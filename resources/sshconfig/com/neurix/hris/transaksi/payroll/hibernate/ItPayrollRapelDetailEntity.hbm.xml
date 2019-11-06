@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollRapelDetailEntity" dynamic-update="true"
+           table="it_hris_payroll_rapel_detail" select-before-update="true" schema="public">
+
+
+        <id name="rapelDetailId">
+            <column name="rapel_detail_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="rapelId">
+            <column name="rapel_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="12"  />
+        </property>
+        <property name="point">
+            <column name="point" sql-type="varchar" length="12"  />
+        </property>
+        <property name="pointLebih">
+            <column name="point_lebih" sql-type="varchar" length="12"  />
+        </property>
+
+        <property name="golonganIdLama">
+            <column name="golongan_id_lama" sql-type="varchar" length="12"  />
+        </property>
+        <property name="pointLama">
+            <column name="point_lama" sql-type="varchar" length="12" />
+        </property>
+        <property name="pointLebihLama">
+            <column name="point_lebih_lama" sql-type="varchar" length="12" />
+        </property>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="12" not-null="true" />
+        </property>
+
+        <property name="gajiGolonganBaruNilai">
+            <column name="gaji_golongan_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="gajiGolonganLamaNilai">
+            <column name="gaji_golongan_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="gajiGolonganNilai">
+            <column name="gaji_golongan" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="umkBaruNilai">
+            <column name="umk_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="umkLamaNilai">
+            <column name="umk_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="umkNilai">
+            <column name="umk" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="strukturalBaruNilai">
+            <column name="struktural_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="strukturalLamaNilai">
+            <column name="struktural_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="strukturalNilai">
+            <column name="struktural" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="jabStrukturalBaruNilai">
+            <column name="jab_struktural_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="jabStrukturalLamaNilai">
+            <column name="jab_struktural_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="jabStrukturalNilai">
+            <column name="jab_struktural" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="strategisBaruNilai">
+            <column name="strategis_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="strategisLamaNilai">
+            <column name="strategis_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="strategisNilai">
+            <column name="strategis" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="airListrikBaruNilai">
+            <column name="air_listrik_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="airListrikLamaNilai">
+            <column name="air_listrik_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="airListrikNilai">
+            <column name="air_listrik" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="perumahanBaruNilai">
+            <column name="perumahan_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="perumahanLamaNilai">
+            <column name="perumahan_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="perumahanNilai">
+            <column name="perumahan" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="peralihanBaruNilai">
+            <column name="peralihan_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="peralihanLamaNilai">
+            <column name="peralihan_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="peralihanNilai">
+            <column name="peralihan" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="bulan">
+            <column name="bulan" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

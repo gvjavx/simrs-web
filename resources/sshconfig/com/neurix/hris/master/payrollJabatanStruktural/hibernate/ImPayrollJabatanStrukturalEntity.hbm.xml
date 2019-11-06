@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.payrollTunjanganStruktural.model.ImPayrollTunjanganStrukturalEntity" dynamic-update="true"
+           table="imt_hris_payroll_tunjangan_struktural" select-before-update="true" schema="public">
+
+
+        <id name="tunjStrukturId">
+            <column name="tunj_struktur_id" sql-type="varchar" length="9" not-null="true" />
+        </id>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="nilai">
+            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imGolonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

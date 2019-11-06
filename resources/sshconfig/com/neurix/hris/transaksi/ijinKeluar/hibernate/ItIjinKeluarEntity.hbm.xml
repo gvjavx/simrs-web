@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity" dynamic-update="true"
+           table="it_hris_ijin_keluar" select-before-update="true" schema="public">
+
+        <id name="ijinKeluarId">
+            <column name="ijin_keluar_id" sql-type="varchar" length="9" not-null="true" />
+        </id>
+        <property name="ijinId">
+            <column name="ijin_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="ijinName">
+            <column name="ijin_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lamaIjin">
+            <column name="lama_ijin" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="false"/>
+        </property>
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalId">
+            <column name="approval_id" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalName">
+            <column name="approval_name" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalDate">
+            <column name="approval_date" sql-type="date" not-null="false"/>
+        </property>
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" not-null="false"/>
+        </property>
+        <property name="notApprovalNote">
+            <column name="not_approval_note" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalSdmId">
+            <column name="approval_sdm_id" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalSdmName">
+            <column name="approval_sdm_name" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="approvalSdmDate">
+            <column name="approval_sdm_date" sql-type="date" not-null="false"/>
+        </property>
+        <property name="approvalSdmFlag">
+            <column name="approval_sdm_flag" sql-type="varchar" not-null="false"/>
+        </property>
+        <property name="notApprovalSdmNote">
+            <column name="not_approval_sdm_note" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="unitId">
+            <column name="unit_id" sql-type="varchar" length="4" not-null="false"/>
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="jamKeluar">
+            <column name="jam_keluar" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+        <property name="jamKembali">
+            <column name="jam_kembali" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+        <property name="tanggalAwal">
+            <column name="tanggal_awal" sql-type="date" not-null="false"/>
+        </property>
+        <property name="tanggalAkhir">
+            <column name="tanggal_akhir" sql-type="date" not-null="false"/>
+        </property>
+        <property name="cancelFlag">
+            <column name="cancel_flag" sql-type="varchar" length="1"  />
+        </property>
+        <property name="cancelDate">
+            <column name="cancel_date" sql-type="date" />
+        </property>
+        <property name="cancelPerson">
+            <column name="cancel_person" sql-type="varchar" length="100"  />
+        </property>
+        <property name="cancelNote">
+            <column name="cancel_note" sql-type="varchar" length="1000"  />
+        </property>
+        <property name="keperluan">
+            <column name="keperluan" sql-type="varchar" length="1"  />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

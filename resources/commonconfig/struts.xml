@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.action.excludePattern" value="/j_spring_security_check"/>
+    <constant name="struts.action.excludePattern" value="/j_spring_security_check.*,.*\\.j_spring_security_check,/j_spring_security_logout"/>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.custom.i18n.resources" value="messages" />
+    <!--<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />-->
+    <!--<constant name="struts.objectFactory.spring.autoWire" value="type" />-->
+
+    <constant name="struts.action.extension" value="xhtml,,xml,json,action"/>
+    <constant name="struts.mapper.class" value="org.apache.struts2.dispatcher.mapper.PrefixBasedActionMapper" />
+
+    <!-- /api is the namespace of REST calls, second part "struts" for Non-REST calls -->
+    <constant name="struts.mapper.prefixMapping" value="/mobileapi:rest,:struts"/>
+
+    <constant name="struts.convention.package.locators" value="mobileapi"/>
+    <constant name="struts.convention.action.suffix" value="Controller"/>
+    <constant name="struts.convention.action.mapAllMatches" value="true"/>
+    <constant name="struts.convention.default.parent.package" value="mobileapi"/>
+    <constant name="struts.rest.namespace" value="/mobileapi" />
+    <constant name="struts.rest.defaultExtension" value="json" />
+    <constant name="struts.rest.content.restrictToGET" value="false"/>
+    <constant name="struts.multipart.maxSize" value="25000000" />
+
+    <include file="sshconfig/com/neurix/hris/mobileapi/struts/MobileApiAction.xml" />
+
+    <include file="sshconfig/com/neurix/authorization/user/struts/UserAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/user/struts/UserLoginAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/function/struts/FunctionAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/role/struts/RoleAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/role/struts/RoleFuncAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/position/struts/PositionAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/company/struts/CompanyAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/company/struts/AreaAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/company/struts/BranchAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/company/struts/AreaBranchUserAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/user/struts/ErrorLogAction.xml"/>
+    <include file="sshconfig/com/neurix/authorization/user/struts/UserSessionLogAction.xml"/>
+    <include file="sshconfig/com/neurix/pmsapb/alatapb/alatdetail/struts/alatDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/pmsapb/master/alat/struts/AlatAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/jamLembur/struts/JamLemburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/pengaliFaktorLembur/struts/PengaliFaktorLemburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/libur/struts/LiburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/jamLembur/struts/JamLemburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/pengaliFaktorLembur/struts/PengaliFaktorLemburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipelibur/struts/TipeLiburAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/golongan/struts/GolonganAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/updateGolongan/struts/UpdateGolonganAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/department/struts/DepartmentAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/strukturJabatan/struts/StrukturJabatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/ijin/struts/IjinAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipeNotif/struts/TipeNotifAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/cuti/struts/CutiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/rsKerjasama/struts/RsKerjasamaAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/biayaPerjalananDinas/struts/BiayaPerjalananDinasAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/kelompokPosition/struts/KelompokPositionAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/transportLokal/struts/TransportLokalAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/perjalananDinas/struts/PerjalananDinasAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/biodata/struts/BiodataAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipepegawai/struts/TipePegawaiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/keluarga/struts/KeluargaAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/study/struts/StudyAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/notifikasi/struts/NotifikasiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/medicalrecord/struts/MedicalRecordAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/notif/struts/NotifAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/group/struts/GroupAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/groupShift/struts/GroupShiftAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/groupMember/struts/GroupMemberAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/biayapengobatan/struts/BiayaPengobatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/shift/struts/ShiftAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/jamkerja/struts/JamKerjaAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/rskelas/struts/RsKelasAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/training/struts/TrainingAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/sppd/struts/SppdAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/provinsi/struts/ProvinsiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/cutiPanjang/struts/CutiPanjangAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkBudget/struts/SmkBudgetAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipeAspek/struts/TipeAspekAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/statusRekruitment/struts/StatusRekruitmentAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/masaTanam/struts/MasaTanamAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/positionBagian/struts/PositionBagianAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/transaksi/mutasi/struts/MutasiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/cutiPegawai/struts/CutiPegawaiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/ijinKeluar/struts/IjinKeluarAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkKategoriAspek/struts/SmkKategoriAspekAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkIndikatorPenilaianAspek/struts/SmkIndikatorPenilaianAspekAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkIndikatorKinerja/struts/SmkIndikatorKinerjaAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkSkalaNilai/struts/SmkSkalaNilaiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkSkalaPointPrestasi/struts/SmkSkalaPointPrestasiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkSkalaNilaiItem/struts/SmkSkalaNilaiItemAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkCheckList/struts/SmkCheckListAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkIndikatorPenilaianCheckList/struts/SmkIndikatorPenilaianCheckListAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/smkPersenSmkNilai/struts/SmkPersenSmkNilaiAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/transaksi/Lembur/struts/LemburAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/transaksi/indisipliner/struts/IndisiplinerAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/transaksi/JadwalShiftKerja/struts/JadwalShiftKerjaAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/smkJabatan/struts/SmkJabatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/smk/struts/SmkAction.xml"/>
+
+    <!-- For Payroll -->
+    <include file="sshconfig/com/neurix/hris/master/payrollTunjanganJabatanStruktural/struts/PayrollTunjanganJabatanStrukturalAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/transaksi/payroll/struts/PayrollAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGaji/struts/PayrollSkalaGajiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/struts/PayrollSkalaGajiPensiunAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/branchTunjangan/struts/BranchTunjanganAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollBajuDinas/struts/PayrollBajuDinasAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollAirListrik/struts/PayrollAirListrikAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollTunjanganUmk/struts/PayrollTunjanganUmkAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollTunjanganStruktural/struts/PayrollTunjanganStrukturalAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollTunjanganPerumahan/struts/PayrollTunjanganPerumahanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollDanaPensiun/struts/PayrollDanaPensiunAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollFaktorKeluarga/struts/PayrollFaktorKeluargaAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/struts/PayrollMasaKerjaPensiunAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/masaTanam/struts/MasaTanamAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/laporan/struts/LaporanAction.xml"/>
+
+    <!-- For Rekruitmen -->
+    <include file="sshconfig/com/neurix/hris/transaksi/rekruitmen/struts/RekruitmenAction.xml"/>
+    <!-- For Rekruitmen Pabrik -->
+    <include file="sshconfig/com/neurix/hris/transaksi/rekruitmenPabrik/struts/RekruitmenPabrikAction.xml"/>
+    <!-- For Absensi -->
+    <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/MesinAbsensiDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/AbsensiAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/struts/MasaKerjaPensiunAction.xml"/>
+
+    <!--Dashboard-->
+    <include file="sshconfig/com/neurix/hris/master/dashboard/struts/DashboardAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/dashboardAbsensi/struts/DashboardAbsensiAction.xml"/>
+
+    <!--Medical Kacamata-->
+    <include file="sshconfig/com/neurix/hris/transaksi/medicalKacamata/struts/MedicalKacamataAction.xml"/>
+
+    <!--Im Medical Kacamata-->
+    <include file="sshconfig/com/neurix/hris/master/medicalBiayaKacamata/struts/MedicalBiayaKacamataAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/studyJurusan/struts/StudyJurusanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/carrerPath/struts/CarrerPathAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/pelatihanJabatan/struts/PelatihanJabatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollMasterInsentif/struts/PayrollMasterInsentifAction.xml"/>
+
+
+    <!--Struts Route Config For SIMRS Is Here-->
+
+</struts>

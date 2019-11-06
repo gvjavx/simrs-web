@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.payrollMasterInsentif.model.ImPayrollMasterInsentifEntity" dynamic-update="true"
+           table="im_hris_payroll_insentif" select-before-update="true" schema="public">
+
+
+        <id name="payrollInsentifId">
+            <column name="payroll_insentif_id" sql-type="varchar" length="7" not-null="true" />
+        </id>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="numeric" length="5" not-null="true" />
+        </property>
+        <property name="potonganInsentif">
+            <column name="potongan_insentif" sql-type="numeric" length="5" not-null="true" />
+        </property>
+        <property name="smkStandart">
+            <column name="smk_standart" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

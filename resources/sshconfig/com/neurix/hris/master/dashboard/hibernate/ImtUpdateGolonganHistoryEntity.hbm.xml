@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.golongan.model.ImGolonganHistoryEntity" dynamic-update="true"
+           table="im_hris_golongan_history" select-before-update="true" schema="public">
+
+
+        <id name="id">
+            <column name="id" sql-type="varchar" length="3" not-null="true" />
+        </id>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="3" not-null="true" />
+        </property>
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

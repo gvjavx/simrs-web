@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cetakKontrakRekruitmen" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a6393542-af9f-4ef7-9b5c-f2ae8e7ce0e6">
+	<property name="ireport.zoom" value="1.1000000000000065"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="itemPasal" uuid="6ce22422-5720-4536-99f9-49a70c03ba41">
+		<field name="no" class="java.lang.String"/>
+		<field name="isi" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="itemUraianPekerjaan" uuid="b4ecc12a-ef8e-4212-a43a-44580a3b675e">
+		<field name="no" class="java.lang.String"/>
+		<field name="uraianPekerjaan" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.id" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.nomorSurat" class="java.lang.String"/>
+	<parameter name="reportParams.hariSekarang" class="java.lang.String"/>
+	<parameter name="reportParams.tanggalSekarang" class="java.lang.String"/>
+	<parameter name="reportParams.bulanSekarang" class="java.lang.String"/>
+	<parameter name="reportParams.tahunSekarang" class="java.lang.String"/>
+	<parameter name="reportParams.par1Nama" class="java.lang.String"/>
+	<parameter name="reportParams.par1Direktur" class="java.lang.String"/>
+	<parameter name="reportParams.par1Perkenalan" class="java.lang.String"/>
+	<parameter name="reportParams.par1Menerangkan1" class="java.lang.String"/>
+	<parameter name="reportParams.par1Menerangkan2" class="java.lang.String"/>
+	<parameter name="reportParams.namaDirektur" class="java.lang.String"/>
+	<parameter name="reportParams.par1Hari" class="java.lang.String"/>
+	<parameter name="reportParams.par1Menerangkan3" class="java.lang.String"/>
+	<parameter name="reportParams.par3Fasilitas" class="java.lang.String"/>
+	<parameter name="reportParams.par2JangkaWaktu" class="java.lang.String"/>
+	<parameter name="reportParams.par2Upah" class="java.lang.String"/>
+	<parameter name="reportParams.par3KewajibanPihakPertama" class="java.lang.String"/>
+	<parameter name="reportParams.par3HakPihakPertama" class="java.lang.String"/>
+	<parameter name="reportParams.par4KewajibanPihakDua" class="java.lang.String"/>
+	<parameter name="reportParams.par4HakPihakDua" class="java.lang.String"/>
+	<parameter name="reportParams.par4CutidanLembur" class="java.lang.String"/>
+	<parameter name="reportParams.par5TataTertib" class="java.lang.String"/>
+	<parameter name="reportParams.par5Pemutusan" class="java.lang.String"/>
+	<parameter name="reportParams.par5Penutup" class="java.lang.String"/>
+	<parameter name="reportParams.par6Peraturan" class="java.lang.String"/>
+	<parameter name="reportParams.par6NomorSurat" class="java.lang.String"/>
+	<parameter name="reportParams.itemPasal1UraianPekerjaan" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal2JangkaWaktu" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal3Upah" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal4Fasilitas" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal5KewajibanPihakPertama" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal6KewajibanPihakKedua" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal7CutiDanLembur" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal8TataTertib" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal9PemutusHubungan" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPasal10Penutup" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.itemPeraturanDanTatibPerusahaan" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<queryString>
+		<![CDATA[SELECT * FROM it_hris_rekruitmen_pegawai WHERE calon_pegawai_id=$P{reportParams.id}]]>
+	</queryString>
+	<field name="calon_pegawai_id" class="java.lang.String"/>
+	<field name="nama_calon_pegawai" class="java.lang.String"/>
+	<field name="gelar_depan" class="java.lang.String"/>
+	<field name="gelar_belakang" class="java.lang.String"/>
+	<field name="no_ktp" class="java.lang.String"/>
+	<field name="alamat" class="java.lang.String"/>
+	<field name="rtrw" class="java.lang.String"/>
+	<field name="desa" class="java.lang.String"/>
+	<field name="kabupaten" class="java.lang.String"/>
+	<field name="provinsi" class="java.lang.String"/>
+	<field name="tanggal_lahir" class="java.sql.Date"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="foto_upload" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String"/>
+	<field name="status_keluarga" class="java.lang.String"/>
+	<field name="jenis_kelamin" class="java.lang.String"/>
+	<field name="jumlah_anak" class="java.lang.Integer"/>
+	<field name="branch_id" class="java.lang.String"/>
+	<field name="status_input" class="java.lang.String"/>
+	<field name="position_id" class="java.lang.String"/>
+	<field name="department_id" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="status_pegawai" class="java.lang.String"/>
+	<field name="tipe_pegawai" class="java.lang.String"/>
+	<field name="status_giling" class="java.lang.String"/>
+	<field name="no_kontrak" class="java.lang.String"/>
+	<field name="kecamatan" class="java.lang.String"/>
+	<field name="closed" class="java.lang.String"/>
+	<field name="tanggal_aktif" class="java.sql.Timestamp"/>
+	<field name="nip" class="java.lang.String"/>
+	<field name="golongan_id" class="java.lang.String"/>
+	<field name="poin" class="java.lang.Long"/>
+	<detail>
+		<band height="778">
+			<image onErrorType="Blank">
+				<reportElement x="0" y="9" width="149" height="59" uuid="daf1aff2-1d94-43b0-9109-3829168ed45c"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="40" y="111" width="481" height="1" uuid="ef253a7b-2f74-4033-9135-4b7786c8220e"/>
+			</line>
+			<staticText>
+				<reportElement x="108" y="44" width="348" height="28" uuid="4e3f9ef5-dde4-49cd-aeb9-62354b71cb25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERJANJIAN KERJA WAKTU TERTENTU (PKWT)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="517" width="22" height="20" uuid="bfa870b2-e588-4ee3-9561-20c4ab58fc36"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[o]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="595" width="22" height="20" uuid="a09b9041-ff4a-432f-8cbe-7a9936ecfc04"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[o]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="349" width="109" height="20" uuid="dfed1166-d823-4b28-9b67-b292a7dd3bbb"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="153" y="349" width="11" height="20" uuid="7beedf95-3045-411b-b1ae-418a13929276"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="191" width="11" height="20" uuid="74ad2ed0-6852-4bc0-be27-10041739b2bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="91" width="348" height="20" uuid="b8bcbf80-26a3-4a76-88ec-414d661417bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nomorSurat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="191" width="109" height="20" uuid="533f521f-806b-45e9-b47d-66eb47d6703d"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.namaDirektur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="169" y="354" width="353" height="79" uuid="0a4bb610-d961-4d77-a36b-6dca43858b5e"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="169" y="195" width="353" height="158" uuid="283a8067-c2bc-45bd-9b77-a048180673e2"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Direktur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="465" width="481" height="52" uuid="daf4fccf-8ed7-4a2a-a84b-6be365e2b8aa"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Perkenalan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="123" width="480" height="57" uuid="a42312c5-7847-44de-a146-66ed76a2cb62"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Hari}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="517" width="459" height="77" uuid="43bdc18e-e073-4527-b5e7-e23c429c54fb"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Menerangkan1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="595" width="459" height="49" uuid="7f213d21-cb7d-4437-9107-995ef6932547"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Menerangkan2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="653" width="481" height="89" uuid="a1cf4221-8adf-42e9-8138-4852742f9efe"/>
+				<textElement textAlignment="Justified" markup="html">
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.par1Menerangkan3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="479" y="71" width="72" height="16" uuid="9c7f059c-f38f-47ed-8785-489f1b651c2a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="464" y="2" width="69" height="70" uuid="5bb2e9a0-892f-49bc-981c-f5c1d62493bc"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"No Surat : " ,
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="108" y="72" width="348" height="20" uuid="51d7b752-07e5-4ed2-b6e1-d49a41b5d3bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT PABRIK GULA RAJAWALI I]]></text>
+			</staticText>
+		</band>
+		<band height="730">
+			<break>
+				<reportElement x="0" y="0" width="100" height="1" uuid="5fe077f1-1185-4ccd-895c-66d86263d03e"/>
+			</break>
+			<staticText>
+				<reportElement x="83" y="44" width="381" height="37" uuid="350aaf64-8bc0-46a1-bcc1-d44cfbabbfe2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 1
+URAIAN PEKERJAAN, TUGAS DAN TANGGUNG JAWAB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="220" width="292" height="37" uuid="65a618fd-e8cb-44b3-9f83-005c503224af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 2
+JANGKA WAKTU DAN LOKASI KERJA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="425" width="292" height="37" uuid="4e1277bd-23f3-4c94-8095-31fd38d03ca5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 3
+UPAH]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="41" y="92" width="479" height="128" isPrintWhenDetailOverflows="true" uuid="54714bc8-db27-40b5-8444-4f179c8341ff"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemUraianPekerjaan" uuid="c608fce8-6397-46e6-944c-71ddc01e67e7">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal1UraianPekerjaan}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="adc82e82-1a32-48a0-996c-182fb2f829cd">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="01288906-4682-4c89-b77a-607473088cae"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="437" uuid="2fc54146-f258-4b4d-8e91-9c9bc7afd508">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="437" height="17" isPrintWhenDetailOverflows="true" uuid="81fc6d37-4202-499f-860d-f453011cdf23"/>
+								<textElement textAlignment="Justified" verticalAlignment="Top" markup="html"/>
+								<textFieldExpression><![CDATA[$F{uraianPekerjaan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="277" width="479" height="148" isPrintWhenDetailOverflows="true" uuid="672a4e88-1c60-4480-96b4-0af0eed4ec22"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="953e7d47-38dc-4f77-b162-ab80907a578e">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal2JangkaWaktu}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="3a357398-3cff-4009-b484-895e4096877f">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="1fe44615-383b-4d97-84f2-f0fd6702243c"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="437" uuid="63e3f5f8-4a75-423c-8f8a-6be2b5d33d50">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="437" height="17" isPrintWhenDetailOverflows="true" uuid="5ec83afc-4ebf-4b6c-9b45-4db4f80b25c7"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="483" width="479" height="247" isPrintWhenDetailOverflows="true" uuid="de1290ca-32b1-4ec9-9a18-74bc5067d124"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="a2b0e33a-ef13-42f7-aee2-0e94dd7b8ae4">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal3Upah}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="6dbada22-a5bd-44b7-9913-2928acc59ca1">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="9e1921e0-2204-437a-8602-4dff2bf4b4a5"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="437" uuid="f5ea97b1-53a9-4133-811b-b0fcbffcd4dc">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="437" height="17" isPrintWhenDetailOverflows="true" uuid="7ad1b4b6-c5da-41d3-aee8-035e418dfb25"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="778">
+			<break>
+				<reportElement x="0" y="0" width="100" height="1" uuid="62ebd512-4ec3-4d99-875b-94f5ca7c0505"/>
+			</break>
+			<staticText>
+				<reportElement x="129" y="39" width="292" height="37" uuid="77531385-2c9e-43d3-9843-7f19278dceb7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 4
+FASILITAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="475" width="292" height="37" uuid="f2d852e7-5bf9-4d67-8b42-676232a6bf01"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 5
+KEWAJIBAN DAN HAK PIHAK PERTAMA]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="41" y="514" width="479" height="247" isPrintWhenDetailOverflows="true" uuid="675c34fa-04ed-4610-a966-e4ec1719b09d"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="7a2b7cd7-6298-4e87-b7a3-f07314bfebc1">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal5KewajibanPihakPertama}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="2bf12e01-de81-4db4-94e4-1721c987254b">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="3d223e6f-5126-4a5d-9894-82348f44156b"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="d7e4c568-28d2-43b7-93dd-ec3fa2a1535e">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="3cefc60f-57c0-4f63-8661-c4366efe42e0"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="91" width="479" height="356" isPrintWhenDetailOverflows="true" uuid="79161b84-3621-45a3-ac4c-8ccc631869f3"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="b49a9955-daf4-480e-9efe-af01d7758a2d">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal4Fasilitas}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="cfe5bf22-9e2d-4ed7-85a0-4849705f0d58">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="aae4d7a5-7d2d-4f1e-af76-ee0225a3773d"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="437" uuid="5a5cc05a-3a68-4d69-8d46-a4009d28fdd3">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="437" height="17" isPrintWhenDetailOverflows="true" uuid="8fbc2787-3a05-4b66-b54a-0addc4e1d230"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="778">
+			<break>
+				<reportElement x="0" y="1" width="100" height="1" uuid="9338ddbc-b833-4660-b667-7a296cdef7c3"/>
+			</break>
+			<staticText>
+				<reportElement x="122" y="37" width="292" height="37" uuid="fea4d6f4-47cd-42ad-b107-bc29691dc5d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 6
+KEWAJIBAN DAN HAK PIHAK KEDUA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="291" width="292" height="37" uuid="33b93f5a-e194-4bf2-86be-1474bf53297f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 7
+CUTI DAN LEMBUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="435" width="292" height="37" uuid="5a11c174-536d-4bea-b381-76ca070500ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 8
+TATA TERTIB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="565" width="292" height="37" uuid="47727578-3572-476d-bab5-88fb63d8aa05"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PASAL 9
+PEMUTUSAN HUBUNGAN KERJA]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="96" width="479" height="195" isPrintWhenDetailOverflows="true" uuid="aa00a921-82e0-4b3b-ab1f-8a33bbc69a8f"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="aaacf195-eff1-43db-9d54-7b3a730f72e2">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal6KewajibanPihakKedua}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="9f0ea330-3603-4b73-b816-ab62a6d9402d">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="d3741398-4fd5-48ce-99ce-d3deb20434ed"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="2220de85-cead-44fd-8fe1-06da71953cc3">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="d4c43648-7b95-48cd-bdcb-252685246e1e"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="41" y="346" width="479" height="89" isPrintWhenDetailOverflows="true" uuid="a853cc5f-9c33-408b-83bc-67907a0e1d05"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="10765dfd-b725-41e5-891a-bec91d587e9d">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal7CutiDanLembur}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="59a1cf15-6893-4424-8945-8d26cb044e3e">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="6c599bc0-bf2d-4037-8709-c6f3967ffc89"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="1ddfd1f3-9503-40de-9fb2-e35a37bb8386">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="0a44edc8-05d7-44f6-97b7-961260831a65"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="489" width="479" height="76" isPrintWhenDetailOverflows="true" uuid="fa5caad0-4c5f-4b3a-b1ac-b4b01341155b"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="f3cc52ac-4118-4400-b65f-cd5a9f505f36">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal8TataTertib}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="477" uuid="0eb7ea97-79b7-4303-8431-175dfa663bc6">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="477" height="17" isPrintWhenDetailOverflows="true" uuid="3993f03d-b9e0-44da-9b9c-c7675dfa3758"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="620" width="479" height="158" isPrintWhenDetailOverflows="true" uuid="3b5160ca-081e-4796-b3c5-cf45ef65a1e1"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="ac6f20e3-c2ee-4a2d-bc76-280e2e6a5a95">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal9PemutusHubungan}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="2bfbcf56-e5a4-4a4e-881d-08b03b4a75ed">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="8501996e-26b4-4d8b-8b3d-8821ca508cfa"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="c552db50-bffb-4298-b68d-bde7ee2aa13f">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="47b303ec-b23c-4675-bb8b-737e0b35e9d4"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="778">
+			<break>
+				<reportElement x="0" y="0" width="100" height="1" uuid="eb17b188-25a4-4c7c-8989-b7c681bd316a"/>
+			</break>
+			<staticText>
+				<reportElement x="122" y="37" width="292" height="37" uuid="9b3226ec-c2a8-48d1-8ec4-e1150a423d26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pasal 10
+PENUTUP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="237" width="76" height="20" uuid="fca021ee-eef7-45b1-a9ac-5eb6a3172696"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pihak Pertama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="237" width="170" height="20" uuid="cb916f5c-54bb-4e70-88f1-80f7e75e0a92"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pihak Kedua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="335" width="117" height="20" uuid="bf349e56-365c-4734-b8c3-fd24b86ba81d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[DIREKTUR UTAMA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="294" y="315" width="170" height="20" uuid="ccfe68f9-9976-4880-bc91-82a37d2246df"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="315" width="117" height="20" uuid="ac90b55d-98ea-4acb-b56d-4509eb94751f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.namaDirektur}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="41" y="97" width="479" height="140" isPrintWhenDetailOverflows="true" uuid="b6a4b359-ce44-4661-98cb-98a1dd61e188"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="35c31325-ad51-46a6-becc-8a083a56e58b">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPasal10Penutup}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="28f56c8d-b9f8-4dac-9d89-10fb1bd1cee4">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="390271a5-d88e-4fd3-9325-dde79dcad830"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="6b15780d-e109-43d1-b422-3f9aab6d7abe">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="b268027c-5fbc-4fc8-abf8-fc0651aafdca"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="778">
+			<break>
+				<reportElement x="0" y="0" width="100" height="1" uuid="48661c3e-d280-4550-82eb-8a408e04f58a"/>
+			</break>
+			<staticText>
+				<reportElement x="122" y="86" width="292" height="37" uuid="828f78f2-c1f0-46cb-b990-a4d14d3984c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[PERATURAN DAN TATA TERTIB PERUSAHAAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="272" y="39" width="249" height="20" uuid="80865e95-38a4-43d9-8d8f-97ec6624d960"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{reportParams.par6NomorSurat}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="table 3" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="137" width="479" height="627" isPrintWhenDetailOverflows="true" uuid="0a9ceafa-2049-4e7d-ae47-b5cffa39ec29"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="itemPasal" uuid="87036e3c-91ab-43af-a31d-4970ed8915f2">
+						<dataSourceExpression><![CDATA[$P{reportParams.itemPeraturanDanTatibPerusahaan}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="25" uuid="2ade35de-6a07-4e0f-ba15-e71be026b4a6">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="25" height="17" isPrintWhenDetailOverflows="true" uuid="24d83c84-1969-4732-9eb8-f688bb60c630"/>
+								<textElement verticalAlignment="Top">
+									<font isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="453" uuid="c1e355b0-9f18-45f9-8e1d-4d4d1cddf9d3">
+						<jr:detailCell height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="453" height="17" isPrintWhenDetailOverflows="true" uuid="0ab75ad5-d25d-46b9-9f4b-25d5d825e6e7"/>
+								<textElement textAlignment="Justified" markup="html"/>
+								<textFieldExpression><![CDATA[$F{isi}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="428" y="0" width="80" height="20" uuid="659eeb0e-09e9-467d-a8fc-91d446322656"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="508" y="0" width="40" height="20" uuid="ad5264ae-0438-48ba-8b0b-996235427a7f"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

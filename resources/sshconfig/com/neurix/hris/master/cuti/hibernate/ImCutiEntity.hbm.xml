@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.cuti.model.ImCutiEntity" dynamic-update="true"
+           table="im_hris_cuti" select-before-update="true" schema="public">
+
+
+        <id name="cutiId">
+            <column name="cuti_id" sql-type="varchar" length="5" not-null="true" />
+        </id>
+
+        <property name="cutiName">
+            <column name="cuti_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="tipeHari">
+            <column name="tipe_hari" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+
+        <property name="jumlahCuti">
+            <column name="jumlah_cuti_hari" sql-type="bigint" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imGolongan" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+
+        <many-to-one name="imBranch" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

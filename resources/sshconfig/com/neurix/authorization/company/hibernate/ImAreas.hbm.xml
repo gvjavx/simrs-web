@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.company.model.ImAreas" table="im_areas" dynamic-update="true"
+           select-before-update="true" schema="public">
+        <composite-id name="primaryKey" class="com.neurix.authorization.company.model.ImAreasPK">
+            <key-property name="id">
+                <column name="area_id" sql-type="varchar" length="4" not-null="true"/>
+            </key-property>
+        </composite-id>
+
+
+        <property name="areaName">
+            <column name="area_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+
+        <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
+            <key>
+                <column name="area_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.authorization.company.model.ImAreasBranchesUsers"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

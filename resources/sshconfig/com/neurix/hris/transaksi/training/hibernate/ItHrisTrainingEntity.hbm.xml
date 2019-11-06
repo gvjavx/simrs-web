@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.transaksi.training.model.ItHrisTrainingEntity" table="it_hris_training" dynamic-update="true" select-before-update="true" schema="public">
+
+        <id name="trainingId">
+            <column name="training_id" sql-type="varchar" length="7" not-null="true"/>
+        </id>
+        <property name="trainingName">
+            <column name="training_name" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="tipeTraining">
+            <column name="tipe_training" sql-type="varchar" length="20"/>
+        </property>
+        <property name="trainingStartDate">
+            <column name="training_start_date" sql-type="date"/>
+        </property>
+        <property name="trainingEndDate">
+            <column name="training_end_date" sql-type="date"/>
+        </property>
+        <property name="instansi">
+            <column name="instansi" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="closed">
+            <column name="closed" sql-type="varchar" length="1"/>
+        </property>
+        <property name="closedNote">
+            <column name="closed_note" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="unitId">
+            <column name="unit_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="kota">
+            <column name="kota" sql-type="varchar" length="10"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createDateWho">
+            <column name="created_who" sql-type="varchar"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar"/>
+        </property>
+
+        <many-to-one name="imKotaEntity" class="com.neurix.hris.master.provinsi.model.ImKotaEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kota"/>
+        </many-to-one>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="unit_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

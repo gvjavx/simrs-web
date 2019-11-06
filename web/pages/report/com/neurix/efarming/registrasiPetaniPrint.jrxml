@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="registrasiPetaniPrint" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="97aaed94-7f54-4259-9b83-05f2edca6d0e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="0d0ed4b5-ef3f-483a-a02c-27693a01dae2"/>
+	<parameter name="reportParams.petaniId" class="java.lang.String"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.keyCode" class="java.lang.String"/>
+	<parameter name="reportParams.urlImageKTP" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+petani.*,
+(case when petani.type_petani = 'K' then 'Ketua' else 'Anggota' end) as tipe_petani,
+desa.desa_name,
+kec.kecamatan_name,
+kota.kota_name,
+prov.provinsi_name
+from
+imt_ptpnx_petani petani
+left outer join im_ptpnx_desa desa on desa.desa_id = petani.desa_id
+left outer join im_ptpnx_kecamatan kec on kec.kecamatan_id = petani.kecamatan_id
+left outer join im_ptpnx_kota kota on kota.kota_id = petani.kota_id
+left outer join im_ptpnx_provinsi prov on prov.provinsi_id = petani.provinsi_id
+where
+petani_id = $P{reportParams.petaniId}
+and petani.flag = 'Y']]>
+	</queryString>
+	<field name="petani_id" class="java.lang.String"/>
+	<field name="petani_name" class="java.lang.String"/>
+	<field name="alamat_ktp" class="java.lang.String"/>
+	<field name="no_kk" class="java.lang.String"/>
+	<field name="no_hp" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="nama_kebun" class="java.lang.String"/>
+	<field name="attachment_ktp" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="desa_id" class="java.lang.Long"/>
+	<field name="kecamatan_id" class="java.lang.Long"/>
+	<field name="kota_id" class="java.lang.Long"/>
+	<field name="provinsi_id" class="java.lang.Long"/>
+	<field name="type_reg" class="java.lang.String"/>
+	<field name="type_petani" class="java.lang.String"/>
+	<field name="sent_flag" class="java.lang.String"/>
+	<field name="delivery_flag" class="java.lang.String"/>
+	<field name="sent_date" class="java.sql.Timestamp"/>
+	<field name="ktp_desa_id" class="java.lang.Long"/>
+	<field name="tipe_petani" class="java.lang.String"/>
+	<field name="desa_name" class="java.lang.String"/>
+	<field name="kecamatan_name" class="java.lang.String"/>
+	<field name="kota_name" class="java.lang.String"/>
+	<field name="provinsi_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="207" splitType="Stretch">
+			<textField>
+				<reportElement x="223" y="89" width="131" height="12" forecolor="#000000" uuid="f6b06c79-0752-419d-af43-bca389ea60c9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{petani_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="75" width="81" height="13" uuid="81280f02-5af3-4b3c-b0d5-ef53244697b6"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Petani Id :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="75" width="131" height="13" forecolor="#009933" uuid="4391037b-206b-4a6a-8302-6f0f51ccefef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{petani_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="89" width="81" height="12" uuid="e43125f1-28bb-455c-b80f-1c244aa4979f"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Nama Petani :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="103" width="81" height="13" uuid="b8818932-0654-417c-ae57-49401dbb4d74"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[No. Hp :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="103" width="131" height="13" uuid="4d90b289-6a9f-4ef8-b17c-a66559326889"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_hp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="173" y="44" width="262" height="15" uuid="79d31f8d-b2f1-460d-8dae-9d821eefc7d4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="397" y="23" width="59" height="19" uuid="e5a4c962-1302-4611-a7f1-5ac07f9654d4"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="455" y="23" width="100" height="19" uuid="fc929774-be0d-4798-b729-4d7d5dae9af8"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="411" y="0" width="167" height="20" uuid="885ccae2-5384-4e94-b085-e8f8dca7ac58">
+					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[$P{reportParams.keyCode}]]></propertyExpression>
+				</reportElement>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.keyCode}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<image>
+				<reportElement x="0" y="76" width="132" height="94" uuid="c0235053-fcae-4604-9cf2-4121af2d248c"/>
+				<imageExpression><![CDATA[$P{reportParams.urlImageKTP}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="447" y="39" width="56" height="20" uuid="19a2645a-4c66-4cb0-844b-3295957a5be5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Calibri" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="503" y="39" width="41" height="20" uuid="2c016405-a0bb-4bf9-ae0c-a87df4b22769"/>
+				<textElement>
+					<font fontName="Calibri" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="247" y="4" width="94" height="39" uuid="05e3cb87-c3df-40b0-80db-c2c63987c766"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="142" y="118" width="81" height="12" uuid="e3403bd1-3daf-494c-996e-3d1b568a115f"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Email  :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="118" width="131" height="12" uuid="4beb8d8d-9fd3-470e-b657-b9a6eafe46d7"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="131" width="131" height="12" uuid="00e695a0-39f1-44b1-a224-92b572918162"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_kk}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="131" width="81" height="12" uuid="4f27802b-1dde-4c8f-b52c-550aef023672"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[No. KK :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="104" width="74" height="12" uuid="5b30ed85-e767-42b4-99b3-15c674884462"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Kebun :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="104" width="108" height="12" uuid="18eebedc-ab9c-42a5-89a4-609655d9dfbc"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_kebun}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="117" width="108" height="13" uuid="66df7339-766c-4893-8482-9c48b900a682"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desa_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="117" width="74" height="13" uuid="9a740f06-91f4-4cc9-b267-f3edbdcdc6fd"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Desa :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="144" width="74" height="13" uuid="bae00a81-3b8b-4f42-8184-104816583d41"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Kab./Kota :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="131" width="108" height="12" uuid="6b474b23-da44-4f1b-954c-5bf10f108f39"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kecamatan_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="131" width="74" height="12" uuid="d5bbc8b6-a298-4a3f-8eff-a058b32d64ee"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Kecamatan :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="144" width="108" height="13" uuid="9e08707a-c95b-4ae2-88eb-617033136506"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kota_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="158" width="108" height="12" uuid="342d1729-291c-49e9-b095-e84a1f64fd2b"/>
+				<textElement>
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{provinsi_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="158" width="74" height="12" uuid="8fa84890-5ca7-4334-ad1b-09948de1be02"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Provinsi :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="223" y="144" width="131" height="13" uuid="a4782ccf-a9b2-4a18-8500-8331979a775a"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{password}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="144" width="81" height="13" uuid="d8b80f92-979f-4d22-a51a-2182d2d14f4f"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Password :]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy HH:mm" isBlankWhenNull="true">
+				<reportElement x="447" y="75" width="108" height="25" forecolor="#000000" uuid="ac78c4ed-88f8-403d-a1a2-f7bf9e5fe31d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Calibri" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alamat_ktp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="75" width="74" height="13" uuid="57918b69-9a22-46e2-b2f5-a5fbaaba2e20"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Alamat KTP :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="158" width="81" height="12" uuid="47991546-0399-4076-9970-44a70f3c638c"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Tanggal Registrasi :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="223" y="158" width="131" height="12" uuid="92bfd73a-c203-45ad-b0fd-4356c1c43eb3"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{created_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="223" y="171" width="131" height="13" uuid="0e7c0ba9-253e-4efb-b1ce-c3a6e52cc13b"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipe_petani}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="171" width="81" height="13" uuid="bb0b9545-685a-48eb-a267-0191fa91ee6f"/>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<text><![CDATA[Tipe Petani :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="22" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.rekruitmenPabrik.model.ItRekruitmenPabrikDetailHistoryEntity" dynamic-update="true"
+           table="it_hris_rekruitmen_pabrik_detail_history" select-before-update="true" schema="public">
+
+
+        <id name="rekruitmenPabrikDetailId">
+            <column name="rekruitmen_pabrik_detail_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="rekruitmenPabrikId">
+            <column name="rekruitmen_pabrik_id" sql-type="varchar" length="10" not-null="true" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="15" not-null="false" />
+        </property>
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="posisiLama">
+            <column name="posisi_lama" sql-type="varchar" length="3" not-null="false" />
+        </property>
+        <property name="posisiBaru">
+            <column name="posisi_baru" sql-type="varchar" length="3" not-null="false" />
+        </property>
+        <property name="tanggalAktif">
+            <column name="tanggal_aktif" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="statusGiling">
+            <column name="status_giling" sql-type="varchar" length="3" not-null="false" />
+        </property>
+        <property name="approvalGmFlag">
+            <column name="approval_gm_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalGmId">
+            <column name="approval_gm_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="approvalGmName">
+            <column name="approval_gm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approvalGmdate">
+            <column name="approval_gm_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="approvalSdmFlag">
+            <column name="approval_Sdm_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalSdmId">
+            <column name="approval_Sdm_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="approvalSdmName">
+            <column name="approval_Sdm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approvalSdmdate">
+            <column name="approval_Sdm_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="noKontrak">
+            <column name="no_kontrak" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="id">
+            <column name="id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="nip"/>
+        </many-to-one>
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="posisi_lama"/>
+        </many-to-one>
+        <many-to-one name="imPosition2" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="posisi_baru"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

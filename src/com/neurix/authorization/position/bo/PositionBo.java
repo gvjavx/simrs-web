@@ -1,0 +1,26 @@
+package com.neurix.authorization.position.bo;
+
+import com.neurix.authorization.position.model.Position;
+import com.neurix.common.bo.BaseMasterBo;
+import com.neurix.common.exception.GeneralBOException;
+
+import java.util.List;
+
+/**
+ * Created by Ferdi on 02/02/2015.
+ */
+public interface PositionBo extends BaseMasterBo<Position> {
+
+    List<Position> getComboDivisiWithCriteria(String query) throws GeneralBOException;
+
+    public Position getPositionById(String positionId, String flag) throws GeneralBOException;
+    public List<Position> searchPosition2Sys(Position position) throws GeneralBOException;
+
+    List<Position> searchPositionMutasi(Position position) throws GeneralBOException;
+
+    List<Position> searchDivisi(Position position) throws GeneralBOException;
+
+    public List<Position> searchPosition2Sys(String unitId) throws GeneralBOException;
+    public List<Position> searchPositionBiodataSys(String divisiId) throws GeneralBOException;
+
+}

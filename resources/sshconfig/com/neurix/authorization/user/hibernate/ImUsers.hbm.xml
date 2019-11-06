@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.user.model.ImUsers" table="im_users" dynamic-update="true"
+           select-before-update="true" schema="public">
+        <composite-id name="primaryKey" class="com.neurix.authorization.user.model.ImUsersPK">
+            <key-property name="id">
+                <column name="user_id" sql-type="varchar" length="100" not-null="true"/>
+            </key-property>
+        </composite-id>
+
+        <property name="userName">
+            <column name="user_name" sql-type="varchar" length="100" not-null="true"/>
+        </property>
+        <property name="divisiId">
+            <column name="department_id" sql-type="varchar" length="3" not-null="false"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar" length="100" not-null="true"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar" length="100" not-null="true"/>
+        </property>
+        <property name="photoUrl">
+            <column name="photo_url" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="3" not-null="true"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_id"/>
+        </many-to-one>
+
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="department_id"/>
+        </many-to-one>
+
+        <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity" not-found="ignore" not-null="false"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="user_id"/>
+        </many-to-one>
+
+        <many-to-one name="itPersonilPositionEntity" class="com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity" not-found="ignore" not-null="false"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="user_id"/>
+        </many-to-one>
+
+        <!--<set name="imBiodataEntity" inverse="false" lazy="true" fetch="select" where="flag='Y'" >
+            <key>
+                <column name="user_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"/>
+        </set>-->
+
+        <set name="imAreasBranchesUsers" inverse="false" lazy="true" fetch="select" where="flag='Y'" >
+            <key>
+                <column name="user_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.authorization.company.model.ImAreasBranchesUsers"/>
+        </set>
+
+        <set name="imRoles" table="im_users_roles" where="flag='Y'"
+             inverse="false" lazy="true" fetch="select" cascade="none" >
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.neurix.authorization.role.model.ImRoles">
+                <column name="role_id" not-null="true"/>
+            </many-to-many>
+        </set>
+
+    </class>
+</hibernate-mapping>

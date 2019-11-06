@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.smkIndikatorPenilaianAspek.model.ImSmkIndikatorPenilaianAspekEntity" dynamic-update="true"
+           table="im_hris_smk_indikator_penilaian_aspek" select-before-update="true" schema="public">
+
+
+        <id name="indikatorPenilaianAspekId">
+            <column name="indikator_penilaian_aspek_id" sql-type="varchar" length="6" not-null="true" />
+        </id>
+
+        <property name="kategoriAspekId">
+            <column name="kategori_aspek_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="indikatorName">
+            <column name="indikator_name" sql-type="varchar" length="1000" not-null="true" />
+        </property>
+
+        <property name="bobot">
+            <column name="bobot" sql-type="numeric" length="5" precision="0" not-null="true" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imSmkKategoriAspekEntity" class="com.neurix.hris.master.smkKategoriAspek.model.ImSmkKategoriAspekEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kategori_aspek_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

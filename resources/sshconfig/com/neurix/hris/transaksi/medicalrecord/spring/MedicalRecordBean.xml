@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="medicalRecordAction" class="com.neurix.hris.transaksi.medicalrecord.action.MedicalRecordAction"
+        p:medicalRecordBoProxy-ref="medicalRecordBoProxy"
+    />
+    <bean id="medicalRecordBo" class="com.neurix.hris.transaksi.medicalrecord.bo.impl.MedicalRecordBoImpl"
+        p:buktiPengobatanDao-ref="buktiPengobatanDao"
+        p:medicalRecordDao-ref="medicalRecordDao"
+        p:pengobatanDao-ref="pengobatanDao"
+        p:notifikasiDao-ref="notifikasiDao"
+          p:biodataDao-ref="biodataDao2"
+          p:rsKerjasamaDao-ref="rsKerjasamaDao3"
+          p:rsKelasDao-ref="rsKelasDao2"
+          p:keluargaDao-ref="keluargaDao2"
+        p:biayaPengobatanDao-ref="biayaPengobatanDao2"
+          p:branchDao-ref="branchDao"
+          p:positionDao-ref="positionDao"
+          p:departmentDao-ref="departmentDao"
+          p:personilPositionDao-ref="personilPositionDao"
+    />
+    <bean id="medicalRecordBoProxy"
+          class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="medicalRecordBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveMedicalRecord">PROPAGATION_REQUIRED</prop>
+                <prop key="saveBuktiPengobatan">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateMedicalRecord">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="medicalRecordDao" class="com.neurix.hris.transaksi.medicalrecord.dao.MedicalRecordDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengobatanDao" class="com.neurix.hris.transaksi.medicalrecord.dao.PengobatanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="buktiPengobatanDao" class="com.neurix.hris.transaksi.medicalrecord.dao.BuktiPengobatanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="notifikasiDao" class="com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="biodataDao2" class="com.neurix.hris.master.biodata.dao.BiodataDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="rsKerjasamaDao3" class="com.neurix.hris.master.rsKerjasama.dao.RsKerjasamaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="rsKelasDao2" class="com.neurix.hris.master.rskelas.dao.RsKelasDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="keluargaDao2" class="com.neurix.hris.master.keluarga.dao.KeluargaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="biayaPengobatanDao2" class="com.neurix.hris.master.biayapengobatan.dao.BiayaPengobatanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+</beans>

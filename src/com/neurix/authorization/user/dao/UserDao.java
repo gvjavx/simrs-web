@@ -1,0 +1,285 @@
+package com.neurix.authorization.user.dao;
+
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.user.model.ImUsers;
+import com.neurix.authorization.user.model.ImUsersHistory;
+import com.neurix.common.dao.GenericDao;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thunderbird
+ * Date: 14/01/13
+ * Time: 11:17
+ * To change this template use File | Settings | File Templates.
+ */
+
+public class UserDao extends GenericDao<ImUsers,String> {
+    @Override
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        super.setSessionFactory(sessionFactory);
+    }
+
+    @Override
+    protected Class getEntityClass() {
+        return ImUsers.class;
+    }
+
+    @Override
+    public List<ImUsers> getByCriteria(Map mapCriteria) throws HibernateException {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class);
+
+        if (mapCriteria!=null) {
+            if (mapCriteria.get("user_id")!=null) {
+                criteria.add(Restrictions.eq("primaryKey.id", (String) mapCriteria.get("user_id")));
+            }
+            if (mapCriteria.get("user_name")!=null) {
+                criteria.add(Restrictions.ilike("userName", "%" + (String)mapCriteria.get("user_name") + "%"));
+            }
+            if (mapCriteria.get("email")!=null) {
+                criteria.add(Restrictions.ilike("email", "%" + (String) mapCriteria.get("email") + "%"));
+            }
+            if (mapCriteria.get("position_id")!=null) {
+                criteria.add(Restrictions.eq("positionId", (Long) mapCriteria.get("position_id")));
+            }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+            }
+            if (mapCriteria.get("lokasi_kebun")!=null) {
+                criteria.add(Restrictions.eq("lokasiKebun", (Long) mapCriteria.get("lokasi_kebun")));
+            }
+
+        }
+
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.addOrder(Order.asc("primaryKey.id"));
+
+        List<ImUsers> results = criteria.list();
+
+        return results;
+    }
+
+    public boolean isExistUser(String userId) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("primaryKey.id", userId))
+                .list();
+
+
+        return results.size() > 0 ? true : false;
+    }
+
+    public ImUsers getUserByUsername(String userName, String activeFlag) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("primaryKey.id", userName))
+                .add(Restrictions.eq("flag", activeFlag))
+                .list();
+
+
+         return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
+
+    public ImUsers getUserByUsername(String userName) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("primaryKey.id", userName))
+                .list();
+
+
+        return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
+
+    public ImUsers getUserByIdPosition(String userId, long positionId) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("primaryKey.id", userId))
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+
+        return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
+
+
+    public ImUsers getUserByLokasiLahan(Long lokasiLahan, Long positionId) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("lokasiKebun", lokasiLahan))
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+
+        return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
+
+    public List<ImUsers> getListUser(String term) throws HibernateException {
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                //.add(Restrictions.ilike("userName",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+        return results;
+    }
+
+    public List<ImUsers> getListUser2(String term) throws HibernateException {
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+        return results;
+    }
+
+    public List<ImUsers> getListOpsGps(String term) throws HibernateException {
+
+        List<ImUsers> resultsByOpsGpsName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("4")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByOpsGpsId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("4")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByOpsGpsName.addAll(resultsByOpsGpsId);
+
+        return resultsByOpsGpsName;
+    }
+
+    public List<ImUsers> getListAsmud(String term) throws HibernateException {
+
+        List<ImUsers> resultsByAsmudName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("7")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByAsmudId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("7")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByAsmudName.addAll(resultsByAsmudId);
+
+        return resultsByAsmudName;
+    }
+
+    public List<ImUsers> getListAsman(String term) throws HibernateException {
+
+        List<ImUsers> resultsByAsmudName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("8")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByAsmudId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("8")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByAsmudName.addAll(resultsByAsmudId);
+
+        return resultsByAsmudName;
+    }
+
+    public List<ImUsers> getListMantan(String term) throws HibernateException {
+
+        List<ImUsers> resultsByMantanName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("1")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByMantanId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("positionId", Long.valueOf("1")))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByMantanName.addAll(resultsByMantanId);
+
+        return resultsByMantanName;
+    }
+
+    public List<ImUsers> getListTanamanPerson(String term) throws HibernateException {
+
+        //updated by ferdi 01-12-2016, tanaman person ( asmud = 7, asman = 8, mantan =1 )
+        List<ImUsers> resultsByTanamanName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.or(Restrictions.or(Restrictions.eq("positionId", Long.valueOf("7")),Restrictions.eq("positionId", Long.valueOf("8"))),Restrictions.eq("positionId",Long.valueOf("1") )))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByTanamanId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.or(Restrictions.or(Restrictions.eq("positionId", Long.valueOf("7")),Restrictions.eq("positionId", Long.valueOf("8"))),Restrictions.eq("positionId", Long.valueOf("1"))))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByTanamanName.addAll(resultsByTanamanId);
+
+        return resultsByTanamanName;
+    }
+
+    public List<ImUsers> getListApprovalPerson(String term) throws HibernateException {
+
+        //updated by ferdi 01-12-2016, approval person ( asmud = 7, asman = 8, mantan =1 )
+        List<ImUsers> resultsByApproveName = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("userName", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.or(Restrictions.or(Restrictions.eq("positionId", Long.valueOf("7")),Restrictions.eq("positionId", Long.valueOf("8"))),Restrictions.eq("positionId", Long.valueOf("1"))))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        List<ImUsers> resultsByApproveId = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.or(Restrictions.or(Restrictions.eq("positionId", Long.valueOf("7")),Restrictions.eq("positionId", Long.valueOf("8"))),Restrictions.eq("positionId", Long.valueOf("1"))))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        resultsByApproveName.addAll(resultsByApproveId);
+
+        return resultsByApproveName;
+    }
+    public List<ImUsers> getListUserId(String term) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.ilike("primaryKey.id", term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
+
+        return results;
+    }
+    public void addAndSaveHistory(ImUsersHistory entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
+
+    }
+
+}

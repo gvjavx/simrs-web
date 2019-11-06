@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.sppd.model.ImSppdEntity" dynamic-update="true"
+           table="it_hris_sppd" select-before-update="true" schema="public">
+
+
+        <id name="sppdId">
+            <column name="sppd_id" sql-type="varchar" length="11" not-null="true" />
+        </id>
+
+        <property name="dinas">
+            <column name="dinas" sql-type="varchar" length="2" not-null="true" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="4" not-null="true" />
+        </property>
+        <property name="noSurat">
+            <column name="no_surat" sql-type="varchar" length="20" not-null="true" />
+        </property>
+        <property name="tugasSppd">
+            <column name="tugas_sppd" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="tanggalSppdBerangkat">
+            <column name="tanggal_sppd_berangkat" sql-type="date"  not-null="true" />
+        </property>
+        <property name="tanggalSppdKembali">
+            <column name="tanggal_sppd_kembali" sql-type="date"  not-null="true" />
+        </property>
+
+        <property name="closed">
+            <column name="closed" sql-type="varchar" length="1"  />
+        </property>
+        <property name="flagEdit">
+            <column name="flag_edit" sql-type="varchar" length="1"  />
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="pemberiTugas">
+            <column name="pemberi_tugas" sql-type="varchar" length="20" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="divisi_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

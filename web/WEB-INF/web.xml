@@ -1,0 +1,207 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Neurix Application</display-name>
+
+    <filter>
+        <filter-name>javamelody</filter-name>
+        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>javamelody</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+    </filter-mapping>
+    <listener>
+        <listener-class>net.bull.javamelody.SessionListener</listener-class>
+    </listener>
+
+
+    <filter>
+        <filter-name>ResponseOverrideFilter</filter-name>
+        <filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ResponseOverrideFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>ResponseOverrideFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>requestContextFilter</filter-name>
+        <filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>SimpleCORSFilter</filter-name>
+        <filter-class>com.neurix.common.SimpleCORSFilter</filter-class>
+    </filter>
+	
+    <filter-mapping>
+        <filter-name>SimpleCORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
+	<filter-mapping>
+        <filter-name>requestContextFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/classes/spring-config.xml
+            /WEB-INF/classes/spring-security-config.xml
+        </param-value>
+    </context-param>
+
+    <!--<filter>-->
+    <!--<filter-name>OpenSessionInViewFilter</filter-name>-->
+    <!--<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>-->
+    <!--</filter>-->
+
+    <!--<filter-mapping>-->
+    <!--<filter-name>OpenSessionInViewFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.directwebremoting.servlet.DwrListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>
+            com.neurix.common.security.CustomHttpSessionEventPublisher
+        </listener-class>
+    </listener>
+
+
+    <!--<listener>-->
+    <!--<listener-class>-->
+    <!--org.springframework.security.web.session.HttpSessionEventPublisher-->
+    <!--</listener-class>-->
+    <!--</listener>-->
+
+    <servlet>
+        <servlet-name>dwr-invoker</servlet-name>
+        <display-name>DWR Servlet</display-name>
+
+        <description>Direct Web Remoter Servlet</description>
+        <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+
+        <!-- This should NEVER be present in live -->
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>accessLogLevel</param-name>
+            <param-value>CALL</param-value>
+        </init-param>
+
+        <!-- Remove this unless you want to use active reverse ajax -->
+        <init-param>
+            <param-name>activeReverseAjaxEnabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <!-- By default DWR creates application scope objects when they are first
+            used. This creates them when the app-server is started -->
+        <init-param>
+            <param-name>initApplicationScopeCreatorsAtStartup</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <!-- WARNING: allowing JSON-RPC connections bypasses much of the security
+            protection that DWR gives you. Take this out if security is important -->
+        <init-param>
+            <param-name>jsonRpcEnabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <!-- WARNING: allowing JSONP connections bypasses much of the security
+            protection that DWR gives you. Take this out if security is important -->
+        <init-param>
+            <param-name>jsonpEnabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <!-- data: URLs are good for small images, but are slower, and could OOM for
+            larger images. Leave this out (or keep 'false') for anything but small images -->
+        <init-param>
+            <param-name>preferDataUrlSchema</param-name>
+            <param-value>false</param-value>
+        </init-param>
+
+        <!--
+        For more information on these parameters, see:
+        - http://getahead.org/dwr/server/servlet
+        - http://getahead.org/dwr/reverse-ajax/configuration
+        -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dwr-invoker</servlet-name>
+        <url-pattern>/dwr/*</url-pattern>
+    </servlet-mapping>
+
+    <!--session timeout in minutes-->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+
+
+</web-app>

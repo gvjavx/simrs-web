@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.smk.model.ItHistorySmkEvaluasiPegawaiAspekActivityPeristiwaEntity" dynamic-update="true"
+           table="it_hris_history_smk_evaluasi_pegawai_aspek_activity_peristiwa" select-before-update="true" schema="public">
+
+
+        <id name="id">
+            <column name="id" sql-type="integer" not-null="true" />
+        </id>
+
+        <property name="evaluasiActivityPeristiwaId">
+            <column name="evaluasi_activity_persitiwa_id" sql-type="varchar" length="12" />
+        </property>
+        <property name="aspekActivityMonthlyId">
+            <column name="aspek_activity_monthly" sql-type="varchar" length="10" />
+        </property>
+        <property name="kejadian">
+            <column name="kejadian" sql-type="varchar" length="1000" />
+        </property>
+        <property name="tanggalKejadian">
+            <column name="tanggal_kejadian" sql-type="date" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+
+    </class>
+</hibernate-mapping>

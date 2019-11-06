@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.medicalBiayaKacamata.model.ImMedicalBiayaKacamataEntity" dynamic-update="true"
+           table="im_hris_medical_biaya_kacamata" select-before-update="true" schema="public">
+
+
+        <id name="biayaKacamataId">
+            <column name="medical_biaya_kacamata_id" sql-type="varchar" length="3" not-null="true" />
+        </id>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="unitId">
+            <column name="unit_id" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="biayaLensa">
+            <column name="biaya_lensa" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="biayaGagang">
+            <column name="biaya_gagang" sql-type="varchar" length="100" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="unit_id"/>
+        </many-to-one>
+
+        <many-to-one name="golonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

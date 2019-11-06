@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity" dynamic-update="true"
+           table="imt_hris_history_jabatan_pegawai" select-before-update="true" schema="public">
+
+        <id name="historyJabatanPegawaiId">
+            <column name="history_jabatan_pegawai_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="true" />
+        </property>
+        <property name="bidang">
+            <column name="bidang" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="100" />
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="100" />
+        </property>
+        <property name="pjsFlag">
+            <column name="pjs_flag" sql-type="varchar" length="3" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="4" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="3" />
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="3" />
+        </property>
+        <property name="tanggalMutasiSk">
+            <column name="tanggal_sk_mutasi" sql-type="varchar" length="3" />
+        </property>
+        <property name="tipePegawai">
+            <column name="tipe_pegawai" sql-type="varchar" length="10" />
+        </property>
+        <property name="tipePegawaiId">
+            <column name="tipe_pegawai_id" sql-type="varchar" length="10" />
+        </property>
+
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar" length="10" />
+        </property>
+        <property name="point">
+            <column name="point" sql-type="varchar" length="10" />
+        </property>
+        <property name="pointLebih">
+            <column name="point_lebih" sql-type="varchar" length="10" />
+        </property>
+        <property name="nilaiSmk">
+            <column name="nilai_smk" sql-type="varchar" length="10" />
+        </property>
+        <property name="gradeSmk">
+            <column name="grade_smk" sql-type="varchar" length="10" />
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="varchar" length="10" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

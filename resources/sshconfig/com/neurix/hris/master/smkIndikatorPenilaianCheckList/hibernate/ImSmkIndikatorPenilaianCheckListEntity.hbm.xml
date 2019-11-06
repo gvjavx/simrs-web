@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.smkIndikatorPenilaianCheckList.model.ImSmkIndikatorPenilaianCheckListEntity" dynamic-update="true"
+           table="im_hris_smk_indikator_penilaian_check_list" select-before-update="true" schema="public">
+
+
+        <id name="indikatorPenilaianCheckListId">
+            <column name="indikator_penilaian_check_list_id" sql-type="varchar" length="6" not-null="true" />
+        </id>
+
+        <property name="checkListId">
+            <column name="check_list_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="indikatorName">
+            <column name="indikator_name" sql-type="varchar" length="1000" not-null="true" />
+        </property>
+        <property name="nilai">
+            <column name="nilai" sql-type="varchar" length="100" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imSmkCheckListEntity" class="com.neurix.hris.master.smkCheckList.model.ImSmkCheckListEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="check_list_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

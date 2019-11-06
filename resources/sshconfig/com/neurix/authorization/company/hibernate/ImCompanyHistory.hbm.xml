@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.company.model.ImCompanyHistory" table="im_company_history" schema="public">
+
+        <id name="id" column="id" type="java.lang.Long" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">seq_company_history</param>
+            </generator>
+        </id>
+
+        <property name="companyId">
+            <column name="company_id" sql-type="varchar" length="20" not-null="true"/>
+        </property>
+        <property name="companyName">
+            <column name="company_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="address">
+            <column name="address" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="npwp">
+            <column name="npwp" sql-type="varchar" length="100"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="true"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+    </class>
+</hibernate-mapping>

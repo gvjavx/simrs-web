@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="belajarAction" class="com.neurix.hris.master.belajar.action.BelajarAction"
+          p:belajarBoProxy-ref="belajarBoProxy" />
+
+    <bean id="belajarBo" class="com.neurix.hris.master.belajar.bo.impl.BelajarBoImpl"
+          p:belajarDao-ref="belajarDao" />
+
+    <bean id="belajarBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="belajarBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="belajarDao" class="com.neurix.hris.master.belajar.dao.BelajarDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
