@@ -25,8 +25,8 @@ public class JenisObatDao extends GenericDao<ImSimrsJenisObatEntity, String> {
             if (mapCriteria.get("id_jenis_obat")!=null) {
                 criteria.add(Restrictions.eq("idJenisObat", (String) mapCriteria.get("id_jenis_obat")));
             }
-            if (mapCriteria.get("group_name")!=null) {
-                criteria.add(Restrictions.ilike("groupName", "%" + (String)mapCriteria.get("group_name") + "%"));
+            if (mapCriteria.get("nama_jenis_obat")!=null) {
+                criteria.add(Restrictions.ilike("namaJenisObat", "%" + (String)mapCriteria.get("nama_jenis_obat") + "%"));
             }
 
         }

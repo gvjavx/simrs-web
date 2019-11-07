@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity" dynamic-update="true"
            table="mt_simrs_ruangan" select-before-update="true" schema="public">
 
-
         <id name="idRuangan">
             <column name="id_ruangan" sql-type="varchar" length="10" not-null="true" />
         </id>
