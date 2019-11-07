@@ -273,6 +273,22 @@
                 <value>sshconfig/com/neurix/simrs/master/operatorlab/hibernate/ImSimrsOperatorLabEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPelayananEntitiy.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPoliSpesialisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/spesialis/hibernate/ImSimrsSpesialisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/jenisperiksapasien/hibernate/ImSimrsJenisPeriksaPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/statuspasien/hibernate/ImSimrsStatusPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/keterangankeluar/hibernate/ImSimrsKeteranganKeluarEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsTindakanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/kategoritindakan/hibernate/ImSimrsKategoriTindakanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/diagnosa/hibernate/ImSimrsDiagnosaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/tarifdokter/hibernate/ImSimrsTarifDokterEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterSpesialisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsPenjaminEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsTipePenjaminEntity.hbm.xml</value>
+
 
 
             </list>
