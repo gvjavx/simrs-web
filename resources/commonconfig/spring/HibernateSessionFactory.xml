@@ -32,10 +32,7 @@
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.1.9:5432/hris_rj1_db2</prop>-->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/test_05-08-2019</prop>-->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/hris</prop>
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/hris_dev</prop>-->
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/simrs_nmu</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>
