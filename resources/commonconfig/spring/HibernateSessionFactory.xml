@@ -264,6 +264,15 @@
 
 
                 <!--Hibernate Config For SIMRS is HERE-->
+                <value>sshconfig/com/neurix/simrs/master/jenisobat/hibernate/ImSimrsJenisObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/kategorilab/hibernate/ImSimrsKategoriLabEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/kelasruangan/hibernate/ImSimrsKelasRuanganEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/lab/hibernate/ImSimrsLabEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/labdetail/hibernate/ImSimrsLabDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/operatorlab/hibernate/ImSimrsOperatorLabEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganEntity.hbm.xml</value>
+
 
 
             </list>
