@@ -1,21 +1,30 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.transaksi.obatinap.model;
 
 import com.neurix.common.model.BaseModel;
 
 import java.sql.Timestamp;
 
-public class Obat extends BaseModel {
+public class ObatInap extends BaseModel {
 
+    private String idObatInap;
     private String idObat;
     private String namaObat;
-    private String idJenisObat;
     private Long harga;
+    private Long qty;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdObatInap() {
+        return idObatInap;
+    }
+
+    public void setIdObatInap(String idObatInap) {
+        this.idObatInap = idObatInap;
+    }
 
     public String getIdObat() {
         return idObat;
@@ -33,20 +42,20 @@ public class Obat extends BaseModel {
         this.namaObat = namaObat;
     }
 
-    public String getIdJenisObat() {
-        return idJenisObat;
-    }
-
-    public void setIdJenisObat(String idJenisObat) {
-        this.idJenisObat = idJenisObat;
-    }
-
     public Long getHarga() {
         return harga;
     }
 
     public void setHarga(Long harga) {
         this.harga = harga;
+    }
+
+    public Long getQty() {
+        return qty;
+    }
+
+    public void setQty(Long qty) {
+        this.qty = qty;
     }
 
     @Override

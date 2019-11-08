@@ -1,15 +1,16 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.transaksi.antrianonline.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Obat extends BaseModel {
+public class AntianOnline extends BaseModel implements Serializable {
 
-    private String idObat;
-    private String namaObat;
-    private String idJenisObat;
-    private Long harga;
+    private String idAntrianOnline;
+    private String noCheckupOnline;
+    private String idPelayanan;
+    private String idDokter;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -17,36 +18,36 @@ public class Obat extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public String getIdObat() {
-        return idObat;
+    public String getIdAntrianOnline() {
+        return idAntrianOnline;
     }
 
-    public void setIdObat(String idObat) {
-        this.idObat = idObat;
+    public void setIdAntrianOnline(String idAntrianOnline) {
+        this.idAntrianOnline = idAntrianOnline;
     }
 
-    public String getNamaObat() {
-        return namaObat;
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
     }
 
-    public void setNamaObat(String namaObat) {
-        this.namaObat = namaObat;
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
     }
 
-    public String getIdJenisObat() {
-        return idJenisObat;
+    public String getIdPelayanan() {
+        return idPelayanan;
     }
 
-    public void setIdJenisObat(String idJenisObat) {
-        this.idJenisObat = idJenisObat;
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
     }
 
-    public Long getHarga() {
-        return harga;
+    public String getIdDokter() {
+        return idDokter;
     }
 
-    public void setHarga(Long harga) {
-        this.harga = harga;
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
     }
 
     @Override
