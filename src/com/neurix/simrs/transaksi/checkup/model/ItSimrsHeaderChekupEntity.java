@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderCheckup {
+public class ItSimrsHeaderChekupEntity {
     private String noCheckup;
     private String idPasien;
     private String nama;
@@ -214,5 +214,34 @@ public class HeaderCheckup {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    @Override
+    public String toString() {
+        return "ItSimrsHeaderChekupEntity{" +
+                "noCheckup='" + noCheckup + '\'' +
+                ", idPasien='" + idPasien + '\'' +
+                ", nama='" + nama + '\'' +
+                ", jenisKelamin='" + jenisKelamin + '\'' +
+                ", noKtp='" + noKtp + '\'' +
+                ", tempatLahir='" + tempatLahir + '\'' +
+                ", tglLahir=" + tglLahir +
+                ", desaId=" + desaId +
+                ", jalan='" + jalan + '\'' +
+                ", suku='" + suku + '\'' +
+                ", agama='" + agama + '\'' +
+                ", profesi='" + profesi + '\'' +
+                ", noTelp='" + noTelp + '\'' +
+                ", idJenisPeriksaPasien='" + idJenisPeriksaPasien + '\'' +
+                ", keteranganKeluar='" + keteranganKeluar + '\'' +
+                ", urlKtp='" + urlKtp + '\'' +
+                ", branchId='" + branchId + '\'' +
+                ", flag='" + flag + '\'' +
+                ", action='" + action + '\'' +
+                ", createdDate=" + createdDate +
+                ", createdWho='" + createdWho + '\'' +
+                ", lastUpdate=" + lastUpdate +
+                ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                '}';
     }
 }

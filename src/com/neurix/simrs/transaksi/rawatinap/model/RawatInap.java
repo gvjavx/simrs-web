@@ -1,4 +1,4 @@
-package com.neurix.simrs.transaksi.checkupdetail.model;
+package com.neurix.simrs.transaksi.rawatinap.model;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -6,22 +6,31 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderDetailCheckup {
+public class RawatInap {
+    private String idRawatInap;
     private String idDetailCheckup;
     private String noCheckup;
-    private String idPelayanan;
-    private String statusPeriksa;
-    private String statusBayar;
-    private BigInteger totalBiaya;
-    private String keteranganSelesai;
-    private String jenisLab;
-    private String branchId;
+    private String idRuangan;
+    private String namaRangan;
+    private String noRuangan;
+    private String keterangan;
+    private BigInteger tarif;
+    private Timestamp tglMasuk;
+    private Timestamp tglKeluar;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;
@@ -39,60 +48,60 @@ public class HeaderDetailCheckup {
         this.noCheckup = noCheckup;
     }
 
-    public String getIdPelayanan() {
-        return idPelayanan;
+    public String getIdRuangan() {
+        return idRuangan;
     }
 
-    public void setIdPelayanan(String idPelayanan) {
-        this.idPelayanan = idPelayanan;
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
     }
 
-    public String getStatusPeriksa() {
-        return statusPeriksa;
+    public String getNamaRangan() {
+        return namaRangan;
     }
 
-    public void setStatusPeriksa(String statusPeriksa) {
-        this.statusPeriksa = statusPeriksa;
+    public void setNamaRangan(String namaRangan) {
+        this.namaRangan = namaRangan;
     }
 
-    public String getStatusBayar() {
-        return statusBayar;
+    public String getNoRuangan() {
+        return noRuangan;
     }
 
-    public void setStatusBayar(String statusBayar) {
-        this.statusBayar = statusBayar;
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
     }
 
-    public BigInteger getTotalBiaya() {
-        return totalBiaya;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setTotalBiaya(BigInteger totalBiaya) {
-        this.totalBiaya = totalBiaya;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
-    public String getKeteranganSelesai() {
-        return keteranganSelesai;
+    public BigInteger getTarif() {
+        return tarif;
     }
 
-    public void setKeteranganSelesai(String keteranganSelesai) {
-        this.keteranganSelesai = keteranganSelesai;
+    public void setTarif(BigInteger tarif) {
+        this.tarif = tarif;
     }
 
-    public String getJenisLab() {
-        return jenisLab;
+    public Timestamp getTglMasuk() {
+        return tglMasuk;
     }
 
-    public void setJenisLab(String jenisLab) {
-        this.jenisLab = jenisLab;
+    public void setTglMasuk(Timestamp tglMasuk) {
+        this.tglMasuk = tglMasuk;
     }
 
-    public String getBranchId() {
-        return branchId;
+    public Timestamp getTglKeluar() {
+        return tglKeluar;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setTglKeluar(Timestamp tglKeluar) {
+        this.tglKeluar = tglKeluar;
     }
 
     public String getFlag() {
@@ -145,16 +154,17 @@ public class HeaderDetailCheckup {
 
     @Override
     public String toString() {
-        return "ItSimrsHeaderDetailCheckupEntity{" +
-                "idDetailCheckup='" + idDetailCheckup + '\'' +
+        return "ItSimrsRawatInapEntity{" +
+                "idRawatInap='" + idRawatInap + '\'' +
+                ", idDetailCheckup='" + idDetailCheckup + '\'' +
                 ", noCheckup='" + noCheckup + '\'' +
-                ", idPelayanan='" + idPelayanan + '\'' +
-                ", statusPeriksa='" + statusPeriksa + '\'' +
-                ", statusBayar='" + statusBayar + '\'' +
-                ", totalBiaya=" + totalBiaya +
-                ", keteranganSelesai='" + keteranganSelesai + '\'' +
-                ", jenisLab='" + jenisLab + '\'' +
-                ", branchId='" + branchId + '\'' +
+                ", idRuangan='" + idRuangan + '\'' +
+                ", namaRangan='" + namaRangan + '\'' +
+                ", noRuangan='" + noRuangan + '\'' +
+                ", keterangan='" + keterangan + '\'' +
+                ", tarif=" + tarif +
+                ", tglMasuk=" + tglMasuk +
+                ", tglKeluar=" + tglKeluar +
                 ", flag='" + flag + '\'' +
                 ", action='" + action + '\'' +
                 ", createdDate=" + createdDate +

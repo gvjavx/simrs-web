@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderDetailCheckup {
+public class ItSimrsHeaderDetailCheckupEntity {
     private String idDetailCheckup;
     private String noCheckup;
     private String idPelayanan;

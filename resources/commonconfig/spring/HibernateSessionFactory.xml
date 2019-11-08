@@ -289,7 +289,13 @@
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsPenjaminEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsTipePenjaminEntity.hbm.xml</value>
 
-
+                <!--Hibernate Config For Transactions SIMRS is HERE-->
+                <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsDetailCheckupEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rawatinap/hibernate/ItSimrsRawatInapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/ordergizi/hibernate/ItSimrsOrderGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryRuanganEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryLayananEntity.hbm.xml</value>
 
             </list>
         </property>
