@@ -297,6 +297,16 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryRuanganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryLayananEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/transaksi/antrianonline/hibernate/ItSimrsAntrianOnlineEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/antrianonline/hibernate/ItSimrsRegistrasiOnlineEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/diagnosarawat/hibernate/ItSimrsDiagnosaRawatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/obatinap/hibernate/ItSimrsObatInapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsPeriksaLabEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsPeriksaLabDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/periksaradiologi/hibernate/ItSimrsPeriksaRadiologiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/teamdokter/hibernate/ItSimrsDokterTeamEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/tindakanrawat/hibernate/ItSimrsTindakanRawatEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>
