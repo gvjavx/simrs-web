@@ -1,15 +1,14 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.transaksi.teamdokter.model;
 
-import com.neurix.common.model.BaseModel;
-
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Obat extends BaseModel {
+public class ItSimrsDokterTeamEntity implements Serializable {
 
-    private String idObat;
-    private String namaObat;
-    private String idJenisObat;
-    private Long harga;
+    private String idTeamDokter;
+    private String idDokter;
+    private String idDetailCheckup;
+    private String kategori;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -17,94 +16,82 @@ public class Obat extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public String getIdObat() {
-        return idObat;
+    public String getIdTeamDokter() {
+        return idTeamDokter;
     }
 
-    public void setIdObat(String idObat) {
-        this.idObat = idObat;
+    public void setIdTeamDokter(String idTeamDokter) {
+        this.idTeamDokter = idTeamDokter;
     }
 
-    public String getNamaObat() {
-        return namaObat;
+    public String getIdDokter() {
+        return idDokter;
     }
 
-    public void setNamaObat(String namaObat) {
-        this.namaObat = namaObat;
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
     }
 
-    public String getIdJenisObat() {
-        return idJenisObat;
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
     }
 
-    public void setIdJenisObat(String idJenisObat) {
-        this.idJenisObat = idJenisObat;
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
     }
 
-    public Long getHarga() {
-        return harga;
+    public String getKategori() {
+        return kategori;
     }
 
-    public void setHarga(Long harga) {
-        this.harga = harga;
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 
-    @Override
     public String getFlag() {
         return flag;
     }
 
-    @Override
     public void setFlag(String flag) {
         this.flag = flag;
     }
 
-    @Override
     public String getAction() {
         return action;
     }
 
-    @Override
     public void setAction(String action) {
         this.action = action;
     }
 
-    @Override
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    @Override
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
-    @Override
     public String getCreatedWho() {
         return createdWho;
     }
 
-    @Override
     public void setCreatedWho(String createdWho) {
         this.createdWho = createdWho;
     }
 
-    @Override
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    @Override
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    @Override
     public String getLastUpdateWho() {
         return lastUpdateWho;
     }
 
-    @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }

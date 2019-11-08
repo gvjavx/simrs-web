@@ -1,19 +1,19 @@
-package com.neurix.simrs.master.ruangan.model;
+package com.neurix.simrs.transaksi.tindakanrawat.model;
 
 import com.neurix.common.model.BaseModel;
-
 import java.sql.Timestamp;
 
-public class Ruangan extends BaseModel {
+public class TindakanRawat extends BaseModel {
 
-    private String idRuangan;
-    private String namaRuangan;
-    private String noRuangan;
-    private String statusRuangan;
-    private String idKelasRuangan;
-    private String keterangan;
+    private String idTindakanRawat;
+    private String idDetailCheckup;
+    private String idTindakan;
+    private String namaTindakan;
+    private String idDokter;
+    private String idPerawat;
     private Long tarif;
-    private String branchId;
+    private Long qty;
+    private Long tarifTotal;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -21,52 +21,52 @@ public class Ruangan extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public String getIdRuangan() {
-        return idRuangan;
+    public String getIdTindakanRawat() {
+        return idTindakanRawat;
     }
 
-    public void setIdRuangan(String idRuangan) {
-        this.idRuangan = idRuangan;
+    public void setIdTindakanRawat(String idTindakanRawat) {
+        this.idTindakanRawat = idTindakanRawat;
     }
 
-    public String getNamaRuangan() {
-        return namaRuangan;
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
     }
 
-    public void setNamaRuangan(String namaRuangan) {
-        this.namaRuangan = namaRuangan;
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
     }
 
-    public String getNoRuangan() {
-        return noRuangan;
+    public String getIdTindakan() {
+        return idTindakan;
     }
 
-    public void setNoRuangan(String noRuangan) {
-        this.noRuangan = noRuangan;
+    public void setIdTindakan(String idTindakan) {
+        this.idTindakan = idTindakan;
     }
 
-    public String getStatusRuangan() {
-        return statusRuangan;
+    public String getNamaTindakan() {
+        return namaTindakan;
     }
 
-    public void setStatusRuangan(String statusRuangan) {
-        this.statusRuangan = statusRuangan;
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
     }
 
-    public String getIdKelasRuangan() {
-        return idKelasRuangan;
+    public String getIdDokter() {
+        return idDokter;
     }
 
-    public void setIdKelasRuangan(String idKelasRuangan) {
-        this.idKelasRuangan = idKelasRuangan;
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
     }
 
-    public String getKeterangan() {
-        return keterangan;
+    public String getIdPerawat() {
+        return idPerawat;
     }
 
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
+    public void setIdPerawat(String idPerawat) {
+        this.idPerawat = idPerawat;
     }
 
     public Long getTarif() {
@@ -77,12 +77,20 @@ public class Ruangan extends BaseModel {
         this.tarif = tarif;
     }
 
-    public String getBranchId() {
-        return branchId;
+    public Long getQty() {
+        return qty;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setQty(Long qty) {
+        this.qty = qty;
+    }
+
+    public Long getTarifTotal() {
+        return tarifTotal;
+    }
+
+    public void setTarifTotal(Long tarifTotal) {
+        this.tarifTotal = tarifTotal;
     }
 
     @Override

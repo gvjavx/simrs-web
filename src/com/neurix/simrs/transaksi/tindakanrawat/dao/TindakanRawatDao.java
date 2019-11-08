@@ -1,0 +1,63 @@
+package com.neurix.simrs.transaksi.tindakanrawat.dao;
+
+import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
+import java.util.Map;
+
+public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, String> {
+    @Override
+    protected Class<ItSimrsTindakanRawatEntity> getEntityClass() {
+        return ItSimrsTindakanRawatEntity.class;
+    }
+
+    @Override
+    public List<ItSimrsTindakanRawatEntity> getByCriteria(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItSimrsTindakanRawatEntity.class);
+
+        // Get Collection and sorting
+        if (mapCriteria!=null) {
+            if (mapCriteria.get("id_tindakan_rawat")!=null) {
+                criteria.add(Restrictions.eq("idTindakanRawat", (String) mapCriteria.get("id_tindakan_rawat")));
+            }
+            if (mapCriteria.get("nama_tindakan")!=null) {
+                criteria.add(Restrictions.ilike("namaTindakan", "%" + (String)mapCriteria.get("nama_tindakan") + "%"));
+            }
+            if (mapCriteria.get("id_detail_checkup")!=null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+            }
+            if (mapCriteria.get("id_tindakan")!=null) {
+                criteria.add(Restrictions.eq("idTindakan", (String) mapCriteria.get("id_tindakan")));
+            }
+            if (mapCriteria.get("id_dokter")!=null) {
+                criteria.add(Restrictions.eq("idDokter", (String) mapCriteria.get("id_dokter")));
+            }
+            if (mapCriteria.get("id_perawat")!=null) {
+                criteria.add(Restrictions.eq("idPerawat", (String) mapCriteria.get("id_perawat")));
+            }
+            if (mapCriteria.get("tarif")!=null) {
+                criteria.add(Restrictions.eq("tarif", (Long) mapCriteria.get("tarif")));
+            }
+            if (mapCriteria.get("qty")!=null) {
+                criteria.add(Restrictions.eq("qty", (Long) mapCriteria.get("qty")));
+            }
+            if (mapCriteria.get("tarif_total")!=null) {
+                criteria.add(Restrictions.eq("tarifTotal", (Long) mapCriteria.get("tarif_total")));
+            }
+
+        }
+
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+
+        // Order by
+        criteria.addOrder(Order.asc("idTindakanRawat"));
+
+        List<ItSimrsTindakanRawatEntity> results = criteria.list();
+
+        return results;
+    }
+}
