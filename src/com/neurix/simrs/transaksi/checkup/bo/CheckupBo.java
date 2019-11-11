@@ -11,4 +11,5 @@ import java.util.List;
 public interface CheckupBo {
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean)throws GeneralBOException;
     public void saveAdd(HeaderCheckup bean)throws GeneralBOException;
+    Long saveErrorMessage(String message, String s);
 }

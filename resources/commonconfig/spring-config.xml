@@ -126,6 +126,8 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollMasterInsentif/spring/PayrollMasterInsentifBean.xml"/>
 
     <!--BEAN SIMRS HERE-->
+    <import resource="sshconfig/com/neurix/simrs/transaksi/checkup/spring/CheckupBean.xml"/>
+
 
 
 </beans>

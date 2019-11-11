@@ -89,6 +89,11 @@ public class CheckupBoImpl implements CheckupBo {
         return null;
     }
 
+    @Override
+    public Long saveErrorMessage(String message, String s) {
+        return null;
+    }
+
     public List<HeaderCheckup> setTemplateToHeaderCheckupResult(List<ItSimrsHeaderChekupEntity> listHeader){
         logger.info("[CheckupBoImpl.setTemplateToHeaderCheckupResult] Start >>>>>>>");
 
