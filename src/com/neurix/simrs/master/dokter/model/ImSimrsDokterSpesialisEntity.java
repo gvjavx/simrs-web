@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.dokter.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsDokterSpesialisEntity {
+public class ImSimrsDokterSpesialisEntity implements Serializable{
     private DokterSpesialisPK primariKey;
     private String idSpesialis;
     private String flag;

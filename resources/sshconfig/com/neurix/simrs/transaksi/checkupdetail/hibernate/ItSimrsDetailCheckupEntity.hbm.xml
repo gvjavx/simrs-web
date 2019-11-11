@@ -48,7 +48,7 @@
             <column name="created_who" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="lastUpdate">
-            <column name="alamat" sql-type="timestamp" not-null="false" />
+            <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />

@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.tarifdokter.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsTarifDokterEntity {
+public class ImSimrsTarifDokterEntity implements Serializable{
     private String idTarifDokter;
     private String idDokter;
     private String idJenisPasien;

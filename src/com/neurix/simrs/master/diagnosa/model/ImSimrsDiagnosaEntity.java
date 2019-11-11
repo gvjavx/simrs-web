@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.diagnosa.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsDiagnosaEntity {
+public class ImSimrsDiagnosaEntity implements Serializable{
     private String idDiagnosa;
     private String descOfDiagnosa;
     private String flag;

@@ -1,12 +1,13 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class ItSimrsHeaderDetailCheckupEntity {
+public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String idDetailCheckup;
     private String noCheckup;
     private String idPelayanan;

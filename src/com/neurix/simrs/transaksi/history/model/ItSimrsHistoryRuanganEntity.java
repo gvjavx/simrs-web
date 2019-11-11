@@ -1,11 +1,12 @@
 package com.neurix.simrs.transaksi.history.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class ItSimrsHistoryRuanganEntity {
+public class ItSimrsHistoryRuanganEntity implements Serializable{
 
     private String idHistoryRuangan;
     private String idRawatInap;

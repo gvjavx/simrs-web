@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.pelayanan.model;
 
+import java.io.Serializable;
 import java.security.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsPelayananEntity {
+public class ImSimrsPelayananEntity implements Serializable {
     private String idPelayanan;
     private String namaPelayanan;
     private String flag;

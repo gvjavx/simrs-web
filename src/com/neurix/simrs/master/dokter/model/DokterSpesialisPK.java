@@ -1,9 +1,11 @@
 package com.neurix.simrs.master.dokter.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class DokterSpesialisPK {
+public class DokterSpesialisPK implements Serializable{
     private String idDokter;
     private String idSpesialis;
 
