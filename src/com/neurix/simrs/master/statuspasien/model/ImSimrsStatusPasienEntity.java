@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.statuspasien.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsStatusPasienEntity {
+public class ImSimrsStatusPasienEntity implements Serializable{
     private String idStatusPasien;
     private String keterangan;
     private String flag;

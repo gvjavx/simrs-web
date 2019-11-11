@@ -1,12 +1,13 @@
 package com.neurix.simrs.transaksi.ordergizi.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class ItSimrsOrderGiziEntity {
+public class ItSimrsOrderGiziEntity implements Serializable{
     private String idOrderGizi;
     private String idRawatInap;
     private Date tglOrder;

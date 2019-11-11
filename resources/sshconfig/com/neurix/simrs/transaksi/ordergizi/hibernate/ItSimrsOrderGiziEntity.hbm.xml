@@ -30,10 +30,10 @@
             <column name="bentuk_makan_siang" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="dietMalam">
-            <column name="bentuk_makan_malam" sql-type="varchar" length="100" not-null="false"/>
+            <column name="diet_malam" sql-type="varchar" length="100" not-null="false"/>
         </property>
-        <property name="bentukMakanSiang">
-            <column name="bentuk_makan_siang" sql-type="varchar" length="100" not-null="false"/>
+        <property name="bentukMakanMalam">
+            <column name="bentuk_makan_malam" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -48,7 +48,7 @@
             <column name="created_who" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="lastUpdate">
-            <column name="alamat" sql-type="timestamp" not-null="false" />
+            <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />

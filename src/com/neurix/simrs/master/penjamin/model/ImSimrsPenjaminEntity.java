@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.penjamin.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsPenjaminEntity {
+public class ImSimrsPenjaminEntity implements Serializable{
     private String idPenjamin;
     private String penyelenggarakan;
     private String alamat;

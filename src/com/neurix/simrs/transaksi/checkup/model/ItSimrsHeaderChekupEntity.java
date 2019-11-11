@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -7,7 +8,7 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class ItSimrsHeaderChekupEntity {
+public class ItSimrsHeaderChekupEntity implements Serializable {
     private String noCheckup;
     private String idPasien;
     private String nama;

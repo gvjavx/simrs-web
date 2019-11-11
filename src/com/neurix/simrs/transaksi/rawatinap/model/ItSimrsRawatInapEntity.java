@@ -1,12 +1,13 @@
 package com.neurix.simrs.transaksi.rawatinap.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class ItSimrsRawatInapEntity {
+public class ItSimrsRawatInapEntity implements Serializable{
     private String idRawatInap;
     private String idDetailCheckup;
     private String noCheckup;

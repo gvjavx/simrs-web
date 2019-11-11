@@ -44,7 +44,7 @@
         <property name="profesi">
             <column name="profesi" sql-type="varchar" length="50" />
         </property>
-        <property name="noKtp">
+        <property name="noTelp">
             <column name="no_telp" sql-type="varchar" length="50" />
         </property>
         <property name="idJenisPeriksaPasien">
@@ -72,7 +72,7 @@
             <column name="created_who" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="lastUpdate">
-            <column name="alamat" sql-type="timestamp" not-null="false" />
+            <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />

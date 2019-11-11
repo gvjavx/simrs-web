@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.keterangankeluar.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsKeteranganKeluarEntity {
+public class ImSimrsKeteranganKeluarEntity implements Serializable {
     private String idKeterangan;
     private String keterangan;
     private String flag;

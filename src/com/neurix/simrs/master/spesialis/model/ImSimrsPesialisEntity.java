@@ -2,12 +2,13 @@ package com.neurix.simrs.master.spesialis.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.io.Serializable;
 import java.security.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsPesialisEntity{
+public class ImSimrsPesialisEntity implements Serializable{
     private String idSpesialis;
     private String namaSpesialis;
     private String flag;

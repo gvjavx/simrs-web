@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.tindakan.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImSimrsTindakanEntity {
+public class ImSimrsTindakanEntity implements Serializable{
     private String idTindakan;
     private String tindakan;
     private String idKategoriTindakan;

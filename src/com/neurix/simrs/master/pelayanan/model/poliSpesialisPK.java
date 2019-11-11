@@ -1,9 +1,11 @@
 package com.neurix.simrs.master.pelayanan.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class poliSpesialisPK {
+public class poliSpesialisPK implements Serializable {
 
     private String idPelayanan;
     private String idSpesialis;

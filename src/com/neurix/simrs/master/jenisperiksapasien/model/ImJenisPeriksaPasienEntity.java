@@ -1,11 +1,12 @@
 package com.neurix.simrs.master.jenisperiksapasien.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class ImJenisPeriksaPasienEntity {
+public class ImJenisPeriksaPasienEntity implements Serializable{
     private String idJenisPeriksaPasien;
     private String keterangan;
     private String flag;
