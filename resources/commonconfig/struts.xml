@@ -155,5 +155,6 @@
 
 
     <!--Struts Route Config For SIMRS Is Here-->
+    <include file="sshconfig/com/neurix/simrs/master/pasien/struts/PasienAction.xml"/>
 
 </struts>
