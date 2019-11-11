@@ -4,9 +4,12 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -139,5 +142,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         return listOfResult;
+    }
+
+    public String getNextSeq(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('sq_header_checkup')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }
