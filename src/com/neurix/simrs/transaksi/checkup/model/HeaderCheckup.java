@@ -32,6 +32,34 @@ public class HeaderCheckup {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String idPelayanan;
+    private String statusPeriksa;
+    private String statusPeriksaName;
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String statusPeriksa) {
+        this.statusPeriksa = statusPeriksa;
+    }
+
+    public String getStatusPeriksaName() {
+        return statusPeriksaName;
+    }
+
+    public void setStatusPeriksaName(String statusPeriksaName) {
+        this.statusPeriksaName = statusPeriksaName;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getNoCheckup() {
         return noCheckup;
     }

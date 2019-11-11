@@ -23,6 +23,16 @@ public class HeaderDetailCheckup {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String statusPeriksaName;
+
+    public String getStatusPeriksaName() {
+        return statusPeriksaName;
+    }
+
+    public void setStatusPeriksaName(String statusPeriksaName) {
+        this.statusPeriksaName = statusPeriksaName;
+    }
+
     public String getIdDetailCheckup() {
         return idDetailCheckup;
     }
