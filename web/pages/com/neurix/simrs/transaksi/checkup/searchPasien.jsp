@@ -86,7 +86,7 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="id_pasien" name="pasien.idPasien" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="id_pasien" name="headerCheckup.idPasien" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -96,7 +96,7 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="no_ktp" name="pasien.noKtp" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px"  id="no_ktp" name="headerCheckup.noKtp" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -106,7 +106,7 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_pasien" name="pasien.nama" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_pasien" name="headerCheckup.nama" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -117,7 +117,7 @@ To change this template use File | Settings | File Templates.
                                             <td>
                                                 <table>
                                                     <s:action id="initComboStatus" namespace="/rekruitmen" name="searchStatusRekruitmen_rekruitmen"/>
-                                                    <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listComboStatusRekruitmen" id="poli" name="pasien.poli" listKey="statusRekruitmentId" listValue="statusRekruitmentName"
+                                                    <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listComboStatusRekruitmen" id="poli" name="headerCheckup.idPelayanan" listKey="statusRekruitmentId" listValue="statusRekruitmentName"
                                                               headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                 </table>
                                             </td>
@@ -133,7 +133,7 @@ To change this template use File | Settings | File Templates.
                                                     <s:action id="initComboBranch" namespace="/admin/branch"
                                                               name="initComboBranch_branch"/>
                                                     <s:select cssStyle="margin-top: 7px" list="#initComboBranch.listOfComboBranch" id="status"
-                                                              name="rekruitmen.branchId" onchange="listPosisi()"
+                                                              name="headerCheckup.statusPeriksa" onchange="listPosisi()"
                                                               listKey="branchId" listValue="branchName" headerKey=""
                                                               headerValue="[Select one]" cssClass="form-control"/>
                                                 </table>
@@ -205,13 +205,13 @@ To change this template use File | Settings | File Templates.
                                                     <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
 
-                                                        <display:column property="namaCalonPegawai" sortable="true" title="No Checkup"  />
-                                                        <display:column property="noKtp" sortable="true" title="ID Pasien" />
-                                                        <display:column property="noTelp" sortable="true" title="Nama" />
-                                                        <display:column property="posisiName" sortable="true" title="Poli Terakhir" />
-                                                        <display:column property="divisiName" sortable="true" title="Status Terakhir" />
-                                                        <display:column property="branchName" sortable="true" title="Ruangan" />
-                                                        <display:column property="statusSaatIni" sortable="true" title="No" />
+                                                        <display:column property="noCheckup" sortable="true" title="No Checkup"  />
+                                                        <display:column property="idPasien" sortable="true" title="ID Pasien" />
+                                                        <display:column property="nama" sortable="true" title="Nama" />
+                                                        <display:column property="namaPelayanan" sortable="true" title="Poli Terakhir" />
+                                                        <display:column property="statusPeriksa" sortable="true" title="Status Terakhir" />
+                                                        <display:column property="noCheckup" sortable="true" title="Ruangan" />
+                                                        <display:column property="noCheckup" sortable="true" title="No" />
                                                         <display:column media="html" title="Action" style="text-align:center;font-size:9">
                                                             <s:if test="#attr.row.rekruitmenClosed">
                                                                 <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
