@@ -8,6 +8,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 08/11/2019.
  */
+
 public class CheckupBoImpl implements CheckupBo {
     protected static transient Logger logger = Logger.getLogger(StatusRekruitmentBoImpl.class);
 
@@ -142,4 +144,52 @@ public class CheckupBoImpl implements CheckupBo {
         return result;
     }
 
+    @Override
+    public void saveAdd(HeaderCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveAdd] Start >>>>>>>");
+        if (bean != null){
+            ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
+
+            String id = "";
+            try {
+                id = headerCheckupDao.getNextSeq();
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveAdd] Error get next seq id "+e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Error get next seq id");
+            }
+
+            headerEntity.setNoCheckup("CKP"+id);
+            headerEntity.setIdPasien(bean.getIdPasien());
+            headerEntity.setNama(bean.getNama());
+            headerEntity.setJenisKelamin(bean.getJenisKelamin());
+            headerEntity.setNoKtp(bean.getNoKtp());
+            headerEntity.setTempatLahir(bean.getTempatLahir());
+            headerEntity.setTglLahir(bean.getTglLahir());
+            headerEntity.setDesaId(bean.getDesaId());
+            headerEntity.setJalan(bean.getJalan());
+            headerEntity.setSuku(bean.getSuku());
+            headerEntity.setAgama(bean.getProfesi());
+            headerEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+            headerEntity.setUrlKtp(bean.getUrlKtp());
+            headerEntity.setBranchId(bean.getBranchId());
+            headerEntity.setFlag("Y");
+            headerEntity.setAction("C");
+            headerEntity.setCreatedDate(bean.getCreatedDate());
+            headerEntity.setLastUpdate(bean.getLastUpdate());
+            headerEntity.setCreatedWho(bean.getCreatedWho());
+            headerEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                headerCheckupDao.addAndSave(headerEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
+            }
+
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+            }
+            logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
+        }
+    }
 }
