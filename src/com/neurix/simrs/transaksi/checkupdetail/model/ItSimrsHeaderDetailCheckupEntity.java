@@ -23,6 +23,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Timestamp tglAntrian;
+
+    public Timestamp getTglAntrian() {
+        return tglAntrian;
+    }
+
+    public void setTglAntrian(Timestamp tglAntrian) {
+        this.tglAntrian = tglAntrian;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;
@@ -162,6 +171,7 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", tglAntrian=" + tglAntrian +
                 '}';
     }
 }

@@ -148,16 +148,11 @@ public class CheckupBoImpl implements CheckupBo {
     public void saveAdd(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.saveAdd] Start >>>>>>>");
         if (bean != null){
-            ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
 
             String id = "";
-            try {
-                id = headerCheckupDao.getNextSeq();
-            } catch (HibernateException e){
-                logger.error("[CheckupBoImpl.saveAdd] Error get next seq id "+e.getMessage());
-                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Error get next seq id");
-            }
+            id = getNextHeaderId();
 
+            ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
             headerEntity.setNoCheckup("CKP"+id);
             headerEntity.setIdPasien(bean.getIdPasien());
             headerEntity.setNama(bean.getNama());
@@ -188,8 +183,52 @@ public class CheckupBoImpl implements CheckupBo {
 
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                 ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+
+                id = "";
+                id = getNextDetailCheckupId();
+                notify();
+                detailCheckupEntity.setIdDetailCheckup("DCM"+id);
+                detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
+                detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
+                detailCheckupEntity.setStatusPeriksa("0");
+                detailCheckupEntity.setFlag("Y");
+                detailCheckupEntity.setAction("C");
+                detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
+                detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    checkupDetailDao.addAndSave(detailCheckupEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data detail checkup");
+                }
+
             }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
+    }
+
+    private String getNextHeaderId(){
+        String id = "";
+        try {
+            id = headerCheckupDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextHeaderId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getNextHeaderId] Error When Error get next seq id");
+        }
+        return id;
+    }
+
+    private String getNextDetailCheckupId(){
+        String id = "";
+        try {
+            id = checkupDetailDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextDetailCheckupId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
+        }
+        return id;
     }
 }

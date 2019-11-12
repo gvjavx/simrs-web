@@ -118,7 +118,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "WHERE h.id_pasien LIKE :idPasien\n" +
                 "AND h.no_ktp LIKE :noKtp\n" +
                 "AND h.nama LIKE :nama\n" +
-                "AND h.branch_id = :branchId\n" +
+                "AND h.branch_id LIKE :branchId\n" +
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
