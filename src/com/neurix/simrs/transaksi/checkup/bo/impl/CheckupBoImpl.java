@@ -203,6 +203,7 @@ public class CheckupBoImpl implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
 
                 try {
                     checkupDetailDao.addAndSave(detailCheckupEntity);
