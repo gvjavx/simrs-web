@@ -131,6 +131,7 @@ apply the skin class to the body tag so the changes take effect.
         console.log( "ready!" );
         $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
+        $('#myTable').DataTable();
     });
     $(function () {
         $('.select2').select2();

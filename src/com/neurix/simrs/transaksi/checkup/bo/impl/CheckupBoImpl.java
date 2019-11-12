@@ -44,22 +44,28 @@ public class CheckupBoImpl implements CheckupBo {
             Boolean isStatus = false;
             Map hsCriteria = new HashMap();
 
-            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan()))
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
                 isPoli = true;
                 hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+            }
 
-            if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa()))
+            if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())) {
                 isStatus = true;
                 hsCriteria.put("status_periksa", bean.getStatusPeriksa());
+            }
 
-            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien()))
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 hsCriteria.put("id_pasien", bean.getIdPasien());
-            if (bean.getNoKtp() != null && !"".equalsIgnoreCase(bean.getNoKtp()))
+            }
+            if (bean.getNoKtp() != null && !"".equalsIgnoreCase(bean.getNoKtp())) {
                 hsCriteria.put("no_ktp", bean.getNoKtp());
-            if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama()))
+            }
+            if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
                 hsCriteria.put("nama", bean.getNama());
-
-            hsCriteria.put("branch_id", bean.getBranchId());
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();
 

@@ -31,12 +31,8 @@ To change this template use File | Settings | File Templates.
     </style>
     <script type='text/javascript'>
 
-        function link(){
-            window.location.href="<s:url action='initForm_rekruitmen'/>";
-        }
 
     </script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -177,78 +173,90 @@ To change this template use File | Settings | File Templates.
 
                                     <br>
                                     <br>
-                                    <center>
-                                        <table id="showdata" width="90%">
-                                            <tr>
-                                                <td align="center">
-                                                    <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
-                                                               resizable="false"
-                                                               height="350" width="600" autoOpen="false" title="Loading ...">
-                                                        Please don't close this window, server is processing your request ...
-                                                        </br>
-                                                        </br>
-                                                        </br>
-                                                        <center>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
-                                                        </center>
-                                                    </sj:dialog>
-                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                               height="800" width="1100" autoOpen="false"
-                                                               title="Rekruitmen ">
-                                                    </sj:dialog>
-                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
-                                                               height="700" width="1100" autoOpen="false"
-                                                               title="Rekruitmen">
-                                                        <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                    </sj:dialog>
-                                                    <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
-                                                    <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
-                                                                   requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
+                                    <%--<center>--%>
+                                        <%--<table id="showdata" width="90%">--%>
+                                            <%--<tr>--%>
+                                                <%--<td align="center">--%>
+                                                    <%--<sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"--%>
+                                                               <%--resizable="false"--%>
+                                                               <%--height="350" width="600" autoOpen="false" title="Loading ...">--%>
+                                                        <%--Please don't close this window, server is processing your request ...--%>
+                                                        <%--</br>--%>
+                                                        <%--</br>--%>
+                                                        <%--</br>--%>
+                                                        <%--<center>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
+                                                        <%--</center>--%>
+                                                    <%--</sj:dialog>--%>
+                                                    <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
+                                                               <%--height="800" width="1100" autoOpen="false"--%>
+                                                               <%--title="Rekruitmen ">--%>
+                                                    <%--</sj:dialog>--%>
+                                                    <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"--%>
+                                                               <%--height="700" width="1100" autoOpen="false"--%>
+                                                               <%--title="Rekruitmen">--%>
+                                                        <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
+                                                    <%--</sj:dialog>--%>
+                                                    <%--<s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />--%>
+                                                    <%--<display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"--%>
+                                                                   <%--requestURI="paging_displaytag_pasien.action" export="true" id="row" pagesize="14" style="font-size:12">--%>
 
-                                                        <display:column property="noCheckup" sortable="true" title="No Checkup"  />
-                                                        <display:column property="idPasien" sortable="true" title="ID Pasien" />
-                                                        <display:column property="nama" sortable="true" title="Nama" />
-                                                        <display:column property="namaPelayanan" sortable="true" title="Poli Terakhir" />
-                                                        <display:column property="statusPeriksa" sortable="true" title="Status Terakhir" />
-                                                        <display:column property="noCheckup" sortable="true" title="Ruangan" />
-                                                        <display:column property="noCheckup" sortable="true" title="No" />
-                                                        <display:column media="html" title="Action" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <s:url var="urlAction" namespace="/rekruitmen" action="action_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlAction}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_reassign.ico"/>" name="icon_reassign">
-                                                                </sj:a>
-                                                            </s:else>
-                                                        </display:column>
-                                                    </display:table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </center>
+                                                        <%--<display:column property="noCheckup" sortable="true" title="No Checkup"  />--%>
+                                                        <%--<display:column property="idPasien" sortable="true" title="ID Pasien" />--%>
+                                                        <%--<display:column property="nama" sortable="true" title="Nama" />--%>
+                                                        <%--<display:column property="namaPelayanan" sortable="true" title="Poli Terakhir" />--%>
+                                                        <%--<display:column property="statusPeriksa" sortable="true" title="Status Terakhir" />--%>
+                                                        <%--<display:column property="noCheckup" sortable="true" title="Ruangan" />--%>
+                                                        <%--<display:column property="noCheckup" sortable="true" title="No" />--%>
+                                                        <%--<display:column media="html" title="Action" style="text-align:center;font-size:9">--%>
+
+                                                        <%--</display:column>--%>
+                                                    <%--</display:table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
+                                        <%--</table>--%>
+                                    <%--</center>--%>
+
                                 </s:form>
                             </td>
                         </tr>
                     </table>
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="myTable" class="table table-bordered table-striped">
+                                <thead >
+                                <tr bgcolor="#00ced1">
+                                    <td>No Checkup</td>
+                                    <td>ID Pasien</td>
+                                    <td>Nama</td>
+                                    <td>Poli Terakhir</td>
+                                    <td>Status Terakhir</td>
+                                    <td>Ruangan</td>
+                                    <td>No</td>
+                                    <td>Action</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                    <tr>
+                                        <td><s:property value="noCheckup"/></td>
+                                        <td><s:property value="idPasien"/></td>
+                                        <td><s:property value="nama"/></td>
+                                        <td><s:property value="namaPelayanan"/></td>
+                                        <td><s:property value="statusPeriksa"/></td>
+                                        <td><s:property value="namaRuangan"/></td>
+                                        <td><s:property value="idPasien"/></td>
+                                        <td><img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"></td>
+                                    </tr>
+                                </s:iterator>
+                                </tbody>
+                            </table>
+                        </div>
                 </div>
             </div>
         </div>
         <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
     </section>
     <!-- /.content -->
 </div>
@@ -261,18 +269,3 @@ To change this template use File | Settings | File Templates.
 
 </body>
 </html>
-<script>
-    window.listPosisi = function(branch, divisi){
-        var branch = document.getElementById("branchId").value;
-        var divisi = document.getElementById("departmentId").value;
-        $('#positionId').empty();
-        PositionAction.searchPosition2(branch, divisi, function(listdata){
-            $.each(listdata, function (i, item) {
-                $('#positionId').append($("<option></option>")
-                        .attr("value",item.positionId)
-                        .text(item.positionName));
-            });
-        });
-    }
-</script>
-

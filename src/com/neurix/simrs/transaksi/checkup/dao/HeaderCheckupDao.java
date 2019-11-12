@@ -26,18 +26,24 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     public List<ItSimrsHeaderChekupEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderChekupEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("no_checkup") != null)
+            if (mapCriteria.get("no_checkup") != null) {
                 criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
-            if (mapCriteria.get("id_pasien") != null)
+            }
+            if (mapCriteria.get("id_pasien") != null) {
                 criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
-            if (mapCriteria.get("branch_id") != null)
+            }
+            if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", mapCriteria.get("id_branch").toString()));
-            if (mapCriteria.get("desa_id") != null)
+            }
+            if (mapCriteria.get("desa_id") != null) {
                 criteria.add(Restrictions.eq("desaId", mapCriteria.get("desa_id").toString()));
-            if (mapCriteria.get("no_ktp") != null)
+            }
+            if (mapCriteria.get("no_ktp") != null) {
                 criteria.add(Restrictions.eq("noKtp", mapCriteria.get("no_ktp").toString()));
-            if (mapCriteria.get("list_no_checkup") != null)
+            }
+            if (mapCriteria.get("list_no_checkup") != null) {
                 criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
+            }
 
         List<ItSimrsHeaderChekupEntity> result = criteria.list();
         return result;
@@ -118,7 +124,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "WHERE h.id_pasien LIKE :idPasien\n" +
                 "AND h.no_ktp LIKE :noKtp\n" +
                 "AND h.nama LIKE :nama\n" +
-                "AND h.branch_id = :branchId\n" +
+                "AND h.branch_id LIKE :branchId\n" +
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
