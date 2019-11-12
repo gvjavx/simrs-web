@@ -2,13 +2,16 @@ package com.neurix.simrs.transaksi.checkup.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CheckupAction extends BaseMasterAction {
@@ -99,6 +102,11 @@ public class CheckupAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
+        logger.info("[CheckupAction.initForm] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        logger.info("[CheckupAction.initForm] end process >>>");
         return "search";
     }
 
@@ -110,5 +118,37 @@ public class CheckupAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public String saveAdd(){
+
+        logger.info("[CheckupAction.saveAdd] start process >>>");
+        try {
+            HeaderCheckup checkup = getHeaderCheckup();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            checkup.setCreatedWho(userLogin);
+            checkup.setLastUpdate(updateTime);
+            checkup.setCreatedDate(updateTime);
+            checkup.setLastUpdateWho(userLogin);
+            checkup.setAction("C");
+            checkup.setFlag("Y");
+
+            checkupBoProxy.saveAdd(checkup);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[CheckupAction.saveAdd] end process >>>");
+        return "search";
+
     }
 }

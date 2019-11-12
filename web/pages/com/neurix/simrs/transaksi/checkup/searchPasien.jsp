@@ -246,7 +246,7 @@ To change this template use File | Settings | File Templates.
                                         <td><s:property value="namaPelayanan"/></td>
                                         <td><s:property value="statusPeriksa"/></td>
                                         <td><s:property value="namaRuangan"/></td>
-                                        <td><s:property value="idPasien"/></td>
+                                        <td><s:property value="noRuangan"/></td>
                                         <td><img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"></td>
                                     </tr>
                                 </s:iterator>
