@@ -3,10 +3,15 @@ package com.neurix.simrs.transaksi.checkup.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -18,6 +23,12 @@ public class CheckupAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(CheckupAction.class);
     private CheckupBo checkupBoProxy;
+    private PelayananBo pelayananBoProxy;
+    private JenisPerksaPasienBo jenisPriksaPasienBoProxy;
+
+    private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
+    private List<Pelayanan> listOfPelayanan = new ArrayList<>();
+
     private HeaderCheckup headerCheckup;
 
     public static Logger getLogger() {
@@ -42,6 +53,38 @@ public class CheckupAction extends BaseMasterAction {
 
     public void setHeaderCheckup(HeaderCheckup headerCheckup) {
         this.headerCheckup = headerCheckup;
+    }
+
+    public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
+        this.pelayananBoProxy = pelayananBoProxy;
+    }
+
+    public void setJenisPriksaPasienBoProxy(JenisPerksaPasienBo jenisPriksaPasienBoProxy) {
+        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
+    }
+
+    public PelayananBo getPelayananBoProxy() {
+        return pelayananBoProxy;
+    }
+
+    public JenisPerksaPasienBo getJenisPriksaPasienBoProxy() {
+        return jenisPriksaPasienBoProxy;
+    }
+
+    public List<JenisPriksaPasien> getListOfJenisPriksaPasien() {
+        return listOfJenisPriksaPasien;
+    }
+
+    public void setListOfJenisPriksaPasien(List<JenisPriksaPasien> listOfJenisPriksaPasien) {
+        this.listOfJenisPriksaPasien = listOfJenisPriksaPasien;
+    }
+
+    public List<Pelayanan> getListOfPelayanan() {
+        return listOfPelayanan;
+    }
+
+    public void setListOfPelayanan(List<Pelayanan> listOfPelayanan) {
+        this.listOfPelayanan = listOfPelayanan;
     }
 
     @Override
@@ -150,5 +193,33 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveAdd] end process >>>");
         return "search";
 
+    }
+
+    public String getComboJenisPeriksaPasien(){
+        List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
+
+        try {
+            lisJenisPeriksa = jenisPriksaPasienBoProxy.getListAllJenisPeriksa();
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboJenisPeriksaPasien] Error when get data for combo listOfJenisPriksaPasien", e);
+            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
+        }
+
+        listOfJenisPriksaPasien.addAll(lisJenisPeriksa);
+        return "add";
+    }
+
+    public String getComboPelayanan(){
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = pelayananBoProxy.getListAllPelayanan();
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfPelayanan.addAll(pelayananList);
+        return "add";
     }
 }
