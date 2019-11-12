@@ -32,6 +32,15 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String jenisKunjungan;
+
+    public String getJenisKunjungan() {
+        return jenisKunjungan;
+    }
+
+    public void setJenisKunjungan(String jenisKunjungan) {
+        this.jenisKunjungan = jenisKunjungan;
+    }
 
     public String getNoCheckup() {
         return noCheckup;
@@ -243,6 +252,7 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", jenisKunjungan='" + jenisKunjungan + '\'' +
                 '}';
     }
 }

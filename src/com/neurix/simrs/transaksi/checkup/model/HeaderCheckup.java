@@ -31,10 +31,19 @@ public class HeaderCheckup {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String jenisKunjungan;
 
     private String idPelayanan;
     private String statusPeriksa;
     private String statusPeriksaName;
+
+    public String getJenisKunjungan() {
+        return jenisKunjungan;
+    }
+
+    public void setJenisKunjungan(String jenisKunjungan) {
+        this.jenisKunjungan = jenisKunjungan;
+    }
 
     public String getStatusPeriksa() {
         return statusPeriksa;

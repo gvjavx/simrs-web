@@ -77,6 +77,9 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="jenisKunjungan">
+            <column name="jenis_kunjungan" sql-type="varchar" length="10" not-null="false" />
+        </property>
 
 
     </class>
