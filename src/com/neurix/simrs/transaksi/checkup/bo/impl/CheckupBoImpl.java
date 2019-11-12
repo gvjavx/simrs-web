@@ -179,6 +179,7 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setLastUpdate(bean.getLastUpdate());
             headerEntity.setCreatedWho(bean.getCreatedWho());
             headerEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            headerEntity.setJenisKunjungan(bean.getJenisKunjungan());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
@@ -192,7 +193,6 @@ public class CheckupBoImpl implements CheckupBo {
 
                 id = "";
                 id = getNextDetailCheckupId();
-                notify();
                 detailCheckupEntity.setIdDetailCheckup("DCM"+id);
                 detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
