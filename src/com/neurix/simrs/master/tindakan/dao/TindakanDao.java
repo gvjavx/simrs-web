@@ -23,6 +23,10 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity,String> {
         if (mapCriteria != null)
             if (mapCriteria.get("id_tindakan") != null)
                 criteria.add(Restrictions.eq("idTindakan", mapCriteria.get("id_tindakan").toString()));
+            if (mapCriteria.get("id_kategori_tindakan") != null)
+                criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
+            if (mapCriteria.get("flag") != null)
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
         List<ImSimrsTindakanEntity> result = criteria.list();
         return result;

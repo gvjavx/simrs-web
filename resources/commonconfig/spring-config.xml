@@ -134,6 +134,9 @@
     <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/JenisPeriksaPasienBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/pasien/spring/PasienBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/statuspasien/spring/StatusPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/TindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kategoritindakan/spring/KategoriTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawat/spring/TindakanRawatBean.xml"/>
 
 
 

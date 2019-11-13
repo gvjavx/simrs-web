@@ -21,6 +21,25 @@ public class TindakanRawat extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String namaDokter;
+    private String namaPerawat;
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getNamaPerawat() {
+        return namaPerawat;
+    }
+
+    public void setNamaPerawat(String namaPerawat) {
+        this.namaPerawat = namaPerawat;
+    }
+
     public String getIdTindakanRawat() {
         return idTindakanRawat;
     }

@@ -23,6 +23,8 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
         if (mapCriteria != null)
             if (mapCriteria.get("id_kategori_tindakan") != null)
                 criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
+            if (mapCriteria.get("flag") != null)
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
         List<ImSimrsKategoriTindakanEntity> result = criteria.list();
         return result;

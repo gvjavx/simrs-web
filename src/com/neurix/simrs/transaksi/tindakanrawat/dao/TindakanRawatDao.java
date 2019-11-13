@@ -3,9 +3,12 @@ package com.neurix.simrs.transaksi.tindakanrawat.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +51,9 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             if (mapCriteria.get("tarif_total")!=null) {
                 criteria.add(Restrictions.eq("tarifTotal", (Long) mapCriteria.get("tarif_total")));
             }
+            if (mapCriteria.get("flag")!=null) {
+                criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
 
         }
 
@@ -59,5 +65,12 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
         List<ItSimrsTindakanRawatEntity> results = criteria.list();
 
         return results;
+    }
+
+    public String getNextTindakanRawatId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tindakan_rawat')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }
