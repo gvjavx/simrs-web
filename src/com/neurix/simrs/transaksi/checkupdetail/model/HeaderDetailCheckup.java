@@ -24,6 +24,9 @@ public class HeaderDetailCheckup {
     private String lastUpdateWho;
 
     private String statusPeriksaName;
+    private String idRuangan;
+    private String namaRuangan;
+    private String noRuangan;
 
     public String getStatusPeriksaName() {
         return statusPeriksaName;
@@ -153,24 +156,28 @@ public class HeaderDetailCheckup {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    @Override
-    public String toString() {
-        return "ItSimrsHeaderDetailCheckupEntity{" +
-                "idDetailCheckup='" + idDetailCheckup + '\'' +
-                ", noCheckup='" + noCheckup + '\'' +
-                ", idPelayanan='" + idPelayanan + '\'' +
-                ", statusPeriksa='" + statusPeriksa + '\'' +
-                ", statusBayar='" + statusBayar + '\'' +
-                ", totalBiaya=" + totalBiaya +
-                ", keteranganSelesai='" + keteranganSelesai + '\'' +
-                ", jenisLab='" + jenisLab + '\'' +
-                ", branchId='" + branchId + '\'' +
-                ", flag='" + flag + '\'' +
-                ", action='" + action + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdWho='" + createdWho + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                '}';
+    public String getIdRuangan() {
+        return idRuangan;
     }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
+    public String getNamaRuangan() {
+        return namaRuangan;
+    }
+
+    public void setNamaRuangan(String namaRuangan) {
+        this.namaRuangan = namaRuangan;
+    }
+
+    public String getNoRuangan() {
+        return noRuangan;
+    }
+
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
+    }
+
 }

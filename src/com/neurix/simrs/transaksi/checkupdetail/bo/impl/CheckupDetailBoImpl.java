@@ -7,6 +7,8 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -18,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 13/11/2019.
  */
-public class CheckupDetailBoImpl extends StatusPasienBoImpl implements CheckupDetailBo {
+public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailBo{
 
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(CheckupDetailBoImpl.class);
 
@@ -88,10 +90,18 @@ public class CheckupDetailBoImpl extends StatusPasienBoImpl implements CheckupDe
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())){
                 StatusPasien statusPasien = new StatusPasien();
                 statusPasien.setIdStatusPasien(detailCheckup.getStatusPeriksa());
-
-                detailCheckup.setStatusPeriksa(getListEnstityStatusPasien(statusPasien).get(0).getKeterangan());
+                detailCheckup.setStatusPeriksa(getListEntityStatusPasien(statusPasien).get(0).getKeterangan());
             }
 
+            RawatInap rawatInap = new RawatInap();
+            rawatInap.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+            ItSimrsRawatInapEntity rawatInapEntity = getListEntityRawatInap(rawatInap).get(0);
+
+            if (rawatInapEntity != null){
+                detailCheckup.setNoRuangan(rawatInapEntity.getNoRuangan());
+                detailCheckup.setIdRuangan(rawatInapEntity.getIdRuangan());
+                detailCheckup.setNamaRuangan(rawatInapEntity.getNamaRangan());
+            }
 
             results.add(detailCheckup);
         }
@@ -103,4 +113,5 @@ public class CheckupDetailBoImpl extends StatusPasienBoImpl implements CheckupDe
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
     }
+
 }

@@ -21,8 +21,9 @@ public class StatusPasienBoImpl implements StatusPasienBo {
     private static transient Logger logger = Logger.getLogger(StatusPasienBoImpl.class);
     private StatusPasienDao statusPasienDao;
 
-    protected List<ImSimrsStatusPasienEntity> getListEnstityStatusPasien(StatusPasien bean) throws GeneralBOException{
+    protected List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean) throws GeneralBOException {
         logger.info("[StatusPasienBoImpl.getListEnstityStatusPasien] Start >>>>>>>>>");
+
         List<ImSimrsStatusPasienEntity> results = new ArrayList<>();
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_status_pasien", bean.getIdStatusPasien());
@@ -32,9 +33,11 @@ public class StatusPasienBoImpl implements StatusPasienBo {
         } catch (HibernateException e){
             logger.error("[StatusPasienBoImpl.getListEnstityStatusPasien] Error When get data status pasien");
         }
+
         logger.info("[StatusPasienBoImpl.getListEnstityStatusPasien] End <<<<<<<<<");
         return results;
     }
+
 
     public void setStatusPasienDao(StatusPasienDao statusPasienDao) {
         this.statusPasienDao = statusPasienDao;

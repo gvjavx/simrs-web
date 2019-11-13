@@ -30,6 +30,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             if (mapCriteria.get("id_ruangan") != null)
                 criteria.add(Restrictions.eq("idRuangan", mapCriteria.get("id_ruangan").toString()));
 
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         List<ItSimrsRawatInapEntity> result = criteria.list();
         return result;
     }
