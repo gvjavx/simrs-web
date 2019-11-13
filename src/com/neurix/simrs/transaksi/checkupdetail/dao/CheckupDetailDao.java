@@ -4,6 +4,8 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -41,6 +43,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if (mapCriteria.get("today") != null)
                 criteria.add(Restrictions.eq("createdDate", (Date) mapCriteria.get("today")));
 
+        criteria.add((Criterion) Order.desc("createdDate"));
         List<ItSimrsHeaderDetailCheckupEntity> result = criteria.list();
         return result;
     }
