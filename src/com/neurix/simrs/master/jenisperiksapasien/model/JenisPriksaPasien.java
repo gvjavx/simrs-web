@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class JenisPeiksaPasien {
+public class JenisPriksaPasien {
     private String idJenisPeriksaPasien;
     private String keterangan;
     private String flag;

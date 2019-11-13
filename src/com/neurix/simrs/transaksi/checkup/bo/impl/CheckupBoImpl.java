@@ -22,7 +22,7 @@ import java.util.Map;
  */
 
 public class CheckupBoImpl implements CheckupBo {
-    protected static transient Logger logger = Logger.getLogger(StatusRekruitmentBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
 
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;

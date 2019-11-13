@@ -22,7 +22,7 @@
             <column name="status_bayar" sql-type="varchar" length="1" not-null="false"/>
         </property>
         <property name="totalBiaya">
-            <column name="total_biaya" sql-type="long" />
+            <column name="total_bayar" sql-type="long" />
         </property>
         <property name="keteranganSelesai">
             <column name="keterangan_selesai" sql-type="varchar" length="1000" />
@@ -54,6 +54,5 @@
         <property name="tglAntrian">
             <column name="tgl_antrian" sql-type="timestamp" not-null="false" />
         </property>
-
     </class>
 </hibernate-mapping>
