@@ -169,7 +169,8 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setDesaId(bean.getDesaId());
             headerEntity.setJalan(bean.getJalan());
             headerEntity.setSuku(bean.getSuku());
-            headerEntity.setAgama(bean.getProfesi());
+            headerEntity.setNoTelp(bean.getNoTelp());
+            headerEntity.setAgama(bean.getAgama());
             headerEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
             headerEntity.setUrlKtp(bean.getUrlKtp());
             headerEntity.setBranchId(bean.getBranchId());
