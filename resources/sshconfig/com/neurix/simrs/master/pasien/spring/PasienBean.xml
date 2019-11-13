@@ -4,28 +4,24 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"
-          p:checkupBoProxy-ref="checkupBoProxy"
-          p:pelayananBoProxy-ref="pelayananBoProxy"
-          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+    <bean id="pasienAction" class="com.neurix.simrs.master.pasien.action.PasienAction"
     />
 
-    <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
-          p:headerCheckupDao-ref="headerCheckupDao"
-          p:checkupDetailDao-ref="checkupDetailDao"
+    <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
+         p:pasienDao-ref="pasienDao"
     />
 
-    <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="checkupBo">
+    <bean id="pasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="pasienBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionHeaderCheckupInterceptor</value>
+                <value>transactionPasienInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionHeaderCheckupInterceptor"
+    <bean id="transactionPasienInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
@@ -36,8 +32,7 @@
         </property>
     </bean>
 
-    <bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"
+    <bean id="pasienDao" class="com.neurix.simrs.master.pasien.dao.PasienDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="checkupDetailDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao"
-          p:sessionFactory-ref="sessionFactory" />
+
 </beans>
