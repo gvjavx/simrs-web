@@ -132,14 +132,15 @@ apply the skin class to the body tag so the changes take effect.
         $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
         $('#myTable').DataTable();
+        $("#tanggal_lahir").datepicker({
+            autoclose: true,
+            dateFormat:'yy-mm-dd'
+        });
     });
+
     $(function () {
         $('.select2').select2();
     });
-
-    $('#datepicker').datepicker({
-        autoclose: true
-    })
 </script>
 
 

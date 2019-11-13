@@ -37,6 +37,16 @@ public class HeaderCheckup {
     private String statusPeriksa;
     private String statusPeriksaName;
 
+    private String stTglLahir;
+
+    public String getStTglLahir() {
+        return stTglLahir;
+    }
+
+    public void setStTglLahir(String stTglLahir) {
+        this.stTglLahir = stTglLahir;
+    }
+
     public String getJenisKunjungan() {
         return jenisKunjungan;
     }

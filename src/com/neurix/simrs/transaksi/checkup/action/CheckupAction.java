@@ -10,8 +10,11 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CheckupAction extends BaseMasterAction {
@@ -19,6 +22,17 @@ public class CheckupAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(CheckupAction.class);
     private CheckupBo checkupBoProxy;
     private HeaderCheckup headerCheckup;
+    private String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -46,22 +60,60 @@ public class CheckupAction extends BaseMasterAction {
 
     @Override
     public String add() {
-        return "add";
+
+        logger.info("[CheckupAction.add] start process >>>");
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        setHeaderCheckup(checkup);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[CheckupAction.add] end process <<<");
+
+        return "init_add";
     }
 
     @Override
     public String edit() {
-        return "edit";
+        return "init_edit";
     }
 
     @Override
     public String delete() {
-        return "delete";
+        return "init_delete";
     }
 
     @Override
     public String view() {
-        return "view";
+
+        logger.info("[CheckupAction.view] start process >>>");
+
+        //get data from session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HeaderCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (HeaderCheckup headerCheckup : listOfResult) {
+                    if (id.equalsIgnoreCase(headerCheckup.getNoCheckup())) {
+                        setHeaderCheckup(headerCheckup);
+                        break;
+                    }
+                }
+
+            } else {
+                setHeaderCheckup(new HeaderCheckup());
+            }
+        } else {
+            setHeaderCheckup(new HeaderCheckup());
+        }
+        logger.info("[CheckupAction.view] DATA YANG DI PARAM ID: "+getId());
+        logger.info("[CheckupAction.view] end process <<<");
+
+        return "init_view";
     }
 
     @Override
@@ -128,6 +180,17 @@ public class CheckupAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            String tgl_lahir = checkup.getStTglLahir();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                java.util.Date date = format.parse(tgl_lahir);
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                checkup.setTglLahir(sqlDate);
+            } catch (ParseException e) {
+
+            }
+
             checkup.setCreatedWho(userLogin);
             checkup.setLastUpdate(updateTime);
             checkup.setCreatedDate(updateTime);
@@ -148,7 +211,7 @@ public class CheckupAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
 
         logger.info("[CheckupAction.saveAdd] end process >>>");
-        return "search";
+        return "success_add";
 
     }
 }
