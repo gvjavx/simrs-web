@@ -329,12 +329,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.IdPelayanan">Poli</label>
+                                    <label class="control-label col-sm-2">Poli</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerCheckup.IdPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                        <s:action id="initComboStatus" namespace="/checkup" name="getComboPelayanan_checkup"/>
+                                        <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listOfPelayanan" id="poli" name="headerCheckup.idPelayanan" listKey="idPelayanan" listValue="namaPelayanan"
+                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </div>
                                     <label class="control-label col-sm-2" for="headerCheckup.jenisKunjungan">Kunjungan</label>
                                     <div class="col-sm-4">

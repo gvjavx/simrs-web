@@ -269,7 +269,7 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfJenisPriksaPasien.addAll(lisJenisPeriksa);
-        return "add";
+        return "init_add";
     }
 
     public String getComboPelayanan(){
@@ -283,6 +283,6 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfPelayanan.addAll(pelayananList);
-        return "add";
+        return "init_add";
     }
 }
