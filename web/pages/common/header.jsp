@@ -128,11 +128,10 @@ apply the skin class to the body tag so the changes take effect.
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
     $( document ).ready(function() {
-        console.log( "ready!" );
         $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
         $('#myTable').DataTable();
-        $("#tanggal_lahir").datepicker({
+        $("#tanggal_lahir, #tgl_from, #tgl_to").datepicker({
             autoclose: true,
             dateFormat:'yy-mm-dd'
         });
@@ -141,6 +140,7 @@ apply the skin class to the body tag so the changes take effect.
     $(function () {
         $('.select2').select2();
     });
+
 </script>
 
 

@@ -108,13 +108,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.jalan">Tanggal Masuk</label>
+                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
                                         <div class="input-group date" style="margin-top: 7px">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir" cssClass="form-control" placeholder="From"
+                                            <s:textfield id="tgl_from" name="headerCheckup.tglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -123,7 +123,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tanggal_lahir2" name="headerCheckup.stTglLahir" cssClass="form-control" placeholder="To"
+                                            <s:textfield id="tgl_to" name="headerCheckup.tglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -197,9 +197,22 @@
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <sj:a onClickTopics="showDialogUser" href="%{detail}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup" style="cursor: pointer">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
                                         </sj:a>
-                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+
+                                        <s:url var="edit" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
                                     </td>
                                 </tr>
                             </s:iterator>

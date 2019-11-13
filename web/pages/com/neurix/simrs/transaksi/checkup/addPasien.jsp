@@ -297,6 +297,7 @@
                                                      readonly="false" cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2"></label>
                                     <div class="col-sm-3"><h4>Data Penanggung Jawab</h4>
@@ -323,6 +324,7 @@
                                                      disabled="false" cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2"></label>
                                     <div class="col-sm-3"><h4>Data Kunjungan</h4>
