@@ -297,6 +297,7 @@
                                                      readonly="false" cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2"></label>
                                     <div class="col-sm-3"><h4>Data Penanggung Jawab</h4>
@@ -323,6 +324,7 @@
                                                      disabled="false" cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2"></label>
                                     <div class="col-sm-3"><h4>Data Kunjungan</h4>
@@ -357,12 +359,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.idJenisPeriksaPasien">Penjamin</label>
+                                    <label class="control-label col-sm-2">Penjamin</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'1':'BPJS','2':'BANK BRI','3':'BANK BNI','4':'OVO'}" cssStyle="margin-top: 7px"
-                                                  id="penjamin" name="headerCheckup.idJenisPeriksaPasien"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                        <s:action id="initComboStatus" namespace="/checkup" name="getComboJenisPeriksaPasien_checkup"/>
+                                        <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listOfJenisPriksaPasien" id="penjamin" name="headerCheckup.idPelayanan" listKey="idJenisPeriksaPasien" listValue="keterangan"
+                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+
                                     </div>
                                 </div>
                                 <br>

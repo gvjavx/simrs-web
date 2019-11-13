@@ -9,6 +9,8 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -28,6 +30,15 @@ public class CheckupAction extends BaseMasterAction {
     private CheckupBo checkupBoProxy;
     private PelayananBo pelayananBoProxy;
     private JenisPerksaPasienBo jenisPriksaPasienBoProxy;
+    private CheckupDetailBo checkupDetailBoProxy;
+
+    public CheckupDetailBo getCheckupDetailBoProxy() {
+        return checkupDetailBoProxy;
+    }
+
+    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
+        this.checkupDetailBoProxy = checkupDetailBoProxy;
+    }
 
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
@@ -119,6 +130,31 @@ public class CheckupAction extends BaseMasterAction {
 
     @Override
     public String edit() {
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HeaderCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+        List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (HeaderCheckup headerCheckup : listOfResult) {
+                    if (id.equalsIgnoreCase(headerCheckup.getNoCheckup())) {
+                        setHeaderCheckup(headerCheckup);
+                        detailCheckup.setNoCheckup(headerCheckup.getNoCheckup());
+                        break;
+                    }
+                }
+
+            } else {
+                setHeaderCheckup(new HeaderCheckup());
+            }
+        } else {
+            setHeaderCheckup(new HeaderCheckup());
+        }
+
         return "init_edit";
     }
 
@@ -135,6 +171,8 @@ public class CheckupAction extends BaseMasterAction {
         //get data from session
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HeaderCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+        List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
 
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -143,6 +181,7 @@ public class CheckupAction extends BaseMasterAction {
                 for (HeaderCheckup headerCheckup : listOfResult) {
                     if (id.equalsIgnoreCase(headerCheckup.getNoCheckup())) {
                         setHeaderCheckup(headerCheckup);
+                        detailCheckup.setNoCheckup(headerCheckup.getNoCheckup());
                         break;
                     }
                 }
@@ -153,6 +192,19 @@ public class CheckupAction extends BaseMasterAction {
         } else {
             setHeaderCheckup(new HeaderCheckup());
         }
+
+        try {
+            listOfsearchDetailCheckup = checkupDetailBoProxy.getByCriteria(detailCheckup);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupAction.view] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        session.removeAttribute("listOfRiwayat");
+        session.setAttribute("listOfRiwayat", listOfsearchDetailCheckup);
+
         logger.info("[CheckupAction.view] DATA YANG DI PARAM ID: "+getId());
         logger.info("[CheckupAction.view] end process <<<");
 
@@ -221,6 +273,7 @@ public class CheckupAction extends BaseMasterAction {
         try {
             HeaderCheckup checkup = getHeaderCheckup();
             String userLogin = CommonUtil.userLogin();
+            String userArea  = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             String tgl_lahir = checkup.getStTglLahir();
@@ -234,6 +287,7 @@ public class CheckupAction extends BaseMasterAction {
 
             }
 
+            checkup.setBranchId(userArea);
             checkup.setCreatedWho(userLogin);
             checkup.setLastUpdate(updateTime);
             checkup.setCreatedDate(updateTime);

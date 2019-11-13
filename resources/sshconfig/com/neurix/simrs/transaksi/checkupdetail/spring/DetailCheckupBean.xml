@@ -13,8 +13,8 @@
           p:rawatInapDao-ref="rawatInapDao"
     />
 
-    <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="pelayananBo">
+    <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="checkupDetailBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionDetailCheckupInterceptor</value>
@@ -29,13 +29,14 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
-                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="saveAdd">PROPAGATION_REQUIRED</prop>-->
+                <!--<prop key="saveEdit">PROPAGATION_REQUIRED</prop>-->
             </props>
         </property>
     </bean>
 
-
+    <!--<bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"-->
+          <!--p:sessionFactory-ref="sessionFactory" />-->
 
 
 </beans>

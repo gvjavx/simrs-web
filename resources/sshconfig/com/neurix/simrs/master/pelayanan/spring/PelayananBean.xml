@@ -35,6 +35,4 @@
     <bean id="pelayananDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananDao"
           p:sessionFactory-ref="sessionFactory" />
 
-
-
 </beans>

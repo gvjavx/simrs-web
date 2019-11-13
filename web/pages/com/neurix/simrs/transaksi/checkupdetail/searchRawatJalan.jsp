@@ -43,7 +43,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pasien
+            Rawat Jalan
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -59,26 +59,19 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupForm" method="post" namespace="/checkup" action="search_checkup.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="checkupDetailForm" method="post" namespace="/checkup" action="search_checkup.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.idPasien">ID Pasien</label>
+                                    <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.idPasien" required="false"
+                                                     name="headerDetailCheckup.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.noKtp">No KTP</label>
+                                    <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="no_ktp" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.noKtp" required="true" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.nama">Nama</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -87,7 +80,7 @@
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerCheckup.IdPelayanan"
+                                                  id="poli" name="headerDetailCheckup.IdPelayanan"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
                                     </div>
@@ -96,15 +89,9 @@
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="headerCheckup.statusPeriksa"
+                                                  id="status" name="headerDetailCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.jalan">Alamat</label>
-                                    <div class="col-sm-4">
-                                        <s:textarea cssStyle="margin-top: 7px"  id="alamat" name="headerCheckup.jalan" required="false" readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -114,7 +101,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -123,7 +110,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -132,7 +119,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search

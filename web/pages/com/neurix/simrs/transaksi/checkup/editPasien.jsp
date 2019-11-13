@@ -454,6 +454,214 @@
                             </s:form>
                         </div>
                     </div>
+
+                    <div class="box-body">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>No Checkup</td>
+                                <td>ID Pasien</td>
+                                <td>Nama</td>
+                                <td>Poli Terakhir</td>
+                                <td>Status Terakhir</td>
+                                <td>Ruangan</td>
+                                <td>No</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaRuangan"/></td>
+                                    <td><s:property value="noRuangan"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-body">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>No Checkup</td>
+                                <td>ID Pasien</td>
+                                <td>Nama</td>
+                                <td>Poli Terakhir</td>
+                                <td>Status Terakhir</td>
+                                <td>Ruangan</td>
+                                <td>No</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaRuangan"/></td>
+                                    <td><s:property value="noRuangan"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-body">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>No Checkup</td>
+                                <td>ID Pasien</td>
+                                <td>Nama</td>
+                                <td>Poli Terakhir</td>
+                                <td>Status Terakhir</td>
+                                <td>Ruangan</td>
+                                <td>No</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaRuangan"/></td>
+                                    <td><s:property value="noRuangan"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-body">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>No Checkup</td>
+                                <td>ID Pasien</td>
+                                <td>Nama</td>
+                                <td>Poli Terakhir</td>
+                                <td>Status Terakhir</td>
+                                <td>Ruangan</td>
+                                <td>No</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaRuangan"/></td>
+                                    <td><s:property value="noRuangan"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

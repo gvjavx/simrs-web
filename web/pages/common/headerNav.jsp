@@ -411,6 +411,13 @@
                         <%--<li class="footer"><a href="#">View all</a></li>--%>
                     </ul>
                 </li>
+
+                <li class="dropdown notifications-menu">
+                    <!-- Menu toggle button -->
+                    <a href="j_spring_security_logout">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                </li>
                 <!-- Tasks Menu -->
             </ul>
         </div>
