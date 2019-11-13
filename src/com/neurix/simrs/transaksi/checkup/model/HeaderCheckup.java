@@ -38,6 +38,24 @@ public class HeaderCheckup {
     private String statusPeriksaName;
 
     private String stTglLahir;
+    private String stTglFrom;
+    private String getStTglTo;
+
+    public String getStTglFrom() {
+        return stTglFrom;
+    }
+
+    public void setStTglFrom(String stTglFrom) {
+        this.stTglFrom = stTglFrom;
+    }
+
+    public String getGetStTglTo() {
+        return getStTglTo;
+    }
+
+    public void setGetStTglTo(String getStTglTo) {
+        this.getStTglTo = getStTglTo;
+    }
 
     public String getStTglLahir() {
         return stTglLahir;

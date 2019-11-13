@@ -160,13 +160,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <s:iterator value="#session.listOfResult" status="listOfUsers">
+                        <s:iterator value="#session.listOfRiwayat" status="listOfUsers">
                             <tr>
                                 <td><s:property value="noCheckup"/></td>
-                                <td><s:property value="idPasien"/></td>
-                                <td><s:property value="nama"/></td>
-                                <td><s:property value="namaPelayanan"/></td>
-                                <td><s:property value="statusPeriksa"/></td>
+                                <td><s:property value="noCheckup"/></td>
+                                <td><s:property value="noCheckup"/></td>
+                                <td><s:property value="noCheckup"/></td>
+                                <td><s:property value="noCheckup"/></td>
                             </tr>
                         </s:iterator>
                         </tbody>
