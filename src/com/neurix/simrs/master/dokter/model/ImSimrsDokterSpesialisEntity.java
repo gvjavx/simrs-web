@@ -8,7 +8,6 @@ import java.sql.Timestamp;
  */
 public class ImSimrsDokterSpesialisEntity implements Serializable{
     private DokterSpesialisPK primariKey;
-    private String idSpesialis;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -22,14 +21,6 @@ public class ImSimrsDokterSpesialisEntity implements Serializable{
 
     public void setPrimariKey(DokterSpesialisPK primariKey) {
         this.primariKey = primariKey;
-    }
-
-    public String getIdSpesialis() {
-        return idSpesialis;
-    }
-
-    public void setIdSpesialis(String idSpesialis) {
-        this.idSpesialis = idSpesialis;
     }
 
     public String getFlag() {
@@ -84,7 +75,6 @@ public class ImSimrsDokterSpesialisEntity implements Serializable{
     public String toString() {
         return "ImSimrsDokterSpesialisEntity{" +
                 "primariKey=" + primariKey +
-                ", idSpesialis='" + idSpesialis + '\'' +
                 ", flag='" + flag + '\'' +
                 ", action='" + action + '\'' +
                 ", createdDate=" + createdDate +
