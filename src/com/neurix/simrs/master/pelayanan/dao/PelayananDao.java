@@ -11,25 +11,20 @@ import java.util.Map;
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class PelayananDao extends GenericDao {
+public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
+
     @Override
-    protected Class getEntityClass() {
+    protected Class<ImSimrsPelayananEntity> getEntityClass() {
         return ImSimrsPelayananEntity.class;
     }
 
     @Override
-    public List getByCriteria(Map mapCriteria) {
-
+    public List<ImSimrsPelayananEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class);
-
-        if (mapCriteria != null){
-
-            if (mapCriteria.get("id_pelayanan") != null){
+        if (mapCriteria != null) {
+            if (mapCriteria.get("id_pelayanan") != null)
                 criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
-            }
-
         }
-
         List<ImSimrsPelayananEntity> result = criteria.list();
         return result;
     }

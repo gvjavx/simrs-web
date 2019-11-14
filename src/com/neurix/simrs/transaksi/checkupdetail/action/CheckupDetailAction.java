@@ -1,18 +1,32 @@
 package com.neurix.simrs.transaksi.checkupdetail.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckupDetailAction extends BaseMasterAction {
 
     protected static transient Logger logger = Logger.getLogger(CheckupDetailAction.class);
     private HeaderDetailCheckup headerDetailCheckup;
     private CheckupDetailBo checkupDetailBoProxy;
+    private String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public HeaderDetailCheckup getHeaderDetailCheckup() {
         return headerDetailCheckup;
@@ -42,12 +56,30 @@ public class CheckupDetailAction extends BaseMasterAction {
     public String add() {
         logger.info("[CheckupDetailAction.add] start process >>>");
 
-        HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
-        setHeaderDetailCheckup(checkupdetail);
-
+        //get data from session
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+        List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
 
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (HeaderDetailCheckup detailCheckup : listOfResult) {
+                    if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+                        setHeaderDetailCheckup(detailCheckup);
+                        break;
+                    }
+                }
+
+            } else {
+                setHeaderDetailCheckup(new HeaderDetailCheckup());
+            }
+        } else {
+            setHeaderDetailCheckup(new HeaderDetailCheckup());
+        }
+
+        session.removeAttribute("listOfResult");
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_add";
@@ -75,6 +107,26 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     @Override
     public String search() {
+        logger.info("[CheckupAction.search] start process >>>");
+
+        HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
+
+        try {
+            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getByCriteria(headerDetailCheckup);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+
+        logger.info("[CheckupAction.search] end process <<<");
         return "search";
     }
 

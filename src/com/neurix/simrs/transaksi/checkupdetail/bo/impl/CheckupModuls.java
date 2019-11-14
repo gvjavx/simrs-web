@@ -38,7 +38,7 @@ public class CheckupModuls {
         }
 
         logger.info("[CheckupModuls.getListEntityStatusPasien] End <<<<<<<<<");
-        return entities;
+        return results;
     }
 
     protected List<ItSimrsRawatInapEntity> getListEntityRawatInap(RawatInap bean){

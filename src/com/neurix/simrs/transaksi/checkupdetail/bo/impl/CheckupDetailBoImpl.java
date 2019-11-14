@@ -95,7 +95,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-            ItSimrsRawatInapEntity rawatInapEntity = getListEntityRawatInap(rawatInap).get(0);
+            List<ItSimrsRawatInapEntity> rawatInapEntitys = getListEntityRawatInap(rawatInap);
+
+            ItSimrsRawatInapEntity rawatInapEntity = new ItSimrsRawatInapEntity();
+            if (!rawatInapEntitys.isEmpty()){
+                rawatInapEntity = rawatInapEntitys.get(0);
+            }
+
 
             if (rawatInapEntity != null){
                 detailCheckup.setNoRuangan(rawatInapEntity.getNoRuangan());

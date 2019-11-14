@@ -13,6 +13,7 @@
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
           p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -37,8 +38,5 @@
     </bean>
 
     <bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"
-          p:sessionFactory-ref="sessionFactory" />
-
-    <bean id="checkupDetailDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

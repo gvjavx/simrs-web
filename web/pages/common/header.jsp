@@ -72,6 +72,8 @@ apply the skin class to the body tag so the changes take effect.
 <%--<script src="<s:url value="/pages/js/jquery-ui.js"/>"></script>--%>
 <link rel="<s:url value="/pages/plugins/datepicker/datepicker3.css"/>">
 <%--<link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">--%>
+<script src="<s:url value="/pages/dist/js/adminlte.min.js"/>"></script>
+
 <style>
     .ui-datepicker-title{
         color: black !important;    
