@@ -18,16 +18,21 @@ import java.util.Map;
  */
 public class PelayananBoImpl implements PelayananBo{
     protected static transient Logger logger = Logger.getLogger(PelayananBoImpl.class);
-
     private PelayananDao pelayananDao;
 
     public void setPelayananDao(PelayananDao pelayananDao) {
+
         this.pelayananDao = pelayananDao;
+    }
+
+    public PelayananDao getPelayananDao() {
+        return pelayananDao;
     }
 
     @Override
     public List<Pelayanan> getListAllPelayanan() throws GeneralBOException {
         logger.info("[pelayananBoImpl.getListAllPelayanan] Start >>>>>>");
+        List<Pelayanan> result = new ArrayList<>();
         Map hsCriteria = new HashMap();
         hsCriteria.put("flag", "Y");
 
@@ -35,20 +40,19 @@ public class PelayananBoImpl implements PelayananBo{
         try {
             imSimrsPelayananEntities = pelayananDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.error("[jenisPriksaPasienImpl.getListAllJenisPeriksa] Error get pelayanan data "+e.getMessage());
+            logger.error("[pelayananBoImpl.getListAllPelayanan] Error get pelayanan data "+e.getMessage());
         }
 
-        List<Pelayanan> pelayananList = new ArrayList<>();
         if (!imSimrsPelayananEntities.isEmpty()){
             Pelayanan pelayanan;
             for (ImSimrsPelayananEntity listEntity : imSimrsPelayananEntities){
                 pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(listEntity.getIdPelayanan());
                 pelayanan.setNamaPelayanan(listEntity.getNamaPelayanan());
-                pelayananList.add(pelayanan);
+                result.add(pelayanan);
             }
         }
         logger.info("[pelayananBoImpl.getListAllPelayanan] End <<<<<<");
-        return pelayananList;
+        return result;
     }
 }

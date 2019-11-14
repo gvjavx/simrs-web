@@ -1,11 +1,14 @@
 package com.neurix.simrs.master.pelayanan.model;
 
-import java.security.Timestamp;
+import com.neurix.common.model.BaseModel;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class Pelayanan {
+public class Pelayanan extends BaseModel implements Serializable {
 
     private String idPelayanan;
     private String namaPelayanan;

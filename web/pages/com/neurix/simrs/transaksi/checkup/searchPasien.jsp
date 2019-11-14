@@ -32,7 +32,7 @@
     </script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue fixed sidebar-mini">
 
 <%@ include file="/pages/common/headerNav.jsp" %>
 
@@ -43,7 +43,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pasien
+            Pendaftaran Rawat Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>

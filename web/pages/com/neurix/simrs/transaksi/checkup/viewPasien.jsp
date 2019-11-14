@@ -25,14 +25,14 @@
                                 <div class="col-sm-4">
                                     <s:textfield id="no_bpjs" cssStyle="margin-top: 7px"
                                                  name="headerCheckup.noBpjs" required="false"
-                                                 readonly="false" cssClass="form-control"/>
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
 
                                 <label class="control-label col-sm-2" for="headerCheckup.jalan">Alamat</label>
                                 <div class="col-sm-4">
                                     <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
                                                 name="headerCheckup.jalan" required="false"
-                                                readonly="false" cssClass="form-control"/>
+                                                readonly="true" cssClass="form-control"/>
                                 </div>
 
                             </div>
@@ -42,27 +42,27 @@
                                 <div class="col-sm-4">
                                     <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                  name="headerCheckup.idPasien" required="false"
-                                                 readonly="false" cssClass="form-control"/>
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
                                 <label class="control-label col-sm-2" for="headerCheckup.provinsiId">Provinsi</label>
                                 <div class="col-sm-4">
                                     <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="" required="true" disabled="false"
-                                                 cssClass="form-control"/>
+                                                 cssClass="form-control" readonly="true"/>
                                     <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
                                                  name="headerCheckup.provinsiId" required="true"
-                                                 disabled="false" cssClass="form-control" />
+                                                 readonly="true" cssClass="form-control" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="headerCheckup.noKtp">No KTP</label>
                                 <div class="col-sm-4">
                                     <s:textfield id="no_ktp" cssStyle="margin-top: 7px"
-                                                 name="headerCheckup.noKtp" required="true" cssClass="form-control"/>
+                                                 name="headerCheckup.noKtp" required="true" cssClass="form-control" readonly="true"/>
                                 </div>
                                 <label class="control-label col-sm-2" for="headerCheckup.kotaId">Kota</label>
                                 <div class="col-sm-4">
                                     <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="" required="true" disabled="false"
-                                                 cssClass="form-control"/>
+                                                 cssClass="form-control" readonly="true"/>
                                     <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
                                                  name="headerCheckup.kotaId" required="true"
                                                  disabled="false" cssClass="form-control"/>
@@ -72,13 +72,13 @@
                                 <label class="control-label col-sm-2" for="headerCheckup.nama">Nama</label>
                                 <div class="col-sm-4">
                                     <s:textfield id="nama_pasien" name="headerCheckup.nama"
-                                                 required="false" readonly="false"
+                                                 required="false" readonly="true"
                                                  cssClass="form-control" cssStyle="margin-top: 7px"/>
                                 </div>
                                 <label class="control-label col-sm-2" for="headerCheckup.kecamatanId">Kecamatan</label>
                                 <div class="col-sm-4">
                                     <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="" required="true" disabled="false"
-                                                 cssClass="form-control"/>
+                                                 cssClass="form-control" readonly="true"/>
                                     <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
                                                  name="headerCheckup.kecamatanId" required="true"
                                                  disabled="false" cssClass="form-control"/>
@@ -91,12 +91,12 @@
                                     <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
                                               id="jenis_kelamin" name="headerCheckup.jenisKelamin"
                                               headerKey="" headerValue="[Select one]"
-                                              cssClass="form-control"/>
+                                              cssClass="form-control" readonly="true"/>
                                 </div>
                                 <label class="control-label col-sm-2" for="headerCheckup.desaId">Desa</label>
                                 <div class="col-sm-4">
                                     <s:textfield cssStyle="margin-top: 7px" id="desa" name="" required="true" disabled="false"
-                                                 cssClass="form-control"/>
+                                                 cssClass="form-control" readonly="true"/>
                                     <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
                                                  name="headerCheckup.desaId" required="true"
                                                  disabled="false" cssClass="form-control"/>
@@ -106,7 +106,7 @@
                                 <label class="control-label col-sm-2" for="headerCheckup.tempatLahir">Tempat Lahir</label>
                                 <div class="col-sm-4">
                                     <s:textfield cssStyle="margin-top: 7px" id="tempat_Lahir" name="headerCheckup.tempatLahir"
-                                                 required="true" cssClass="form-control"/>
+                                                 required="true" cssClass="form-control" readonly="true"/>
                                 </div>
 
                             </div>
@@ -117,8 +117,8 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir" cssClass="form-control"
-                                                     required="false"/>
+                                        <s:textfield id="tanggal_lahir" name="headerCheckup.tglLahir" cssClass="form-control"
+                                                     required="false" readonly="true"/>
                                     </div>
 
                                 </div>
@@ -129,7 +129,7 @@
                                     <s:select list="#{'Islam':'Islam','Kristen':'Kristen'}" cssStyle="margin-top: 7px"
                                               id="agama" name="headerCheckup.agama"
                                               headerKey="" headerValue="[Select one]"
-                                              cssClass="form-control"/>
+                                              cssClass="form-control" readonly="true"/>
                                 </div>
                             </div>
 
@@ -137,7 +137,7 @@
                                 <label class="control-label col-sm-2" for="headerCheckup.suku">Suku</label>
                                 <div class="col-sm-4">
                                     <s:textfield id="suku" type="text" name="headerCheckup.suku" required="false"
-                                                 readonly="false" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                 readonly="true" cssClass="form-control" cssStyle="margin-top: 7px"/>
                                 </div>
                             </div>
                         </s:form>
@@ -160,13 +160,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <s:iterator value="#session.listOfRiwayat" status="listOfUsers">
+                        <s:iterator value="#session.listOfRiwayat" status="listOfRiwayat">
                             <tr>
-                                <td><s:property value="noCheckup"/></td>
-                                <td><s:property value="noCheckup"/></td>
-                                <td><s:property value="noCheckup"/></td>
-                                <td><s:property value="noCheckup"/></td>
-                                <td><s:property value="noCheckup"/></td>
+                                <td><s:property value="idPelayanan"/></td>
+                                <td><s:property value="statusPeriksa"/></td>
+                                <td><s:property value="keterangan"/></td>
+                                <td><s:property value="namaRuangan"/></td>
+                                <td><s:property value="noRuangan"/></td>
                             </tr>
                         </s:iterator>
                         </tbody>

@@ -1,18 +1,20 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
-import java.math.BigInteger;
+import com.neurix.common.model.BaseModel;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderDetailCheckup {
+public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String idDetailCheckup;
     private String noCheckup;
     private String idPelayanan;
     private String statusPeriksa;
     private String statusBayar;
-    private BigInteger totalBiaya;
+    private Long totalBiaya;
     private String keteranganSelesai;
     private String jenisLab;
     private String branchId;
@@ -76,11 +78,11 @@ public class HeaderDetailCheckup {
         this.statusBayar = statusBayar;
     }
 
-    public BigInteger getTotalBiaya() {
+    public Long getTotalBiaya() {
         return totalBiaya;
     }
 
-    public void setTotalBiaya(BigInteger totalBiaya) {
+    public void setTotalBiaya(Long totalBiaya) {
         this.totalBiaya = totalBiaya;
     }
 

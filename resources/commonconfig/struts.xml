@@ -143,7 +143,7 @@
     <include file="sshconfig/com/neurix/hris/master/dashboardAbsensi/struts/DashboardAbsensiAction.xml"/>
 
     <!--Medical Kacamata-->
-    <include file="sshconfig/com/neurix/hris/transaksi/medicalKacamata/struts/MedicalKacamataAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/medicalKacresources/sshconfig/com/neurix/simrs/transaksi/periksalab/struts/PeriksaLabAction.xmlamata/struts/MedicalKacamataAction.xml"/>
 
     <!--Im Medical Kacamata-->
     <include file="sshconfig/com/neurix/hris/master/medicalBiayaKacamata/struts/MedicalBiayaKacamataAction.xml"/>
@@ -158,5 +158,8 @@
     <include file="sshconfig/com/neurix/simrs/master/pasien/struts/PasienAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/CheckupDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatInapAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/periksalab/struts/PeriksaLabAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/periksaradiologi/struts/PeriksaRadiologiAction.xml"/>
 
 </struts>

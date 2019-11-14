@@ -155,7 +155,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Pasien
+            Rawat Jalan
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -446,7 +446,7 @@
                                                                                 'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                             }"
                                         >
-                                            <div class="alert bg-danger">
+                                            <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Silahkan Periksa Inputan Berikut :
                                                     <br/>

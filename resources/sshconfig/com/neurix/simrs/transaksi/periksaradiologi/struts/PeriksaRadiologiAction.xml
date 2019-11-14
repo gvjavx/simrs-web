@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="checkupdetail" namespace="/checkupdetail" extends="struts-default, jasperreports-default, json-default">
+    <package name="radiologi" namespace="/radiologi" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,12 +69,12 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_checkupdetail"
-                class="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction" method="{1}">
+        <action name="*_radiologi"
+                class="com.neurix.simrs.transaksi.periksaradiologi.action.PeriksaRadiologi" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/checkupdetail/searchRawatJalan.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/transaksi/checkupdetail/addRawatJalan.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/periksaradiologi/searchPeriksaRadiologi.jsp</result>
+            <!--<result name="init_add">/pages/com/neurix/simrs/transaksi/checkup/addPasien.jsp</result>-->
             <!--<result name="init_edit">/pages/com/neurix/simrs/transaksi/checkup/editPasien.jsp</result>-->
             <!--<result name="init_view">/pages/com/neurix/simrs/transaksi/checkup/viewPasien.jsp</result>-->
             <!--<result name="init_delete">/pages/com/neurix/simrs/transaksi/checkup/deletePasien.jsp</result>-->
