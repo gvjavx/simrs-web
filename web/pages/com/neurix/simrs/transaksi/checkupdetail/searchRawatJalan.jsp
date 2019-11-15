@@ -177,10 +177,10 @@
                                     <td><s:property value="statusPeriksa"/></td>
                                     <td><s:property value="noRuangan"/></td>
                                     <td>
-                                        <s:url var="add" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
+                                        <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
-                                        <s:a href="%{add}">
+                                        <s:a href="%{add_rawat_jalan}">
                                             <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
                                     </td>

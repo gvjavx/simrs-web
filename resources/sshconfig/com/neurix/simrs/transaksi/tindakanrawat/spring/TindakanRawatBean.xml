@@ -5,8 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!--<bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"-->
-          <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
+    <bean id="tindakanRawatAction" class="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"
+        p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+    />
 
     <bean id="tindakanRawatBo" class="com.neurix.simrs.transaksi.tindakanrawat.bo.impl.TindakanRawatBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
