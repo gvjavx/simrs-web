@@ -551,7 +551,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan
+                    Silahkan cek kembali data inputan dan jumlah harus lebih dari 0
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -590,7 +590,7 @@
                     <div class="form-group" >
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                           <input type="number" class="form-control" style="margin-top: 7px" id="tin_qty">
+                           <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty">
                         </div>
                     </div>
                 </div>
@@ -721,9 +721,11 @@
             data = response;
             if (data != null){
                 $.each(data, function (i,item) {
+                    var tanggal = item.createdDate;
+                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
                     table += "<tr>" +
                             "<td>" + item.idTindakan + "</td>" +
-                            "<td>" + item.createdDate + "</td>" +
+                            "<td>" + dateFormat + "</td>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
                             "<td>" + item.tarif + "</td>" +
@@ -745,9 +747,8 @@
         var idDokter        = $('#tin_id_dokter').val();
         var idPerawat       = $('#tin_id_perawat').val();
         var qty             = $('#tin_qty').val();
-        var data            = [];
 
-        if (idDetailCheckup != '' && idTindakan !='' && idDokter != '' && idPerawat != '' && qty != ''){
+        if (idDetailCheckup != '' && idTindakan !='' && idDokter != '' && idPerawat != '' && qty > 0){
             $('#save_tindakan').hide();
             $('#load_tindakan').show();
             dwr.engine.setAsync(true);
@@ -766,7 +767,10 @@
             });
         }else {
             $('#warning_tindakan').show().fadeOut(5000);
-            $( "#idTindakan" ).focus().select();
+            $('#tin_id_tindakan').css('border','renderDates ');
+            $('#tin_id_dokter').focus();
+            $('#tin_id_perawat').focus();
+            $('#tin_qty').focus();
         }
     }
 </script>
