@@ -1,6 +1,11 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
+import com.neurix.hris.master.provinsi.model.ImDesaEntity;
+import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
+import com.neurix.hris.master.provinsi.model.ImKotaEntity;
+import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
 import com.neurix.hris.master.statusRekruitment.bo.impl.StatusRekruitmentBoImpl;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -26,14 +31,7 @@ public class CheckupBoImpl implements CheckupBo {
 
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
-
-    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
-        this.headerCheckupDao = headerCheckupDao;
-    }
-
-    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
-        this.checkupDetailDao = checkupDetailDao;
-    }
+    private ProvinsiDao provinsiDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -143,6 +141,11 @@ public class CheckupBoImpl implements CheckupBo {
                 headerCheckup.setStatusPeriksa(headerDetailCheckup.getStatusPeriksa());
                 headerCheckup.setStatusPeriksaName(headerDetailCheckup.getStatusPeriksaName());
             }
+
+//            if (headerCheckup.getDesaId() != null){
+//                headerCheckup.setNamaDesa(getDesaName(headerCheckup.getDesaId().toString()));
+//            }
+
             result.add(headerCheckup);
         }
 
@@ -238,5 +241,78 @@ public class CheckupBoImpl implements CheckupBo {
             throw new GeneralBOException("[CheckupBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    private String getDesaName(String desaId){
+
+        String name = "";
+        List<ImDesaEntity> entities = null;
+        try {
+            entities = provinsiDao.getListDesaById(desaId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getDesaName] Error when get desa name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getDesaName();
+        }
+        return name;
+
+    }
+
+    private String getKecamatanName(String kecId){
+        String name = "";
+        List<ImKecamatanEntity> entities = null;
+        try {
+            entities = provinsiDao.getListKecamatanById(kecId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getKecamatanName] Error when get kecamatan name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getKecamatanName();
+        }
+        return name;
+    }
+
+    private String getKotaName(String kotaId){
+        String name = "";
+        List<ImKotaEntity> entities = null;
+        try {
+            entities = provinsiDao.getListKotaById(kotaId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getKotaName] Error when get kota name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getKotaName();
+        }
+        return name;
+    }
+    private String getProvonsiName(String provId){
+        String name = "";
+        List<ImProvinsiEntity> entities = null;
+        try {
+            entities = provinsiDao.getListProvinsiById(provId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getProvonsiName] Error when get provinsi name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getProvinsiName();
+        }
+        return name;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setProvinsiDao(ProvinsiDao provinsiDao) {
+        this.provinsiDao = provinsiDao;
     }
 }

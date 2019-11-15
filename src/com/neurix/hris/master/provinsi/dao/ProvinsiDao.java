@@ -143,12 +143,45 @@ public class ProvinsiDao extends GenericDao<ImProvinsiEntity, String> {
 
         return results;
     }
+
+    public List<ImProvinsiEntity> getListProvinsiById(String term) throws HibernateException {
+
+        List<ImProvinsiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProvinsiEntity.class)
+                .add(Restrictions.ilike("provinsiId",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("provinsiId"))
+                .list();
+
+        return results;
+    }
+
     public List<ImKotaEntity> getListKotaById(String term) throws HibernateException {
         List<ImKotaEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImKotaEntity.class)
                 .add(Restrictions.eq("kotaId",term))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("kotaId"))
                 .list();
+        return results;
+    }
+
+    public List<ImKecamatanEntity> getListKecamatanById(String term) throws HibernateException {
+        List<ImKecamatanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImKecamatanEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("kecamatanId", term))
+                .addOrder(Order.asc("kecamatanId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImDesaEntity> getListDesaById(String term) throws HibernateException {
+
+        List<ImDesaEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImDesaEntity.class)
+                .add(Restrictions.ilike("desaId",term))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("desaId"))
+                .list();
+
         return results;
     }
     public List<ImDesaEntity> getListDesa(String term, String kota) throws HibernateException {

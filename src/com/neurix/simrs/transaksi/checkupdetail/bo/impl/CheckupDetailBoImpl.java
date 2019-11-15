@@ -101,13 +101,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 rawatInapEntity = rawatInapEntitys.get(0);
             }
 
-
             if (rawatInapEntity != null){
                 detailCheckup.setNoRuangan(rawatInapEntity.getNoRuangan());
                 detailCheckup.setIdRuangan(rawatInapEntity.getIdRuangan());
                 detailCheckup.setNamaRuangan(rawatInapEntity.getNamaRangan());
             }
-
             results.add(detailCheckup);
         }
 
