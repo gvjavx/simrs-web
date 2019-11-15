@@ -21,7 +21,7 @@
             margin-bottom: 30px;
         }
     </style>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript'>
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -571,7 +571,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <select class="form-control">
+                            <select class="form-control" id="tin_id_tindakan">
                                 <option value="">[select one]</option>
                                 <option value="1">Suntik</option>
                                 <option value="2">Pil</option>
@@ -582,7 +582,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px">
+                            <select class="form-control" style="margin-top: 7px" id="tin_id_dokter">
                                 <option value="">[select one]</option>
                                 <option value="1">Dr. Sutikno</option>
                                 <option value="2">Dr. Julio</option>
@@ -593,7 +593,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px">
+                            <select class="form-control" style="margin-top: 7px" id="tin_id_perawat">
                                 <option value="">[select one]</option>
                                 <option value="1">Angel</option>
                                 <option value="2">Anya</option>
@@ -604,7 +604,7 @@
                     <div class="form-group" >
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                           <input type="number" class="form-control" style="margin-top: 7px">
+                           <input type="number" class="form-control" style="margin-top: 7px" id="tin_qty">
                         </div>
                     </div>
 
@@ -721,6 +721,14 @@
 
     function saveTindakan(){
 
+        var idDetailCheckup = 20;
+        var idTindakan = $('#tin_id_tindakan').val();
+        var idDokter = $('#tin_id_dokter').val();
+        var idPerawat = $('#tin_id_perawat').val();
+        var qty = $('#tin_qty').val();
+
+        dwr.engine.setAsync(false);
+        TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty);
     }
 </script>
 
