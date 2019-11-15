@@ -167,297 +167,347 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title">Search Form</h3>--%>
+                        <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-group">
-                            <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup" action="saveAdd_checkup.action" theme="simple" cssClass="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2"></label>
-                                    <div class="col-sm-3"><h4>Data Pasien</h4>
-                                    </div>
+                                    <label>No Checkup</label>
+                                    <s:textfield id="no_bpjs"
+                                                 name="headerDetailCheckup.noCheckup" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
+                                <!-- /.form-group -->
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">No BPJS</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="no_bpjs" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.noBpjs" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-
-                                    <label class="control-label col-sm-2" for="headerCheckup.jalan">Alamat</label>
-                                    <div class="col-sm-4">
-                                        <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.jalan" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-
+                                    <label style="margin-top: 7px">No Detail Checkup</label>
+                                    <s:textfield id="no_detail_checkup"
+                                                 name="headerDetailCheckup.idDetailCheckup" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.idPasien">ID Pasien</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.idPasien" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.provinsiId">Provinsi</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="" required="true" disabled="false"
-                                                     cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
-                                                     name="headerCheckup.provinsiId" required="true"
-                                                     disabled="false" cssClass="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.noKtp">No KTP</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="no_ktp" cssStyle="margin-top: 7px"
-                                                     name="headerCheckup.noKtp" required="true" cssClass="form-control"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.kotaId">Kota</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="" required="true" disabled="false"
-                                                     cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
-                                                     name="headerCheckup.kotaId" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.nama">Nama</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerCheckup.nama"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.kecamatanId">Kecamatan</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="" required="true" disabled="false"
-                                                     cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
-                                                     name="headerCheckup.kecamatanId" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.jenisKelamin">Jenis Kelamin</label>
-                                    <div class="col-sm-4">
-                                        <%--<s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>--%>
-                                        <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
-                                                  id="jenis_kelamin" name="headerCheckup.jenisKelamin"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.desaId">Desa</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="desa" name="" required="true" disabled="false"
-                                                     cssClass="form-control"/>
-                                        <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
-                                                     name="headerCheckup.desaId" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.tempatLahir">Tempat Lahir</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="tempat_Lahir" name="headerCheckup.tempatLahir"
-                                                     required="true" cssClass="form-control"/>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" >Tanggal Lahir</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                                <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir" cssClass="form-control"
-                                                required="false"/>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.agama">Agama</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'Islam':'Islam','Kristen':'Kristen'}" cssStyle="margin-top: 7px"
-                                                  id="agama" name="headerCheckup.agama"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
+                                    <label style="margin-top: 7px">Nama</label>
+                                    <s:textfield id="nama"
+                                                 name="headerDetailCheckup.nama" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.suku">Suku</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="suku" type="text" name="headerCheckup.suku" required="false"
-                                                     readonly="false" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2"></label>
-                                    <div class="col-sm-3"><h4>Data Penanggung Jawab</h4>
-                                    </div>
+                                    <label style="margin-top: 7px">Jenis Kelamin</label>
+                                    <s:textfield id="jenis_kelamin"
+                                                 name="headerDetailCheckup.jenisKelamin" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.namaPenanggung">Nama</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="nama_penanggung" name="headerCheckup.namaPenanggung" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.hubungan">Hubungan</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik'}" cssStyle="margin-top: 7px"
-                                                  id="hubungan" name="headerCheckup.hubungan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
+                                    <label style="margin-top: 7px">Tempat Lahir</label>
+                                    <s:textfield id="tempat_lahir"
+                                                 name="headerDetailCheckup.tempatLahir" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.suku">No Telp</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="no_telp" name="headerCheckup.noTelp" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2"></label>
-                                    <div class="col-sm-3"><h4>Data Kunjungan</h4>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup" name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px" list="#initComboPoli.listOfPelayanan" id="poli" name="headerCheckup.idPelayanan" listKey="idPelayanan" listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                            <%--<s:select list="#{'0001':'Poli Kebinan Dan Penyakit Kandungan','0002':'Poli Anak'}" cssStyle="margin-top: 7px"--%>
-                                                      <%--id="poli" name="headerCheckup.idPelayanan"--%>
-                                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                                      <%--cssClass="form-control"/>--%>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.jenisKunjungan">Kunjungan</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="kunjungan" name="headerCheckup.jenisKunjungan" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="headerCheckup.idDokter">Dokter</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'01':'Dr. Sudirman','02':'Dr. Istoyo','03':'Dr. Tarmajo','04':'Dr. Sutino'}" cssStyle="margin-top: 7px"
-                                                  id="dokter" name="headerCheckup.idDokter"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                    <label class="control-label col-sm-2" for="headerCheckup.perujuk">Perujuk/Asal</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield cssStyle="margin-top: 7px" id="perujuk" name="headerCheckup.perujuk" required="true"
-                                                     disabled="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Penjamin</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboPenjamin" namespace="/checkup" name="getComboJenisPeriksaPasien_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px" list="#initComboPenjamin.listOfJenisPriksaPasien" id="penjamin" name="headerCheckup.idJenisPeriksaPasien" listKey="idJenisPeriksaPasien" listValue="keterangan"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
 
-                                    </div>
-                                </div>
-                                <br>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2"></label>
-                                    <div class="col-sm-3" style="margin-top: 7px">
-                                        <sj:submit targets="crud" type="button" cssClass="btn btn-success" formIds="addCheckupForm" id="save" name="save"
-                                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                                            <i class="fa fa-check"></i>
-                                            Save
-                                        </sj:submit>
-                                        <button type="button" class="btn btn-danger" onclick="resetField()">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </button>
-                                        <a type="button" class="btn btn-warning" href="initForm_checkup.action">
-                                            <i class="fa fa-arrow-left"></i> Back
-                                        </a>
-                                    </div>
+                                    <label>Tanggal Lahir</label>
+                                    <s:textfield id="tgl_lahir"
+                                                 name="headerDetailCheckup.tglLahir" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-5"></label>
-                                    <div class="col-sm-5" style="display: none">
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                   resizable="false"
-                                                   height="250" width="600" autoOpen="false" title="Saving ...">
-                                            Please don't close this window, server is processing your request ...
-                                            <br>
-                                            <center>
-                                                <img border="0" style="width: 150px; height: 150px" src="<s:url value="/pages/images/spinner.gif"/>" name="image_indicator_write">
-                                            </center>
-                                        </sj:dialog>
-
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
-                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                   buttons="{
-                                                                                'OK':function() {
-                                                                                         $('#info_dialog').dialog('close');
-                                                                                         resetField();
-                                                                                     }
-                                                                            }"
-                                        >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                            Record has been saved successfully.
-                                        </sj:dialog>
-
-                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
-                                                   height="200" width="400" autoOpen="false" title="Confirmation Dialog">
-                                            <center><img border="0" style="height: 40px; width: 40px" src="<s:url value="/pages/images/icon_warning.ico"/>" name="icon_success">
-                                                Do you want to save this record?
-                                                </center>
-                                            <br>
-                                            <s:hidden id="con"></s:hidden>
-                                            <center>
-                                                <button class="btn btn-success" onclick="$('#con').val(true)">Yes</button>&nbsp&nbsp&nbsp&nbsp
-                                                <button class="btn btn-danger">No</button></center>
-                                        </sj:dialog>
-
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                   buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
-                                                                            }"
-                                        >
-                                            <div class="alert alert-error fade in">
-                                                <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                </label>
-                                            </div>
-                                        </sj:dialog>
-
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                   height="280" width="500" autoOpen="false" title="Warning"
-                                                   buttons="{
-                                                                                'OK':function() { $('#error_validation_dialog').dialog('close'); }
-                                                                            }"
-                                        >
-                                            <div class="alert alert-error fade in">
-                                                <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Silahkan Periksa Inputan Berikut :
-                                                    <br/>
-                                                        <div id="errorValidationMessage"></div>
-                                                </label>
-                                            </div>
-                                        </sj:dialog>
-                                    </div>
+                                    <label style="margin-top: 7px">Jenis Pasien</label>
+                                    <s:textfield id="jenis_pasien"
+                                                 name="headerDetailCheckup.idJenisPeriksaPasien" required="false"
+                                                 readonly="true" cssClass="form-control"/>
                                 </div>
-                            </s:form>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Poli</label>
+                                    <s:textfield id="poli"
+                                                 name="headerDetailCheckup.namaPelayanan" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Alamat</label>
+                                    <s:textarea id="jalan" rows="4"
+                                                name="headerDetailCheckup.jalan" required="false"
+                                                readonly="true" cssClass="form-control"/>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Provinsi</label>
+                                    <s:textfield id="provinsi" name="headerDetailCheckup.provinsi" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Kota</label>
+                                    <s:textfield id="kota" name="headerDetailCheckup.kota" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Kecamatan</label>
+                                    <s:textfield id="kecamatan" name="headerDetailCheckup.kecamatan" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Keluahan/Desa</label>
+                                    <s:textfield id="desa" name="headerDetailCheckup.desa" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
                         </div>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter</button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>ID Dokter</td>
+                                <td>Nama</td>
+                                <td>Poli</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-header with-border">
+                    </div>
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan</button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tindakan</td>
+                                <td>Tanggal</td>
+                                <td>Dokter</td>
+                                <td>Perawat</td>
+                                <td>Tarif</td>
+                                <td>Qty</td>
+                                <td>Total</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa</button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>ID Diagnosa</td>
+                                <td>Deskripsi</td>
+                                <td>Keterangan</td>
+                                <td>Tanggal</td>
+                                <td>Status</td>
+                                <td>Poli</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Order Lab</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Lab</button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal Order</td>
+                                <td>Pemeriksaan</td>
+                                <td>Status</td>
+                                <td>Jenis Lab</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                                <tr>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
+                                    <td><s:property value="nama"/></td>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td>
+                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
+                                        </sj:a>
+
+                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{edit}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        </s:a>
+
+                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
+                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                        </s:url>
+                                        <sj:a href="%{delete}">
+                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </sj:a>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Waktu Selesai Periksa</label>
+                                <s:textfield id=""
+                                             name="headerDetailCheckup.noCheckup" required="false"
+                                             cssClass="form-control"/>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Keterangan Selesai Periksa</label>
+                                <s:textfield id="e" name="headerDetailCheckup.idDetailCheckup" required="false"
+                                             cssClass="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" style="margin-top: 10px"><i class="fa fa-arrow-right"></i> Save</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
                     </div>
                 </div>
             </div>
@@ -465,143 +515,213 @@
     </section>
     <!-- /.content -->
 </div>
+
+<div class="modal fade" id="modal-dokter">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Dokter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Poli</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <label class="col-md-3">Nama Dokter</label>
+                    <div class="col-md-7">
+                        <select class="form-control" style="margin-top: 7px">
+                            <option value="">[select one]</option>
+                            <option value="1">Dr. Sutikno</option>
+                            <option value="2">Dr. Julio</option>
+                            <option value="3">Dr. Turnomo</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-tindakan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Tambah Tindakan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Suntik</option>
+                                <option value="2">Pil</option>
+                                <option value="3">Obat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Angel</option>
+                                <option value="2">Anya</option>
+                                <option value="3">Ayu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
+                        <div class="col-md-7">
+                           <input type="number" class="form-control" style="margin-top: 7px">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success" onclick="saveTindakan()"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-diagnosa">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-stethoscope"></i> Tambah Diagnosa</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Poli</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Order Lab</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Poli</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
-    var functions, mapped;
-    $('#provinsi').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
 
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                data = listdata;
-            });
+    function showModal(select){
 
-            $.each(data, function (i, item) {
-                var labelItem = item.provinsiName;
-                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("provinsi11").value = selectedObj.id;
-            prov = selectedObj.id;
-            return namaAlat;
+        if (select == 1){
+            $('#modal-dokter').modal('show');
+        }else if(select == 2){
+            $('#modal-tindakan').modal('show');
+        }else if(select == 3){
+            $('#modal-diagnosa').modal('show');
+        }else if(select == 4){
+            $('#modal-lab').modal('show');
         }
-    });
-</script>
-<script type='text/javascript'>
-    var functions, mapped;
-    // var prov = document.getElementById("provinsi1").value;
-    $('#kabupaten').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
+    }
 
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kotaName;
-                mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                functions.push(labelItem);
-            });
 
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kabupaten11").value = selectedObj.id;
+    function saveTindakan(){
 
-            kab = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    //
-    //
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    var kab = document.getElementById("kabupaten").value;
-    $('#kecamatan').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kecamatanName;
-                mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kecamatan11").value = selectedObj.id;
-
-            kec = selectedObj.id;
-            return namaAlat;
-        }
-    });
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    $('#desa').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.desaName;
-                mapped[labelItem] = {id: item.desaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("desa11").value = selectedObj.id;
-
-            desa = selectedObj.id;
-            return namaAlat;
-        }
-    });
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

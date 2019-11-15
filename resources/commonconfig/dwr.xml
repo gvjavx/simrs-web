@@ -277,6 +277,15 @@
           <param name="class" value="com.neurix.hris.master.studyJurusan.action.StudyJurusanAction"/>
       </create>
       <convert converter="bean" match="com.neurix.hris.master.studyJurusan.model.StudyJurusan"/>
+
+      <!--DWR FOR SIMRS-->
+
+      <!--Tindaakan Rawat-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat"/>
+
   </allow>
 
 </dwr>
