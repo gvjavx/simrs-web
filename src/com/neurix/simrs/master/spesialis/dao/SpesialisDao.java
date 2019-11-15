@@ -2,6 +2,7 @@ package com.neurix.simrs.master.spesialis.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPoliSpesialisEntity;
+import com.neurix.simrs.master.spesialis.model.ImSimrsSpesialisEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -11,14 +12,14 @@ import java.util.Map;
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class SpesialisDao extends GenericDao<ImSimrsPoliSpesialisEntity,String> {
+public class SpesialisDao extends GenericDao<ImSimrsSpesialisEntity,String> {
     @Override
-    protected Class<ImSimrsPoliSpesialisEntity> getEntityClass() {
-        return ImSimrsPoliSpesialisEntity.class;
+    protected Class<ImSimrsSpesialisEntity> getEntityClass() {
+        return ImSimrsSpesialisEntity.class;
     }
 
     @Override
-    public List<ImSimrsPoliSpesialisEntity> getByCriteria(Map mapCriteria) {
+    public List<ImSimrsSpesialisEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPoliSpesialisEntity.class);
         if (mapCriteria != null){
@@ -27,7 +28,7 @@ public class SpesialisDao extends GenericDao<ImSimrsPoliSpesialisEntity,String> 
             }
         }
 
-        List<ImSimrsPoliSpesialisEntity> result = criteria.list();
+        List<ImSimrsSpesialisEntity> result = criteria.list();
         return result;
     }
 }

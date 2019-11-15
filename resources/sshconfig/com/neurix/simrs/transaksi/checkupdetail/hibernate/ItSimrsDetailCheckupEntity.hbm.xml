@@ -22,7 +22,7 @@
             <column name="status_bayar" sql-type="varchar" length="1" not-null="false"/>
         </property>
         <property name="totalBiaya">
-            <column name="total_bayar" sql-type="long" />
+            <column name="total_bayar" sql-type="bigint" />
         </property>
         <property name="keteranganSelesai">
             <column name="keterangan_selesai" sql-type="varchar" length="1000" />

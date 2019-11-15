@@ -15,6 +15,9 @@ public class Dokter {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String idSpesialis;
+    private String namaSpesialis;
+
     public String getIdDokter() {
         return idDokter;
     }
@@ -79,4 +82,19 @@ public class Dokter {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getIdSpesialis() {
+        return idSpesialis;
+    }
+
+    public void setIdSpesialis(String idSpesialis) {
+        this.idSpesialis = idSpesialis;
+    }
+
+    public String getNamaSpesialis() {
+        return namaSpesialis;
+    }
+
+    public void setNamaSpesialis(String namaSpesialis) {
+        this.namaSpesialis = namaSpesialis;
+    }
 }

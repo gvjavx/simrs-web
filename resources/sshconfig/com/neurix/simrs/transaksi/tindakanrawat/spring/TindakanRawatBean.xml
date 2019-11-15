@@ -11,6 +11,7 @@
 
     <bean id="tindakanRawatBo" class="com.neurix.simrs.transaksi.tindakanrawat.bo.impl.TindakanRawatBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
     />
 
     <bean id="tindakanRawatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -31,6 +32,7 @@
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="updateDetailCheckup">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

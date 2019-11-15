@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.tindakanrawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
@@ -9,6 +11,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.Map;
 public class TindakanRawatBoImpl extends TindakanRawatModuls implements TindakanRawatBo {
     private static transient Logger logger = Logger.getLogger(TindakanRawatBoImpl.class);
     private TindakanRawatDao tindakanRawatDao;
+    private CheckupDetailDao checkupDetailDao;
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -43,7 +47,6 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
 
         if (bean != null){
-
             String id = getNextTindakanRawatId();
             if (id != null && !"".equalsIgnoreCase(id)) {
                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
@@ -70,9 +73,9 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                     throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert tindakan rawat " + e.getMessage());
                 }
             }
-
         }
-
+        // update total biaya pada di detail checkup
+        updateDetailCheckup(bean);
         logger.info("[TindakanRawatBoImpl.saveAdd] End <<<<<<");
     }
 
@@ -108,8 +111,54 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                 }
             }
 
+            // update total biaya pada di detail checkup
+            updateDetailCheckup(bean);
         }
         logger.info("[TindakanRawatBoImpl.saveEdit] End <<<<<<");
+    }
+
+    protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{
+        logger.info("[TindakanRawatBoImpl.updateDetailCheckup] Start >>>>>>>");
+
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            BigInteger totalTarif = new BigInteger(String.valueOf(0));
+            try {
+                totalTarif = tindakanRawatDao.getSumOfTarifTindakanByIdDetailCheckup(bean.getIdDetailCheckup());
+            } catch (HibernateException e){
+                logger.error("[TindakanRawatBoImpl.saveAdd] Error when get sum of total tarif tindakan ", e);
+                throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert tindakan rawat " + e.getMessage());
+            }
+
+            if (totalTarif != null){
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+
+                List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
+                try {
+                    detailCheckupEntityList = checkupDetailDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[TindakanRawatBoImpl.saveAdd] Error when get detail checkup data ", e);
+                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when get detail checkup data " + e.getMessage());
+                }
+
+                if (!detailCheckupEntityList.isEmpty()){
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntityList.get(0);
+
+                    detailCheckupEntity.setTotalBiaya(totalTarif);
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    } catch (HibernateException e){
+                        logger.error("[TindakanRawatBoImpl.saveAdd] Error when update checkup detail data ", e);
+                        throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when update checkup detail data " + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[TindakanRawatBoImpl.updateDetailCheckup] End <<<<<<");
     }
 
     protected List<ItSimrsTindakanRawatEntity> getListEntityTindakanRawat(TindakanRawat bean) throws GeneralBOException{
@@ -182,5 +231,9 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
 
     public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
         this.tindakanRawatDao = tindakanRawatDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
     }
 }

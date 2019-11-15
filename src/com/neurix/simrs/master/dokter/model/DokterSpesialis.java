@@ -15,6 +15,8 @@ public class DokterSpesialis {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String spesialisName;
+
     public String getIdDokter() {
         return idDokter;
     }
@@ -79,4 +81,11 @@ public class DokterSpesialis {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getSpesialisName() {
+        return spesialisName;
+    }
+
+    public void setSpesialisName(String spesialisName) {
+        this.spesialisName = spesialisName;
+    }
 }
