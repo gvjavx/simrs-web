@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.checkupdetail.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.apache.log4j.Logger;
@@ -16,6 +18,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(CheckupDetailAction.class);
     private HeaderDetailCheckup headerDetailCheckup;
     private CheckupDetailBo checkupDetailBoProxy;
+    private CheckupBo checkupBoProxy;
     private String id;
 
     @Override
@@ -26,6 +29,10 @@ public class CheckupDetailAction extends BaseMasterAction {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
+        this.checkupBoProxy = checkupBoProxy;
     }
 
     public HeaderDetailCheckup getHeaderDetailCheckup() {
@@ -69,10 +76,18 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
 
                         detailCheckup.setStatusPeriksa("1");
-
                         try {
-
+                            checkupDetailBoProxy.saveEdit(detailCheckup);
                         } catch (GeneralBOException e){
+                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
+                        }
+
+                        HeaderCheckup headerCheckup = getHeaderCheckup(detailCheckup.getNoCheckup());
+                        detailCheckup.setIdPasien(headerCheckup.getIdPasien());
+                        detailCheckup.setNamaPasien(headerCheckup.getNama());
+                        detailCheckup.setAlamat(headerCheckup.getJalan());
+
+                        if (headerCheckup.getDesaId() != null){
 
                         }
 
@@ -153,6 +168,29 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         return "search";
     }
+
+    private HeaderCheckup getHeaderCheckup(String noCheckup){
+        logger.info("[CheckupDetailAction.getHeaderCheckup] start process >>>");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try {
+            headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+        }
+
+        HeaderCheckup result = new HeaderCheckup();
+        if (!headerCheckupList.isEmpty()){
+            result = headerCheckupList.get(0);
+        }
+
+        logger.info("[CheckupDetailAction.getHeaderCheckup] end process <<<");
+        return result;
+    }
+
 
     @Override
     public String downloadPdf() {

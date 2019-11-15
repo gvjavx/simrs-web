@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.tindakanrawat.model;
 
 import com.neurix.common.model.BaseModel;
+
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class TindakanRawat extends BaseModel {
@@ -11,9 +13,9 @@ public class TindakanRawat extends BaseModel {
     private String namaTindakan;
     private String idDokter;
     private String idPerawat;
-    private Long tarif;
-    private Long qty;
-    private Long tarifTotal;
+    private BigInteger tarif;
+    private BigInteger qty;
+    private BigInteger tarifTotal;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -88,27 +90,27 @@ public class TindakanRawat extends BaseModel {
         this.idPerawat = idPerawat;
     }
 
-    public Long getTarif() {
+    public BigInteger getTarif() {
         return tarif;
     }
 
-    public void setTarif(Long tarif) {
+    public void setTarif(BigInteger tarif) {
         this.tarif = tarif;
     }
 
-    public Long getQty() {
+    public BigInteger getQty() {
         return qty;
     }
 
-    public void setQty(Long qty) {
+    public void setQty(BigInteger qty) {
         this.qty = qty;
     }
 
-    public Long getTarifTotal() {
+    public BigInteger getTarifTotal() {
         return tarifTotal;
     }
 
-    public void setTarifTotal(Long tarifTotal) {
+    public void setTarifTotal(BigInteger tarifTotal) {
         this.tarifTotal = tarifTotal;
     }
 

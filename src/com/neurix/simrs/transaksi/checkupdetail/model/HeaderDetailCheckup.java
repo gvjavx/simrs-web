@@ -31,6 +31,79 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String namaRuangan;
     private String noRuangan;
 
+    private String idPasien;
+    private String namaPasien;
+    private String namaPelayanan;
+    private String alamat;
+    private String desa;
+    private String kecamatan;
+    private String kota;
+    private String provinsi;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getDesa() {
+        return desa;
+    }
+
+    public void setDesa(String desa) {
+        this.desa = desa;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
     public String getStatusPeriksaName() {
         return statusPeriksaName;
     }
