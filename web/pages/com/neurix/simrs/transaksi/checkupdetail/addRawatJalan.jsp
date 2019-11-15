@@ -264,6 +264,21 @@
                                 <!-- /.form-group -->
                             </div>
                             <!-- /.col -->
+                            <div class="form-group" style="display: none">
+                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
+                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                           buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                     }
+                                                                            }"
+                                >
+                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                    Record has been saved successfully.
+                                </sj:dialog>
+
+
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
@@ -337,40 +352,7 @@
                                 <td>Action</td>
                             </tr>
                             </thead>
-                            <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
-                                <tr>
-                                    <td><s:property value="noCheckup"/></td>
-                                    <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="noCheckup"/></td>
-                                    <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td>
-                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
-                                        </sj:a>
-
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{edit}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
-                                        </s:a>
-
-                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a href="%{delete}">
-                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
-                                        </sj:a>
-                                    </td>
-                                </tr>
-                            </s:iterator>
+                            <tbody id="body_tindakan">
                             </tbody>
                         </table>
                     </div>
@@ -567,6 +549,10 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Tambah Tindakan</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
@@ -607,12 +593,12 @@
                            <input type="number" class="form-control" style="margin-top: 7px" id="tin_qty">
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button type="button" class="btn btn-success" onclick="saveTindakan()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" onclick="saveTindakan()" id="save_tindakan"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan"><i class="fa fa-spinner fa-spin"></i> Menyimpan...</button>
             </div>
         </div>
     </div>
@@ -704,12 +690,21 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
-
+    $( document ).ready(function() {
+        listTindakan();
+    });
     function showModal(select){
 
         if (select == 1){
             $('#modal-dokter').modal('show');
         }else if(select == 2){
+            $('#tin_id_tindakan').val('');
+            $('#tin_id_dokter').val('');
+            $('#tin_id_perawat').val('');
+            $('#tin_qty').val('');
+            $('#save_tindakan').show();
+            $('#load_tindakan').hide();
+            $('#warning_tindakan').hide();
             $('#modal-tindakan').modal('show');
         }else if(select == 3){
             $('#modal-diagnosa').modal('show');
@@ -718,17 +713,61 @@
         }
     }
 
+    function listTindakan(idDetailCheckup){
+
+        var table           = "";
+        var data            = [];
+        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+            data = response;
+            if (data != null){
+                $.each(data, function (i,item) {
+                    table += "<tr>" +
+                            "<td>" + item.idTindakan + "</td>" +
+                            "<td>" + item.createdDate + "</td>" +
+                            "<td>" + item.idDokter + "</td>" +
+                            "<td>" + item.idPerawat + "</td>" +
+                            "<td>" + item.tarif + "</td>" +
+                            "<td>" + item.qty + "</td>" +
+                            "<td>" + item.tarifTotal + "</td>" +
+                            "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
+                            "</tr>"
+                });
+            }
+        });
+
+        $('#body_tindakan').html(table);
+    }
 
     function saveTindakan(){
 
-        var idDetailCheckup = 20;
-        var idTindakan = $('#tin_id_tindakan').val();
-        var idDokter = $('#tin_id_dokter').val();
-        var idPerawat = $('#tin_id_perawat').val();
-        var qty = $('#tin_qty').val();
+        var idDetailCheckup = 'DCM00000005';
+        var idTindakan      = $('#tin_id_tindakan').val();
+        var idDokter        = $('#tin_id_dokter').val();
+        var idPerawat       = $('#tin_id_perawat').val();
+        var qty             = $('#tin_qty').val();
+        var data            = [];
 
-        dwr.engine.setAsync(false);
-        TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty);
+        if (idDetailCheckup != '' && idTindakan !='' && idDokter != '' && idPerawat != '' && qty != ''){
+            $('#save_tindakan').hide();
+            $('#load_tindakan').show();
+            dwr.engine.setAsync(true);
+            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty, { callback : function (response) {
+                if (response == "success"){
+                    dwr.engine.setAsync(false);
+                    listTindakan(idDetailCheckup);
+                    $('#modal-tindakan').modal('hide');
+                    $('#info_dialog').dialog('open');
+                }else{
+                    $('#eror_dialog').dialog('open');
+                    $('#save_tindakan').show();
+                    $('#load_tindakan').hide();
+                }
+            }
+            });
+        }else {
+            $('#warning_tindakan').show().fadeOut(5000);
+            $( "#idTindakan" ).focus().select();
+        }
     }
 </script>
 
