@@ -1,7 +1,6 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.statuspasien.bo.impl.StatusPasienBoImpl;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
@@ -114,6 +113,81 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
         logger.info("[CheckupDetailBoImpl.setToDetailCheckupTemplate] End <<<<<<<<");
         return results;
+    }
+
+    @Override
+    public void saveEdit(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntityList = null;
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+
+        detailCheckupEntityList = getListEntityByCriteria(detailCheckup);
+        if (!detailCheckupEntityList.isEmpty()){
+            ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
+            entity.setStatusPeriksa(bean.getStatusPeriksa());
+            entity.setStatusBayar(bean.getStatusBayar());
+            entity.setTotalBiaya(bean.getTotalBiaya());
+            entity.setKeteranganSelesai(bean.getKeteranganSelesai());
+            entity.setJenisLab(bean.getJenisLab());
+            entity.setBranchId(bean.getBranchId());
+            entity.setFlag(bean.getFlag());
+            entity.setAction(bean.getAction());
+            entity.setCreatedDate(bean.getCreatedDate());
+            entity.setCreatedWho(bean.getCreatedWho());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                checkupDetailDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ",e);
+                throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup "+e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+    @Override
+    public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
+
+        String id = "";
+        id = getNextDetailCheckupId();
+
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+        detailCheckupEntity.setIdDetailCheckup("DCM"+id);
+        detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
+        detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
+        detailCheckupEntity.setStatusPeriksa("0");
+        detailCheckupEntity.setFlag("Y");
+        detailCheckupEntity.setAction("C");
+        detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
+        detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
+        detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+        detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+
+        try {
+            checkupDetailDao.addAndSave(detailCheckupEntity);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
+            throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
+        }
+        logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+
+    private String getNextDetailCheckupId(){
+        String id = "";
+        try {
+            id = checkupDetailDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextDetailCheckupId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
+        }
+        return id;
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

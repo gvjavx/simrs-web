@@ -67,6 +67,25 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
         return results;
     }
 
+    public BigInteger getSumOfTarifTindakanByIdDetailCheckup(String idDetailCheckup){
+
+        String SQL = "SELECT id_detail_checkup, SUM(tarif_total) as total_biaya FROM it_simrs_tindakan_rawat\n" +
+                "WHERE id_detail_checkup = :id \n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+
+        BigInteger jumlah = new BigInteger(String.valueOf(0));
+        if (!result.isEmpty()){
+            for (Object[] obj : result){
+                jumlah = new BigInteger(obj[1].toString());
+            }
+        }
+        return jumlah;
+    }
+
     public String getNextTindakanRawatId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tindakan_rawat')");
         Iterator<BigInteger> iter=query.list().iterator();

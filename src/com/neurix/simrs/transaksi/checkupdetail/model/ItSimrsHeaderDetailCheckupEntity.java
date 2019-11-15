@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -12,7 +13,7 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String idPelayanan;
     private String statusPeriksa;
     private String statusBayar;
-    private Long totalBiaya;
+    private BigInteger totalBiaya;
     private String keteranganSelesai;
     private String jenisLab;
     private String branchId;
@@ -72,11 +73,11 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
         this.statusBayar = statusBayar;
     }
 
-    public Long getTotalBiaya() {
+    public BigInteger getTotalBiaya() {
         return totalBiaya;
     }
 
-    public void setTotalBiaya(Long totalBiaya) {
+    public void setTotalBiaya(BigInteger totalBiaya) {
         this.totalBiaya = totalBiaya;
     }
 

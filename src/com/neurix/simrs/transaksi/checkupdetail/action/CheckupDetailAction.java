@@ -67,6 +67,15 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 for (HeaderDetailCheckup detailCheckup : listOfResult) {
                     if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+
+                        detailCheckup.setStatusPeriksa("1");
+
+                        try {
+
+                        } catch (GeneralBOException e){
+
+                        }
+
                         setHeaderDetailCheckup(detailCheckup);
                         break;
                     }
