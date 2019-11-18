@@ -17,6 +17,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,9 +143,17 @@ public class CheckupBoImpl implements CheckupBo {
                 headerCheckup.setStatusPeriksaName(headerDetailCheckup.getStatusPeriksaName());
             }
 
-//            if (headerCheckup.getDesaId() != null){
-//                headerCheckup.setNamaDesa(getDesaName(headerCheckup.getDesaId().toString()));
-//            }
+            if (headerCheckup.getDesaId() != null){
+                List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId());
+                if (!objs.isEmpty()){
+                    for (Object[] obj : objs){
+                        headerCheckup.setNamaDesa(obj[0].toString());
+                        headerCheckup.setNamaKecamatan(obj[1].toString());
+                        headerCheckup.setNamaKota(obj[2].toString());
+                        headerCheckup.setNamaProvinsi(obj[3].toString());
+                    }
+                }
+            }
 
             result.add(headerCheckup);
         }
