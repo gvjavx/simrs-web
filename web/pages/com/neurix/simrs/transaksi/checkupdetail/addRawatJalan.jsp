@@ -55,7 +55,115 @@
                         <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                     </div>
                     <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>No Checkup</label>
+                                    <s:textfield id="no_checkup"
+                                                 name="headerDetailCheckup.noCheckup" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">No Detail Checkup</label>
+                                    <s:textfield id="no_detail_checkup"
+                                                 name="headerDetailCheckup.idDetailCheckup" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
 
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Nama</label>
+                                    <s:textfield id="nama"
+                                                 name="headerDetailCheckup.nama" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Jenis Kelamin</label>
+                                    <s:textfield id="jenis_kelamin"
+                                                 name="headerDetailCheckup.jenisKelamin" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Tempat Lahir</label>
+                                    <s:textfield id="tempat_lahir"
+                                                 name="headerDetailCheckup.tempatLahir" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label>Tanggal Lahir</label>
+                                    <s:textfield id="tgl_lahir"
+                                                 name="headerDetailCheckup.tglLahir" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Jenis Pasien</label>
+                                    <s:textfield id="jenis_pasien"
+                                                 name="headerDetailCheckup.idJenisPeriksaPasien" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Poli</label>
+                                    <s:textfield id="poli"
+                                                 name="headerDetailCheckup.namaPelayanan" required="false"
+                                                 readonly="true" cssClass="form-control"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Alamat</label>
+                                    <s:textarea id="jalan" rows="4"
+                                                name="headerDetailCheckup.jalan" required="false"
+                                                readonly="true" cssClass="form-control"/>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Provinsi</label>
+                                    <s:textfield id="provinsi" name="headerDetailCheckup.provinsi" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Kota</label>
+                                    <s:textfield id="kota" name="headerDetailCheckup.kota" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Kecamatan</label>
+                                    <s:textfield id="kecamatan" name="headerDetailCheckup.kecamatan" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">Keluahan/Desa</label>
+                                    <s:textfield id="desa" name="headerDetailCheckup.desa" required="true" readonly="true"
+                                                 cssClass="form-control"/>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="form-group" style="display: none">
+                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
+                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                           buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                     }
+                                                                            }"
+                                >
+                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                    Record has been saved successfully.
+                                </sj:dialog>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border">
                     </div>

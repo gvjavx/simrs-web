@@ -90,6 +90,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
                         detailCheckup.setKota(headerCheckup.getNamaKota());
                         detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
+                        detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
 
                         setHeaderDetailCheckup(detailCheckup);
                         break;

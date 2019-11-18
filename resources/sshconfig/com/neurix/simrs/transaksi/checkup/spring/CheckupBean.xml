@@ -9,6 +9,7 @@
           p:pelayananBoProxy-ref="pelayananBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
     />
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"

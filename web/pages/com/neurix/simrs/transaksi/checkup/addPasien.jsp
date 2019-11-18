@@ -11,6 +11,7 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -394,7 +395,7 @@
                                                 <s:select cssStyle="margin-top: 7px"
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                          listValue="namaPelayanan" onchange="$(this).css('border','')"
+                                                          listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control"/>
                                             </div>
@@ -402,8 +403,9 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Dokter</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                <%--<s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
+                                                             <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" onchange="$(this).css('border','')"></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -572,6 +574,18 @@
             readURL(this);
         });
     });
+
+    function listDokter(idPelayanan){
+        var idx = idPelayanan.selectedIndex;
+        var idPoli = idPelayanan.options[idx].value;
+        CheckupAction.listOfDokter(idPoli, function(response){
+            $.each(response, function (i, item) {
+                $('#dokter').append($("<option></option>")
+                        .attr("value",item.idDokter)
+                        .text(item.idDokter));
+            });
+        });
+    }
 
     var functions, mapped;
     $('#provinsi').typeahead({
