@@ -17,6 +17,25 @@ public class DokterTeam extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String namaDokter;
+    private String namaSpesialis;
+
+    public String getNamaSpesialis() {
+        return namaSpesialis;
+    }
+
+    public void setNamaSpesialis(String namaSpesialis) {
+        this.namaSpesialis = namaSpesialis;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
     public String getIdTeamDokter() {
         return idTeamDokter;
     }

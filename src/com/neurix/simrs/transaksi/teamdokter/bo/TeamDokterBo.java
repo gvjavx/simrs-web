@@ -1,8 +1,14 @@
 package com.neurix.simrs.transaksi.teamdokter.bo;
 
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+
+import java.util.List;
+
 /**
- * @author gondok
- * Monday, 18/11/19 12:20
+ * Created by Toshiba on 18/11/2019.
  */
 public interface TeamDokterBo {
+    public List<DokterTeam> getByCriteria(DokterTeam bean) throws GeneralBOException;
+    public void savaAdd(DokterTeam bean) throws GeneralBOException;
 }

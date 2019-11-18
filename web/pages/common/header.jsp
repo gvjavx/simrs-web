@@ -74,6 +74,15 @@ apply the skin class to the body tag so the changes take effect.
 <%--<link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">--%>
 <script src="<s:url value="/pages/dist/js/adminlte.min.js"/>"></script>
 
+<script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.js"/>"></script>
+<script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.date.extensions.js"/>"></script>
+<script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
+
+<%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
+<%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
+<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
+
+
 <style>
     .ui-datepicker-title{
         color: black !important;    
@@ -141,6 +150,10 @@ apply the skin class to the body tag so the changes take effect.
 
     $(function () {
         $('.select2').select2();
+        //Datemask dd/mm/yyyy
+        $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
+        //Money Euro
+        $('[data-mask]').inputmask()
     });
 
 </script>

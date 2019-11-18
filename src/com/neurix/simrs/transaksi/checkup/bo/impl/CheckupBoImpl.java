@@ -1,6 +1,11 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
+import com.neurix.hris.master.provinsi.model.ImDesaEntity;
+import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
+import com.neurix.hris.master.provinsi.model.ImKotaEntity;
+import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
 import com.neurix.hris.master.statusRekruitment.bo.impl.StatusRekruitmentBoImpl;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -12,6 +17,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +32,7 @@ public class CheckupBoImpl implements CheckupBo {
 
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
-
-    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
-        this.headerCheckupDao = headerCheckupDao;
-    }
-
-    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
-        this.checkupDetailDao = checkupDetailDao;
-    }
+    private ProvinsiDao provinsiDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -44,16 +43,19 @@ public class CheckupBoImpl implements CheckupBo {
             Boolean isStatus = false;
             Map hsCriteria = new HashMap();
 
+            //sodiq, 17 Nov 2019, penambahan no_checkup
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
+
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
                 isPoli = true;
                 hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
             }
-
             if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())) {
                 isStatus = true;
                 hsCriteria.put("status_periksa", bean.getStatusPeriksa());
             }
-
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 hsCriteria.put("id_pasien", bean.getIdPasien());
             }
@@ -142,7 +144,23 @@ public class CheckupBoImpl implements CheckupBo {
                 headerCheckup.setIdPelayanan(headerDetailCheckup.getIdPelayanan());
                 headerCheckup.setStatusPeriksa(headerDetailCheckup.getStatusPeriksa());
                 headerCheckup.setStatusPeriksaName(headerDetailCheckup.getStatusPeriksaName());
+                headerCheckup.setNamaPelayanan(headerDetailCheckup.getNamaPelayanan());
+                headerCheckup.setNamaRuangan(headerDetailCheckup.getNamaRuangan());
+                headerCheckup.setNoRuangan(headerDetailCheckup.getNoRuangan());
             }
+
+            if (headerCheckup.getDesaId() != null){
+                List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId().toString());
+                if (!objs.isEmpty()){
+                    for (Object[] obj : objs){
+                        headerCheckup.setNamaDesa(obj[0].toString());
+                        headerCheckup.setNamaKecamatan(obj[1].toString());
+                        headerCheckup.setNamaKota(obj[2].toString());
+                        headerCheckup.setNamaProvinsi(obj[3].toString());
+                    }
+                }
+            }
+
             result.add(headerCheckup);
         }
 
@@ -169,6 +187,7 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setDesaId(bean.getDesaId());
             headerEntity.setJalan(bean.getJalan());
             headerEntity.setSuku(bean.getSuku());
+            headerEntity.setProfesi(bean.getProfesi());
             headerEntity.setNoTelp(bean.getNoTelp());
             headerEntity.setAgama(bean.getAgama());
             headerEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
@@ -238,5 +257,78 @@ public class CheckupBoImpl implements CheckupBo {
             throw new GeneralBOException("[CheckupBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    private String getDesaName(String desaId){
+
+        String name = "";
+        List<ImDesaEntity> entities = null;
+        try {
+            entities = provinsiDao.getListDesaById(desaId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getDesaName] Error when get desa name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getDesaName();
+        }
+        return name;
+
+    }
+
+    private String getKecamatanName(String kecId){
+        String name = "";
+        List<ImKecamatanEntity> entities = null;
+        try {
+            entities = provinsiDao.getListKecamatanById(kecId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getKecamatanName] Error when get kecamatan name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getKecamatanName();
+        }
+        return name;
+    }
+
+    private String getKotaName(String kotaId){
+        String name = "";
+        List<ImKotaEntity> entities = null;
+        try {
+            entities = provinsiDao.getListKotaById(kotaId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getKotaName] Error when get kota name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getKotaName();
+        }
+        return name;
+    }
+    private String getProvonsiName(String provId){
+        String name = "";
+        List<ImProvinsiEntity> entities = null;
+        try {
+            entities = provinsiDao.getListProvinsiById(provId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getProvonsiName] Error when get provinsi name "+e.getMessage());
+        }
+
+        if (!entities.isEmpty()){
+            name = entities.get(0).getProvinsiName();
+        }
+        return name;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setProvinsiDao(ProvinsiDao provinsiDao) {
+        this.provinsiDao = provinsiDao;
     }
 }

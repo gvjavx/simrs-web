@@ -36,10 +36,74 @@ public class HeaderCheckup {
     private String idPelayanan;
     private String statusPeriksa;
     private String statusPeriksaName;
+    private String namaPelayanan;
+    private String namaRuangan;
+    private String noRuangan;
 
     private String stTglLahir;
     private String stTglFrom;
     private String getStTglTo;
+
+    private String namaDesa;
+    private String namaKecamatan;
+    private String namaKota;
+    private String namaProvinsi;
+
+    public String getNamaRuangan() {
+        return namaRuangan;
+    }
+
+    public void setNamaRuangan(String namaRuangan) {
+        this.namaRuangan = namaRuangan;
+    }
+
+    public String getNoRuangan() {
+        return noRuangan;
+    }
+
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaDesa() {
+        return namaDesa;
+    }
+
+    public void setNamaDesa(String namaDesa) {
+        this.namaDesa = namaDesa;
+    }
+
+    public String getNamaKecamatan() {
+        return namaKecamatan;
+    }
+
+    public void setNamaKecamatan(String namaKecamatan) {
+        this.namaKecamatan = namaKecamatan;
+    }
+
+    public String getNamaKota() {
+        return namaKota;
+    }
+
+    public void setNamaKota(String namaKota) {
+        this.namaKota = namaKota;
+    }
+
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
+    }
 
     public String getStTglFrom() {
         return stTglFrom;

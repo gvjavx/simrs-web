@@ -9,24 +9,12 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
     </style>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript'>
 
-        function resetField(){
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa').val('');
-        }
+        $( document ).ready(function() {
+            $('#rawat_jalan').addClass('active');
+        });
 
 
     </script>
@@ -55,7 +43,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title">Search Form</h3>--%>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Jalan Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -79,8 +67,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerDetailCheckup.IdPelayanan"
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select cssStyle="margin-top: 7px"
+                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                  listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
                                     </div>
@@ -154,6 +146,10 @@
                             </s:form>
                         </div>
                     </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Jalan Pasien</h3>
+                    </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
@@ -175,7 +171,7 @@
                                     <td><s:property value="nama"/></td>
                                     <td><s:property value="jalan"/></td>
                                     <td><s:property value="statusPeriksa"/></td>
-                                    <td><s:property value="noRuangan"/></td>
+                                    <td><s:property value="keteranganSelesai"/></td>
                                     <td>
                                         <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
@@ -195,144 +191,6 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-<script type='text/javascript'>
-    var functions, mapped;
-    $('#provinsi').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                data = listdata;
-            });
-
-            $.each(data, function (i, item) {
-                var labelItem = item.provinsiName;
-                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("provinsi11").value = selectedObj.id;
-            prov = selectedObj.id;
-            return namaAlat;
-        }
-    });
-</script>
-<script type='text/javascript'>
-    var functions, mapped;
-    // var prov = document.getElementById("provinsi1").value;
-    $('#kabupaten').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kotaName;
-                mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kabupaten11").value = selectedObj.id;
-
-            kab = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    //
-    //
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    var kab = document.getElementById("kabupaten").value;
-    $('#kecamatan').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kecamatanName;
-                mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kecamatan11").value = selectedObj.id;
-
-            kec = selectedObj.id;
-            return namaAlat;
-        }
-    });
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    $('#desa').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.desaName;
-                mapped[labelItem] = {id: item.desaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("desa11").value = selectedObj.id;
-
-            desa = selectedObj.id;
-            return namaAlat;
-        }
-    });
-</script>
 
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

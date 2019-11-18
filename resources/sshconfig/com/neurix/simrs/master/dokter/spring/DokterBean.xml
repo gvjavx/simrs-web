@@ -10,6 +10,8 @@
     <bean id="dokterBo" class="com.neurix.simrs.master.dokter.bo.impl.DokterBoImpl"
           p:dokterDao-ref="dokterDao"
           p:dokterSpesialisDao-ref="dokterSpesialisDao"
+          p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
+          p:spesialisDao-ref="spesialisDao"
     />
 
     <bean id="dokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -37,5 +39,10 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="dokterSpesialisDao" class="com.neurix.simrs.master.dokter.dao.DokterSpesialisDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="pelayananSpesialisDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananSpesialisDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="spesialisDao" class="com.neurix.simrs.master.spesialis.dao.SpesialisDao"
+          p:sessionFactory-ref="sessionFactory" />
+
 
 </beans>

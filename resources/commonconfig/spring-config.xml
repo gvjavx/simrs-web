@@ -129,6 +129,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/checkup/spring/CheckupBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/checkupdetail/spring/DetailCheckupBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/rawatinap/spring/RawatInapBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/diagnosarawat/spring/DiagnosaRawatBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/PelayananBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/JenisPeriksaPasienBean.xml"/>

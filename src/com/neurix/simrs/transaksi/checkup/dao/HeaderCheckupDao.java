@@ -56,10 +56,15 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "detail.no_checkup,\n" +
                     "detail.id_pelayanan,\n" +
                     "detail.status_periksa,\n" +
-                    "status.keterangan as status_name\n" +
+                    "status.keterangan as status_name,\n" +
+                    "pel.nama_pelayanan,\n" +
+                    "ranap.nama_ruangan,\n" +
+                    "ranap.no_ruangan\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
+                    "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = detail.id_pelayanan \n" +
+                    "LEFT OUTER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') ranap ON ranap.id_detail_checkup = detail.id_detail_checkup\n" +
                     "WHERE (detail.no_checkup, detail.created_date) = \n" +
                     "(\n" +
                     "\tSELECT\n" +
@@ -81,6 +86,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setIdPelayanan(obj[1].toString());
                 headerDetailCheckup.setStatusPeriksa(obj[2].toString());
                 headerDetailCheckup.setStatusPeriksaName(obj[3].toString());
+                headerDetailCheckup.setNamaPelayanan(obj[4].toString());
+                headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
+                headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
                 return headerDetailCheckup;
             }
         }
@@ -95,6 +103,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String branchId = "%";
         String idPelayanan = "%";
         String statusPeriksa = "%";
+
+        //sodiq, 17 Nov 2019, penambahan no checkup
+        String noCheckup = "%";
+        if(mapCriteria.get("no_checkup") != null){
+            noCheckup = mapCriteria.get("no_checkup").toString();
+        }
 
         if(mapCriteria.get("id_pasien") != null){
             idPasien = mapCriteria.get("id_pasien").toString();
@@ -128,6 +142,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
+                "AND h.no_checkup LIKE :noCheckup\n" +
                 "GROUP BY detail.no_checkup, h.branch_id";
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -137,6 +152,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 .setParameter("branchId", branchId)
                 .setParameter("idPelayanan", idPelayanan)
                 .setParameter("statusPeriksa", statusPeriksa)
+                .setParameter("noCheckup", noCheckup)
                 .list();
 
         List<String> listOfResult = new ArrayList<>();
