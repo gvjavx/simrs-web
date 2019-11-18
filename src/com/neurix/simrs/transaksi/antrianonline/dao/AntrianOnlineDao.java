@@ -3,13 +3,16 @@ package com.neurix.simrs.transaksi.antrianonline.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class AntianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, String> {
+public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, String> {
     @Override
     protected Class<ItSimrsAntianOnlineEntity> getEntityClass() {
         return ItSimrsAntianOnlineEntity.class;
@@ -43,4 +46,13 @@ public class AntianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Strin
         List<ItSimrsAntianOnlineEntity> results = criteria.list();
         return results;
     }
+
+    public String getNextSeq(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_antrian_online')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
+    }
+
+
 }

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -273,7 +274,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdTindakan(idTindakan);
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
-            tindakanRawat.setQty(qty);
+            tindakanRawat.setQty(BigInteger.valueOf(qty));
             tindakanRawat.setCreatedWho(userLogin);
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setCreatedDate(updateTime);

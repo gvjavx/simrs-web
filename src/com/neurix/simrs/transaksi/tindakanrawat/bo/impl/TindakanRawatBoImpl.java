@@ -58,7 +58,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                 tindakanRawatEntity.setIdPerawat(bean.getIdPerawat());
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
-                tindakanRawatEntity.setTarifTotal(bean.getTarif() * bean.getQty());
+                tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
                 tindakanRawatEntity.setFlag("Y");
                 tindakanRawatEntity.setAction("C");
                 tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
@@ -97,7 +97,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                 tindakanRawatEntity.setIdPerawat(bean.getIdPerawat());
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
-                tindakanRawatEntity.setTarifTotal(bean.getTarif() * bean.getQty());
+                tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
                 tindakanRawatEntity.setFlag("U");
                 tindakanRawatEntity.setAction("C");
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());

@@ -11,6 +11,10 @@
     <bean id="jenisObatBo" class="com.neurix.simrs.master.jenisobat.bo.impl.JenisObatBoImpl"
           p:jenisObatDao-ref="jenisObatDao"/>
 
+    <bean id="registrasiOnlineBo" class="com.neurix.simrs.transaksi.antrianonline.bo.impl.RegistrasiOnlineBoImpl"
+          p:registrasiOnlineDao-ref="registrasiOnlineDao"/>
+
+
     <bean id="jenisObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="jenisObatBo">
         <property name="interceptorNames">
@@ -32,6 +36,9 @@
     </bean>
 
     <bean id="jenisObatDao" class="com.neurix.simrs.master.jenisobat.dao.JenisObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="registrasiOnlineDao" class="com.neurix.simrs.transaksi.antrianonline.dao.RegistrasiOnlineDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>
