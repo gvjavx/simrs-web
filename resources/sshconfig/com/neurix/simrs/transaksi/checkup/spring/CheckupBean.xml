@@ -14,6 +14,7 @@
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
           p:headerCheckupDao-ref="headerCheckupDao"
           p:checkupDetailDao-ref="checkupDetailDao"
+          p:provinsiDao-ref="provinsiDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

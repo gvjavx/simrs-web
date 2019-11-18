@@ -196,7 +196,7 @@ public class ProvinsiDao extends GenericDao<ImProvinsiEntity, String> {
         return results;
     }
 
-    public List<Object[]> getListAlamatByDesaId(BigInteger desaId){
+    public List<Object[]> getListAlamatByDesaId(String desaId){
         String SQL = "SELECT \n" +
                 "ds.desa_name, \n" +
                 "kec.kecamatan_name,\n" +

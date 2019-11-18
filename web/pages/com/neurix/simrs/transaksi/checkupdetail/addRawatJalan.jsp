@@ -9,119 +9,9 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript'>
-
-        $.subscribe('beforeProcessSave', function (event, data) {
-
-            var noBpjs         = $('#no_bpjs').val();
-            var idPasien        = $('#id_pasien').val();
-            var noKtp           = $('#no_ktp').val();
-            var namaPasien      = $('#nama_pasien').val();
-            var jenisKelamin    = $('#jenis_kelamin').val();
-            var tempatLahir     = $('#tempat_lahir').val();
-            var tglLahir        = $('#tangggal_lahir').val();
-            var jalan           = $('#jalan').val();
-            var suku            = $('#suku').val();
-            var agama           = $('#agama').val();
-            var poli            = $('#poli').val();
-            var dokter          = $('#dokter').val();
-            var penjamin        = $('#penjamin').val();
-            var provinsi        = $('#provinsi11').val();
-            var kota            = $('#kabupaten11').val();
-            var kecamatan       = $('#kecamatan11').val();
-            var desa            = $('#desa11').val();
-
-            if(noBpjs != '' && idPasien != '' && noKtp != ''&&namaPasien != ''
-               && jenisKelamin != ''&& tempatLahir != '' && tglLahir != ''
-               && jalan != ''&& suku != '' && agama != ''
-               && poli != ''&& dokter != '' && penjamin != ''
-               && provinsi != ''&& kota != '' && kecamatan != '' && desa != '') {
-
-                if (document.getElementById("id_pasien").value != '') {
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-
-                    } else {
-                        event.originalEvent.options.submit = false;
-
-                    }
-                }
-            }else {
-
-                event.originalEvent.options.submit = false;
-
-                var msg = "";
-                if (noBpjs == '') {
-                    msg = '<strong>No BPJS</strong> harus diisi'+'<br>';
-                }
-                if (idPasien == '') {
-                    msg = msg + '<strong>ID Pasien</strong> harus diisi'+'<br>';
-                }
-                if (noKtp == '') {
-                    msg = msg + '<strong>No KTP</strong> harus diisi'+'<br>';
-                }
-                if (namaPasien == '') {
-                    msg = msg + '<strong>Nama</strong> harus diisi'+'<br>';
-                }
-                if (jenisKelamin == '') {
-                    msg = msg + '<strong>Jenis Kelamin</strong> harus diisi'+'<br>';
-                }
-                if (tempatLahir == '') {
-                    msg = msg + '<strong>Tempat Lahir</strong> harus diisi'+'<br>';
-                }
-                if (tglLahir == '') {
-                    msg = msg + '<strong>Tanggal Lahir</strong> harus diisi'+'<br>';
-                }
-                if (jalan == '') {
-                    msg = msg + '<strong>Jalan</strong> harus diisi'+'<br>';
-                }
-                if (suku == '') {
-                    msg = msg + '<strong>Suku</strong> harus diisi'+'<br>';
-                }
-                if (agama == '') {
-                    msg = msg + '<strong>Agama</strong> harus diisi'+'<br>';
-                }
-                if (poli == '') {
-                    msg = msg + '<strong>Poli</strong> harus diisi'+'<br>';
-                }
-                if (dokter == '') {
-                    msg = msg + '<strong>DokterP</strong> harus diisi'+'<br>';
-                }
-                if (penjamin == '') {
-                    msg = msg + '<strong>Penjamin</strong> harus diisi'+'<br>';
-                }
-                if (provinsi == '') {
-                    msg = msg + '<strong>Provinsi</strong> harus diisi'+'<br>';
-                }
-                if (kota == '') {
-                    msg = msg + '<strong>Kota</strong> harus diisi'+'<br>';
-                }
-                if (kecamatan == '') {
-                    msg = msg + '<strong>Kecamatan</strong> harus diisi'+'<br>';
-                }
-                if (desa == '') {
-                    msg = msg + '<strong>Desa</strong> harus diisi'+'<br>';
-                }
-                document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                $.publish('showErrorValidationDialog');
-
-            }
-        });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -135,11 +25,6 @@
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
-
-        function resetField(){
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa').val('');
-        }
-
 
     </script>
 </head>
@@ -170,116 +55,7 @@
                         <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>No Checkup</label>
-                                    <s:textfield id="no_bpjs"
-                                                 name="headerDetailCheckup.noCheckup" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">No Detail Checkup</label>
-                                    <s:textfield id="no_detail_checkup"
-                                                 name="headerDetailCheckup.idDetailCheckup" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
 
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Nama</label>
-                                    <s:textfield id="nama"
-                                                 name="headerDetailCheckup.nama" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Jenis Kelamin</label>
-                                    <s:textfield id="jenis_kelamin"
-                                                 name="headerDetailCheckup.jenisKelamin" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Tempat Lahir</label>
-                                    <s:textfield id="tempat_lahir"
-                                                 name="headerDetailCheckup.tempatLahir" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-                                    <label>Tanggal Lahir</label>
-                                    <s:textfield id="tgl_lahir"
-                                                 name="headerDetailCheckup.tglLahir" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Jenis Pasien</label>
-                                    <s:textfield id="jenis_pasien"
-                                                 name="headerDetailCheckup.idJenisPeriksaPasien" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Poli</label>
-                                    <s:textfield id="poli"
-                                                 name="headerDetailCheckup.namaPelayanan" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Alamat</label>
-                                    <s:textarea id="jalan" rows="4"
-                                                name="headerDetailCheckup.jalan" required="false"
-                                                readonly="true" cssClass="form-control"/>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Provinsi</label>
-                                    <s:textfield id="provinsi" name="headerDetailCheckup.provinsi" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Kota</label>
-                                    <s:textfield id="kota" name="headerDetailCheckup.kota" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Kecamatan</label>
-                                    <s:textfield id="kecamatan" name="headerDetailCheckup.kecamatan" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Keluahan/Desa</label>
-                                    <s:textfield id="desa" name="headerDetailCheckup.desa" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="form-group" style="display: none">
-                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
-                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                           buttons="{
-                                                                                'OK':function() {
-                                                                                         $('#info_dialog').dialog('close');
-                                                                                     }
-                                                                            }"
-                                >
-                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                    Record has been saved successfully.
-                                </sj:dialog>
-
-
-                            </div>
-                        </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
@@ -484,7 +260,7 @@
                                              cssClass="form-control"/>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-success" style="margin-top: 10px"><i class="fa fa-arrow-right"></i> Save</button>
+                                <button class="btn btn-success" style="margin-top: 10px; width: 150px"><i class="fa fa-arrow-right"></i> Save</button>
                             </div>
                         </div>
                         </div>
@@ -691,8 +467,10 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $( document ).ready(function() {
+        $('#rawat_jalan').addClass('active');
         listTindakan();
     });
+
     function showModal(select){
 
         if (select == 1){
@@ -713,8 +491,8 @@
         }
     }
 
-    function listTindakan(idDetailCheckup){
-
+    function listTindakan(){
+        var idDetailCheckup = $('#no_detail_checkup').val();
         var table           = "";
         var data            = [];
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
@@ -742,7 +520,7 @@
 
     function saveTindakan(){
 
-        var idDetailCheckup = 'DCM00000005';
+        var idDetailCheckup = $('#no_detail_checkup').val();
         var idTindakan      = $('#tin_id_tindakan').val();
         var idDokter        = $('#tin_id_dokter').val();
         var idPerawat       = $('#tin_id_perawat').val();
@@ -755,7 +533,7 @@
             TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty, { callback : function (response) {
                 if (response == "success"){
                     dwr.engine.setAsync(false);
-                    listTindakan(idDetailCheckup);
+                    listTindakan();
                     $('#modal-tindakan').modal('hide');
                     $('#info_dialog').dialog('open');
                 }else{

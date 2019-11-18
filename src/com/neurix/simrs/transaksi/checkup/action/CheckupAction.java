@@ -431,10 +431,10 @@ public class CheckupAction extends BaseMasterAction {
         headerDetailCheckup.setNoCheckup(noCheckup);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        CheckupDetailBo checkupDetailBoBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
-            headerDetailCheckupList = checkupDetailBoBo.getByCriteria(headerDetailCheckup);
+            headerDetailCheckupList = checkupDetailBo.getByCriteria(headerDetailCheckup);
         }catch (GeneralBOException e){
             logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data, please inform to your admin.", e);
         }
