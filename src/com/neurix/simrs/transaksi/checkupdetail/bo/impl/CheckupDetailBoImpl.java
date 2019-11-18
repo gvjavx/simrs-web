@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
+import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -52,6 +55,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
+
         try {
             entityList = checkupDetailDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
@@ -106,6 +110,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckup.setIdRuangan(rawatInapEntity.getIdRuangan());
                 detailCheckup.setNamaRuangan(rawatInapEntity.getNamaRangan());
             }
+
             results.add(detailCheckup);
         }
 
