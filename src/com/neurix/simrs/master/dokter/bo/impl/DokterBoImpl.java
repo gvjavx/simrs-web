@@ -113,6 +113,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
                             dokter.setIdSpesialis(listDokter.getIdSpesialis());
                             dokter.setNamaSpesialis(listDokter.getSpesialisName());
+                            dokter.setNamaDokter(dokterData.getNamaDokter());
                             dokter.setFlag(dokterData.getFlag());
                             dokter.setAction(dokterData.getAction());
                             dokter.setLastUpdate(dokterData.getLastUpdate());
