@@ -56,10 +56,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "detail.no_checkup,\n" +
                     "detail.id_pelayanan,\n" +
                     "detail.status_periksa,\n" +
-                    "status.keterangan as status_name\n" +
+                    "status.keterangan as status_name,\n" +
+                    "pel.nama_pelayanan\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
+                    "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = detail.id_pelayanan \n" +
                     "WHERE (detail.no_checkup, detail.created_date) = \n" +
                     "(\n" +
                     "\tSELECT\n" +
@@ -68,6 +70,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tFROM it_simrs_header_detail_checkup d\n" +
                     "\tWHERE d.no_checkup = :noCheckup \n" +
                     "\tGROUP BY d.no_checkup\n" +
+                    ")" +
                     ")";
 
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -81,6 +84,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setIdPelayanan(obj[1].toString());
                 headerDetailCheckup.setStatusPeriksa(obj[2].toString());
                 headerDetailCheckup.setStatusPeriksaName(obj[3].toString());
+                headerDetailCheckup.setNamaPelayanan(obj[4].toString());
                 return headerDetailCheckup;
             }
         }

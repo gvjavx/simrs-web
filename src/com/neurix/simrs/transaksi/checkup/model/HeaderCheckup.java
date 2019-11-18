@@ -36,6 +36,7 @@ public class HeaderCheckup {
     private String idPelayanan;
     private String statusPeriksa;
     private String statusPeriksaName;
+    private String namaPelayanan;
 
     private String stTglLahir;
     private String stTglFrom;
@@ -45,6 +46,14 @@ public class HeaderCheckup {
     private String namaKecamatan;
     private String namaKota;
     private String namaProvinsi;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
 
     public String getNamaDesa() {
         return namaDesa;
