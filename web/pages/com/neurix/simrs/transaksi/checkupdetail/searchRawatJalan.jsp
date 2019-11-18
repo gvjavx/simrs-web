@@ -67,8 +67,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerDetailCheckup.IdPelayanan"
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select cssStyle="margin-top: 7px"
+                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                  listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
                                     </div>
@@ -167,7 +171,7 @@
                                     <td><s:property value="nama"/></td>
                                     <td><s:property value="jalan"/></td>
                                     <td><s:property value="statusPeriksa"/></td>
-                                    <td><s:property value="noRuangan"/></td>
+                                    <td><s:property value="keteranganSelesai"/></td>
                                     <td>
                                         <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>

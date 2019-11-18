@@ -150,7 +150,7 @@ public class CheckupBoImpl implements CheckupBo {
             }
 
             if (headerCheckup.getDesaId() != null){
-                List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId());
+                List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId().toString());
                 if (!objs.isEmpty()){
                     for (Object[] obj : objs){
                         headerCheckup.setNamaDesa(obj[0].toString());

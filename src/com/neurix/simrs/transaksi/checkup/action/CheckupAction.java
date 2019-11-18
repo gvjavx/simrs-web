@@ -4,6 +4,8 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.bo.DokterBo;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
@@ -37,6 +39,15 @@ public class CheckupAction extends BaseMasterAction {
     private PelayananBo pelayananBoProxy;
     private JenisPerksaPasienBo jenisPriksaPasienBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
+    private DokterBo dokterBoProxy;
+
+    public DokterBo getDokterBoProxy() {
+        return dokterBoProxy;
+    }
+
+    public void setDokterBoProxy(DokterBo dokterBoProxy) {
+        this.dokterBoProxy = dokterBoProxy;
+    }
 
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
@@ -431,15 +442,33 @@ public class CheckupAction extends BaseMasterAction {
         headerDetailCheckup.setNoCheckup(noCheckup);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        CheckupDetailBo checkupDetailBoBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
-            headerDetailCheckupList = checkupDetailBoBo.getByCriteria(headerDetailCheckup);
+            headerDetailCheckupList = checkupDetailBo.getByCriteria(headerDetailCheckup);
         }catch (GeneralBOException e){
             logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data, please inform to your admin.", e);
         }
 
         logger.info("[CheckupAction.listRiwayatPasien] end process >>>");
         return headerDetailCheckupList;
+    }
+
+    public List<Dokter> listOfDokter(String idPelayanan){
+        logger.info("[CheckupAction.listOfDokter] start process >>>");
+
+        List<Dokter> dokterList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+
+        try {
+            dokterList = dokterBo.getByIdPelayanan(idPelayanan, "");
+        }catch (GeneralBOException e){
+            logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+        }
+
+        logger.info("[CheckupAction.listOfDokter] end process >>>");
+        return dokterList;
     }
 }

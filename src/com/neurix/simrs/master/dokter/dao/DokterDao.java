@@ -12,6 +12,7 @@ import java.util.Map;
  * Created by Toshiba on 07/11/2019.
  */
 public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
+
     @Override
     protected Class<ImSimrsDokterEntity> getEntityClass() {
         return ImSimrsDokterEntity.class;
@@ -21,8 +22,9 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
     public List<ImSimrsDokterEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_dokter") != null)
+            if (mapCriteria.get("id_dokter") != null){
                 criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
+            }
 
         List<ImSimrsDokterEntity> result = criteria.list();
         return result;

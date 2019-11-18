@@ -184,7 +184,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="nama"/></td>
-                                    <td><s:property value="idPelayanan"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
@@ -341,6 +341,10 @@ function detail_pasien(idCheckup){
     var kabupaten       = "";
     var kecamatan       = "";
     var desa            = "";
+    var pelayanan       = "";
+    var ket             = "";
+    var ruangan         = "";
+    var noRuangan       = "";
 
     CheckupAction.listDataPasien(idCheckup, function (response) {
         dataPasien = response;
@@ -362,6 +366,10 @@ function detail_pasien(idCheckup){
                 agama            = item.agama;
                 suku             = item.suku;
                 alamat           = item.jalan;
+                provinsi         = item.namaProvinsi;
+                kabupaten        = item.namaKota;
+                kecamatan        = item.namaKecamatan;
+                desa             = item.namaDesa;
             });
         }
     });
@@ -370,12 +378,27 @@ function detail_pasien(idCheckup){
         dataRiwayat = response;
         if (dataRiwayat != null){
             $.each(dataRiwayat, function (i,item) {
+
+                if(item.namaPelayanan){
+                    pelayanan = item.namaPelayanan;
+                }
+                if(item.keteranganSelesai){
+                    ket = item.keteranganSelesai;
+                }
+                if(item.namaRuangan){
+                    ruangan = item.namaRuangan;
+                }
+                if(item.noRuangan){
+                    noRuangan = item.noRuangan;
+                }
+
+
                 table += "<tr>" +
-                        "<td>" + item.idPelayanan + "</td>" +
+                        "<td>" + pelayanan + "</td>" +
                         "<td>" + item.statusPeriksa + "</td>" +
-                        "<td>" + item.keteranganKeluar + "</td>" +
-                        "<td>" + item.idRuangan + "</td>" +
-                        "<td>" + item.noRuanagan + "</td>" +
+                        "<td>" + ket + "</td>" +
+                        "<td>" + ruangan + "</td>" +
+                        "<td>" + noRuangan + "</td>" +
                         "</tr>"
             });
         }
@@ -389,6 +412,10 @@ function detail_pasien(idCheckup){
     $('#det_agama').html(agama);
     $('#det_suku').html(suku);
     $('#det_alamat').html(alamat);
+    $('#det_provinsi').html(provinsi);
+    $('#det_kabupaten').html(kabupaten);
+    $('#det_kecamatan').html(kecamatan);
+    $('#det_desa').html(desa);
     $('#det_riwayat').html(table);
     $('#modal-detail-pasien').modal('show');
 }
