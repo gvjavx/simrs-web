@@ -169,7 +169,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
         if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
             hsCriteria.put("id_tindakan_rawat", bean.getIdTindakanRawat());
         }
-        if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
 

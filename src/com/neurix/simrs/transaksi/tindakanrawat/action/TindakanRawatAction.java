@@ -134,15 +134,18 @@ public class TindakanRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
+        if (idDetailCheckup != ""){
+            try {
+                tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
+            }catch (GeneralBOException e){
+                logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
 
-        try {
-            tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
-        }catch (GeneralBOException e){
-            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+            return tindakanRawatList;
+        }else{
+            return null;
         }
-
-        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
-        return tindakanRawatList;
     }
 }

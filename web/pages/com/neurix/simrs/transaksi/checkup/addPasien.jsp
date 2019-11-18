@@ -36,7 +36,6 @@
             var desa            = $('#desa11').val();
             var imgInp          = $('#imgInp').val();
 
-
             if (noBpjs != '' && idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
                     && jalan != '' && suku != '' && profesi != '' && agama != ''
@@ -86,7 +85,7 @@
                 if (poli == '') {
                     $('#poli').css('border','red solid 1px');
                 }
-                if (dokter == '') {
+                if (dokter == '' || dokter == null) {
                     $('#dokter').css('border','red solid 1px');
                 }
                 if (penjamin == '') {
@@ -398,14 +397,21 @@
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control"/>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Dokter</label>
                                             <div class="col-md-8">
+                                                <%--<s:select--%>
+                                                        <%--list="#{'01':'Dr. Sudirto','02':'Dr.Sumadjo'}"--%>
+                                                        <%--cssStyle="margin-top: 7px"--%>
+                                                        <%--id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
+                                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                                        <%--cssClass="form-control"/>--%>
                                                 <%--<s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
                                                              <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" onchange="$(this).css('border','')"></select>
+                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" style="margin-top: 7px" onchange="$(this).css('border','')"></select>
                                             </div>
                                         </div>
                                         <div class="form-group">

@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label style="margin-top: 7px">Nama</label>
                                     <s:textfield id="nama"
-                                                 name="headerDetailCheckup.nama" required="false"
+                                                 name="headerDetailCheckup.namaPasien" required="false"
                                                  readonly="true" cssClass="form-control"/>
                                 </div>
 
@@ -474,7 +474,7 @@
                     <div class="form-group" >
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                           <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty" onclick="$(this).css('border','')" onchange="$(this).css('border','')">
+                           <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty" oninput="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
                     </div>
                 </div>
@@ -482,7 +482,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                 <button type="button" class="btn btn-success" onclick="saveTindakan()" id="save_tindakan"><i class="fa fa-arrow-right"></i> Save</button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan"><i class="fa fa-spinner fa-spin"></i> Menyimpan...</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan"><i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...</button>
             </div>
         </div>
     </div>
