@@ -582,7 +582,7 @@
             $.each(response, function (i, item) {
                 $('#dokter').append($("<option></option>")
                         .attr("value",item.idDokter)
-                        .text(item.idDokter));
+                        .text(item.namaDokter));
             });
         });
     }
