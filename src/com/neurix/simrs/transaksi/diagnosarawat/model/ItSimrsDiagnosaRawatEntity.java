@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 public class ItSimrsDiagnosaRawatEntity implements Serializable {
 
+    private String idDiagnosaRawat;
     private String idDiagnosa;
     private String idDetailCheckup;
     private String keteranganDiagnosa;
@@ -16,6 +17,14 @@ public class ItSimrsDiagnosaRawatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdDiagnosaRawat() {
+        return idDiagnosaRawat;
+    }
+
+    public void setIdDiagnosaRawat(String idDiagnosaRawat) {
+        this.idDiagnosaRawat = idDiagnosaRawat;
+    }
 
     public String getIdDiagnosa() {
         return idDiagnosa;
