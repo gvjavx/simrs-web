@@ -145,6 +145,8 @@ public class CheckupBoImpl implements CheckupBo {
                 headerCheckup.setStatusPeriksa(headerDetailCheckup.getStatusPeriksa());
                 headerCheckup.setStatusPeriksaName(headerDetailCheckup.getStatusPeriksaName());
                 headerCheckup.setNamaPelayanan(headerDetailCheckup.getNamaPelayanan());
+                headerCheckup.setNamaRuangan(headerDetailCheckup.getNamaRuangan());
+                headerCheckup.setNoRuangan(headerDetailCheckup.getNoRuangan());
             }
 
             if (headerCheckup.getDesaId() != null){
