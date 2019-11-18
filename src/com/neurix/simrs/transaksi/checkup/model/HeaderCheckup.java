@@ -46,6 +46,7 @@ public class HeaderCheckup {
     private String namaKota;
     private String namaProvinsi;
 
+
     public String getNamaDesa() {
         return namaDesa;
     }

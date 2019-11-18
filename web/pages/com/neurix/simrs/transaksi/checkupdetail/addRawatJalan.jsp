@@ -557,7 +557,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <select class="form-control" id="tin_id_tindakan">
+                            <select class="form-control" id="tin_id_tindakan" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
                                 <option value="1">Suntik</option>
                                 <option value="2">Pil</option>
@@ -568,7 +568,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px" id="tin_id_dokter">
+                            <select class="form-control" style="margin-top: 7px" id="tin_id_dokter" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
                                 <option value="1">Dr. Sutikno</option>
                                 <option value="2">Dr. Julio</option>
@@ -579,7 +579,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px" id="tin_id_perawat">
+                            <select class="form-control" style="margin-top: 7px" id="tin_id_perawat" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
                                 <option value="1">Angel</option>
                                 <option value="2">Anya</option>
@@ -590,7 +590,7 @@
                     <div class="form-group" >
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                           <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty">
+                           <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty" onclick="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
                     </div>
                 </div>
@@ -703,8 +703,8 @@
             $('#tin_id_perawat').val('');
             $('#tin_qty').val('');
             $('#save_tindakan').show();
-            $('#load_tindakan').hide();
-            $('#warning_tindakan').hide();
+            $('#load_tindakan, #warning_tindakan').hide();
+            $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
             $('#modal-tindakan').modal('show');
         }else if(select == 3){
             $('#modal-diagnosa').modal('show');
@@ -767,10 +767,19 @@
             });
         }else {
             $('#warning_tindakan').show().fadeOut(5000);
-            $('#tin_id_tindakan').css('border','renderDates ');
-            $('#tin_id_dokter').focus();
-            $('#tin_id_perawat').focus();
-            $('#tin_qty').focus();
+
+            if(idTindakan == ''){
+                $('#tin_id_tindakan').css('border','red solid 1px');
+            }
+            if(idDokter == ''){
+                $('#tin_id_dokter').css('border','red solid 1px');
+            }
+            if(idPerawat == ''){
+                $('#tin_id_perawat').css('border','red solid 1px');
+            }
+            if(qty <= 0 || qty == ''){
+                $('#tin_qty').css('border','red solid 1px');
+            }
         }
     }
 </script>
