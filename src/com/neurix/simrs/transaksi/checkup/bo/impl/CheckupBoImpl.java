@@ -43,16 +43,19 @@ public class CheckupBoImpl implements CheckupBo {
             Boolean isStatus = false;
             Map hsCriteria = new HashMap();
 
+            //sodiq, 17 Nov 2019, penambahan no_checkup
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
+
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
                 isPoli = true;
                 hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
             }
-
             if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())) {
                 isStatus = true;
                 hsCriteria.put("status_periksa", bean.getStatusPeriksa());
             }
-
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 hsCriteria.put("id_pasien", bean.getIdPasien());
             }
@@ -182,6 +185,7 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setDesaId(bean.getDesaId());
             headerEntity.setJalan(bean.getJalan());
             headerEntity.setSuku(bean.getSuku());
+            headerEntity.setProfesi(bean.getProfesi());
             headerEntity.setNoTelp(bean.getNoTelp());
             headerEntity.setAgama(bean.getAgama());
             headerEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());

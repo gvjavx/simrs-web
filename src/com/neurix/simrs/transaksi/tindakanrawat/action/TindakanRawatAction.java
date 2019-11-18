@@ -3,14 +3,18 @@ package com.neurix.simrs.transaksi.tindakanrawat.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TindakanRawatAction extends BaseMasterAction {
 
@@ -262,7 +266,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, Long qty){
+    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -274,6 +278,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(qty);
+            tindakanRawat.setTarif(new BigInteger(String.valueOf(2000)));
             tindakanRawat.setCreatedWho(userLogin);
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setCreatedDate(updateTime);
@@ -292,6 +297,28 @@ public class TindakanRawatAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
-        return "init_add";
+        return SUCCESS;
+    }
+
+    public List<TindakanRawat> listTindakanRawat(String idDetailCheckup){
+
+        logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
+        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+        TindakanRawat tindakanRawat = new TindakanRawat();
+        tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+
+
+        try {
+            tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
+        }catch (GeneralBOException e){
+            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        return tindakanRawatList;
     }
 }
