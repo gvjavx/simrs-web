@@ -56,10 +56,15 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "detail.no_checkup,\n" +
                     "detail.id_pelayanan,\n" +
                     "detail.status_periksa,\n" +
-                    "status.keterangan as status_name\n" +
+                    "status.keterangan as status_name,\n" +
+                    "pel.nama_pelayanan,\n" +
+                    "ranap.nama_ruangan,\n" +
+                    "ranap.no_ruangan\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
+                    "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = detail.id_pelayanan \n" +
+                    "LEFT OUTER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') ranap ON ranap.id_detail_checkup = detail.id_detail_checkup\n" +
                     "WHERE (detail.no_checkup, detail.created_date) = \n" +
                     "(\n" +
                     "\tSELECT\n" +
@@ -81,6 +86,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setIdPelayanan(obj[1].toString());
                 headerDetailCheckup.setStatusPeriksa(obj[2].toString());
                 headerDetailCheckup.setStatusPeriksaName(obj[3].toString());
+                headerDetailCheckup.setNamaPelayanan(obj[4].toString());
+                headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
+                headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
                 return headerDetailCheckup;
             }
         }

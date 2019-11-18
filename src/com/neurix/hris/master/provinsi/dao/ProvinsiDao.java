@@ -196,4 +196,24 @@ public class ProvinsiDao extends GenericDao<ImProvinsiEntity, String> {
         return results;
     }
 
+    public List<Object[]> getListAlamatByDesaId(BigInteger desaId){
+        String SQL = "SELECT \n" +
+                "ds.desa_name, \n" +
+                "kec.kecamatan_name,\n" +
+                "kot.kota_name,\n" +
+                "prov.provinsi_name\n" +
+                "FROM \n" +
+                "im_hris_desa ds\n" +
+                "INNER JOIN im_hris_kecamatan kec ON kec.kecamatan_id = ds.kecamatan_id\n" +
+                "INNER JOIN im_hris_kota kot ON kot.kota_id = kec.kota_id\n" +
+                "INNER JOIN im_hris_provinsi prov ON prov.provinsi_id = kot.provinsi_id\n" +
+                "WHERE ds.desa_id = :id ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", desaId)
+                .list();
+
+        return results;
+    }
+
 }
