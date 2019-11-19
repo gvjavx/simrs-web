@@ -44,6 +44,22 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return results;
     }
 
+    @Override
+    public List<HeaderDetailCheckup> getSearchRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getSearchRawatJalan] Start >>>>>>>");
+        List<HeaderDetailCheckup> results = new ArrayList<>();
+        if (bean != null){
+           try {
+               results = checkupDetailDao.getSearchRawatJalan(bean);
+           } catch (HibernateException e){
+               logger.error("[CheckupDetailBoImpl.getSearchRawatJalan] Error when get data detail checkup ",e);
+               throw new GeneralBOException("Error when get data detail checkup"+e.getMessage());
+           }
+       }
+        logger.info("[CheckupDetailBoImpl.getSearchRawatJalan] End <<<<<<<<");
+        return results;
+    }
+
     protected List<ItSimrsHeaderDetailCheckupEntity> getListEntityByCriteria(HeaderDetailCheckup bean) throws GeneralBOException{
         logger.info("[CheckupDetailBoImpl.getListEntityByCriteria] Start >>>>>>>");
         List<ItSimrsHeaderDetailCheckupEntity> entityList = new ArrayList<>();
@@ -130,15 +146,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if (!detailCheckupEntityList.isEmpty()){
             ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
             entity.setStatusPeriksa(bean.getStatusPeriksa());
-            entity.setStatusBayar(bean.getStatusBayar());
-            entity.setTotalBiaya(bean.getTotalBiaya());
+//            entity.setStatusBayar(bean.getStatusBayar());
+//            entity.setTotalBiaya(bean.getTotalBiaya());
             entity.setKeteranganSelesai(bean.getKeteranganSelesai());
             entity.setJenisLab(bean.getJenisLab());
-            entity.setBranchId(bean.getBranchId());
             entity.setFlag(bean.getFlag());
             entity.setAction(bean.getAction());
-            entity.setCreatedDate(bean.getCreatedDate());
-            entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
 

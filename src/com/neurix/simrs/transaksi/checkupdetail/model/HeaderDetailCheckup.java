@@ -35,10 +35,38 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String namaPasien;
     private String namaPelayanan;
     private String alamat;
+    private String desaId;
     private String desa;
     private String kecamatan;
     private String kota;
     private String provinsi;
+
+    private String stDateFrom;
+    private String stDateTo;
+
+    public String getDesaId() {
+        return desaId;
+    }
+
+    public void setDesaId(String desaId) {
+        this.desaId = desaId;
+    }
+
+    public String getStDateFrom() {
+        return stDateFrom;
+    }
+
+    public void setStDateFrom(String stDateFrom) {
+        this.stDateFrom = stDateFrom;
+    }
+
+    public String getStDateTo() {
+        return stDateTo;
+    }
+
+    public void setStDateTo(String stDateTo) {
+        this.stDateTo = stDateTo;
+    }
 
     public String getIdPasien() {
         return idPasien;
