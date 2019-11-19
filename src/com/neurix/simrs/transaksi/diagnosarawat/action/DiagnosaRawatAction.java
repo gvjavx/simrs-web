@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.diagnosarawat.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import org.apache.log4j.Logger;
@@ -18,6 +20,15 @@ public class DiagnosaRawatAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(DiagnosaRawatAction.class);
     private DiagnosaRawatBo diagnosaRawatBoProxy;
     private DiagnosaRawat diagnosaRawat;
+    private DiagnosaBo diagnosaBoProxy;
+
+    public DiagnosaBo getDiagnosaBoProxy() {
+        return diagnosaBoProxy;
+    }
+
+    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
+        this.diagnosaBoProxy = diagnosaBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -94,7 +105,18 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            List<Diagnosa> diagnosaList = new ArrayList<>();
+            Diagnosa diagnosa = new Diagnosa();
+            diagnosa.setIdDiagnosa(idDiagnosa);
 
+            try {
+                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+            }catch (GeneralBOException e){
+                logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+            if (!diagnosaList.isEmpty()){
+
+            }
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
             diagnosaRawat.setIdDiagnosa(idDiagnosa);
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);

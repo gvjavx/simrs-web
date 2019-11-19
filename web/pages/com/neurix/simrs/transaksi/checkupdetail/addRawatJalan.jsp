@@ -131,9 +131,11 @@
                                            buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
+                                                                                         toContent();
                                                                                      }
                                                                             }"
                                 >
+                                    <s:hidden id="close_pos"></s:hidden>
                                     <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
                                     Record has been saved successfully.
                                 </sj:dialog>
@@ -141,7 +143,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_dok">
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
@@ -163,7 +165,7 @@
                         </table>
                     </div>
 
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_tin">
                     </div>
 
                     <div class="box-header with-border">
@@ -188,9 +190,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="box-header with-border">
-                    </div>
                     <div class="box-header with-border" id="pos_nosa">
+                    </div>
+                    <div class="box-header with-border" >
                         <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
                     </div>
                     <div class="box-body">
@@ -210,7 +212,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Order Lab</h3>
@@ -382,9 +384,9 @@
                         <div class="col-md-7">
                             <select class="form-control" id="nosa_id_diagnosa" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
-                                <option value="1">Ablasi Retina</option>
-                                <option value="2">Abses Gigi</option>
-                                <option value="3">Abses Paru</option>
+                                <option value="01">Ablasi Retina</option>
+                                <option value="02">Abses Gigi</option>
+                                <option value="03">Abses Paru</option>
                             </select>
                         </div>
                     </div>
@@ -463,10 +465,18 @@
         listDiagnosa();
     });
 
-    function showSuccess(select){
-
+    function toContent(){
+        var back = $('#close_pos').val();
+        if(back == 2){
+            $('html, body').animate({
+                scrollTop: $("#pos_tin").offset().top
+            }, 2000);
+        }else if(back == 3){
+            $('html, body').animate({
+                scrollTop: $("#pos_nosa").offset().top
+            }, 2000);
+        }
     }
-
     function showModal(select){
 
         if (select == 1){
@@ -505,6 +515,7 @@
                     listDokter();
                     $('#modal-dokter').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('#close_pos').val(1);
                 }else{
 
                 }
@@ -553,6 +564,7 @@
                     listTindakan();
                     $('#modal-tindakan').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('#close_pos').val(2);
                 }else{
                     $('#eror_dialog').dialog('open');
                     $('#save_tindakan').show();
@@ -646,8 +658,7 @@
                     listDiagnosa();
                     $('#modal-diagnosa').modal('hide');
                     $('#info_dialog').dialog('open');
-                    $('#save_diagnosa').show();
-                    $('#load_diagnosa').hide();
+                    $('#close_pos').val(3);
                 }else{
 
                 }
