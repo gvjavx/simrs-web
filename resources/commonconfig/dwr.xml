@@ -293,6 +293,11 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
 
+      <!--Team Dokter -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.teamdokter.action.TeamDokterAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.teamdokter.model.DokterTeam"/>
   </allow>
 
 </dwr>
