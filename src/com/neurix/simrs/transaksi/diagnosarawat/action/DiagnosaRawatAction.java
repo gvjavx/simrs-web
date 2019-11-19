@@ -106,8 +106,10 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
             List<Diagnosa> diagnosaList = new ArrayList<>();
+            List<Diagnosa> diagnosaList2 = new ArrayList<>();
             Diagnosa diagnosa = new Diagnosa();
             diagnosa.setIdDiagnosa(idDiagnosa);
+            Diagnosa diagnosaResult = new Diagnosa();
 
             try {
                 diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
@@ -115,10 +117,12 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                 logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
             if (!diagnosaList.isEmpty()){
-
+                diagnosaResult = diagnosaList.get(0);
             }
+
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
             diagnosaRawat.setIdDiagnosa(idDiagnosa);
+            diagnosaRawat.setKeteranganDiagnosa(diagnosaResult.getDescOfDiagnosa());
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setCreatedWho(userLogin);
             diagnosaRawat.setLastUpdate(updateTime);
@@ -153,14 +157,18 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
-        try {
-            diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
-        }catch (GeneralBOException e){
-            logger.error("[TeamDokterAction.listDiagnosa] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-        }
+        if (idDetailCheckup != ""){
+            try {
+                diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+            }catch (GeneralBOException e){
+                logger.error("[TeamDokterAction.listDiagnosa] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
 
-        logger.info("[TeamDokterAction.listDiagnosa] start process >>>");
-        return diagnosaRawatList;
+            logger.info("[TeamDokterAction.listDiagnosa] start process >>>");
+            return diagnosaRawatList;
+        }else{
+            return null;
+        }
     }
 }
