@@ -291,6 +291,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.checkup.action.CheckupAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
 
   </allow>

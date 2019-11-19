@@ -28,7 +28,7 @@ public class DokterSpesialisModuls {
         logger.info("[DokterSpesialisModuls.getDokterSpesialisData] Start >>>>>>>>>");
         List<DokterSpesialis> results = new ArrayList<>();
 
-        if (bean != null && bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
+        if (bean != null && bean.getIdSpesialis() != null && !"".equalsIgnoreCase(bean.getIdSpesialis())){
             Map hsCriteria = new HashMap();
             hsCriteria.put("flag", "Y");
             if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){

@@ -3,7 +3,7 @@ package com.neurix.simrs.master.spesialis.model;
 import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.
