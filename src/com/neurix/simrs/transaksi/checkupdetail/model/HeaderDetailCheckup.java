@@ -41,8 +41,36 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String kota;
     private String provinsi;
 
+    private String jenisKelamin;
+    private String tempatLahir;
+    private String tglLahir;
+
     private String stDateFrom;
     private String stDateTo;
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getTempatLahir() {
+        return tempatLahir;
+    }
+
+    public void setTempatLahir(String tempatLahir) {
+        this.tempatLahir = tempatLahir;
+    }
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
 
     public String getDesaId() {
         return desaId;

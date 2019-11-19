@@ -85,11 +85,13 @@
                                     </tr>
                                     <tr>
                                         <td><b>Tempat, Tanggal Lahir</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                        <td><table><s:label name="headerDetailCheckup.tempatLahir"></s:label>, <s:label name="headerDetailCheckup.tglLahir"></s:label></table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                        <td><table>
+                                            <%--<s:label name="headerDetailCheckup.jenisKelamin"></s:label>--%>
+                                        </table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Poli</b></td>

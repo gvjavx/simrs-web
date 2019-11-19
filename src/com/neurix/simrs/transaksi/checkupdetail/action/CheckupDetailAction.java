@@ -70,8 +70,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
         String id = getId();
-
-        String id = getId();
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -100,6 +98,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setKota(headerCheckup.getNamaKota());
                         detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
                         detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+                        detailCheckup.setJenisKelamin(headerCheckup.getJenisKelamin());
+                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
+                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
 
                         setHeaderDetailCheckup(detailCheckup);
 
