@@ -74,6 +74,12 @@ public class DiagnosaBoImpl implements DiagnosaBo {
             diagnosa = new Diagnosa();
             diagnosa.setIdDiagnosa(diagnosaEntity.getIdDiagnosa());
             diagnosa.setDescOfDiagnosa(diagnosaEntity.getDescOfDiagnosa());
+            diagnosa.setFlag(diagnosaEntity.getFlag());
+            diagnosa.setAction(diagnosaEntity.getAction());
+            diagnosa.setCreatedDate(diagnosaEntity.getCreatedDate());
+            diagnosa.setCreatedWho(diagnosaEntity.getCreatedWho());
+            diagnosa.setLastUpdate(diagnosaEntity.getLastUpdate());
+            diagnosa.setLastUpdateWho(diagnosaEntity.getLastUpdateWho());
             result.add(diagnosa);
         }
 

@@ -22,6 +22,16 @@ public class DiagnosaRawatAction extends BaseMasterAction {
     private DiagnosaRawat diagnosaRawat;
     private DiagnosaBo diagnosaBoProxy;
 
+    private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
+
+    public List<Diagnosa> getListOfComboDiagnosa() {
+        return listOfComboDiagnosa;
+    }
+
+    public void setListOfComboDiagnosa(List<Diagnosa> listOfComboDiagnosa) {
+        this.listOfComboDiagnosa = listOfComboDiagnosa;
+    }
+
     public DiagnosaBo getDiagnosaBoProxy() {
         return diagnosaBoProxy;
     }
@@ -160,7 +170,25 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[TeamDokterAction.listDiagnosa] start process >>>");
+        logger.info("[TeamDokterAction.listDiagnosa] end process <<<");
         return diagnosaRawatList;
+    }
+
+    public String getListComboDiagnosa(){
+        logger.info("[TeamDokterAction.getListComboDiagnosa] start process >>>");
+
+        List<Diagnosa> diagnosaList = new ArrayList<>();
+        Diagnosa diagnosa = new Diagnosa();
+
+        try {
+            diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+        }catch (GeneralBOException e){
+            logger.error("[TeamDokterAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfComboDiagnosa.addAll(diagnosaList);
+        logger.info("[TeamDokterAction.getListComboDiagnosa] end process <<<");
+        return SUCCESS;
     }
 }
