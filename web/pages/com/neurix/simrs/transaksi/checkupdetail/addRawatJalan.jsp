@@ -10,8 +10,11 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $.subscribe('successDialog', function (event, data) {
@@ -57,98 +60,67 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>No Checkup</label>
-                                    <s:textfield id="no_checkup"
-                                                 name="headerDetailCheckup.noCheckup" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                    <s:hidden id="id_pelayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">No Detail Checkup</label>
-                                    <s:textfield id="no_detail_checkup"
-                                                 name="headerDetailCheckup.idDetailCheckup" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
 
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Nama</label>
-                                    <s:textfield id="nama"
-                                                 name="headerDetailCheckup.namaPasien" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Jenis Kelamin</label>
-                                    <s:textfield id="jenis_kelamin"
-                                                 name="headerDetailCheckup.jenisKelamin" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Tempat Lahir</label>
-                                    <s:textfield id="tempat_lahir"
-                                                 name="headerDetailCheckup.tempatLahir" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <!-- /.form-group -->
+                            <div class="col-md-6">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td><b>No Checkup</b></td>
+                                        <td><table><s:label id="no_checkup" name="headerDetailCheckup.noCheckup"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>No Checkup Detail</b></td>
+                                        <td ><table><s:label id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>NIK</b></td>
+                                        <td><table><s:label id="nik" name=""></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Nama</b></td>
+                                        <td><table><s:label id="nama" name="headerDetailCheckup.namaPasien"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Jenis Kelamin</b></td>
+                                        <td><table><s:label id="jenis_kelamin" name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tempat, Tanggal Lahir</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Jenis Pasien</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Poli</b></td>
+                                        <td><table><s:label id="no_detail_checkup" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
+                                    </tr>
+                                </table>
                             </div>
                             <!-- /.col -->
-                            <div class="col-md-4">
-
-                                <div class="form-group">
-                                    <label>Tanggal Lahir</label>
-                                    <s:textfield id="tgl_lahir"
-                                                 name="headerDetailCheckup.tglLahir" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Jenis Pasien</label>
-                                    <s:textfield id="jenis_pasien"
-                                                 name="headerDetailCheckup.idJenisPeriksaPasien" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Poli</label>
-                                    <s:textfield id="poli"
-                                                 name="headerDetailCheckup.namaPelayanan" required="false"
-                                                 readonly="true" cssClass="form-control"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Alamat</label>
-                                    <s:textarea id="jalan" rows="4"
-                                                name="headerDetailCheckup.jalan" required="false"
-                                                readonly="true" cssClass="form-control"/>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Provinsi</label>
-                                    <s:textfield id="provinsi" name="headerDetailCheckup.provinsi" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Kota</label>
-                                    <s:textfield id="kota" name="headerDetailCheckup.kota" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Kecamatan</label>
-                                    <s:textfield id="kecamatan" name="headerDetailCheckup.kecamatan" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Keluahan/Desa</label>
-                                    <s:textfield id="desa" name="headerDetailCheckup.desa" required="true" readonly="true"
-                                                 cssClass="form-control"/>
-                                </div>
-                                <!-- /.form-group -->
+                            <div class="col-md-6">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td><b>Alamat</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.alamat"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Provinsi</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.provinsi"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Kabupaten</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.kota"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Kecamatan</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.kecamatan"></s:label></table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Desa</b></td>
+                                        <td><table><s:label name="headerDetailCheckup.desa"></s:label></table></td>
+                                    </tr>
+                                </table>
                             </div>
                             <!-- /.col -->
                             <div class="form-group" style="display: none">
@@ -200,13 +172,13 @@
                         <table class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>Tindakan</td>
                                 <td>Tanggal</td>
+                                <td>Tindakan</td>
                                 <td>Dokter</td>
                                 <td>Perawat</td>
-                                <td>Tarif</td>
-                                <td>Qty</td>
-                                <td>Total</td>
+                                <td align="right">Tarif</td>
+                                <td align="center">Qty</td>
+                                <td align="right">Total</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -216,7 +188,7 @@
                     </div>
                     <div class="box-header with-border">
                     </div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="pos_nosa">
                         <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
                     </div>
                     <div class="box-body">
@@ -224,12 +196,10 @@
                         <table class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Diagnosa</td>
-                                <td>Deskripsi</td>
-                                <td>Keterangan</td>
                                 <td>Tanggal</td>
-                                <td>Status</td>
-                                <td>Poli</td>
+                                <td>ID Diagnosa</td>
+                                <td>Keterangan</td>
+                                <td>Jenis Diagnosa</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -421,8 +391,8 @@
                         <div class="col-md-7">
                             <select class="form-control" style="margin-top: 7px" id="nosa_jenis_diagnosa" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
-                                <option value="1">Diagnosa Awal</option>
-                                <option value="2">Diagnosa Akhir</option>
+                                <option value="0">Diagnosa Awal</option>
+                                <option value="1">Diagnosa Akhir</option>
                             </select>
                         </div>
                     </div>
@@ -482,14 +452,18 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    var idDetailCheckup = $('#no_detail_checkup').text();
 
     $( document ).ready(function() {
         $('#rawat_jalan').addClass('active');
         listTindakan();
         listDokter();
+        listDiagnosa();
     });
 
-    var idDetailCheckup = $('#no_detail_checkup').val();
+    function showSuccess(select){
+
+    }
 
     function showModal(select){
 
@@ -509,6 +483,13 @@
         }else if(select == 4){
             $('#modal-lab').modal('show');
         }
+    }
+
+    function formatRupiah(angka){
+        var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
     }
 
 
@@ -599,27 +580,54 @@
 
         var table           = "";
         var data            = [];
+        var tarif           = "";
+        var tarifTotal      = "";
+        var trfTotal        = 0;
+        var qtyTotal        = 0;
+        var trfTtl          = 0;
+
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
             data = response;
             if (data != null){
                 $.each(data, function (i,item) {
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    if(item.tarif != null){
+                        tarif = formatRupiah(item.tarif);
+                        trfTotal += item.tarif;
+                    }
+                    if(item.tarifTotal != null){
+                        tarifTotal = formatRupiah(item.tarifTotal);
+                        trfTtl += item.tarifTotal;
+                    }
+                    if(item.qty != null){
+                        qtyTotal += item.qty;
+                    }
+
                     table += "<tr>" +
-                            "<td>" + item.idTindakan + "</td>" +
                             "<td>" + dateFormat + "</td>" +
+                            "<td>" + item.idTindakan + "</td>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
-                            "<td>" + item.tarif + "</td>" +
-                            "<td>" + item.qty + "</td>" +
-                            "<td>" + item.tarifTotal + "</td>" +
+                            "<td align='right'>" + "Rp. "+ tarif + "</td>" +
+                            "<td align='center'>" + item.qty + "</td>" +
+                            "<td align='right'>" + "Rp. "+ tarifTotal + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
-                            "</tr>"
+                            "</tr>";
+
                 });
+                table = table + "<tr>"+
+                                "<td colspan='6'>Total</td>"+
+//                                "<td align='right'>" + "Rp. " + formatRupiah(trfTotal) + "</td>"+
+//                                "<td align='center'>"+ qtyTotal +"</td>"+
+                                "<td align='right'>" + "Rp. " + formatRupiah(trfTtl) + "</td>"+
+                                "<td></td>"+
+                                "</tr>";
             }
         });
 
         $('#body_tindakan').html(table);
+
     }
 
     function saveDiagnosa(){
@@ -630,7 +638,7 @@
             $('#save_diagnosa').hide();
             $('#load_diagnosa').show();
             dwr.engine.setAsync(true);
-            TeamDokterAction.saveDokter(idDetailCheckup, idDiagnosa, jenisDiagnosa, { callback : function (response) {
+            DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiagnosa, jenisDiagnosa, { callback : function (response) {
                 if(response == "success"){
                     dwr.engine.setAsync(false);
                     listDiagnosa();
@@ -647,7 +655,7 @@
             if(idDiagnosa == ''){
                 $('#nosa_id_diagnosa').css('border','red solid 1px');
             }
-            if(jenisDiagnosa){
+            if(jenisDiagnosa == ''){
                 $('#nosa_jenis_diagnosa').css('border','red solid 1px');
             }
         }
@@ -655,29 +663,44 @@
 
     function listDiagnosa(){
 
-        var table           = "";
-        var data            = [];
-        DiagnosaRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+        var table = "";
+        var data  = [];
+        var id    = "";
+        var ket   = "";
+        var jen   = "";
+
+        DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null){
                 $.each(data, function (i,item) {
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    if(item.idDiagnosa != null){
+                        id = item.idDiagnosa;
+                    }
+                    if(item.keteranganDiagnosa != null){
+                        ket = item.keteranganDiagnosa;
+                    }
+                    if(item.jenisDiagnosa != null){
+                        if(item.jenisDiagnosa == 0){
+                            jen = "Diagnosa Awal";
+                        }else{
+                            jen = "Diagnosa Akhir";
+                        }
+                    }
                     table += "<tr>" +
-                            "<td>" + item.idDiagnosa + "</td>" +
-                            "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.idDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
-                            "<td>" + item.tarif + "</td>" +
-                            "<td>" + item.qty + "</td>" +
-                            "<td>" + item.tarifTotal + "</td>" +
+                            "<td>" +  dateFormat + "</td>" +
+                            "<td>" + id + "</td>" +
+                            "<td>" + ket + "</td>" +
+                            "<td>" + jen + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>"
                 });
             }
         });
 
-        $('#body_tindakan').html(table);
+        $('#body_diagnosa').html(table);
     }
 
 </script>

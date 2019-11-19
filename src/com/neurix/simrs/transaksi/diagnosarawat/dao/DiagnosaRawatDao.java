@@ -42,7 +42,7 @@ public class DiagnosaRawatDao extends GenericDao<ItSimrsDiagnosaRawatEntity, Str
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by
         criteria.addOrder(Order.asc("idDiagnosa"));
