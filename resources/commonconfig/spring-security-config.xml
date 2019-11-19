@@ -92,6 +92,10 @@
             <filter-chain pattern="/mobileapi/payrol/*" filters="none"/>
             <filter-chain pattern="/mobileapi/historycuti" filters="none"/>
 
+            <filter-chain pattern="/mobileapi/registrasi" filters="none" />
+            <filter-chain pattern="/mobileapi/registrasi/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/registrasi/*/**" filters="none"/>
+
             <filter-chain pattern="/**/*"
                           filters="
                         	concurrentSessionFilter, 

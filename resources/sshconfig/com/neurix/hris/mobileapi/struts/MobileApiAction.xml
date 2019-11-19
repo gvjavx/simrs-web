@@ -122,6 +122,10 @@
         <action name="testbpjs/*" class="com.neurix.hris.mobileapi.TestBpjsController">
             <interceptor-ref name="mobileStack"/>
         </action>
+
+        <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

@@ -84,6 +84,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.cronproccess] skiping token");
             } else if ("/mobileapi/testbpjs".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.testbpjs] skiping token");
+            } else if ("/mobileapi/registrasi".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.checkingApi] skiping token");
             }
             else {
 

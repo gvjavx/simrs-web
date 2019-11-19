@@ -122,5 +122,16 @@ public class CommonConstant {
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest";
     public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest";
 
+    public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN="/pages/upload/pasien/";
+
+    public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT="/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
+    public final static String RESOURCE_DOCUMENT_APB="/opt/tomcat/webapps/mnt/documents/simrs/";
+    public final static String RESOURCE_IMAGE_APB="/opt/tomcat/webapps/mnt/images/simrs/";
+    public final static String IMAGE_TYPE=".jpg";
+    public final static String DOC_TYPE = ".pdf";
+
+    public final static String URL_IMG="/images/";
+    public final static String URL_DOC="/documents/";
+
 
 }

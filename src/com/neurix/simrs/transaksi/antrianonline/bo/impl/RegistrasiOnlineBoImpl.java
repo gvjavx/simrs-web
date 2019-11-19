@@ -1,6 +1,10 @@
 package com.neurix.simrs.transaksi.antrianonline.bo.impl;
 
+import com.neurix.authorization.user.dao.UserDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.dao.RegistrasiOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsRegistrasiOnlineEntity;
@@ -21,9 +25,19 @@ import java.util.Map;
 public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
     protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
     private RegistrasiOnlineDao registrasiOnlineDao;
+    private UserDao userDao;
+    private PasienDao pasienDao;
 
     public void setRegistrasiOnlineDao(RegistrasiOnlineDao registrasiOnlineDao) {
         this.registrasiOnlineDao = registrasiOnlineDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 
     @Override
@@ -140,14 +154,17 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
     }
 
     @Override
-    public void saveAdd(RegistrasiOnline bean) throws GeneralBOException {
+    public RegistrasiOnline saveAdd(RegistrasiOnline bean) throws GeneralBOException {
+        logger.info("[RegistrasiOnlineBoImpl.saveAdd] Start <<<<<<<");
+
         if (bean != null) {
 
-            String id = "";
-            id = getNextCheckupOnlineId();
+            String idCheckupOnline = "";
+            String idPasien = "";
+            idCheckupOnline = getNextCheckupOnlineId();
 
             ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
-            registrasiOnlineEntity.setNoCheckupOnline("CKO" + id);
+            registrasiOnlineEntity.setNoCheckupOnline("CKO" + idCheckupOnline);
             registrasiOnlineEntity.setNama(bean.getNama());
             registrasiOnlineEntity.setJenisKelamin(bean.getJenisKelamin());
             registrasiOnlineEntity.setProfesi(bean.getProfesi());
@@ -155,7 +172,6 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             registrasiOnlineEntity.setSuku(bean.getSuku());
             registrasiOnlineEntity.setTempatLahir(bean.getTempatLahir());
             registrasiOnlineEntity.setTglLahir(bean.getTglLahir());
-            registrasiOnlineEntity.setIdPasien(bean.getIdPasien());
             registrasiOnlineEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
             registrasiOnlineEntity.setBranchId(bean.getBranchId());
             registrasiOnlineEntity.setJalan(bean.getJalan());
@@ -172,11 +188,20 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
 
             try{
                 registrasiOnlineDao.addAndSave(registrasiOnlineEntity);
+                bean.setNoCheckupOnline(registrasiOnlineEntity.getNoCheckupOnline());
             } catch (HibernateException e) {
                 logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online" + e.getMessage());
                 throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online");
             }
         }
+
+        logger.info("[RegistrasiOnlineBoImpl.saveAdd] End <<<<<<<");
+        return bean;
+    }
+
+    @Override
+    public Long saveErrorMessage(String message, String s) {
+        return null;
     }
 
     private String getNextCheckupOnlineId() {

@@ -28,6 +28,15 @@ public class ItSimrsRegistrasiOnlineEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String valid;
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
 
     public String getNoCheckupOnline() {
         return noCheckupOnline;
