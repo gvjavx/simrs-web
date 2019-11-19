@@ -3,6 +3,8 @@ package com.neurix.simrs.transaksi.checkupdetail.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -21,7 +23,24 @@ public class CheckupDetailAction extends BaseMasterAction {
     private HeaderDetailCheckup headerDetailCheckup;
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
+    private DiagnosaBo diagnosaBoProxy;
+
     private String id;
+
+    private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
+
+    public List<Diagnosa> getListOfComboDiagnosa() {
+        return listOfComboDiagnosa;
+    }
+
+    public void setListOfComboDiagnosa(List<Diagnosa> listOfComboDiagnosa) {
+        this.listOfComboDiagnosa = listOfComboDiagnosa;
+    }
+
+
+    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
+        this.diagnosaBoProxy = diagnosaBoProxy;
+    }
 
     @Override
     public String getId() {
@@ -122,6 +141,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "init_add";
     }
 
+
+
     @Override
     public String edit() {
         return "init_edit";
@@ -202,6 +223,24 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.getHeaderCheckup] end process <<<");
         return result;
+    }
+
+    public String getListComboDiagnosa(){
+        logger.info("[TeamDokterAction.getListComboDiagnosa] start process >>>");
+
+        List<Diagnosa> diagnosaList = new ArrayList<>();
+        Diagnosa diagnosa = new Diagnosa();
+
+        try {
+            diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+        }catch (GeneralBOException e){
+            logger.error("[TeamDokterAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfComboDiagnosa.addAll(diagnosaList);
+        logger.info("[TeamDokterAction.getListComboDiagnosa] end process <<<");
+        return SUCCESS;
     }
 
 
