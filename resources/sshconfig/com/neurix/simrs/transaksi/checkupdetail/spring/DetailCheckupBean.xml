@@ -5,7 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="checkupDetailAction" class="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"
-          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"/>
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+    />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
