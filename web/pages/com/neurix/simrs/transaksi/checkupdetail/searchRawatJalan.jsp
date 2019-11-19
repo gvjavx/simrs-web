@@ -80,9 +80,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="headerDetailCheckup.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="0" headerValue="Antrian"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -168,9 +168,9 @@
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="jalan"/></td>
-                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td>
                                         <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">

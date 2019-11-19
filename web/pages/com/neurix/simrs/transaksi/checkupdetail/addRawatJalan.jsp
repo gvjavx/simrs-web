@@ -64,7 +64,7 @@
                             <div class="col-md-6">
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>No Checkup</b></td>
+                                        <td width="45%"><b>No Checkup</b></td>
                                         <td><table><s:label id="no_checkup" name="headerDetailCheckup.noCheckup"></s:label></table></td>
                                     </tr>
                                     <tr>
@@ -85,11 +85,13 @@
                                     </tr>
                                     <tr>
                                         <td><b>Tempat, Tanggal Lahir</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                        <td><table><s:label name="headerDetailCheckup.tempatLahir"></s:label>, <s:label name="headerDetailCheckup.tglLahir"></s:label></table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table></td>
+                                        <td><table>
+                                            <%--<s:label name="headerDetailCheckup.jenisKelamin"></s:label>--%>
+                                        </table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
@@ -380,12 +382,20 @@
                     <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <select class="form-control" id="nosa_id_diagnosa" onchange="$(this).css('border','')">
-                                <option value="">[select one]</option>
-                                <option value="01">Ablasi Retina</option>
-                                <option value="02">Abses Gigi</option>
-                                <option value="03">Abses Paru</option>
-                            </select>
+                            <%--<select class="form-control" id="nosa_id_diagnosa" onchange="$(this).css('border','')">--%>
+                                <%--<option value="">[select one]</option>--%>
+                                <%--<option value="01">Ablasi Retina</option>--%>
+                                <%--<option value="02">Abses Gigi</option>--%>
+                                <%--<option value="03">Abses Paru</option>--%>
+                            <%--</select>--%>
+                                <s:action id="initComboDiagnosa" namespace="/checkup"
+                                          name="getListComboDiagnosa_checkup"/>
+                                <s:select cssStyle="margin-top: 7px"
+                                          list="#initComboPoli.listOfPelayanan" id="poli"
+                                          name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                          listValue="namaPelayanan"
+                                          headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2" theme="simple"/>
                         </div>
                     </div>
                     <div class="form-group">

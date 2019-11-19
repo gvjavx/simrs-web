@@ -35,10 +35,76 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String namaPasien;
     private String namaPelayanan;
     private String alamat;
+    private String desaId;
     private String desa;
     private String kecamatan;
     private String kota;
     private String provinsi;
+
+    private String jenisKelamin;
+    private String tempatLahir;
+    private String tglLahir;
+
+    private String stDateFrom;
+    private String stDateTo;
+
+    private String tempatTglLahir;
+
+    public String getTempatTglLahir() {
+        return tempatTglLahir;
+    }
+
+    public void setTempatTglLahir(String tempatTglLahir) {
+        this.tempatTglLahir = tempatTglLahir;
+    }
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getTempatLahir() {
+        return tempatLahir;
+    }
+
+    public void setTempatLahir(String tempatLahir) {
+        this.tempatLahir = tempatLahir;
+    }
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
+    public String getDesaId() {
+        return desaId;
+    }
+
+    public void setDesaId(String desaId) {
+        this.desaId = desaId;
+    }
+
+    public String getStDateFrom() {
+        return stDateFrom;
+    }
+
+    public void setStDateFrom(String stDateFrom) {
+        this.stDateFrom = stDateFrom;
+    }
+
+    public String getStDateTo() {
+        return stDateTo;
+    }
+
+    public void setStDateTo(String stDateTo) {
+        this.stDateTo = stDateTo;
+    }
 
     public String getIdPasien() {
         return idPasien;

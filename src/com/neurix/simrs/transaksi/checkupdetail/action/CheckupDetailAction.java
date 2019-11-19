@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkupdetail.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
         String id = getId();
-
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -77,6 +78,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
 
                         detailCheckup.setStatusPeriksa("1");
+                        detailCheckup.setFlag("Y");
+                        detailCheckup.setAction("U");
+                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
                         try {
                             checkupDetailBoProxy.saveEdit(detailCheckup);
                         } catch (GeneralBOException e){
@@ -92,6 +98,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setKota(headerCheckup.getNamaKota());
                         detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
                         detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+                        detailCheckup.setJenisKelamin(headerCheckup.getJenisKelamin() == "P" ? "Perempuan" : "Laki-Laki");
+                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
+                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
+                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
 
                         setHeaderDetailCheckup(detailCheckup);
 
@@ -141,7 +151,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         try {
-            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getByCriteria(headerDetailCheckup);
+            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
