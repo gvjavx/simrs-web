@@ -5,8 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!--<bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"-->
-          <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
+    <bean id="teamDokterAction" class="com.neurix.simrs.transaksi.teamdokter.action.TeamDokterAction"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
 
     <bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"
           p:dokterSpesialisDao-ref="dokterSpesialisDao"
