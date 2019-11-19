@@ -69,6 +69,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
+        String id = getId();
 
         String id = getId();
         if (id != null && !"".equalsIgnoreCase(id)) {
@@ -101,6 +102,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
 
                         setHeaderDetailCheckup(detailCheckup);
+
                         break;
                     }
                 }
@@ -112,7 +114,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfDataPasien");
+        session.setAttribute("listOfDataPasien", listOfsearchDetailCheckup);
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_add";

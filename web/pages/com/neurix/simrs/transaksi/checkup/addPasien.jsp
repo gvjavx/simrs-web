@@ -394,26 +394,26 @@
                                                 <s:select cssStyle="margin-top: 7px"
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                          listValue="namaPelayanan" onchange="$(this).css('border','')"
+                                                          listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control"/>
 
-                                                <%--; listDokter(this)--%>
+
 
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Dokter</label>
                                             <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'01':'Dr. Sudirto','02':'Dr.Sumadjo'}"
-                                                        cssStyle="margin-top: 7px"
-                                                        id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"
-                                                        headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control"/>
+                                                <%--<s:select--%>
+                                                        <%--list="#{'01':'Dr. Sudirto','02':'Dr.Sumadjo'}"--%>
+                                                        <%--cssStyle="margin-top: 7px"--%>
+                                                        <%--id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
+                                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                                        <%--cssClass="form-control"/>--%>
                                                 <%--<s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
                                                              <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                                    <%--<select id="dokter" class="form-control" name="headerCheckup.idDokter" style="margin-top: 7px" onchange="$(this).css('border','')"></select>--%>
+                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" style="margin-top: 7px" onchange="$(this).css('border','')"></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -586,13 +586,18 @@
     function listDokter(idPelayanan){
         var idx = idPelayanan.selectedIndex;
         var idPoli = idPelayanan.options[idx].value;
+        var option = "";
         CheckupAction.listOfDokter(idPoli, function(response){
-            $.each(response, function (i, item) {
-                $('#dokter').append($("<option></option>")
-                        .attr("value",item.idDokter)
-                        .text(item.namaDokter));
-            });
+            option = "<option value=''>[Select One]</option>";
+            if (response != null){
+                $.each(response, function (i, item) {
+                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
+                });
+            }else{
+               option = option;
+            }
         });
+        $('#dokter').html(option);
     }
 
     var functions, mapped;
