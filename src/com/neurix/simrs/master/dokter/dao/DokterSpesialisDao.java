@@ -21,12 +21,15 @@ public class DokterSpesialisDao extends GenericDao<ImSimrsDokterSpesialisEntity,
     public List<ImSimrsDokterSpesialisEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterSpesialisEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_dokter") != null)
+            if (mapCriteria.get("id_dokter") != null){
                 criteria.add(Restrictions.eq("primariKey.idDokter", mapCriteria.get("id_dokter").toString()));
-            if (mapCriteria.get("id_spesialis") != null)
+            }
+            if (mapCriteria.get("id_spesialis") != null){
                 criteria.add(Restrictions.eq("primariKey.idSpesialis", mapCriteria.get("id_spesialis").toString()));
-            if (mapCriteria.get("flag") != null)
+            }
+            if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
 
         List<ImSimrsDokterSpesialisEntity> result = criteria.list();
         return result;

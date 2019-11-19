@@ -291,8 +291,20 @@
           <param name="class" value="com.neurix.simrs.transaksi.checkup.action.CheckupAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
 
+      <!--Team Dokter -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.teamdokter.action.TeamDokterAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.teamdokter.model.DokterTeam"/>
+
+      <!--Diagnosa Rawat -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat"/>
   </allow>
 
 </dwr>

@@ -5,8 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!--<bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"-->
-          <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
+    <bean id="diagnosaRawatAction" class="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"
+        p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+
+    />
 
     <bean id="diagnosaRawatBo" class="com.neurix.simrs.transaksi.diagnosarawat.bo.impl.DiagnosaRawatBoImpl"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"

@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.checkupdetail.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -10,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +23,24 @@ public class CheckupDetailAction extends BaseMasterAction {
     private HeaderDetailCheckup headerDetailCheckup;
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
+    private DiagnosaBo diagnosaBoProxy;
+
     private String id;
+
+    private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
+
+    public List<Diagnosa> getListOfComboDiagnosa() {
+        return listOfComboDiagnosa;
+    }
+
+    public void setListOfComboDiagnosa(List<Diagnosa> listOfComboDiagnosa) {
+        this.listOfComboDiagnosa = listOfComboDiagnosa;
+    }
+
+
+    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
+        this.diagnosaBoProxy = diagnosaBoProxy;
+    }
 
     @Override
     public String getId() {
@@ -67,7 +88,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
-
+        String id = getId();
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -76,6 +97,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
 
                         detailCheckup.setStatusPeriksa("1");
+                        detailCheckup.setFlag("Y");
+                        detailCheckup.setAction("U");
+                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
                         try {
                             checkupDetailBoProxy.saveEdit(detailCheckup);
                         } catch (GeneralBOException e){
@@ -91,8 +117,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setKota(headerCheckup.getNamaKota());
                         detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
                         detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+                        detailCheckup.setJenisKelamin(headerCheckup.getJenisKelamin());
+                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
+                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
 
                         setHeaderDetailCheckup(detailCheckup);
+
                         break;
                     }
                 }
@@ -104,11 +134,14 @@ public class CheckupDetailAction extends BaseMasterAction {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfDataPasien");
+        session.setAttribute("listOfDataPasien", listOfsearchDetailCheckup);
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_add";
     }
+
+
 
     @Override
     public String edit() {
@@ -138,7 +171,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         try {
-            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getByCriteria(headerDetailCheckup);
+            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
@@ -190,6 +223,24 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.getHeaderCheckup] end process <<<");
         return result;
+    }
+
+    public String getListComboDiagnosa(){
+        logger.info("[TeamDokterAction.getListComboDiagnosa] start process >>>");
+
+        List<Diagnosa> diagnosaList = new ArrayList<>();
+        Diagnosa diagnosa = new Diagnosa();
+
+        try {
+            diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+        }catch (GeneralBOException e){
+            logger.error("[TeamDokterAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfComboDiagnosa.addAll(diagnosaList);
+        logger.info("[TeamDokterAction.getListComboDiagnosa] end process <<<");
+        return SUCCESS;
     }
 
 
