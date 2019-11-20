@@ -149,7 +149,7 @@ apply the skin class to the body tag so the changes take effect.
     });
 
     $(function () {
-        $('.select2').select2();
+        $('.select2').select2({});
         //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
         //Money Euro

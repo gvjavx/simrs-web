@@ -118,17 +118,23 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             List<Diagnosa> diagnosaList = new ArrayList<>();
             Diagnosa diagnosa = new Diagnosa();
             diagnosa.setIdDiagnosa(idDiagnosa);
+            Diagnosa diagnosaResult = new Diagnosa();
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
 
             try {
-                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+                diagnosaList = diagnosaBo.getByCriteria(diagnosa);
             }catch (GeneralBOException e){
                 logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
             if (!diagnosaList.isEmpty()){
-
+                diagnosaResult = diagnosaList.get(0);
             }
+
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
             diagnosaRawat.setIdDiagnosa(idDiagnosa);
+            diagnosaRawat.setKeteranganDiagnosa(diagnosaResult.getDescOfDiagnosa());
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setCreatedWho(userLogin);
             diagnosaRawat.setLastUpdate(updateTime);
@@ -137,7 +143,6 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
             diagnosaRawatBo.saveAdd(diagnosaRawat);
@@ -155,7 +160,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
 
     public List<DiagnosaRawat> listDiagnosa(String idDetailCheckup){
 
-        logger.info("[TeamDokterAction.listDiagnosa] start process >>>");
+        logger.info("[DiagnosaRawatAction.listDiagnosa] start process >>>");
         List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
         DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
         diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
@@ -163,19 +168,23 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
-        try {
-            diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
-        }catch (GeneralBOException e){
-            logger.error("[TeamDokterAction.listDiagnosa] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-        }
+        if (idDetailCheckup != ""){
+            try {
+                diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+            }catch (GeneralBOException e){
+                logger.error("[DiagnosaRawatAction.listDiagnosa] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
 
-        logger.info("[TeamDokterAction.listDiagnosa] end process <<<");
-        return diagnosaRawatList;
+            logger.info("[DiagnosaRawatAction.listDiagnosa] end process <<<");
+            return diagnosaRawatList;
+        }else{
+            return null;
+        }
     }
 
     public String getListComboDiagnosa(){
-        logger.info("[TeamDokterAction.getListComboDiagnosa] start process >>>");
+        logger.info("[DiagnosaRawatAction.getListComboDiagnosa] start process >>>");
 
         List<Diagnosa> diagnosaList = new ArrayList<>();
         Diagnosa diagnosa = new Diagnosa();
@@ -183,12 +192,12 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         try {
             diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
         }catch (GeneralBOException e){
-            logger.error("[TeamDokterAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[DiagnosaRawatAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
         }
 
         listOfComboDiagnosa.addAll(diagnosaList);
-        logger.info("[TeamDokterAction.getListComboDiagnosa] end process <<<");
+        logger.info("[DiagnosaRawatAction.getListComboDiagnosa] end process <<<");
         return SUCCESS;
     }
 }

@@ -48,6 +48,16 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String stDateFrom;
     private String stDateTo;
 
+    private String tempatTglLahir;
+
+    public String getTempatTglLahir() {
+        return tempatTglLahir;
+    }
+
+    public void setTempatTglLahir(String tempatTglLahir) {
+        this.tempatTglLahir = tempatTglLahir;
+    }
+
     public String getJenisKelamin() {
         return jenisKelamin;
     }
