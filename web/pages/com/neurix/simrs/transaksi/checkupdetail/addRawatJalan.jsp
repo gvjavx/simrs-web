@@ -14,6 +14,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -95,7 +96,8 @@
                                     </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
-                                        <td><table><s:label id="no_detail_checkup" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
+                                        <td><table><s:label id="nama_poli" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
+                                        <s:hidden id="id_pelayanan" name="headerDetailCheckup.idPelayanan"/>
                                     </tr>
                                 </table>
                             </div>
@@ -331,9 +333,9 @@
                         <div class="col-md-7">
                             <select class="form-control" style="margin-top: 7px" id="tin_id_dokter" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
+                                <div id="dokter_tindakan">
+
+                                </div>
                             </select>
                         </div>
                     </div>
@@ -490,6 +492,12 @@
             $('#load_tindakan, #warning_tindakan').hide();
             $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
             $('#modal-tindakan').modal('show');
+
+//            listDokterTindakan();
+
+            var idPelayanan = $("#nama_poli").val();
+            alert(idPelayanan);
+
         }else if(select == 3){
             $('#modal-diagnosa').modal('show');
         }else if(select == 4){
@@ -590,6 +598,24 @@
         }
     }
 
+    function listDokterTindakan(){
+
+        var idPelayanan = $("#id_pelayanan").val();
+
+        var option = "";
+        CheckupAction.listOfDokter(idPelayanan, function(response){
+            option = "<option value=''>[Select One]</option>";
+            if (response != null){
+                $.each(response, function (i, item) {
+                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
+                });
+            }else{
+                option = option;
+            }
+        });
+        $('#dokter_tindakan').html(option);
+    }
+
     function listTindakan(){
 
         var table           = "";
@@ -621,7 +647,7 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.idTindakan + "</td>" +
-                            "<td>" + item.idDokter + "</td>" +
+                            "<td>" + item.namaDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
                             "<td align='right'>" + "Rp. "+ tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
