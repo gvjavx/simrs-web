@@ -12,6 +12,7 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
@@ -320,13 +321,23 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
+                        <div class="col-md-7">
+                            <s:action id="initComboKategoriTindakan" namespace="/checkupdetail"
+                                      name="getListComboKategoriTindakan_checkupdetail"/>
+                            <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectTindakan(this);"
+                                      list="#initComboKategoriTindakan.listOfKategoriTindakan" id="tin_id_ketgori_tindakan"
+                                      listKey="idKategoriTindakan"
+                                      listValue="kategoriTindakan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <select class="form-control" id="tin_id_tindakan" onchange="$(this).css('border','')">
-                                <option value="">[select one]</option>
-                                <option value="1">Suntik</option>
-                                <option value="2">Pil</option>
-                                <option value="3">Obat</option>
+                            <select class="form-control" style="margin-top: 7px" id="tin_id_tindakan" onchange="$(this).css('border','')">
+                                <option value=''>[Select One]</option>
                             </select>
                         </div>
                     </div>
@@ -470,6 +481,7 @@
     });
 
     function listSelectDokter(){
+        var option = "";
         CheckupAction.listOfDokter(idPoli, function(response){
             option = "<option value=''>[Select One]</option>";
             if (response != null){
@@ -482,6 +494,28 @@
         });
         $('#dok_id_dokter').html(option);
         $('#tin_id_dokter').html(option);
+    }
+
+    function listSelectTindakan(idKategori){
+        var idx     = idKategori.selectedIndex;
+        var idKtg   = idKategori.options[idx].value;
+        var option = "<option value=''>[Select One]</option>";
+        if(idKtg != ''){
+            CheckupDetailAction.getListComboTindakan(idKtg, function(response){
+                if (response != null){
+                    $.each(response, function (i, item) {
+                        option += "<option value='"+item.idTindakan+"'>" +item.tindakan+ "</option>";
+                    });
+                }else{
+                    option = option;
+                }
+            });
+        }else{
+            alert("kosong");
+            option = option;
+        }
+
+        $('#tin_id_tindakan').html(option);
     }
 
     function toContent(){
@@ -585,12 +619,13 @@
 
     function saveTindakan(){
 
+        var idKategori      = $('#tin_id_ketgori_tindakan').val();
         var idTindakan      = $('#tin_id_tindakan').val();
         var idDokter        = $('#tin_id_dokter').val();
         var idPerawat       = $('#tin_id_perawat').val();
         var qty             = $('#tin_qty').val();
 
-        if (idDetailCheckup != '' && idTindakan !='' && idDokter != '' && idPerawat != '' && qty > 0){
+        if (idDetailCheckup != '' && idTindakan !='' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != ''){
             $('#save_tindakan').hide();
             $('#load_tindakan').show();
             dwr.engine.setAsync(true);
@@ -611,6 +646,9 @@
         }else {
             $('#warning_tindakan').show().fadeOut(5000);
 
+            if(idKategori == ''){
+                $('#tin_id_ketgori_tindakan').css('border','red solid 1px');
+            }
             if(idTindakan == ''){
                 $('#tin_id_tindakan').css('border','red solid 1px');
             }
@@ -656,8 +694,8 @@
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.idTindakan + "</td>" +
-                            "<td>" + item.idDokter + "</td>" +
+                            "<td>" + item.namaTindakan + "</td>" +
+                            "<td>" + item.namaDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
                             "<td align='right'>" + "Rp. "+ tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +

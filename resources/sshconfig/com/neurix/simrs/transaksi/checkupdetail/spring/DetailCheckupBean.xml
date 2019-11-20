@@ -7,6 +7,8 @@
     <bean id="checkupDetailAction" class="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
+          p:tindakanBoProxy-ref="tindakanBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"

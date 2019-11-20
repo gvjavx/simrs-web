@@ -1,6 +1,9 @@
 package com.neurix.simrs.transaksi.tindakanrawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -24,6 +27,15 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
     private static transient Logger logger = Logger.getLogger(TindakanRawatBoImpl.class);
     private TindakanRawatDao tindakanRawatDao;
     private CheckupDetailDao checkupDetailDao;
+    private DokterDao dokterDao;
+
+    public DokterDao getDokterDao() {
+        return dokterDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -195,6 +207,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setIdTindakanRawat(entity.getIdTindakanRawat());
             tindakanRawat.setIdDetailCheckup(entity.getIdDetailCheckup());
             tindakanRawat.setIdTindakan(entity.getIdTindakan());
+            tindakanRawat.setNamaTindakan(entity.getNamaTindakan());
             tindakanRawat.setIdDokter(entity.getIdDokter());
             tindakanRawat.setIdPerawat(entity.getIdPerawat());
             tindakanRawat.setTarif(entity.getTarif());
@@ -206,6 +219,23 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setCreatedWho(entity.getCreatedWho());
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
+
+            List<ImSimrsDokterEntity> dokterEntityList = new ArrayList<>();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_dokter", entity.getIdDokter());
+
+            try {
+                dokterEntityList = dokterDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[TindakanRawatBoImpl.setToTindakanRawatTemplate] Error When get nama dokter");
+            }
+
+            ImSimrsDokterEntity dokterEntity = new ImSimrsDokterEntity();
+
+            if (!dokterEntityList.isEmpty()){
+                dokterEntity = dokterEntityList.get(0);
+                tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
+            }
 
             results.add(tindakanRawat);
 
