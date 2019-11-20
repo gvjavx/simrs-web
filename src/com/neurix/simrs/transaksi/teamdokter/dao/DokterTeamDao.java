@@ -38,7 +38,7 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by
         criteria.addOrder(Order.asc("idTeamDokter"));

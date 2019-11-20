@@ -116,13 +116,15 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
             List<Diagnosa> diagnosaList = new ArrayList<>();
-            List<Diagnosa> diagnosaList2 = new ArrayList<>();
             Diagnosa diagnosa = new Diagnosa();
             diagnosa.setIdDiagnosa(idDiagnosa);
             Diagnosa diagnosaResult = new Diagnosa();
 
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
+
             try {
-                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+                diagnosaList = diagnosaBo.getByCriteria(diagnosa);
             }catch (GeneralBOException e){
                 logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
@@ -141,7 +143,6 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
             diagnosaRawatBo.saveAdd(diagnosaRawat);

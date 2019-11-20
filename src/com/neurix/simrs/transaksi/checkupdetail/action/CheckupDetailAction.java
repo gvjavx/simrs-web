@@ -89,6 +89,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
         String id = getId();
+        String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -116,8 +117,16 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
                         detailCheckup.setKota(headerCheckup.getNamaKota());
                         detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
+                        detailCheckup.setIdPelayanan(headerCheckup.getIdPelayanan());
                         detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        detailCheckup.setJenisKelamin(headerCheckup.getJenisKelamin() == "P" ? "Perempuan" : "Laki-Laki");
+                        if(headerCheckup.getJenisKelamin()!= null){
+                            if("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
+                                jk = "Perempuan";
+                            }else{
+                                jk = "laki-Laki";
+                            }
+                        }
+                        detailCheckup.setJenisKelamin(jk);
                         detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
                         detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
                         detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
@@ -227,7 +236,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public String getListComboDiagnosa(){
-        logger.info("[TeamDokterAction.getListComboDiagnosa] start process >>>");
+        logger.info("[CheckupDetailAction.getListComboDiagnosa] start process >>>");
 
         List<Diagnosa> diagnosaList = new ArrayList<>();
         Diagnosa diagnosa = new Diagnosa();
@@ -235,12 +244,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         try {
             diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
         }catch (GeneralBOException e){
-            logger.error("[TeamDokterAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[CheckupDetailAction.getListComboDiagnosa] Error when get diagnosa ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get diagnosa , please inform to your admin.\n" + e.getMessage());
         }
 
         listOfComboDiagnosa.addAll(diagnosaList);
-        logger.info("[TeamDokterAction.getListComboDiagnosa] end process <<<");
+        logger.info("[CheckupDetailAction.getListComboDiagnosa] end process <<<");
         return SUCCESS;
     }
 

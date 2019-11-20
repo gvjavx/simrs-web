@@ -11,6 +11,7 @@
     <style>
     </style>
 
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
@@ -85,17 +86,19 @@
                                     </tr>
                                     <tr>
                                         <td><b>Tempat, Tanggal Lahir</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.tempatLahir"></s:label>, <s:label name="headerDetailCheckup.tglLahir"></s:label></table></td>
+                                        <td><table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td><table>
-                                            <%--<s:label name="headerDetailCheckup.jenisKelamin"></s:label>--%>
+                                            <s:label name="headerDetailCheckup.jenisPasien"></s:label>
                                         </table></td>
                                     </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
-                                        <td><table><s:label id="no_detail_checkup" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
+                                        <td><table>
+                                            <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
+                                            <s:label id="no_detail_checkup" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
                                     </tr>
                                 </table>
                             </div>
@@ -155,7 +158,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <td>Poli</td>
+                                <td>Spesialis</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -279,15 +282,15 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Dokter</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dokter">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
                 <div class="row">
                 <div class="form-group">
                     <label class="col-md-3">Nama Dokter</label>
                     <div class="col-md-7">
-                        <select id="dok_id_dokter" class="form-control" style="margin-top: 7px">
-                            <option value="">[select one]</option>
-                            <option value="1">Dr. Sutikno</option>
-                            <option value="2">Dr. Julio</option>
-                            <option value="3">Dr. Turnomo</option>
+                        <select id="dok_id_dokter" class="form-control" onchange="$(this).css('border','')">
                         </select>
                     </div>
                 </div>
@@ -295,7 +298,8 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button type="button" class="btn btn-success" onclick="saveDokter()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" onclick="saveDokter()" id="save_dokter"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_dokter"><i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...</button>
             </div>
         </div>
     </div>
@@ -330,10 +334,6 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
                             <select class="form-control" style="margin-top: 7px" id="tin_id_dokter" onchange="$(this).css('border','')">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
                             </select>
                         </div>
                     </div>
@@ -382,20 +382,14 @@
                     <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <%--<select class="form-control" id="nosa_id_diagnosa" onchange="$(this).css('border','')">--%>
-                                <%--<option value="">[select one]</option>--%>
-                                <%--<option value="01">Ablasi Retina</option>--%>
-                                <%--<option value="02">Abses Gigi</option>--%>
-                                <%--<option value="03">Abses Paru</option>--%>
-                            <%--</select>--%>
-                                <s:action id="initComboDiagnosa" namespace="/checkup"
-                                          name="getListComboDiagnosa_checkup"/>
-                                <s:select cssStyle="margin-top: 7px"
-                                          list="#initComboPoli.listOfPelayanan" id="poli"
-                                          name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
-                                          listValue="namaPelayanan"
+                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                          name="getListComboDiagnosa_checkupdetail"/>
+                                <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                          name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
+                                          listValue="descOfDiagnosa"
                                           headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2" theme="simple"/>
+                                          cssClass="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -465,29 +459,56 @@
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').text();
+    var idPoli          = $('#id_palayanan').val();
 
     $( document ).ready(function() {
         $('#rawat_jalan').addClass('active');
-        listTindakan();
         listDokter();
+        listTindakan();
         listDiagnosa();
+        listSelectDokter();
     });
+
+    function listSelectDokter(){
+        CheckupAction.listOfDokter(idPoli, function(response){
+            option = "<option value=''>[Select One]</option>";
+            if (response != null){
+                $.each(response, function (i, item) {
+                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
+                });
+            }else{
+                option = option;
+            }
+        });
+        $('#dok_id_dokter').html(option);
+        $('#tin_id_dokter').html(option);
+    }
 
     function toContent(){
         var back = $('#close_pos').val();
-        if(back == 2){
-            $('html, body').animate({
-                scrollTop: $("#pos_tin").offset().top
-            }, 2000);
+        var desti = "";
+
+        if(back == 1){
+            desti = "#pos_dok";
+        }else if(back == 2){
+            desti = "#pos_tin";
         }else if(back == 3){
-            $('html, body').animate({
-                scrollTop: $("#pos_nosa").offset().top
-            }, 2000);
+            desti = "#pos_nosa";
+        }else if (back == 4){
+            desti = "#pos_lab";
         }
+
+        $('html, body').animate({
+            scrollTop: $(desti).offset().top
+        }, 2000);
     }
+
     function showModal(select){
 
         if (select == 1){
+            $('#save_dokter').show();
+            $('#load_dokter, #warning_dokter').hide();
+            $('#dok_id_dokter').css('border','');
             $('#modal-dokter').modal('show');
         }else if(select == 2){
             $('#tin_id_tindakan').val('');
@@ -499,6 +520,11 @@
             $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
             $('#modal-tindakan').modal('show');
         }else if(select == 3){
+            $('#nosa_id_diagnosa').val('');
+            $('#nosa_jenis_diagnosa').val('');
+            $('#save_diagnosa').show();
+            $('#load_diagnosa, #warning_diagnosa').hide();
+            $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').css('border','');
             $('#modal-diagnosa').modal('show');
         }else if(select == 4){
             $('#modal-lab').modal('show');
@@ -516,6 +542,8 @@
     function saveDokter(){
         var idDokter        = $('#dok_id_dokter').val();
         if(idDetailCheckup != '' && idDokter != ''){
+            $('#save_dokter').hide();
+            $('#load_dokter').show();
             dwr.engine.setAsync(true);
             TeamDokterAction.saveDokter(idDetailCheckup, idDokter, function (response) {
                 if(response == "success"){
@@ -545,7 +573,7 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.namaPleyanan + "</td>" +
+                            "<td>" + item.namaSpesialis + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>"
                 });
@@ -692,6 +720,7 @@
 
         DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
             data = response;
+            console.log('tes');
             console.log(data);
             if (data != null){
                 $.each(data, function (i,item) {
