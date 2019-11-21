@@ -47,7 +47,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rawat Jalan Pasien
+            Rawat Inap Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -160,7 +160,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <%--<td>Spesialis</td>--%>
+                                <td>Spesialis</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -239,7 +239,55 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-header with-border" id="pos_diet">
+                    </div>
+                    <div class="box-header with-border" >
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Keterangan</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_diet">
 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-header with-border" id="pos_obat">
+                    </div>
+                    <div class="box-header with-border" >
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>ID Obat</td>
+                                <td>Obat</td>
+                                <td>Jenis Obat</td>
+                                <td>Qty</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_obat">
+
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
@@ -249,16 +297,10 @@
                         <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Waktu Selesai Periksa</label>
-                                <s:textfield id=""
-                                             name="headerDetailCheckup.noCheckup" required="false"
-                                             cssClass="form-control"/>
-                            </div>
-                            <!-- /.form-group -->
-                            <div class="form-group">
                                 <label style="margin-top: 7px">Keterangan Selesai Periksa</label>
-                                <s:textfield id="e" name="headerDetailCheckup.idDetailCheckup" required="false"
-                                             cssClass="form-control"/>
+                                <select class="form-control">
+                                    <option>Pulang</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-success" style="margin-top: 10px; width: 150px"><i class="fa fa-arrow-right"></i> Save</button>
@@ -474,7 +516,7 @@
     var idPoli          = $('#id_palayanan').val();
 
     $( document ).ready(function() {
-        $('#rawat_jalan').addClass('active');
+        $('#rawat_inap').addClass('active');
         listDokter();
         listTindakan();
         listDiagnosa();
@@ -574,7 +616,7 @@
 
     function formatRupiah(angka){
         var reverse = angka.toString().split('').reverse().join(''),
-        ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = reverse.match(/\d{1,3}/g);
         ribuan = ribuan.join('.').split('').reverse().join('');
         return ribuan;
     }
@@ -614,7 +656,7 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-//                            "<td>" + item.namaSpesialis + "</td>" +
+                            "<td>" + item.namaSpesialis + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>"
                 });

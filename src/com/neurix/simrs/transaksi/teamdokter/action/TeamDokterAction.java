@@ -129,7 +129,7 @@ public class TeamDokterAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
 
-        if(idDetailCheckup != ""){
+        if(!"".equalsIgnoreCase(idDetailCheckup)){
             try {
                 dokterTeamList = dokterBo.getByCriteria(dokterTeam);
             }catch (GeneralBOException e){
