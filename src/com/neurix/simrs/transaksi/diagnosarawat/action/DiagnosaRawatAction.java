@@ -168,7 +168,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
-        if (idDetailCheckup != ""){
+        if (!"".equalsIgnoreCase(idDetailCheckup)){
             try {
                 diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
             }catch (GeneralBOException e){

@@ -176,7 +176,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
-        if(idDetailCheckup != ""){
+        if(!"".equalsIgnoreCase(idDetailCheckup)){
             try {
                 tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
             }catch (GeneralBOException e){

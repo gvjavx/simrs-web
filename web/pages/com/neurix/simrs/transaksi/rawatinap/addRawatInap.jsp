@@ -47,7 +47,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rawat Jalan Pasien
+            Rawat Inap Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -68,7 +68,7 @@
                                 <table class="table table-striped">
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
-                                        <td><table><s:label name="headerDetailCheckup.noCheckup"></s:label></table></td>
+                                        <td><table><s:label id="no_checkup" name="headerDetailCheckup.noCheckup"></s:label></table></td>
                                     </tr>
                                     <tr>
                                         <td><b>No Checkup Detail</b></td>
@@ -99,7 +99,6 @@
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td><table>
-                                            <s:hidden id="no_checkup" name="headerDetailCheckup.noCheckup"></s:hidden>
                                             <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
                                             <s:label id="nama_pelayanan" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
                                     </tr>
@@ -161,7 +160,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <%--<td>Spesialis</td>--%>
+                                <td>Spesialis</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -240,73 +239,71 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-header with-border" id="pos_diet">
+                    </div>
+                    <div class="box-header with-border" >
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Jenis Diet Pagi</td>
+                                <td>Bentuk Diet Pagi</td>
+                                <td>Keterangan</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_diet">
 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-header with-border" id="pos_obat">
+                    </div>
+                    <div class="box-header with-border" >
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
+                        <table class="table table-bordered table-striped">
+                            <thead >
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>ID Obat</td>
+                                <td>Obat</td>
+                                <td>Jenis Obat</td>
+                                <td>Qty</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_obat">
+
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="box-header with-border">
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>--%>
-                    <%--</div>--%>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                    </div>
                     <div class="box-body">
                         <div class="row">
                         <div class="col-md-4">
-                            <%--<div class="form-group">--%>
-                                <%--<label>Waktu Selesai Periksa</label>--%>
-                                <%--<s:textfield id=""--%>
-                                             <%--name="headerDetailCheckup.noCheckup" required="false"--%>
-                                             <%--cssClass="form-control"/>--%>
-                            <%--</div>--%>
-                            <!-- /.form-group -->
                             <div class="form-group">
-                                <label style="margin-top: 7px">Keterangan : </label>
-                                <select class="form-control" style="margin-top: 7px" id="keterangan" onchange="$(this).css('border',''), selectKeterangan(this)">
-                                    <option value=''>[Select One]</option>
-                                    <option value='selesai'>Selesai</option>
-                                    <option value='pindah'>Pindah Poli Lain</option>
-                                    <option value='rujuk'>Rujuk Rawat Inap</option>
+                                <label style="margin-top: 7px">Keterangan Selesai Periksa</label>
+                                <select class="form-control">
+                                    <option>Pulang</option>
                                 </select>
                             </div>
-                            <div id="form-poli" style="display: none">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Poli</label>
-                                    <s:action id="initComboPoli" namespace="/checkup"
-                                              name="getComboPelayanan_checkup"/>
-                                    <s:select cssStyle="margin-top: 7px"
-                                              list="#initComboPoli.listOfPelayanan" id="poli_lain"
-                                              name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                              listValue="namaPelayanan" onchange="$(this).css('border',''); listDokterKeterangan(this)"
-                                              headerKey="" headerValue="[Select one]"
-                                              cssClass="form-control"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Dokter</label>
-                                    <select id="list_dokter" class="form-control" style="margin-top: 7px" onchange="$(this).css('border','')"></select>
-                                </div>
-                            </div>
-
-                            <div id="kamar" style="display: none;">
-                                <div class="form-group" >
-                                    <label style="margin-top: 7px">Kelas : </label>
-                                    <select class="form-control" style="margin-top: 7px" id="kelas_kamar" onchange="$(this).css('border','')">
-                                        <option value=''>[Select One]</option>
-                                        <%--<option value=''>[Selesai]</option>--%>
-                                        <%--<option value=''>[Pindah Poli Lain]</option>--%>
-                                        <%--<option value=''>[Rujuk Rawat Inap]</option>--%>
-                                    </select>
-                                </div>
-                                <div class="form-group" >
-                                    <label style="margin-top: 7px">Kamar : </label>
-                                    <select class="form-control" style="margin-top: 7px" id="kamar_detail" onchange="$(this).css('border','')">
-                                        <option value=''>[Select One]</option>
-                                        <%--<option value=''>[Selesai]</option>--%>
-                                        <%--<option value=''>[Pindah Poli Lain]</option>--%>
-                                        <%--<option value=''>[Rujuk Rawat Inap]</option>--%>
-                                    </select>
-                                </div>
-                            </div>
-
                             <div class="form-group">
-                                <button class="btn btn-success" onclick="saveKeterangan()" style="margin-top: 10px; width: 150px"><i class="fa fa-arrow-right"></i> Save</button>
+                                <button class="btn btn-success" style="margin-top: 10px; width: 150px"><i class="fa fa-arrow-right"></i> Save</button>
                             </div>
                         </div>
                         </div>
@@ -519,7 +516,7 @@
     var idPoli          = $('#id_palayanan').val();
 
     $( document ).ready(function() {
-        $('#rawat_jalan').addClass('active');
+        $('#rawat_inap').addClass('active');
         listDokter();
         listTindakan();
         listDiagnosa();
@@ -540,47 +537,6 @@
         });
         $('#dok_id_dokter').html(option);
         $('#tin_id_dokter').html(option);
-    }
-
-    function selectKeterangan(id) {
-        var idx     = id.selectedIndex;
-        var idKtg   = id.options[idx].value;
-
-        if(idKtg == "pindah"){
-            $("#form-poli").attr('style','display:block');
-            $("#kamar").attr('style','display:none');
-        }
-        if (idKtg == "rujuk"){
-            $("#kamar").attr('style','display:block');
-            $("#form-poli").attr('style','display:none');
-        }
-        if (idKtg == "selesai" || idKtg == ""){
-            $("#kamar").attr('style','display:none');
-            $("#form-poli").attr('style','display:none');
-        }
-    }
-
-    function saveKeterangan(){
-        var idKtg = $("#keterangan").val();
-        var noCheckup = $("#no_checkup").val();
-        var poli = "";
-        var kelas = "";
-        var kamar = "";
-        var idDokter = "";
-
-        if(idKtg == "pindah"){
-            poli = $("#poli_lain").val();
-            idDokter = $("#list_dokter").val();
-        }
-
-        if (idKtg == "rujuk"){
-            $("#kelas_kamar").val();
-            $("#kamar_detail").val();
-        }
-
-        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, function(response){
-           alert(response);
-        });
     }
 
     function listSelectTindakan(idKategori){
@@ -660,7 +616,7 @@
 
     function formatRupiah(angka){
         var reverse = angka.toString().split('').reverse().join(''),
-        ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = reverse.match(/\d{1,3}/g);
         ribuan = ribuan.join('.').split('').reverse().join('');
         return ribuan;
     }
@@ -700,7 +656,7 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-//                            "<td>" + item.namaSpesialis + "</td>" +
+                            "<td>" + item.namaSpesialis + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>"
                 });
@@ -708,23 +664,6 @@
         });
 
         $('#body_dokter').html(table);
-    }
-
-    function listDokterKeterangan(idPelayanan){
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
-        var option = "";
-        CheckupAction.listOfDokter(idPoli, function(response){
-            option = "<option value=''>[Select One]</option>";
-            if (response != null){
-                $.each(response, function (i, item) {
-                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
-                });
-            }else{
-                option = option;
-            }
-        });
-        $('#list_dokter').html(option);
     }
 
     function saveTindakan(){
