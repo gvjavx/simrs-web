@@ -336,11 +336,22 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setStatusPeriksa("3");
         headerDetailCheckup.setFlag("Y");
         headerDetailCheckup.setAction("U");
+
+        if ("selesai".equalsIgnoreCase(idKtg)){
+            headerDetailCheckup.setKeteranganSelesai("Selesai Periksa");
+        }
+        if ("pindah".equalsIgnoreCase(idKtg)){
+            headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
+        }
+        if ("rujuk".equalsIgnoreCase(idKtg)){
+            headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
+        }
+
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("CheckupDetailBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
             checkupDetailBo.saveEdit(headerDetailCheckup);
