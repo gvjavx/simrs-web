@@ -31,6 +31,7 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String namaRuangan;
     private String noRuangan;
 
+    private String idDokter;
     private String idPasien;
     private String namaPasien;
     private String namaPelayanan;
@@ -49,6 +50,14 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String stDateTo;
 
     private String tempatTglLahir;
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
 
     public String getTempatTglLahir() {
         return tempatTglLahir;
