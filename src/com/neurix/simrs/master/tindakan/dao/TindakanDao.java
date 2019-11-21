@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 07/11/2019.
  */
-public class TindakanDao extends GenericDao<ImSimrsTindakanEntity,String> {
+public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
     @Override
     protected Class<ImSimrsTindakanEntity> getEntityClass() {
         return ImSimrsTindakanEntity.class;
@@ -21,12 +21,15 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity,String> {
     public List<ImSimrsTindakanEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_tindakan") != null)
+            if (mapCriteria.get("id_tindakan") != null) {
                 criteria.add(Restrictions.eq("idTindakan", mapCriteria.get("id_tindakan").toString()));
-            if (mapCriteria.get("id_kategori_tindakan") != null)
+            }
+            if (mapCriteria.get("id_kategori_tindakan") != null) {
                 criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
-            if (mapCriteria.get("flag") != null)
+            }
+            if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
 
         List<ImSimrsTindakanEntity> result = criteria.list();
         return result;

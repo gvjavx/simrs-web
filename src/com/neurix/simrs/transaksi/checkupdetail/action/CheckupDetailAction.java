@@ -5,12 +5,18 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
+import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
+import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -24,10 +30,37 @@ public class CheckupDetailAction extends BaseMasterAction {
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
     private DiagnosaBo diagnosaBoProxy;
+    private KategoriTindakanBo kategoriTindakanBoProxy;
+    private TindakanBo tindakanBoProxy;
+
+    public TindakanBo getTindakanBoProxy() {
+        return tindakanBoProxy;
+    }
+
+    public void setTindakanBoProxy(TindakanBo tindakanBoProxy) {
+        this.tindakanBoProxy = tindakanBoProxy;
+    }
+
+    public KategoriTindakanBo getKategoriTindakanBoProxy() {
+        return kategoriTindakanBoProxy;
+    }
+
+    public void setKategoriTindakanBoProxy(KategoriTindakanBo kategoriTindakanBoProxy) {
+        this.kategoriTindakanBoProxy = kategoriTindakanBoProxy;
+    }
 
     private String id;
 
     private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
+    private List<KategoriTindakan> listOfKategoriTindakan = new ArrayList<>();
+
+    public List<KategoriTindakan> getListOfKategoriTindakan() {
+        return listOfKategoriTindakan;
+    }
+
+    public void setListOfKategoriTindakan(List<KategoriTindakan> listOfKategoriTindakan) {
+        this.listOfKategoriTindakan = listOfKategoriTindakan;
+    }
 
     public List<Diagnosa> getListOfComboDiagnosa() {
         return listOfComboDiagnosa;
@@ -252,6 +285,46 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.getListComboDiagnosa] end process <<<");
         return SUCCESS;
     }
+
+    public String getListComboKategoriTindakan(){
+        logger.info("[CheckupDetailAction.getListComboKategoriTIndakan] start process >>>");
+
+        List<KategoriTindakan> kategoriTindakanList = new ArrayList<>();
+        KategoriTindakan kategoriTindakan = new KategoriTindakan();
+
+        try {
+            kategoriTindakanList = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListComboKategoriTIndakan] Error when get kategori tindakan ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfKategoriTindakan.addAll(kategoriTindakanList);
+        logger.info("[CheckupDetailAction.getListComboKategoriTIndakan] end process <<<");
+        return SUCCESS;
+    }
+
+    public List<Tindakan> getListComboTindakan(String idKategoriTindakan){
+        logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
+
+        List<Tindakan> tindakanList = new ArrayList<>();
+        Tindakan tindakan = new Tindakan();
+        tindakan.setIdKategoriTindakan(idKategoriTindakan);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+
+        try {
+            tindakanList = tindakanBo.getByCriteria(tindakan);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+        }
+
+        logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
+        return tindakanList;
+    }
+
+
 
 
     @Override

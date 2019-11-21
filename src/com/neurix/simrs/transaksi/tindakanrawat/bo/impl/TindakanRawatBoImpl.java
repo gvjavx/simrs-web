@@ -199,6 +199,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setIdTindakanRawat(entity.getIdTindakanRawat());
             tindakanRawat.setIdDetailCheckup(entity.getIdDetailCheckup());
             tindakanRawat.setIdTindakan(entity.getIdTindakan());
+            tindakanRawat.setNamaTindakan(entity.getNamaTindakan());
             tindakanRawat.setIdDokter(entity.getIdDokter());
             tindakanRawat.setIdPerawat(entity.getIdPerawat());
             tindakanRawat.setTarif(entity.getTarif());
@@ -218,6 +219,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                     tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
                 }
             }
+
             results.add(tindakanRawat);
         }
 

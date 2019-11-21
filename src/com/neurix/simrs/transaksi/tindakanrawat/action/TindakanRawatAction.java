@@ -135,7 +135,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             try {
                 tindakanList = tindakanBo.getByCriteria(tindakan);
             }catch (GeneralBOException e){
-                logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+                logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
             if (!tindakanList.isEmpty()){
                 tindakanResult = tindakanList.get(0);
@@ -145,7 +145,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(qty);
-            tindakanRawat.setTarif(new BigInteger(String.valueOf(2000)));
+            tindakanRawat.setTarif(tindakanResult.getTarif());
             tindakanRawat.setCreatedWho(userLogin);
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setCreatedDate(updateTime);

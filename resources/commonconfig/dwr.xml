@@ -305,6 +305,13 @@
           <param name="class" value="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat"/>
+
+      <!--Checkup Detail -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
   </allow>
 
 </dwr>

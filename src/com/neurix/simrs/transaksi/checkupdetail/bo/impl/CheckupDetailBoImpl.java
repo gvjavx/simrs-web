@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -27,6 +29,15 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(CheckupDetailBoImpl.class);
 
     private CheckupDetailDao checkupDetailDao;
+    private PelayananDao pelayananDao;
+
+    public PelayananDao getPelayananDao() {
+        return pelayananDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
+    }
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -126,6 +137,23 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckup.setIdRuangan(rawatInapEntity.getIdRuangan());
                 detailCheckup.setNamaRuangan(rawatInapEntity.getNamaRangan());
             }
+
+            List<ImSimrsPelayananEntity> imSimrsPelayananEntities = null;
+            ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_pelayanan", entity.getIdPelayanan());
+
+            try {
+                imSimrsPelayananEntities = pelayananDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[CheckupDetailBoImpl.getListAllPelayanan] Error get pelayanan data "+e.getMessage());
+            }
+
+            if (!imSimrsPelayananEntities.isEmpty()){
+                pelayananEntity = imSimrsPelayananEntities.get(0);
+                detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+            }
+
 
             results.add(detailCheckup);
         }
