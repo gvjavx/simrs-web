@@ -95,6 +95,9 @@
             <filter-chain pattern="/mobileapi/registrasi" filters="none" />
             <filter-chain pattern="/mobileapi/registrasi/*" filters="none"/>
             <filter-chain pattern="/mobileapi/registrasi/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/antrian" filters="none" />
+            <filter-chain pattern="/mobileapi/antrian/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/antrian/*/**" filters="none"/>
 
             <filter-chain pattern="/**/*"
                           filters="

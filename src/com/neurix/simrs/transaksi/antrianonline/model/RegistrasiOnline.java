@@ -24,12 +24,33 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
     private String idJenisPeriksaPasien;
     private String branchId;
     private String urlKtp;
-    private String flag;
-    private String action;
-    private Timestamp createdDate;
-    private String createdWho;
-    private Timestamp lastUpdate;
-    private String lastUpdateWho;
+    private String stTglLahir;
+    private String stDesaId;
+    private String valid;
+
+    public String getStTglLahir() {
+        return stTglLahir;
+    }
+
+    public void setStTglLahir(String stTglLahir) {
+        this.stTglLahir = stTglLahir;
+    }
+
+    public String getStDesaId() {
+        return stDesaId;
+    }
+
+    public void setStDesaId(String stDesaId) {
+        this.stDesaId = stDesaId;
+    }
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
 
     public String getNoCheckupOnline() {
         return noCheckupOnline;

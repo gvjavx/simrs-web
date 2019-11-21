@@ -137,6 +137,8 @@
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/TindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/kategoritindakan/spring/KategoriTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawat/spring/TindakanRawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/antrianonline/spring/RegistrasiOnlineBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/antrianonline/spring/AntrianOnlineBean.xml"/>
 
 
 

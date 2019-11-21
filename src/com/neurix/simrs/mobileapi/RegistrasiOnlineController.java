@@ -2,12 +2,14 @@ package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.ValidationAwareSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
@@ -29,7 +31,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     private static final transient Logger logger = Logger.getLogger(RegistrasiOnlineController.class);
     private RegistrasiOnline model = new RegistrasiOnline();
     private RegistrasiOnlineBo registrasiOnlineBoProxy;
-    private Collection<RegistrasiOnline> listOfRegistrasiOnline = new ArrayList<>();
+    private Collection<RegistrasiOnline> listOfRegistrasiOnline = new ArrayList<RegistrasiOnline>();
 
     private String noCheckupOnline;
     private String idPasien;
@@ -38,7 +40,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     private String noKtp;
     private String tempatLahir;
     private String tglLahir;
-    private Long desaId;
+    private String desaId;
     private String jalan;
     private String suku;
     private String agama;
@@ -53,8 +55,17 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     private String createdWho;
     private String lastUpdate;
     private String lastUpdateWho;
+    private String valid;
 
     private File fileUploadKtp;
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -62,7 +73,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
 
     @Override
     public Object getModel() {
-        return (listOfRegistrasiOnline != null ? listOfRegistrasiOnline : model);
+        return model;
     }
 
     public void setModel(RegistrasiOnline model) {
@@ -137,11 +148,11 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
         this.tglLahir = tglLahir;
     }
 
-    public Long getDesaId() {
+    public String getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(Long desaId) {
+    public void setDesaId(String desaId) {
         this.desaId = desaId;
     }
 
@@ -272,70 +283,61 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     public HttpHeaders create() {
         logger.info("[RegistrasiOnlineController.create] start process POST / <<<");
 
-        RegistrasiOnline registrasiOnline = new RegistrasiOnline();
-        registrasiOnline.setNoCheckupOnline(noCheckupOnline);
-        registrasiOnline.setNoKtp(noKtp);
-        registrasiOnline.setNama(nama);
-        registrasiOnline.setDesaId(desaId);
-        registrasiOnline.setBranchId(branchId);
-        registrasiOnline.setTempatLahir(tempatLahir);
-        registrasiOnline.setUrlKtp(urlKtp);
-        registrasiOnline.setProfesi(profesi);
-        registrasiOnline.setJenisKelamin(jenisKelamin);
-        registrasiOnline.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
-        registrasiOnline.setSuku(suku);
-        registrasiOnline.setAgama(agama);
-        registrasiOnline.setNoTelp(noTelp);
-        registrasiOnline.setJalan(jalan);
-
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date_tglLahir = formatter.parse(tglLahir);
-            java.sql.Date date_sql = new java.sql.Date(date_tglLahir.getDate());
-            registrasiOnline.setTglLahir(date_sql);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        if (action.equalsIgnoreCase("registrasi")) {
+            RegistrasiOnline registrasiOnline = new RegistrasiOnline();
+            registrasiOnline.setNoCheckupOnline(noCheckupOnline);
+            registrasiOnline.setNoKtp(noKtp);
+            registrasiOnline.setNama(nama);
+            registrasiOnline.setDesaId(Long.valueOf(desaId));
+            registrasiOnline.setBranchId(branchId);
+            registrasiOnline.setTempatLahir(tempatLahir);
+            registrasiOnline.setProfesi(profesi);
+            registrasiOnline.setJenisKelamin(jenisKelamin);
+            registrasiOnline.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
+            registrasiOnline.setSuku(suku);
+            registrasiOnline.setAgama(agama);
+            registrasiOnline.setNoTelp(noTelp);
+            registrasiOnline.setJalan(jalan);
+            registrasiOnline.setValid("N");
+            registrasiOnline.setTglLahir(CommonUtil.convertStringToDate(tglLahir));
+            registrasiOnline.setStTglLahir(tglLahir);
 
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        registrasiOnline.setCreatedDate(timestamp);
-        registrasiOnline.setLastUpdate(timestamp);
-        registrasiOnline.setCreatedWho(nama);
-        registrasiOnline.setLastUpdateWho(nama);
-        registrasiOnline.setAction("C");
-        registrasiOnline.setFlag("Y");
+            String ktpPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN;
 
-        String ktpPath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN;
+            if (fileUploadKtp != null) {
+                if (fileUploadKtp.length() > 0 && fileUploadKtp.length() <= 15728640) {
+                    Random random = new Random(System.currentTimeMillis());
+                    Integer randomName = ((1 + random.nextInt(2)) * 1000000 + random.nextInt(1000000));
+                    String fileNameKtp = "KTP_" + randomName + "_" + noKtp + CommonConstant.IMAGE_TYPE;
+                    File fileCreate = new File(ktpPath, fileNameKtp);
+                    try {
+                        FileUtils.copyFile(fileUploadKtp, fileCreate);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        if (fileUploadKtp != null) {
-            if (fileUploadKtp.length() > 0 && fileUploadKtp.length() <= 15728640) {
-                Random random = new Random( System.currentTimeMillis() );
-                Integer randomName = ((1 + random.nextInt(2)) * 1000000 + random.nextInt(1000000));
-                String fileNameKtp = "KTP_" + randomName + "_" + noKtp + CommonConstant.DOC_TYPE;
-                File fileCreate = new File(ktpPath, fileNameKtp);
-                try {
-                    FileUtils.copyFile(fileUploadKtp, fileCreate);
-                }catch (IOException e){
-                    e.printStackTrace();
+                    registrasiOnline.setUrlKtp(fileNameKtp);
                 }
-
-                registrasiOnline.setUrlKtp(fileNameKtp);
+            } else {
+                registrasiOnline.setUrlKtp("");
             }
-        }
 
-        try {
-           model = registrasiOnlineBoProxy.saveAdd(registrasiOnline);
-        } catch (GeneralBOException e) {
-            Long logId = null;
             try {
-                logId = registrasiOnlineBoProxy.saveErrorMessage(e.getMessage(), "registrasi online index");
-            } catch (GeneralBOException el) {
+                model = registrasiOnlineBoProxy.saveAdd(registrasiOnline);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = registrasiOnlineBoProxy.saveErrorMessage(e.getMessage(), "registrasi online index");
+                } catch (GeneralBOException el) {
 
+                }
             }
+
+            model.setAction("registrasi");
         }
 
-        logger.info("[RegistrasiOnlineController.create] start process POST / <<<");
+        logger.info("[RegistrasiOnlineController.create] end process POST / <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
 }

@@ -126,6 +126,10 @@
         <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+
+        <action name="antrian/*" class="com.neurix.simrs.mobileapi.AntrianOnlineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>
