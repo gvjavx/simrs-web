@@ -23,19 +23,11 @@ import java.util.Map;
 /**
  * Created by Toshiba on 13/11/2019.
  */
-public class TindakanRawatBoImpl extends TindakanRawatModuls implements TindakanRawatBo {
+public class TindakanRawatBoImpl implements TindakanRawatBo {
     private static transient Logger logger = Logger.getLogger(TindakanRawatBoImpl.class);
     private TindakanRawatDao tindakanRawatDao;
     private CheckupDetailDao checkupDetailDao;
     private DokterDao dokterDao;
-
-    public DokterDao getDokterDao() {
-        return dokterDao;
-    }
-
-    public void setDokterDao(DokterDao dokterDao) {
-        this.dokterDao = dokterDao;
-    }
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -220,29 +212,35 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
 
-            List<ImSimrsDokterEntity> dokterEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("id_dokter", entity.getIdDokter());
-
-            try {
-                dokterEntityList = dokterDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[TindakanRawatBoImpl.setToTindakanRawatTemplate] Error When get nama dokter");
-            }
-
-            ImSimrsDokterEntity dokterEntity = new ImSimrsDokterEntity();
-
-            if (!dokterEntityList.isEmpty()){
-                dokterEntity = dokterEntityList.get(0);
-                tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
+            if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
+                List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());
+                if (!listDokter.isEmpty()){
+                    ImSimrsDokterEntity dokterEntity = listDokter.get(0);
+                    tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
+                }
             }
 
             results.add(tindakanRawat);
-
         }
 
         logger.info("[TindakanRawatBoImpl.setToTindakanRawatTemplate] End <<<<<<");
         return results;
+    }
+
+    private List<ImSimrsDokterEntity> getDokterList(String dokterId){
+        logger.info("[TindakanRawatBoImpl.getDokterList] Start >>>>>>>");
+        List<ImSimrsDokterEntity> dokterList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_dokter", dokterId);
+        try {
+            dokterList = dokterDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getDokterList] Error when get data dokter ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getDokterList] End <<<<<<");
+        return dokterList;
     }
 
     public String getNextTindakanRawatId(){
@@ -265,5 +263,9 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
     }
 }

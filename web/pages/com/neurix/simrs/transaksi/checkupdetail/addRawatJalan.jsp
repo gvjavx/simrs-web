@@ -16,6 +16,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -99,7 +100,7 @@
                                         <td><b>Poli</b></td>
                                         <td><table>
                                             <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
-                                            <s:label id="no_detail_checkup" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
+                                            <s:label id="nama_pelayanan" name="headerDetailCheckup.namaPelayanan"></s:label></table></td>
                                     </tr>
                                 </table>
                             </div>
@@ -553,6 +554,12 @@
             $('#load_tindakan, #warning_tindakan').hide();
             $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
             $('#modal-tindakan').modal('show');
+
+//            listDokterTindakan();
+
+            var idPelayanan = $("#nama_poli").val();
+            alert(idPelayanan);
+
         }else if(select == 3){
             $('#nosa_id_diagnosa').val('');
             $('#nosa_jenis_diagnosa').val('');
@@ -662,6 +669,24 @@
                 $('#tin_qty').css('border','red solid 1px');
             }
         }
+    }
+
+    function listDokterTindakan(){
+
+        var idPelayanan = $("#id_pelayanan").val();
+
+        var option = "";
+        CheckupAction.listOfDokter(idPelayanan, function(response){
+            option = "<option value=''>[Select One]</option>";
+            if (response != null){
+                $.each(response, function (i, item) {
+                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
+                });
+            }else{
+                option = option;
+            }
+        });
+        $('#dokter_tindakan').html(option);
     }
 
     function listTindakan(){
