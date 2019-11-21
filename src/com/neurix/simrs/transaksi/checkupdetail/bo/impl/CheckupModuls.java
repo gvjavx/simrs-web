@@ -1,5 +1,9 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
@@ -22,6 +26,7 @@ public class CheckupModuls {
 
     private StatusPasienDao statusPasienDao;
     private RawatInapDao rawatInapDao;
+    private PelayananDao pelayananDao;
 
     protected List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean){
         logger.info("[CheckupModuls.getListEntityStatusPasien] Start >>>>>>>>>");
@@ -72,11 +77,36 @@ public class CheckupModuls {
         return results;
     }
 
+    protected List<ImSimrsPelayananEntity> getListEntityPelayanan(Pelayanan bean){
+        logger.info("[CheckupModuls.getListEntityPelayanan] Start >>>>>>>>>");
+
+        List<ImSimrsPelayananEntity> results = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+            hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+        }
+        hsCriteria.put("flag", "Y");
+
+        try {
+            results = pelayananDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupModuls.getListEntityPelayanan] Error When get data status rawat inap");
+        }
+
+        logger.info("[CheckupModuls.getListEntityPelayanan] End <<<<<<<<<");
+        return results;
+    }
+
     public void setStatusPasienDao(StatusPasienDao statusPasienDao) {
         this.statusPasienDao = statusPasienDao;
     }
 
     public void setRawatInapDao(RawatInapDao rawatInapDao) {
         this.rawatInapDao = rawatInapDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
     }
 }

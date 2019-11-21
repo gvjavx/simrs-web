@@ -15,6 +15,7 @@
           p:checkupDetailDao-ref="checkupDetailDao"
           p:statusPasienDao-ref="statusPasienDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:pelayananDao-ref="pelayananDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
