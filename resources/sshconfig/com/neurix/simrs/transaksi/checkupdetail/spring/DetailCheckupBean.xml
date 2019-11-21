@@ -9,6 +9,7 @@
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
           p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
           p:tindakanBoProxy-ref="tindakanBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
@@ -16,6 +17,7 @@
           p:statusPasienDao-ref="statusPasienDao"
           p:rawatInapDao-ref="rawatInapDao"
           p:pelayananDao-ref="pelayananDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

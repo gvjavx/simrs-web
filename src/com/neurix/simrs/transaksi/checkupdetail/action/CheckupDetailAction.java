@@ -13,8 +13,11 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.components.ActionError;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -322,6 +325,72 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
         return tindakanList;
+    }
+
+    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter){
+        logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
+
+        String status = "error";
+        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+        headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+        headerDetailCheckup.setStatusPeriksa("3");
+        headerDetailCheckup.setFlag("Y");
+        headerDetailCheckup.setAction("U");
+        headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("CheckupDetailBoProxy");
+
+        try {
+            checkupDetailBo.saveEdit(headerDetailCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, ", e);
+        }
+
+        if ("pindah".equalsIgnoreCase(idKtg)){
+            pindahPoli(noCheckup, poli, idDokter);
+            status = "sukses";
+        } else if ("rujuk".equalsIgnoreCase(idKtg)){
+            status = "sukses";
+        } else {
+            status = "sukses";
+        }
+
+        logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
+        return status;
+    }
+
+    public void pindahPoli(String noCheckup, String idPoli, String idDokter){
+        logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String user = CommonUtil.userLogin();
+
+        if (!"".equalsIgnoreCase(noCheckup) &&
+                !"".equalsIgnoreCase(idPoli) &&
+                !"".equalsIgnoreCase(idDokter)){
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setNoCheckup(noCheckup);
+            headerDetailCheckup.setIdPelayanan(idPoli);
+            headerDetailCheckup.setStatusPeriksa("1");
+            headerDetailCheckup.setCreatedDate(now);
+            headerDetailCheckup.setCreatedWho(user);
+            headerDetailCheckup.setLastUpdate(now);
+            headerDetailCheckup.setLastUpdateWho(user);
+            headerDetailCheckup.setIdDokter(idDokter);
+
+            try {
+                checkupDetailBo.saveAdd(headerDetailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.pindahPoli] Error when saving add new detail poli, ", e);
+            }
+        }
+        logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
 
 
