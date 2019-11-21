@@ -390,9 +390,10 @@ public class CheckupAction extends BaseMasterAction {
 
     public String getComboJenisPeriksaPasien(){
         List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
+        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
 
         try {
-            lisJenisPeriksa = jenisPriksaPasienBoProxy.getListAllJenisPeriksa();
+            lisJenisPeriksa = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
         } catch (HibernateException e){
             logger.error("[CheckupAction.getComboJenisPeriksaPasien] Error when get data for combo listOfJenisPriksaPasien", e);
             addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());

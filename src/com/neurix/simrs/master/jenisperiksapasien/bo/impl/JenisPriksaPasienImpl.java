@@ -25,10 +25,15 @@ public class JenisPriksaPasienImpl implements JenisPerksaPasienBo {
     }
 
     @Override
-    public List<JenisPriksaPasien> getListAllJenisPeriksa() {
+    public List<JenisPriksaPasien> getListAllJenisPeriksa(JenisPriksaPasien bean) {
         logger.info("[jenisPriksaPasienImpl.getListAllJenisPeriksa] Start >>>>>>");
         List<JenisPriksaPasien> result = new ArrayList<>();
         Map hsCriteria = new HashMap();
+
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            hsCriteria.put("id_jenis_periksa_pasien", bean.getIdJenisPeriksaPasien());
+        }
+
         hsCriteria.put("flag","Y");
 
         List<ImJenisPeriksaPasienEntity> imJenisPeriksaPasienEntityList = null;
