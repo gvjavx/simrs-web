@@ -473,7 +473,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 headerDetailCheckup.setRawatInap(true);
 
                 try {
-                    checkupDetailBoProxy.saveAdd(headerDetailCheckup);
+                    checkupDetailBo.saveAdd(headerDetailCheckup);
                 } catch (GeneralBOException e){
                     logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
                 }

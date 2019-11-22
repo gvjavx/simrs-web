@@ -305,7 +305,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setNoCheckup(bean.getNoCheckup());
             entity.setIdRuangan("01");
             entity.setNamaRangan("MAWAR MELATI");
-            entity.setNoRuangan("3");
+//            entity.setNoRuangan("3");
             entity.setTarif(new BigInteger("200000"));
             entity.setFlag("Y");
             entity.setAction("C");

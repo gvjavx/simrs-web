@@ -702,7 +702,7 @@
                 kelas = $("#kelas_kamar").val();
                 kamar = $("#kamar_detail").val();
 
-                if (kelas == '' && kamar == '') {
+                if (kelas != '' && kamar != '') {
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
@@ -713,15 +713,15 @@
                         $('#load_ket').hide();
                     });
                 }
-//                else {
-//                    $('#warning_ket').show().fadeOut(5000);
-//                    if(kelas == ''){
-//                        $('#kelas_kamar').css('border', 'red solid 1px');
-//                    }
-//                    if(kamar == ''){
-//                        $('#kamar_detail').css('border', 'red solid 1px');
-//                    }
-//                }
+                else {
+                    $('#warning_ket').show().fadeOut(5000);
+                    if(kelas == ''){
+                        $('#kelas_kamar').css('border', 'red solid 1px');
+                    }
+                    if(kamar == ''){
+                        $('#kamar_detail').css('border', 'red solid 1px');
+                    }
+                }
             }
 
             if(idKtg == "selesai"){
