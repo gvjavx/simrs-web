@@ -10,6 +10,10 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
+import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
+import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -37,6 +41,16 @@ public class CheckupDetailAction extends BaseMasterAction {
     private KategoriTindakanBo kategoriTindakanBoProxy;
     private TindakanBo tindakanBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+    private KelasRuanganBo kelasRuanganBoProxy;
+    private RuanganBo ruanganBoProxy;
+
+    public void setRuanganBoProxy(RuanganBo ruanganBoProxy) {
+        this.ruanganBoProxy = ruanganBoProxy;
+    }
+
+    public void setKelasRuanganBoProxy(KelasRuanganBo kelasRuanganBoProxy) {
+        this.kelasRuanganBoProxy = kelasRuanganBoProxy;
+    }
 
     public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
         this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
@@ -62,6 +76,15 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
     private List<KategoriTindakan> listOfKategoriTindakan = new ArrayList<>();
+    private List<KelasRuangan> listOfKelasRuangan = new ArrayList<>();
+
+    public List<KelasRuangan> getListOfKelasRuangan() {
+        return listOfKelasRuangan;
+    }
+
+    public void setListOfKelasRuangan(List<KelasRuangan> listOfKelasRuangan) {
+        this.listOfKelasRuangan = listOfKelasRuangan;
+    }
 
     public List<KategoriTindakan> getListOfKategoriTindakan() {
         return listOfKategoriTindakan;
@@ -480,6 +503,47 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] end process <<<");
         return result;
+    }
+
+    public String getListComboKelasRuangan(){
+        logger.info("[CheckupDetailAction.getListComboKelasRuangan] start process >>>");
+
+        List<KelasRuangan> kelasRuanganList = new ArrayList<>();
+        KelasRuangan kelasRuangan = new KelasRuangan();
+
+        try {
+            kelasRuanganList = kelasRuanganBoProxy.getByCriteria(kelasRuangan);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListComboKelasRuangan] Error when get kelas ruangan ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfKelasRuangan.addAll(kelasRuanganList);
+        logger.info("[CheckupDetailAction.getListComboKelasRuangan] end process <<<");
+        return SUCCESS;
+    }
+
+    public List<Ruangan> listRuangan(String idkelas){
+
+        logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
+        List<Ruangan> ruanganList = new ArrayList<>();
+        Ruangan ruangan = new Ruangan();
+        ruangan.setStatusRuangan("Y");
+        ruangan.setIdKelasRuangan(idkelas);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+
+            try {
+                ruanganList = ruanganBo.getByCriteria(ruangan);
+            }catch (GeneralBOException e){
+                logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+            return ruanganList;
+
     }
 
 

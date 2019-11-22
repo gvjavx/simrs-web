@@ -331,8 +331,8 @@
                                                     </span>
                                                     <input type="text" class="form-control" readonly>
                                                 </div>
-                                                <img id="img-upload" src="<s:url value="/pages/images/ktp-default.jpg"/>"
-                                                     style="width: 308px; height: 150px; border: darkgray solid 1px"/>
+                                                <img id="img-upload" width="100%" src="<s:url value="/pages/images/ktp-default.jpg"/>"
+                                                     style="border: darkgray solid 1px; height: 170px"/>
                                             </div>
                                         </div>
                                     </div>
