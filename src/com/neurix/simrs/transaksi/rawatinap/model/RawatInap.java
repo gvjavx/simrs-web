@@ -40,6 +40,33 @@ public class RawatInap {
     private String tglLahir;
 
     private String tempatTglLahir;
+    private String idJenisPeriksa;
+    private String jenisPeriksaPasien;
+    private String nik;
+
+    public String getIdJenisPeriksa() {
+        return idJenisPeriksa;
+    }
+
+    public void setIdJenisPeriksa(String idJenisPeriksa) {
+        this.idJenisPeriksa = idJenisPeriksa;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getJenisPeriksaPasien() {
+        return jenisPeriksaPasien;
+    }
+
+    public void setJenisPeriksaPasien(String jenisPeriksaPasien) {
+        this.jenisPeriksaPasien = jenisPeriksaPasien;
+    }
 
     public String getTempatTglLahir() {
         return tempatTglLahir;

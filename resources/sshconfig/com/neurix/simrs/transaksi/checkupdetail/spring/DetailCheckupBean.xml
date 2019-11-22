@@ -10,6 +10,7 @@
           p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
           p:tindakanBoProxy-ref="tindakanBoProxy"
           p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"

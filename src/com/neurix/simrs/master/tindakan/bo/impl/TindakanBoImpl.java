@@ -69,7 +69,7 @@ public class TindakanBoImpl implements TindakanBo {
         for (ImSimrsTindakanEntity entity : entities){
             tindakan = new Tindakan();
             tindakan.setIdTindakan(entity.getIdTindakan());
-            tindakan.setTindakan(entity.getIdTindakan());
+            tindakan.setTindakan(entity.getTindakan());
             tindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
             tindakan.setTarif(entity.getTarif());
             tindakan.setTarifBpjs(entity.getTarifBpjs());

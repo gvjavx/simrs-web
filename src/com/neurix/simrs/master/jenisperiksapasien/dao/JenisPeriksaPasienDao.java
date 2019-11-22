@@ -21,8 +21,9 @@ public class JenisPeriksaPasienDao extends GenericDao<ImJenisPeriksaPasienEntity
     public List<ImJenisPeriksaPasienEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImJenisPeriksaPasienEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_jenis_periksa_pasien") != null)
+            if (mapCriteria.get("id_jenis_periksa_pasien") != null){
                 criteria.add(Restrictions.eq("idJenisPeriksaPasien", mapCriteria.get("id_jenis_periksa_pasien").toString()));
+            }
 
         List<ImJenisPeriksaPasienEntity> result = criteria.list();
         return result;

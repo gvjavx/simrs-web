@@ -36,7 +36,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private CheckupDetailDao checkupDetailDao;
     private DokterTeamDao dokterTeamDao;
     private RuanganDao ruanganDao;
-    private RawatInapDao rawatInapDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -370,10 +369,5 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setRuanganDao(RuanganDao ruanganDao) {
         this.ruanganDao = ruanganDao;
-    }
-
-    @Override
-    public void setRawatInapDao(RawatInapDao rawatInapDao) {
-        this.rawatInapDao = rawatInapDao;
     }
 }
