@@ -267,10 +267,10 @@
                     <div class="box-header with-border" id="pos_obat">
                     </div>
                     <div class="box-header with-border" >
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Obat</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(6)"><i class="fa fa-plus"></i> Order </button>
                         <table class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
@@ -508,6 +508,90 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-diet">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Diet</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Poli</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-obat">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Obat</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Poli</label>
+                        <div class="col-md-7">
+                            <select class="form-control">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px">
+                                <option value="">[select one]</option>
+                                <option value="1">Dr. Sutikno</option>
+                                <option value="2">Dr. Julio</option>
+                                <option value="3">Dr. Turnomo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -605,6 +689,10 @@
             $('#modal-diagnosa').modal('show');
         }else if(select == 4){
             $('#modal-lab').modal('show');
+        }else if(select == 5){
+            $('#modal-diet').modal('show');
+        }else if(select == 6){
+            $('#modal-obat').modal('show');
         }
     }
 

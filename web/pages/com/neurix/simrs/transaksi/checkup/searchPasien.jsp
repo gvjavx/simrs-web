@@ -206,7 +206,7 @@
                                             <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
                                             <%--</s:url>--%>
                                             <%--<sj:a onClickTopics="showDialogUser" href="%{detail}">--%>
-                                        <img border="0" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/icon_lup.ico"/>"
+                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/icon_lup.ico"/>"
                                              style="cursor: pointer" onclick="detail_pasien('<s:property value="noCheckup"/>')">
                                             <%--</sj:a>--%>
 

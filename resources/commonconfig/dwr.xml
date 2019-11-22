@@ -312,6 +312,7 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
   </allow>
 
 </dwr>

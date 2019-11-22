@@ -339,10 +339,18 @@
                                 <div id="kamar" style="display: none;">
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Kelas</label>
-                                        <select class="form-control" id="kelas_kamar"
-                                                onchange="$(this).css('border','')">
-                                            <option value=''>[Select One]</option>
-                                        </select>
+                                        <%--<select class="form-control" id="kelas_kamar"--%>
+                                                <%--onchange="$(this).css('border','')">--%>
+                                            <%--<option value=''>[Select One]</option>--%>
+                                        <%--</select>--%>
+                                        <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                  listKey="idKelasRuangan"
+                                                  listValue="namaKelasRuangan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control"/>
                                     </div>
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Kamar</label>
@@ -559,7 +567,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Nama Lab</label>
+                        <label class="col-md-3">Poli</label>
                         <div class="col-md-7">
                             <select class="form-control">
                                 <option value="">[select one]</option>
@@ -636,6 +644,25 @@
             $("#kamar").attr('style', 'display:none');
             $("#form-poli").attr('style', 'display:none');
         }
+    }
+
+    function listSelectRuangan(id){
+        var idx = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+
+        var option = "";
+        CheckupDetailAction.listRuangan(idKelas, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+        });
+
+        $('#kamar_detail').html(option);
     }
 
     function saveKeterangan() {
