@@ -1,6 +1,6 @@
 package com.neurix.simrs.master.jenisperiksapasien.bo.impl;
 
-import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public class JenisPriksaPasienImpl implements JenisPerksaPasienBo {
+public class JenisPriksaPasienImpl implements JenisPriksaPasienBo {
     protected static transient Logger logger = Logger.getLogger(JenisPriksaPasienImpl.class);
 
     private JenisPeriksaPasienDao jenisPeriksaPasienDao;

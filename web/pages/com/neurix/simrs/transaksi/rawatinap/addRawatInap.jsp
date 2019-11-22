@@ -160,7 +160,6 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <td>Spesialis</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
@@ -597,11 +596,6 @@
             $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
             $('#modal-tindakan').modal('show');
 
-//            listDokterTindakan();
-
-            var idPelayanan = $("#nama_poli").val();
-            alert(idPelayanan);
-
         }else if(select == 3){
             $('#nosa_id_diagnosa').val('');
             $('#nosa_jenis_diagnosa').val('');
@@ -656,7 +650,6 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.namaSpesialis + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>"
                 });
@@ -764,9 +757,9 @@
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
-                            "<td align='right'>" + "Rp. "+ tarif + "</td>" +
+                            "<td align='right'>" + "Rp. "+ tarif+",-" + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
-                            "<td align='right'>" + "Rp. "+ tarifTotal + "</td>" +
+                            "<td align='right'>" + "Rp. "+ tarifTotal+",-" + "</td>" +
                             "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
                             "</tr>";
 
@@ -775,7 +768,7 @@
                                 "<td colspan='6'>Total</td>"+
 //                                "<td align='right'>" + "Rp. " + formatRupiah(trfTotal) + "</td>"+
 //                                "<td align='center'>"+ qtyTotal +"</td>"+
-                                "<td align='right'>" + "Rp. " + formatRupiah(trfTtl) + "</td>"+
+                                "<td align='right'>" + "Rp. " + formatRupiah(trfTtl)+",-" + "</td>"+
                                 "<td></td>"+
                                 "</tr>";
             }

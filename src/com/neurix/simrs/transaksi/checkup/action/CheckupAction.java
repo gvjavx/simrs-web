@@ -6,7 +6,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
-import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -29,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CheckupAction extends BaseMasterAction {
@@ -37,7 +36,7 @@ public class CheckupAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(CheckupAction.class);
     private CheckupBo checkupBoProxy;
     private PelayananBo pelayananBoProxy;
-    private JenisPerksaPasienBo jenisPriksaPasienBoProxy;
+    private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private DokterBo dokterBoProxy;
 
@@ -130,7 +129,7 @@ public class CheckupAction extends BaseMasterAction {
         this.pelayananBoProxy = pelayananBoProxy;
     }
 
-    public void setJenisPriksaPasienBoProxy(JenisPerksaPasienBo jenisPriksaPasienBoProxy) {
+    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
         this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
     }
 
@@ -138,7 +137,7 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananBoProxy;
     }
 
-    public JenisPerksaPasienBo getJenisPriksaPasienBoProxy() {
+    public JenisPriksaPasienBo getJenisPriksaPasienBoProxy() {
         return jenisPriksaPasienBoProxy;
     }
 

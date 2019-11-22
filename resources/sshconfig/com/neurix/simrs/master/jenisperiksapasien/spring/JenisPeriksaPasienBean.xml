@@ -10,7 +10,6 @@
     <bean id="jenisPriksaPasienBo" class="com.neurix.simrs.master.jenisperiksapasien.bo.impl.JenisPriksaPasienImpl"
           p:jenisPeriksaPasienDao-ref="jenisPeriksaPasienDao"
     />
-
     <bean id="jenisPriksaPasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="jenisPriksaPasienBo">
         <property name="interceptorNames">

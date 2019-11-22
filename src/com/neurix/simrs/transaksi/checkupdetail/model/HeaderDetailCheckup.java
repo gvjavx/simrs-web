@@ -51,6 +51,34 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
 
     private String tempatTglLahir;
 
+    private String nik;
+    private String idJenisPeriksaPasien;
+    private String jenisPeriksaPasien;
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getIdJenisPeriksaPasien() {
+        return idJenisPeriksaPasien;
+    }
+
+    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
+        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
+    }
+
+    public String getJenisPeriksaPasien() {
+        return jenisPeriksaPasien;
+    }
+
+    public void setJenisPeriksaPasien(String jenisPeriksaPasien) {
+        this.jenisPeriksaPasien = jenisPeriksaPasien;
+    }
+
     public String getIdDokter() {
         return idDokter;
     }

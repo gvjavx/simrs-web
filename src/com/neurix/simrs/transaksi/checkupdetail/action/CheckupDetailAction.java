@@ -5,6 +5,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
@@ -35,6 +37,11 @@ public class CheckupDetailAction extends BaseMasterAction {
     private DiagnosaBo diagnosaBoProxy;
     private KategoriTindakanBo kategoriTindakanBoProxy;
     private TindakanBo tindakanBoProxy;
+    private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+
+    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
+        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
+    }
 
     public TindakanBo getTindakanBoProxy() {
         return tindakanBoProxy;
@@ -123,7 +130,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         //get data from session
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
-        List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
         String id = getId();
         String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
@@ -166,6 +172,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
                         detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
                         detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        detailCheckup.setNik(headerCheckup.getNoKtp());
+                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+
+                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+                        detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
 
                         setHeaderDetailCheckup(detailCheckup);
 
@@ -180,8 +191,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
 
-        session.removeAttribute("listOfDataPasien");
-        session.setAttribute("listOfDataPasien", listOfsearchDetailCheckup);
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_add";
@@ -402,6 +411,28 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
+    }
+
+    private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa){
+        logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] start process >>>");
+
+        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
+        jenisPriksaPasien.setIdJenisPeriksaPasien(idJenisPeriksa);
+
+        List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
+        try {
+            jenisPriksaPasienList = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListJenisPeriksaPasien] Error When Get Jenis Pasien Data", e);
+        }
+
+        JenisPriksaPasien result = new JenisPriksaPasien();
+        if (!jenisPriksaPasienList.isEmpty()){
+            result = jenisPriksaPasienList.get(0);
+        }
+
+        logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] end process <<<");
+        return result;
     }
 
 

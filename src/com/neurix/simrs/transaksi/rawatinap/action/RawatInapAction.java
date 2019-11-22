@@ -2,7 +2,7 @@ package com.neurix.simrs.transaksi.rawatinap.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -21,10 +21,10 @@ public class RawatInapAction extends BaseMasterAction {
     private RawatInap rawatInap;
     private RawatInapBo rawatInapBoProxy;
     private CheckupBo checkupBoProxy;
-    private JenisPerksaPasienBo jenisPerksaPasienBo;
+    private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
 
-    public void setJenisPerksaPasienBo(JenisPerksaPasienBo jenisPerksaPasienBo) {
-        this.jenisPerksaPasienBo = jenisPerksaPasienBo;
+    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
+        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
     }
 
     public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
@@ -123,9 +123,6 @@ public class RawatInapAction extends BaseMasterAction {
         } else {
             setRawatInap(new RawatInap());
         }
-
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", getRawatInap());
 
         logger.info("[RawatInapAction.add] end process <<<");
         return "init_add";
@@ -232,7 +229,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
         try {
-            jenisPriksaPasienList = jenisPerksaPasienBo.getListAllJenisPeriksa(jenisPriksaPasien);
+            jenisPriksaPasienList = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
         } catch (GeneralBOException e){
             logger.error("[RawatInapAction.getListJenisPeriksaPasien] Error When Get Jenis Pasien Data", e);
         }
