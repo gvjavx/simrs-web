@@ -16,8 +16,8 @@
             $('#rawat_inap').addClass('active');
         });
 
-
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -96,12 +96,25 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Ruangan</label>
+                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Mawar','1':'Bungenvil','2':'Melati','3':'Kamboja'}" cssStyle="margin-top: 7px"
-                                                  id="ruangan" name="headerDetailCheckup.ruangan"
+                                        <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                  name="rawatInap.idkelasRuangan"
+                                                  listKey="idKelasRuangan"
+                                                  listValue="namaKelasRuangan"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Ruangan</label>
+                                    <div class="col-sm-4">
+                                        <select style="margin-top: 7px" class="form-control" id="nama_ruangan" name="rawatInap.idRuangan">
+                                            <option value=''>[Select One]</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -209,6 +222,24 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+    function listSelectRuangan(id){
+        var idx = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+
+        var option = "";
+        CheckupDetailAction.listRuangan(idKelas, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+        });
+
+        $('#nama_ruangan').html(option);
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
