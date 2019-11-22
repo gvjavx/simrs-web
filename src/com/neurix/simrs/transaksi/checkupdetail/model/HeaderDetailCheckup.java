@@ -50,6 +50,15 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String stDateTo;
 
     private String tempatTglLahir;
+    private Boolean rawatInap = false;
+
+    public Boolean getRawatInap() {
+        return rawatInap;
+    }
+
+    public void setRawatInap(Boolean rawatInap) {
+        this.rawatInap = rawatInap;
+    }
 
     public String getIdDokter() {
         return idDokter;

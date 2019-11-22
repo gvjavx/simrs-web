@@ -3,8 +3,11 @@ package com.neurix.simrs.transaksi.rawatinap.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,5 +40,12 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         List<ItSimrsRawatInapEntity> result = criteria.list();
         return result;
+    }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_rawat_inap')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

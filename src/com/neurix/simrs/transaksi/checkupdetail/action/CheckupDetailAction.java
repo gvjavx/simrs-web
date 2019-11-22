@@ -5,6 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
@@ -363,6 +364,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             pindahPoli(noCheckup, poli, idDokter);
             status = "sukses";
         } else if ("rujuk".equalsIgnoreCase(idKtg)){
+            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar);
             status = "sukses";
         } else {
             status = "sukses";
@@ -372,7 +374,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return status;
     }
 
-    public void pindahPoli(String noCheckup, String idPoli, String idDokter){
+    private void pindahPoli(String noCheckup, String idPoli, String idDokter){
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -404,7 +406,52 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
 
+    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar){
+        logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String user = CommonUtil.userLogin();
+
+        if (!"".equalsIgnoreCase(noCheckup) &&
+                !"".equalsIgnoreCase(idDetailCheckup))
+        {
+//            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                detailCheckupList = checkupDetailBoProxy.getByCriteria(detailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
+            }
+
+
+            if (!detailCheckupList.isEmpty()){
+                detailCheckup = detailCheckupList.get(0);
+                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                headerDetailCheckup.setNoCheckup(noCheckup);
+                headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                headerDetailCheckup.setIdPelayanan(detailCheckup.getIdPelayanan());
+                headerDetailCheckup.setStatusPeriksa("1");
+                headerDetailCheckup.setCreatedDate(now);
+                headerDetailCheckup.setCreatedWho(user);
+                headerDetailCheckup.setLastUpdate(now);
+                headerDetailCheckup.setLastUpdateWho(user);
+                headerDetailCheckup.setRawatInap(true);
+
+                try {
+                    checkupDetailBoProxy.saveAdd(headerDetailCheckup);
+                } catch (GeneralBOException e){
+                    logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
+                }
+            }
+        }
+        logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
+
+    }
 
 
     @Override
