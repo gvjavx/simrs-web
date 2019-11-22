@@ -1,18 +1,16 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.ruangan.dao.RuanganDao;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
-import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
-import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
@@ -21,6 +19,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +35,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     private CheckupDetailDao checkupDetailDao;
     private DokterTeamDao dokterTeamDao;
+    private RuanganDao ruanganDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -190,6 +190,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
 
+        // create new detail
         String id = "";
         id = getNextDetailCheckupId();
 
@@ -220,7 +221,46 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             DokterTeam dokterTeam = new DokterTeam();
             dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             dokterTeam.setIdDokter(bean.getIdDokter());
+            dokterTeam.setCreatedWho(bean.getCreatedWho());
+            dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
             saveTeamDokter(dokterTeam);
+        }
+
+        // for rawat Inap
+        if (bean.getRawatInap()){
+            List<ItSimrsDokterTeamEntity> dokterEntities = null;
+            Map hsCriteria = new HashMap();
+            // set criteria with old detail id for get old dokter team data
+            hsCriteria.put("id_detail_checkup",bean.getIdDetailCheckup());
+            try {
+                dokterEntities = dokterTeamDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team" + e.getMessage());
+                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When getting data dokter team");
+            }
+
+            if (!dokterEntities.isEmpty()){
+                for (ItSimrsDokterTeamEntity entity : dokterEntities){
+
+                    DokterTeam dokterTeam = new DokterTeam();
+                    dokterTeam.setIdTeamDokter("");
+
+                    // set id detail with new id detail
+                    dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    dokterTeam.setIdDokter(entity.getIdDokter());
+                    dokterTeam.setCreatedWho(bean.getCreatedWho());
+                    dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+                    saveTeamDokter(dokterTeam);
+
+                }
+            }
+
+            RawatInap rawatInap = new RawatInap();
+            rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            rawatInap.setNoCheckup(bean.getNoCheckup());
+            rawatInap.setCreatedDate(bean.getCreatedDate());
+            rawatInap.setCreatedWho(bean.getCreatedWho());
+            saveRawatInap(rawatInap);
         }
 
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
@@ -238,9 +278,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         entity.setFlag("Y");
         entity.setAction("C");
         entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        entity.setCreatedWho(CommonUtil.userLogin());
+        entity.setCreatedWho(bean.getCreatedWho());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        entity.setLastUpdateWho(CommonUtil.userLogin());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
 
         try {
             dokterTeamDao.addAndSave(entity);
@@ -250,6 +290,39 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         logger.info("[CheckupDetailBoImpl.savaAdd] End <<<<<<<<");
+    }
+
+    private void saveRawatInap(RawatInap bean){
+        logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
+        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup()) &&
+                bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()))
+        {
+            String id = getNextRawatInapId();
+
+            ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
+            entity.setIdRawatInap("RNP"+id);
+            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            entity.setNoCheckup(bean.getNoCheckup());
+            entity.setIdRuangan("01");
+            entity.setNamaRangan("MAWAR MELATI");
+//            entity.setNoRuangan("3");
+            entity.setTarif(new BigInteger("200000"));
+            entity.setFlag("Y");
+            entity.setAction("C");
+            entity.setCreatedDate(bean.getCreatedDate());
+            entity.setLastUpdate(bean.getCreatedDate());
+            entity.setCreatedWho(bean.getCreatedWho());
+            entity.setLastUpdateWho(bean.getCreatedWho());
+            entity.setTglMasuk(bean.getCreatedDate());
+
+            try {
+                rawatInapDao.addAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ",e);
+                throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when save add  Rawat Inap "+e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailBoImpl.saveRawatInap] End <<<<<<<<");
     }
 
 
@@ -275,11 +348,26 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return id;
     }
 
+    private String getNextRawatInapId(){
+        String id = "";
+        try {
+            id = rawatInapDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.getNextRawatInapId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupDetailBoImpl.getNextRawatInapId] Error When Error get next seq id");
+        }
+        return id;
+    }
+
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
     }
 
     public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
         this.dokterTeamDao = dokterTeamDao;
+    }
+
+    public void setRuanganDao(RuanganDao ruanganDao) {
+        this.ruanganDao = ruanganDao;
     }
 }

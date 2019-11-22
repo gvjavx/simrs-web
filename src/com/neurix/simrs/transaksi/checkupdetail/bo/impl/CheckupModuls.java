@@ -25,7 +25,7 @@ public class CheckupModuls {
     private static transient Logger logger = Logger.getLogger(CheckupModuls.class);
 
     private StatusPasienDao statusPasienDao;
-    private RawatInapDao rawatInapDao;
+    protected RawatInapDao rawatInapDao;
     private PelayananDao pelayananDao;
 
     protected List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean){
