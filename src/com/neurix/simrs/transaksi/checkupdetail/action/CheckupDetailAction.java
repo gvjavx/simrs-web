@@ -465,6 +465,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 headerDetailCheckup.setNoCheckup(noCheckup);
                 headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                 headerDetailCheckup.setIdPelayanan(detailCheckup.getIdPelayanan());
+                headerDetailCheckup.setIdRuangan(kamar);
                 headerDetailCheckup.setStatusPeriksa("1");
                 headerDetailCheckup.setCreatedDate(now);
                 headerDetailCheckup.setCreatedWho(user);
