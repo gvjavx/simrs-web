@@ -30,7 +30,7 @@
             <column name="keterangan" sql-type="varchar" length="1000" />
         </property>
         <property name="tarif">
-            <column name="tarif" sql-type="long" />
+            <column name="tarif" sql-type="bigint" />
         </property>
         <property name="tglMasuk">
             <column name="tgl_masuk" sql-type="date" />

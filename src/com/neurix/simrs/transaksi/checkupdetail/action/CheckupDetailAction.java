@@ -5,6 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
+
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
@@ -19,11 +20,9 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
-import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.components.ActionError;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -395,6 +394,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             pindahPoli(noCheckup, poli, idDokter);
             status = "sukses";
         } else if ("rujuk".equalsIgnoreCase(idKtg)){
+            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar);
             status = "sukses";
         } else {
             status = "sukses";
@@ -404,7 +404,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return status;
     }
 
-    public void pindahPoli(String noCheckup, String idPoli, String idDokter){
+    private void pindahPoli(String noCheckup, String idPoli, String idDokter){
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -434,6 +434,54 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
+    }
+
+    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar){
+        logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String user = CommonUtil.userLogin();
+
+        if (!"".equalsIgnoreCase(noCheckup) &&
+                !"".equalsIgnoreCase(idDetailCheckup))
+        {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
+            }
+
+
+            if (!detailCheckupList.isEmpty()){
+                detailCheckup = detailCheckupList.get(0);
+                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                headerDetailCheckup.setNoCheckup(noCheckup);
+                headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                headerDetailCheckup.setIdPelayanan(detailCheckup.getIdPelayanan());
+                headerDetailCheckup.setIdRuangan(kamar);
+                headerDetailCheckup.setStatusPeriksa("1");
+                headerDetailCheckup.setCreatedDate(now);
+                headerDetailCheckup.setCreatedWho(user);
+                headerDetailCheckup.setLastUpdate(now);
+                headerDetailCheckup.setLastUpdateWho(user);
+                headerDetailCheckup.setRawatInap(true);
+
+                try {
+                    checkupDetailBo.saveAdd(headerDetailCheckup);
+                } catch (GeneralBOException e){
+                    logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
+                }
+            }
+        }
+        logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
+
     }
 
     private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa){
@@ -498,8 +546,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             return ruanganList;
 
     }
-
-
 
 
     @Override

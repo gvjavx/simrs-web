@@ -712,7 +712,8 @@
                         $('#save_ket').show();
                         $('#load_ket').hide();
                     });
-                } else {
+                }
+                else {
                     $('#warning_ket').show().fadeOut(5000);
                     if(kelas == ''){
                         $('#kelas_kamar').css('border', 'red solid 1px');

@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.ruangan.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class MtSimrsRuanganEntity implements Serializable {
@@ -11,7 +12,7 @@ public class MtSimrsRuanganEntity implements Serializable {
     private String statusRuangan;
     private String idKelasRuangan;
     private String keterangan;
-    private Long tarif;
+    private BigInteger tarif;
     private String branchId;
     private String flag;
     private String action;
@@ -68,11 +69,11 @@ public class MtSimrsRuanganEntity implements Serializable {
         this.keterangan = keterangan;
     }
 
-    public Long getTarif() {
+    public BigInteger getTarif() {
         return tarif;
     }
 
-    public void setTarif(Long tarif) {
+    public void setTarif(BigInteger tarif) {
         this.tarif = tarif;
     }
 
