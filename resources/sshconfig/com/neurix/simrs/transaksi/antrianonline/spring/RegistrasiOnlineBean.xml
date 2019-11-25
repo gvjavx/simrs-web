@@ -8,7 +8,6 @@
 
     <bean id="registrasiOnlineBo" class="com.neurix.simrs.transaksi.antrianonline.bo.impl.RegistrasiOnlineBoImpl"
           p:registrasiOnlineDao-ref="registrasiOnlineDao"
-          p:userDao-ref="userDao"
           p:pasienDao-ref="pasienDao"
     />
 

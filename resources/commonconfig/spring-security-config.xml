@@ -98,6 +98,9 @@
             <filter-chain pattern="/mobileapi/antrian" filters="none" />
             <filter-chain pattern="/mobileapi/antrian/*" filters="none"/>
             <filter-chain pattern="/mobileapi/antrian/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/pelayanan" filters="none" />
+            <filter-chain pattern="/mobileapi/pelayanan/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/pelayanan/*/**" filters="none"/>
 
             <filter-chain pattern="/**/*"
                           filters="

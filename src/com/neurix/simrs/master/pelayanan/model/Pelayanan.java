@@ -12,12 +12,21 @@ public class Pelayanan extends BaseModel implements Serializable {
 
     private String idPelayanan;
     private String namaPelayanan;
+    private String idDokter;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

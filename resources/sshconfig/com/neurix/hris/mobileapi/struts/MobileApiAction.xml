@@ -130,6 +130,10 @@
         <action name="antrian/*" class="com.neurix.simrs.mobileapi.AntrianOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
+
+        <action name="pelayanan/*" class="com.neurix.simrs.mobileapi.PelayananController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

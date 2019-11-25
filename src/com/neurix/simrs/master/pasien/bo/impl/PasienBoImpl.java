@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.pasien.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
@@ -92,8 +93,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoKtp(data.getNoKtp());
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
-            pasien.setTglLahir(data.getTglLahir());
-            pasien.setDesaId(data.getDesaId());
+            pasien.setTglLahir(data.getTglLahir().toString());
+            pasien.setDesaId(data.getDesaId().toString());
             pasien.setJalan(data.getJalan());
             pasien.setSuku(data.getSuku());
             pasien.setAgama(data.getAgama());
@@ -127,8 +128,8 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setNoKtp(pasien.getNoKtp());
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
-            pasienEntity.setTglLahir(pasien.getTglLahir());
-            pasienEntity.setDesaId(pasien.getDesaId());
+            pasienEntity.setTglLahir(CommonUtil.convertStringToDate(pasien.getTglLahir()));
+            pasienEntity.setDesaId(Long.valueOf(pasien.getDesaId()));
             pasienEntity.setJalan(pasien.getJalan());
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
@@ -173,8 +174,8 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setNoKtp(pasien.getNoKtp());
                 pasienEntity.setNoBpjs(pasien.getNoBpjs());
                 pasienEntity.setTempatLahir(pasien.getTempatLahir());
-                pasienEntity.setTglLahir(pasien.getTglLahir());
-                pasienEntity.setDesaId(pasien.getDesaId());
+                pasienEntity.setTglLahir(CommonUtil.convertStringToDate(pasien.getTglLahir()));
+                pasienEntity.setDesaId(Long.valueOf(pasien.getDesaId()));
                 pasienEntity.setJalan(pasien.getJalan());
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());

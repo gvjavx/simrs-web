@@ -1,5 +1,6 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -302,7 +303,6 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setTglLahir(CommonUtil.convertStringToDate(tglLahir));
             registrasiOnline.setStTglLahir(tglLahir);
 
-
             String ktpPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN;
 
             if (fileUploadKtp != null) {
@@ -335,6 +335,10 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             }
 
             model.setAction("registrasi");
+        }
+
+        if (action.equalsIgnoreCase("validasi")) {
+            //TODO action ketika validasi akun
         }
 
         logger.info("[RegistrasiOnlineController.create] end process POST / <<<");

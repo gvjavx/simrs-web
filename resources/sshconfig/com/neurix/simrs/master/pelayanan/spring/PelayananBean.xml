@@ -11,6 +11,10 @@
           p:pelayananDao-ref="pelayananDao"
     />
 
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+    />
+
     <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="pelayananBo">
         <property name="interceptorNames">
@@ -33,6 +37,9 @@
     </bean>
 
     <bean id="pelayananDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="pelayananSpesialisDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananSpesialisDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

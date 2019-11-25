@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.antrianonline.bo;
 
+import com.neurix.authorization.user.model.ImUsers;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;

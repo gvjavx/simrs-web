@@ -1,5 +1,6 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.opensymphony.xwork2.ModelDriven;
@@ -98,6 +99,27 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
+
+        AntianOnline antianOnline = new AntianOnline();
+        antianOnline.setIdPelayanan(idPelayanan);
+        antianOnline.setIdDokter(idDokter);
+        antianOnline.setNoCheckupOnline(noCheckupOnline);
+
+        if (action.equalsIgnoreCase("tambah")) {
+            try {
+                antrianOnlineBoProxy.saveAdd(antianOnline);
+            } catch (GeneralBOException e) {
+
+            }
+        }
+
+        if (action.equalsIgnoreCase("show")) {
+            try {
+                listOfAntrianOnline = antrianOnlineBoProxy.getByCriteria(antianOnline);
+            } catch (GeneralBOException e) {
+
+            }
+        }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");
         return new DefaultHttpHeaders("index").disableCaching();

@@ -2,6 +2,7 @@ package com.neurix.simrs.master.pasien.model;
 
 import java.io.Serializable;
 import java.security.Timestamp;
+import java.sql.Date;
 
 /**
  * Created by Toshiba on 07/11/2019.
@@ -13,8 +14,8 @@ public class ImSimrsPasienEntity implements Serializable{
     private String noKtp;
     private String noBpjs;
     private String tempatLahir;
-    private String tglLahir;
-    private String desaId;
+    private Date tglLahir;
+    private Long desaId;
     private String jalan;
     private String suku;
     private String agama;
@@ -76,19 +77,19 @@ public class ImSimrsPasienEntity implements Serializable{
         this.tempatLahir = tempatLahir;
     }
 
-    public String getTglLahir() {
+    public Date getTglLahir() {
         return tglLahir;
     }
 
-    public void setTglLahir(String tglLahir) {
+    public void setTglLahir(Date tglLahir) {
         this.tglLahir = tglLahir;
     }
 
-    public String getDesaId() {
+    public Long getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(String desaId) {
+    public void setDesaId(Long desaId) {
         this.desaId = desaId;
     }
 

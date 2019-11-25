@@ -1,6 +1,9 @@
 package com.neurix.simrs.transaksi.antrianonline.bo.impl;
 
+import com.neurix.authorization.company.model.ImAreasBranchesUsers;
+import com.neurix.authorization.company.model.ImAreasBranchesUsersPK;
 import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.model.*;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
@@ -26,19 +29,14 @@ import java.util.Map;
 public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
     protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
     private RegistrasiOnlineDao registrasiOnlineDao;
-    private UserDao userDao;
     private PasienDao pasienDao;
-
-    public void setRegistrasiOnlineDao(RegistrasiOnlineDao registrasiOnlineDao) {
-        this.registrasiOnlineDao = registrasiOnlineDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
+    }
+
+    public void setRegistrasiOnlineDao(RegistrasiOnlineDao registrasiOnlineDao) {
+        this.registrasiOnlineDao = registrasiOnlineDao;
     }
 
     @Override
@@ -165,8 +163,33 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             String idCheckupOnline = "";
             String idPasien = "1";
             idCheckupOnline = getNextCheckupOnlineId();
+//            idPasien = pasienDao.getNextIdPasien();
 
             ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
+//            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+//
+//            pasienEntity.setIdPasien(idPasien);
+//            pasienEntity.setNama(bean.getNama());
+//            pasienEntity.setIdPasien(idPasien);
+//            pasienEntity.setJenisKelamin(bean.getJenisKelamin());
+//            pasienEntity.setProfesi(bean.getProfesi());
+//            pasienEntity.setNoTelp(bean.getNoTelp());
+//            pasienEntity.setSuku(bean.getSuku());
+//            pasienEntity.setTempatLahir(bean.getTempatLahir());
+//            pasienEntity.setTglLahir(bean.getTglLahir());
+//            pasienEntity.setJalan(bean.getJalan());
+//            pasienEntity.setDesaId(bean.getDesaId());
+//            pasienEntity.setNoKtp(bean.getNoKtp());
+//            pasienEntity.setUrlKtp(bean.getUrlKtp());
+//            pasienEntity.setAgama(bean.getAgama());
+//
+//            try {
+//                pasienDao.addAndSave(pasienEntity);
+//            } catch (HibernateException e) {
+//                logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data pasien" + e.getMessage());
+//                throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving pasien");
+//            }
+
 
             registrasiOnlineEntity.setNoCheckupOnline("CKO" + idCheckupOnline);
             registrasiOnlineEntity.setNama(bean.getNama());
@@ -311,6 +334,5 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
 
         return id;
     }
-
 
 }
