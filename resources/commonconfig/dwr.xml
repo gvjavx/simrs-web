@@ -310,9 +310,16 @@
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"/>
       </create>
+
+      <!--Pasien -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.pasien.action.PasienAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pasien.model.Pasien"/>
   </allow>
 
 </dwr>

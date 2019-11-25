@@ -12,4 +12,5 @@ public interface PasienBo {
     public List<Pasien> getByCriteria(Pasien bean) throws GeneralBOException;
     public void saveAdd(Pasien pasien) throws GeneralBOException;
     public void saveEdit(Pasien pasien) throws GeneralBOException;
+    public List<Pasien> getListComboPasien(String query) throws GeneralBOException;
 }

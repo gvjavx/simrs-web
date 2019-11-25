@@ -12,6 +12,7 @@
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -194,6 +195,60 @@
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
                                             </div>
+
+                                            <script type="application/javascript">
+                                                var functions, mapped;
+                                                $('#id_pasien').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+
+                                                        var data = [];
+                                                        dwr.engine.setAsync(false);
+
+                                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                                            data = listdata;
+                                                        });
+
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.noKtp+" "+item.noBpjs+" "+item.nama;
+                                                            mapped[labelItem] = {
+                                                                id: item.idPasien,
+                                                                nama:item.nama,
+                                                                ktp: item.noKtp,
+                                                                bpjs:item.noBpjs,
+                                                                tempatlahir:item.tempatLahir,
+                                                                tgllahir:item.tglLahir,
+                                                                alamat:item.jalan,
+                                                                suku:item.suku,
+                                                                profesi:item.profesi,
+                                                                notelp:item.noTelp,
+                                                                urlktp:item.urlKtp,
+                                                                sex:item.jenisKelamin,
+                                                                agama:item.agama
+                                                            };
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+                                                        $('#no_ktp').val(selectedObj.ktp);
+                                                        $('#nama_pasien').val(selectedObj.nama);
+                                                        $('#jenis_kelamin').val(selectedObj.sex);
+                                                        $('#tempat_lahir').val(selectedObj.tempatlahir);
+                                                        $('#tanggal_lahir').val(selectedObj.tgllahir);
+                                                        $('#agama').val(selectedObj.agama);
+                                                        $('#profesi').val(selectedObj.profesi);
+                                                        $('#jalan').val(selectedObj.alamat);
+                                                        $('#suku').val(selectedObj.urlktp);
+                                                        $('#url').val(selectedObj.suku);
+                                                        return selectedObj.id;
+                                                    }
+                                                });
+                                            </script>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
@@ -331,7 +386,7 @@
                                                     </span>
                                                     <input type="text" class="form-control" readonly>
                                                 </div>
-                                                <img id="img-upload" width="100%" src="<s:url value="/pages/images/ktp-default.jpg"/>"
+                                                <img id="img-upload" width="100%" src="<s:url id="url" value="/pages/images/ktp-default.jpg"/>"
                                                      style="border: darkgray solid 1px; height: 170px"/>
                                             </div>
                                         </div>
