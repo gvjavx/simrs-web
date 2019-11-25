@@ -74,7 +74,7 @@
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control" theme="simple"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

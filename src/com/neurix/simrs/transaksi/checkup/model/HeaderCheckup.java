@@ -49,6 +49,16 @@ public class HeaderCheckup {
     private String namaKota;
     private String namaProvinsi;
 
+    private String idDokter;
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
+
     public String getNamaRuangan() {
         return namaRuangan;
     }

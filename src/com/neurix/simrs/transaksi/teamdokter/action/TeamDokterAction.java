@@ -129,14 +129,18 @@ public class TeamDokterAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
 
-        try {
-            dokterTeamList = dokterBo.getByCriteria(dokterTeam);
-        }catch (GeneralBOException e){
-            logger.error("[TeamDokterAction.listDokter] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-        }
+        if(!"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                dokterTeamList = dokterBo.getByCriteria(dokterTeam);
+            }catch (GeneralBOException e){
+                logger.error("[TeamDokterAction.listDokter] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
 
-        logger.info("[TeamDokterAction.listDokter] start process >>>");
-        return dokterTeamList;
+            logger.info("[TeamDokterAction.listDokter] start process >>>");
+            return dokterTeamList;
+        }else{
+            return null;
+        }
     }
 }

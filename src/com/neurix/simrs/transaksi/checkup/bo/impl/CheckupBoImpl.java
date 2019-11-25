@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 import com.neurix.hris.master.provinsi.model.ImDesaEntity;
 import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
@@ -14,10 +15,14 @@ import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +38,7 @@ public class CheckupBoImpl implements CheckupBo {
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
     private ProvinsiDao provinsiDao;
+    private DokterTeamDao dokterTeamDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -208,6 +214,7 @@ public class CheckupBoImpl implements CheckupBo {
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
             }
 
+            // saving detail checkup
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                 ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
 
@@ -232,9 +239,45 @@ public class CheckupBoImpl implements CheckupBo {
                     throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data detail checkup");
                 }
 
+                // saving dokter
+                if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) &&
+                        detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup()))
+                {
+                    DokterTeam dokterTeam = new DokterTeam();
+                    dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    dokterTeam.setIdDokter(bean.getIdDokter());
+                    saveTeamDokter(dokterTeam);
+                }
             }
+
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
+    }
+
+    private void saveTeamDokter(DokterTeam bean){
+        logger.info("[TeamDokterBoImpl.savaAdd] Start >>>>>>>>");
+
+        ItSimrsDokterTeamEntity entity = new ItSimrsDokterTeamEntity();
+        String id = getNextTeamDokterId();
+
+        entity.setIdTeamDokter("TDT"+id);
+        entity.setIdDokter(bean.getIdDokter());
+        entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setFlag("Y");
+        entity.setAction("C");
+        entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        entity.setCreatedWho(CommonUtil.userLogin());
+        entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        entity.setLastUpdateWho(CommonUtil.userLogin());
+
+        try {
+            dokterTeamDao.addAndSave(entity);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.saveTeamDokter] Error when save add dokter team ",e);
+            throw new GeneralBOException("[CheckupBoImpl.saveTeamDokter] Error when save add dokter team "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.savaAdd] End <<<<<<<<");
     }
 
     private String getNextHeaderId(){
@@ -259,65 +302,15 @@ public class CheckupBoImpl implements CheckupBo {
         return id;
     }
 
-    private String getDesaName(String desaId){
-
-        String name = "";
-        List<ImDesaEntity> entities = null;
+    private String getNextTeamDokterId(){
+        String id = "";
         try {
-            entities = provinsiDao.getListDesaById(desaId);
+            id = dokterTeamDao.getNextSeq();
         } catch (HibernateException e){
-            logger.error("[CheckupBoImpl.getDesaName] Error when get desa name "+e.getMessage());
+            logger.error("[CheckupBoImpl.getNextTeamDokterId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getNextTeamDokterId] Error When Error get next seq id");
         }
-
-        if (!entities.isEmpty()){
-            name = entities.get(0).getDesaName();
-        }
-        return name;
-
-    }
-
-    private String getKecamatanName(String kecId){
-        String name = "";
-        List<ImKecamatanEntity> entities = null;
-        try {
-            entities = provinsiDao.getListKecamatanById(kecId);
-        } catch (HibernateException e){
-            logger.error("[CheckupBoImpl.getKecamatanName] Error when get kecamatan name "+e.getMessage());
-        }
-
-        if (!entities.isEmpty()){
-            name = entities.get(0).getKecamatanName();
-        }
-        return name;
-    }
-
-    private String getKotaName(String kotaId){
-        String name = "";
-        List<ImKotaEntity> entities = null;
-        try {
-            entities = provinsiDao.getListKotaById(kotaId);
-        } catch (HibernateException e){
-            logger.error("[CheckupBoImpl.getKotaName] Error when get kota name "+e.getMessage());
-        }
-
-        if (!entities.isEmpty()){
-            name = entities.get(0).getKotaName();
-        }
-        return name;
-    }
-    private String getProvonsiName(String provId){
-        String name = "";
-        List<ImProvinsiEntity> entities = null;
-        try {
-            entities = provinsiDao.getListProvinsiById(provId);
-        } catch (HibernateException e){
-            logger.error("[CheckupBoImpl.getProvonsiName] Error when get provinsi name "+e.getMessage());
-        }
-
-        if (!entities.isEmpty()){
-            name = entities.get(0).getProvinsiName();
-        }
-        return name;
+        return id;
     }
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
@@ -330,5 +323,9 @@ public class CheckupBoImpl implements CheckupBo {
 
     public void setProvinsiDao(ProvinsiDao provinsiDao) {
         this.provinsiDao = provinsiDao;
+    }
+
+    public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
+        this.dokterTeamDao = dokterTeamDao;
     }
 }

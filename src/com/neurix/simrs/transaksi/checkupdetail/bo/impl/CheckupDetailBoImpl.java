@@ -1,6 +1,10 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -11,9 +15,13 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +35,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(CheckupDetailBoImpl.class);
 
     private CheckupDetailDao checkupDetailDao;
+    private DokterTeamDao dokterTeamDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -127,6 +136,18 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckup.setNamaRuangan(rawatInapEntity.getNamaRangan());
             }
 
+            Pelayanan pelayanan = new Pelayanan();
+            pelayanan.setIdPelayanan(detailCheckup.getIdPelayanan());
+            List<ImSimrsPelayananEntity> pelayananEntityList = getListEntityPelayanan(pelayanan);
+
+            ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+            if (!pelayananEntityList.isEmpty()){
+                pelayananEntity = pelayananEntityList.get(0);
+            }
+            if(pelayananEntity != null){
+               detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+            }
+
             results.add(detailCheckup);
         }
 
@@ -176,7 +197,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setIdDetailCheckup("DCM"+id);
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-        detailCheckupEntity.setStatusPeriksa("0");
+        detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         detailCheckupEntity.setFlag("Y");
         detailCheckupEntity.setAction("C");
         detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
@@ -191,7 +212,44 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
+
+        // saving dokter
+        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) &&
+                detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup()))
+        {
+            DokterTeam dokterTeam = new DokterTeam();
+            dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            dokterTeam.setIdDokter(bean.getIdDokter());
+            saveTeamDokter(dokterTeam);
+        }
+
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+    private void saveTeamDokter(DokterTeam bean){
+        logger.info("[CheckupDetailBoImpl.savaAdd] Start >>>>>>>>");
+
+        ItSimrsDokterTeamEntity entity = new ItSimrsDokterTeamEntity();
+        String id = getNextTeamDokterId();
+
+        entity.setIdTeamDokter("TDT"+id);
+        entity.setIdDokter(bean.getIdDokter());
+        entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setFlag("Y");
+        entity.setAction("C");
+        entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        entity.setCreatedWho(CommonUtil.userLogin());
+        entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        entity.setLastUpdateWho(CommonUtil.userLogin());
+
+        try {
+            dokterTeamDao.addAndSave(entity);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.saveTeamDokter] Error when save add dokter team ",e);
+            throw new GeneralBOException("[CheckupDetailBoImpl.saveTeamDokter] Error when save add dokter team "+e.getMessage());
+        }
+
+        logger.info("[CheckupDetailBoImpl.savaAdd] End <<<<<<<<");
     }
 
 
@@ -200,8 +258,19 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         try {
             id = checkupDetailDao.getNextId();
         } catch (HibernateException e){
-            logger.error("[CheckupBoImpl.getNextDetailCheckupId] Error get next seq id "+e.getMessage());
-            throw new GeneralBOException("[CheckupBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
+            logger.error("[CheckupDetailBoImpl.getNextDetailCheckupId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupDetailBoImpl.getNextDetailCheckupId] Error When Error get next seq id");
+        }
+        return id;
+    }
+
+    private String getNextTeamDokterId(){
+        String id = "";
+        try {
+            id = dokterTeamDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.getNextTeamDokterId] Error get next seq id "+e.getMessage());
+            throw new GeneralBOException("[CheckupDetailBoImpl.getNextTeamDokterId] Error When Error get next seq id");
         }
         return id;
     }
@@ -210,4 +279,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         this.checkupDetailDao = checkupDetailDao;
     }
 
+    public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
+        this.dokterTeamDao = dokterTeamDao;
+    }
 }

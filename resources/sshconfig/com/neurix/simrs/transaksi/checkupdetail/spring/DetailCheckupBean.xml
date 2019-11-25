@@ -7,12 +7,20 @@
     <bean id="checkupDetailAction" class="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
+          p:tindakanBoProxy-ref="tindakanBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:kelasRuanganBoProxy-ref="kelasRuanganBoProxy"
+          p:ruanganBoProxy-ref="ruanganBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:statusPasienDao-ref="statusPasienDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

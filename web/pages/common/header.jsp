@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="<s:url value="/pages/bootstraplte/css/bootstrap.css"/>" rel="stylesheet" media="screen">
+<link href="<s:url value="/pages/bootstrap/css/hover.css"/>" rel="stylesheet">
 
 <%--<!--<link type="text/css" href="<s:url value="/pages/mozilla/style.css"/>" rel="stylesheet"/> -->--%>
 <%--<link type="text/css" href="<s:url value="/pages/css/initial-form.css"/>" rel="stylesheet"/>--%>
@@ -149,7 +150,7 @@ apply the skin class to the body tag so the changes take effect.
     });
 
     $(function () {
-        $('.select2').select2();
+        $('.select2').select2({});
         //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
         //Money Euro

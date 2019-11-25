@@ -7,8 +7,7 @@
 
     <bean id="diagnosaRawatAction" class="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"
         p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
-          p:diagnosaBoProxy-ref="diagnosaBoProxy"
-
+        p:diagnosaBoProxy-ref="diagnosaBoProxy"
     />
 
     <bean id="diagnosaRawatBo" class="com.neurix.simrs.transaksi.diagnosarawat.bo.impl.DiagnosaRawatBoImpl"

@@ -21,14 +21,18 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
     public List<ItSimrsRawatInapEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsRawatInapEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_rawat_inap") != null)
+            if (mapCriteria.get("id_rawat_inap") != null){
                 criteria.add(Restrictions.eq("idRawatInap", mapCriteria.get("id_rawat_inap").toString()));
-            if (mapCriteria.get("id_detail_checkup") != null)
+            }
+            if (mapCriteria.get("id_detail_checkup") != null){
                 criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
-            if (mapCriteria.get("no_checkup") != null)
+            }
+            if (mapCriteria.get("no_checkup") != null){
                 criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
-            if (mapCriteria.get("id_ruangan") != null)
+            }
+            if (mapCriteria.get("id_ruangan") != null){
                 criteria.add(Restrictions.eq("idRuangan", mapCriteria.get("id_ruangan").toString()));
+            }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         List<ItSimrsRawatInapEntity> result = criteria.list();

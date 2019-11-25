@@ -12,6 +12,7 @@
     <bean id="tindakanRawatBo" class="com.neurix.simrs.transaksi.tindakanrawat.bo.impl.TindakanRawatBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
           p:checkupDetailDao-ref="checkupDetailDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="tindakanRawatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

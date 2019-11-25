@@ -1,6 +1,9 @@
 package com.neurix.simrs.transaksi.tindakanrawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -20,10 +23,11 @@ import java.util.Map;
 /**
  * Created by Toshiba on 13/11/2019.
  */
-public class TindakanRawatBoImpl extends TindakanRawatModuls implements TindakanRawatBo {
+public class TindakanRawatBoImpl implements TindakanRawatBo {
     private static transient Logger logger = Logger.getLogger(TindakanRawatBoImpl.class);
     private TindakanRawatDao tindakanRawatDao;
     private CheckupDetailDao checkupDetailDao;
+    private DokterDao dokterDao;
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -195,6 +199,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setIdTindakanRawat(entity.getIdTindakanRawat());
             tindakanRawat.setIdDetailCheckup(entity.getIdDetailCheckup());
             tindakanRawat.setIdTindakan(entity.getIdTindakan());
+            tindakanRawat.setNamaTindakan(entity.getNamaTindakan());
             tindakanRawat.setIdDokter(entity.getIdDokter());
             tindakanRawat.setIdPerawat(entity.getIdPerawat());
             tindakanRawat.setTarif(entity.getTarif());
@@ -207,12 +212,35 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
 
-            results.add(tindakanRawat);
+            if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
+                List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());
+                if (!listDokter.isEmpty()){
+                    ImSimrsDokterEntity dokterEntity = listDokter.get(0);
+                    tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
+                }
+            }
 
+            results.add(tindakanRawat);
         }
 
         logger.info("[TindakanRawatBoImpl.setToTindakanRawatTemplate] End <<<<<<");
         return results;
+    }
+
+    private List<ImSimrsDokterEntity> getDokterList(String dokterId){
+        logger.info("[TindakanRawatBoImpl.getDokterList] Start >>>>>>>");
+        List<ImSimrsDokterEntity> dokterList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_dokter", dokterId);
+        try {
+            dokterList = dokterDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getDokterList] Error when get data dokter ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getDokterList] End <<<<<<");
+        return dokterList;
     }
 
     public String getNextTindakanRawatId(){
@@ -235,5 +263,9 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
     }
 }

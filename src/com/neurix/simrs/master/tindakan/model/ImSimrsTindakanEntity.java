@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.tindakan.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -10,8 +11,8 @@ public class ImSimrsTindakanEntity implements Serializable{
     private String idTindakan;
     private String tindakan;
     private String idKategoriTindakan;
-    private Long tarif;
-    private Long tarifBpjs;
+    private BigInteger tarif;
+    private BigInteger tarifBpjs;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -43,19 +44,19 @@ public class ImSimrsTindakanEntity implements Serializable{
         this.idKategoriTindakan = idKategoriTindakan;
     }
 
-    public Long getTarif() {
+    public BigInteger getTarif() {
         return tarif;
     }
 
-    public void setTarif(Long tarif) {
+    public void setTarif(BigInteger tarif) {
         this.tarif = tarif;
     }
 
-    public Long getTarifBpjs() {
+    public BigInteger getTarifBpjs() {
         return tarifBpjs;
     }
 
-    public void setTarifBpjs(Long tarifBpjs) {
+    public void setTarifBpjs(BigInteger tarifBpjs) {
         this.tarifBpjs = tarifBpjs;
     }
 
