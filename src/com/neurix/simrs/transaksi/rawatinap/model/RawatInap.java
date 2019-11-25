@@ -44,6 +44,35 @@ public class RawatInap {
     private String jenisPeriksaPasien;
     private String nik;
 
+    private String idStatusPeriksa;
+    private String statusPeriksaName;
+
+    private String alamaLengkap;
+
+    public String getAlamaLengkap() {
+        return alamaLengkap;
+    }
+
+    public void setAlamaLengkap(String alamaLengkap) {
+        this.alamaLengkap = alamaLengkap;
+    }
+
+    public String getIdStatusPeriksa() {
+        return idStatusPeriksa;
+    }
+
+    public void setIdStatusPeriksa(String idStatusPeriksa) {
+        this.idStatusPeriksa = idStatusPeriksa;
+    }
+
+    public String getStatusPeriksaName() {
+        return statusPeriksaName;
+    }
+
+    public void setStatusPeriksaName(String statusPeriksaName) {
+        this.statusPeriksaName = statusPeriksaName;
+    }
+
     public String getIdJenisPeriksa() {
         return idJenisPeriksa;
     }

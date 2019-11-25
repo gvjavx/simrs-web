@@ -198,9 +198,9 @@
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
-                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="alamatLengkap"/></td>
+                                    <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>

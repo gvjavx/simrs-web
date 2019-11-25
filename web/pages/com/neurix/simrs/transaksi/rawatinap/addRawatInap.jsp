@@ -671,13 +671,14 @@
             $('#dok_id_dokter').css('border','');
             $('#modal-dokter').modal('show');
         }else if(select == 2){
+            $('#tin_id_ketgori_tindakan').val('');
             $('#tin_id_tindakan').val('');
             $('#tin_id_dokter').val('');
             $('#tin_id_perawat').val('');
             $('#tin_qty').val('');
             $('#save_tindakan').show();
             $('#load_tindakan, #warning_tindakan').hide();
-            $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty').css('border','');
+            $('#tin_id_tindakan, #tin_id_dokter, #tin_id_perawat, #tin_qty, #tin_id_ketgori_tindakan').css('border','');
             $('#modal-tindakan').modal('show');
 
         }else if(select == 3){
