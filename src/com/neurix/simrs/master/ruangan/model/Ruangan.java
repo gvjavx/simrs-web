@@ -2,6 +2,7 @@ package com.neurix.simrs.master.ruangan.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class Ruangan extends BaseModel {
@@ -12,7 +13,7 @@ public class Ruangan extends BaseModel {
     private String statusRuangan;
     private String idKelasRuangan;
     private String keterangan;
-    private Long tarif;
+    private BigInteger tarif;
     private String branchId;
     private String flag;
     private String action;
@@ -69,11 +70,11 @@ public class Ruangan extends BaseModel {
         this.keterangan = keterangan;
     }
 
-    public Long getTarif() {
+    public BigInteger getTarif() {
         return tarif;
     }
 
-    public void setTarif(Long tarif) {
+    public void setTarif(BigInteger tarif) {
         this.tarif = tarif;
     }
 
