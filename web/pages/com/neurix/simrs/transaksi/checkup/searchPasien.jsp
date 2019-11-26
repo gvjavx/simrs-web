@@ -78,12 +78,12 @@
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

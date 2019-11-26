@@ -72,18 +72,6 @@ public class RawatInapAction extends BaseMasterAction {
                 for (RawatInap rawatInap : listOfResult) {
                     if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
 
-//                        detailCheckup.setStatusPeriksa("1");
-//                        detailCheckup.setFlag("Y");
-//                        detailCheckup.setAction("U");
-//                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-//                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-//
-//                        try {
-//                            checkupDetailBoProxy.saveEdit(detailCheckup);
-//                        } catch (GeneralBOException e){
-//                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
-//                        }
-
                         HeaderCheckup headerCheckup = getHeaderCheckup(rawatInap.getNoCheckup());
                         rawatInap.setIdPasien(headerCheckup.getIdPasien());
                         rawatInap.setNamaPasien(headerCheckup.getNama());
@@ -157,7 +145,7 @@ public class RawatInapAction extends BaseMasterAction {
         List<RawatInap> listOfRawatInap = new ArrayList();
 
         try {
-            listOfRawatInap = rawatInapBoProxy.getListEntityRawatInap(rawatInap);
+            listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[RawatInapAction.save] Error when searching rawat inap by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);

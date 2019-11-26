@@ -391,12 +391,12 @@
                                             <div class="col-md-8">
                                                 <s:action id="initComboPoli" namespace="/checkup"
                                                           name="getComboPelayanan_checkup"/>
-                                                <s:select cssStyle="margin-top: 7px"
+                                                <s:select cssStyle="margin-top: 7px; width: 100%"
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
+                                                          cssClass="form-control select2"/>
 
 
 
@@ -405,15 +405,9 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Dokter</label>
                                             <div class="col-md-8">
-                                                <%--<s:select--%>
-                                                        <%--list="#{'01':'Dr. Sudirto','02':'Dr.Sumadjo'}"--%>
-                                                        <%--cssStyle="margin-top: 7px"--%>
-                                                        <%--id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
-                                                        <%--headerKey="" headerValue="[Select one]"--%>
-                                                        <%--cssClass="form-control"/>--%>
-                                                <%--<s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
-                                                             <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" style="margin-top: 7px" onchange="$(this).css('border','')"></select>
+                                                    <select id="dokter" class="form-control select2" name="headerCheckup.idDokter" style="margin-top: 7px; width: 100%" onchange="$(this).css('border','')">
+                                                        <option value=''>[Select One]</option>
+                                                    </select>
                                             </div>
                                         </div>
                                         <div class="form-group">

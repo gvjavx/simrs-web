@@ -59,7 +59,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="rawatInap.nama"
+                                        <s:textfield id="nama_pasien" name="rawatInap.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -69,12 +69,12 @@
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select cssStyle="border-radius: 4px; width: 100%"
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="rawatInap.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control" theme="simple"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -102,7 +102,7 @@
                                                   name="getListComboKelasRuangan_checkupdetail"/>
                                         <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="rawatInap.idkelasRuangan"
+                                                  name="rawatInap.idKelas"
                                                   listKey="idKelasRuangan"
                                                   listValue="namaKelasRuangan"
                                                   headerKey="" headerValue="[Select one]"
@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
-                                        <select style="margin-top: 7px" class="form-control" id="nama_ruangan" name="rawatInap.idRuangan">
+                                        <select style="margin-top: 7px" class="form-control" id="nama_ruangan" name="rawatInap.idRuang">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -199,7 +199,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="alamatLengkap"/></td>
+                                    <td><s:property value="alamat"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
@@ -225,18 +225,22 @@
     function listSelectRuangan(id){
         var idx = id.selectedIndex;
         var idKelas = id.options[idx].value;
-
         var option = "";
-        CheckupDetailAction.listRuangan(idKelas, function (response) {
+
+        if(idKelas != ''){
+            CheckupDetailAction.listRuangan(idKelas, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+            });
+        }else{
             option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
+        }
 
         $('#nama_ruangan').html(option);
     }

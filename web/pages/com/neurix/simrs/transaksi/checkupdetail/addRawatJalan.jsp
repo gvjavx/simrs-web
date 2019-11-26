@@ -286,9 +286,9 @@
 
                     <div class="box-header with-border">
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                    <%--<h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>--%>
-                    <%--</div>--%>
+                    <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                    </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -296,16 +296,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <%--<div class="form-group">--%>
-                                <%--<label>Waktu Selesai Periksa</label>--%>
-                                <%--<s:textfield id=""--%>
-                                <%--name="headerDetailCheckup.noCheckup" required="false"--%>
-                                <%--cssClass="form-control"/>--%>
-                                <%--</div>--%>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label style="margin-top: 7px">Keterangan</label>
-                                    <select class="form-control" style="margin-top: 7px" id="keterangan"
+                                    <select class="form-control" id="keterangan"
                                             onchange="$(this).css('border',''); selectKeterangan(this)">
                                         <option value=''>[Select One]</option>
                                         <option value='selesai'>Selesai</option>
@@ -318,7 +311,7 @@
                                         <label style="margin-top: 7px">Poli</label>
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select
                                                   list="#initComboPoli.listOfPelayanan" id="poli_lain"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
@@ -337,16 +330,26 @@
                                     </div>
                                 </div>
 
+                                    <div id="form-selesai" style="display: none">
+                                        <div class="form-group">
+                                            <label style="margin-top: 7px">Keterangan Selesai</label>
+                                            <s:action id="initComboKet" namespace="/checkupdetail"
+                                                      name="getListComboKeteranganKeluar_checkupdetail"/>
+                                            <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
+                                                      name="headerCheckup.idPelayanan" listKey="keterangan"
+                                                      listValue="keterangan"
+                                                      onchange="$(this).css('border','')"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control"/>
+                                        </div>
+                                    </div>
+
                                 <div id="kamar" style="display: none;">
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Kelas</label>
-                                        <%--<select class="form-control" id="kelas_kamar"--%>
-                                                <%--onchange="$(this).css('border','')">--%>
-                                            <%--<option value=''>[Select One]</option>--%>
-                                        <%--</select>--%>
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                        <s:select onchange="$(this).css('border',''); listSelectRuangan(this)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
                                                   listKey="idKelasRuangan"
                                                   listValue="namaKelasRuangan"
@@ -636,14 +639,17 @@
         if (idKtg == "pindah") {
             $("#form-poli").attr('style', 'display:block');
             $("#kamar").attr('style', 'display:none');
+            $("#form-selesai").hide();
         }
         if (idKtg == "rujuk") {
             $("#kamar").attr('style', 'display:block');
             $("#form-poli").attr('style', 'display:none');
+            $("#form-selesai").hide();
         }
         if (idKtg == "selesai" || idKtg == "") {
             $("#kamar").attr('style', 'display:none');
             $("#form-poli").attr('style', 'display:none');
+            $("#form-selesai").show();
         }
     }
 
@@ -673,6 +679,7 @@
         var kelas = "";
         var kamar = "";
         var idDokter = "";
+        var ket_selesai = "";
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
@@ -682,7 +689,7 @@
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, function (response) {
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, function (response) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(5);
                         $('#save_ket').show();
@@ -707,7 +714,7 @@
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, function (response) {
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter,ket_selesai, function (response) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(5);
                         $('#save_ket').show();
@@ -726,15 +733,21 @@
             }
 
             if(idKtg == "selesai"){
-                $('#save_ket').hide();
-                $('#load_ket').show();
-                dwr.engine.setAsync(true);
-                CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, function (response) {
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(5);
-                    $('#save_ket').show();
-                    $('#load_ket').hide();
-                });
+                ket_selesai = $('#ket_selesai').val();
+                if(ket_selesai != ''){
+                    $('#save_ket').hide();
+                    $('#load_ket').show();
+                    dwr.engine.setAsync(true);
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, function (response) {
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(5);
+                        $('#save_ket').show();
+                        $('#load_ket').hide();
+                    });
+                }else{
+                    $('#warning_ket').show().fadeOut(5000);
+                    $('#ket_selesai').css('border', 'red solid 1px');
+                }
             }
         } else {
             $('#warning_ket').show().fadeOut(5000);

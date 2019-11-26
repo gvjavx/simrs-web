@@ -44,25 +44,63 @@ public class RawatInap {
     private String jenisPeriksaPasien;
     private String nik;
 
-    private String idStatusPeriksa;
+    private String statusPeriksa;
     private String statusPeriksaName;
 
-    private String alamaLengkap;
+    private String stTglFrom;
+    private String stTglTo;
 
-    public String getAlamaLengkap() {
-        return alamaLengkap;
+    private String idKelas;
+    private String idRuang;
+
+    private String keteranganSelesai;
+
+    public String getKeteranganSelesai() {
+        return keteranganSelesai;
     }
 
-    public void setAlamaLengkap(String alamaLengkap) {
-        this.alamaLengkap = alamaLengkap;
+    public void setKeteranganSelesai(String keteranganSelesai) {
+        this.keteranganSelesai = keteranganSelesai;
     }
 
-    public String getIdStatusPeriksa() {
-        return idStatusPeriksa;
+    public String getIdKelas() {
+        return idKelas;
     }
 
-    public void setIdStatusPeriksa(String idStatusPeriksa) {
-        this.idStatusPeriksa = idStatusPeriksa;
+    public void setIdKelas(String idKelas) {
+        this.idKelas = idKelas;
+    }
+
+    public String getIdRuang() {
+        return idRuang;
+    }
+
+    public void setIdRuang(String idRuang) {
+        this.idRuang = idRuang;
+    }
+
+    public String getStTglFrom() {
+        return stTglFrom;
+    }
+
+    public void setStTglFrom(String stTglFrom) {
+        this.stTglFrom = stTglFrom;
+    }
+
+    public String getStTglTo() {
+        return stTglTo;
+    }
+
+    public void setStTglTo(String stTglTo) {
+        this.stTglTo = stTglTo;
+    }
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String idStatusPeriksa) {
+        this.statusPeriksa = idStatusPeriksa;
     }
 
     public String getStatusPeriksaName() {

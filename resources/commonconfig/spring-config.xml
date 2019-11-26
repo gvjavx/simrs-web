@@ -143,6 +143,7 @@
     <import resource="sshconfig/com/neurix/simrs/master/diagnosa/spring/DiagnosaBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/kelasruangan/spring/KelasRuanganBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/RuanganBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/keterangankeluar/spring/KeteranganKeluarBean.xml"/>
 
 
 </beans>

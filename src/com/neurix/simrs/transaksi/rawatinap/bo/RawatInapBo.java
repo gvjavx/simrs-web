@@ -9,5 +9,5 @@ import java.util.List;
  * Created by Toshiba on 13/11/2019.
  */
 public interface RawatInapBo {
-    public List<RawatInap> getListEntityRawatInap(RawatInap bean) throws GeneralBOException;
+    public List<RawatInap> getSearchRawatInap(RawatInap bean) throws GeneralBOException;
 }
