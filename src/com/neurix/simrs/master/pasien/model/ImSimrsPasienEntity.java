@@ -1,7 +1,7 @@
 package com.neurix.simrs.master.pasien.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 07/11/2019.

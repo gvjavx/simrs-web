@@ -50,6 +50,16 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
         return listOfResult;
     }
 
+    public List<ImSimrsPasienEntity> getListPasienByTmp(String tmp){
+
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
+        criteria.add(Restrictions.ilike("nama", tmp));
+        criteria.add(Restrictions.eq("flag", "Y"));
+
+        List<ImSimrsPasienEntity> listOfResult = criteria.list();
+        return listOfResult;
+    }
+
     public String getNextIdPasien(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pasien')");
         Iterator<BigInteger> iter=query.list().iterator();
