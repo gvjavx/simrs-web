@@ -178,6 +178,7 @@
                             </div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                                <%--<button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Pasien Baru</button>--%>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -194,6 +195,16 @@
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
+
+                                                    <%--<s:action id="initSelectPasien" namespace="/pasien"--%>
+                                                              <%--name="getListComboSelectPasien_pasien"/>--%>
+                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                              <%--list="#initSelectPasien.listOfpasien" id="id_pasien"--%>
+                                                              <%--name="headerCheckup.idPasien" listKey="idPasien+,+nama"--%>
+                                                              <%--listValue="idPasien" onchange="$(this).css('border','')"--%>
+                                                              <%--headerKey="" headerValue="[Select one]"--%>
+                                                              <%--cssClass="form-control select2"/>--%>
+
                                             </div>
 
                                             <script type="application/javascript">
@@ -386,7 +397,7 @@
                                                     </span>
                                                     <input type="text" class="form-control" readonly>
                                                 </div>
-                                                <img id="img-upload" width="100%" src="<s:url id="url" value="/pages/images/ktp-default.jpg"/>"
+                                                <img id="img-upload" width="100%" src="<s:url value="/pages/images/ktp-default.jpg"/>"
                                                      style="border: darkgray solid 1px; height: 170px"/>
                                             </div>
                                         </div>
@@ -452,9 +463,6 @@
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control select2"/>
-
-
-
                                             </div>
                                         </div>
                                         <div class="form-group">

@@ -316,10 +316,23 @@
           <param name="class" value="com.neurix.simrs.master.pasien.action.PasienAction"/>
       </create>
 
+      <!--Obat -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.obat.action.ObatAction"/>
+      </create>
+
+      <!--Obat Inap -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.obatinap.action.ObatInapAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
       <convert converter="bean" match="com.neurix.simrs.master.pasien.model.Pasien"/>
+      <convert converter="bean" match="com.neurix.simrs.master.obat.model.Obat"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.obatinap.model.ObatInap"/>
+
   </allow>
 
 </dwr>

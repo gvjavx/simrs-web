@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.obat.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class ImSimrsObatEntity implements Serializable{
@@ -8,7 +9,7 @@ public class ImSimrsObatEntity implements Serializable{
     private String idObat;
     private String namaObat;
     private String idJenisObat;
-    private Long harga;
+    private BigInteger harga;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -40,11 +41,11 @@ public class ImSimrsObatEntity implements Serializable{
         this.idJenisObat = idJenisObat;
     }
 
-    public Long getHarga() {
+    public BigInteger getHarga() {
         return harga;
     }
 
-    public void setHarga(Long harga) {
+    public void setHarga(BigInteger harga) {
         this.harga = harga;
     }
 

@@ -1,21 +1,40 @@
 package com.neurix.simrs.transaksi.obatinap.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class ItSimrsObatInapEntity implements Serializable {
 
     private String idObatInap;
+    private String idDetailCheckup;
     private String idObat;
     private String namaObat;
-    private Long harga;
-    private Long qty;
+    private BigInteger harga;
+    private BigInteger qty;
+    private BigInteger totalHarga;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public BigInteger getTotalHarga() {
+        return totalHarga;
+    }
+
+    public void setTotalHarga(BigInteger totalHarga) {
+        this.totalHarga = totalHarga;
+    }
 
     public String getIdObatInap() {
         return idObatInap;
@@ -41,19 +60,19 @@ public class ItSimrsObatInapEntity implements Serializable {
         this.namaObat = namaObat;
     }
 
-    public Long getHarga() {
+    public BigInteger getHarga() {
         return harga;
     }
 
-    public void setHarga(Long harga) {
+    public void setHarga(BigInteger harga) {
         this.harga = harga;
     }
 
-    public Long getQty() {
+    public BigInteger getQty() {
         return qty;
     }
 
-    public void setQty(Long qty) {
+    public void setQty(BigInteger qty) {
         this.qty = qty;
     }
 

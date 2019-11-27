@@ -157,6 +157,8 @@
     <!--Struts Route Config For SIMRS Is Here-->
     <!--MASTER -->
     <include file="sshconfig/com/neurix/simrs/master/pasien/struts/PasienAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/jenisobat/struts/JenisObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/obat/struts/ObatAction.xml"/>
 
     <!--TRANSAKSI -->
     <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>

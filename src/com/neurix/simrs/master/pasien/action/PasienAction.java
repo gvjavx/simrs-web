@@ -16,6 +16,15 @@ public class PasienAction extends BaseMasterAction {
 
     private Pasien pasien;
     private PasienBo pasienBoProxy;
+    private List<Pasien> listOfpasien = new ArrayList<>();
+
+    public List<Pasien> getListOfpasien() {
+        return listOfpasien;
+    }
+
+    public void setListOfpasien(List<Pasien> listOfpasien) {
+        this.listOfpasien = listOfpasien;
+    }
 
     @Override
     public String add() {
@@ -78,6 +87,24 @@ public class PasienAction extends BaseMasterAction {
 
         logger.info("[PasienAction.getListComboPasien] end process <<<");
         return listOfPasien;
+    }
+
+    public String getListComboSelectPasien(){
+        logger.info("[PasienAction.getListComboSelectPasien] start process >>>");
+
+        List<Pasien> pasienList = new ArrayList<>();
+        Pasien pasien = new Pasien();
+
+        try {
+            pasienList = pasienBoProxy.getByCriteria(pasien);
+        }catch (GeneralBOException e){
+            logger.error("[PasienAction.getListComboSelectPasien] Error when get data pasien ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfpasien.addAll(pasienList);
+        logger.info("[PasienAction.getListComboSelectPasien] end process <<<");
+        return SUCCESS;
     }
 
     public Pasien getPasien() {

@@ -168,6 +168,11 @@ apply the skin class to the body tag so the changes take effect.
         $('[data-mask]').inputmask()
     });
 
+    function logout(){
+        var host = window.location.hostname;
+        window.location.href = host+"/simrs/j_spring_security_logout";
+    }
+
 </script>
 
 

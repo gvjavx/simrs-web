@@ -132,6 +132,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/diagnosarawat/spring/DiagnosaRawatBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/teamdokter/spring/DokterTeamBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawat/spring/TindakanRawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/obatinap/spring/ObatInapBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/PelayananBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/JenisPeriksaPasienBean.xml"/>
@@ -144,6 +145,8 @@
     <import resource="sshconfig/com/neurix/simrs/master/kelasruangan/spring/KelasRuanganBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/RuanganBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/keterangankeluar/spring/KeteranganKeluarBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenisobat/spring/JenisObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/obat/spring/ObatBean.xml"/>
 
 
 </beans>

@@ -5,16 +5,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="jenisObatAction" class="com.neurix.simrs.transaksi.obatinap.action.ObatInapAction"
-          p:obatBoProxy-ref="obatBoProxy"
-          p:obatInapBoProxy-ref="obatInapBoProxy"/>
+    <!--<bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"-->
+          <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
 
+    <bean id="obatBo" class="com.neurix.simrs.master.obat.bo.impl.ObatBoImpl"
+          p:obatDao-ref="obatDao"
+          p:jenisObatDao-ref="jenisObatDao"/>
 
-    <bean id="obatInapBo" class="com.neurix.simrs.transaksi.obatinap.bo.impl.ObatInapBoImpl"
-          p:obatInapDao-ref="obatInapDao"/>
-
-    <bean id="obatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="obatInapBo">
+    <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="obatBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -29,12 +28,11 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="obatInapDao" class="com.neurix.simrs.transaksi.obatinap.dao.ObatInapDao"
+    <bean id="obatDao" class="com.neurix.simrs.master.obat.dao.ObatDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -17,6 +17,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -560,34 +562,44 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Obat</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_obat">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Poli</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control">
+                            <s:action id="initJenis" namespace="/jenisobat"
+                                      name="getListJenisObat_jenisobat"/>
+                            <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectObat(this);"
+                                      list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
+                                      listKey="idJenisObat"
+                                      listValue="namaJenisObat"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select" style="margin-top: 7px; width: 100%" id="ob_id_obat" onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3">Nama Dokter</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
-                            </select>
+                            <s:textfield type="number" min="1" cssClass="form-control" cssStyle="margin-top: 7px" id="ob_qty" onkeypress="$(this).css('border','')"></s:textfield>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" id="save_obat" onclick="saveObat()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...</button>
             </div>
         </div>
     </div>
@@ -604,6 +616,7 @@
         listTindakan();
         listDiagnosa();
         listSelectDokter();
+        listObat();
     });
 
     function listSelectDokter(){
@@ -637,7 +650,6 @@
                 }
             });
         }else{
-            alert("kosong");
             option = option;
         }
 
@@ -656,6 +668,10 @@
             desti = "#pos_nosa";
         }else if (back == 4){
             desti = "#pos_lab";
+        }else if(back == 5){
+            desti = '#pos_diet';
+        }else if(back == 6){
+            desti = '#pos_obat';
         }
 
         $('html, body').animate({
@@ -693,6 +709,10 @@
         }else if(select == 5){
             $('#modal-diet').modal('show');
         }else if(select == 6){
+            $('#obat_jenis_obat, #ob_obat, #ob_jumlah').val('');
+            $('#save_obat').show();
+            $('#load_obat, #warning_obat').hide();
+            $('#obat_jenis_obat, #ob_obat, #ob_jumlah').css('border','');
             $('#modal-obat').modal('show');
         }
     }
@@ -907,8 +927,6 @@
 
         DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
             data = response;
-            console.log('tes');
-            console.log(data);
             if (data != null){
                 $.each(data, function (i,item) {
                     var tanggal = item.createdDate;
@@ -938,6 +956,106 @@
         });
 
         $('#body_diagnosa').html(table);
+    }
+
+    function listSelectObat(select){
+        var idx       = select.selectedIndex;
+        var idJenis   = select.options[idx].value;
+        var option = "<option value=''>[Select One]</option>";
+        if(idJenis != ''){
+            ObatAction.listObat(idJenis, function(response){
+                if (response != null){
+                    $.each(response, function (i, item) {
+                        option += "<option value='"+item.idObat+"'>" +item.namaObat+ "</option>";
+                    });
+                }else{
+                    option = option;
+                }
+            });
+        }else{
+            option = option;
+        }
+
+        $('#ob_id_obat').html(option);
+    }
+
+    function saveObat(){
+
+        var idJenis  = $('#obat_jenis_obat').val();
+        var idObat   = $('#ob_id_obat').val();
+        var qty      = $('#ob_qty').val();
+
+        if(idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0){
+            $('#save_obat').hide();
+            $('#load_obat').show();
+            dwr.engine.setAsync(true);
+            ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
+                if(response == "success"){
+                    dwr.engine.setAsync(false);
+                    listObat();
+                    $('#modal-obat').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                }else{
+
+                }
+            })
+        }else{
+            $('#warning_obat').show().fadeOut(5000);
+
+            if(idJenis == ''){
+                $('#obat_jenis_obat').css('border','red solid 1px');
+            }
+            if(idObat == ''){
+                $('#ob_id_obat').css('border','red solid 1px');
+            }
+            if(qty == '' || qty < 1){
+                $('#ob_qty').css('border','red solid 1px');
+            }
+        }
+    }
+
+    function listObat(){
+        var table = "";
+        var data  = [];
+        var id    = "";
+        var obat  = "";
+        var qty   = "";
+        var jenis = "";
+
+        ObatInapAction.listObatInap(idDetailCheckup, function (response) {
+            data = response;
+            console.log(data);
+            if (data != null){
+                $.each(data, function (i,item) {
+                    var tanggal = item.createdDate;
+                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    if(item.idObat != null){
+                        id = item.idObat;
+                    }
+                    if(item.namaObat != null){
+                        obat = item.namaObat;
+                    }
+                    if(item.qty != null){
+                        qty = item.qty;
+                    }
+                    if(item.jenisObat != null){
+                        jenis = item.jenisObat;
+                    }
+
+                    table += "<tr>" +
+                            "<td>" +  dateFormat + "</td>" +
+                            "<td>" + id + "</td>" +
+                            "<td>" + obat + "</td>" +
+                            "<td>" + jenis + "</td>" +
+                            "<td>" + qty + "</td>" +
+                            "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
+                            "</tr>"
+                });
+            }
+        });
+
+        $('#body_obat').html(table);
     }
 
 </script>
