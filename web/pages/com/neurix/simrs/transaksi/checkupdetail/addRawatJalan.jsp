@@ -17,6 +17,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -566,29 +567,32 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Order Lab</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Lab</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Poli</label>
+                        <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
                         <div class="col-md-7">
-                            <select class="form-control">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
-                            </select>
+                            <s:action id="comboLab" namespace="/kategorilab"
+                                      name="getListKategoriLab_kategorilab"/>
+                            <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectLab(this)"
+                                      list="#comboLab.listOfKategoriLab" id="lab_kategori"
+                                      listKey="idKategoriLab"
+                                      listValue="namaKategori"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3">Nama Dokter</label>
+                        <label class="col-md-3" style="margin-top: 7px">Lab</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
+                            <select class="form-control" style="margin-top: 7px" id="lab_lab" onchange="$(this).css('border','');">
+                                <option value=''>[Select One]</option>
                             </select>
                         </div>
                     </div>
@@ -597,7 +601,10 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
+                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
             </div>
         </div>
     </div>
@@ -606,7 +613,7 @@
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').text();
-    var idPoli = $('#id_palayanan').val();
+    var idPoli          = $('#id_palayanan').val();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -823,6 +830,10 @@
             $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').css('border', '');
             $('#modal-diagnosa').modal('show');
         } else if (select == 4) {
+            $('#lab_kategori, #lab_lab').val('');
+            $('#save_lab').show();
+            $('#load_lab, #warning_lab').hide();
+            $('#lab_kategori, #lab_lab').css('border', '');
             $('#modal-lab').modal('show');
         }
     }
@@ -1086,6 +1097,61 @@
         });
 
         $('#body_diagnosa').html(table);
+    }
+
+    function listSelectLab(select){
+        var idx          = select.selectedIndex;
+        var idKategori   = select.options[idx].value;
+
+        var option = "<option value=''>[Select One]</option>";
+        if(idKategori != ''){
+            LabAction.listLab(idKategori, function(response){
+                if (response != null){
+                    $.each(response, function (i, item) {
+                        option += "<option value='"+item.idLab+"'>" +item.namaLab+ "</option>";
+                    });
+                }else{
+                    option = option;
+                }
+            });
+        }else{
+            option = option;
+        }
+
+        $('#lab_lab').html(option);
+    }
+
+    function saveLab() {
+
+        var idKategori  = $('#lab_kategori').val();
+        var idLab       = $('#lab_lab').val();
+
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
+            $('#save_lab').hide();
+            $('#load_lab').show();
+            dwr.engine.setAsync(true);
+            Lab.saveDiagnosa(idDetailCheckup, idLab,{
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        listDiagnosa();
+                        $('#modal-lab').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(4);
+                    } else {
+
+                    }
+                }
+            })
+        } else {
+            $('#warning_diagnosa').show().fadeOut(5000);
+            if (idDiagnosa == '') {
+                $('#nosa_id_diagnosa').css('border', 'red solid 1px');
+            }
+            if (jenisDiagnosa == '') {
+                $('#nosa_jenis_diagnosa').css('border', 'red solid 1px');
+            }
+        }
     }
 
 </script>
