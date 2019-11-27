@@ -19,6 +19,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String statusPeriksa;
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String statusPeriksa) {
+        this.statusPeriksa = statusPeriksa;
+    }
 
     public String getIdPeriksaLab() {
         return idPeriksaLab;

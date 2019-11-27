@@ -5,33 +5,37 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"
-          p:jenisObatBoProxy-ref="jenisObatBoProxy"/>
+    <bean id="periksaLabAction" class="com.neurix.simrs.transaksi.periksalab.action.PeriksaLabAction"
+    />
 
-    <bean id="jenisObatBo" class="com.neurix.simrs.master.jenisobat.bo.impl.JenisObatBoImpl"
-          p:jenisObatDao-ref="jenisObatDao"/>
+    <bean id="periksaLabBo" class="com.neurix.simrs.transaksi.periksalab.bo.impl.PeriksaLabBoImpl"
+          p:periksaLabDao-ref="periksaLabDao"
+          p:periksaLabDetailDao-ref="periksaLabDetailDao"
+    />
 
-    <bean id="jenisObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="jenisObatBo">
+    <bean id="periksaLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="periksaLabBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionPeriksaLabDetailInterceptor</value>
+                <value>transactionLabDetailInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionPeriksaLabDetailInterceptor"
+    <bean id="transactionLabDetailInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="periksaLabDetailDao" class="com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao"
+    <bean id="labDetailDao" class="com.neurix.simrs.master.labdetail.dao.LabDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

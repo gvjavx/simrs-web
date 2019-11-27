@@ -30,6 +30,9 @@
         <property name="idPemeriksa">
             <column name="id_pemeriksa" sql-type="varchar" length="30" not-null="true"/>
         </property>
+        <property name="statusPeriksa">
+            <column name="status_periksa" sql-type="varchar" length="1" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

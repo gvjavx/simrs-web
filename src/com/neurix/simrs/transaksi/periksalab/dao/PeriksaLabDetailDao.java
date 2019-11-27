@@ -4,11 +4,14 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabDetailEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +61,12 @@ public class PeriksaLabDetailDao extends GenericDao<ItSimrsPeriksaLabDetailEntit
 
         List<ItSimrsPeriksaLabDetailEntity> results = criteria.list();
         return results;
+    }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_periksa_lab_detail')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }
