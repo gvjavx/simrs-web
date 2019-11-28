@@ -200,4 +200,51 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         logger.info("[DiagnosaRawatAction.getListComboDiagnosa] end process <<<");
         return SUCCESS;
     }
+
+    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa){
+        logger.info("[DiagnosaRawatAction.editDiagnosa] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            List<Diagnosa> diagnosaList = new ArrayList<>();
+            Diagnosa diagnosa = new Diagnosa();
+            diagnosa.setIdDiagnosa(idDiagnosa);
+            Diagnosa diagnosaResult = new Diagnosa();
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
+
+            try {
+                diagnosaList = diagnosaBo.getByCriteria(diagnosa);
+            }catch (GeneralBOException e){
+                logger.error("[DiagnosaRawatAction.editDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+            if (!diagnosaList.isEmpty()){
+                diagnosaResult = diagnosaList.get(0);
+            }
+
+            diagnosaRawat.setIdDiagnosaRawat(idRawatDiagnosa);
+            diagnosaRawat.setIdDiagnosa(idDiagnosa);
+            diagnosaRawat.setKeteranganDiagnosa(diagnosaResult.getDescOfDiagnosa());
+            diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
+            diagnosaRawat.setLastUpdate(updateTime);
+            diagnosaRawat.setLastUpdateWho(userLogin);
+            diagnosaRawat.setAction("U");
+
+            DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
+
+            diagnosaRawatBo.saveAdd(diagnosaRawat);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[DiagnosaRawatAction.editDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+        logger.info("[DiagnosaRawatAction.editDiagnosa] end process >>>");
+
+        return SUCCESS;
+    }
 }

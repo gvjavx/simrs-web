@@ -127,7 +127,6 @@ public class PeriksaLabAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-            periksaLabBo.saveAdd(periksaLab);
             periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
 
         }catch (GeneralBOException e) {
@@ -153,7 +152,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         if(!"".equalsIgnoreCase(idDetailCheckup)){
             try {
-                periksaLabList = null;
+                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
             }catch (GeneralBOException e){
                 logger.error("[PeriksaLabAction.listOrderLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
                 addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());

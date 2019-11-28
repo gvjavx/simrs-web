@@ -58,7 +58,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     public void saveAdd(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
 
-        if (bean != null){
+        if (bean != null && bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
             String id = getNextTindakanRawatId();
             if (id != null && !"".equalsIgnoreCase(id)) {
                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
@@ -71,8 +71,8 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
                 tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
-                tindakanRawatEntity.setFlag("Y");
-                tindakanRawatEntity.setAction("C");
+                tindakanRawatEntity.setFlag(bean.getFlag());
+                tindakanRawatEntity.setAction(bean.getAction());
                 tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
                 tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
@@ -101,6 +101,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setIdTindakanRawat(bean.getIdTindakanRawat());
 
             ItSimrsTindakanRawatEntity tindakanRawatEntity = getListEntityTindakanRawat(tindakanRawat).get(0);
+
             if (tindakanRawatEntity != null){
 
                 tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());

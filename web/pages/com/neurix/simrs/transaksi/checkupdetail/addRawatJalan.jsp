@@ -633,6 +633,7 @@
         listTindakan();
         listDiagnosa();
         listSelectDokter();
+        listLab();
     });
 
     function listSelectDokter() {
@@ -891,7 +892,7 @@
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
 //                            "<td>" + item.namaSpesialis + "</td>" +
-                            "<td>" + '<img border="0" onclick="editDokter(1, \''+item.idDokter+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td>" + '<img border="0" onclick="editDokter(\''+item.idTeamDokter+'\',\''+item.idDokter+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>";
                     dokter = item.idDokter;
                 });
@@ -1020,7 +1021,7 @@
                             "<td align='right'>" + "Rp. " + tarif+",-" + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + "Rp. " + tarifTotal+",-" + "</td>" +
-                            "<td>" + '<img border="0" onclick="editTindakan(1,\''+item.idTindakan+'\',\''+item.idKategoriTindakan+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td>" + '<img border="0" onclick="editTindakan(\''+item.idTindakanRawat+'\',\''+item.idTindakan+'\',\''+item.idKategoriTindakan+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>";
 
                 });
@@ -1102,7 +1103,7 @@
                             "<td>" + id + "</td>" +
                             "<td>" + ket + "</td>" +
                             "<td>" + jen + "</td>" +
-                            "<td>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td>" + '<img border="0" onclick="editDiagnosa(\''+item.idDiagnosaRawat+'\',\''+item.idDiagnosa+'\',\''+item.jenisDiagnosa+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -1193,44 +1194,69 @@
 
         var table = "";
         var data = [];
-        var id = "";
-        var ket = "";
-        var jen = "";
+        var pemeriksaan = "";
+        var status = "";
+        var lab = "";
 
-        PeriksaLabAction.listDiagnosa(idDetailCheckup, function (response) {
+        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    if (item.idDiagnosa != null) {
-                        id = item.idDiagnosa;
+                    if (item.idLab != null) {
+                        pemeriksaan = item.idLab;
                     }
-                    if (item.keteranganDiagnosa != null) {
-                        ket = item.keteranganDiagnosa;
+                    if (item.statusPeriksaName != null) {
+                        status = item.statusPeriksaName;
                     }
-                    if (item.jenisDiagnosa != null) {
-                        if (item.jenisDiagnosa == 0) {
-                            jen = "Diagnosa Awal";
-                        } else {
-                            jen = "Diagnosa Akhir";
-                        }
+                    if (item.labName != null) {
+                        lab = item.labName;
                     }
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + id + "</td>" +
-                            "<td>" + ket + "</td>" +
-                            "<td>" + jen + "</td>" +
+                            "<td>" + pemeriksaan + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + lab + "</td>" +
                             "<td>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
             }
         });
 
-        $('#body_diagnosa').html(table);
+        $('#body_lab').html(table);
+    }
+    function editDokter(id, idDokter){
+        $('#save_dokter').attr('onclick','saveEditDokter(\''+id+'\')');
+        $('#dok_id_dokter').val(idDokter);
+        $('#modal-dokter').modal('show');
     }
 
-    function editTindakan(index, idTindakan, idKategori){
+    function saveEditDokter(id){
+        var idDok = $('#dok_id_dokter').val();
+        if (idDok != '') {
+            $('#save_dokter').hide();
+            $('#load_dokter').show();
+            dwr.engine.setAsync(true);
+            TeamDokterAction.editDokter(id, idDok, function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    listDokter();
+                    $('#modal-dokter').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(1);
+                } else {
+
+                }
+            })
+        } else {
+            $('#warning_dokter').show().fadeOut(5000);
+            $('#dok_id_dokter').css('border', 'red solid 1px');
+        }
+    }
+
+    function editTindakan(id, idTindakan, idKategori){
         console.log(idTindakan);
         var option = "";
         $('#tin_id_ketgori_tindakan').val('01');
@@ -1246,6 +1272,12 @@
         $('#tin_id_tindakan').html(option);
         $('#tin_id_tindakan').val('01');
         $('#modal-tindakan').modal('show');
+    }
+
+    function editDiagnosa(id, idDiagnosa, jenis){
+        $('#nosa_id_diagnosa').val(idDiagnosa);
+        $('#nosa_jenis_diagnosa').val(jenis);
+        $('#modal-diagnosa').modal('show');
     }
 
 </script>

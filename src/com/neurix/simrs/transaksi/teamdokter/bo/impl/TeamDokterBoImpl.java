@@ -89,6 +89,35 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
         logger.info("[TeamDokterBoImpl.savaAdd] End <<<<<<<<");
     }
 
+    @Override
+    public void saveEdit(DokterTeam bean) throws GeneralBOException {
+        logger.info("[TeamDokterBoImpl.saveEdit] Start >>>>>>>>");
+
+        ItSimrsDokterTeamEntity entityList = null;
+
+        try {
+            entityList = dokterTeamDao.getById("idTeamDokter", bean.getIdTeamDokter());
+        } catch (HibernateException e){
+            logger.error("[TeamDokterBoImpl.saveEdit] Error when save edit dokter team ",e);
+            throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit dokter team "+e.getMessage());
+        }
+        if(entityList != null){
+            entityList.setIdDokter(bean.getIdDokter());
+            entityList.setAction(bean.getAction());
+            entityList.setLastUpdate(bean.getLastUpdate());
+            entityList.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                dokterTeamDao.updateAndSave(entityList);
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.saveEdit] Error when edit dokter team ",e);
+                throw new GeneralBOException("[TeamDokterBoImpl.saveEdit] Error when save edit dokter team "+e.getMessage());
+            }
+        }
+
+        logger.info("[TeamDokterBoImpl.saveEdit] End <<<<<<<<");
+    }
+
     protected List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
         logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();

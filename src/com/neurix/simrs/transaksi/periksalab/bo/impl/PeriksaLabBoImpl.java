@@ -76,6 +76,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     periksaLab.setCreatedWho(periksaLabEntity.getCreatedWho());
                     periksaLab.setLastUpdate(periksaLabEntity.getLastUpdate());
                     periksaLab.setLastUpdateWho(periksaLabEntity.getLastUpdateWho());
+
                     periksaLabList.add(periksaLab);
                 }
             }
@@ -131,8 +132,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
             entity.setIdDetailCheckup(periksaLab.getIdDetailCheckup());
             entity.setIdDokterPengirim(periksaLab.getIdDokterPengirim());
             entity.setStatusPeriksa("0");
-            entity.setFlag("Y");
-            entity.setAction("C");
+            entity.setFlag(periksaLab.getFlag());
+            entity.setAction(periksaLab.getAction());
             entity.setCreatedDate(periksaLab.getCreatedDate());
             entity.setCreatedWho(periksaLab.getCreatedWho());
             entity.setLastUpdate(periksaLab.getLastUpdate());
