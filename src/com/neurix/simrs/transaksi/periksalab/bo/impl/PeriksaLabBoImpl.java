@@ -66,6 +66,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     }
 
                     periksaLab.setIdPeriksaLab(periksaLabEntity.getIdPeriksaLab());
+                    periksaLab.setIdDetailCheckup(periksaLabEntity.getIdDetailCheckup());
                     periksaLab.setIdLab(lab.getIdLab());
                     periksaLab.setLabName(lab.getNamaLab());
                     periksaLab.setKategoriLabName(lab.getKategoriLabName());
@@ -259,6 +260,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
 
+        if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
+            hsCriteria.put("status", bean.getStatusPeriksa());
+        }
+
         hsCriteria.put("flag","Y");
         List<ItSimrsPeriksaLabEntity> periksaLabEntities = new ArrayList<>();
         try {
@@ -300,6 +305,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         Lab lab = new Lab();
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_lab", id);
+        hsCriteria.put("flag", "Y");
 
         List<ImSimrsLabEntity> labEntities = null;
         try {
@@ -331,8 +337,23 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
     private ImSimrsKategoriLabEntity getKategoriLabById(String id){
         logger.info("[PeriksaLabBoImpl.getKategoriLabById] START >>>>>>>>> ");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori_lab",id);
+        hsCriteria.put("flag", "Y");
+
+        List<ImSimrsKategoriLabEntity> kategoriLabEntities = new ArrayList<>();
+        try {
+            kategoriLabEntities = kategoriLabDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getKategoriLabById] ERROR When search data master lab kategori ", e);
+        }
+
         logger.info("[PeriksaLabBoImpl.getKategoriLabById] END <<<<<<<<< ");
-        return null;
+        if (!kategoriLabEntities.isEmpty() && kategoriLabEntities.size() > 0){
+            return kategoriLabEntities.get(0);
+        }
+        return new ImSimrsKategoriLabEntity();
     }
 
     private ImSimrsLabDetailEntity getDataMasterLabDetailByIdLab(String id){

@@ -101,9 +101,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
-                    "LEFT JOIN it_simrs_periksa_lab lab ON lab.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
-                    "AND lab.id_detail_checkup is null\n" +
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
