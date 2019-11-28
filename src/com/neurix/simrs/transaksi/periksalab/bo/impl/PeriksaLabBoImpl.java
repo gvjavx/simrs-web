@@ -1,9 +1,16 @@
 package com.neurix.simrs.transaksi.periksalab.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.kategorilab.dao.KategoriLabDao;
+import com.neurix.simrs.master.kategorilab.model.ImSimrsKategoriLabEntity;
+import com.neurix.simrs.master.lab.dao.LabDao;
+import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
+import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
-import com.neurix.simrs.master.labdetail.model.LabDetail;
+import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
+import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
+import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao;
@@ -26,6 +33,57 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
     private PeriksaLabDao periksaLabDao;
     private PeriksaLabDetailDao periksaLabDetailDao;
     private LabDetailDao labDetailDao;
+    private LabDao labDao;
+    private KategoriLabDao kategoriLabDao;
+    private StatusPasienDao statusPasienDao;
+
+    @Override
+    public List<PeriksaLab> getByCriteria(PeriksaLab bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.getByCriteria] START >>>>>>>>> ");
+
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        if (bean != null)
+        {
+            // get data transaction periksa lab by criteria (bean)
+            List<ItSimrsPeriksaLabEntity> periksaLabEntities = getListEntityPeriksaLab(bean);
+
+            if (!periksaLabEntities.isEmpty() && periksaLabEntities.size() > 0)
+            {
+                PeriksaLab periksaLab;
+                for (ItSimrsPeriksaLabEntity periksaLabEntity : periksaLabEntities)
+                {
+                    periksaLab = new PeriksaLab();
+
+                    // get master data lab
+                    Lab lab = getDatamasterLabById(periksaLabEntity.getIdLab());
+
+                    // get master data status periksa
+                    if (periksaLabEntity.getStatusPeriksa() != null && !"".equalsIgnoreCase(periksaLabEntity.getStatusPeriksa()))
+                    {
+                        ImSimrsStatusPasienEntity status = getMasterStatusPasienByIdStatus(periksaLabEntity.getStatusPeriksa());
+                        periksaLab.setStatusPeriksa(status.getIdStatusPasien());
+                        periksaLab.setStatusPeriksaName(status.getKeterangan());
+                    }
+
+                    periksaLab.setIdPeriksaLab(periksaLabEntity.getIdPeriksaLab());
+                    periksaLab.setIdLab(lab.getIdLab());
+                    periksaLab.setLabName(lab.getNamaLab());
+                    periksaLab.setKategoriLabName(lab.getKategoriLabName());
+                    periksaLab.setIdKategoriLab(lab.getIdKategoriLab());
+                    periksaLab.setFlag(periksaLabEntity.getFlag());
+                    periksaLab.setAction(periksaLabEntity.getAction());
+                    periksaLab.setCreatedDate(periksaLabEntity.getCreatedDate());
+                    periksaLab.setCreatedWho(periksaLabEntity.getCreatedWho());
+                    periksaLab.setLastUpdate(periksaLabEntity.getLastUpdate());
+                    periksaLab.setLastUpdateWho(periksaLabEntity.getLastUpdateWho());
+
+                }
+            }
+        }
+
+        logger.info("[PeriksaLabBoImpl.getByCriteria] END <<<<<<<<< ");
+        return periksaLabList;
+    }
 
     @Override
     public void saveAdd(PeriksaLab bean) throws GeneralBOException {
@@ -137,9 +195,15 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] START >>>>>>>>> ");
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_periksa_lab", bean.getIdPeriksaLab());
-        hsCriteria.put("flag","Y");
+        if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab())){
+            hsCriteria.put("id_periksa_lab", bean.getIdPeriksaLab());
+        }
 
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+
+        hsCriteria.put("flag","Y");
         List<ItSimrsPeriksaLabEntity> periksaLabEntities = new ArrayList<>();
         try {
             periksaLabEntities = periksaLabDao.getByCriteria(hsCriteria);
@@ -150,6 +214,69 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
         logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] END <<<<<<<<< ");
         return periksaLabEntities;
+    }
+
+    private ImSimrsStatusPasienEntity getMasterStatusPasienByIdStatus(String idStatus) throws GeneralBOException{
+        logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] START >>>>>>>>> ");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_status_pasien", idStatus);
+
+        List<ImSimrsStatusPasienEntity> statusPasienEntities = new ArrayList<>();
+        try {
+            statusPasienEntities = statusPasienDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getListEntityPeriksaLab] ERROR When search data status ", e);
+            throw new GeneralBOException("[PeriksaLabBoImpl.getListEntityPeriksaLab] ERROR When search data status "+ e.getCause());
+        }
+
+        logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] END <<<<<<<<< ");
+        if (!statusPasienEntities.isEmpty() && statusPasienEntities.size() > 0){
+            return statusPasienEntities.get(0);
+        }
+
+        return new ImSimrsStatusPasienEntity();
+    }
+
+    private Lab getDatamasterLabById(String id){
+        logger.info("[PeriksaLabBoImpl.getDatamasterLabById] START >>>>>>>>> ");
+
+        Lab lab = new Lab();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_lab", id);
+
+        List<ImSimrsLabEntity> labEntities = null;
+        try {
+            labEntities = labDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getDatamasterLabById] ERROR When search data master lab ", e);
+        }
+
+        if (!labEntities.isEmpty() && labEntities.size() > 0)
+        {
+            ImSimrsLabEntity labEntity = labEntities.get(0);
+            lab.setIdLab(labEntity.getIdLab());
+            lab.setNamaLab(labEntity.getNamaLab());
+            lab.setIdKategoriLab(labEntity.getIdKategoriLab());
+
+            if (labEntity.getIdKategoriLab() != null && !"".equalsIgnoreCase(labEntity.getIdKategoriLab()))
+            {
+                ImSimrsKategoriLabEntity kategoriLabEntity = getKategoriLabById(labEntity.getIdKategoriLab());
+                if (kategoriLabEntity != null)
+                {
+                    lab.setKategoriLabName(kategoriLabEntity.getNamaKategori());
+                }
+            }
+        }
+
+        logger.info("[PeriksaLabBoImpl.getDatamasterLabById] END <<<<<<<<< ");
+        return lab;
+    }
+
+    private ImSimrsKategoriLabEntity getKategoriLabById(String id){
+        logger.info("[PeriksaLabBoImpl.getKategoriLabById] START >>>>>>>>> ");
+        logger.info("[PeriksaLabBoImpl.getKategoriLabById] END <<<<<<<<< ");
+        return null;
     }
 
     private ImSimrsLabDetailEntity getDataMasterLabDetailByIdLab(String id){
@@ -207,5 +334,17 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
     public void setLabDetailDao(LabDetailDao labDetailDao) {
         this.labDetailDao = labDetailDao;
+    }
+
+    public void setLabDao(LabDao labDao) {
+        this.labDao = labDao;
+    }
+
+    public void setKategoriLabDao(KategoriLabDao kategoriLabDao) {
+        this.kategoriLabDao = kategoriLabDao;
+    }
+
+    public void setStatusPasienDao(StatusPasienDao statusPasienDao) {
+        this.statusPasienDao = statusPasienDao;
     }
 }

@@ -12,6 +12,9 @@
           p:periksaLabDao-ref="periksaLabDao"
           p:periksaLabDetailDao-ref="periksaLabDetailDao"
           p:labDetailDao-ref="labDetailDao"
+          p:kategoriLabDao-ref="kategoriLabDao"
+          p:statusPasienDao-ref="statusPasienDao"
+          p:labDao-ref="labDao"
     />
 
     <bean id="periksaLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
