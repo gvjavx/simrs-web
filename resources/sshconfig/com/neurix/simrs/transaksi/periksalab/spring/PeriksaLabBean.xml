@@ -36,11 +36,15 @@
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
                 <prop key="saveAddWithParameter">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateHasilLab">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
     <bean id="periksaLabDao" class="com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="periksaLabDetailDao" class="com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>
