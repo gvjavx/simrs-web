@@ -350,6 +350,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.lab.model.Lab"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLab"/>
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>
 
   </allow>
 

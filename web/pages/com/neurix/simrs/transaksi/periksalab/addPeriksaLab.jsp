@@ -188,29 +188,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border" id="pos_dok">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>ID Dokter</td>
-                                <td>Nama</td>
-                                <%--<td>Spesialis</td>--%>
-                                <td>Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_dokter">
-
-                            </tbody>
-                        </table>
-                    </div>
 
                     <div class="box-header with-border" id="pos_tin">
                     </div>
@@ -266,23 +243,24 @@
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Order Lab</h3>
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Parameter Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Lab
+                                onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Parameter
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal Order</td>
                                 <td>Pemeriksaan</td>
-                                <td>Status</td>
-                                <td>Jenis Lab</td>
+                                <td>Hasil</td>
+                                <td>Satuan</td>
+                                <td>Keterangan Acuan</td>
+                                <td>Keterangan</td>
                                 <td>Action</td>
                             </tr>
                             </thead>
-                            <tbody id="body_lab">
+                            <tbody id="body_parameter">
 
                             </tbody>
                         </table>
@@ -628,29 +606,11 @@
     var id_dokter       = "";
 
     $(document).ready(function () {
-        $('#rawat_jalan').addClass('active');
-        listDokter();
+        $('#periksa_lab').addClass('active');
         listTindakan();
         listDiagnosa();
-        listSelectDokter();
-        listLab();
+        listParameter();
     });
-
-    function listSelectDokter() {
-        var option = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
-        $('#dok_id_dokter').html(option);
-        $('#tin_id_dokter').html(option);
-    }
 
     function selectKeterangan(id) {
         var idx = id.selectedIndex;
@@ -671,25 +631,6 @@
             $("#form-poli").attr('style', 'display:none');
             $("#form-selesai").show();
         }
-    }
-
-    function listSelectRuangan(id){
-        var idx = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-
-        var option = "";
-        CheckupDetailAction.listRuangan(idKelas, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
-
-        $('#kamar_detail').html(option);
     }
 
     function saveKeterangan() {
@@ -855,53 +796,6 @@
         ribuan = ribuan.join('.').split('').reverse().join('');
         return ribuan;
     }
-
-
-    function saveDokter() {
-        var idDokter = $('#dok_id_dokter').val();
-        if (idDetailCheckup != '' && idDokter != '') {
-            $('#save_dokter').hide();
-            $('#load_dokter').show();
-            dwr.engine.setAsync(true);
-            TeamDokterAction.saveDokter(idDetailCheckup, idDokter, function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    listDokter();
-                    $('#modal-dokter').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(1);
-                } else {
-
-                }
-            })
-        } else {
-            $('#warning_dokter').show().fadeOut(5000);
-            $('#dok_id_dokter').css('border', 'red solid 1px');
-        }
-    }
-
-    function listDokter() {
-        var table = "";
-        var data = [];
-        var dokter = "";
-        TeamDokterAction.listDokter(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    table += "<tr>" +
-                            "<td>" + item.idDokter + "</td>" +
-                            "<td>" + item.namaDokter + "</td>" +
-//                            "<td>" + item.namaSpesialis + "</td>" +
-                            "<td>" + '<img border="0" onclick="editDokter(\''+item.idTeamDokter+'\',\''+item.idDokter+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
-                            "</tr>";
-                    dokter = item.idDokter;
-                });
-            }
-        });
-        id_dokter = dokter;
-        $('#body_dokter').html(table);
-    }
-
     function listDokterKeterangan(idPelayanan) {
         var idx = idPelayanan.selectedIndex;
         var idPoli = idPelayanan.options[idx].value;
@@ -1190,7 +1084,7 @@
         }
     }
 
-    function listLab() {
+    function listParameter() {
 
         var table = "";
         var data = [];
@@ -1198,34 +1092,24 @@
         var status = "";
         var lab = "";
 
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
+        PeriksaLabAction.listParameterPemeriksaan('PRL00000025', function (response) {
             data = response;
             console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    if (item.idLab != null) {
-                        pemeriksaan = item.idLab;
-                    }
-                    if (item.statusPeriksaName != null) {
-                        status = item.statusPeriksaName;
-                    }
-                    if (item.labName != null) {
-                        lab = item.labName;
-                    }
                     table += "<tr>" +
-                            "<td>" + dateFormat + "</td>" +
-                            "<td>" + pemeriksaan + "</td>" +
-                            "<td>" + status + "</td>" +
-                            "<td>" + lab + "</td>" +
+                            "<td>" + item.namaDetailPeriksa + "</td>" +
+                            "<td>" + item.hasil + "</td>" +
+                            "<td>" + item.satuan + "</td>" +
+                            "<td>" + item.keteranganAcuan + "</td>" +
+                            "<td>" + item.keteranganPeriksa + "</td>" +
                             "<td>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
             }
         });
 
-        $('#body_lab').html(table);
+        $('#body_parameter').html(table);
     }
     function editDokter(id, idDokter){
         $('#save_dokter').attr('onclick','saveEditDokter(\''+id+'\')');

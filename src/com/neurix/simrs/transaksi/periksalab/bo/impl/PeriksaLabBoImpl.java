@@ -224,6 +224,53 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         logger.info("[PeriksaLabBoImpl.saveUpdateHasilLab] END <<<<<<<<< ");
     }
 
+    @Override
+    public List<PeriksaLabDetail> getListParameterLab(PeriksaLabDetail bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.getListParameterLab] START >>>>>>>>> ");
+
+        if (bean != null){
+
+            List<PeriksaLabDetail> periksaLabDetailList = new ArrayList<>();
+
+            PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
+            periksaLabDetail.setIdPeriksaLab(bean.getIdPeriksaLab());
+
+            List<ItSimrsPeriksaLabDetailEntity> listEntity = null;
+
+            try {
+                listEntity = getListEntityPerikasDetailLab(periksaLabDetail);
+            }catch (HibernateException e){
+                logger.error("[PeriksaLabBoImpl.getListParameterLab] ERROR When search data periksa lab detail ", e);
+                throw new GeneralBOException("[PeriksaLabBoImpl.getListParameterLab] ERROR When search data periksa lab detail "+ e.getCause());
+            }
+
+            if (!listEntity.isEmpty()){
+                PeriksaLabDetail periksaLabDetail1;
+                for (ItSimrsPeriksaLabDetailEntity entity : listEntity){
+                    periksaLabDetail1 = new PeriksaLabDetail();
+                    periksaLabDetail1.setIdPeriksaLabDetail(entity.getIdPeriksaLabDetail());
+                    periksaLabDetail1.setIdPeriksaLab(entity.getIdPeriksaLab());
+                    periksaLabDetail1.setIdLabDetail(entity.getIdLabDetail());
+                    periksaLabDetail1.setNamaDetailPeriksa(entity.getNamaDetailPeriksa());
+                    periksaLabDetail1.setSatuan(entity.getSatuan());
+                    periksaLabDetail1.setKeteranganAcuan(entity.getKeteranganAcuan());
+                    periksaLabDetail1.setKeteranganPeriksa(entity.getKeteranganPeriksa());
+                    periksaLabDetail1.setFlag(entity.getFlag());
+                    periksaLabDetail1.setAction(entity.getAction());
+                    periksaLabDetail1.setCreatedDate(entity.getCreatedDate());
+                    periksaLabDetail1.setCreatedWho(entity.getCreatedWho());
+                    periksaLabDetail1.setLastUpdate(entity.getLastUpdate());
+                    periksaLabDetail1.setLastUpdateWho(entity.getLastUpdateWho());
+                    periksaLabDetailList.add(periksaLabDetail);
+                }
+            }
+
+            return periksaLabDetailList;
+        }
+        logger.info("[PeriksaLabBoImpl.getListParameterLab] END >>>>>>>>> ");
+        return null;
+    }
+
     private List<ItSimrsPeriksaLabDetailEntity> getListEntityPerikasDetailLab(PeriksaLabDetail bean) throws GeneralBOException{
         logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] START >>>>>>>>> ");
         List<ItSimrsPeriksaLabDetailEntity> periksaLabDetailEntities = new ArrayList<>();

@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -186,4 +187,32 @@ public class PeriksaLabAction extends BaseMasterAction {
             return null;
         }
     }
+    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab){
+
+        logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
+        List<PeriksaLabDetail> periksaLabDetailList = new ArrayList<>();
+
+        PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
+        periksaLabDetail.setIdPeriksaLab(idPeriksaLab);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+        if(!"".equalsIgnoreCase(idPeriksaLab)){
+            try {
+                periksaLabDetailList = periksaLabBo.getListParameterLab(periksaLabDetail);
+            }catch (GeneralBOException e){
+                logger.error("[PeriksaLabAction.listParameterPemeriksaan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
+            return periksaLabDetailList;
+
+        }else{
+            return null;
+        }
+    }
+
+
 }
