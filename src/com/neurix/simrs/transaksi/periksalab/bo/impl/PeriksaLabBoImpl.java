@@ -10,13 +10,13 @@ import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
-import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabDetailEntity;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -79,7 +79,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     periksaLab.setLastUpdateWho(periksaLabEntity.getLastUpdateWho());
 
                     periksaLabList.add(periksaLab);
-
                 }
             }
         }
@@ -195,6 +194,60 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         logger.info("[PeriksaLabBoImpl.saveAddWithParameter] END <<<<<<<<< ");
     }
 
+    @Override
+    public void saveUpdateHasilLab(PeriksaLabDetail bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.saveUpdateHasilLab] START >>>>>>>>> ");
+
+        if (bean != null && bean.getIdPeriksaLabDetail() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLabDetail()))
+        {
+            List<ItSimrsPeriksaLabDetailEntity> labDetailEntities = getListEntityPerikasDetailLab(bean);
+
+            if (!labDetailEntities.isEmpty() && labDetailEntities.size() > 0)
+            {
+                for (ItSimrsPeriksaLabDetailEntity labDetailEntity : labDetailEntities)
+                {
+                    labDetailEntity.setHasil(bean.getHasil());
+                    labDetailEntity.setAction("U");
+                    labDetailEntity.setLastUpdate(bean.getLastUpdate());
+                    labDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        periksaLabDetailDao.updateAndSave(labDetailEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] ERROR When updating data periksa lab detail ", e);
+                        throw new GeneralBOException("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] ERROR When updating data periksa lab detail "+ e.getCause());
+                    }
+                }
+            }
+        }
+
+        logger.info("[PeriksaLabBoImpl.saveUpdateHasilLab] END <<<<<<<<< ");
+    }
+
+    private List<ItSimrsPeriksaLabDetailEntity> getListEntityPerikasDetailLab(PeriksaLabDetail bean) throws GeneralBOException{
+        logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] START >>>>>>>>> ");
+        List<ItSimrsPeriksaLabDetailEntity> periksaLabDetailEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdPeriksaLabDetail() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLabDetail())) {
+            hsCriteria.put("id_periksa_lab_detail", bean.getIdPeriksaLabDetail());
+        }
+        if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab())) {
+            hsCriteria.put("id_periksa_lab", bean.getIdPeriksaLab());
+        }
+        hsCriteria.put("flag","Y");
+
+        try {
+            periksaLabDetailEntities = periksaLabDetailDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] ERROR When search data periksa lab detail ", e);
+            throw new GeneralBOException("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] ERROR When search data periksa lab detail "+ e.getCause());
+        }
+
+        logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] END <<<<<<<<< ");
+        return periksaLabDetailEntities;
+    }
+
     private List<ItSimrsPeriksaLabEntity> getListEntityPeriksaLab(PeriksaLab bean) throws GeneralBOException{
         logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] START >>>>>>>>> ");
 
@@ -205,6 +258,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+
+        if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
+            hsCriteria.put("status", bean.getStatusPeriksa());
         }
 
         hsCriteria.put("flag","Y");
@@ -248,6 +305,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         Lab lab = new Lab();
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_lab", id);
+        hsCriteria.put("flag", "Y");
 
         List<ImSimrsLabEntity> labEntities = null;
         try {
@@ -279,8 +337,23 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
     private ImSimrsKategoriLabEntity getKategoriLabById(String id){
         logger.info("[PeriksaLabBoImpl.getKategoriLabById] START >>>>>>>>> ");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori_lab",id);
+        hsCriteria.put("flag", "Y");
+
+        List<ImSimrsKategoriLabEntity> kategoriLabEntities = new ArrayList<>();
+        try {
+            kategoriLabEntities = kategoriLabDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getKategoriLabById] ERROR When search data master lab kategori ", e);
+        }
+
         logger.info("[PeriksaLabBoImpl.getKategoriLabById] END <<<<<<<<< ");
-        return null;
+        if (!kategoriLabEntities.isEmpty() && kategoriLabEntities.size() > 0){
+            return kategoriLabEntities.get(0);
+        }
+        return new ImSimrsKategoriLabEntity();
     }
 
     private ImSimrsLabDetailEntity getDataMasterLabDetailByIdLab(String id){

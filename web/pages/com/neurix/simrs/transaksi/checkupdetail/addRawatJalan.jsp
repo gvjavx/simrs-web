@@ -1216,9 +1216,9 @@
                     }
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + pemeriksaan + "</td>" +
-                            "<td>" + status + "</td>" +
                             "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
                             "<td>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
