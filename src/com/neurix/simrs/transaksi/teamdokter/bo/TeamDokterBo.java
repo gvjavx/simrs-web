@@ -11,4 +11,5 @@ import java.util.List;
 public interface TeamDokterBo {
     public List<DokterTeam> getByCriteria(DokterTeam bean) throws GeneralBOException;
     public void savaAdd(DokterTeam bean) throws GeneralBOException;
+    public void saveEdit(DokterTeam bean) throws GeneralBOException;
 }

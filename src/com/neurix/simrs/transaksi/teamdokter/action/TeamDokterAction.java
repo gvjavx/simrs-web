@@ -143,4 +143,31 @@ public class TeamDokterAction extends BaseMasterAction {
             return null;
         }
     }
+    public String editDokter(String idTeamDokter, String idDoKter){
+        logger.info("[TeamDokterAction.editDokter] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            DokterTeam dokterTeam = new DokterTeam();
+
+            dokterTeam.setIdTeamDokter(idTeamDokter);
+            dokterTeam.setIdDokter(idDoKter);
+            dokterTeam.setLastUpdate(updateTime);
+            dokterTeam.setLastUpdateWho(userLogin);
+            dokterTeam.setAction("U");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+
+            dokterBo.saveEdit(dokterTeam);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[TeamDokterAction.editDokter] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+        logger.info("[TeamDokterAction.editDokter] end process >>>");
+        return SUCCESS;
+    }
 }

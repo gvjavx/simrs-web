@@ -83,6 +83,41 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         logger.info("[DiagnosaRawatBoImpl.saveAdd] End <<<<<<<<<");
     }
 
+    @Override
+    public void saveEdit(DiagnosaRawat bean) throws GeneralBOException {
+        logger.info("[DiagnosaRawatBoImpl.saveEdit] Start >>>>>>>>>");
+
+        if (bean != null){
+
+            ItSimrsDiagnosaRawatEntity entity = null;
+
+            try {
+                entity = diagnosaRawatDao.getById("idDiagnosaRawat", bean.getIdDiagnosaRawat());
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.saveEdit] Error when getById diagnosa rawat ",e);
+                throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit diagnosa rawat "+e.getMessage());
+            }
+            if(entity != null){
+                entity.setIdDiagnosa(bean.getIdDiagnosa());
+                entity.setKeteranganDiagnosa(bean.getKeteranganDiagnosa());
+                entity.setJenisDiagnosa(bean.getJenisDiagnosa());
+                entity.setTipe(bean.getTipe());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+            }
+
+            try {
+                diagnosaRawatDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
+                throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+            }
+        }
+
+        logger.info("[DiagnosaRawatBoImpl.saveEdit] End <<<<<<<<<");
+    }
+
     protected List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 
