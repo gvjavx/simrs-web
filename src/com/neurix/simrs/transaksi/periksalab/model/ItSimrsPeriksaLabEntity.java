@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 public class ItSimrsPeriksaLabEntity implements Serializable {
 
     private String idPeriksaLab;
+    private String idLab;
     private String idDetailCheckup;
     private Date tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
@@ -20,6 +21,14 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String statusPeriksa;
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
 
     public String getStatusPeriksa() {
         return statusPeriksa;

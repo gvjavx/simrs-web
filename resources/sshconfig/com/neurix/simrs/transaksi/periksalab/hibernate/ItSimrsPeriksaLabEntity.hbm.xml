@@ -15,6 +15,9 @@
         <property name="idDetailCheckup">
             <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="true"/>
         </property>
+        <property name="idLab">
+            <column name="id_lab" sql-type="varchar" length="30" not-null="true"/>
+        </property>
         <property name="tanggalMasukLab">
             <column name="tanggal_masuk_lab" sql-type="date" not-null="false"/>
         </property>
