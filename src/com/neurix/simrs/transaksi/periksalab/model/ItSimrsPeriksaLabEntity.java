@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 public class ItSimrsPeriksaLabEntity implements Serializable {
 
     private String idPeriksaLab;
-    private String idLab;
     private String idDetailCheckup;
+    private String idLab;
     private Date tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
     private String idDokterPengirim;

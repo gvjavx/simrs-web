@@ -25,13 +25,13 @@
             <column name="tanggal_selesai_periksa" sql-type="timestamp" not-null="false"/>
         </property>
         <property name="idDokterPengirim">
-            <column name="id_dokter_pengirim" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_dokter_pengirim" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="idDokter">
-            <column name="id_dokter" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_dokter" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="idPemeriksa">
-            <column name="id_pemeriksa" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_pemeriksa" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="statusPeriksa">
             <column name="status_periksa" sql-type="varchar" length="1" not-null="false" />

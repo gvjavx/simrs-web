@@ -4,6 +4,13 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
+import com.neurix.simrs.master.kategoritindakan.dao.KategoriTindakanDao;
+import com.neurix.simrs.master.kategoritindakan.model.ImSimrsKategoriTindakanEntity;
+import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -28,6 +35,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     private TindakanRawatDao tindakanRawatDao;
     private CheckupDetailDao checkupDetailDao;
     private DokterDao dokterDao;
+    private TindakanDao tindakanDao;
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -220,6 +228,15 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 }
             }
 
+            List<ImSimrsTindakanEntity> tindakanEntityList = getTindakanList(entity.getIdTindakan());
+            ImSimrsTindakanEntity tindakanEntity = new ImSimrsTindakanEntity();
+            if (!tindakanEntityList.isEmpty()){
+                tindakanEntity = tindakanEntityList.get(0);
+            }
+            if(tindakanEntity != null){
+                tindakanRawat.setIdKategoriTindakan(tindakanEntity.getIdKategoriTindakan());
+            }
+
             results.add(tindakanRawat);
         }
 
@@ -241,6 +258,22 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
         logger.info("[TindakanRawatBoImpl.getDokterList] End <<<<<<");
         return dokterList;
+    }
+
+    private List<ImSimrsTindakanEntity> getTindakanList(String idTindakan){
+        logger.info("[TindakanRawatBoImpl.getTindakanList] Start >>>>>>>");
+        List<ImSimrsTindakanEntity> tindakanEntityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_tindakan", idTindakan);
+        try {
+            tindakanEntityList = tindakanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getTindakanList] Error when get data tindakan ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getTindakanList] End <<<<<<");
+        return tindakanEntityList;
     }
 
     public String getNextTindakanRawatId(){
@@ -267,5 +300,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
+    }
+
+    public void setTindakanDao(TindakanDao tindakanDao) {
+        this.tindakanDao = tindakanDao;
     }
 }

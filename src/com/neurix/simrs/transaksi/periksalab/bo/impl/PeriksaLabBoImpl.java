@@ -93,6 +93,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         String id = getNextPeriksaLabId();
         entity.setIdPeriksaLab("PRL"+id);
         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setIdLab(bean.getIdLab());
         entity.setIdDokterPengirim(bean.getIdDokterPengirim());
         entity.setStatusPeriksa("0");
         entity.setFlag("Y");

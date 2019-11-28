@@ -83,7 +83,7 @@
                                         <s:select list="#{'1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="headerDetailCheckup.statusPeriksa"
                                                   headerKey="0" headerValue="Antrian"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

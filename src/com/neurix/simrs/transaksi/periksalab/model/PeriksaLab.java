@@ -37,6 +37,7 @@ public class PeriksaLab extends BaseModel implements Serializable{
         this.idLab = idLab;
     }
 
+
     public String getLabName() {
         return labName;
     }
