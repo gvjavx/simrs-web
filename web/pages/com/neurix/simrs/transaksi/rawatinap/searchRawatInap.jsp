@@ -83,7 +83,7 @@
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="rawatInap.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -106,13 +106,15 @@
                                                   listKey="idKelasRuangan"
                                                   listValue="namaKelasRuangan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
+                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
+                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
-                                        <select style="margin-top: 7px" class="form-control" id="nama_ruangan" name="rawatInap.idRuang">
+                                        <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -222,21 +224,27 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
     function listSelectRuangan(id){
         var idx = id.selectedIndex;
         var idKelas = id.options[idx].value;
         var option = "";
+        $('#load_ruang').show();
+        setTimeout(function () {
 
+        },100);
         if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, function (response) {
+            CheckupDetailAction.listRuangan(idKelas, { callback: function (response) {
                 option = "<option value=''>[Select One]</option>";
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan+"-"+item.namaRuangan + "</option>";
+                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                     });
                 } else {
                     option = option;
                 }
+                $('#load_ruang').hide();
+            }
             });
         }else{
             option = "<option value=''>[Select One]</option>";

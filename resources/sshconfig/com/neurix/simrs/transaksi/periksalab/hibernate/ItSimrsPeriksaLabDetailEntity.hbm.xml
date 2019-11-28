@@ -22,16 +22,16 @@
             <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="satuan">
-            <column name="satuan" sql-type="varchar" length="10" not-null="true"/>
+            <column name="satuan" sql-type="varchar" length="10" not-null="false"/>
         </property>
         <property name="keteranganAcuan">
-            <column name="keterangan_acuan" sql-type="varchar" length="1000" not-null="true"/>
+            <column name="keterangan_acuan" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="hasil">
-            <column name="hasil" sql-type="varchar" length="20" not-null="true"/>
+            <column name="hasil" sql-type="varchar" length="20" not-null="false"/>
         </property>
         <property name="keteranganPeriksa">
-            <column name="keterangan_periksa" sql-type="varchar" length="1000" not-null="true"/>
+            <column name="keterangan_periksa" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

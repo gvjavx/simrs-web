@@ -20,6 +20,7 @@ public class ItSimrsPeriksaLabDetailEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+
     public String getIdPeriksaLabDetail() {
         return idPeriksaLabDetail;
     }

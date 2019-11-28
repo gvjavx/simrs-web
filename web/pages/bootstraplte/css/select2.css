@@ -35,6 +35,7 @@
 }
 
 .select2-container .select2-selection--multiple {
+    margin-top: 7px;
     box-sizing: border-box;
     cursor: pointer;
     display: block;

@@ -10,6 +10,7 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String idPeriksaLab;
     private String idDetailCheckup;
+    private String idLab;
     private Date tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
     private String idDokterPengirim;
@@ -21,6 +22,14 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
 
     public String getIdPeriksaLab() {
         return idPeriksaLab;

@@ -1,15 +1,30 @@
 package com.neurix.simrs.transaksi.periksalab.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Array;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class PeriksaLabAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(PeriksaLabAction.class);
     private PeriksaLab periksaLab;
+    private PeriksaLabBo periksaLabBoProxy;
+
+    public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
+        this.periksaLabBoProxy = periksaLabBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -69,7 +84,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
-        logger.info("[RawatInapAction.initForm] start process >>>");
+        logger.info("[PeriksaLabAction.initForm] start process >>>");
 
         PeriksaLab periksaLab = new PeriksaLab();
         setPeriksaLab(periksaLab);
@@ -77,7 +92,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        logger.info("[RawatInapAction.initForm] end process <<<");
+        logger.info("[PeriksaLabAction.initForm] end process <<<");
 
         return "search";
     }
@@ -90,5 +105,65 @@ public class PeriksaLabAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public String saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter){
+        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            PeriksaLab periksaLab = new PeriksaLab();
+
+            periksaLab.setIdDetailCheckup(idDetailCheckup);
+            periksaLab.setIdLab(idLab);
+            periksaLab.setCreatedWho(userLogin);
+            periksaLab.setLastUpdate(updateTime);
+            periksaLab.setCreatedDate(updateTime);
+            periksaLab.setLastUpdateWho(userLogin);
+            periksaLab.setAction("C");
+            periksaLab.setFlag("Y");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+            periksaLabBo.saveAdd(periksaLab);
+            periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        return SUCCESS;
+    }
+
+    public List<PeriksaLab> listOrderLab(String idDetailCheckup){
+
+        logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        PeriksaLab periksaLab = new PeriksaLab();
+        periksaLab.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+        if(!"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                periksaLabList = null;
+            }catch (GeneralBOException e){
+                logger.error("[PeriksaLabAction.listOrderLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
+            return periksaLabList;
+
+        }else{
+            return null;
+        }
     }
 }

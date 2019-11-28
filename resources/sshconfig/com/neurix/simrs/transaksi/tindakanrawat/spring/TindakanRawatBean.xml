@@ -13,6 +13,7 @@
           p:tindakanRawatDao-ref="tindakanRawatDao"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:dokterDao-ref="dokterDao"
+          p:tindakanDao-ref="tindakanDao"
     />
 
     <bean id="tindakanRawatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
