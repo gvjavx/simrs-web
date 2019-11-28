@@ -66,6 +66,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     }
 
                     periksaLab.setIdPeriksaLab(periksaLabEntity.getIdPeriksaLab());
+                    periksaLab.setIdDetailCheckup(periksaLabEntity.getIdDetailCheckup());
                     periksaLab.setIdLab(lab.getIdLab());
                     periksaLab.setLabName(lab.getNamaLab());
                     periksaLab.setKategoriLabName(lab.getKategoriLabName());

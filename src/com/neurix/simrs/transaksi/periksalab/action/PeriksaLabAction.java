@@ -3,6 +3,10 @@ package com.neurix.simrs.transaksi.periksalab.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import org.apache.log4j.Logger;
@@ -46,14 +50,11 @@ public class PeriksaLabAction extends BaseMasterAction {
     public String add() {
         logger.info("[PeriksaLabAction.add] start process >>>");
 
-        PeriksaLab periksaLab = new PeriksaLab();
-        setPeriksaLab(periksaLab);
-
+        //get data from session
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
 
         logger.info("[PeriksaLabAction.add] end process <<<");
-
         return "init_add";
     }
 
@@ -79,6 +80,26 @@ public class PeriksaLabAction extends BaseMasterAction {
 
     @Override
     public String search() {
+        logger.info("[PeriksaLabAction.search] start process >>>");
+
+        PeriksaLab periksaLab = getPeriksaLab();
+        List<PeriksaLab> listPeriksaLabList = new ArrayList();
+
+        try {
+            listPeriksaLabList = periksaLabBoProxy.getByCriteria(periksaLab);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PeriksaLabAction.save] Error when searching periksa lab by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listPeriksaLabList);
+
+        logger.info("[PeriksaLabAction.search] end process <<<");
         return "search";
     }
 
