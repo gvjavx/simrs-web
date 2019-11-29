@@ -207,6 +207,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                 for (ItSimrsPeriksaLabDetailEntity labDetailEntity : labDetailEntities)
                 {
                     labDetailEntity.setHasil(bean.getHasil());
+                    labDetailEntity.setKeteranganPeriksa(bean.getKeteranganPeriksa());
                     labDetailEntity.setAction("U");
                     labDetailEntity.setLastUpdate(bean.getLastUpdate());
                     labDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -247,12 +248,15 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
             if (!listEntity.isEmpty()){
                 PeriksaLabDetail periksaLabDetail1;
                 for (ItSimrsPeriksaLabDetailEntity entity : listEntity){
+
                     periksaLabDetail1 = new PeriksaLabDetail();
+
                     periksaLabDetail1.setIdPeriksaLabDetail(entity.getIdPeriksaLabDetail());
                     periksaLabDetail1.setIdPeriksaLab(entity.getIdPeriksaLab());
                     periksaLabDetail1.setIdLabDetail(entity.getIdLabDetail());
                     periksaLabDetail1.setNamaDetailPeriksa(entity.getNamaDetailPeriksa());
                     periksaLabDetail1.setSatuan(entity.getSatuan());
+                    periksaLabDetail1.setHasil(entity.getHasil());
                     periksaLabDetail1.setKeteranganAcuan(entity.getKeteranganAcuan());
                     periksaLabDetail1.setKeteranganPeriksa(entity.getKeteranganPeriksa());
                     periksaLabDetail1.setFlag(entity.getFlag());
@@ -261,7 +265,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     periksaLabDetail1.setCreatedWho(entity.getCreatedWho());
                     periksaLabDetail1.setLastUpdate(entity.getLastUpdate());
                     periksaLabDetail1.setLastUpdateWho(entity.getLastUpdateWho());
-                    periksaLabDetailList.add(periksaLabDetail);
+
+                    periksaLabDetailList.add(periksaLabDetail1);
                 }
             }
 

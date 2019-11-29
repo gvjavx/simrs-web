@@ -29,6 +29,190 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String idKategoriLab;
     private String kategoriLabName;
 
+    private String noCheckup;
+    private String idPasien;
+    private String namaPasien;
+    private String idPelayanan;
+    private String namaPelayanan;
+    private String alamat;
+    private String desaId;
+    private String desa;
+    private String kecamatan;
+    private String kota;
+    private String provinsi;
+
+    private String jenisKelamin;
+    private String tempatLahir;
+    private String tglLahir;
+
+    private String tempatTglLahir;
+    private String idJenisPeriksa;
+    private String jenisPeriksaPasien;
+    private String nik;
+
+    private String stTglFrom;
+    private String stTglTo;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getDesaId() {
+        return desaId;
+    }
+
+    public void setDesaId(String desaId) {
+        this.desaId = desaId;
+    }
+
+    public String getDesa() {
+        return desa;
+    }
+
+    public void setDesa(String desa) {
+        this.desa = desa;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getTempatLahir() {
+        return tempatLahir;
+    }
+
+    public void setTempatLahir(String tempatLahir) {
+        this.tempatLahir = tempatLahir;
+    }
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
+    public String getTempatTglLahir() {
+        return tempatTglLahir;
+    }
+
+    public void setTempatTglLahir(String tempatTglLahir) {
+        this.tempatTglLahir = tempatTglLahir;
+    }
+
+    public String getIdJenisPeriksa() {
+        return idJenisPeriksa;
+    }
+
+    public void setIdJenisPeriksa(String idJenisPeriksa) {
+        this.idJenisPeriksa = idJenisPeriksa;
+    }
+
+    public String getJenisPeriksaPasien() {
+        return jenisPeriksaPasien;
+    }
+
+    public void setJenisPeriksaPasien(String jenisPeriksaPasien) {
+        this.jenisPeriksaPasien = jenisPeriksaPasien;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getStTglFrom() {
+        return stTglFrom;
+    }
+
+    public void setStTglFrom(String stTglFrom) {
+        this.stTglFrom = stTglFrom;
+    }
+
+    public String getStTglTo() {
+        return stTglTo;
+    }
+
+    public void setStTglTo(String stTglTo) {
+        this.stTglTo = stTglTo;
+    }
+
     public String getIdLab() {
         return idLab;
     }

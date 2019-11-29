@@ -111,8 +111,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
                 tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
-                tindakanRawatEntity.setFlag("U");
-                tindakanRawatEntity.setAction("C");
+                tindakanRawatEntity.setAction(bean.getAction());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
