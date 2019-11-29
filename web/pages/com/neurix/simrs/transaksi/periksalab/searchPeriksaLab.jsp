@@ -88,10 +88,10 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px; width: 100%"
                                                   id="status" name="periksaLab.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -163,10 +163,10 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
-                                <td>Nama</td>
-                                <td>Jenis Rawat</td>
+                                <td>No Pelayanan</td>
+                                <td>Nama Pasien</td>
                                 <td>Pemeriksaan</td>
-                                <td align="center">Process</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -174,29 +174,15 @@
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="labName"/></td>
                                     <td align="center">
                                         <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                            <s:param name="id"><s:property value="idPeriksaLab"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_periksa_lab}">
                                             <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
-
-                                        <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                        <%--</s:url>--%>
-                                        <%--<s:a href="%{edit}">--%>
-                                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">--%>
-                                        <%--</s:a>--%>
-
-                                        <%--<s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                        <%--</s:url>--%>
-                                        <%--<sj:a href="%{delete}">--%>
-                                            <%--<img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">--%>
-                                        <%--</sj:a>--%>
                                     </td>
                                 </tr>
                             </s:iterator>

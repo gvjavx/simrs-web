@@ -203,7 +203,7 @@
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
                                 <%--<td>Spesialis</td>--%>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_dokter">
@@ -232,7 +232,7 @@
                                 <td align="right">Tarif</td>
                                 <td align="center">Qty</td>
                                 <td align="right">Total</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_tindakan">
@@ -255,7 +255,7 @@
                                 <td>ID Diagnosa</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_diagnosa">
@@ -279,7 +279,7 @@
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
                                 <td>Jenis Lab</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_lab">
@@ -302,7 +302,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label style="margin-top: 7px">Keterangan</label>
-                                    <select class="form-control" id="keterangan"
+                                    <select class="form-control select2" id="keterangan" style="width: 100%"
                                             onchange="$(this).css('border',''); selectKeterangan(this)">
                                         <option value=''>[Select One]</option>
                                         <option value='selesai'>Selesai</option>
@@ -318,15 +318,15 @@
                                         <s:select
                                                   list="#initComboPoli.listOfPelayanan" id="poli_lain"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
+                                                  listValue="namaPelayanan" cssStyle="width: 100%"
                                                   onchange="$(this).css('border',''); listDokterKeterangan(this)"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Dokter</label>
-                                        <select id="list_dokter" class="form-control"
+                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
                                                 onchange="$(this).css('border','')">
                                             <option value=''>[Select One]</option>
                                         </select>
@@ -341,10 +341,10 @@
                                                       name="getListComboKeteranganKeluar_checkupdetail"/>
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                                       name="headerCheckup.idPelayanan" listKey="keterangan"
-                                                      listValue="keterangan"
+                                                      listValue="keterangan" cssStyle="width: 100%"
                                                       onchange="$(this).css('border','')"
                                                       headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control"/>
+                                                      cssClass="form-control select2"/>
                                         </div>
                                     </div>
 
@@ -355,14 +355,14 @@
                                                   name="getListComboKelasRuangan_checkupdetail"/>
                                         <s:select onchange="$(this).css('border',''); listSelectRuangan(this)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  listKey="idKelasRuangan"
+                                                  listKey="idKelasRuangan" cssStyle="width: 100%"
                                                   listValue="namaKelasRuangan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Kamar</label>
-                                        <select class="form-control" id="kamar_detail"
+                                        <select class="form-control select2" id="kamar_detail" style="width: 100%"
                                                 onchange="$(this).css('border','')">
                                             <option value=''>[Select One]</option>
                                         </select>
@@ -406,9 +406,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Nama Dokter</label>
+                        <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
-                            <select id="dok_id_dokter" class="form-control" onchange="$(this).css('border','')">
+                            <select id="dok_id_dokter" style="width: 100%" class="form-control select2" onchange="$(this).css('border','')">
                             </select>
                         </div>
                     </div>
@@ -417,7 +417,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveDokter()" id="save_dokter"><i
+                <button type="button" class="btn btn-success" id="save_dokter"><i
                         class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_dokter"><i
@@ -447,20 +447,20 @@
                         <div class="col-md-7">
                             <s:action id="initComboKategoriTindakan" namespace="/checkupdetail"
                                       name="getListComboKategoriTindakan_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px"
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
                                       onchange="$(this).css('border',''); listSelectTindakan(this);"
                                       list="#initComboKategoriTindakan.listOfKategoriTindakan"
                                       id="tin_id_ketgori_tindakan"
                                       listKey="idKategoriTindakan"
                                       listValue="kategoriTindakan"
                                       headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control"/>
+                                      cssClass="form-control select2"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px" id="tin_id_tindakan"
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="tin_id_tindakan"
                                     onchange="$(this).css('border','')">
                                 <option value=''>[Select One]</option>
                             </select>
@@ -477,7 +477,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px" id="tin_id_perawat"
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="tin_id_perawat"
                                     onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
                                 <option value="1">Angel</option>
@@ -498,7 +498,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveTindakan()" id="save_tindakan"><i
+                <button type="button" class="btn btn-success" id="save_tindakan"><i
                         class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">
@@ -528,18 +528,18 @@
                         <div class="col-md-7">
                             <s:action id="initComboDiagnosa" namespace="/checkupdetail"
                                       name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                            <s:select cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
                                       list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
                                       name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
                                       listValue="descOfDiagnosa"
                                       headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control"/>
+                                      cssClass="form-control select2"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px" id="nosa_jenis_diagnosa"
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="nosa_jenis_diagnosa"
                                     onchange="$(this).css('border','')">
                                 <option value="">[select one]</option>
                                 <option value="0">Diagnosa Awal</option>
@@ -552,7 +552,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveDiagnosa()" id="save_diagnosa"><i
+                <button type="button" class="btn btn-success" id="save_diagnosa"><i
                         class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
@@ -612,7 +612,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-arrow-right"></i> Save</button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
@@ -819,11 +819,15 @@
 
     function showModal(select) {
 
+        var id = "";
+
         if (select == 1) {
             $('#save_dokter').show();
             $('#load_dokter, #warning_dokter').hide();
             $('#dok_id_dokter').css('border', '');
+            $('#save_dokter').attr('onclick','saveDokter(\''+id+'\')');
             $('#modal-dokter').modal('show');
+
         } else if (select == 2) {
             $('#tin_id_ketgori_tindakan').val('');
             $('#tin_id_tindakan').val('');
@@ -831,6 +835,7 @@
             $('#save_tindakan').show();
             $('#load_tindakan, #warning_tindakan').hide();
             $('#tin_id_tindakan, #tin_id_perawat, #tin_id_ketgori_tindakan').css('border', '');
+            $('#save_tindakan').attr('onclick','saveTindakan(\''+id+'\')');
             $('#modal-tindakan').modal('show');
 
         } else if (select == 3) {
@@ -839,12 +844,15 @@
             $('#save_diagnosa').show();
             $('#load_diagnosa, #warning_diagnosa').hide();
             $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').css('border', '');
+            $('#save_diagnosa').attr('onclick','saveDiagnosa(\''+id+'\')');
             $('#modal-diagnosa').modal('show');
+
         } else if (select == 4) {
             $('#lab_kategori, #lab_lab').val('');
             $('#save_lab').show();
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
+            $('#save_lab').attr('onclick','saveLab(\''+id+'\')');
             $('#modal-lab').modal('show');
         }
     }
@@ -857,23 +865,39 @@
     }
 
 
-    function saveDokter() {
+    function saveDokter(id) {
         var idDokter = $('#dok_id_dokter').val();
+
         if (idDetailCheckup != '' && idDokter != '') {
             $('#save_dokter').hide();
             $('#load_dokter').show();
-            dwr.engine.setAsync(true);
-            TeamDokterAction.saveDokter(idDetailCheckup, idDokter, function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    listDokter();
-                    $('#modal-dokter').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(1);
-                } else {
+            if(id != ''){
+                dwr.engine.setAsync(true);
+                TeamDokterAction.editDokter(id, idDokter, function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        listDokter();
+                        $('#modal-dokter').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(1);
+                    } else {
 
-                }
-            })
+                    }
+                })
+            }else{
+                dwr.engine.setAsync(true);
+                TeamDokterAction.saveDokter(idDetailCheckup, idDokter, function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        listDokter();
+                        $('#modal-dokter').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(1);
+                    } else {
+
+                    }
+                })
+            }
         } else {
             $('#warning_dokter').show().fadeOut(5000);
             $('#dok_id_dokter').css('border', 'red solid 1px');
@@ -892,7 +916,7 @@
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
 //                            "<td>" + item.namaSpesialis + "</td>" +
-                            "<td>" + '<img border="0" onclick="editDokter(\''+item.idTeamDokter+'\',\''+item.idDokter+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" onclick="editDokter(\''+item.idTeamDokter+'\',\''+item.idDokter+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>";
                     dokter = item.idDokter;
                 });
@@ -919,33 +943,56 @@
         $('#list_dokter').html(option);
     }
 
-    function saveTindakan() {
+    function saveTindakan(id) {
 
-        var idKategori = $('#tin_id_ketgori_tindakan').val();
-        var idTindakan = $('#tin_id_tindakan').val();
-        var idDokter = $('#tin_id_dokter').val();
-        var idPerawat = $('#tin_id_perawat').val();
-        var qty = $('#tin_qty').val();
+        var idKategori  = $('#tin_id_ketgori_tindakan').val();
+        var idTindakan  = $('#tin_id_tindakan').val();
+        var idDokter    = $('#tin_id_dokter').val();
+        var idPerawat   = $('#tin_id_perawat').val();
+        var qty         = $('#tin_qty').val();
+        alert(idKategori);
 
+        console.log(idKategori);
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
+
             $('#save_tindakan').hide();
             $('#load_tindakan').show();
-            dwr.engine.setAsync(true);
-            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listTindakan();
-                        $('#modal-tindakan').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(2);
-                    } else {
-                        $('#eror_dialog').dialog('open');
-                        $('#save_tindakan').show();
-                        $('#load_tindakan').hide();
+
+            if(id != ''){
+                dwr.engine.setAsync(true);
+                TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listTindakan();
+                            $('#modal-tindakan').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(2);
+                        } else {
+                            $('#eror_dialog').dialog('open');
+                            $('#save_tindakan').show();
+                            $('#load_tindakan').hide();
+                        }
                     }
-                }
-            });
+                });
+            }else {
+                dwr.engine.setAsync(true);
+                TindakanRawatAction.editTindakanRawat(id, idTindakan, idDokter, idPerawat, qty, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listTindakan();
+                            $('#modal-tindakan').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(2);
+                        } else {
+                            $('#eror_dialog').dialog('open');
+                            $('#save_tindakan').show();
+                            $('#load_tindakan').hide();
+                        }
+                    }
+                });
+            }
         } else {
             $('#warning_tindakan').show().fadeOut(5000);
 
@@ -997,6 +1044,7 @@
 
         TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
@@ -1021,7 +1069,7 @@
                             "<td align='right'>" + "Rp. " + tarif+",-" + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + "Rp. " + tarifTotal+",-" + "</td>" +
-                            "<td>" + '<img border="0" onclick="editTindakan(\''+item.idTindakanRawat+'\',\''+item.idTindakan+'\',\''+item.idKategoriTindakan+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" onclick="editTindakan(\''+item.idTindakanRawat+'\',\''+item.idTindakan+'\',\''+item.idKategoriTindakan+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>";
 
                 });
@@ -1039,27 +1087,47 @@
 
     }
 
-    function saveDiagnosa() {
+    function saveDiagnosa(id) {
+
         var idDiagnosa = $('#nosa_id_diagnosa').val();
         var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
 
         if (idDetailCheckup != '' && idDiagnosa != '' && jenisDiagnosa != '') {
+
             $('#save_diagnosa').hide();
             $('#load_diagnosa').show();
-            dwr.engine.setAsync(true);
-            DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiagnosa, jenisDiagnosa, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listDiagnosa();
-                        $('#modal-diagnosa').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(3);
-                    } else {
 
+            if(id != ''){
+                dwr.engine.setAsync(true);
+                DiagnosaRawatAction.editDiagnosa(id, idDiagnosa, jenisDiagnosa, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listDiagnosa();
+                            $('#modal-diagnosa').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(3);
+                        } else {
+
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                dwr.engine.setAsync(true);
+                DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiagnosa, jenisDiagnosa, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listDiagnosa();
+                            $('#modal-diagnosa').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(3);
+                        } else {
+
+                        }
+                    }
+                })
+            }
         } else {
             $('#warning_diagnosa').show().fadeOut(5000);
             if (idDiagnosa == '') {
@@ -1075,16 +1143,17 @@
 
         var table = "";
         var data = [];
-        var id = "";
-        var ket = "";
-        var jen = "";
 
         DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
             data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    var id          = "-";
+                    var ket         = "-";
+                    var jen         = "-";
+                    var tanggal     = item.createdDate;
+                    var dateFormat  = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+
                     if (item.idDiagnosa != null) {
                         id = item.idDiagnosa;
                     }
@@ -1103,7 +1172,7 @@
                             "<td>" + id + "</td>" +
                             "<td>" + ket + "</td>" +
                             "<td>" + jen + "</td>" +
-                            "<td>" + '<img border="0" onclick="editDiagnosa(\''+item.idDiagnosaRawat+'\',\''+item.idDiagnosa+'\',\''+item.jenisDiagnosa+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" onclick="editDiagnosa(\''+item.idDiagnosaRawat+'\',\''+item.idDiagnosa+'\',\''+item.jenisDiagnosa+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -1156,29 +1225,48 @@
         $('#lab_parameter').html(option);
     }
 
-    function saveLab() {
+    function saveLab(id) {
 
         var idKategori  = $('#lab_kategori').val();
         var idLab       = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
         if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
+
             $('#save_lab').hide();
             $('#load_lab').show();
-            dwr.engine.setAsync(true);
-            PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-//                        listDiagnosa();
-                        $('#modal-lab').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(4);
-                    } else {
 
+            if(id != ''){
+                dwr.engine.setAsync(true);
+                PeriksaLabAction.editOrderLab(id, idLab, idParameter, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listLab();
+                            $('#modal-lab').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(4);
+                        } else {
+
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                dwr.engine.setAsync(true);
+                PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listLab();
+                            $('#modal-lab').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(4);
+                        } else {
+
+                        }
+                    }
+                })
+            }
         } else {
             $('#warning_lab').show().fadeOut(5000);
             if (idKategori == '') {
@@ -1194,17 +1282,17 @@
 
         var table = "";
         var data = [];
-        var pemeriksaan = "";
-        var status = "";
-        var lab = "";
 
         PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
             data = response;
-            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    var pemeriksaan = "";
+                    var status      = "";
+                    var lab         = "";
+                    var tanggal     = item.createdDate;
+                    var dateFormat  = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
                     }
@@ -1219,7 +1307,7 @@
                             "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
-                            "<td>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -1227,40 +1315,17 @@
 
         $('#body_lab').html(table);
     }
+
     function editDokter(id, idDokter){
-        $('#save_dokter').attr('onclick','saveEditDokter(\''+id+'\')');
-        $('#dok_id_dokter').val(idDokter);
+        $('#load_dokter').hide();
+        $('#save_dokter').attr('onclick','saveDokter(\''+id+'\')').show();
+        $('#dok_id_dokter').val(idDokter).trigger('change');
         $('#modal-dokter').modal('show');
     }
 
-    function saveEditDokter(id){
-        var idDok = $('#dok_id_dokter').val();
-        if (idDok != '') {
-            $('#save_dokter').hide();
-            $('#load_dokter').show();
-            dwr.engine.setAsync(true);
-            TeamDokterAction.editDokter(id, idDok, function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    listDokter();
-                    $('#modal-dokter').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(1);
-                } else {
-
-                }
-            })
-        } else {
-            $('#warning_dokter').show().fadeOut(5000);
-            $('#dok_id_dokter').css('border', 'red solid 1px');
-        }
-    }
-
-    function editTindakan(id, idTindakan, idKategori){
-        console.log(idTindakan);
+    function editTindakan(id, idTindakan, idKategori, qty){
         var option = "";
-        $('#tin_id_ketgori_tindakan').val('01');
-        CheckupDetailAction.getListComboTindakan('01', function (response) {
+        CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
@@ -1269,14 +1334,20 @@
                 option = option;
             }
         });
+
         $('#tin_id_tindakan').html(option);
-        $('#tin_id_tindakan').val('01');
+        $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
+        $('#tin_id_tindakan').val(idTindakan).trigger('change');
+        $('#tin_qty').val(qty);
+        $('#save_tindakan').attr('onclick','saveTindakan(\''+id+'\')').show();
         $('#modal-tindakan').modal('show');
     }
 
     function editDiagnosa(id, idDiagnosa, jenis){
-        $('#nosa_id_diagnosa').val(idDiagnosa);
-        $('#nosa_jenis_diagnosa').val(jenis);
+        $('#load_diagnosa').hide();
+        $('#save_diagnosa').attr('onclick','saveDiagnosa(\''+id+'\')').show();
+        $('#nosa_id_diagnosa').val(idDiagnosa).trigger('change');
+        $('#nosa_jenis_diagnosa').val(jenis).trigger('change');
         $('#modal-diagnosa').modal('show');
     }
 

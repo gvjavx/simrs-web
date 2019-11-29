@@ -1,21 +1,24 @@
 package com.neurix.simrs.transaksi.periksaradiologi.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.simrs.transaksi.periksaradiologi.bo.PeriksaRadiologiBo;
+import com.neurix.simrs.transaksi.periksaradiologi.model.PeriksaRadiologi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
 
-public class PeriksaRadiologi extends BaseMasterAction {
-    protected static transient Logger logger = Logger.getLogger(PeriksaRadiologi.class);
+public class PeriksaRadiologiAction extends BaseMasterAction {
+    protected static transient Logger logger = Logger.getLogger(PeriksaRadiologiAction.class);
     private PeriksaRadiologi periksaRadiologi;
+    private PeriksaRadiologiBo periksaRadiologiBoProxy;
 
     public static Logger getLogger() {
         return logger;
     }
 
     public static void setLogger(Logger logger) {
-        PeriksaRadiologi.logger = logger;
+        PeriksaRadiologiAction.logger = logger;
     }
 
     public PeriksaRadiologi getPeriksaRadiologi() {
@@ -24,6 +27,10 @@ public class PeriksaRadiologi extends BaseMasterAction {
 
     public void setPeriksaRadiologi(PeriksaRadiologi periksaRadiologi) {
         this.periksaRadiologi = periksaRadiologi;
+    }
+
+    public void setPeriksaRadiologiBoProxy(PeriksaRadiologiBo periksaRadiologiBoProxy) {
+        this.periksaRadiologiBoProxy = periksaRadiologiBoProxy;
     }
 
     @Override

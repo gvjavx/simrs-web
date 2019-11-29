@@ -160,7 +160,7 @@
                                 <td>Alamat</td>
                                 <td>Status</td>
                                 <td>Keterangan</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -172,7 +172,7 @@
                                     <td><s:property value="alamat"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
-                                    <td>
+                                    <td align="center">
                                         <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>

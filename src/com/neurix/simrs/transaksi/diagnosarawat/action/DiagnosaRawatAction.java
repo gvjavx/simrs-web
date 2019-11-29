@@ -235,7 +235,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
 
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
-            diagnosaRawatBo.saveAdd(diagnosaRawat);
+            diagnosaRawatBo.saveEdit(diagnosaRawat);
 
         }catch (GeneralBOException e) {
             Long logId = null;
