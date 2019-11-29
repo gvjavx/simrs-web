@@ -261,7 +261,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                     periksaLabDetail1.setCreatedWho(entity.getCreatedWho());
                     periksaLabDetail1.setLastUpdate(entity.getLastUpdate());
                     periksaLabDetail1.setLastUpdateWho(entity.getLastUpdateWho());
-                    periksaLabDetailList.add(periksaLabDetail);
+                    periksaLabDetailList.add(periksaLabDetail1);
                 }
             }
 
