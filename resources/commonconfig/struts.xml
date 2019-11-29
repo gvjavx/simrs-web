@@ -169,5 +169,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatInapAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/periksalab/struts/PeriksaLabAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/periksaradiologi/struts/PeriksaRadiologiAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/ordergizi/struts/OrderGiziAction.xml"/>
+
+
 
 </struts>

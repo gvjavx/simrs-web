@@ -1137,6 +1137,40 @@
         $('#modal-edit-parameter').modal('show');
     }
 
+    function saveEditParameter(id) {
+
+        var hasil  = $('#par_hasil').val();
+        var ket    = $('#par_ket').val();
+
+        if (id != '' && hasil != '' && ket != '') {
+            $('#save_par').hide();
+            $('#load_par').show();
+            dwr.engine.setAsync(true);
+            PeriksaLabAction.saveEditParameterLab(id, hasil, ket, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        listParameter();
+                        $('#modal-edit-parameter').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(3);
+                    } else {
+
+                    }
+                }
+            })
+        } else {
+            $('#warning_edit_parameter').show().fadeOut(5000);
+//            if (idKategori == '') {
+//                $('#lab_kategori').css('border', 'red solid 1px');
+//            }
+//            if (idLab == '') {
+//                $('#lab_lab').css('border', 'red solid 1px');
+//            }
+        }
+    }
+
+
     function editTindakan(id, idTindakan, idKategori){
         console.log(idTindakan);
         var option = "";

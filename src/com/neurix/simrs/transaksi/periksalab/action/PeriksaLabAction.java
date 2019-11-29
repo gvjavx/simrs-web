@@ -396,34 +396,32 @@ public class PeriksaLabAction extends BaseMasterAction {
     }
 
     public String editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter){
-        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        logger.info("[PeriksaLabAction.editOrderLab] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             PeriksaLab periksaLab = new PeriksaLab();
 
+            periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdLab(idLab);
-            periksaLab.setCreatedWho(userLogin);
             periksaLab.setLastUpdate(updateTime);
-            periksaLab.setCreatedDate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
-            periksaLab.setAction("C");
-            periksaLab.setFlag("Y");
+            periksaLab.setAction("U");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-            periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
+            periksaLabBo.saveEdit(periksaLab, idParameter);
 
         }catch (GeneralBOException e) {
             Long logId = null;
-            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[PeriksaLabAction.editOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        logger.info("[PeriksaLabAction.editOrderLab] End process >>>");
         return SUCCESS;
     }
 

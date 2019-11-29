@@ -29,7 +29,7 @@ public class ObatInapBoImpl implements ObatInapBo {
 
     @Override
     public List<ObatInap> getByCriteria(ObatInap bean) throws GeneralBOException {
-        logger.info("[ObatInapBoImpl.getByCriteria] Start >>>>>>>");
+        logger.info("[OrderGiziBoImpl.getByCriteria] Start >>>>>>>");
 
         List<ObatInap> results = new ArrayList<>();
 
@@ -40,13 +40,13 @@ public class ObatInapBoImpl implements ObatInapBo {
             }
         }
 
-        logger.info("[ObatInapBoImpl.getByCriteria] End <<<<<<");
+        logger.info("[OrderGiziBoImpl.getByCriteria] End <<<<<<");
         return results;
     }
 
     @Override
     public void saveAdd(ObatInap bean) throws GeneralBOException {
-        logger.info("[ObatInapBoImpl.saveAdd] Start >>>>>>>");
+        logger.info("[OrderGiziBoImpl.saveAdd] Start >>>>>>>");
 
         if (bean != null){
             String id = getNextId();
@@ -69,32 +69,32 @@ public class ObatInapBoImpl implements ObatInapBo {
                 try {
                     obatInapDao.addAndSave(obatInapEntity);
                 } catch (HibernateException e) {
-                    logger.error("[ObatInapBoImpl.saveAdd] Error when insert obat inap ", e);
+                    logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
                     throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert obat inap " + e.getMessage());
                 }
             }
         }
         // update total biaya pada di detail checkup
         // updateDetailCheckup(bean);
-        logger.info("[ObatInapBoImpl.saveAdd] End <<<<<<");
+        logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
     }
 
     public String getNextId(){
-        logger.info("[ObatInapBoImpl.getNextId] Start >>>>>>>");
+        logger.info("[OrderGiziBoImpl.getNextId] Start >>>>>>>");
 
         String id = "";
         try {
             id = obatInapDao.getNextId();
         } catch (HibernateException e){
-            logger.error("[ObatInapBoImpl.getNextId] Error when get next id obat inap");
+            logger.error("[OrderGiziBoImpl.getNextId] Error when get next id obat inap");
         }
 
-        logger.info("[ObatInapBoImpl.getNextId] End <<<<<<");
+        logger.info("[OrderGiziBoImpl.getNextId] End <<<<<<");
         return id;
     }
 
     protected List<ItSimrsObatInapEntity> getListEntity(ObatInap bean) throws GeneralBOException{
-        logger.info("[ObatInapBoImpl.getListEntity] Start >>>>>>>");
+        logger.info("[OrderGiziBoImpl.getListEntity] Start >>>>>>>");
         List<ItSimrsObatInapEntity> results = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
@@ -109,15 +109,15 @@ public class ObatInapBoImpl implements ObatInapBo {
         try {
             results = obatInapDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.error("[ObatInapBoImpl.getListEntity] Erro when searching data obat inap ", e);
+            logger.error("[OrderGiziBoImpl.getListEntity] Erro when searching data obat inap ", e);
         }
 
-        logger.info("[ObatInapBoImpl.getListEntityT] End <<<<<<");
+        logger.info("[OrderGiziBoImpl.getListEntityT] End <<<<<<");
         return results;
     }
 
     protected List<ObatInap> setToTemplate(List<ItSimrsObatInapEntity> entities) throws GeneralBOException{
-        logger.info("[ObatInapBoImpl.setToTemplate] Start >>>>>>>");
+        logger.info("[OrderGiziBoImpl.setToTemplate] Start >>>>>>>");
         List<ObatInap> results = new ArrayList<>();
 
         ObatInap obatInap;
@@ -141,7 +141,7 @@ public class ObatInapBoImpl implements ObatInapBo {
 
             results.add(obatInap);
         }
-        logger.info("[ObatInapBoImpl.setToTemplate] End <<<<<<");
+        logger.info("[OrderGiziBoImpl.setToTemplate] End <<<<<<");
         return results;
     }
 }

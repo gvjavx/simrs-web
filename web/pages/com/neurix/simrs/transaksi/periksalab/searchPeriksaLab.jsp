@@ -48,6 +48,14 @@
                         <div class="form-group">
                             <s:form id="periksaLabForm" method="post" namespace="/periksalab" action="search_periksalab.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
+                                                     name="periksaLab.idPasien" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
@@ -64,16 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Jenis Kelamin</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'L':'Laki-laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
-                                                  id="jenis_kelamin" name="periksaLab.jenisKelamin"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
+                                    <label class="control-label col-sm-4">Labotarium</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>

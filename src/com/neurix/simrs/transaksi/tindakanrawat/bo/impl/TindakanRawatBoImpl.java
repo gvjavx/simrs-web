@@ -58,7 +58,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     public void saveAdd(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
 
-        if (bean != null && bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
+        if (bean != null ){
             String id = getNextTindakanRawatId();
             if (id != null && !"".equalsIgnoreCase(id)) {
                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();

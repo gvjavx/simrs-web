@@ -19,6 +19,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/OrderGiziAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -248,17 +249,21 @@
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(5)"><i class="fa fa-plus"></i> Order </button>
                         <table class="table table-bordered table-striped">
-                            <thead >
+                            <thead>
+                            <tr bgcolor="#90ee90" style="height: 20px">
+                                <td rowspan="2">Tanggal</td>
+                                <td colspan="2" align="center">Pagi</td>
+                                <td colspan="2" align="center">Siang</td>
+                                <td colspan="2" align="center">Malam</td>
+                                <td align="center" rowspan="2">Action</td>
+                            </tr>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>Jenis Diet Pagi</td>
-                                <td>Bentuk Diet Pagi</td>
-                                <td>Jenis Diet Pagi</td>
-                                <td>Bentuk Diet Pagi</td>
-                                <td>Jenis Diet Pagi</td>
-                                <td>Bentuk Diet Pagi</td>
-                                <td>Keterangan</td>
-                                <td>Action</td>
+                                <td>Jenis</td>
+                                <td>Bentuk</td>
+                                <td>Jenis</td>
+                                <td>Bentuk</td>
+                                <td>Jenisi</td>
+                                <td>Bentuk</td>
                             </tr>
                             </thead>
                             <tbody id="body_diet">
@@ -522,32 +527,48 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Poli</label>
+                        <label class="col-md-3" >Jenis Diet Pagi</label>
                         <div class="col-md-7">
-                            <select class="form-control">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
-                            </select>
+                            <input type="text" class="form-control" id="diet_pagi">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3">Nama Dokter</label>
+                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Pagi</label>
                         <div class="col-md-7">
-                            <select class="form-control" style="margin-top: 7px">
-                                <option value="">[select one]</option>
-                                <option value="1">Dr. Sutikno</option>
-                                <option value="2">Dr. Julio</option>
-                                <option value="3">Dr. Turnomo</option>
-                            </select>
+                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_pagi">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Diet Siang</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" style="margin-top: 7px" id="diet_siang">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Siang</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_siang">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Diet Malam</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" style="margin-top: 7px" id="diet_malam">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Malam</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_malam">
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button type="button" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" id="save_diet" onclick="saveDiet()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diet"><i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...</button>
             </div>
         </div>
     </div>
@@ -617,6 +638,7 @@
         listDiagnosa();
         listSelectDokter();
         listObat();
+        listDiet();
     });
 
     function listSelectDokter(){
@@ -1056,6 +1078,74 @@
         });
 
         $('#body_obat').html(table);
+    }
+
+    function saveDiet(){
+
+        var dietPagi    = $('#diet_pagi').val();
+        var bentukPagi  = $('#bentuk_pagi').val();
+        var dietSiang   = $('#diet_siang').val();
+        var bentukSiang = $('#bentuk_siang').val();
+        var dietMalam   = $('#diet_malam').val();
+        var bentukMalam = $('#bentuk_malam').val();
+
+
+        if(dietPagi != '' && bentukPagi != '' && dietSiang != '' && bentukSiang != '' && dietMalam != '' && bentukMalam != ''){
+            $('#save_diet').hide();
+            $('#load_diet').show();
+            dwr.engine.setAsync(true);
+            OrderGiziAction.saveOrderGizi('RNP00000017', dietPagi, bentukPagi, dietSiang, bentukSiang, dietMalam, bentukMalam, function (response) {
+                if(response == "success"){
+                    dwr.engine.setAsync(false);
+                    listDiet();
+                    $('#modal-diet').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(5);
+                }else{
+
+                }
+            })
+        }else{
+//            $('#warning_d').show().fadeOut(5000);
+
+//            if(idJenis == ''){
+//                $('#obat_jenis_obat').css('border','red solid 1px');
+//            }
+//            if(idObat == ''){
+//                $('#ob_id_obat').css('border','red solid 1px');
+//            }
+//            if(qty == '' || qty < 1){
+//                $('#ob_qty').css('border','red solid 1px');
+//            }
+        }
+    }
+
+    function listDiet(){
+        var table = "";
+        var data  = [];
+
+        OrderGiziAction.listOrderGizi('RNP00000017', function (response) {
+            data = response;
+            console.log(data);
+            if (data != null){
+                $.each(data, function (i,item) {
+                    var tanggal = item.createdDate;
+                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    table += "<tr>" +
+                            "<td>" +  dateFormat + "</td>" +
+                            "<td>" + item.dietPagi + "</td>" +
+                            "<td>" + item.bentukMakanPagi + "</td>" +
+                            "<td>" + item.dietSiang + "</td>" +
+                            "<td>" + item.bentukMakanSiang + "</td>" +
+                            "<td>" + item.dietMalam + "</td>" +
+                            "<td>" + item.bentukMakanMalam + "</td>" +
+                            "<td>"+ '<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">'+ "</td>"+
+                            "</tr>"
+                });
+            }
+        });
+
+        $('#body_diet').html(table);
     }
 
 </script>

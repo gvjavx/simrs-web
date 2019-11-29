@@ -192,7 +192,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         }
     }
 
-    public String editTindakanRawat(String idTindakanRawat, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
+    public String editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -201,6 +201,8 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdTindakanRawat(idTindakanRawat);
+            tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+            tindakanRawat.setIdTindakan(idTindakan);
 
             List<Tindakan> tindakanList = new ArrayList<>();
             Tindakan tindakan = new Tindakan();
