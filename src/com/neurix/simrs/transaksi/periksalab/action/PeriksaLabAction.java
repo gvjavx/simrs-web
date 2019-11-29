@@ -167,8 +167,11 @@ public class PeriksaLabAction extends BaseMasterAction {
         PeriksaLab periksaLab = getPeriksaLab();
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
 
+        // hanya kategori lab laboratorium saja
+        periksaLab.setIdKategoriLab("02");
+
         try {
-            listPeriksaLabList = periksaLabBoProxy.getByCriteria(periksaLab);
+            listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[PeriksaLabAction.save] Error when searching periksa lab by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);

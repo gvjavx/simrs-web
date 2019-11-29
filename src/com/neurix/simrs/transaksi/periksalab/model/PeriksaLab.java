@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.periksalab.model;
 
 import com.neurix.common.model.BaseModel;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -52,6 +53,35 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String stTglFrom;
     private String stTglTo;
+
+    private Boolean forRadiology = false;
+
+    private String stDateFrom;
+    private String stDateTo;
+
+    public String getStDateFrom() {
+        return stDateFrom;
+    }
+
+    public void setStDateFrom(String stDateFrom) {
+        this.stDateFrom = stDateFrom;
+    }
+
+    public String getStDateTo() {
+        return stDateTo;
+    }
+
+    public void setStDateTo(String stDateTo) {
+        this.stDateTo = stDateTo;
+    }
+
+    public Boolean getForRadiology() {
+        return forRadiology;
+    }
+
+    public void setForRadiology(Boolean forRadiology) {
+        this.forRadiology = forRadiology;
+    }
 
     public String getNoCheckup() {
         return noCheckup;

@@ -2,10 +2,9 @@ package com.neurix.simrs.transaksi.periksalab.model;
 
 import com.neurix.common.model.BaseModel;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class PeriksaLabDetail extends BaseModel implements Serializable {
+public class PeriksaLabDetail extends BaseModel {
 
     private String idPeriksaLabDetail;
     private String idPeriksaLab;

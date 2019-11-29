@@ -162,8 +162,8 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
-                                <td>Nama</td>
-                                <td>Jenis Rawat</td>
+                                <td>No Pelayanan</td>
+                                <td>Nama Pasien</td>
                                 <td>Pemeriksaan</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -173,8 +173,8 @@
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="labName"/></td>
                                     <td align="center">
                                         <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
                                             <s:param name="id"><s:property value="idPeriksaLab"/></s:param>

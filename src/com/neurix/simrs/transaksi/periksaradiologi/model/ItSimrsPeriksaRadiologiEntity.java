@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 public class ItSimrsPeriksaRadiologiEntity implements Serializable{
 
     private String idPeriksaRadiologi;
+    private String idLab;
+    private String idDetailCheckup;
+    private String statusPeriksa;
     private String idDokterRadiologi;
     private String pemeriksaan;
     private String kesimpulan;
@@ -15,6 +18,39 @@ public class ItSimrsPeriksaRadiologiEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idPeriksaLab;
+
+    public String getIdPeriksaLab() {
+        return idPeriksaLab;
+    }
+
+    public void setIdPeriksaLab(String idPeriksaLab) {
+        this.idPeriksaLab = idPeriksaLab;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String statusPeriksa) {
+        this.statusPeriksa = statusPeriksa;
+    }
 
     public String getIdPeriksaRadiologi() {
         return idPeriksaRadiologi;
