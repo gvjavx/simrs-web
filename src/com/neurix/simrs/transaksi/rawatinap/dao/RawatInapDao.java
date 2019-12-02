@@ -63,6 +63,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String jenisKelamin = "%";
             String idKelas      = "%";
             String idRuang      = "%";
+            String idDetailCheckup = "%";
             String dateFrom     = "";
             String dateTo       = "";
 
@@ -94,6 +95,10 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 idRuang = bean.getIdRuang();
             }
 
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                idDetailCheckup = bean.getIdDetailCheckup();
+            }
+
             if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())){
                 dateFrom = bean.getStTglFrom();
             }
@@ -122,7 +127,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
-                    "INNER JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
+                    "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
@@ -132,6 +137,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND a.jenis_kelamin LIKE :jenisKelamin\n" +
                     "AND f.id_kelas_ruangan LIKE :idKelas\n" +
                     "AND e.id_ruangan LIKE :idRuang\n" +
+                    "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.flag = 'Y'";
 
             List<Object[]> results = new ArrayList<>();
@@ -149,6 +155,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         .setParameter("jenisKelamin", jenisKelamin)
                         .setParameter("idKelas", idKelas)
                         .setParameter("idRuang", idRuang)
+                        .setParameter("idDetailCheckup", idDetailCheckup)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
                         .list();
@@ -168,6 +175,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("jenisKelamin", jenisKelamin)
                             .setParameter("idKelas", idKelas)
                             .setParameter("idRuang", idRuang)
+                            .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("dateFrom", dateFrom)
                             .list();
                 }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
@@ -183,6 +191,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("jenisKelamin", jenisKelamin)
                             .setParameter("idKelas", idKelas)
                             .setParameter("idRuang", idRuang)
+                            .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("dateTo", dateTo)
                             .list();
                 }else{
@@ -197,6 +206,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             .setParameter("jenisKelamin", jenisKelamin)
                             .setParameter("idKelas", idKelas)
                             .setParameter("idRuang", idRuang)
+                            .setParameter("idDetailCheckup", idDetailCheckup)
                             .list();
                 }
             }
@@ -221,7 +231,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setIdRuangan(obj[11].toString());
                     rawatInap.setNoRuangan(obj[12].toString());
                     rawatInap.setNamaRangan(obj[13].toString());
-                    rawatInap.setNamaRangan(obj[14].toString());
+                    rawatInap.setKelasRuanganName(obj[14].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());

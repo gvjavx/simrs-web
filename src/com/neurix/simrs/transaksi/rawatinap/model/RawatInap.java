@@ -54,6 +54,15 @@ public class RawatInap {
     private String idRuang;
 
     private String keteranganSelesai;
+    private String kelasRuanganName;
+
+    public String getKelasRuanganName() {
+        return kelasRuanganName;
+    }
+
+    public void setKelasRuanganName(String kelasRuanganName) {
+        this.kelasRuanganName = kelasRuanganName;
+    }
 
     public String getKeteranganSelesai() {
         return keteranganSelesai;
