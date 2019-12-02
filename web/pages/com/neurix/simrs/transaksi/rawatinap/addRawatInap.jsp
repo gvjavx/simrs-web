@@ -1108,7 +1108,7 @@
             $('#load_diet, #warning_diet, #war_pagi1, #war_pagi2, #war_siang1, #war_siang2, #war_malam1, #war_malam2').hide();
             $('#modal-diet').modal('show');
         } else if (select == 6) {
-            $('#obat_jenis_obat, #ob_obat').val('').trigger('change');
+            $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
             $('#ob_jumlah').val('1');
             $('#save_obat').attr('onclick','saveObat(\''+id+'\')').show();
             $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
@@ -1667,8 +1667,8 @@
                     if(item.qty != null){
                         qty = item.qty;
                     }
-                    if(item.jenisObat != null){
-                        jenis = item.jenisObat;
+                    if(item.namaJenisObat != null){
+                        jenis = item.namaJenisObat;
                     }
 
                     table += "<tr>" +
@@ -1677,7 +1677,7 @@
                             "<td>" + obat + "</td>" +
                             "<td>" + jenis + "</td>" +
                             "<td>" + qty + "</td>" +
-                            "<td align='center'>" + '<img border="0" onclick="editObat(\''+item.idObatInap+'\',\''+item.idKategori+'\',\''+item.idObat+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" onclick="editObat(\''+item.idObatInap+'\',\''+item.idJenisObat+'\',\''+item.idObat+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -1836,7 +1836,7 @@
     function editObat(id, jenis, obat, qty){
         $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
         $('#obat_jenis_obat').val(jenis).trigger('change');
-        $('#ob_obat').val(obat).trigger('change');;
+        $('#ob_id_obat').val(obat).trigger('change');;
         $('#ob_jumlah').val(qty);
         $('#save_obat').attr('onclick','saveObat(\''+id+'\')').show();;
         $('#modal-obat').modal('show');

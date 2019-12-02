@@ -6,6 +6,10 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="periksaRadiologiAction" class="com.neurix.simrs.transaksi.periksaradiologi.action.PeriksaRadiologiAction"
+          p:periksaLabBoProxy-ref="periksaLabBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
 
     <bean id="periksaRadiologiBo" class="com.neurix.simrs.transaksi.periksaradiologi.bo.impl.PeriksaRadiologiBoImpl"

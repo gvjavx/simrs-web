@@ -169,13 +169,13 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
             ItSimrsPeriksaRadiologiEntity entity = getListEntityRadiologi(bean).get(0);
 
             entity.setKesimpulan(bean.getKesimpulan());
-            entity.setFlag(bean.getFlag());
+            entity.setIdDokterRadiologi(bean.getIdDokterRadiologi());
             entity.setAction(bean.getAction());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
-                periksaRadiologiDao.addAndSave(entity);
+                periksaRadiologiDao.updateAndSave(entity);
             } catch (HibernateException e){
                 logger.error("[PeriksaRadiologiBoImpl.saveEdit] ERROR when updating Radiologi, ", e.getCause());
                 throw new GeneralBOException("[PeriksaRadiologiBoImpl.getListEntityRadiologi] ERROR when updating Radiologi, ", e.getCause());

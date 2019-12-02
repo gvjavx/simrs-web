@@ -346,6 +346,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.ordergizi.action.OrderGiziAction"/>
       </create>
 
+      <!--Order Gizi-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.periksaradiologi.action.PeriksaRadiologiAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
@@ -357,6 +362,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.ordergizi.model.OrderGizi"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.periksaradiologi.model.PeriksaRadiologi"/>
 
   </allow>
 

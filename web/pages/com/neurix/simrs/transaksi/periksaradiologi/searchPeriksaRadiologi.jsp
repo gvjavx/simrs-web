@@ -51,7 +51,7 @@
                                     <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_checkup_detail" cssStyle="margin-top: 7px"
-                                                     name="radiologi.idDetailCheckup" required="false"
+                                                     name="periksaLab.idDetailCheckup" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -59,14 +59,14 @@
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="radiologi.idPasien" required="false"
+                                                     name="periksaLab.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="radiologi.nama"
+                                        <s:textfield id="nama_pasien" name="periksaLab.nama"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -78,7 +78,7 @@
                                                   name="getListRadiologi_lab"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#comboRadiologi.lisOfRadiologi" id="lab"
-                                                  name="radiologi.idLab" listKey="idLab"
+                                                  name="periksaLab.idLab" listKey="idLab"
                                                   listValue="namaLab"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2" theme="simple"/>
@@ -88,7 +88,7 @@
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="headerDetailCheckup.statusPeriksa"
+                                                  id="status" name="periksaLab.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                     </div>
@@ -100,7 +100,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="radiologi.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="periksaLab.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="radiologi.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="periksaLab.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="radiologiForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
@@ -162,40 +162,26 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
-                                <td>Nama</td>
-                                <td>Jenis Rawat</td>
+                                <td>No Pelayanan</td>
+                                <td>Nama Pasien</td>
                                 <td>Pemeriksaan</td>
-                                <td>Process</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
-                                    <td><s:property value="noCheckup"/></td>
-                                    <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
-                                    <td>
-                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="labName"/></td>
+                                    <td align="center">
+                                        <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
+                                            <s:param name="id"><s:property value="idPeriksaLab"/></s:param>
                                         </s:url>
-                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
-                                        </sj:a>
-
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{edit}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        <s:a href="%{add_periksa_radiologi}">
+                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
-
-                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a href="%{delete}">
-                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
-                                        </sj:a>
                                     </td>
                                 </tr>
                             </s:iterator>
