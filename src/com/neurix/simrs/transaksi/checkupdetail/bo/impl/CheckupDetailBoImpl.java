@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -166,8 +167,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if (!detailCheckupEntityList.isEmpty()){
             ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
             entity.setStatusPeriksa(bean.getStatusPeriksa());
-//            entity.setStatusBayar(bean.getStatusBayar());
-//            entity.setTotalBiaya(bean.getTotalBiaya());
             entity.setKeteranganSelesai(bean.getKeteranganSelesai());
             entity.setJenisLab(bean.getJenisLab());
             entity.setFlag(bean.getFlag());
@@ -180,6 +179,50 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             } catch (HibernateException e){
                 logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ",e);
                 throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup "+e.getMessage());
+            }
+        }
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setIdDetailCheckup(bean.getIdDetailCheckup());
+        rawatInap.setFlag("Y");
+        List<ItSimrsRawatInapEntity> rawatInapEntities = getListEntityRawatInap(rawatInap);
+
+        // if rawat inap
+        if (!rawatInapEntities.isEmpty() && rawatInapEntities.size() > 0) {
+            for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities) {
+                rawatInapEntity.setFlag("N");
+                rawatInapEntity.setAction("U");
+                rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
+                try {
+                    rawatInapDao.updateAndSave(rawatInapEntity);
+                } catch (HibernateException e) {
+                    logger.error("[CheckupDetailBoImpl.saveEdit] Error when Update data transaksi inap ", e);
+                    throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when Update data transaksi inap " + e.getMessage());
+                }
+
+                if (rawatInapEntity.getIdRuangan() != null && !"".equalsIgnoreCase(rawatInapEntity.getIdRuangan())) {
+                    Ruangan ruangan = new Ruangan();
+                    ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
+                    ruangan.setStatusRuangan("N");
+                    List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
+
+                    if (!ruanganEntities.isEmpty() && ruanganEntities.size() > 0) {
+                        for (MtSimrsRuanganEntity ruanganEntity : ruanganEntities) {
+                            ruanganEntity.setStatusRuangan("Y");
+                            ruanganEntity.setAction("U");
+                            ruanganEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                            ruanganEntity.setLastUpdateWho(CommonUtil.userLogin());
+
+                            try {
+                                ruanganDao.updateAndSave(ruanganEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[CheckupDetailBoImpl.saveEdit] Error when Update status master ruangan ", e);
+                                throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when Update status master ruangan " + e.getMessage());
+                            }
+                        }
+                    }
+                }
             }
         }
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
@@ -345,6 +388,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             // set ketersedian ruangan to tidak tersedia
             if (ruanganEntity != null){
                 ruanganEntity.setStatusRuangan("N");
+                ruanganEntity.setAction("U");
+                ruanganEntity.setLastUpdate(bean.getCreatedDate());
+                ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
                 try {
                     ruanganDao.updateAndSave(ruanganEntity);
                 } catch (HibernateException e){
@@ -357,6 +403,75 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         logger.info("[CheckupDetailBoImpl.saveRawatInap] End <<<<<<<<");
     }
 
+    @Override
+    public void updateRuanganInap(String idRuangan, String idDetailCheckup) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.updateRuanganInap] Start >>>>>>>>");
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setIdDetailCheckup(idDetailCheckup);
+        rawatInap.setFlag("Y");
+        List<ItSimrsRawatInapEntity> rawatInapEntities = getListEntityRawatInap(rawatInap);
+
+        String noCheckup = "";
+        if (!rawatInapEntities.isEmpty() && rawatInapEntities.size() > 0)
+        {
+            for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities)
+            {
+                // get noCheckup
+                noCheckup = rawatInapEntity.getNoCheckup();
+
+                rawatInapEntity.setFlag("N");
+                rawatInapEntity.setAction("U");
+                rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
+                try {
+                    rawatInapDao.updateAndSave(rawatInapEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error when Update data transaksi inap ",e);
+                    throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error when Update data transaksi inap "+e.getMessage());
+                }
+
+                if (rawatInapEntity.getIdRuangan() != null && !"".equalsIgnoreCase(rawatInapEntity.getIdRuangan()))
+                {
+                    Ruangan ruangan = new Ruangan();
+                    ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
+                    ruangan.setStatusRuangan("N");
+                    List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
+
+                    if (!ruanganEntities.isEmpty() && ruanganEntities.size() > 0)
+                    {
+                        for (MtSimrsRuanganEntity ruanganEntity : ruanganEntities)
+                        {
+                            ruanganEntity.setStatusRuangan("Y");
+                            ruanganEntity.setAction("U");
+                            ruanganEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                            ruanganEntity.setLastUpdateWho(CommonUtil.userLogin());
+
+                            try {
+                                ruanganDao.updateAndSave(ruanganEntity);
+                            } catch (HibernateException e){
+                                logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error when Update status master ruangan ",e);
+                                throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error when Update status master ruangan "+e.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idRuangan) && noCheckup != null && !"".equalsIgnoreCase(noCheckup))
+            {
+                // save new data to table rawat inap
+                RawatInap rawatInapNew = new RawatInap();
+                rawatInapNew.setIdDetailCheckup(idDetailCheckup);
+                rawatInapNew.setIdRuangan(idRuangan);
+                rawatInapNew.setNoCheckup(idDetailCheckup);
+                rawatInapNew.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                rawatInapNew.setCreatedWho(CommonUtil.userLogin());
+                saveRawatInap(rawatInapNew);
+            }
+        }
+        logger.info("[CheckupDetailBoImpl.updateRuanganInap] End <<<<<<<<");
+    }
 
     private String getNextDetailCheckupId(){
         String id = "";

@@ -23,6 +23,8 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -581,6 +583,50 @@ public class CheckupDetailAction extends BaseMasterAction {
         listOfKeterangan.addAll(keteranganKeluarList);
         logger.info("[CheckupDetailAction.getListComboKeteranganKeluar] end process <<<");
         return SUCCESS;
+    }
+
+    public String saveUpdateRuangan(String idRuangan, String idDetailCheckup){
+        logger.info("[CheckupAction.saveUpdateRuangan] start process >>>");
+
+        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup))
+        {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+            try {
+                checkupDetailBo.updateRuanganInap(idRuangan, idDetailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveUpdateRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
+                return "ERROR, "+e.getMessage();
+            }
+        } else {
+            return "ERROR, idRuangan OR idDetailCheckup Is NULL";
+        }
+
+        logger.info("[CheckupAction.saveUpdateRuangan] end process >>>");
+        return "SUCCESS";
+    }
+
+    public List<RawatInap> getListRuangInapByIdDetailCheckup(String idDetailCheckup){
+        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] start process >>>");
+
+        List<RawatInap> rawatInaps = new ArrayList<>();
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        try {
+            rawatInaps = rawatInapBo.getSearchRawatInap(rawatInap);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListRuangInapByIdDetailCheckup] Error when get data ruangan.", e);
+            addActionError("Error Found problem when get  Error when get data ruangan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] end process >>>");
+        return rawatInaps;
     }
 
 
