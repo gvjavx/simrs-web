@@ -114,6 +114,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "b.status_periksa,\n" +
                     "c.keterangan,\n" +
                     "b.keterangan_selesai,\n" +
+                    "d.id_rawat_inap,\n" +
                     "d.id_ruangan,\n" +
                     "e.no_ruangan,\n" +
                     "e.nama_ruangan,\n" +
@@ -216,6 +217,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setStatusPeriksa(obj[7].toString());
                     rawatInap.setStatusPeriksaName(obj[8].toString());
                     rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                    rawatInap.setIdRawatInap(obj[10].toString());
+                    rawatInap.setIdRuangan(obj[11].toString());
+                    rawatInap.setNoRuangan(obj[12].toString());
+                    rawatInap.setNamaRangan(obj[13].toString());
+                    rawatInap.setNamaRangan(obj[14].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -236,7 +242,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                             }
                         }
                     }
-
                     rawatInap.setAlamat(jalan);
                     rawatInapList.add(rawatInap);
                 }

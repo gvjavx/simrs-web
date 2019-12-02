@@ -74,16 +74,17 @@
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
-                                            <table>
-                                                <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
-                                                <s:label name="periksaLab.noCheckup"></s:label></table>
+                                            <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
+                                            <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
+                                            <s:hidden id="no_detail_checkup" name="periksaLab.idDetailCheckup"></s:hidden>
+                                            <s:hidden id="id_palayanan" name="periksaLab.idPelayanan"></s:hidden>
+                                            <table><s:label name="periksaLab.noCheckup"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><b>No Checkup Detail</b></td>
                                         <td>
-                                            <table><s:label id="no_detail_checkup"
-                                                            name="periksaLab.idDetailCheckup"></s:label></table>
+                                            <table><s:label name="periksaLab.idDetailCheckup"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -95,15 +96,13 @@
                                     <tr>
                                         <td><b>Nama</b></td>
                                         <td>
-                                            <table><s:label id="nama"
-                                                            name="periksaLab.namaPasien"></s:label></table>
+                                            <table><s:label name="periksaLab.namaPasien"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><b>Jenis Kelamin</b></td>
                                         <td>
-                                            <table><s:label id="jenis_kelamin"
-                                                            name="periksaLab.jenisKelamin"></s:label></table>
+                                            <table><s:label name="periksaLab.jenisKelamin"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -128,13 +127,7 @@
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
-                                            <table>
-                                                <s:hidden id="no_checkup"
-                                                          name="periksaLab.noCheckup"></s:hidden>
-                                                <s:hidden id="id_palayanan"
-                                                          name="periksaLab.idPelayanan"></s:hidden>
-                                                <s:label id="nama_pelayanan"
-                                                         name="periksaLab.namaPelayanan"></s:label></table>
+                                            <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -190,66 +183,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="box-header with-border" id="pos_tin">
-                    </div>
-
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Tindakan
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>Tindakan</td>
-                                <td>Dokter</td>
-                                <td>Perawat</td>
-                                <td align="right">Tarif</td>
-                                <td align="center">Qty</td>
-                                <td align="right">Total</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_tindakan">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="box-header with-border" id="pos_nosa">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Diagnosa
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Diagnosa</td>
-                                <td>Keterangan</td>
-                                <td>Jenis Diagnosa</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_diagnosa">
-
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Parameter Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Parameter
+                        <button class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px"><i class="fa fa-plus"></i> Tambah Parameter
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -413,142 +353,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-tindakan">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Tambah Tindakan</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan dan jumlah harus lebih dari 0
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
-                        <div class="col-md-7">
-                            <s:action id="initComboKategoriTindakan" namespace="/checkupdetail"
-                                      name="getListComboKategoriTindakan_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="$(this).css('border',''); listSelectTindakan(this);"
-                                      list="#initComboKategoriTindakan.listOfKategoriTindakan"
-                                      id="tin_id_ketgori_tindakan"
-                                      listKey="idKategoriTindakan"
-                                      listValue="kategoriTindakan"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="tin_id_tindakan"
-                                    onchange="$(this).css('border','')">
-                                <option value=''>[Select One]</option>
-                            </select>
-                        </div>
-                    </div>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<select class="form-control" style="margin-top: 7px" id="tin_id_dokter"--%>
-                                    <%--onchange="$(this).css('border','')">--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="tin_id_perawat"
-                                    onchange="$(this).css('border','')">
-                                <option value="">[select one]</option>
-                                <option value="1">Angel</option>
-                                <option value="2">Anya</option>
-                                <option value="3">Ayu</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
-                        <div class="col-md-7">
-                            <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty"
-                                   oninput="$(this).css('border','')" onchange="$(this).css('border','')" value="1">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" onclick="saveTindakan()" id="save_tindakan"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">
-                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-diagnosa">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-stethoscope"></i> Tambah Diagnosa</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_diagnosa">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3">Diagnosa</label>
-                        <div class="col-md-7">
-                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                      name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
-                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                      listValue="descOfDiagnosa"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3">Jenis Diagnosa</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="nosa_jenis_diagnosa"
-                                    onchange="$(this).css('border','')">
-                                <option value="">[select one]</option>
-                                <option value="0">Diagnosa Awal</option>
-                                <option value="1">Diagnosa Akhir</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" onclick="saveDiagnosa()" id="save_diagnosa"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
-                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="modal fade" id="modal-lab">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
@@ -608,14 +412,12 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idDetailCheckup = $('#no_detail_checkup').text();
+    var idDetailCheckup = $('#no_detail_checkup').val();
     var idPoli          = $('#id_palayanan').val();
     var idPeriksaLab    = $('#id_periksa_lab').val();
 
     $(document).ready(function () {
         $('#periksa_lab').addClass('active');
-        listTindakan();
-        listDiagnosa();
         listParameter();
     });
 
@@ -766,243 +568,12 @@
     function showModal(select) {
 
         if (select == 1) {
-            $('#tin_id_ketgori_tindakan').val('');
-            $('#tin_id_tindakan').val('');
-            $('#tin_id_perawat').val('');
-            $('#save_tindakan').show();
-            $('#load_tindakan, #warning_tindakan').hide();
-            $('#tin_id_tindakan, #tin_id_perawat, #tin_id_ketgori_tindakan').css('border', '');
-            $('#modal-tindakan').modal('show');
-        } else if (select == 2) {
-            $('#nosa_id_diagnosa').val('');
-            $('#nosa_jenis_diagnosa').val('');
-            $('#save_diagnosa').show();
-            $('#load_diagnosa, #warning_diagnosa').hide();
-            $('#nosa_id_diagnosa, #nosa_jenis_diagnosa').css('border', '');
-            $('#modal-diagnosa').modal('show');
-        } else if (select == 3) {
             $('#lab_kategori, #lab_lab').val('');
             $('#save_lab').show();
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
             $('#modal-lab').modal('show');
         }
-    }
-
-    function formatRupiah(angka) {
-        var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-        ribuan = ribuan.join('.').split('').reverse().join('');
-        return ribuan;
-    }
-    function listDokterKeterangan(idPelayanan) {
-        var idx     = idPelayanan.selectedIndex;
-        var idPoli  = idPelayanan.options[idx].value;
-        var option  = "";
-        CheckupAction.listOfDokter(idPoli, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
-        $('#list_dokter').html(option);
-    }
-
-    function saveTindakan() {
-
-        var idKategori  = $('#tin_id_ketgori_tindakan').val();
-        var idTindakan  = $('#tin_id_tindakan').val();
-        var idDokter    = $('#tin_id_dokter').val();
-        var idPerawat   = $('#tin_id_perawat').val();
-        var qty         = $('#tin_qty').val();
-
-        if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
-            $('#save_tindakan').hide();
-            $('#load_tindakan').show();
-            dwr.engine.setAsync(true);
-            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listTindakan();
-                        $('#modal-tindakan').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(1);
-                    } else {
-                        $('#eror_dialog').dialog('open');
-                        $('#save_tindakan').show();
-                        $('#load_tindakan').hide();
-                    }
-                }
-            });
-        } else {
-            $('#warning_tindakan').show().fadeOut(5000);
-
-            if (idKategori == '') {
-                $('#tin_id_ketgori_tindakan').css('border', 'red solid 1px');
-            }
-            if (idTindakan == '') {
-                $('#tin_id_tindakan').css('border', 'red solid 1px');
-            }
-            if (idDokter == '') {
-                $('#tin_id_dokter').css('border', 'red solid 1px');
-            }
-            if (idPerawat == '') {
-                $('#tin_id_perawat').css('border', 'red solid 1px');
-            }
-            if (qty <= 0 || qty == '') {
-                $('#tin_qty').css('border', 'red solid 1px');
-            }
-        }
-    }
-
-    function listDokterTindakan() {
-
-        var idPelayanan = $("#id_pelayanan").val();
-
-        var option = "";
-        CheckupAction.listOfDokter(idPelayanan, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
-        $('#dokter_tindakan').html(option);
-    }
-
-    function listTindakan() {
-
-        var table = "";
-        var data = [];
-        var tarif = "";
-        var tarifTotal = "";
-        var trfTotal = 0;
-        var qtyTotal = 0;
-        var trfTtl = 0;
-
-        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    if (item.tarif != null) {
-                        tarif = formatRupiah(item.tarif);
-                        trfTotal += item.tarif;
-                    }
-                    if (item.tarifTotal != null) {
-                        tarifTotal = formatRupiah(item.tarifTotal);
-                        trfTtl += item.tarifTotal;
-                    }
-                    if (item.qty != null) {
-                        qtyTotal += item.qty;
-                    }
-
-                    table += "<tr>" +
-                            "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.namaTindakan + "</td>" +
-                            "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarif+",-" + "</td>" +
-                            "<td align='center'>" + item.qty + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarifTotal+",-" + "</td>" +
-                            "<td align='center'>" + '<img border="0" onclick="editTindakan(\''+item.idTindakanRawat+'\',\''+item.idTindakan+'\',\''+item.idKategoriTindakan+'\',\''+item.qty+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
-                            "</tr>";
-
-                });
-                table = table + "<tr>" +
-                        "<td colspan='6'>Total</td>" +
-//                                "<td align='right'>" + "Rp. " + formatRupiah(trfTotal) + "</td>"+
-//                                "<td align='center'>"+ qtyTotal +"</td>"+
-                        "<td align='right'>" + "Rp. " + formatRupiah(trfTtl)+",-" + "</td>" +
-                        "<td></td>" +
-                        "</tr>";
-            }
-        });
-
-        $('#body_tindakan').html(table);
-
-    }
-
-    function saveDiagnosa() {
-        var idDiagnosa = $('#nosa_id_diagnosa').val();
-        var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
-
-        if (idDetailCheckup != '' && idDiagnosa != '' && jenisDiagnosa != '') {
-            $('#save_diagnosa').hide();
-            $('#load_diagnosa').show();
-            dwr.engine.setAsync(true);
-            DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiagnosa, jenisDiagnosa, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listDiagnosa();
-                        $('#modal-diagnosa').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(2);
-                    } else {
-
-                    }
-                }
-            })
-        } else {
-            $('#warning_diagnosa').show().fadeOut(5000);
-            if (idDiagnosa == '') {
-                $('#nosa_id_diagnosa').css('border', 'red solid 1px');
-            }
-            if (jenisDiagnosa == '') {
-                $('#nosa_jenis_diagnosa').css('border', 'red solid 1px');
-            }
-        }
-    }
-
-    function listDiagnosa() {
-
-        var table = "";
-        var data = [];
-        var id = "";
-        var ket = "";
-        var jen = "";
-
-        DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
-            data = response;
-            if (data != null) {
-                $.each(data, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    if (item.idDiagnosa != null) {
-                        id = item.idDiagnosa;
-                    }
-                    if (item.keteranganDiagnosa != null) {
-                        ket = item.keteranganDiagnosa;
-                    }
-                    if (item.jenisDiagnosa != null) {
-                        if (item.jenisDiagnosa == 0) {
-                            jen = "Diagnosa Awal";
-                        } else {
-                            jen = "Diagnosa Akhir";
-                        }
-                    }
-                    table += "<tr>" +
-                            "<td>" + dateFormat + "</td>" +
-                            "<td>" + id + "</td>" +
-                            "<td>" + ket + "</td>" +
-                            "<td>" + jen + "</td>" +
-                            "<td align='center'>" + '<img border="0" onclick="editDiagnosa(\''+item.idDiagnosaRawat+'\',\''+item.idDiagnosa+'\',\''+item.jenisDiagnosa+'\')" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">' + "</td>" +
-                            "</tr>"
-                });
-            }
-        });
-
-        $('#body_diagnosa').html(table);
     }
 
     function listSelectLab(select){
@@ -1063,7 +634,7 @@
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
-//                        listDiagnosa();
+                        listParameter();
                         $('#modal-lab').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(3);
@@ -1168,31 +739,6 @@
 //                $('#lab_lab').css('border', 'red solid 1px');
 //            }
         }
-    }
-
-
-    function editTindakan(id, idTindakan, idKategori){
-        console.log(idTindakan);
-        var option = "";
-        $('#tin_id_ketgori_tindakan').val('01');
-        CheckupDetailAction.getListComboTindakan('01', function (response) {
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
-                });
-            } else {
-                option = option;
-            }
-        });
-        $('#tin_id_tindakan').html(option);
-        $('#tin_id_tindakan').val('01');
-        $('#modal-tindakan').modal('show');
-    }
-
-    function editDiagnosa(id, idDiagnosa, jenis){
-        $('#nosa_id_diagnosa').val(idDiagnosa);
-        $('#nosa_jenis_diagnosa').val(jenis);
-        $('#modal-diagnosa').modal('show');
     }
 
 </script>

@@ -16,6 +16,24 @@ public class LabAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(LabAction.class);
     private LabBo labBoProxy;
     private Lab lab;
+    private List<Lab> listOfLab = new ArrayList<>();
+    private List<Lab> lisOfRadiologi = new ArrayList<>();
+
+    public List<Lab> getLisOfRadiologi() {
+        return lisOfRadiologi;
+    }
+
+    public void setLisOfRadiologi(List<Lab> lisOfRadiologi) {
+        this.lisOfRadiologi = lisOfRadiologi;
+    }
+
+    public List<Lab> getListOfLab() {
+        return listOfLab;
+    }
+
+    public void setListOfLab(List<Lab> listOfLab) {
+        this.listOfLab = listOfLab;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -105,6 +123,45 @@ public class LabAction extends BaseMasterAction {
 
         logger.info("[LabAction.listLab] end process >>>");
         return labList;
+
+    }
+
+    public String getListLab(){
+
+        logger.info("[LabAction.getListLab] start process >>>");
+
+        List<Lab> labList = new ArrayList<>();
+        Lab lab = new Lab();
+        lab.setIdKategoriLab("02");
+        try {
+            labList = labBoProxy.getByCriteria(lab);
+        }catch (GeneralBOException e){
+            logger.error("[LabAction.getListLab] Error when get lab ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+
+        listOfLab.addAll(labList);
+        logger.info("[LabAction.getListLab] end process <<<");
+        return SUCCESS;
+
+    }
+
+    public String getListRadiologi(){
+
+        logger.info("[LabAction.getListRadiologi] start process >>>");
+
+        List<Lab> labList = new ArrayList<>();
+        Lab lab = new Lab();
+        lab.setIdKategoriLab("01");
+
+        try {
+            labList = labBoProxy.getByCriteria(lab);
+        }catch (GeneralBOException e){
+            logger.error("[LabAction.getListRadiologi] Error when get lab radiologi," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+
+        lisOfRadiologi.addAll(labList);
+        logger.info("[LabAction.getListRadiologi] end process <<<");
+        return SUCCESS;
 
     }
 

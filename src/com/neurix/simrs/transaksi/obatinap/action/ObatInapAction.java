@@ -82,7 +82,7 @@ public class ObatInapAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveObatInap(String idDetailCheckup,String idObat, BigInteger qty){
+    public String saveObatInap(String idDetailCheckup, String idObat, BigInteger qty){
         logger.info("[ObatInapAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -158,5 +158,56 @@ public class ObatInapAction extends BaseMasterAction {
         }else{
             return null;
         }
+    }
+
+    public String editObatInap(String idObatInap, String idDetailCheckup, String idObat, BigInteger qty){
+        logger.info("[ObatInapAction.editObatInap] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            List<Obat> obatList = new ArrayList<>();
+            Obat obat = new Obat();
+            obat.setIdObat(idObat);
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+            try {
+                obatList = obatBo.getByCriteria(obat);
+            }catch (GeneralBOException e){
+                logger.error("[ObatInapAction.saveObatInap] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+            Obat obatResult = new Obat();
+            if (!obatList.isEmpty()){
+                obatResult = obatList.get(0);
+            }
+
+            ObatInap obatInap = new ObatInap();
+            obatInap.setIdDetailCheckup(idDetailCheckup);
+            obatInap.setIdObat(idObat);
+            obatInap.setIdObatInap(idObatInap);
+            obatInap.setNamaObat(obatResult.getNamaObat());
+            obatInap.setQty(qty);
+            obatInap.setHarga(obatResult.getHarga());
+            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
+            obatInap.setLastUpdate(updateTime);
+            obatInap.setLastUpdateWho(userLogin);
+            obatInap.setAction("U");
+
+            ObatInapBo obatInapBo = (ObatInapBo) ctx.getBean("obatInapBoProxy");
+            obatInapBo.saveEdit(obatInap);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatInapAction.editObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[ObatInapAction.saveObatInap] end process >>>");
+        return SUCCESS;
     }
 }

@@ -75,11 +75,11 @@
 
             <result name="search">/pages/com/neurix/simrs/transaksi/periksalab/searchPeriksaLab.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/transaksi/periksalab/addPeriksaLab.jsp</result>
-            <!--<result name="init_add">/pages/com/neurix/simrs/transaksi/checkup/addPasien.jsp</result>-->
-            <!--<result name="init_edit">/pages/com/neurix/simrs/transaksi/checkup/editPasien.jsp</result>-->
+            <!--<result name="init_add">/pages/com/neurix/simrs/transaksi/checkup/addRawatPasien.jsp</result>-->
+            <!--<result name="init_edit">/pages/com/neurix/simrs/transaksi/checkup/editRawatPasien.jsp</result>-->
             <!--<result name="init_view">/pages/com/neurix/simrs/transaksi/checkup/viewPasien.jsp</result>-->
             <!--<result name="init_delete">/pages/com/neurix/simrs/transaksi/checkup/deletePasien.jsp</result>-->
-            <!--<result name="success_add">/pages/com/neurix/simrs/transaksi/checkup/addPasien.jsp</result>-->
+            <!--<result name="success_add">/pages/com/neurix/simrs/transaksi/checkup/addRawatPasien.jsp</result>-->
 
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->

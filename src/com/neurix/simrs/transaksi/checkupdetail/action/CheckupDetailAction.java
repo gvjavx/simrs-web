@@ -540,12 +540,14 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Ruangan> listRuangan(String idkelas){
+    public List<Ruangan> listRuangan(String idkelas, boolean flag){
 
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<Ruangan> ruanganList = new ArrayList<>();
         Ruangan ruangan = new Ruangan();
-        ruangan.setStatusRuangan("Y");
+        if (flag){
+            ruangan.setStatusRuangan("Y");
+        }
         ruangan.setIdKelasRuangan(idkelas);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

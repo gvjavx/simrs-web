@@ -8,4 +8,5 @@ import java.util.List;
 public interface ObatInapBo {
     public List<ObatInap> getByCriteria(ObatInap bean) throws GeneralBOException;
     public void saveAdd(ObatInap bean)throws GeneralBOException;
+    public void saveEdit(ObatInap bean)throws GeneralBOException;
 }

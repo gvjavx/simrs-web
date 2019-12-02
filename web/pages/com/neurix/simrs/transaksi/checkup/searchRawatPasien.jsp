@@ -93,7 +93,7 @@
                                                   cssStyle="margin-top: 7px"
                                                   id="status" name="headerCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -202,14 +202,8 @@
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
                                     <td>
-                                            <%--<s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<sj:a onClickTopics="showDialogUser" href="%{detail}">--%>
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/icon_lup.ico"/>"
                                              style="cursor: pointer" onclick="detail_pasien('<s:property value="noCheckup"/>')">
-                                            <%--</sj:a>--%>
-
                                         <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
@@ -217,15 +211,6 @@
                                             <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>"
                                                  style="cursor: pointer">
                                         </s:a>
-
-                                        <s:url var="delete" namespace="/checkup" action="delete_checkup"
-                                               escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a href="%{delete}">
-                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>"
-                                                 style="cursor: pointer; height: 25px; width: 25px">
-                                        </sj:a>
                                     </td>
                                 </tr>
                             </s:iterator>

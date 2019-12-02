@@ -12,10 +12,9 @@
     </style>
     <script type='text/javascript'>
 
-        function resetField(){
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa').val('');
-        }
-
+        $( document ).ready(function() {
+            $('#periksa_radiologi').addClass('active');
+        });
 
     </script>
 </head>
@@ -47,39 +46,42 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" namespace="/checkup" action="search_checkup.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="radiologiForm" method="post" namespace="/radiologi" action="search_radiologi.action" theme="simple" cssClass="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_checkup_detail" cssStyle="margin-top: 7px"
+                                                     name="radiologi.idDetailCheckup" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="headerDetailCheckup.idPasien" required="false"
+                                                     name="radiologi.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="radiologi.nama"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Jenis Kelamin</label>
+                                    <label class="control-label col-sm-4">Radiologi</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'L':'Laki-laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
-                                                  id="jenis_kelamin" name="headerDetailCheckup.jenisKelamin"
+                                        <s:action id="comboRadiologi" namespace="/lab"
+                                                  name="getListRadiologi_lab"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#comboRadiologi.lisOfRadiologi" id="lab"
+                                                  name="radiologi.idLab" listKey="idLab"
+                                                  listValue="namaLab"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerDetailCheckup.IdPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -88,7 +90,7 @@
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="headerDetailCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -98,7 +100,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="radiologi.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -107,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="radiologi.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>

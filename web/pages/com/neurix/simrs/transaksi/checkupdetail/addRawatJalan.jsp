@@ -300,7 +300,7 @@
                                 <div class="form-group">
                                     <label style="margin-top: 7px">Keterangan</label>
                                     <select class="form-control select2" id="keterangan" style="width: 100%"
-                                            onchange="$(this).css('border',''); selectKeterangan(this)">
+                                            onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
                                         <option value=''>[Select One]</option>
                                         <option value='selesai'>Selesai</option>
                                         <option value='pindah'>Pindah Poli Lain</option>
@@ -316,7 +316,7 @@
                                                   list="#initComboPoli.listOfPelayanan" id="poli_lain"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan" cssStyle="width: 100%"
-                                                  onchange="$(this).css('border',''); listDokterKeterangan(this)"
+                                                  onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                     </div>
@@ -324,7 +324,7 @@
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Dokter</label>
                                         <select id="list_dokter" class="form-control select2" style="width: 100%"
-                                                onchange="$(this).css('border','')">
+                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
                                             <option value=''>[Select One]</option>
                                         </select>
 
@@ -339,7 +339,7 @@
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                                       name="headerCheckup.idPelayanan" listKey="keterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
-                                                      onchange="$(this).css('border','')"
+                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
                                         </div>
@@ -350,7 +350,7 @@
                                         <label style="margin-top: 7px">Kelas</label>
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                        <s:select onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listSelectRuangan(this)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
                                                   listKey="idKelasRuangan" cssStyle="width: 100%"
                                                   listValue="namaKelasRuangan"
@@ -360,7 +360,7 @@
                                     <div class="form-group">
                                         <label style="margin-top: 7px">Kamar</label>
                                         <select class="form-control select2" id="kamar_detail" style="width: 100%"
-                                                onchange="$(this).css('border','')">
+                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -375,6 +375,23 @@
                                             class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                         Sedang Menyimpan...
                                     </button>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">&nbsp;</label>
+                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_catatan"><i class="fa fa-times"></i>required</p>
+                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_catatan"><i class="fa fa-check"></i> correct</p>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">&nbsp;</label>
+                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-2"><i class="fa fa-times"></i> required</p>
+                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-2"><i class="fa fa-check"></i> correct</p>
+                                </div>
+                                <div class="form-group">
+                                    <label style="margin-top: 7px">&nbsp;</label>
+                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-3"><i class="fa fa-times"></i> required</p>
+                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-3"><i class="fa fa-check"></i> correct</p>
                                 </div>
                             </div>
                         </div>
@@ -700,9 +717,10 @@
     function listSelectRuangan(id){
         var idx     = id.selectedIndex;
         var idKelas = id.options[idx].value;
+        var flag    = true;
 
         var option = "";
-        CheckupDetailAction.listRuangan(idKelas, function (response) {
+        CheckupDetailAction.listRuangan(idKelas, flag,function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response != null) {
                 $.each(response, function (i, item) {
@@ -742,10 +760,10 @@
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     if (poli == '') {
-                        $('#poli_lain').css('border', 'red solid 1px');
+                        $('#war_kolom-2').show();
                     }
                     if (idDokter == '') {
-                        $('#list_dokter').css('border', 'red solid 1px');
+                        $('#war_kolom-3').show();
                     }
                 }
             }
@@ -768,10 +786,10 @@
                 else {
                     $('#warning_ket').show().fadeOut(5000);
                     if(kelas == ''){
-                        $('#kelas_kamar').css('border', 'red solid 1px');
+                        $('#war_kolom-2').show();
                     }
                     if(kamar == ''){
-                        $('#kamar_detail').css('border', 'red solid 1px');
+                        $('#war_kolom-3').show();
                     }
                 }
             }
@@ -790,12 +808,12 @@
                     });
                 }else{
                     $('#warning_ket').show().fadeOut(5000);
-                    $('#ket_selesai').css('border', 'red solid 1px');
+                    $('#war_kolom-2').show();
                 }
             }
         } else {
             $('#warning_ket').show().fadeOut(5000);
-            $('#keterangan').css('border', 'red solid 1px');
+            $('#war_catatan').show();
         }
     }
 

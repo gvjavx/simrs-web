@@ -1,8 +1,12 @@
 package com.neurix.simrs.transaksi.obatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
+import com.neurix.simrs.master.obat.dao.ObatDao;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatinap.bo.ObatInapBo;
 import com.neurix.simrs.transaksi.obatinap.dao.ObatInapDao;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
@@ -18,6 +22,16 @@ import java.util.Map;
 public class ObatInapBoImpl implements ObatInapBo {
     private static transient Logger logger = Logger.getLogger(ObatInapBoImpl.class);
     private ObatInapDao obatInapDao;
+    private JenisObatDao jenisObatDao;
+    private ObatDao obatDao;
+
+    public void setObatDao(ObatDao obatDao) {
+        this.obatDao = obatDao;
+    }
+
+    public void setJenisObatDao(JenisObatDao jenisObatDao) {
+        this.jenisObatDao = jenisObatDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -29,7 +43,7 @@ public class ObatInapBoImpl implements ObatInapBo {
 
     @Override
     public List<ObatInap> getByCriteria(ObatInap bean) throws GeneralBOException {
-        logger.info("[OrderGiziBoImpl.getByCriteria] Start >>>>>>>");
+        logger.info("[ObatInapBoImpl.getByCriteria] Start >>>>>>>");
 
         List<ObatInap> results = new ArrayList<>();
 
@@ -40,13 +54,13 @@ public class ObatInapBoImpl implements ObatInapBo {
             }
         }
 
-        logger.info("[OrderGiziBoImpl.getByCriteria] End <<<<<<");
+        logger.info("[ObatInapBoImpl.getByCriteria] End <<<<<<");
         return results;
     }
 
     @Override
     public void saveAdd(ObatInap bean) throws GeneralBOException {
-        logger.info("[OrderGiziBoImpl.saveAdd] Start >>>>>>>");
+        logger.info("[ObatInapBoImpl.saveAdd] Start >>>>>>>");
 
         if (bean != null){
             String id = getNextId();
@@ -69,32 +83,67 @@ public class ObatInapBoImpl implements ObatInapBo {
                 try {
                     obatInapDao.addAndSave(obatInapEntity);
                 } catch (HibernateException e) {
-                    logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
-                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert obat inap " + e.getMessage());
+                    logger.error("[ObatInapBoImpl.saveAdd] Error when insert obat inap ", e);
+                    throw new GeneralBOException("[ObatInapBoImpl.saveAdd] Error when insert obat inap " + e.getMessage());
                 }
             }
         }
         // update total biaya pada di detail checkup
         // updateDetailCheckup(bean);
-        logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
+        logger.info("[ObatInapBoImpl.saveAdd] End <<<<<<");
+    }
+
+    @Override
+    public void saveEdit(ObatInap bean) throws GeneralBOException {
+        logger.info("[ObatInapBoImpl.saveEdit] Start >>>>>>>");
+
+        if (bean != null){
+
+            ItSimrsObatInapEntity entity = null;
+
+            try {
+                entity = obatInapDao.getById("idObatInap", bean.getIdObatInap());
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.saveEdit] Error when getById rawat inap ",e);
+                throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit diagnosa rawat "+e.getMessage());
+            }
+            if(entity != null){
+                entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                entity.setIdObat(bean.getIdObat());
+                entity.setNamaObat(bean.getNamaObat());
+                entity.setHarga(bean.getHarga());
+                entity.setQty(bean.getQty());
+                entity.setTotalHarga(bean.getTotalHarga());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdate(bean.getLastUpdate());
+            }
+
+            try {
+                obatInapDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit obat inap ", e);
+                throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+            }
+        }
+        logger.info("[ObatInapBoImpl.saveEdit] End <<<<<<");
     }
 
     public String getNextId(){
-        logger.info("[OrderGiziBoImpl.getNextId] Start >>>>>>>");
+        logger.info("[ObatInapBoImpl.getNextId] Start >>>>>>>");
 
         String id = "";
         try {
             id = obatInapDao.getNextId();
         } catch (HibernateException e){
-            logger.error("[OrderGiziBoImpl.getNextId] Error when get next id obat inap");
+            logger.error("[ObatInapBoImpl.getNextId] Error when get next id obat inap");
         }
 
-        logger.info("[OrderGiziBoImpl.getNextId] End <<<<<<");
+        logger.info("[ObatInapBoImpl.getNextId] End <<<<<<");
         return id;
     }
 
-    protected List<ItSimrsObatInapEntity> getListEntity(ObatInap bean) throws GeneralBOException{
-        logger.info("[OrderGiziBoImpl.getListEntity] Start >>>>>>>");
+    public List<ItSimrsObatInapEntity> getListEntity(ObatInap bean) throws GeneralBOException{
+        logger.info("[ObatInapBoImpl.getListEntity] Start >>>>>>>");
         List<ItSimrsObatInapEntity> results = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
@@ -109,15 +158,15 @@ public class ObatInapBoImpl implements ObatInapBo {
         try {
             results = obatInapDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.error("[OrderGiziBoImpl.getListEntity] Erro when searching data obat inap ", e);
+            logger.error("[ObatInapBoImpl.getListEntity] Erro when searching data obat inap ", e);
         }
 
-        logger.info("[OrderGiziBoImpl.getListEntityT] End <<<<<<");
+        logger.info("[ObatInapBoImpl.getListEntityT] End <<<<<<");
         return results;
     }
 
     protected List<ObatInap> setToTemplate(List<ItSimrsObatInapEntity> entities) throws GeneralBOException{
-        logger.info("[OrderGiziBoImpl.setToTemplate] Start >>>>>>>");
+        logger.info("[ObatInapBoImpl.setToTemplate] Start >>>>>>>");
         List<ObatInap> results = new ArrayList<>();
 
         ObatInap obatInap;
@@ -138,10 +187,74 @@ public class ObatInapBoImpl implements ObatInapBo {
             obatInap.setLastUpdate(entity.getLastUpdate());
             obatInap.setLastUpdateWho(entity.getLastUpdateWho());
 
+            Obat obat = new Obat();
+            obat.setIdObat(entity.getIdObat());
+            List<ImSimrsObatEntity> obatEntityList = getListObatEntity(obat);
+
+            ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+            if (!obatEntityList.isEmpty()){
+                obatEntity = obatEntityList.get(0);
+            }
+
+            if (obatEntity != null){
+                JenisObat jenisObat = new JenisObat();
+                jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
+                List<ImSimrsJenisObatEntity> jenisObatEntityList = getListJenisObatEntity(jenisObat);
+
+                ImSimrsJenisObatEntity jenisObatEntity = new ImSimrsJenisObatEntity();
+                if (!jenisObatEntityList.isEmpty()){
+                    jenisObatEntity = jenisObatEntityList.get(0);
+                }
+                if (jenisObatEntity != null){
+                    obatInap.setIdJenisObat(jenisObatEntity.getIdJenisObat());
+                    obatInap.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
+                }
+
+            }
 
             results.add(obatInap);
         }
-        logger.info("[OrderGiziBoImpl.setToTemplate] End <<<<<<");
+        logger.info("[ObatInapBoImpl.setToTemplate] End <<<<<<");
+        return results;
+    }
+
+    private List<ImSimrsObatEntity> getListObatEntity(Obat bean) throws GeneralBOException{
+        logger.info("[ObatInapBoImpl.getListObatEntity] Start >>>>>>>");
+        List<ImSimrsObatEntity> results = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            hsCriteria.put("id_obat", bean.getIdObat());
+        }
+
+        hsCriteria.put("flag","Y");
+        try {
+            results = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatInapBoImpl.getListObatEntity] Erro when searching data obat ", e);
+        }
+
+        logger.info("[ObatInapBoImpl.getListObatEntity] End <<<<<<");
+        return results;
+    }
+
+    private List<ImSimrsJenisObatEntity> getListJenisObatEntity(JenisObat bean) throws GeneralBOException{
+        logger.info("[ObatInapBoImpl.getListJenisObatEntity] Start >>>>>>>");
+        List<ImSimrsJenisObatEntity> results = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+            hsCriteria.put("id_jenis_obat", bean.getIdJenisObat());
+        }
+
+        hsCriteria.put("flag","Y");
+        try {
+            results = jenisObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatInapBoImpl.getListJenisObatEntity] Erro when searching data jenis obat ", e);
+        }
+
+        logger.info("[ObatInapBoImpl.getListJenisObatEntity] End <<<<<<");
         return results;
     }
 }

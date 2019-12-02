@@ -73,9 +73,9 @@
                 class="com.neurix.simrs.master.labdetail.action.LabDetailAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <!--<result name="search">/pages/com/neurix/simrs/master/pasien/searchPasien.jsp</result>-->
-            <!--<result name="add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>-->
-            <!--<result name="edit">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>-->
+            <!--<result name="search">/pages/com/neurix/simrs/master/pasien/searchRawatPasien.jsp</result>-->
+            <!--<result name="add">/pages/com/neurix/simrs/master/pasien/addRawatPasien.jsp</result>-->
+            <!--<result name="edit">/pages/com/neurix/simrs/master/pasien/editRawatPasien.jsp</result>-->
             <!--<result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>-->
 
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->

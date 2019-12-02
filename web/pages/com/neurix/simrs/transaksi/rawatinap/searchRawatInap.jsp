@@ -226,15 +226,17 @@
 <script type='text/javascript'>
 
     function listSelectRuangan(id){
-        var idx = id.selectedIndex;
+        var idx     = id.selectedIndex;
         var idKelas = id.options[idx].value;
-        var option = "";
+        var option  = "";
+        var flag    = false;
+
         $('#load_ruang').show();
         setTimeout(function () {
 
         },100);
         if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, { callback: function (response) {
+            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
                 option = "<option value=''>[Select One]</option>";
                 if (response != null) {
                     $.each(response, function (i, item) {

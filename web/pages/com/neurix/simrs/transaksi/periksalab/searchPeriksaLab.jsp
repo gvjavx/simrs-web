@@ -51,7 +51,7 @@
                                     <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idPasien" required="false"
+                                                     name="periksaLab.idDetailCheckup" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -74,12 +74,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Labotarium</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                        <s:action id="initLab" namespace="/lab"
+                                                  name="getListLab_lab"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
-                                                  name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
+                                                  list="#initLab.listOfLab" id="lab"
+                                                  name="periksaLab.idLab" listKey="idLab"
+                                                  listValue="namaLab"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>

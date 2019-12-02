@@ -11,7 +11,10 @@
 
 
     <bean id="obatInapBo" class="com.neurix.simrs.transaksi.obatinap.bo.impl.ObatInapBoImpl"
-          p:obatInapDao-ref="obatInapDao"/>
+          p:obatInapDao-ref="obatInapDao"
+          p:obatDao-ref="obatDao"
+          p:jenisObatDao-ref="jenisObatDao"
+    />
 
     <bean id="obatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="obatInapBo">

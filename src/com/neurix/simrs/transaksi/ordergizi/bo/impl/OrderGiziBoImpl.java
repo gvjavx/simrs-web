@@ -77,9 +77,44 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                 }
             }
         }
-        // update total biaya pada di detail checkup
-        // updateDetailCheckup(bean);
         logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
+    }
+
+    @Override
+    public void saveEdit(OrderGizi bean) throws GeneralBOException {
+        logger.info("[OrderGiziBoImpl.saveEdit] Start >>>>>>>");
+        if (bean != null){
+
+            ItSimrsOrderGiziEntity orderGiziEntity = null;
+            try {
+                orderGiziEntity = orderGiziDao.getById("idOrderGizi", bean.getIdOrderGizi());
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.saveEdit] Error when getById order gizi ",e);
+                throw new GeneralBOException("[TeamDokterBoImpl.savaaEdit] Error when save edit order gizi "+e.getMessage());
+            }
+
+            if (bean != null) {
+                orderGiziEntity.setIdRawatInap(bean.getIdRawatInap());
+                orderGiziEntity.setTglOrder(bean.getTglOrder());
+                orderGiziEntity.setDietPagi(bean.getDietPagi());
+                orderGiziEntity.setBentukMakanPagi(bean.getBentukMakanPagi());
+                orderGiziEntity.setDietSiang(bean.getDietSiang());
+                orderGiziEntity.setBentukMakanSiang(bean.getBentukMakanSiang());
+                orderGiziEntity.setDietMalam(bean.getDietMalam());
+                orderGiziEntity.setBentukMakanMalam(bean.getBentukMakanMalam());
+                orderGiziEntity.setAction(bean.getAction());
+                orderGiziEntity.setLastUpdate(bean.getLastUpdate());
+                orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    orderGiziDao.updateAndSave(orderGiziEntity);
+                } catch (HibernateException e) {
+                    logger.error("[OrderGiziBoImpl.saveEdit] Error when insert obat inap ", e);
+                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when edit order gizi " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[OrderGiziBoImpl.saveEdit] End <<<<<<");
     }
 
     public String getNextId(){

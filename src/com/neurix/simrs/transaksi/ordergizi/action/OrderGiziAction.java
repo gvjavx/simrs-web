@@ -81,24 +81,6 @@ public class OrderGiziAction extends BaseMasterAction {
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-//            List<Obat> obatList = new ArrayList<>();
-//            Obat obat = new Obat();
-//            obat.setIdObat(idObat);
-//
-//            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
-//
-//            try {
-//                obatList = obatBo.getByCriteria(obat);
-//            }catch (GeneralBOException e){
-//                logger.error("[OrderGiziAction.saveObatInap] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
-//            }
-//
-//            Obat obatResult = new Obat();
-//            if (!obatList.isEmpty()){
-//                obatResult = obatList.get(0);
-//            }
-
             OrderGizi orderGizi = new OrderGizi();
             orderGizi.setIdRawatInap(idRawatInap);
             orderGizi.setDietPagi(dietPagi);
@@ -152,6 +134,42 @@ public class OrderGiziAction extends BaseMasterAction {
         }else{
             return null;
         }
+    }
+
+    public String editOrderGizi(String idOrdeGizi, String idRawatInap,String dietPagi, String bentukPagi, String dietSiang, String bentukSiang, String dietMalam, String bentukMalam){
+        logger.info("[OrderGiziAction.editOrderGizi] start process >>>");
+        try {
+
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            OrderGizi orderGizi = new OrderGizi();
+            orderGizi.setIdOrderGizi(idOrdeGizi);
+            orderGizi.setIdRawatInap(idRawatInap);
+            orderGizi.setDietPagi(dietPagi);
+            orderGizi.setBentukMakanPagi(bentukPagi);
+            orderGizi.setDietSiang(dietSiang);
+            orderGizi.setBentukMakanSiang(bentukSiang);
+            orderGizi.setDietMalam(dietMalam);
+            orderGizi.setBentukMakanMalam(bentukMalam);
+            orderGizi.setLastUpdate(updateTime);
+            orderGizi.setLastUpdateWho(userLogin);
+            orderGizi.setAction("U");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+            orderGiziBo.saveEdit(orderGizi);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[OrderGiziAction.editOrderGizi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[OrderGiziAction.editOrderGizi] end process >>>");
+        return SUCCESS;
     }
 
 }
