@@ -381,6 +381,40 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         return null;
     }
 
+    @Override
+    public void saveDokterLab(PeriksaLab bean) throws GeneralBOException {
+
+        logger.info("[PeriksaLabBoImpl.saveDokterLab] start <<<<<<<<<");
+
+        if (bean != null){
+
+            ItSimrsPeriksaLabEntity entity = null;
+
+            try {
+                entity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
+            } catch (HibernateException e){
+                logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when getById periksa lab ",e);
+                throw new GeneralBOException("[PeriksaLabBoImpl.saveDokterLab] Error when save edit periksa lab "+e.getMessage());
+            }
+            if(entity != null){
+
+                entity.setIdDokter(bean.getIdDokter());
+                entity.setAction(bean.getAction());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+            }
+
+            try {
+                periksaLabDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when periksa lab ", e);
+                throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+            }
+        }
+
+        logger.info("[PeriksaLabBoImpl.saveDokterLab] End <<<<<<<<<");
+    }
+
     private List<ItSimrsPeriksaLabDetailEntity> getListEntityPerikasDetailLab(PeriksaLabDetail bean) throws GeneralBOException{
         logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] START >>>>>>>>> ");
         List<ItSimrsPeriksaLabDetailEntity> periksaLabDetailEntities = new ArrayList<>();

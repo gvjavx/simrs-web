@@ -321,11 +321,11 @@
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-    <a href="/simrs" class="logo" style="background-color: #3bb387 !important;">
+    <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>e-H</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>e-HEALTH</b></span>
+        <span class="logo-lg" style="margin-left: -40px"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/LOGO%20LAMA%20PTPN%20X.png"/>" style="cursor: pointer; height: 25px; width: 35px;"> <b>e-HEALTH</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -414,7 +414,7 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Muhammad Sodiq</span>
+                        <span class="hidden-xs"><s:text name="#session.user_name"></s:text></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -422,9 +422,10 @@
                             <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
 
                             <p>
-                                <span>Muhammad Sodiq</span>
-                                <small>PT. Nusantara Medika Utama</small>
-                                <span>&nbsp;</span>
+                                <span><s:text name="#session.user_name"></s:text></span>
+                                <small><s:text name="#session.user_position"></s:text></small>
+                                <small><s:text name="#session.user_branch"></s:text></small>
+                                <small><s:text name="#session.user_area"></s:text></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->

@@ -142,6 +142,20 @@ apply the skin class to the body tag so the changes take effect.
         margin: 18px 0;
     }
 
+    .card {
+        background: #fff;
+        border-radius: 2px;
+        display: inline-block;
+        height: 100px;
+        margin: 1rem;
+        position: relative;
+        width: 200px;
+    }
+
+    .card-4 {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    }
+
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>

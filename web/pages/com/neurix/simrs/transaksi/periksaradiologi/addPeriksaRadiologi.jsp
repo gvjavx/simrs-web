@@ -62,8 +62,7 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                <img border="0" src="<s:url value="/pages/images/ktp-tes.jpg"/>" style="cursor: pointer; margin-bottom: 20px; height: 100px; width: 200px;">
-                                <table class="table table-striped">
+                                <table class="table table-striped" style="margin-top: 20px">
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -98,11 +97,6 @@
                                             <table><s:label name="periksaLab.jenisKelamin"></s:label></table>
                                         </td>
                                     </tr>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Tempat, Tanggal Lahir</b></td>
                                         <td>
@@ -117,6 +111,13 @@
                                             </table>
                                         </td>
                                     </tr>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
+                                     style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
+                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -153,6 +154,12 @@
                                             <table><s:label name="periksaLab.desa"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Permeriksaan</b></td>
+                                        <td>
+                                            <table><label class="label label-success"><span id="pemeriksa"></span> </label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -173,6 +180,19 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
+
                             </div>
                         </div>
                     </div>
@@ -184,13 +204,15 @@
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_radiologi">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            Silahkan cek kembali data inputan!
+                            <p id="isi_eror"></p>
                         </div>
                         <div class="alert alert-success alert-dismissible" style="display: none" id="info_radiologi">
                             <h4><i class="icon fa fa-info"></i> Info!</h4>
                             Data Berhasil Disimpan!
                         </div>
-                        <div class="col-md-7">
+                        <div class="form-group">
+                        <div class="row">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label style="margin-bottom: -2px">Dokter Radiologi</label>
                                 <select class="form-control select2" id="id_dokter" style="width: 100%"
@@ -199,6 +221,10 @@
                                 </select>
                             </div>
                             <input type="hidden" id="id_radiologi">
+                            </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-7">
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kesimpulan Periksa</label>
                                <textarea class="form-control" rows="4" id="kesimpulan"></textarea>
@@ -220,7 +246,9 @@
                                         class="fa fa-arrow-left"></i> Back
                                 </a>
                             </div>
+                                </div>
                         </div>
+                            </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
@@ -242,8 +270,6 @@
         $('#periksa_radiologi').addClass('active');
         listSelectDokter();
         getIdRadiologi();
-        console.log('tes');
-        console.log(idPeriksaRadiologi);
     });
 
     function listSelectDokter() {
@@ -265,7 +291,6 @@
 
         var idDokter    = $('#id_dokter').val();
         var kesimpulan  = $('#kesimpulan').val();
-        console.log(idPeriksaRadiologi);
         if (idPeriksaRadiologi != '' && idDokter != '' && kesimpulan != '') {
             $('#save_ket').hide();
             $('#load_ket').show();
@@ -278,12 +303,17 @@
                         $('#save_ket').show();
                         $('#load_ket').hide();
                     } else {
+                        $('#warning_radiologi').show().fadeOut(5000);
+                        $('#isi_eror').text('Terjadi kesalahan!');
+                        $('#save_ket').show();
+                        $('#load_ket').hide();
 
                     }
                 }
             })
         } else {
             $('#warning_radiologi').show().fadeOut(5000);
+            $('#isi_eror').text('Silahkan cek kembali data inputan!');
             if (idDokter == '') {
 //                $('#lab_kategori').css('border', 'red solid 1px');
             }
@@ -300,6 +330,7 @@
         var id_periksa  = "";
         var id_dokter   = "";
         var kesimpulan  = "";
+        var periksa     = "";
 
         PeriksaRadiologiAction.getIdPemeriksaRadiologi(idPeriksaLab, function (response) {
             data = response;
@@ -315,14 +346,19 @@
                     if(item.kesimpulan != null){
                         kesimpulan = item.kesimpulan;
                     }
+                    if(item.pemeriksaan != null){
+                        periksa = item.pemeriksaan;
+                    }
 
                 });
             }
         });
+
         idPeriksaRadiologi = id_periksa;
         $('#id_radiologi').val(id_periksa);
         $('#id_dokter').val(id_dokter).trigger('change');
         $('#kesimpulan').val(kesimpulan);
+        $('#pemeriksa').html(periksa);
     }
     function editParameter(id){
         $('#save_par').show();

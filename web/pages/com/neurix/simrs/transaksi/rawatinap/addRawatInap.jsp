@@ -72,7 +72,7 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                <table class="table table-striped" style="margin-top: 11px">
+                                <table class="table table-striped" style="margin-top: 20px">
                                     <s:hidden id="no_checkup" name="rawatInap.noCheckup"/>
                                     <s:hidden id="id_palayanan" name="rawatInap.idPelayanan"/>
                                     <s:hidden id="no_detail_checkup" name="rawatInap.idDetailCheckup"/>
@@ -126,7 +126,7 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <img border="2" class="pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
+                                <img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
                                 style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
                                 <table class="table table-striped">
                                     <tr>

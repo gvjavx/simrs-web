@@ -134,6 +134,7 @@ public class MainMenuTag extends TagSupport {
                 photoUpload = userDetailsLogin.getPhotoUpload();
                 listOfMenuString = userDetailsLogin.getMenus();
 
+
                 //for payment-gateway
 //                customerId = userDetailsLogin.getCustomerId();
 //                customerName = userDetailsLogin.getCustomerName();
@@ -178,6 +179,11 @@ public class MainMenuTag extends TagSupport {
 //                    photoUserUrl =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY   + contextPath + CommonConstant.RESOURCE_PATH_USER_PHOTO + CommonConstant.RESOURCE_PATH_UNKNOWN_PHOTO;
                 }
 
+                session.setAttribute("user_name", userName);
+                session.setAttribute("user_area", areaName);
+                session.setAttribute("user_branch", branchName);
+                session.setAttribute("user_position", positionName);
+                session.setAttribute("user_photo", photoUserUrl);
             }
         }
         /*if(statusCaption.equals("") || statusCaption == null){

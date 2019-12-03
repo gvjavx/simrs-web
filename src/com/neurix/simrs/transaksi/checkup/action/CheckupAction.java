@@ -181,6 +181,7 @@ public class CheckupAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
 
+        String id = getId();
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -188,7 +189,6 @@ public class CheckupAction extends BaseMasterAction {
                 for (HeaderCheckup headerCheckup : listOfResult) {
                     if (id.equalsIgnoreCase(headerCheckup.getNoCheckup())) {
                         setHeaderCheckup(headerCheckup);
-                        detailCheckup.setNoCheckup(headerCheckup.getNoCheckup());
                         break;
                     }
                 }
