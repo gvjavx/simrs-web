@@ -192,23 +192,23 @@ public class MainMenuTag extends TagSupport {
                 "    <section class=\"sidebar\">\n" +
                 "\n" +
                 "      <!-- Sidebar user panel (optional) -->\n" +
-                "      <div class=\"user-panel\">\n" +
-                "        <div class=\"pull-left image\">\n" +
-                "          <a id='popoverData' rel=\"popover\" data-placement=\"bottom\" data-original-title='<b>"+userName+"</b>' data-trigger=\"hover\" " +
-                "data-content='<b>Branch : " + branchName +" <br/>Divisi : "+divisiName+"<br/> Position : "+positionName+" </b>' data-html='true' data-container='body' data-toogle='tooltip'"+
-                "href='/hris/biodata/Form_biodata.action'><img src=\"").append(photoUserUrl).append("\" class=\"img-circle\" alt=\"User Image\" width='50px'></a>\n" +
-                "        </div>\n" +
-                "        <div class=\"pull-left info\">\n" +
-                "          <p>").append(userName).append("</p>\n" +
-                "          <!-- Status -->\n" +
-                "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> "+ statusCaption +"</a>\n" +
-                "        </div>\n" +
-                "      </div>\n" +
+//                "      <div class=\"user-panel\">\n" +
+//                "        <div class=\"pull-left image\">\n" +
+//                "          <a id='popoverData' rel=\"popover\" data-placement=\"bottom\" data-original-title='<b>"+userName+"</b>' data-trigger=\"hover\" " +
+//                "data-content='<b>Branch : " + branchName +" <br/>Divisi : "+divisiName+"<br/> Position : "+positionName+" </b>' data-html='true' data-container='body' data-toogle='tooltip'"+
+//                "href='/hris/biodata/Form_biodata.action'><img src=\"").append(photoUserUrl).append("\" class=\"img-circle\" alt=\"User Image\" width='50px'></a>\n" +
+//                "        </div>\n" +
+//                "        <div class=\"pull-left info\">\n" +
+//                "          <p>").append(userName).append("</p>\n" +
+//                "          <!-- Status -->\n" +
+//                "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> "+ statusCaption +"</a>\n" +
+//                "        </div>\n" +
+//                "      </div>\n" +
                 "\n"
         );
 
-        addedScript.append("<ul class=\"sidebar-menu\">\n" +
-//                "        <li class=\"header\">HEADER</li>\n" +
+        addedScript.append("<ul class=\"sidebar-menu\" style=\"margin-top:10px\">\n" +
+//                "        <li class=\"header\">MAIN MENU</li>\n" +
                 "        <!-- Optionally, you can add icons to the links -->\n");
 
         //looping menu

@@ -69,8 +69,7 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                <img border="0" src="<s:url value="/pages/images/ktp-tes.jpg"/>" style="cursor: pointer; margin-bottom: 20px; height: 100px; width: 200px;">
-                                <table class="table table-striped">
+                                <table class="table table-striped" style="margin-top: 11px">
                                     <s:hidden id="no_checkup" name="headerDetailCheckup.noCheckup"></s:hidden>
                                     <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
@@ -105,11 +104,6 @@
                                             <table><s:label name="headerDetailCheckup.jenisKelamin"></s:label></table>
                                         </td>
                                     </tr>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Tempat, Tanggal Lahir</b></td>
                                         <td>
@@ -124,6 +118,13 @@
                                             </table>
                                         </td>
                                     </tr>
+                                </table>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <img border="2" class="pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
+                                     style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
+                                <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>

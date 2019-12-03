@@ -208,7 +208,7 @@
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_rawat_inap}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
                                     </td>
                                 </tr>

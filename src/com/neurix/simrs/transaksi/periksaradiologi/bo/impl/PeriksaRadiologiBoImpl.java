@@ -87,10 +87,10 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
         {
             hsCriteria.put("id_periksa_radiologi", bean.getIdPeriksaRadiologi());
         }
-        if (bean.getIdDokterRadiologi() != null && !"".equalsIgnoreCase(bean.getIdDokterRadiologi()))
-        {
-            hsCriteria.put("id_dokter_radiologi", bean.getIdDokterRadiologi());
-        }
+//        if (bean.getIdDokterRadiologi() != null && !"".equalsIgnoreCase(bean.getIdDokterRadiologi()))
+//        {
+//            hsCriteria.put("id_dokter_radiologi", bean.getIdDokterRadiologi());
+//        }
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup()))
         {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());

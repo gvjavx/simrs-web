@@ -123,7 +123,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "d.id_ruangan,\n" +
                     "e.no_ruangan,\n" +
                     "e.nama_ruangan,\n" +
-                    "f.nama_kelas_ruangan\n" +
+                    "f.nama_kelas_ruangan,\n" +
+                    "f.id_kelas_ruangan\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -232,6 +233,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setNoRuangan(obj[12].toString());
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
+                    rawatInap.setIdKelas(obj[15].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());

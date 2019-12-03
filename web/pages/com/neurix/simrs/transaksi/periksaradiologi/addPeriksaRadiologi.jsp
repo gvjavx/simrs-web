@@ -71,7 +71,6 @@
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
                                             <s:hidden id="no_detail_checkup" name="periksaLab.idDetailCheckup"></s:hidden>
                                             <s:hidden id="id_palayanan" name="periksaLab.idPelayanan"></s:hidden>
-                                            <s:hidden id="id_periksa_radiologi"></s:hidden>
                                             <table><s:label name="periksaLab.noCheckup"></s:label></table>
                                         </td>
                                     </tr>
@@ -183,6 +182,14 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_radiologi">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            Silahkan cek kembali data inputan!
+                        </div>
+                        <div class="alert alert-success alert-dismissible" style="display: none" id="info_radiologi">
+                            <h4><i class="icon fa fa-info"></i> Info!</h4>
+                            Data Berhasil Disimpan!
+                        </div>
                         <div class="col-md-7">
                             <div class="form-group">
                                 <label style="margin-bottom: -2px">Dokter Radiologi</label>
@@ -191,6 +198,7 @@
                                     <option value=''>[Select One]</option>
                                 </select>
                             </div>
+                            <input type="hidden" id="id_radiologi">
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kesimpulan Periksa</label>
                                <textarea class="form-control" rows="4" id="kesimpulan"></textarea>
@@ -225,14 +233,17 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idDetailCheckup = $('#no_detail_checkup').val();
-    var idPoli          = $('#id_palayanan').val();
-    var idPeriksaLab    = $('#id_periksa_lab').val();
+    var idDetailCheckup     = $('#no_detail_checkup').val();
+    var idPoli              = $('#id_palayanan').val();
+    var idPeriksaLab        = $('#id_periksa_lab').val();
+    var idPeriksaRadiologi  = "";
 
     $(document).ready(function () {
         $('#periksa_radiologi').addClass('active');
         listSelectDokter();
         getIdRadiologi();
+        console.log('tes');
+        console.log(idPeriksaRadiologi);
     });
 
     function listSelectDokter() {
@@ -254,15 +265,16 @@
 
         var idDokter    = $('#id_dokter').val();
         var kesimpulan  = $('#kesimpulan').val();
-
-        if (idPeriksaLab != '' && idDokter != '' && kesimpulan != '') {
+        console.log(idPeriksaRadiologi);
+        if (idPeriksaRadiologi != '' && idDokter != '' && kesimpulan != '') {
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            PeriksaRadiologiAction.saveRadiologi(idPeriksaLab, idDokter, kesimpulan, {
+            PeriksaRadiologiAction.saveRadiologi(idPeriksaRadiologi, idDokter, kesimpulan, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
+                        $('#info_radiologi').show().fadeOut(5000);
                         $('#save_ket').show();
                         $('#load_ket').hide();
                     } else {
@@ -271,7 +283,7 @@
                 }
             })
         } else {
-//            $('#warning_lab').show().fadeOut(5000);
+            $('#warning_radiologi').show().fadeOut(5000);
             if (idDokter == '') {
 //                $('#lab_kategori').css('border', 'red solid 1px');
             }
@@ -307,9 +319,9 @@
                 });
             }
         });
-
-        $('#id_periksa_radiologi').val(id_periksa);
-        $('#id_dokter').val().trigger('change');
+        idPeriksaRadiologi = id_periksa;
+        $('#id_radiologi').val(id_periksa);
+        $('#id_dokter').val(id_dokter).trigger('change');
         $('#kesimpulan').val(kesimpulan);
     }
     function editParameter(id){

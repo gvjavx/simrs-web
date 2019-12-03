@@ -363,6 +363,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.ordergizi.model.OrderGizi"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksaradiologi.model.PeriksaRadiologi"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.rawatinap.model.RawatInap"/>
 
   </allow>
 

@@ -188,7 +188,7 @@
                                 <td>Status Terakhir</td>
                                 <td>Ruangan</td>
                                 <td>No</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -201,15 +201,15 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
-                                    <td>
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/icon_lup.ico"/>"
-                                             style="cursor: pointer" onclick="detail_pasien('<s:property value="noCheckup"/>')">
+                                    <td align="center">
+                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"
+                                             style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">
                                         <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{edit}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>"
-                                                 style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"
+                                                 style="cursor: pointer; width: 25px; height: 25px">
                                         </s:a>
                                     </td>
                                 </tr>
@@ -350,12 +350,13 @@
         var noRuangan = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '30px');
+        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
+
 
         setTimeout(function () {
 
-            var url = '<s:url value="/pages/images/icon_lup.ico"/>';
-            $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
+            var url = '<s:url value="/pages/images/search_flat.png"/>';
+            $('#v_'+idCheckup).attr('src',url).css('width', '25px', 'height', '25px');
 
             CheckupAction.listDataPasien(idCheckup, function (response) {
                 dataPasien = response;
