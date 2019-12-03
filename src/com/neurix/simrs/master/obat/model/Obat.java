@@ -17,8 +17,26 @@ public class Obat extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigInteger qty;
+    private String branchId;
 
     private String jenisObat;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public BigInteger getQty() {
+        return qty;
+    }
+
+    public void setQty(BigInteger qty) {
+        this.qty = qty;
+    }
 
     public String getJenisObat() {
         return jenisObat;

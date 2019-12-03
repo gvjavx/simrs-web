@@ -1,38 +1,27 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.master.obatgejala.model;
 
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class ImSimrsObatEntity implements Serializable{
-
+/**
+ * Created by Toshiba on 03/12/2019.
+ */
+public class ObatGejala {
+    private String idObatGejala;
     private String idObat;
-    private String namaObat;
     private String idJenisObat;
-    private BigInteger harga;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private BigInteger qty;
-    private String branchId;
 
-    public BigInteger getQty() {
-        return qty;
+    public String getIdObatGejala() {
+        return idObatGejala;
     }
 
-    public void setQty(BigInteger qty) {
-        this.qty = qty;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setIdObatGejala(String idObatGejala) {
+        this.idObatGejala = idObatGejala;
     }
 
     public String getIdObat() {
@@ -43,28 +32,12 @@ public class ImSimrsObatEntity implements Serializable{
         this.idObat = idObat;
     }
 
-    public String getNamaObat() {
-        return namaObat;
-    }
-
-    public void setNamaObat(String namaObat) {
-        this.namaObat = namaObat;
-    }
-
     public String getIdJenisObat() {
         return idJenisObat;
     }
 
     public void setIdJenisObat(String idJenisObat) {
         this.idJenisObat = idJenisObat;
-    }
-
-    public BigInteger getHarga() {
-        return harga;
-    }
-
-    public void setHarga(BigInteger harga) {
-        this.harga = harga;
     }
 
     public String getFlag() {

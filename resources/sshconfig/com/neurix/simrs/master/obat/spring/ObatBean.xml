@@ -35,4 +35,7 @@
     <bean id="obatDao" class="com.neurix.simrs.master.obat.dao.ObatDao"
           p:sessionFactory-ref="sessionFactory" />
 
+    <bean id="obatGejalaDao" class="com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao"
+          p:sessionFactory-ref="sessionFactory" />
+
 </beans>

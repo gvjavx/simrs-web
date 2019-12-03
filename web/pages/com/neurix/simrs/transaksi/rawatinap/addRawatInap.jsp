@@ -1604,7 +1604,7 @@
             ObatAction.listObat(idJenis, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "'>" + item.namaObat + " - || stock : " +item.qty+  "</option>";
                     });
                 } else {
                     option = option;

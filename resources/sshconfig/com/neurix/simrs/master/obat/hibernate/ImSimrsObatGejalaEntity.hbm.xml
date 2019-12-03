@@ -4,28 +4,19 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.obat.model.ImSimrsObatEntity" dynamic-update="true"
-           table="im_simrs_obat" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity" dynamic-update="true"
+           table="im_simrs_obat_gejala" select-before-update="true" schema="public">
 
 
-        <id name="idObat">
-            <column name="id_obat" sql-type="varchar" length="10" not-null="true" />
+        <id name="idObatGejala">
+            <column name="id_obat_gejala" sql-type="varchar" length="30" not-null="true" />
         </id>
 
-        <property name="namaObat">
-            <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
+        <property name="idObat">
+            <column name="id_obat" sql-type="varchar" length="10" not-null="false"/>
         </property>
         <property name="idJenisObat">
             <column name="id_jenis_obat" sql-type="varchar" length="10" not-null="true" />
-        </property>
-        <property name="harga">
-            <column name="harga" sql-type="bigint" not-null="false"/>
-        </property>
-        <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="10" not-null="true" />
-        </property>
-        <property name="qty">
-            <column name="qty" sql-type="bigint" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
