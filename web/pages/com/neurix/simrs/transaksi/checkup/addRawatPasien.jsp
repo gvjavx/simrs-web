@@ -37,9 +37,9 @@
             var desa            = $('#desa11').val();
             var imgInp          = $('#imgInp').val();
 
-            if (noBpjs != '' && idPasien != '' && noKtp != '' && namaPasien != ''
+            if (idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
-                    && jalan != '' && suku != '' && profesi != '' && agama != ''
+                    && jalan != '' && profesi != '' && agama != ''
                     && poli != '' && dokter != '' && penjamin != ''
                     && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && imgInp != '') {
 
@@ -50,9 +50,9 @@
                 $("html, body").animate({ scrollTop: 0 }, 600);
                 $('#warning_pasien').show().fadeOut(10000);
 
-                if (noBpjs == '') {
-                    $('#no_bpjs').css('border','red solid 1px');
-                }
+//                if (noBpjs == '') {
+//                    $('#no_bpjs').css('border','red solid 1px');
+//                }
                 if (idPasien == '') {
                     $('#id_pasien').css('border','red solid 1px');
                 }
@@ -74,12 +74,12 @@
                 if (jalan == '') {
                     $('#jalan').css('border','red solid 1px');
                 }
-                if (suku == '') {
-                    $('#suku').css('border','red solid 1px');
-                }
-                if (profesi == '') {
-                    $('#profesi').css('border','red solid 1px');
-                }
+//                if (suku == '') {
+//                    $('#suku').css('border','red solid 1px');
+//                }
+//                if (profesi == '') {
+//                    $('#profesi').css('border','red solid 1px');
+//                }
                 if (agama == '') {
                     $('#agama').css('border','red solid 1px');
                 }
@@ -186,8 +186,14 @@
                                         <div class="form-group">
                                             <label class="col-md-4">No BPJS</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
-                                                             cssClass="form-control" onkeypress="$(this).css('border','')"/>
+                                                <div class="input-group date">
+                                                    <s:textfield id="no_bpjs" name="headerCheckup.noBpjs" cssClass="form-control"/>
+                                                    <div class="input-group-addon btn btn-success">
+                                                        <i class="fa fa-search" style="cursor: pointer"></i>
+                                                    </div>
+                                                </div>
+                                                <%--<s:textfield id="no_bpjs" name="headerCheckup.noBpjs"--%>
+                                                             <%--cssClass="form-control" onkeypress="$(this).css('border','')"/>--%>
                                             </div>
                                         </div>
                                         <div class="form-group">

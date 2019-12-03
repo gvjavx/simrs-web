@@ -428,5 +428,36 @@ public class PeriksaLabAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public String saveEditDokterLab(String idPeriksaLab, String idDokter){
+        logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
+
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            PeriksaLab periksaLab = new PeriksaLab();
+
+            periksaLab.setIdPeriksaLab(idPeriksaLab);
+            periksaLab.setIdDokter(idDokter);
+            periksaLab.setLastUpdate(updateTime);
+            periksaLab.setLastUpdateWho(userLogin);
+            periksaLab.setAction("U");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+            periksaLabBo.saveDokterLab(periksaLab);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        return SUCCESS;
+    }
+
 
 }

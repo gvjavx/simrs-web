@@ -123,7 +123,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_checkupdetail.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_radiologi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -180,7 +180,7 @@
                                             <s:param name="id"><s:property value="idPeriksaLab"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_periksa_radiologi}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
                                     </td>
                                 </tr>
