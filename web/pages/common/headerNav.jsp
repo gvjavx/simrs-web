@@ -4,7 +4,19 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
+
+    function loadDataLogin() {
+        dwr.engine.setAsync(false);
+        UserAction.getUserData(function(item){
+           $("#user_name").html(item.username);
+           $("#user_name_head").html(item.username);
+           $("#user_branch").html(item.branchName);
+           $("#user_area").html(item.areaName);
+        });
+    }
+
     function readNotif(id){
         var notifId = id;
         if(notifId != null){
@@ -197,6 +209,7 @@
         $("#count7").html(tmp_jml_panjang);
     }
     $(document).ready(function() {
+        loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
@@ -414,7 +427,7 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
-                        <span class="hidden-xs"><s:text name="#session.user_name"></s:text></span>
+                        <span class="hidden-xs" id="user_name_head"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -422,10 +435,9 @@
                             <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
 
                             <p>
-                                <span><s:text name="#session.user_name"></s:text></span>
-                                <small><s:text name="#session.user_position"></s:text></small>
-                                <small><s:text name="#session.user_branch"></s:text></small>
-                                <small><s:text name="#session.user_area"></s:text></small>
+                                <span id="user_name"></span>
+                                <small id="user_branch"></small>
+                                <small id="user_area"></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
@@ -434,7 +446,7 @@
                                 <%--<a href="#" class="btn btn-default btn-flat">Profile</a>--%>
                             <%--</div>--%>
                             <div onclick="logout()" style="cursor: pointer" class="pull-right">
-                                <a  class="btn btn-default"><i class="fa fa-sign-out"></i> Sign out</a>
+                                <a  class="btn btn-danger"><i class="fa fa-sign-out"></i> Sign out</a>
                             </div>
                         </li>
                     </ul>
