@@ -24,6 +24,35 @@ public class ObatInap extends BaseModel {
     private String idJenisObat;
     private String namaJenisObat;
 
+    private String cekQty;
+    private BigInteger qtyEdit;
+
+    private BigInteger stokMasterObat;
+
+    public BigInteger getStokMasterObat() {
+        return stokMasterObat;
+    }
+
+    public void setStokMasterObat(BigInteger stokMasterObat) {
+        this.stokMasterObat = stokMasterObat;
+    }
+
+    public BigInteger getQtyEdit() {
+        return qtyEdit;
+    }
+
+    public void setQtyEdit(BigInteger qtyEdit) {
+        this.qtyEdit = qtyEdit;
+    }
+
+    public String getCekQty() {
+        return cekQty;
+    }
+
+    public void setCekQty(String cekQty) {
+        this.cekQty = cekQty;
+    }
+
     public String getIdJenisObat() {
         return idJenisObat;
     }

@@ -81,6 +81,18 @@
             <column name="jenis_kunjungan" sql-type="varchar" length="10" not-null="false" />
         </property>
 
+        <property name="namaPenanggung">
+            <column name="nama_penanggung" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="hubunganKeluarga">
+            <column name="hubungan_keluarga" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="rujuk">
+            <column name="rujuk" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
 
     </class>
 </hibernate-mapping>

@@ -840,7 +840,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_obat">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="obat_error"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -849,7 +849,6 @@
                             <s:action id="initJenis" namespace="/jenisobat"
                                       name="getListJenisObat_jenisobat"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);"
                                       list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
                                       listKey="idJenisObat"
                                       listValue="namaJenisObat"
@@ -867,7 +866,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"
-                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}">
+                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
                                 <option value="">[select one]</option>
                             </select>
                         </div>
@@ -878,6 +877,12 @@
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control" cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
+                        </div>
+                </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -1134,8 +1139,9 @@
             $('#load_diet, #warning_diet, #war_pagi1, #war_pagi2, #war_siang1, #war_siang2, #war_malam1, #war_malam2').hide();
             $('#modal-diet').modal('show');
         } else if (select == 6) {
+            $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
             $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
-            $('#ob_jumlah').val('1');
+            $('#ob_qty').val('1');
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
             $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
             $('#modal-obat').modal('show');
@@ -1597,14 +1603,16 @@
     }
 
     function listSelectObat(select) {
-        var idx = select.selectedIndex;
+        var idx     = select.selectedIndex;
         var idJenis = select.options[idx].value;
-        var option = "<option value=''>[Select One]</option>";
+        var option  = "<option value=''>[Select One]</option>";
+        var stok    = "";
+
         if (idJenis != '') {
             ObatAction.listObat(idJenis, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "'>" + item.namaObat + " - || stock : " +item.qty+  "</option>";
+                        option += "<option value='" + item.idObat + "'>" + item.namaObat +  "</option>";
                     });
                 } else {
                     option = option;
@@ -1617,55 +1625,84 @@
         $('#ob_id_obat').html(option);
     }
 
+    function setStokObat(select){
+
+        var idx     = select.selectedIndex;
+        var idObat  = select.options[idx].value;
+        var stok    = "";
+
+        if (idObat != '') {
+            ObatAction.getStokObat(idObat, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        if(item.idObat == idObat){
+                            if(item.qty != null){
+                                stok = item.qty;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        $('#ob_stok').val(stok);
+    }
+
     function saveObat(id) {
 
         var idJenis = $('#obat_jenis_obat').val();
-        var idObat = $('#ob_id_obat').val();
-        var qty = $('#ob_qty').val();
+        var idObat  = $('#ob_id_obat').val();
+        var qty     = $('#ob_qty').val();
+        var stok    = $('#ob_stok').val();
 
-        if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
-            $('#save_obat').hide();
-            $('#load_obat').show();
+        if(qty <= stok){
 
-            if (id != '') {
-                dwr.engine.setAsync(true);
-                ObatInapAction.editObatInap(id, idDetailCheckup, idObat, qty, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listObat();
-                        $('#modal-obat').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                    } else {
+            if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
+                $('#save_obat').hide();
+                $('#load_obat').show();
 
-                    }
-                })
+                if (id != '') {
+                    dwr.engine.setAsync(true);
+                    ObatInapAction.editObatInap(id, idDetailCheckup, idObat, qty, function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listObat();
+                            $('#modal-obat').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(6);
+                        } else {
+
+                        }
+                    })
+                } else {
+                    dwr.engine.setAsync(true);
+                    ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            listObat();
+                            $('#modal-obat').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(6);
+                        } else {
+
+                        }
+                    })
+                }
             } else {
-                dwr.engine.setAsync(true);
-                ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listObat();
-                        $('#modal-obat').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                    } else {
-
-                    }
-                })
+                $('#warning_obat').show().fadeOut(5000);
+                $('#obat_error').text("Silahkan cek kembali data inputan..!");
+                if (idJenis == '') {
+                    $('#war_jenis_obat').show();
+                }
+                if (idObat == '') {
+                    $('#war_obat').show();
+                }
+                if (qty == '' || qty < 1) {
+                    $('#war_qty_obat').show();
+                }
             }
-        } else {
+        }else{
             $('#warning_obat').show().fadeOut(5000);
-
-            if (idJenis == '') {
-                $('#war_jenis_obat').show();
-            }
-            if (idObat == '') {
-                $('#war_obat').show();
-            }
-            if (qty == '' || qty < 1) {
-                $('#war_qty_obat').show();
-            }
+            $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
         }
     }
 
@@ -1858,11 +1895,11 @@
     }
 
     function editObat(id, jenis, obat, qty) {
+        $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObatEdit(this);");
         $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
         $('#obat_jenis_obat').val(jenis).trigger('change');
         $('#ob_id_obat').val(obat).trigger('change');
-        ;
-        $('#ob_jumlah').val(qty);
+        $('#ob_qty').val(qty);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
     }
@@ -1873,6 +1910,28 @@
         $('#ruangan_ruang').val(ruang).trigger('change');
         $('#modal-ruangan').modal('show');
     }
+
+    function listSelectObatEdit(select){
+        var idx = select.selectedIndex;
+        var idJenis = select.options[idx].value;
+        var option = "<option value=''>[Select One]</option>";
+        if (idJenis != '') {
+            ObatAction.listObatByJenis(idJenis, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+            });
+        } else {
+            option = option;
+        }
+
+        $('#ob_id_obat').html(option);
+    }
+
 
     function listRuanganInap() {
 

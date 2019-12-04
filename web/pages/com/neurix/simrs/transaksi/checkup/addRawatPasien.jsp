@@ -39,7 +39,7 @@
 
             if (idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
-                    && jalan != '' && profesi != '' && agama != ''
+                    && profesi != '' && agama != ''
                     && poli != '' && dokter != '' && penjamin != ''
                     && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && imgInp != '') {
 
@@ -71,9 +71,9 @@
                 if (tglLahir == '') {
                     $('#st_tgl_lahir').css('border','red solid 1px');
                 }
-                if (jalan == '') {
-                    $('#jalan').css('border','red solid 1px');
-                }
+//                if (jalan == '') {
+//                    $('#jalan').css('border','red solid 1px');
+//                }
 //                if (suku == '') {
 //                    $('#suku').css('border','red solid 1px');
 //                }
@@ -189,7 +189,7 @@
                                                 <div class="input-group date">
                                                     <s:textfield id="no_bpjs" name="headerCheckup.noBpjs" cssClass="form-control"/>
                                                     <div class="input-group-addon btn btn-success">
-                                                        <i class="fa fa-search" style="cursor: pointer"></i>
+                                                        <i class="fa fa-search" style="cursor: pointer"></i> Search
                                                     </div>
                                                 </div>
                                                 <%--<s:textfield id="no_bpjs" name="headerCheckup.noBpjs"--%>
@@ -315,12 +315,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Agama</label>
                                             <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
-                                                        cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                        id="agama" name="headerCheckup.agama"
-                                                        headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control"/>
+                                               <s:select id="agama" name="headerCheckup.agama" list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}" headerKey="" headerValue="[Select One]" cssStyle="margin-top: 7px" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -442,7 +437,7 @@
                                                 <s:select
                                                         list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik','Sepupu':'Sepupu','Ipar':'Ipar'}"
                                                         cssStyle="margin-top: 7px"
-                                                        id="hubungan" name="headerCheckup.hubungan"
+                                                        id="hubungan" name="headerCheckup.hubunganKeluarga"
                                                         headerKey="" headerValue="[Select one]"
                                                         cssClass="form-control"/>
                                             </div>
@@ -498,14 +493,17 @@
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="kunjungan" name="headerCheckup.jenisKunjungan"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                <s:select list="#{'Lama':'Lama','Baru':'Baru'}"
+                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                                          id="kunjungan" name="headerCheckup.jenisKunjungan"
+                                                          headerKey="" headerValue="[Select one]"
+                                                          cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="perujuk" name="headerCheckup.perujuk"
+                                                <s:textfield id="perujuk" name="headerCheckup.rujuk"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>

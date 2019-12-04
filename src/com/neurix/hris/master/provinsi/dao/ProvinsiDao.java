@@ -201,7 +201,10 @@ public class ProvinsiDao extends GenericDao<ImProvinsiEntity, String> {
                 "ds.desa_name, \n" +
                 "kec.kecamatan_name,\n" +
                 "kot.kota_name,\n" +
-                "prov.provinsi_name\n" +
+                "prov.provinsi_name,\n" +
+                "kec.kecamatan_id,\n" +
+                "kot.kota_id,\n" +
+                "prov.provinsi_id\n" +
                 "FROM \n" +
                 "im_hris_desa ds\n" +
                 "INNER JOIN im_hris_kecamatan kec ON kec.kecamatan_id = ds.kecamatan_id\n" +

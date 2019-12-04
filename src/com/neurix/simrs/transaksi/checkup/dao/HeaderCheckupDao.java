@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
@@ -59,7 +60,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "status.keterangan as status_name,\n" +
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
-                    "ranap.no_ruangan\n" +
+                    "ranap.no_ruangan,\n" +
+                    "detail.id_detail_checkup\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -89,6 +91,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setNamaPelayanan(obj[4].toString());
                 headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
                 headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
+                headerDetailCheckup.setIdDetailCheckup(obj[7].toString());
                 return headerDetailCheckup;
             }
         }

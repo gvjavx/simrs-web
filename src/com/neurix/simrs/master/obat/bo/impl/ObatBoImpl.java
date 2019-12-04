@@ -50,6 +50,12 @@ public class ObatBoImpl implements ObatBo {
             if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())) {
                 hsCriteria.put("nama_obat", bean.getNamaObat());
             }
+            if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())) {
+                hsCriteria.put("nama_obat", bean.getNamaObat());
+            }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
 
             hsCriteria.put("flag", "Y");
 
@@ -76,6 +82,8 @@ public class ObatBoImpl implements ObatBo {
                     obat.setCreatedWho(obatEntity.getCreatedWho());
                     obat.setLastUpdate(obatEntity.getLastUpdate());
                     obat.setLastUpdateWho(obatEntity.getLastUpdateWho());
+                    obat.setQty(obatEntity.getQty());
+                    obat.setBranchId(obatEntity.getBranchId());
 
                     JenisObat jenisObat = new JenisObat();
                     jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());

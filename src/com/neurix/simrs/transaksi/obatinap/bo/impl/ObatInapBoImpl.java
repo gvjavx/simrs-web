@@ -14,6 +14,7 @@ import com.neurix.simrs.transaksi.obatinap.model.ObatInap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,8 +89,8 @@ public class ObatInapBoImpl implements ObatInapBo {
                 }
             }
         }
-        // update total biaya pada di detail checkup
-        // updateDetailCheckup(bean);
+        bean.setCekQty("new");
+        updateStokObat(bean);
         logger.info("[ObatInapBoImpl.saveAdd] End <<<<<<");
     }
 
@@ -108,6 +109,22 @@ public class ObatInapBoImpl implements ObatInapBo {
                 throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit diagnosa rawat "+e.getMessage());
             }
             if(entity != null){
+
+                int font = bean.getQty().intValue();
+                int end  = entity.getQty().intValue();
+
+                if ( font > end){
+                    bean.setCekQty("mines");
+                    BigInteger qty = bean.getQty().subtract(entity.getQty());
+                    bean.setQtyEdit(qty);
+                }
+
+                if(end > font){
+                    bean.setCekQty("plus");
+                    BigInteger qty = entity.getQty().subtract(bean.getQty());
+                    bean.setQtyEdit(qty);
+                }
+
                 entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                 entity.setIdObat(bean.getIdObat());
                 entity.setNamaObat(bean.getNamaObat());
@@ -116,6 +133,10 @@ public class ObatInapBoImpl implements ObatInapBo {
                 entity.setTotalHarga(bean.getTotalHarga());
                 entity.setAction(bean.getAction());
                 entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                logger.info("[ObatInapBoImpl.saveEdit] FRONT --> "+font);
+                logger.info("[ObatInapBoImpl.saveEdit] END   --> "+end);
             }
 
             try {
@@ -125,6 +146,8 @@ public class ObatInapBoImpl implements ObatInapBo {
                 throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
             }
         }
+
+        updateStokObat(bean);
         logger.info("[ObatInapBoImpl.saveEdit] End <<<<<<");
     }
 
@@ -197,6 +220,9 @@ public class ObatInapBoImpl implements ObatInapBo {
             }
 
             if (obatEntity != null){
+
+                obatInap.setStokMasterObat(obat.getQty());
+
                 JenisObat jenisObat = new JenisObat();
                 jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
                 List<ImSimrsJenisObatEntity> jenisObatEntityList = getListJenisObatEntity(jenisObat);
@@ -205,6 +231,7 @@ public class ObatInapBoImpl implements ObatInapBo {
                 if (!jenisObatEntityList.isEmpty()){
                     jenisObatEntity = jenisObatEntityList.get(0);
                 }
+
                 if (jenisObatEntity != null){
                     obatInap.setIdJenisObat(jenisObatEntity.getIdJenisObat());
                     obatInap.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
@@ -256,5 +283,46 @@ public class ObatInapBoImpl implements ObatInapBo {
 
         logger.info("[ObatInapBoImpl.getListJenisObatEntity] End <<<<<<");
         return results;
+    }
+
+    private void updateStokObat(ObatInap bean) throws GeneralBOException {
+        logger.info("[ObatInapBoImpl.updateStokObat] Start >>>>>>>");
+
+        if (bean != null){
+
+            ImSimrsObatEntity entity = null;
+
+            try {
+                entity = obatDao.getById("idObat", bean.getIdObat());
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.updateStokObat] Error when update stok obatp ",e);
+                throw new GeneralBOException("[TeamDokterBoImpl.updateStokObat] Error when update stok obat"+e.getMessage());
+            }
+            if(entity != null){
+
+                if("new".equalsIgnoreCase(bean.getCekQty())){
+                    entity.setQty(entity.getQty().subtract(bean.getQty()));
+                }
+
+                if("plus".equalsIgnoreCase(bean.getCekQty())){
+                    entity.setQty(entity.getQty().add(bean.getQtyEdit()));
+                }
+
+                if("mines".equalsIgnoreCase(bean.getCekQty())){
+                    entity.setQty(entity.getQty().subtract(bean.getQtyEdit()));
+                }
+
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+            }
+
+            try {
+                obatDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[DiagnosaRawatBoImpl.updateStokObat] Error when update stok obat ", e);
+                throw new GeneralBOException("Error when update stok obat " + e.getMessage());
+            }
+        }
+        logger.info("[ObatInapBoImpl.updateStokObat] End <<<<<<");
     }
 }
