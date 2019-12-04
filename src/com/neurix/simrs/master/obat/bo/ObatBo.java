@@ -9,4 +9,6 @@ import java.util.List;
 public interface ObatBo{
     public List<Obat> getByCriteria(Obat searchBean) throws GeneralBOException;
     public List<Obat> getListObatByJenisObat(String idObat, String branchId) throws GeneralBOException;
+    public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
+    public void saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
 }

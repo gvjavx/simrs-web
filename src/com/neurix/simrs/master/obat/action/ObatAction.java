@@ -6,9 +6,12 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +72,25 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String search() {
-        return null;
+        logger.info("[ObatAction.search] START >>>>>>>");
+
+        Obat obat = getObat();
+        obat.setBranchId(CommonUtil.userBranchLogin());
+
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = obatBoProxy.getByCriteria(obat);
+        } catch (HibernateException e){
+            logger.error("[ObatAction.search] ERROR when get data list obat, ", e);
+            addActionError("[ObatAction.search] ERROR when get data list obat, "+e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", obatList);
+
+        logger.info("[ObatAction.search] END <<<<<<<");
+        return SUCCESS;
     }
 
     @Override
@@ -108,5 +129,4 @@ public class ObatAction extends BaseMasterAction {
         return obatList;
 
     }
-
 }
