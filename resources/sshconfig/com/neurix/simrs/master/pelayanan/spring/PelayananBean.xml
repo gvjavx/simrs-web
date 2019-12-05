@@ -9,6 +9,7 @@
 
     <bean id="pelayananBo" class="com.neurix.simrs.master.pelayanan.bo.impl.PelayananBoImpl"
           p:pelayananDao-ref="pelayananDao"
+          p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
     />
 
     <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"

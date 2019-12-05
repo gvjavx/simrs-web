@@ -34,6 +34,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     private RegistrasiOnlineBo registrasiOnlineBoProxy;
     private Collection<RegistrasiOnline> listOfRegistrasiOnline = new ArrayList<RegistrasiOnline>();
 
+    private String userId;
     private String noCheckupOnline;
     private String idPasien;
     private String nama;
@@ -74,7 +75,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
 
     @Override
     public Object getModel() {
-        return model;
+        return (listOfRegistrasiOnline != null ? listOfRegistrasiOnline : model);
     }
 
     public void setModel(RegistrasiOnline model) {
@@ -91,6 +92,14 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
 
     public void setListOfRegistrasiOnline(Collection<RegistrasiOnline> listOfRegistrasiOnline) {
         this.listOfRegistrasiOnline = listOfRegistrasiOnline;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getNoCheckupOnline() {
@@ -281,6 +290,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
         this.fileUploadKtp = fileUploadKtp;
     }
 
+    //simrs/mobileapi/registrasi/
     public HttpHeaders create() {
         logger.info("[RegistrasiOnlineController.create] start process POST / <<<");
 
@@ -335,6 +345,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             }
 
             model.setAction("registrasi");
+            listOfRegistrasiOnline.add(model);
         }
 
         if (action.equalsIgnoreCase("validasi")) {

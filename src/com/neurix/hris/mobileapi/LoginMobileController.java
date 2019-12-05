@@ -28,6 +28,8 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     private LoginMobile model = new LoginMobile();
     private String id;
     private String tokenFcm;
+    private String username;
+    private String password;
 
     public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
         this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
@@ -41,8 +43,8 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     public HttpHeaders create() {
         logger.info("[TaskAsmudController.create] start process POST /loginmobile >>>");
 
-        String userId = model.getUserId();
-        String rawPassword = model.getPassword();
+        String userId = username;
+        String rawPassword = password;
 
         //checking if other device used this userId, if found then throws error
         boolean isFound = false;
@@ -112,6 +114,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         //add into body is tokenId
 
                         model.setTokenId(sessionId);
+                        model.setUserId(userDetailsLogin.getUserId());
                         model.setUserName(userDetailsLogin.getUserNameDetail());
                         model.setAreaId(userDetailsLogin.getAreaId());
                         model.setAreaName(userDetailsLogin.getAreaName());
@@ -134,24 +137,24 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setRoleName(roleName);
 
 
-                        NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
-                        notifikasiFcm.setUserId(model.getUserId());
-                        notifikasiFcm.setUserName(model.getUserName());
-                        notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
-                        notifikasiFcm.setLastUpdateWho(model.getUserName());
-                        notifikasiFcm.setCreatedWho(model.getUserName());
-                        try {
-                            notifikasiFcmBoProxy.saveAdd(notifikasiFcm);
-                        } catch (GeneralBOException e) {
-                            Long logId = null;
-                            try {
-                                logId = userBoProxy.saveErrorMessage(e.getMessage(), "LoginMobileController.isFoundOtherSessionActiveUserSessionLog");
-                            } catch (GeneralBOException e1) {
-                                logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
-                            }
-                            logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                            throw new GeneralBOException(e);
-                        }
+//                        NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
+//                        notifikasiFcm.setUserId(model.getUserId());
+//                        notifikasiFcm.setUserName(model.getUserName());
+//                        notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
+//                        notifikasiFcm.setLastUpdateWho(model.getUserName());
+//                        notifikasiFcm.setCreatedWho(model.getUserName());
+//                        try {
+//                            notifikasiFcmBoProxy.saveAdd(notifikasiFcm);
+//                        } catch (GeneralBOException e) {
+//                            Long logId = null;
+//                            try {
+//                                logId = userBoProxy.saveErrorMessage(e.getMessage(), "LoginMobileController.isFoundOtherSessionActiveUserSessionLog");
+//                            } catch (GeneralBOException e1) {
+//                                logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+//                            }
+//                            logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//                            throw new GeneralBOException(e);
+//                        }
                     } else {
 
                         logger.info("Unable to create token, please call your admin to handle it.");
@@ -285,5 +288,21 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
 
     public void setTokenFcm(String tokenFcm) {
         this.tokenFcm = tokenFcm;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
