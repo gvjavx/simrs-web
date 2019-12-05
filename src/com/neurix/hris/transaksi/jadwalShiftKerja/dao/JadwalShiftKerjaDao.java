@@ -26,7 +26,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
 
     @Override
     protected Class<ItJadwalShiftKerjaEntity> getEntityClass() {
-        return null;
+        return ItJadwalShiftKerjaEntity.class;
     }
 
     @Override
@@ -210,5 +210,19 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             listOfResult.add(result);
         }
         return listOfResult;
+    }
+    public List<ItJadwalShiftKerjaEntity> getJadwalShiftKerjaByUnitAndTanggal(String branchId,Date tanggal) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItJadwalShiftKerjaEntity.class);
+
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.add(Restrictions.eq("branchId", branchId));
+        criteria.add(Restrictions.eq("tanggal", tanggal));
+
+        // Order by
+        criteria.addOrder(Order.desc("jadwalShiftKerjaId"));
+
+        List<ItJadwalShiftKerjaEntity> results = criteria.list();
+
+        return results;
     }
 }

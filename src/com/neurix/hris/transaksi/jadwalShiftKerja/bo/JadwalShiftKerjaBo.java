@@ -21,8 +21,6 @@ import java.util.List;
 public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     List<JadwalShiftKerjaDetail> getByCriteriaDetail(JadwalShiftKerjaDetail searchBean) throws GeneralBOException;
 
-    JadwalShiftKerja saveEdit(JadwalShiftKerja bean, JadwalShiftKerjaDetail bean2) throws GeneralBOException;
-
     List<GroupShift> deleteJadwalShiftKerja(String id) throws GeneralBOException;
 
     String saveTanggalOtomatis(JadwalShiftKerja searchBean) throws GeneralBOException;
@@ -32,4 +30,6 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     List<JadwalShiftKerjaDetail> getPegawaiByGrup(String kelompokPositionId, String unit) throws GeneralBOException;
 
     List<JadwalPelayananDTO> getJadwalPelayanan(String idPelayanan, String kelompokId, String branchId, String nip, Date tanggal) throws GeneralBOException;
+
+    List<JadwalShiftKerja> getJadwalShiftKerjaByUnitAndTanggal(String branchId, Date tanggal) throws GeneralBOException;
 }
