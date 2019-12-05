@@ -70,18 +70,42 @@ public class ObatBoImpl implements ObatBo {
                     obat.setQty(obatEntity.getQty());
                     obat.setBranchId(obatEntity.getBranchId());
 
-                    JenisObat jenisObat = new JenisObat();
-                    jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
-                    List<ImSimrsJenisObatEntity> jenisObatEntityList = getListEntityJenisObat(jenisObat);
 
-                    ImSimrsJenisObatEntity jenisObatEntity = new ImSimrsJenisObatEntity();
-                    if (!jenisObatEntityList.isEmpty()){
-                        jenisObatEntity = jenisObatEntityList.get(0);
-                    }
-                    if(jenisObatEntity != null){
-                        obat.setJenisObat(jenisObatEntity.getNamaJenisObat());
+                    List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
+
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("id_obat", obatEntity.getIdObat());
+                    hsCriteria.put("flag", "Y");
+
+                    try {
+                        obatGejalaEntities = obatGejalaDao.getByCriteria(hsCriteria);
+                    } catch (HibernateException e){
+                        logger.error("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
                     }
 
+                    if (!obatGejalaEntities.isEmpty() && obatGejalaEntities.size() > 0)
+                    {
+                        String listJenisObat = "";
+                        for (ImSimrsObatGejalaEntity gejalaEntity : obatGejalaEntities)
+                        {
+                            JenisObat jenisObat = new JenisObat();
+                            jenisObat.setIdJenisObat(gejalaEntity.getIdJenisObat());
+                            List<ImSimrsJenisObatEntity> jenisObatEntityList = getListEntityJenisObat(jenisObat);
+
+                            if (!jenisObatEntityList.isEmpty())
+                            {
+                                ImSimrsJenisObatEntity jenisObatEntity = jenisObatEntityList.get(0);
+                                if(jenisObatEntity != null)
+                                {
+//                                    listJenisObat = listJenisObat + "<div style=\"background-color: #6ac8eb; color: #fff; padding: 10px\">"+jenisObatEntity.getNamaJenisObat()+"</div>";
+                                    listJenisObat = listJenisObat + jenisObatEntity.getNamaJenisObat() +", ";
+                                }
+
+                            }
+                        }
+                        obat.setJenisObat(listJenisObat);
+                    }
                     result.add(obat);
                 }
             }
@@ -201,6 +225,8 @@ public class ObatBoImpl implements ObatBo {
             {
                 ImSimrsObatGejalaEntity obatGejalaEntity = new ImSimrsObatGejalaEntity();
 
+                id = getIdNextObatGejala();
+
                 obatGejalaEntity.setIdObatGejala("OGJ"+id);
                 obatGejalaEntity.setIdObat(obatEntity.getIdObat());
                 obatGejalaEntity.setIdJenisObat(idJenisObat);
@@ -249,13 +275,50 @@ public class ObatBoImpl implements ObatBo {
     private void updateObatGejala(List<String> idJenisObats, String idObat) throws GeneralBOException{
         logger.info("[ObatBoImpl.updateObatGejala] Start >>>>>>>");
 
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String userLogin = CommonUtil.userLogin();
+
         List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", idObat);
+        hsCriteria.put("flag", "Y");
+
+        try {
+            obatGejalaEntities = obatGejalaDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
+        }
+
+        if (!obatGejalaEntities.isEmpty() && obatGejalaEntities.size() > 0)
+        {
+            for (ImSimrsObatGejalaEntity gejalaEntity : obatGejalaEntities)
+            {
+                gejalaEntity.setFlag("N");
+                gejalaEntity.setAction("U");
+                gejalaEntity.setCreatedDate(time);
+                gejalaEntity.setCreatedWho(userLogin);
+                gejalaEntity.setLastUpdate(time);
+                gejalaEntity.setLastUpdateWho(userLogin);
+
+                try {
+                    obatGejalaDao.updateAndSave(gejalaEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.updateObatGejala] error when update flag N obat gejala "+ e.getMessage());
+                    throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when update flag N obat gejala "+ e.getMessage());
+                }
+            }
+        }
 
         for (String idJenisObat : idJenisObats)
         {
-            Map hsCriteria = new HashMap();
+            obatGejalaEntities = new ArrayList<>();
+            hsCriteria = new HashMap();
+
             hsCriteria.put("id_obat", idObat);
             hsCriteria.put("id_jenis_obat", idJenisObat);
+
             try {
                 obatGejalaEntities = obatGejalaDao.getByCriteria(hsCriteria);
             } catch (HibernateException e){
@@ -263,15 +326,29 @@ public class ObatBoImpl implements ObatBo {
                 throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
             }
 
-
             if (obatGejalaEntities.isEmpty() && obatGejalaEntities.size() == 0)
+            {
+                ImSimrsObatGejalaEntity entity = obatGejalaEntities.get(0);
+
+                entity.setFlag("Y");
+                entity.setAction("U");
+                entity.setCreatedDate(time);
+                entity.setCreatedWho(userLogin);
+                entity.setLastUpdate(time);
+                entity.setLastUpdateWho(userLogin);
+
+                try {
+                    obatGejalaDao.updateAndSave(entity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.updateObatGejala] error when update flag Y obat gejala "+ e.getMessage());
+                    throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when when update flag Y obat gejala "+ e.getMessage());
+                }
+            }
+            else
             {
                 ImSimrsObatGejalaEntity entity = new ImSimrsObatGejalaEntity();
 
                 String id = getIdNextObatGejala();
-
-                Timestamp time = new Timestamp(System.currentTimeMillis());
-                String userLogin = CommonUtil.userLogin();
 
                 entity.setIdObatGejala("OGJ"+id);
                 entity.setIdObat(idObat);

@@ -34,8 +34,10 @@ public class ObatGejalaDao extends GenericDao<ImSimrsObatGejalaEntity, String> {
                 criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat").toString()));
             if (mapCriteria.get("id_jenis_obat") != null)
                 criteria.add(Restrictions.eq("idJenisObat", mapCriteria.get("id_jenis_obat").toString()));
+            if (mapCriteria.get("flag") != null)
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
-        criteria.add(Restrictions.eq("flag", "Y"));
+
         List<ImSimrsObatGejalaEntity> results = criteria.list();
 
         return results;
