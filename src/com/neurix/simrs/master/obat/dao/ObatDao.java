@@ -4,11 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -88,4 +90,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
         return obats;
     }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_obat')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
+    }
+
+
 }

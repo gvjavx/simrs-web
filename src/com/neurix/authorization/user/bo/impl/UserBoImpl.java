@@ -227,8 +227,8 @@ public class UserBoImpl implements UserBo {
                     userDetailsLogin.setPositionName("");
                 }
             }else{
-                userDetailsLogin.setBranchId("");
-                userDetailsLogin.setBranchName("");
+                userDetailsLogin.setBranchId(branchId);
+                userDetailsLogin.setBranchName(branchName);
                 userDetailsLogin.setDivisiId("");
                 userDetailsLogin.setDivisiName("");
                 userDetailsLogin.setPositionId("");

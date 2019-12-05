@@ -167,24 +167,7 @@
                                 </table>
                             </div>
                             <!-- /.col -->
-                            <div class="form-group" style="display: none">
-                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                           closeOnEscape="false"
-                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                           buttons="{
-                                                                                'OK':function() {
-                                                                                         $('#info_dialog').dialog('close');
-                                                                                         toContent();
-                                                                                     }
-                                                                            }"
-                                >
-                                    <s:hidden id="close_pos"></s:hidden>
-                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
-                                         name="icon_success">
-                                    Record has been saved successfully.
-                                </sj:dialog>
-
-                            </div>
+                           toCon
                         </div>
                     </div>
                     <div class="box-header with-border" id="pos_dok">

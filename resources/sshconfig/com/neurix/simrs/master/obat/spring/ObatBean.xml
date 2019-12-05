@@ -10,24 +10,28 @@
 
     <bean id="obatBo" class="com.neurix.simrs.master.obat.bo.impl.ObatBoImpl"
           p:obatDao-ref="obatDao"
-          p:jenisObatDao-ref="jenisObatDao"/>
+          p:jenisObatDao-ref="jenisObatDao"
+          p:obatGejalaDao-ref="obatGejalaDao"
+    />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="obatBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionUserInterceptor</value>
+                <value>transactionObatInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionUserInterceptor"
+    <bean id="transactionObatInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

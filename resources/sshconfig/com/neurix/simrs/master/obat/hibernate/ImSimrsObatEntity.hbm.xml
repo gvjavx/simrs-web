@@ -16,7 +16,7 @@
             <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="idJenisObat">
-            <column name="id_jenis_obat" sql-type="varchar" length="10" not-null="true" />
+            <column name="id_jenis_obat" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="harga">
             <column name="harga" sql-type="bigint" not-null="false"/>
