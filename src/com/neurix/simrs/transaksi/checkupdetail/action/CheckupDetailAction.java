@@ -12,6 +12,8 @@ import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
+import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
+import com.neurix.simrs.master.keterangankeluar.model.KeteranganKeluar;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
@@ -21,6 +23,8 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +47,11 @@ public class CheckupDetailAction extends BaseMasterAction {
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private KelasRuanganBo kelasRuanganBoProxy;
     private RuanganBo ruanganBoProxy;
+    private KeteranganKeluarBo keteranganKeluarBoProxy;
+
+    public void setKeteranganKeluarBoProxy(KeteranganKeluarBo keteranganKeluarBoProxy) {
+        this.keteranganKeluarBoProxy = keteranganKeluarBoProxy;
+    }
 
     public void setRuanganBoProxy(RuanganBo ruanganBoProxy) {
         this.ruanganBoProxy = ruanganBoProxy;
@@ -77,6 +86,15 @@ public class CheckupDetailAction extends BaseMasterAction {
     private List<Diagnosa> listOfComboDiagnosa = new ArrayList<>();
     private List<KategoriTindakan> listOfKategoriTindakan = new ArrayList<>();
     private List<KelasRuangan> listOfKelasRuangan = new ArrayList<>();
+    private List<KeteranganKeluar> listOfKeterangan = new ArrayList<>();
+
+    public List<KeteranganKeluar> getListOfKeterangan() {
+        return listOfKeterangan;
+    }
+
+    public void setListOfKeterangan(List<KeteranganKeluar> listOfKeterangan) {
+        this.listOfKeterangan = listOfKeterangan;
+    }
 
     public List<KelasRuangan> getListOfKelasRuangan() {
         return listOfKelasRuangan;
@@ -358,7 +376,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter){
+    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket){
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         String status = "error";
@@ -369,7 +387,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setAction("U");
 
         if ("selesai".equalsIgnoreCase(idKtg)){
-            headerDetailCheckup.setKeteranganSelesai("Selesai Periksa");
+            headerDetailCheckup.setKeteranganSelesai(ket);
         }
         if ("pindah".equalsIgnoreCase(idKtg)){
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
@@ -524,12 +542,14 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Ruangan> listRuangan(String idkelas){
+    public List<Ruangan> listRuangan(String idkelas, boolean flag){
 
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<Ruangan> ruanganList = new ArrayList<>();
         Ruangan ruangan = new Ruangan();
-        ruangan.setStatusRuangan("Y");
+        if (flag){
+            ruangan.setStatusRuangan("Y");
+        }
         ruangan.setIdKelasRuangan(idkelas);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -545,6 +565,68 @@ public class CheckupDetailAction extends BaseMasterAction {
             logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
             return ruanganList;
 
+    }
+
+    public String getListComboKeteranganKeluar(){
+        logger.info("[CheckupDetailAction.getListComboKeteranganKeluar] start process >>>");
+
+        List<KeteranganKeluar> keteranganKeluarList = new ArrayList<>();
+        KeteranganKeluar keteranganKeluar = new KeteranganKeluar();
+
+        try {
+            keteranganKeluarList = keteranganKeluarBoProxy.getByCriteria(keteranganKeluar);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListComboKeteranganKeluar] Error when get keterangan keluar ," + "Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        listOfKeterangan.addAll(keteranganKeluarList);
+        logger.info("[CheckupDetailAction.getListComboKeteranganKeluar] end process <<<");
+        return SUCCESS;
+    }
+
+    public String saveUpdateRuangan(String idRuangan, String idDetailCheckup){
+        logger.info("[CheckupAction.saveUpdateRuangan] start process >>>");
+
+        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup))
+        {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+            try {
+                checkupDetailBo.updateRuanganInap(idRuangan, idDetailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveUpdateRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
+                return "ERROR, "+e.getMessage();
+            }
+        } else {
+            return "ERROR, idRuangan OR idDetailCheckup Is NULL";
+        }
+
+        logger.info("[CheckupAction.saveUpdateRuangan] end process >>>");
+        return "SUCCESS";
+    }
+
+    public List<RawatInap> getListRuangInapByIdDetailCheckup(String idDetailCheckup){
+        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] start process >>>");
+
+        List<RawatInap> rawatInaps = new ArrayList<>();
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        try {
+            rawatInaps = rawatInapBo.getSearchRawatInap(rawatInap);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListRuangInapByIdDetailCheckup] Error when get data ruangan.", e);
+            addActionError("Error Found problem when get  Error when get data ruangan , please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] end process >>>");
+        return rawatInaps;
     }
 
 

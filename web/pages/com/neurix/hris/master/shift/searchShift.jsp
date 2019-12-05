@@ -112,7 +112,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <s:textfield id="shiftId" name="shift.shiftId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                            <s:textfield id="shiftId1" name="shift.shiftId" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -122,7 +122,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <s:textfield id="shiftName" name="shift.shiftName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
+                                            <s:textfield id="shiftName1" name="shift.shiftName" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -132,7 +132,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <s:select list="#{'N':'Non-Active'}" id="flag" name="shift.flag"
+                                            <s:select list="#{'N':'Non-Active'}" id="flag1" name="shift.flag"
                                                       headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: -30px; margin-left: 20px"/>
                                         </td>
                                     </tr>
@@ -170,7 +170,7 @@
                                 </table>
                             </div>
                             <center>
-                                <table id="showdata" width="40%">
+                                <table id="showdata" width="80%">
                                     <tr>
                                         <td align="center">
                                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -202,10 +202,12 @@
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
                                                         <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                                     </sj:a>
-
                                                 </display:column>
-                                                <display:column property="shiftId" sortable="true" title="Shift Id" />
-                                                <display:column property="shiftName" sortable="true" title="Shift Name"  />
+                                                <display:column property="shiftId" sortable="true" title="ID shift" />
+                                                <display:column property="shiftName" sortable="true" title="Nama Shift"  />
+                                                <display:column property="branchName" sortable="true" title="Unit"  />
+                                                <display:column property="kelompokPositionName" sortable="true" title="Grup"  />
+                                                <display:column property="shiftName" sortable="true" title="Nama Shift"  />
                                                 <display:column property="jamAwal" sortable="true" title="Jam Awal"  />
                                                 <display:column property="jamAkhir" sortable="true" title="Jam Akhir"  />
                                                 <display:column property="flag" sortable="true" title="Flag" />

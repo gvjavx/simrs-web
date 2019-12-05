@@ -885,4 +885,16 @@ public class UserAction extends BaseMasterAction {
 
         return "success_save_newpassword";
     }
+
+    public User getUserData(){
+        logger.info("[UserAction.getUserData] start process >>>");
+
+        User user = new User();
+        user.setUsername(CommonUtil.userLogin());
+        user.setBranchName(CommonUtil.userBranchNameLogin());
+        user.setAreaName(CommonUtil.userAreaName());
+
+        logger.info("[UserAction.getUserData] end process <<<");
+        return user;
+    }
 }

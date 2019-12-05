@@ -21,9 +21,9 @@ public class KeteranganKeluarDao extends GenericDao<ImSimrsKeteranganKeluarEntit
     public List<ImSimrsKeteranganKeluarEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKeteranganKeluarEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_keterangan") != null)
+            if (mapCriteria.get("id_keterangan") != null) {
                 criteria.add(Restrictions.eq("idKeterangan", mapCriteria.get("id_keterangan").toString()));
-
+            }
         List<ImSimrsKeteranganKeluarEntity> result = criteria.list();
         return result;
     }

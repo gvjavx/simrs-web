@@ -69,12 +69,12 @@
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control" theme="simple"/>
+                                                  cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -83,7 +83,7 @@
                                         <s:select list="#{'1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="headerDetailCheckup.statusPeriksa"
                                                   headerKey="0" headerValue="Antrian"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -160,7 +160,7 @@
                                 <td>Alamat</td>
                                 <td>Status</td>
                                 <td>Keterangan</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -172,12 +172,12 @@
                                     <td><s:property value="alamat"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
-                                    <td>
+                                    <td align="center">
                                         <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_rawat_jalan}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
                                     </td>
                                 </tr>

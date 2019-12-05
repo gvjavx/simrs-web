@@ -178,9 +178,8 @@ public class CheckupAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HeaderCheckup> listOfResult = (List) session.getAttribute("listOfResult");
-        List<HeaderDetailCheckup> listOfsearchDetailCheckup = new ArrayList();
-        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
 
+        String id = getId();
         if (id != null && !"".equalsIgnoreCase(id)) {
 
             if (listOfResult != null) {
@@ -188,7 +187,6 @@ public class CheckupAction extends BaseMasterAction {
                 for (HeaderCheckup headerCheckup : listOfResult) {
                     if (id.equalsIgnoreCase(headerCheckup.getNoCheckup())) {
                         setHeaderCheckup(headerCheckup);
-                        detailCheckup.setNoCheckup(headerCheckup.getNoCheckup());
                         break;
                     }
                 }
@@ -473,4 +471,71 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.listOfDokter] end process >>>");
         return dokterList;
     }
+
+    public String saveEdit(){
+
+        logger.info("[CheckupAction.saveEdit] start process >>>");
+        try {
+            HeaderCheckup checkup = getHeaderCheckup();
+            String userLogin = CommonUtil.userLogin();
+            String userArea  = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            String tgl_lahir = checkup.getStTglLahir();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                java.util.Date date = format.parse(tgl_lahir);
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                checkup.setTglLahir(sqlDate);
+            } catch (ParseException e) {
+
+            }
+
+            checkup.setBranchId(userArea);
+            checkup.setLastUpdate(updateTime);
+            checkup.setLastUpdateWho(userLogin);
+
+            String fileName = "";
+            if (this.fileUpload != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+
+                        // file name
+                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
+
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, fileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            checkup.setUrlKtp(fileName);
+                            checkupBoProxy.saveEdit(checkup);
+
+                        } catch (IOException e) {
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupAction.saveEdit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CheckupAction.saveEdit] end process >>>");
+        return "search";
+
+    }
+
 }

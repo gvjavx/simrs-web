@@ -4,7 +4,19 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
+
+    function loadDataLogin() {
+        dwr.engine.setAsync(false);
+        UserAction.getUserData(function(item){
+           $("#user_name").html(item.username);
+           $("#user_name_head").html(item.username);
+           $("#user_branch").html(item.branchName);
+           $("#user_area").html(item.areaName);
+        });
+    }
+
     function readNotif(id){
         var notifId = id;
         if(notifId != null){
@@ -197,6 +209,7 @@
         $("#count7").html(tmp_jml_panjang);
     }
     $(document).ready(function() {
+        loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
@@ -321,11 +334,11 @@
 <div class="wrapper">
 <header class="main-header">
     <!-- Logo -->
-    <a href="/simrs" class="logo" style="background-color: #3bb387 !important;">
+    <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>e-H</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>e-HEALTH</b></span>
+        <span class="logo-lg" style="margin-left: -40px"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/LOGO%20LAMA%20PTPN%20X.png"/>" style="cursor: pointer; height: 25px; width: 35px;"> <b>e-HEALTH</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -411,13 +424,39 @@
                         <%--<li class="footer"><a href="#">View all</a></li>--%>
                     </ul>
                 </li>
-
-                <li class="dropdown notifications-menu">
-                    <!-- Menu toggle button -->
-                    <a href="../j_spring_security_logout">
-                        <i class="fa fa-sign-out"></i>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
+                        <span class="hidden-xs" id="user_name_head"></span>
                     </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header" style="background-color: #30d196; height: 200px">
+                            <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
+
+                            <p>
+                                <span id="user_name"></span>
+                                <small id="user_branch"></small>
+                                <small id="user_area"></small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <%--<div class="pull-left">--%>
+                                <%--<a href="#" class="btn btn-default btn-flat">Profile</a>--%>
+                            <%--</div>--%>
+                            <div onclick="logout()" style="cursor: pointer" class="pull-right">
+                                <a  class="btn btn-danger"><i class="fa fa-sign-out"></i> Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
+                <%--<li class="dropdown notifications-menu">--%>
+                    <%--<!-- Menu toggle button -->--%>
+                    <%--<a onclick="logout()" style="cursor: pointer">--%>
+                        <%--<i class="fa fa-sign-out"></i>--%>
+                    <%--</a>--%>
+                <%--</li>--%>
                 <!-- Tasks Menu -->
             </ul>
         </div>

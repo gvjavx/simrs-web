@@ -97,29 +97,60 @@
             </td>
         </tr>
     </table>
-
     <div class="form-group">
-        <label class="control-label col-sm-2">Tipe Libur Id :</label>
+        <label class="control-label col-sm-2">ID Shift :</label>
         <div class="col-sm-8">
             <s:textfield cssClass="form-control" id="groupShiftId" name="shift.shiftId" readonly="true" required="false"  />
             <s:hidden id="createdDate" name="shift.createdDate" />
             <s:hidden id="createdWho" name="shift.createdWho" />
         </div>
     </div>
-
+    <div class="form-group">
+        <label class="control-label col-sm-2">Unit :</label>
+        <div class="col-sm-8">
+            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+            <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="shift.idBranch"
+                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Pilih Satu]" disabled="true"
+                      cssClass="form-control"/>
+            <s:hidden id="branchid1" name="shift.idBranch" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Grup :</label>
+        <div class="col-sm-8" align="left">
+            <s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
+            <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name="shift.kelompokPositionId"
+                      required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Pilih Satu]" disabled="true"/>
+            <s:hidden id="groupId" name="shift.kelompokPositionId" />
+        </div>
+    </div>
     <div class="form-group">
         <label class="control-label col-sm-2">Nama Shift :</label>
         <div class="col-sm-8">
             <s:textfield id="groupShiftName" cssClass="form-control" name="shift.shiftName" required="false" readonly="true"/>
         </div>
     </div>
-
     <div class="form-group">
-        <label class="control-label col-sm-2">Branch :</label>
+        <label class="control-label col-sm-2">Jam Kerja :</label>
         <div class="col-sm-8">
-            <s:textfield id="idBranch" cssClass="form-control" name="shift.idBranch" required="false" readonly="true"/>
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAwal" name="shift.jamAwal" size="12" cssClass="form-control pull-right" readonly="true"
+                             required="false" cssStyle=""/>
+                <div class="input-group-addon">
+                    s/d
+                </div>
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAkhir" name="shift.jamAkhir" size="12" cssClass="form-control pull-right" readonly="true"
+                             required="false" cssStyle=""/>
+            </div>
         </div>
     </div>
+
 
 
     <br>

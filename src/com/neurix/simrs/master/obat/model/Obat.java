@@ -2,20 +2,59 @@ package com.neurix.simrs.master.obat.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Obat extends BaseModel {
 
     private String idObat;
     private String namaObat;
     private String idJenisObat;
-    private Long harga;
+    private BigInteger harga;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigInteger qty;
+    private String branchId;
+
+    private String jenisObat;
+    private List<Obat> labelJenisObat;
+
+    public List<Obat> getLabelJenisObat() {
+        return labelJenisObat;
+    }
+
+    public void setLabelJenisObat(List<Obat> labelJenisObat) {
+        this.labelJenisObat = labelJenisObat;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public BigInteger getQty() {
+        return qty;
+    }
+
+    public void setQty(BigInteger qty) {
+        this.qty = qty;
+    }
+
+    public String getJenisObat() {
+        return jenisObat;
+    }
+
+    public void setJenisObat(String jenisObat) {
+        this.jenisObat = jenisObat;
+    }
 
     public String getIdObat() {
         return idObat;
@@ -41,11 +80,11 @@ public class Obat extends BaseModel {
         this.idJenisObat = idJenisObat;
     }
 
-    public Long getHarga() {
+    public BigInteger getHarga() {
         return harga;
     }
 
-    public void setHarga(Long harga) {
+    public void setHarga(BigInteger harga) {
         this.harga = harga;
     }
 

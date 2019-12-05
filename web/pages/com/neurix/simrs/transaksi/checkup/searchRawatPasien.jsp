@@ -78,12 +78,12 @@
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -93,7 +93,7 @@
                                                   cssStyle="margin-top: 7px"
                                                   id="status" name="headerCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -188,7 +188,7 @@
                                 <td>Status Terakhir</td>
                                 <td>Ruangan</td>
                                 <td>No</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -201,31 +201,16 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
-                                    <td>
-                                            <%--<s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">--%>
-                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<sj:a onClickTopics="showDialogUser" href="%{detail}">--%>
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/icon_lup.ico"/>"
-                                             style="cursor: pointer" onclick="detail_pasien('<s:property value="noCheckup"/>')">
-                                            <%--</sj:a>--%>
-
+                                    <td align="center">
+                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"
+                                             style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">
                                         <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{edit}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>"
-                                                 style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"
+                                                 style="cursor: pointer; width: 25px; height: 25px">
                                         </s:a>
-
-                                        <s:url var="delete" namespace="/checkup" action="delete_checkup"
-                                               escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a href="%{delete}">
-                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>"
-                                                 style="cursor: pointer; height: 25px; width: 25px">
-                                        </sj:a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -365,12 +350,13 @@
         var noRuangan = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '30px');
+        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
+
 
         setTimeout(function () {
 
-            var url = '<s:url value="/pages/images/icon_lup.ico"/>';
-            $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
+            var url = '<s:url value="/pages/images/search_flat.png"/>';
+            $('#v_'+idCheckup).attr('src',url).css('width', '25px', 'height', '25px');
 
             CheckupAction.listDataPasien(idCheckup, function (response) {
                 dataPasien = response;

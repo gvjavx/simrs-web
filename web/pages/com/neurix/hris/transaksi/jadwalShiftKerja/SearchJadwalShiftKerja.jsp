@@ -80,11 +80,12 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Jadwal :</small></label>
+                                                    <label class="control-label"><small>Unit :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="jadwalName" name="jadwalShiftKerja.jadwalName" required="true" cssClass="form-control"/>
+                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="jadwalShiftKerja.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -109,28 +110,6 @@
                                                             <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="7" cssClass="form-control pull-right"
                                                                          required="false" cssStyle=""/>
                                                         </div>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Status Giling :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling" name="jadwalShiftKerja.statusGiling"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Unit :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="jadwalShiftKerja.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -167,11 +146,10 @@
                                                 </tr>
                                             </table>
                                         </div>
-
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="60%">
+                                            <table id="showdata" width="80%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
@@ -210,13 +188,13 @@
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="Jadwal Id" />
-                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Jadwal Name"  />
-                                                            <display:column property="statusGilingName" sortable="true" title="Status Giling"  />
+                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="ID Jadwal" />
+                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Nama Jadwal"  />
                                                             <display:column property="branchName" sortable="true" title="Unit"  />
                                                             <display:column property="tanggal" sortable="true" title="Tanggal"  />
+                                                            <display:column property="namaPegawai" sortable="true" title="Nama"  />
+                                                            <display:column property="positionName" sortable="true" title="Posisi"  />
                                                             <display:column property="shiftName" sortable="true" title="Shift"  />
-                                                            <display:column property="groupName" sortable="true" title="Group"  />
                                                         </display:table>
                                                     </td>
                                                 </tr>

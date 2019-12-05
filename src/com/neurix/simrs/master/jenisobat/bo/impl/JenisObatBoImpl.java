@@ -3,10 +3,15 @@ package com.neurix.simrs.master.jenisobat.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
 import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
+import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JenisObatBoImpl implements JenisObatBo {
 
@@ -17,45 +22,51 @@ public class JenisObatBoImpl implements JenisObatBo {
         return logger;
     }
 
-    public static void setLogger(Logger logger) {
-        JenisObatBoImpl.logger = logger;
-    }
-
-    public JenisObatDao getJenisObatDao() {
-        return jenisObatDao;
-    }
-
     public void setJenisObatDao(JenisObatDao jenisObatDao) {
         this.jenisObatDao = jenisObatDao;
     }
 
     @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
-      return null;
-    }
+    public List<JenisObat> getByCriteria(JenisObat bean) throws GeneralBOException {
+        logger.info("[JenisObatBoImpl.getByCriteria] Start >>>>>>>");
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
 
-    @Override
-    public void saveDelete(JenisObat bean) throws GeneralBOException {
+            if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
+                hsCriteria.put("id_jenis_obat", bean.getIdJenisObat());
+            }
 
-    }
+            hsCriteria.put("flag", "Y");
 
-    @Override
-    public void saveEdit(JenisObat bean) throws GeneralBOException {
+            List<ImSimrsJenisObatEntity> jenisObatEntityList = new ArrayList<>();
+            List<JenisObat> result = new ArrayList<>();
 
-    }
+            try {
+                jenisObatEntityList = jenisObatDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[JenisObatBoImpl.getByCriteria] error when get data jenis obat by get by criteria "+ e.getMessage());
+            }
 
-    @Override
-    public JenisObat saveAdd(JenisObat bean) throws GeneralBOException {
-        return null;
-    }
+            if (!jenisObatEntityList.isEmpty()){
+                JenisObat jenisObat;
+                for (ImSimrsJenisObatEntity jenisObatEntity : jenisObatEntityList){
+                    jenisObat = new JenisObat();
+                    jenisObat.setIdJenisObat(jenisObatEntity.getIdJenisObat());
+                    jenisObat.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
+                    jenisObat.setFlag(jenisObatEntity.getFlag());
+                    jenisObat.setAction(jenisObatEntity.getAction());
+                    jenisObat.setCreatedDate(jenisObatEntity.getCreatedDate());
+                    jenisObat.setCreatedWho(jenisObatEntity.getCreatedWho());
+                    jenisObat.setLastUpdate(jenisObatEntity.getLastUpdate());
+                    jenisObat.setLastUpdateWho(jenisObatEntity.getLastUpdateWho());
+                    result.add(jenisObat);
+                }
+            }
 
-    @Override
-    public List<JenisObat> getByCriteria(JenisObat searchBean) throws GeneralBOException {
-        return null;
-    }
-
-    @Override
-    public List<JenisObat> getAll() throws GeneralBOException {
+            logger.info("[JenisObatBoImpl.getByCriteria] End <<<<<<<");
+            return result;
+        }
+        logger.info("[JenisObatBoImpl.getByCriteria] End <<<<<<<");
         return null;
     }
 }

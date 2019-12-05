@@ -191,4 +191,55 @@ public class TindakanRawatAction extends BaseMasterAction {
             return null;
         }
     }
+
+    public String editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
+        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            TindakanRawat tindakanRawat = new TindakanRawat();
+            tindakanRawat.setIdTindakanRawat(idTindakanRawat);
+            tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+            tindakanRawat.setIdTindakan(idTindakan);
+
+            List<Tindakan> tindakanList = new ArrayList<>();
+            Tindakan tindakan = new Tindakan();
+            tindakan.setIdTindakan(idTindakan);
+            Tindakan tindakanResult = new Tindakan();
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+
+            try {
+                tindakanList = tindakanBo.getByCriteria(tindakan);
+            }catch (GeneralBOException e){
+                logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+            if (!tindakanList.isEmpty()){
+                tindakanResult = tindakanList.get(0);
+            }
+
+            tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
+            tindakanRawat.setIdDokter(idDokter);
+            tindakanRawat.setIdPerawat(idPerawat);
+            tindakanRawat.setQty(qty);
+            tindakanRawat.setTarif(tindakanResult.getTarif());
+            tindakanRawat.setLastUpdate(updateTime);
+            tindakanRawat.setLastUpdateWho(userLogin);
+            tindakanRawat.setAction("U");
+
+            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+
+            tindakanRawatBo.saveEdit(tindakanRawat);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
 }

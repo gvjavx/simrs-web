@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity" dynamic-update="true"
-           table="belajar" select-before-update="true" schema="public">
+           table="im_simrs_pasien" select-before-update="true" schema="public">
 
 
         <id name="idPasien">

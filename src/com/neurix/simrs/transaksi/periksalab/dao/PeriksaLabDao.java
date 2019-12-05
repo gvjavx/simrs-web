@@ -1,15 +1,17 @@
 package com.neurix.simrs.transaksi.periksalab.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     @Override
@@ -44,6 +46,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             if (mapCriteria.get("id_pemeriksa")!=null) {
                 criteria.add(Restrictions.eq("idPemeriksa", (String) mapCriteria.get("id_pemeriksa")));
             }
+            if (mapCriteria.get("id_lab")!=null) {
+                criteria.add(Restrictions.eq("idLab", (String) mapCriteria.get("id_lab")));
+            }
+            if (mapCriteria.get("status")!=null) {
+                criteria.add(Restrictions.eq("statusPeriksa", (String) mapCriteria.get("status")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -53,5 +61,148 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
 
         List<ItSimrsPeriksaLabEntity> results = criteria.list();
         return results;
+    }
+
+    public List<PeriksaLab> getSearchLab(PeriksaLab bean){
+        List<PeriksaLab> checkupList = new ArrayList<>();
+        if (bean != null){
+
+            String idPasien = "%";
+            String nama = "%";
+            String statusPeriksa = "%";
+            String idDetailCheckup = "%";
+            String idLab = "%";
+
+            String dateFrom = "";
+            String dateTo = "";
+
+            String kategori = "%";
+
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+                idPasien = bean.getIdPasien();
+            }
+
+            if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+                nama = bean.getNamaPasien();
+            }
+
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                idDetailCheckup = bean.getIdPelayanan();
+            }
+
+            if (bean.getIdLab() != null && !"".equalsIgnoreCase(bean.getIdLab())){
+                idLab = bean.getIdLab();
+            }
+
+            if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
+                statusPeriksa = bean.getStatusPeriksa();
+            }
+
+            if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())){
+                kategori = bean.getIdKategoriLab();
+            }
+
+            if (bean.getStDateFrom() != null && !"".equalsIgnoreCase(bean.getStDateFrom())){
+                dateFrom = bean.getStDateFrom();
+            }
+
+            if (bean.getStDateTo() != null && !"".equalsIgnoreCase(bean.getStDateTo())){
+                dateTo = bean.getStDateTo();
+            }
+
+
+            String SQL = "SELECT\n" +
+                    "pl.id_periksa_lab,\n" +
+                    "pl.id_detail_checkup,\n" +
+                    "pl.id_lab,\n" +
+                    "c.id_pasien,\n" +
+                    "c.nama,\n" +
+                    "lab.nama_lab,\n" +
+                    "pl.created_date\n" +
+                    "FROM it_simrs_periksa_lab pl\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup dc ON dc.id_detail_checkup = pl.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup c ON c.no_checkup = dc.no_checkup\n" +
+                    "INNER JOIN im_simrs_lab lab ON lab.id_lab = pl.id_lab\n" +
+                    "WHERE lab.id_kategori_lab LIKE :kategori\n" +
+                    "AND c.id_pasien LIKE :idPasien \n" +
+                    "AND c.nama LIKE :nama \n" +
+                    "AND lab.id_lab LIKE :idLab \n" +
+                    "AND pl.status_periksa LIKE :status \n" +
+                    "AND dc.id_detail_checkup LIKE :idDetailCheckup";
+
+            List<Object[]> results = new ArrayList<>();
+            if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
+
+                SQL = SQL + "\n AND pl.created_date > :dateFrom AND pl.created_date < :dateTo " +
+                        "\n ORDER BY pl.created_date ASC";
+
+                results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                        .setParameter("idPasien", idPasien)
+                        .setParameter("nama", nama)
+                        .setParameter("idDetailCheckup", idDetailCheckup)
+                        .setParameter("idLab", idLab)
+                        .setParameter("status", statusPeriksa)
+                        .setParameter("kategori", kategori)
+                        .setParameter("dateFrom", dateFrom)
+                        .setParameter("dateTo", dateTo)
+                        .list();
+
+            } else {
+
+                SQL = SQL + "\n ORDER BY pl.created_date ASC";
+
+                results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                        .setParameter("idPasien", idPasien)
+                        .setParameter("nama", nama)
+                        .setParameter("idDetailCheckup", idDetailCheckup)
+                        .setParameter("idLab", idLab)
+                        .setParameter("status", statusPeriksa)
+                        .setParameter("kategori", kategori)
+                        .list();
+            }
+
+            if (!results.isEmpty()){
+                PeriksaLab dataLab;
+                for (Object[] obj : results){
+                    dataLab = new PeriksaLab();
+                    dataLab.setIdPeriksaLab(obj[0].toString());
+                    dataLab.setIdDetailCheckup(obj[1].toString());
+                    dataLab.setIdLab(obj[2].toString());
+                    dataLab.setIdPasien(obj[3].toString());
+                    dataLab.setNamaPasien(obj[4].toString());
+                    dataLab.setLabName(obj[5].toString());
+                    dataLab.setCreatedDate((Timestamp) obj[6]);
+                    checkupList.add(dataLab);
+                }
+            }
+        }
+        return checkupList;
+    }
+
+    public List<Object[]> getListAlamatByDesaId(String desaId) {
+        String SQL = "SELECT \n" +
+                "ds.desa_name, \n" +
+                "kec.kecamatan_name,\n" +
+                "kot.kota_name,\n" +
+                "prov.provinsi_name\n" +
+                "FROM \n" +
+                "im_hris_desa ds\n" +
+                "INNER JOIN im_hris_kecamatan kec ON kec.kecamatan_id = ds.kecamatan_id\n" +
+                "INNER JOIN im_hris_kota kot ON kot.kota_id = kec.kota_id\n" +
+                "INNER JOIN im_hris_provinsi prov ON prov.provinsi_id = kot.provinsi_id\n" +
+                "WHERE ds.desa_id = :id ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", desaId)
+                .list();
+
+        return results;
+    }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_periksa_lab')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

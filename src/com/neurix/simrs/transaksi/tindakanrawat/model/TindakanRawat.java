@@ -26,6 +26,16 @@ public class TindakanRawat extends BaseModel {
     private String namaDokter;
     private String namaPerawat;
 
+    private String idKategoriTindakan;
+
+    public String getIdKategoriTindakan() {
+        return idKategoriTindakan;
+    }
+
+    public void setIdKategoriTindakan(String idKategoriTindakan) {
+        this.idKategoriTindakan = idKategoriTindakan;
+    }
+
     public String getNamaDokter() {
         return namaDokter;
     }

@@ -16,8 +16,8 @@
             $('#rawat_inap').addClass('active');
         });
 
-
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -59,7 +59,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="rawatInap.nama"
+                                        <s:textfield id="nama_pasien" name="rawatInap.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -69,12 +69,12 @@
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px"
+                                        <s:select cssStyle="border-radius: 4px; width: 100%"
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="rawatInap.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control" theme="simple"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -83,7 +83,7 @@
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="rawatInap.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -96,12 +96,27 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                  name="rawatInap.idKelas"
+                                                  listKey="idKelasRuangan"
+                                                  listValue="namaKelasRuangan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
+                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Mawar','1':'Bungenvil','2':'Melati','3':'Kamboja'}" cssStyle="margin-top: 7px"
-                                                  id="ruangan" name="headerDetailCheckup.ruangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                        <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
+                                            <option value=''>[Select One]</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -185,15 +200,15 @@
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
-                                    <td><s:property value="statusPeriksa"/></td>
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_rawat_inap}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
                                     </td>
                                 </tr>
@@ -209,6 +224,36 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    function listSelectRuangan(id){
+        var idx     = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+        var option  = "";
+        var flag    = false;
+
+        $('#load_ruang').show();
+        setTimeout(function () {
+
+        },100);
+        if(idKelas != ''){
+            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+                $('#load_ruang').hide();
+            }
+            });
+        }else{
+            option = "<option value=''>[Select One]</option>";
+        }
+
+        $('#nama_ruangan').html(option);
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -12,6 +12,7 @@
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -36,9 +37,9 @@
             var desa            = $('#desa11').val();
             var imgInp          = $('#imgInp').val();
 
-            if (noBpjs != '' && idPasien != '' && noKtp != '' && namaPasien != ''
+            if (idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
-                    && jalan != '' && suku != '' && profesi != '' && agama != ''
+                    && agama != ''
                     && poli != '' && dokter != '' && penjamin != ''
                     && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && imgInp != '') {
 
@@ -49,9 +50,9 @@
                 $("html, body").animate({ scrollTop: 0 }, 600);
                 $('#warning_pasien').show().fadeOut(10000);
 
-                if (noBpjs == '') {
-                    $('#no_bpjs').css('border','red solid 1px');
-                }
+//                if (noBpjs == '') {
+//                    $('#no_bpjs').css('border','red solid 1px');
+//                }
                 if (idPasien == '') {
                     $('#id_pasien').css('border','red solid 1px');
                 }
@@ -70,15 +71,15 @@
                 if (tglLahir == '') {
                     $('#st_tgl_lahir').css('border','red solid 1px');
                 }
-                if (jalan == '') {
-                    $('#jalan').css('border','red solid 1px');
-                }
-                if (suku == '') {
-                    $('#suku').css('border','red solid 1px');
-                }
-                if (profesi == '') {
-                    $('#profesi').css('border','red solid 1px');
-                }
+//                if (jalan == '') {
+//                    $('#jalan').css('border','red solid 1px');
+//                }
+//                if (suku == '') {
+//                    $('#suku').css('border','red solid 1px');
+//                }
+//                if (profesi == '') {
+//                    $('#profesi').css('border','red solid 1px');
+//                }
                 if (agama == '') {
                     $('#agama').css('border','red solid 1px');
                 }
@@ -154,7 +155,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            Edit Rawat Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -168,8 +169,8 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-plus"></i> Inputan Data Pasien</h3>
                     </div>
-                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup"
-                            action="saveAdd_checkup.action" theme="simple">
+                    <s:form id="editCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup"
+                            action="saveEdit_checkup.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pasien" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -177,14 +178,19 @@
                             </div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                                    <%--<button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Pasien Baru</button>--%>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <s:hidden name="headerCheckup.noCheckup"></s:hidden>
+                                            <s:hidden name="headerCheckup.idDetailCheckup"></s:hidden>
+                                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>
+                                            <s:hidden id="id_dokter" name="headerCheckup.idDokter"></s:hidden>
                                             <label class="col-md-4">No BPJS</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
+                                                <s:textfield id="no_bpjs" name="headerCheckup.idDokter"
                                                              cssClass="form-control" onkeypress="$(this).css('border','')"/>
                                             </div>
                                         </div>
@@ -192,8 +198,63 @@
                                             <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"/>
+
                                             </div>
+
+                                            <script type="application/javascript">
+                                                var functions, mapped;
+                                                $('#id_pasien').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+
+                                                        var data = [];
+                                                        dwr.engine.setAsync(false);
+
+                                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                                            data = listdata;
+                                                        });
+
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.noKtp+" "+item.noBpjs+" "+item.nama;
+                                                            mapped[labelItem] = {
+                                                                id: item.idPasien,
+                                                                nama:item.nama,
+                                                                ktp: item.noKtp,
+                                                                bpjs:item.noBpjs,
+                                                                tempatlahir:item.tempatLahir,
+                                                                tgllahir:item.tglLahir,
+                                                                alamat:item.jalan,
+                                                                suku:item.suku,
+                                                                profesi:item.profesi,
+                                                                notelp:item.noTelp,
+                                                                urlktp:item.urlKtp,
+                                                                sex:item.jenisKelamin,
+                                                                agama:item.agama
+                                                            };
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+                                                        $('#no_ktp').val(selectedObj.ktp);
+                                                        $('#nama_pasien').val(selectedObj.nama);
+                                                        $('#jenis_kelamin').val(selectedObj.sex);
+                                                        $('#tempat_lahir').val(selectedObj.tempatlahir);
+                                                        $('#tanggal_lahir').val(selectedObj.tgllahir);
+                                                        $('#agama').val(selectedObj.agama);
+                                                        $('#profesi').val(selectedObj.profesi);
+                                                        $('#jalan').val(selectedObj.alamat);
+                                                        $('#suku').val(selectedObj.urlktp);
+                                                        $('#url').val(selectedObj.suku);
+                                                        return selectedObj.id;
+                                                    }
+                                                });
+                                            </script>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
@@ -243,12 +304,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Agama</label>
                                             <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
-                                                        cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                        id="agama" name="headerCheckup.agama"
-                                                        headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control"/>
+                                                <s:select id="agama" name="headerCheckup.agama" list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}" headerKey="" headerValue="[Select One]" cssStyle="margin-top: 7px" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -278,7 +334,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4">Provinsi</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="headerCheckup.namaProvinsi"
                                                              required="true" disabled="false" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
                                                 <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
@@ -289,7 +345,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kota</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="headerCheckup.namaKota"
                                                              required="true" disabled="false" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
                                                 <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
@@ -300,7 +356,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="headerCheckup.namaKecamatan"
                                                              required="true" disabled="false" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
                                                 <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
@@ -311,7 +367,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name="headerCheckup.namaDesa"
                                                              required="true" disabled="false" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
                                                 <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
@@ -370,7 +426,7 @@
                                                 <s:select
                                                         list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik','Sepupu':'Sepupu','Ipar':'Ipar'}"
                                                         cssStyle="margin-top: 7px"
-                                                        id="hubungan" name="headerCheckup.hubungan"
+                                                        id="hubungan" name="headerCheckup.hubunganKeluarga"
                                                         headerKey="" headerValue="[Select one]"
                                                         cssClass="form-control"/>
                                             </div>
@@ -391,29 +447,20 @@
                                             <div class="col-md-8">
                                                 <s:action id="initComboPoli" namespace="/checkup"
                                                           name="getComboPelayanan_checkup"/>
-                                                <s:select cssStyle="margin-top: 7px"
+                                                <s:select cssStyle="margin-top: 7px; width: 100%"
                                                           list="#initComboPoli.listOfPelayanan" id="poli"
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
-
-
-
+                                                          cssClass="form-control select2"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Dokter</label>
                                             <div class="col-md-8">
-                                                <%--<s:select--%>
-                                                        <%--list="#{'01':'Dr. Sudirto','02':'Dr.Sumadjo'}"--%>
-                                                        <%--cssStyle="margin-top: 7px"--%>
-                                                        <%--id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
-                                                        <%--headerKey="" headerValue="[Select one]"--%>
-                                                        <%--cssClass="form-control"/>--%>
-                                                <%--<s:textfield id="dokter" name="headerCheckup.idDokter" onchange="$(this).css('border','')"--%>
-                                                             <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                                    <select id="dokter" class="form-control" name="headerCheckup.idDokter" style="margin-top: 7px" onchange="$(this).css('border','')"></select>
+                                                <select id="dokter" class="form-control select2" name="headerCheckup.idDokter" style="margin-top: 7px; width: 100%" onchange="$(this).css('border','')">
+                                                    <option value=''>[Select One]</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -435,14 +482,17 @@
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="kunjungan" name="headerCheckup.jenisKunjungan"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                <s:select list="#{'Lama':'Lama','Baru':'Baru'}"
+                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                                          id="kunjungan" name="headerCheckup.jenisKunjungan"
+                                                          headerKey="" headerValue="[Select one]"
+                                                          cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="perujuk" name="headerCheckup.perujuk"
+                                                <s:textfield id="perujuk" name="headerCheckup.rujuk"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
@@ -458,9 +508,9 @@
                                                 <button type="button" class="btn btn-success" onclick="confirm()"><i
                                                         class="fa fa-arrow-right"></i> Save
                                                 </button>
-                                                <button type="button" class="btn btn-danger" onclick="resetField()">
-                                                    <i class="fa fa-refresh"></i> Reset
-                                                </button>
+                                                <%--<button type="button" class="btn btn-danger" onclick="resetField()">--%>
+                                                    <%--<i class="fa fa-refresh"></i> Reset--%>
+                                                <%--</button>--%>
                                                 <a type="button" class="btn btn-warning" href="initForm_checkup.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
@@ -483,7 +533,7 @@
                                                     class="fa fa-times"></i> No
                                             </button>
                                             <sj:submit targets="crud" type="button" cssClass="btn btn-success"
-                                                       formIds="addCheckupForm" id="save" name="save"
+                                                       formIds="editCheckupForm" id="save" name="save"
                                                        onBeforeTopics="beforeProcessSave"
                                                        onCompleteTopics="closeDialog,successDialog"
                                                        onSuccessTopics="successDialog" onErrorTopics="errorDialog">
@@ -544,6 +594,10 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    var idPelayanan = $('#poli').val();
+    var idDokter    = $('#id_dokter').val();
+
     $(document).ready(function () {
 
         $('#pendaftaran').addClass('active');
@@ -581,7 +635,24 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
+
+        initListDokter(idPelayanan);
+
     });
+
+    function initListDokter(idPelayanan){
+        CheckupAction.listOfDokter(idPelayanan, function(response){
+            option = "<option value=''>[Select One]</option>";
+            if (response != null){
+                $.each(response, function (i, item) {
+                    option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
+                });
+            }else{
+                option = option;
+            }
+        });
+        $('#dokter').html(option);
+    }
 
     function listDokter(idPelayanan){
         var idx = idPelayanan.selectedIndex;
@@ -594,7 +665,7 @@
                     option += "<option value='"+item.idDokter+"'>" +item.namaDokter+ "</option>";
                 });
             }else{
-               option = option;
+                option = option;
             }
         });
         $('#dokter').html(option);

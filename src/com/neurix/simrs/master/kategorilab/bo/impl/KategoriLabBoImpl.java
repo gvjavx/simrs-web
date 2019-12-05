@@ -3,12 +3,19 @@ package com.neurix.simrs.master.kategorilab.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
+import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
 import com.neurix.simrs.master.kategorilab.dao.KategoriLabDao;
+import com.neurix.simrs.master.kategorilab.model.ImSimrsKategoriLabEntity;
+import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class KategoriLabBoImpl implements JenisObatBo {
+public class KategoriLabBoImpl implements KategoriLabBo {
 
     protected static transient Logger logger = Logger.getLogger(KategoriLabBoImpl.class);
     private KategoriLabDao kategoriLabDao;
@@ -17,45 +24,52 @@ public class KategoriLabBoImpl implements JenisObatBo {
         return logger;
     }
 
-    public static void setLogger(Logger logger) {
-        KategoriLabBoImpl.logger = logger;
-    }
-
-    public KategoriLabDao getKategoriLabDao() {
-        return kategoriLabDao;
-    }
-
     public void setKategoriLabDao(KategoriLabDao kategoriLabDao) {
         this.kategoriLabDao = kategoriLabDao;
     }
 
-    @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
-        return null;
-    }
 
     @Override
-    public void saveDelete(JenisObat bean) throws GeneralBOException {
+    public List<KategoriLab> getByCriteria(KategoriLab bean) throws GeneralBOException {
+        logger.info("[KategoriLabBoImpl.getByCriteria] Start >>>>>>>");
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
 
-    }
+            if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())) {
+                hsCriteria.put("id_kategori_lab", bean.getIdKategoriLab());
+            }
 
-    @Override
-    public void saveEdit(JenisObat bean) throws GeneralBOException {
+            hsCriteria.put("flag", "Y");
 
-    }
+            List<ImSimrsKategoriLabEntity> kategoriLabEntityList = new ArrayList<>();
+            List<KategoriLab> result = new ArrayList<>();
 
-    @Override
-    public JenisObat saveAdd(JenisObat bean) throws GeneralBOException {
-        return null;
-    }
+            try {
+                kategoriLabEntityList = kategoriLabDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[KategoriLabBoImpl.getByCriteria] error when get data jenis obat by get by criteria "+ e.getMessage());
+            }
 
-    @Override
-    public List<JenisObat> getByCriteria(JenisObat searchBean) throws GeneralBOException {
-        return null;
-    }
+            if (!kategoriLabEntityList.isEmpty()){
+                KategoriLab kategoriLab;
+                for (ImSimrsKategoriLabEntity kategoriLabEntity : kategoriLabEntityList){
+                    kategoriLab = new KategoriLab();
+                    kategoriLab.setIdKategoriLab(kategoriLabEntity.getIdKategoriLab());
+                    kategoriLab.setNamaKategori(kategoriLabEntity.getNamaKategori());
+                    kategoriLab.setFlag(kategoriLabEntity.getFlag());
+                    kategoriLab.setAction(kategoriLabEntity.getAction());
+                    kategoriLab.setCreatedDate(kategoriLabEntity.getCreatedDate());
+                    kategoriLab.setCreatedWho(kategoriLabEntity.getCreatedWho());
+                    kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
+                    kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
+                    result.add(kategoriLab);
+                }
+            }
 
-    @Override
-    public List<JenisObat> getAll() throws GeneralBOException {
+            logger.info("[KategoriLabBoImpl.getByCriteria] End <<<<<<<");
+            return result;
+        }
+        logger.info("[KategoriLabBoImpl.getByCriteria] End <<<<<<<");
         return null;
     }
 }
