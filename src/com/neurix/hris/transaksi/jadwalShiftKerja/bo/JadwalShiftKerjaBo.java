@@ -26,4 +26,6 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     String saveTanggalOtomatis(JadwalShiftKerja searchBean) throws GeneralBOException;
 
     List<JadwalShiftKerja> getJadwalforReport(JadwalShiftKerja bean) throws GeneralBOException;
+
+    List<JadwalShiftKerjaDetail> getPegawaiByGrup(String kelompokPositionId, String unit) throws GeneralBOException;
 }

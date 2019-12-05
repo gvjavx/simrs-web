@@ -15,6 +15,10 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private String jadwalShiftKerjaDetailId;
     private String jadwalShiftKerjaId;
     private String shiftGroupId;
+    private String nip;
+    private String shiftId;
+    private String positionName;
+    private String namaPegawai;
 
     private Timestamp createdDate;
     private String flag;
@@ -22,6 +26,38 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public String getJadwalShiftKerjaDetailId() {
         return jadwalShiftKerjaDetailId;

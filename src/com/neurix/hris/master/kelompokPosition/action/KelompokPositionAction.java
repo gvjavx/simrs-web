@@ -25,6 +25,15 @@ public class KelompokPositionAction extends BaseMasterAction{
     private KelompokPosition kelompokPosition;
 
     private List<KelompokPosition> comboListOfKelompokPosition = new ArrayList<KelompokPosition>();
+    private List<KelompokPosition> listOfComboKelompokPosition = new ArrayList<>() ;
+
+    public List<KelompokPosition> getListOfComboKelompokPosition() {
+        return listOfComboKelompokPosition;
+    }
+
+    public void setListOfComboKelompokPosition(List<KelompokPosition> listOfComboKelompokPosition) {
+        this.listOfComboKelompokPosition = listOfComboKelompokPosition;
+    }
 
     public List<KelompokPosition> getComboListOfKelompokPosition() {
         return comboListOfKelompokPosition;
@@ -415,7 +424,31 @@ public class KelompokPositionAction extends BaseMasterAction{
 
         return "";
     }
+    public String initComboKelompokPosition() {
+        logger.info("[KelompokPositionAction.initComboKelompokPosition] start process >>>");
 
+        KelompokPosition searchKelompokPosition = new KelompokPosition();
+        List<KelompokPosition> listOfSearchKelompokPosition = new ArrayList();
+        searchKelompokPosition.setFlag("Y");
+        try {
+            listOfSearchKelompokPosition = kelompokPositionBoProxy.getByCriteria(searchKelompokPosition);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = kelompokPositionBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[KelompokPositionAction.initComboKelompokPosition] Error when saving error,", e1);
+            }
+            logger.error("[KelompokPositionAction.initComboKelompokPosition] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listOfComboKelompokPosition.addAll(listOfSearchKelompokPosition);
+        logger.info("[KelompokPositionAction.initComboKelompokPosition] end process <<<");
+
+        return SUCCESS;
+    }
     public String paging(){
         return SUCCESS;
     }

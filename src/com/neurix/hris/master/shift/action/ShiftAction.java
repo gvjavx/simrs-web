@@ -7,6 +7,8 @@ import com.neurix.hris.master.shift.bo.ShiftBo;
 import com.neurix.hris.master.shift.model.Shift;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -117,21 +119,6 @@ public class ShiftAction extends BaseMasterAction {
             }
 
             if(editShift != null) {
-                String jamAwal = editShift.getJamAwal();
-                String jamAkhir = editShift.getJamAkhir();
-
-                String jamAwalJam = jamAwal.substring(0,2);
-                String jamAwalMenit = jamAwal.substring(3,5);
-
-                String jamAkhirJam = jamAkhir.substring(0,2);
-                String jamAkhirMenit = jamAkhir.substring(3,5);
-
-                editShift.setJamAwalJam(jamAwalJam);
-                editShift.setJamAwalMenit(jamAwalMenit);
-
-                editShift.setJamAkhirJam(jamAkhirJam);
-                editShift.setJamAkhirMenit(jamAkhirMenit);
-
                 setShift(editShift);
             } else {
                 editShift.setFlag(itemFlag);
@@ -155,7 +142,7 @@ public class ShiftAction extends BaseMasterAction {
 
     @Override
     public String delete() {
-        logger.info("[ShiftAction.edit] start process >>>");
+        logger.info("[ShiftAction.delete] start process >>>");
         String itemId = getId();
         String itemFlag = getFlag();
 
@@ -169,28 +156,14 @@ public class ShiftAction extends BaseMasterAction {
                 try {
                     logId = shiftBoProxy.saveErrorMessage(e.getMessage(), "shiftBo.getAlatByCriteria");
                 } catch (GeneralBOException e1) {
-                    logger.error("[ShiftAction.edit] Error when retrieving edit data,", e1);
+                    logger.error("[ShiftAction.delete] Error when retrieving edit data,", e1);
                 }
-                logger.error("[ShiftAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                logger.error("[ShiftAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
                 return "failure";
             }
 
             if(editShift != null) {
-                String jamAwal = editShift.getJamAwal();
-                String jamAkhir = editShift.getJamAkhir();
-
-                String jamAwalJam = jamAwal.substring(2,3);
-                String jamAwalMenit = jamAwal.substring(2,5);
-
-                String jamAkhirJam = jamAkhir.substring(2,3);
-                String jamAkhirMenit = jamAkhir.substring(2,5);
-
-                editShift.setJamAwalJam(jamAwalJam);
-                editShift.setJamAwalMenit(jamAwalMenit);
-
-                editShift.setJamAkhirJam(jamAkhirJam);
-                editShift.setJamAkhirMenit(jamAkhirMenit);
                 setShift(editShift);
             } else {
                 editShift.setFlag(itemFlag);
@@ -206,7 +179,7 @@ public class ShiftAction extends BaseMasterAction {
             addActionError("Error, Unable to find data with id = " + itemId);
             return "failure";
         }
-        logger.info("[ShiftAction.edit] end process >>>");
+        logger.info("[ShiftAction.delete] end process >>>");
         return "init_delete";
     }
 
@@ -388,6 +361,29 @@ public class ShiftAction extends BaseMasterAction {
         listOfComboShift.addAll(listOfShift);
 
         return "init_combo_shift";
+    }
+
+    public List<Shift> searchShiftByGrup(String kelompokId) {
+        Shift shift = new Shift();
+        shift.setFlag("Y");
+        shift.setKelompokPositionId(kelompokId);
+
+        List<Shift> listOfShift = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ShiftBo shiftBo = (ShiftBo) ctx.getBean("shiftBoProxy");
+        try {
+            listOfShift = shiftBo.getByCriteria(shift);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = shiftBo.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.searchShiftByGrup] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.searchShiftByGrup] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+        }
+        return listOfShift;
     }
     public String paging(){
         return SUCCESS;

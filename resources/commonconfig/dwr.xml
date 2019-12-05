@@ -124,6 +124,7 @@
           <param name="class" value="com.neurix.hris.transaksi.jadwalShiftKerja.action.JadwalShiftKerjaAction"/>
       </create>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail"/>
 
       <convert converter="bean" match="com.neurix.hris.master.shift.model.Shift"/>
       <convert converter="bean" match="com.neurix.hris.master.group.model.Group"/>
@@ -218,6 +219,9 @@
       <convert converter="bean" match="com.neurix.hris.master.groupShift.model.GroupShift"/>
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.payroll.action.PayrollAction"/>
+      </create>
+      <create creator="new">
+          <param name="class" value="com.neurix.hris.master.shift.action.ShiftAction"/>
       </create>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Payroll"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollPph"/>
