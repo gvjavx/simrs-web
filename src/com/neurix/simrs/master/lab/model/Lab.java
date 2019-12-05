@@ -18,6 +18,16 @@ public class Lab extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String kategoriLabName;
+
+    public String getKategoriLabName() {
+        return kategoriLabName;
+    }
+
+    public void setKategoriLabName(String kategoriLabName) {
+        this.kategoriLabName = kategoriLabName;
+    }
+
     public String getIdLab() {
         return idLab;
     }

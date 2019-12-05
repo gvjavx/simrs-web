@@ -1,9 +1,13 @@
 package com.neurix.simrs.master.kategorilab.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
 import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class KategoriLabAction extends BaseMasterAction {
 
@@ -11,16 +15,18 @@ public class KategoriLabAction extends BaseMasterAction {
     private KategoriLabBo kategoriLabBoProxy;
     private KategoriLab kategoriLab;
 
+    private List<KategoriLab> listOfKategoriLab = new ArrayList<>();
+
+    public List<KategoriLab> getListOfKategoriLab() {
+        return listOfKategoriLab;
+    }
+
+    public void setListOfKategoriLab(List<KategoriLab> listOfKategoriLab) {
+        this.listOfKategoriLab = listOfKategoriLab;
+    }
+
     public static Logger getLogger() {
         return logger;
-    }
-
-    public static void setLogger(Logger logger) {
-        KategoriLabAction.logger = logger;
-    }
-
-    public KategoriLabBo getKategoriLabBoProxy() {
-        return kategoriLabBoProxy;
     }
 
     public void setKategoriLabBoProxy(KategoriLabBo kategoriLabBoProxy) {
@@ -78,5 +84,24 @@ public class KategoriLabAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public String getListKategoriLab(){
+
+        logger.info("[KategoriLabAction.getListKategoriLab] start process >>>");
+
+        List<KategoriLab> kategoriLabList = new ArrayList<>();
+        KategoriLab kategoriLab = new KategoriLab();
+
+        try {
+            kategoriLabList = kategoriLabBoProxy.getByCriteria(kategoriLab);
+        }catch (GeneralBOException e){
+            logger.error("[KategoriLabAction.getListKategoriLab] Error when get kategori lab ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+
+        listOfKategoriLab.addAll(kategoriLabList);
+        logger.info("[KategoriLabAction.getListKategoriLab] end process <<<");
+        return SUCCESS;
+
     }
 }

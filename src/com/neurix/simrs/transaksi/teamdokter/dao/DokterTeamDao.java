@@ -3,9 +3,12 @@ package com.neurix.simrs.transaksi.teamdokter.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +38,19 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by
         criteria.addOrder(Order.asc("idTeamDokter"));
 
         List<ItSimrsDokterTeamEntity> results = criteria.list();
         return results;
+    }
+
+    public String getNextSeq(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_team_dokter')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

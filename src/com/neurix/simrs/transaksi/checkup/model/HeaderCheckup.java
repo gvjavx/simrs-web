@@ -36,10 +36,157 @@ public class HeaderCheckup {
     private String idPelayanan;
     private String statusPeriksa;
     private String statusPeriksaName;
+    private String namaPelayanan;
+    private String namaRuangan;
+    private String noRuangan;
 
     private String stTglLahir;
     private String stTglFrom;
     private String getStTglTo;
+
+    private String namaDesa;
+    private String namaKecamatan;
+    private String namaKota;
+    private String namaProvinsi;
+    private String kecamatanId;
+    private String kotaId;
+    private String provinsiId;
+
+    private String idDokter;
+    private String idDetailCheckup;
+    private String idTeamDokter;
+
+    private String namaPenanggung;
+    private String hubunganKeluarga;
+    private String rujuk;
+
+    public String getNamaPenanggung() {
+        return namaPenanggung;
+    }
+
+    public void setNamaPenanggung(String namaPenanggung) {
+        this.namaPenanggung = namaPenanggung;
+    }
+
+    public String getHubunganKeluarga() {
+        return hubunganKeluarga;
+    }
+
+    public void setHubunganKeluarga(String hubunganKeluarga) {
+        this.hubunganKeluarga = hubunganKeluarga;
+    }
+
+    public String getRujuk() {
+        return rujuk;
+    }
+
+    public void setRujuk(String rujuk) {
+        this.rujuk = rujuk;
+    }
+
+    public String getKecamatanId() {
+        return kecamatanId;
+    }
+
+    public void setKecamatanId(String kecamatanId) {
+        this.kecamatanId = kecamatanId;
+    }
+
+    public String getKotaId() {
+        return kotaId;
+    }
+
+    public void setKotaId(String kotaId) {
+        this.kotaId = kotaId;
+    }
+
+    public String getProvinsiId() {
+        return provinsiId;
+    }
+
+    public void setProvinsiId(String provinsiId) {
+        this.provinsiId = provinsiId;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getIdTeamDokter() {
+        return idTeamDokter;
+    }
+
+    public void setIdTeamDokter(String idTeamDokter) {
+        this.idTeamDokter = idTeamDokter;
+    }
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
+
+    public String getNamaRuangan() {
+        return namaRuangan;
+    }
+
+    public void setNamaRuangan(String namaRuangan) {
+        this.namaRuangan = namaRuangan;
+    }
+
+    public String getNoRuangan() {
+        return noRuangan;
+    }
+
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaDesa() {
+        return namaDesa;
+    }
+
+    public void setNamaDesa(String namaDesa) {
+        this.namaDesa = namaDesa;
+    }
+
+    public String getNamaKecamatan() {
+        return namaKecamatan;
+    }
+
+    public void setNamaKecamatan(String namaKecamatan) {
+        this.namaKecamatan = namaKecamatan;
+    }
+
+    public String getNamaKota() {
+        return namaKota;
+    }
+
+    public void setNamaKota(String namaKota) {
+        this.namaKota = namaKota;
+    }
+
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
+    }
 
     public String getStTglFrom() {
         return stTglFrom;

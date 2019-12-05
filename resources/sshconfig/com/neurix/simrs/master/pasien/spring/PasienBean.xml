@@ -5,6 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="pasienAction" class="com.neurix.simrs.master.pasien.action.PasienAction"
+          p:pasienBoProxy-ref="pasienBo"
     />
 
     <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
@@ -27,6 +28,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListComboPasien">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
             </props>

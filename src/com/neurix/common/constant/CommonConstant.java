@@ -38,11 +38,17 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_REKRUITMEN_FILE="/pages/upload/file/rekruitmen/";
     public final static String RESOURCE_PATH_MUTASI_FILE="/pages/upload/file/mutasi/";
 
+    public final static String RESOURCE_PATH_KTP_PASIEN="/upload/ktp_pasien/";
+
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK="/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_DEFAULT_MAP ="/pages/upload/map/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY="C:\\xampp\\tomcat\\webapps\\";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="C:\\tomcat-7-64x\\webapps";
+
+    //sodiq, 18 Nov 2019, Upload KTP pasien
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 

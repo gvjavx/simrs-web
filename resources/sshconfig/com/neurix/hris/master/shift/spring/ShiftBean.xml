@@ -9,7 +9,9 @@
         p:shiftBoProxy-ref="shiftBoProxy"
     />
     <bean id="shiftBo" class="com.neurix.hris.master.shift.bo.impl.ShiftBoImpl"
-       p:shiftDao-ref="shiftDao"
+          p:shiftDao-ref="shiftDao"
+          p:branchDao-ref="branchDao"
+          p:kelompokPositionDao-ref="kelompokPositionDao"
     />
     <bean id="shiftBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"

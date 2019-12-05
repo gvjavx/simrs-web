@@ -6,20 +6,20 @@ import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by Toshiba on 13/11/2019.
  */
 public class PasienBoImpl implements PasienBo {
 
-    protected static transient org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PasienBoImpl.class);
+    protected static transient Logger logger = org.apache.log4j.Logger.getLogger(PasienBoImpl.class);
 
     private PasienDao pasienDao;
 
@@ -206,6 +206,27 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.saveEdit] End <<<<<<<");
     }
 
+    @Override
+    public List<Pasien> getListComboPasien(String query) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getListComboPasien] Start >>>>>>>");
+
+        String tmp = "%" + query + "%";
+
+        List<ImSimrsPasienEntity> pasienEntityList = new ArrayList<>();
+        try {
+            pasienEntityList = pasienDao.getListPasienByTmp(tmp);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        logger.info("[PasienBoImpl.getListComboPasien] End <<<<<<<");
+        if (!pasienEntityList.isEmpty()){
+            return setTemplatePasien(pasienEntityList);
+        }
+
+        return new ArrayList<>();
+    }
+
 
     public String getIdPasien(){
         logger.info("[PasienBoImpl.getIdPasien] Start >>>>>>>");
@@ -220,6 +241,8 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.getIdPasien] End <<<<<<<");
         return id;
     }
+
+
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;

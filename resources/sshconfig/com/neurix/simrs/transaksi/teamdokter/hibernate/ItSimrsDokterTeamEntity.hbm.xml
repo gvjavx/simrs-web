@@ -9,7 +9,7 @@
 
 
         <id name="idTeamDokter">
-            <column name="id_team_dokter" sql-type="varchar" length="10" not-null="true" />
+            <column name="id_team_dokter" sql-type="varchar" length="30" not-null="true" />
         </id>
 
         <property name="idDokter">

@@ -35,8 +35,9 @@
 
                 <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/simrs</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">root123456</prop>
+
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
@@ -295,6 +296,7 @@
                 <value>sshconfig/com/neurix/simrs/master/dokter/hibernate/ImSimrsDokterSpesialisEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsPenjaminEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsTipePenjaminEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatGejalaEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntity.hbm.xml</value>

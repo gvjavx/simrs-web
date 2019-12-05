@@ -22,8 +22,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
     public List<ImSimrsPelayananEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class);
         if (mapCriteria != null) {
-            if (mapCriteria.get("id_pelayanan") != null)
+            if (mapCriteria.get("id_pelayanan") != null){
                 criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
+            }
         }
         criteria.add(Restrictions.eq("flag", "Y"));
         List<ImSimrsPelayananEntity> result = criteria.list();

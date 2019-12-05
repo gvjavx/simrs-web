@@ -1,6 +1,11 @@
 package com.neurix.hris.master.shift.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
+import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.master.shift.bo.ShiftBo;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
@@ -21,6 +26,24 @@ public class ShiftBoImpl implements ShiftBo {
     protected static transient Logger logger = Logger.getLogger(ShiftBoImpl.class);
 
     private ShiftDao shiftDao;
+    private BranchDao branchDao;
+    private KelompokPositionDao kelompokPositionDao;
+
+    public KelompokPositionDao getKelompokPositionDao() {
+        return kelompokPositionDao;
+    }
+
+    public void setKelompokPositionDao(KelompokPositionDao kelompokPositionDao) {
+        this.kelompokPositionDao = kelompokPositionDao;
+    }
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -52,13 +75,8 @@ public class ShiftBoImpl implements ShiftBo {
 
             entityData.setShiftId(bean.getShiftId());
             entityData.setShiftName(bean.getShiftName());
-            if ("Y".equalsIgnoreCase(bean.getFlag())){
-                entityData.setJamAwal(bean.getJamAwalJam()+"."+bean.getJamAwalMenit());
-                entityData.setJamAkhir(bean.getJamAkhirJam()+"."+bean.getJamAkhirMenit());
-            } else {
-                entityData.setJamAwal(bean.getJamAwal());
-                entityData.setJamAkhir(bean.getJamAkhir());
-            }
+            entityData.setJamAwal(bean.getJamAwal());
+            entityData.setJamAkhir(bean.getJamAkhir());
             entityData.setFlag(bean.getFlag());
             entityData.setAction(bean.getAction());
             entityData.setCreateDateWho(bean.getCreatedWho());
@@ -66,6 +84,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setCreatedDate(bean.getCreatedDate());
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
+            entityData.setKelompokPositionId(bean.getKelompokPositionId());
 
             try {
                 shiftDao.updateAndSave(entityData);
@@ -105,6 +124,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setId(id);
             entityData.setIdBranch(bean.getIdBranch());
+            entityData.setKelompokPositionId(bean.getKelompokPositionId());
             try {
                 shiftDao.addAndSaveHistory(entityData);
             } catch (HibernateException e) {
@@ -135,8 +155,8 @@ public class ShiftBoImpl implements ShiftBo {
 
             entityData.setShiftId("SF"+shiftId);
             entityData.setShiftName(bean.getShiftName());
-            entityData.setJamAwal(bean.getJamAwalJam()+":"+bean.getJamAwalMenit());
-            entityData.setJamAkhir(bean.getJamAkhirJam()+":"+bean.getJamAkhirMenit());
+            entityData.setJamAwal(bean.getJamAwal());
+            entityData.setJamAkhir(bean.getJamAkhir());
             entityData.setFlag(bean.getFlag());
             entityData.setAction(bean.getAction());
             entityData.setCreateDateWho(bean.getCreatedWho());
@@ -144,6 +164,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setCreatedDate(bean.getCreatedDate());
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
+            entityData.setKelompokPositionId(bean.getKelompokPositionId());
 
             try {
                 shiftDao.addAndSave(entityData);
@@ -169,6 +190,9 @@ public class ShiftBoImpl implements ShiftBo {
 
             if (searchBean.getShiftId() != null && !"".equalsIgnoreCase(searchBean.getShiftId())) {
                 hsCriteria.put("shift_id", searchBean.getShiftId());
+            }
+            if (searchBean.getKelompokPositionId() != null && !"".equalsIgnoreCase(searchBean.getKelompokPositionId())) {
+                hsCriteria.put("kelompok_id", searchBean.getKelompokPositionId());
             }
             if (searchBean.getShiftName() != null && !"".equalsIgnoreCase(searchBean.getShiftName())) {
                 hsCriteria.put("shift_name", searchBean.getShiftName());
@@ -209,6 +233,27 @@ public class ShiftBoImpl implements ShiftBo {
                     returnData.setFlag(listEntity.getFlag());
                     returnData.setAction(listEntity.getAction());
                     returnData.setIdBranch(listEntity.getIdBranch());
+                    returnData.setKelompokPositionId(listEntity.getKelompokPositionId());
+
+                    if (listEntity.getIdBranch()!=null){
+                        ImBranches imBranches = null;
+                        ImBranchesPK primaryKey = new ImBranchesPK();
+                        primaryKey.setId(listEntity.getIdBranch());
+
+                        imBranches = branchDao.getById(primaryKey, "Y");
+                        returnData.setBranchName(imBranches.getBranchName());
+                    }else{
+                        returnData.setBranchName("");
+                    }
+
+                    if (listEntity.getKelompokPositionId()!=null){
+
+                        ImKelompokPositionEntity kelompokPositionEntity = kelompokPositionDao.getById("kelompokId",listEntity.getKelompokPositionId());
+                        returnData.setKelompokPositionName(kelompokPositionEntity.getKelompokName());
+                    }else{
+                        returnData.setKelompokPositionName("");
+                    }
+
                     listOfResult.add(returnData);
                 }
             }

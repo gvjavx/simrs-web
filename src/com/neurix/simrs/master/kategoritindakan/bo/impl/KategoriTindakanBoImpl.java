@@ -32,7 +32,7 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
             }
         }
         logger.info("[KategoriTindakanBoImpl.getByCriteria] End <<<<<<<");
-        return null;
+        return results;
     }
 
     protected List<ImSimrsKategoriTindakanEntity> getListEntityKategoriTindakan(KategoriTindakan bean) throws GeneralBOException {
@@ -63,7 +63,7 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
         KategoriTindakan kategoriTindakan;
         for (ImSimrsKategoriTindakanEntity entity : entities){
             kategoriTindakan = new KategoriTindakan();
-            kategoriTindakan.setIdKategoriTindakan(entity.getKategoriTindakan());
+            kategoriTindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
             kategoriTindakan.setKategoriTindakan(entity.getKategoriTindakan());
             kategoriTindakan.setFlag(entity.getFlag());
             kategoriTindakan.setAction(entity.getAction());

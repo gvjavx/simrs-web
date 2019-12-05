@@ -23,10 +23,10 @@ public class PelayananSpesialisDao extends GenericDao<ImSimrsPoliSpesialisEntity
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPoliSpesialisEntity.class);
         if (mapCriteria != null){
             if(mapCriteria.get("id_pelayanan") != null){
-                criteria.add(Restrictions.eq("primariKey.idPelayanan",mapCriteria.get("id_pelayanan").toString()));
+                criteria.add(Restrictions.eq("primaryKey.idPelayanan",mapCriteria.get("id_pelayanan").toString()));
             }
             if (mapCriteria.get("id_spesialis") != null){
-                criteria.add(Restrictions.eq("primariKey.idSpesialis", mapCriteria.get("id_spesialis").toString()));
+                criteria.add(Restrictions.eq("primaryKey.idSpesialis", mapCriteria.get("id_spesialis").toString()));
             }
         }
 

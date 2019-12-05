@@ -4,9 +4,11 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--<bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"-->
-    <!---->
-    <!--/>-->
+    <bean id="rawatInapAction" class="com.neurix.simrs.transaksi.rawatinap.action.RawatInapAction"
+          p:rawatInapBoProxy-ref="rawatInapBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+    />
 
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"
           p:rawatInapDao-ref="rawatInapDao"

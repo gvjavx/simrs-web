@@ -21,10 +21,10 @@ public class SpesialisDao extends GenericDao<ImSimrsSpesialisEntity,String> {
     @Override
     public List<ImSimrsSpesialisEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPoliSpesialisEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsSpesialisEntity.class);
         if (mapCriteria != null){
             if (mapCriteria.get("id_spesialis") != null){
-                criteria.add(Restrictions.eq("idPesialis",mapCriteria.get("id_spesialis").toString()));
+                criteria.add(Restrictions.eq("idSpesialis",mapCriteria.get("id_spesialis").toString()));
             }
         }
 

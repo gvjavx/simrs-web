@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public interface JenisPerksaPasienBo {
-    public List<JenisPriksaPasien> getListAllJenisPeriksa();
+public interface JenisPriksaPasienBo {
+    public List<JenisPriksaPasien> getListAllJenisPeriksa(JenisPriksaPasien bean);
 }

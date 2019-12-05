@@ -21,10 +21,12 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
     public List<ImSimrsKategoriTindakanEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKategoriTindakanEntity.class);
         if (mapCriteria != null)
-            if (mapCriteria.get("id_kategori_tindakan") != null)
+            if (mapCriteria.get("id_kategori_tindakan") != null) {
                 criteria.add(Restrictions.eq("idKategoriTindakan", mapCriteria.get("id_kategori_tindakan").toString()));
-            if (mapCriteria.get("flag") != null)
+            }
+            if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
 
         List<ImSimrsKategoriTindakanEntity> result = criteria.list();
         return result;

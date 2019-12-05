@@ -113,6 +113,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
 
                             dokter.setIdSpesialis(listDokter.getIdSpesialis());
                             dokter.setNamaSpesialis(listDokter.getSpesialisName());
+                            dokter.setNamaDokter(dokterData.getNamaDokter());
                             dokter.setFlag(dokterData.getFlag());
                             dokter.setAction(dokterData.getAction());
                             dokter.setLastUpdate(dokterData.getLastUpdate());
@@ -123,12 +124,10 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
                         }
                     }
                 }
-
             }
-
         }
         logger.info("[DokterBoImpl.getByIdPelayanan] End <<<<<<<<");
-        return null;
+        return results;
     }
 
     public void setDokterDao(DokterDao dokterDao) {

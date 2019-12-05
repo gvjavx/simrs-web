@@ -8,6 +8,7 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
 
     private String idPeriksaLab;
     private String idDetailCheckup;
+    private String idLab;
     private Date tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
     private String idDokterPengirim;
@@ -19,6 +20,23 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String statusPeriksa;
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String statusPeriksa) {
+        this.statusPeriksa = statusPeriksa;
+    }
 
     public String getIdPeriksaLab() {
         return idPeriksaLab;

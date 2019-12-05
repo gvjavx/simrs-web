@@ -15,7 +15,18 @@
         <property name="shiftGroupId">
             <column name="group_shift_id" sql-type="varchar" length="8" not-null="false" />
         </property>
-
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="shiftId">
+            <column name="shift_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

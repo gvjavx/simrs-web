@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -21,9 +22,9 @@ public class RawatInapBoImpl implements RawatInapBo {
     private static transient Logger logger = Logger.getLogger(RawatInapBoImpl.class);
     private RawatInapDao rawatInapDao;
 
-    protected List<ItSimrsRawatInapEntity> getListEntityRawatInap(RawatInap bean) throws GeneralBOException{
-        logger.info("[RawatInapBoImpl.getListEntityRawatInap] Start >>>>>>>>");
-        List<ItSimrsRawatInapEntity> results = new ArrayList<>();
+    protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
+        logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
+        List<ItSimrsRawatInapEntity> entityList = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
 
@@ -40,17 +41,36 @@ public class RawatInapBoImpl implements RawatInapBo {
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
 
+        hsCriteria.put("flag", "Y");
+
         try {
-            results = rawatInapDao.getByCriteria(hsCriteria);
+            entityList = rawatInapDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListEntityRawatInap] Error when get data rawat Inap entity ");
+            logger.error("[RawatInapBoImpl.getListEntityByCriteria] Error when get data detail checkup entity ",e);
+            throw new GeneralBOException("Error when get data detail checkup entity "+e.getMessage());
         }
 
-        logger.info("[RawatInapBoImpl.getListEntityRawatInap] End <<<<<<<<");
-        return results;
+        logger.info("[RawatInapBoImpl.getListEntityByCriteria] End <<<<<<<<");
+        return entityList;
     }
 
     public void setRawatInapDao(RawatInapDao rawatInapDao) {
         this.rawatInapDao = rawatInapDao;
+    }
+
+    @Override
+    public List<RawatInap> getSearchRawatInap(RawatInap bean) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getSearchRawatInap] Start >>>>>>>");
+        List<RawatInap> results = new ArrayList<>();
+        if (bean != null){
+            try {
+                results = rawatInapDao.getSearchRawatInap(bean);
+            } catch (HibernateException e){
+                logger.error("[RawatInapBoImpl.getSearchRawatInap] Error when get data rawat inap",e);
+                throw new GeneralBOException("Error when get data detail checkup"+e.getMessage());
+            }
+        }
+        logger.info("[RawatInapBoImpl.getSearchRawatInap] End <<<<<<<<");
+        return results;
     }
 }

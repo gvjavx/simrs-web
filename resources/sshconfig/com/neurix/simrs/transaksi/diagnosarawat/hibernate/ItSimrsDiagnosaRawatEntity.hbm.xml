@@ -8,12 +8,15 @@
            table="it_simrs_diagnosa_rawat" select-before-update="true" schema="public">
 
 
-        <id name="idDiagnosa">
-            <column name="id_diagnosa" sql-type="varchar" length="10" not-null="true" />
+        <id name="idDiagnosaRawat">
+            <column name="id_diagnosa_rawat" sql-type="varchar" length="10" not-null="true" />
         </id>
 
+        <property name="idDiagnosa">
+            <column name="id_diagnosa" sql-type="varchar" length="30" not-null="false"/>
+        </property>
         <property name="idDetailCheckup">
-            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="keteranganDiagnosa">
             <column name="keterangan_diagnosa" sql-type="varchar" length="1000" not-null="false"/>

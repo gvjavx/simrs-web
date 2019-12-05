@@ -1,6 +1,6 @@
 package com.neurix.simrs.master.jenisperiksapasien.bo.impl;
 
-import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPerksaPasienBo;
+import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public class JenisPriksaPasienImpl implements JenisPerksaPasienBo {
+public class JenisPriksaPasienImpl implements JenisPriksaPasienBo {
     protected static transient Logger logger = Logger.getLogger(JenisPriksaPasienImpl.class);
 
     private JenisPeriksaPasienDao jenisPeriksaPasienDao;
@@ -25,10 +25,15 @@ public class JenisPriksaPasienImpl implements JenisPerksaPasienBo {
     }
 
     @Override
-    public List<JenisPriksaPasien> getListAllJenisPeriksa() {
+    public List<JenisPriksaPasien> getListAllJenisPeriksa(JenisPriksaPasien bean) {
         logger.info("[jenisPriksaPasienImpl.getListAllJenisPeriksa] Start >>>>>>");
         List<JenisPriksaPasien> result = new ArrayList<>();
         Map hsCriteria = new HashMap();
+
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            hsCriteria.put("id_jenis_periksa_pasien", bean.getIdJenisPeriksaPasien());
+        }
+
         hsCriteria.put("flag","Y");
 
         List<ImJenisPeriksaPasienEntity> imJenisPeriksaPasienEntityList = null;

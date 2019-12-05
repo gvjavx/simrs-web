@@ -1,6 +1,16 @@
 package com.neurix.simrs.transaksi.tindakanrawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
+import com.neurix.simrs.master.kategoritindakan.dao.KategoriTindakanDao;
+import com.neurix.simrs.master.kategoritindakan.model.ImSimrsKategoriTindakanEntity;
+import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -20,10 +30,12 @@ import java.util.Map;
 /**
  * Created by Toshiba on 13/11/2019.
  */
-public class TindakanRawatBoImpl extends TindakanRawatModuls implements TindakanRawatBo {
+public class TindakanRawatBoImpl implements TindakanRawatBo {
     private static transient Logger logger = Logger.getLogger(TindakanRawatBoImpl.class);
     private TindakanRawatDao tindakanRawatDao;
     private CheckupDetailDao checkupDetailDao;
+    private DokterDao dokterDao;
+    private TindakanDao tindakanDao;
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -46,7 +58,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
     public void saveAdd(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
 
-        if (bean != null){
+        if (bean != null ){
             String id = getNextTindakanRawatId();
             if (id != null && !"".equalsIgnoreCase(id)) {
                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
@@ -59,8 +71,8 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
                 tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
-                tindakanRawatEntity.setFlag("Y");
-                tindakanRawatEntity.setAction("C");
+                tindakanRawatEntity.setFlag(bean.getFlag());
+                tindakanRawatEntity.setAction(bean.getAction());
                 tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
                 tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
@@ -89,6 +101,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setIdTindakanRawat(bean.getIdTindakanRawat());
 
             ItSimrsTindakanRawatEntity tindakanRawatEntity = getListEntityTindakanRawat(tindakanRawat).get(0);
+
             if (tindakanRawatEntity != null){
 
                 tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());
@@ -98,8 +111,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
                 tindakanRawatEntity.setTarif(bean.getTarif());
                 tindakanRawatEntity.setQty(bean.getQty());
                 tindakanRawatEntity.setTarifTotal(bean.getTarif().multiply(bean.getQty()));
-                tindakanRawatEntity.setFlag("U");
-                tindakanRawatEntity.setAction("C");
+                tindakanRawatEntity.setAction(bean.getAction());
                 tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -169,7 +181,7 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
         if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
             hsCriteria.put("id_tindakan_rawat", bean.getIdTindakanRawat());
         }
-        if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
 
@@ -195,11 +207,12 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setIdTindakanRawat(entity.getIdTindakanRawat());
             tindakanRawat.setIdDetailCheckup(entity.getIdDetailCheckup());
             tindakanRawat.setIdTindakan(entity.getIdTindakan());
+            tindakanRawat.setNamaTindakan(entity.getNamaTindakan());
             tindakanRawat.setIdDokter(entity.getIdDokter());
             tindakanRawat.setIdPerawat(entity.getIdPerawat());
             tindakanRawat.setTarif(entity.getTarif());
-            tindakanRawat.setQty(entity.getTarif());
-            tindakanRawat.setTarifTotal(entity.getTarif());
+            tindakanRawat.setQty(entity.getQty());
+            tindakanRawat.setTarifTotal(entity.getTarifTotal());
             tindakanRawat.setFlag(entity.getFlag());
             tindakanRawat.setAction(entity.getAction());
             tindakanRawat.setCreatedDate(entity.getCreatedDate());
@@ -207,12 +220,60 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
 
-            results.add(tindakanRawat);
+            if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
+                List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());
+                if (!listDokter.isEmpty()){
+                    ImSimrsDokterEntity dokterEntity = listDokter.get(0);
+                    tindakanRawat.setNamaDokter(dokterEntity.getNamaDokter());
+                }
+            }
 
+            List<ImSimrsTindakanEntity> tindakanEntityList = getTindakanList(entity.getIdTindakan());
+            ImSimrsTindakanEntity tindakanEntity = new ImSimrsTindakanEntity();
+            if (!tindakanEntityList.isEmpty()){
+                tindakanEntity = tindakanEntityList.get(0);
+            }
+            if(tindakanEntity != null){
+                tindakanRawat.setIdKategoriTindakan(tindakanEntity.getIdKategoriTindakan());
+            }
+
+            results.add(tindakanRawat);
         }
 
         logger.info("[TindakanRawatBoImpl.setToTindakanRawatTemplate] End <<<<<<");
         return results;
+    }
+
+    private List<ImSimrsDokterEntity> getDokterList(String dokterId){
+        logger.info("[TindakanRawatBoImpl.getDokterList] Start >>>>>>>");
+        List<ImSimrsDokterEntity> dokterList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_dokter", dokterId);
+        try {
+            dokterList = dokterDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getDokterList] Error when get data dokter ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getDokterList] End <<<<<<");
+        return dokterList;
+    }
+
+    private List<ImSimrsTindakanEntity> getTindakanList(String idTindakan){
+        logger.info("[TindakanRawatBoImpl.getTindakanList] Start >>>>>>>");
+        List<ImSimrsTindakanEntity> tindakanEntityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_tindakan", idTindakan);
+        try {
+            tindakanEntityList = tindakanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getTindakanList] Error when get data tindakan ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getTindakanList] End <<<<<<");
+        return tindakanEntityList;
     }
 
     public String getNextTindakanRawatId(){
@@ -235,5 +296,13 @@ public class TindakanRawatBoImpl extends TindakanRawatModuls implements Tindakan
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
         this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
+
+    public void setTindakanDao(TindakanDao tindakanDao) {
+        this.tindakanDao = tindakanDao;
     }
 }

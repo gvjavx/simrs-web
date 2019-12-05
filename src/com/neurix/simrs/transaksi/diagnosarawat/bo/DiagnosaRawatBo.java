@@ -5,11 +5,10 @@ import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 
 import java.util.List;
 
-/**
- * @author gondok
- * Friday, 15/11/19 15:07
- */
 public interface DiagnosaRawatBo {
-    public List<DiagnosaRawat> getByCriteria(DiagnosaRawat bean)throws GeneralBOException;
-    public void saveAdd(DiagnosaRawat bean)throws GeneralBOException;
+    public List<DiagnosaRawat> getByCriteria(DiagnosaRawat bean) throws GeneralBOException;
+    public void saveAdd(DiagnosaRawat bean) throws GeneralBOException;
+
+    public void saveEdit(DiagnosaRawat bean) throws GeneralBOException;
+
 }

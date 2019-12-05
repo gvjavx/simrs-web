@@ -2,26 +2,27 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"
-          p:jenisObatBoProxy-ref="jenisObatBoProxy"/>
+    <bean id="labAction" class="com.neurix.simrs.master.lab.action.LabAction"
+          p:labBoProxy-ref="labBoProxy"
+    />
 
-    <bean id="jenisObatBo" class="com.neurix.simrs.master.jenisobat.bo.impl.JenisObatBoImpl"
-          p:jenisObatDao-ref="jenisObatDao"/>
+    <bean id="labBo" class="com.neurix.simrs.master.lab.bo.impl.LabBoImpl"
+         p:labDao-ref="labDao"
+    />
 
-    <bean id="jenisObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="jenisObatBo">
+    <bean id="labBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="labBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionUserInterceptor</value>
+                <value>transactionPasienInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionUserInterceptor"
+    <bean id="transactionPasienInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
@@ -31,7 +32,7 @@
         </property>
     </bean>
 
-    <bean id="jenisObatDao" class="com.neurix.simrs.master.jenisobat.dao.JenisObatDao"
+    <bean id="labDao" class="com.neurix.simrs.master.lab.dao.LabDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

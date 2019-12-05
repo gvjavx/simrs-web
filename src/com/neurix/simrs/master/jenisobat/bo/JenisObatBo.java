@@ -1,8 +1,10 @@
 package com.neurix.simrs.master.jenisobat.bo;
 
-import com.neurix.common.bo.BaseMasterBo;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 
-public interface JenisObatBo extends BaseMasterBo<JenisObat> {
+import java.util.List;
 
+public interface JenisObatBo{
+    public List<JenisObat> getByCriteria(JenisObat searchBean) throws GeneralBOException;
 }

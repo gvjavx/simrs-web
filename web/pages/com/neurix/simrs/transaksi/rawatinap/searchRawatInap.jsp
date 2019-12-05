@@ -9,27 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
     </style>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript'>
 
-        function resetField(){
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa').val('');
-        }
-
+        $( document ).ready(function() {
+            $('#rawat_inap').addClass('active');
+        });
 
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -55,23 +43,23 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title">Search Form</h3>--%>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" namespace="/checkup" action="search_checkup.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="rawatInapForm" method="post" namespace="/rawatinap" action="search_rawatinap.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="headerDetailCheckup.idPasien" required="false"
+                                                     name="rawatInap.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="rawatInap.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -79,37 +67,56 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'01':'Poli Anak','02':'Poli Mata','03':'Poli Ibu','04':'Poli Umum'}" cssStyle="margin-top: 7px"
-                                                  id="poli" name="headerDetailCheckup.IdPelayanan"
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select cssStyle="border-radius: 4px; width: 100%"
+                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  name="rawatInap.idPelayanan" listKey="idPelayanan"
+                                                  listValue="namaPelayanan"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="headerDetailCheckup.statusPeriksa"
+                                                  id="status" name="rawatInap.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Kelamin</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'L':'Laki-laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
-                                                  id="jenis_kelamin" name="headerDetailCheckup.jenisKelamin"
+                                                  id="jenis_kelamin" name="rawatInap.jenisKelamin"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                  name="rawatInap.idKelas"
+                                                  listKey="idKelasRuangan"
+                                                  listValue="namaKelasRuangan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
+                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Mawar','1':'Bungenvil','2':'Melati','3':'Kamboja'}" cssStyle="margin-top: 7px"
-                                                  id="ruangan" name="headerDetailCheckup.ruangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
+                                        <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
+                                            <option value=''>[Select One]</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -119,7 +126,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="rawatInap.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -128,7 +135,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="rawatInap.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -137,12 +144,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="rawatInapForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_checkupdetail.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -172,6 +179,10 @@
                             </s:form>
                         </div>
                     </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
+                    </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
@@ -181,38 +192,24 @@
                                 <td>Nama</td>
                                 <td>Alamat</td>
                                 <td>Status</td>
-                                <td>Action</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                            <s:iterator value="#session.listOfResult" status="listOfRawatInap">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="nama"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
-                                    <td><s:property value="statusPeriksa"/></td>
-                                    <td>
-                                        <s:url var="detail" namespace="/checkup" action="view_checkup" escapeAmp="false">
+                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="statusPeriksaName"/></td>
+                                    <td align="center">
+                                        <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                             <s:param name="id"><s:property value="noCheckup"/></s:param>
                                         </s:url>
-                                        <sj:a onClickTopics="showDialogUser" href="%{detail}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" style="cursor: pointer">
-                                        </sj:a>
-
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{edit}">
-                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" style="cursor: pointer">
+                                        <s:a href="%{add_rawat_inap}">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         </s:a>
-
-                                        <s:url var="delete" namespace="/checkup" action="delete_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <sj:a href="%{delete}">
-                                            <img border="0" src="<s:url value="/pages/images/if_delete.ico"/>" style="cursor: pointer; height: 25px; width: 25px">
-                                        </sj:a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -227,141 +224,36 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
-    var functions, mapped;
-    $('#provinsi').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
 
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                data = listdata;
+    function listSelectRuangan(id){
+        var idx     = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+        var option  = "";
+        var flag    = false;
+
+        $('#load_ruang').show();
+        setTimeout(function () {
+
+        },100);
+        if(idKelas != ''){
+            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                    });
+                } else {
+                    option = option;
+                }
+                $('#load_ruang').hide();
+            }
             });
-
-            $.each(data, function (i, item) {
-                var labelItem = item.provinsiName;
-                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("provinsi11").value = selectedObj.id;
-            prov = selectedObj.id;
-            return namaAlat;
+        }else{
+            option = "<option value=''>[Select One]</option>";
         }
-    });
-</script>
-<script type='text/javascript'>
-    var functions, mapped;
-    // var prov = document.getElementById("provinsi1").value;
-    $('#kabupaten').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
 
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kotaName;
-                mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kabupaten11").value = selectedObj.id;
-
-            kab = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    //
-    //
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    var kab = document.getElementById("kabupaten").value;
-    $('#kecamatan').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kecamatanName;
-                mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("kecamatan11").value = selectedObj.id;
-
-            kec = selectedObj.id;
-            return namaAlat;
-        }
-    });
-</script>
-
-<script type='text/javascript'>
-    var functions, mapped;
-    $('#desa').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.desaName;
-                mapped[labelItem] = {id: item.desaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("desa11").value = selectedObj.id;
-
-            desa = selectedObj.id;
-            return namaAlat;
-        }
-    });
+        $('#nama_ruangan').html(option);
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

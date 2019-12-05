@@ -3,9 +3,12 @@ package com.neurix.simrs.transaksi.obatinap.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,12 +33,6 @@ public class ObatInapDao extends GenericDao<ItSimrsObatInapEntity, String> {
             if (mapCriteria.get("id_obat")!=null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
-            if (mapCriteria.get("harga")!=null) {
-                criteria.add(Restrictions.eq("harga", (Long) mapCriteria.get("harga")));
-            }
-            if (mapCriteria.get("qty")!=null) {
-                criteria.add(Restrictions.eq("qty", (Long) mapCriteria.get("qty")));
-            }
 
         }
 
@@ -47,5 +44,12 @@ public class ObatInapDao extends GenericDao<ItSimrsObatInapEntity, String> {
         List<ItSimrsObatInapEntity> results = criteria.list();
 
         return results;
+    }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_obat_inap')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

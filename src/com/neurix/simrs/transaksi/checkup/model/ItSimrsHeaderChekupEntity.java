@@ -33,6 +33,33 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String jenisKunjungan;
+    private String namaPenanggung;
+    private String hubunganKeluarga;
+    private String rujuk;
+
+    public String getNamaPenanggung() {
+        return namaPenanggung;
+    }
+
+    public void setNamaPenanggung(String namaPenanggung) {
+        this.namaPenanggung = namaPenanggung;
+    }
+
+    public String getHubunganKeluarga() {
+        return hubunganKeluarga;
+    }
+
+    public void setHubunganKeluarga(String hubunganKeluarga) {
+        this.hubunganKeluarga = hubunganKeluarga;
+    }
+
+    public String getRujuk() {
+        return rujuk;
+    }
+
+    public void setRujuk(String rujuk) {
+        this.rujuk = rujuk;
+    }
 
     public String getJenisKunjungan() {
         return jenisKunjungan;
