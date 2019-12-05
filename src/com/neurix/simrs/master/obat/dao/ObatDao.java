@@ -112,6 +112,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "INNER JOIN im_simrs_obat_gejala b ON a.id_jenis_obat = b.id_jenis_obat\n" +
                 "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
                 "WHERE c.id_obat = :id\n" +
+                "AND b.flag = 'Y'\n" +
                 "AND c.branch_id LIKE :branch";
 
         List<Obat> obats = new ArrayList<>();

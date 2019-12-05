@@ -180,7 +180,7 @@
                                             <%--<s:param name="id"><s:property value="idObat"/></s:param>--%>
                                         <%--</s:url>--%>
                                         <%--<s:a href="%{add_periksa_radiologi}">--%>
-                                            <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
                                         <%--</s:a>--%>
                                     </td>
                                 </tr>
@@ -260,6 +260,7 @@
                         <div class="col-md-7">
                             <s:textfield onkeypress="var warn =$('#war_stok').is(':visible'); if (warn){$('#cor_stok').show().fadeOut(3000);$('#war_stok').hide()}"
                                     type="number" min="1" cssClass="form-control" cssStyle="margin-top: 7px" id="add_stok"></s:textfield>
+                            <s:hidden id="add_flag"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -317,6 +318,7 @@
         var jenis   = $('#add_jenis_obat').val();
         var harga   = $('#add_harga').val();
         var qty     = $('#add_stok').val();
+        var flag     = $('#add_flag').val();
 
         if (nama != '' && jenis != null && harga != '' && qty > 0) {
 
@@ -325,7 +327,7 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, jenis, harga, qty, function (response) {
+                ObatAction.editObat(id, nama, jenis, harga, qty, flag, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
@@ -373,13 +375,14 @@
         }
     }
 
-    function editObat(id, nama, harga, stok) {
+    function editObat(id, nama, harga, stok, flag) {
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#add_nama_obat').val(nama);
         $('#add_jenis_obat').val(listSelectObatEdit(id)).trigger('change');
         $('#add_harga').val(harga);
         $('#add_stok').val(stok);
+        $('#add_flag').val(flag);
         $('#modal-obat').modal('show');
     }
 
