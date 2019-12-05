@@ -21,6 +21,7 @@ import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 /**
@@ -406,7 +407,6 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         List<GroupShift> listComboGroupShiftFix = new ArrayList();
         HttpSession session = ServletActionContext.getRequest().getSession();
         try {
-
             listComboGroupShift = (List<GroupShift>) session.getAttribute("ListOfResultGroupShift");
             session.removeAttribute("ListOfResultRekruitmenPabrikDetail");
         } catch (HibernateException e) {
@@ -550,6 +550,21 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         }
 
         logger.info("[JadwalShiftKerjaBoImpl.getJadwalforReport] end process <<<");
+
+        return dataFinal;
+    }
+    @Override
+    public List<JadwalPelayananDTO> getJadwalPelayanan(String idPelayanan, String kelompokId, String branchId, String nip, Date tanggal) throws GeneralBOException {
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalPelayanan] start process >>>");
+        List<JadwalPelayananDTO> dataFinal = new ArrayList<>();
+        try {
+            dataFinal = jadwalShiftKerjaDao.getJadwalPelayanan(idPelayanan,kelompokId,branchId,nip,tanggal);
+        } catch (HibernateException e) {
+            logger.error("[JadwalShiftKerjaBoImpl.getJadwalPelayanan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalPelayanan] end process <<<");
 
         return dataFinal;
     }

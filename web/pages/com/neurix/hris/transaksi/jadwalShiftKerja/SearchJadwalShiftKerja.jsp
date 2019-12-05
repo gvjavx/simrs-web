@@ -188,8 +188,8 @@
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="Jadwal Id" />
-                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Jadwal Name"  />
+                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="ID Jadwal" />
+                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Nama Jadwal"  />
                                                             <display:column property="branchName" sortable="true" title="Unit"  />
                                                             <display:column property="tanggal" sortable="true" title="Tanggal"  />
                                                             <display:column property="namaPegawai" sortable="true" title="Nama"  />
