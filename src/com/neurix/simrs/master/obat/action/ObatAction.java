@@ -110,6 +110,11 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String initForm(){
+
+        Obat obat = new Obat();
+        obat.setFlag("Y");
+        setObat(obat);
+
         return "search";
     }
 
