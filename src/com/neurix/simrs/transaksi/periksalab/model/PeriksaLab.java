@@ -59,6 +59,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String stDateFrom;
     private String stDateTo;
 
+    private String urlKtp;
+
+    public String getUrlKtp() {
+        return urlKtp;
+    }
+
+    public void setUrlKtp(String urlKtp) {
+        this.urlKtp = urlKtp;
+    }
+
     public String getStDateFrom() {
         return stDateFrom;
     }

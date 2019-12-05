@@ -52,6 +52,20 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String tempatTglLahir;
     private Boolean rawatInap = false;
 
+    private String nik;
+    private String idJenisPeriksaPasien;
+    private String jenisPeriksaPasien;
+
+    private String urlKtp;
+
+    public String getUrlKtp() {
+        return urlKtp;
+    }
+
+    public void setUrlKtp(String urlKtp) {
+        this.urlKtp = urlKtp;
+    }
+
     public Boolean getRawatInap() {
         return rawatInap;
     }
@@ -59,10 +73,6 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     public void setRawatInap(Boolean rawatInap) {
         this.rawatInap = rawatInap;
     }
-
-    private String nik;
-    private String idJenisPeriksaPasien;
-    private String jenisPeriksaPasien;
 
     public String getNik() {
         return nik;

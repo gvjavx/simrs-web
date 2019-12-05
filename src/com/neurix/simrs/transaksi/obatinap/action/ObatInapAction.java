@@ -92,6 +92,7 @@ public class ObatInapAction extends BaseMasterAction {
             List<Obat> obatList = new ArrayList<>();
             Obat obat = new Obat();
             obat.setIdObat(idObat);
+            obat.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
@@ -170,6 +171,7 @@ public class ObatInapAction extends BaseMasterAction {
             List<Obat> obatList = new ArrayList<>();
             Obat obat = new Obat();
             obat.setIdObat(idObat);
+            obat.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");

@@ -56,6 +56,16 @@ public class RawatInap {
     private String keteranganSelesai;
     private String kelasRuanganName;
 
+    private String urlKtp;
+
+    public String getUrlKtp() {
+        return urlKtp;
+    }
+
+    public void setUrlKtp(String urlKtp) {
+        this.urlKtp = urlKtp;
+    }
+
     public String getKelasRuanganName() {
         return kelasRuanganName;
     }

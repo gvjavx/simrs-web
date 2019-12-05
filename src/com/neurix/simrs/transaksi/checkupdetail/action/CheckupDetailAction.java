@@ -214,6 +214,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
                         detailCheckup.setNik(headerCheckup.getNoKtp());
                         detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+                        detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());

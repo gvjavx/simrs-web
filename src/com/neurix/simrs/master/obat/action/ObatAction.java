@@ -154,6 +154,7 @@ public class ObatAction extends BaseMasterAction {
         Obat obat = new Obat();
         obat.setIdObat(idObat);
         obat.setBranchId(branchId);
+        obat.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");

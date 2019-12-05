@@ -126,9 +126,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <img border="2" class="card card-4 pull-right"
-                                     src="<s:url value="/pages/images/ktp-tes.jpg"/>"
-                                     style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
+                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center" class="card card-4 pull-right">
+                                    <img border="2" id="img_ktp" src="<s:property value="rawatInap.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
+                                </div>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
@@ -987,7 +987,7 @@
         </div>
     </div>
 </div>
-
+<div class="mask"></div>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -1004,6 +1004,23 @@
         listObat();
         listDiet();
         listRuanganInap();
+
+        $('#img_ktp').on('click', function(e){
+            e.preventDefault();
+            var src = $('#img_ktp').attr('src');
+            $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
+
+            $('.mask').addClass('is-visible fadein').on('animationend', function(){
+                $(this).removeClass('fadein is-visible').addClass('is-visible');
+            });
+
+            $('.close').on('click', function(){
+                $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
+                    $(this).removeClass('fadeout is-visible')
+                });
+            });
+
+        });
     });
 
     function listSelectDokter() {
@@ -1669,30 +1686,16 @@
         var qty         = $('#ob_qty').val();
         var stok        = $('#ob_stok').val();
 
-        if (qty <= stok) {
-
-            var obat = $('#set_id_obat').val();
-
             if (id != '') {
-                dwr.engine.setAsync(true);
-                ObatInapAction.editObatInap(id,idDetailCheckup, obat, qty, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listObat();
-                        $('#modal-obat').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                    } else {
 
-                    }
-                })
-            } else {
-                if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
+                if (qty <= stok) {
+                    var obat = $('#set_id_obat').val();
+
                     $('#save_obat').hide();
                     $('#load_obat').show();
 
                     dwr.engine.setAsync(true);
-                    ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
+                    ObatInapAction.editObatInap(id,idDetailCheckup, obat, qty, function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listObat();
@@ -1703,6 +1706,33 @@
 
                         }
                     })
+                }else {
+                    $('#warning_obat').show().fadeOut(5000);
+                    $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
+                }
+            } else {
+                if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
+
+                    if (qty <= stok) {
+                        $('#save_obat').hide();
+                        $('#load_obat').show();
+
+                        dwr.engine.setAsync(true);
+                        ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
+                            if (response == "success") {
+                                dwr.engine.setAsync(false);
+                                listObat();
+                                $('#modal-obat').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(6);
+                            } else {
+
+                            }
+                        })
+                    }else{
+                        $('#warning_obat').show().fadeOut(5000);
+                        $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
+                    }
                 } else {
                     $('#warning_obat').show().fadeOut(5000);
                     $('#obat_error').text("Silahkan cek kembali data inputan..!");
@@ -1717,10 +1747,6 @@
                     }
                 }
             }
-        } else {
-            $('#warning_obat').show().fadeOut(5000);
-            $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
-        }
     }
 
     function listObat() {

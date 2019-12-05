@@ -95,6 +95,7 @@ public class RawatInapAction extends BaseMasterAction {
                         rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
                         rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setNik(headerCheckup.getNoKtp());
+                        rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());

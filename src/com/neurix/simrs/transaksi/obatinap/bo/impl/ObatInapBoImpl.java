@@ -176,6 +176,9 @@ public class ObatInapBoImpl implements ObatInapBo {
         if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
             hsCriteria.put("id_obat", bean.getIdObat());
         }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
 
         hsCriteria.put("flag","Y");
         try {

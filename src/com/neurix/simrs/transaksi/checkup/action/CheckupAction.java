@@ -350,7 +350,7 @@ public class CheckupAction extends BaseMasterAction {
 
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
 
                         // persiapan pemindahan file
