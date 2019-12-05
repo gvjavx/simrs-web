@@ -98,5 +98,41 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return sId;
     }
 
+    public List<Obat> getJenisObat(String id, String branch){
+
+        String branchId = "%";
+
+        if (branch != null && !"".equalsIgnoreCase(branch))
+        {
+            branchId = branch;
+        }
+
+        String SQL = "SELECT a.nama_jenis_obat, a.id_jenis_obat\n" +
+                "FROM im_simrs_jenis_obat a \n" +
+                "INNER JOIN im_simrs_obat_gejala b ON a.id_jenis_obat = b.id_jenis_obat\n" +
+                "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
+                "WHERE c.id_obat = :id\n" +
+                "AND c.branch_id LIKE :branch";
+
+        List<Obat> obats = new ArrayList<>();
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("branch", branchId)
+                .list();
+
+        if (!result.isEmpty() && result.size() > 0)
+        {
+            Obat obat;
+            for (Object[] obj : result){
+                obat = new Obat();
+                obat.setJenisObat(obj[0].toString());
+                obat.setIdJenisObat(obj[1].toString());
+                obats.add(obat);
+            }
+        }
+        return obats;
+    }
+
 
 }
