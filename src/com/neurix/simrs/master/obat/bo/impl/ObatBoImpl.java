@@ -67,6 +67,8 @@ public class ObatBoImpl implements ObatBo {
                     obat.setCreatedWho(obatEntity.getCreatedWho());
                     obat.setLastUpdate(obatEntity.getLastUpdate());
                     obat.setLastUpdateWho(obatEntity.getLastUpdateWho());
+                    obat.setQty(obatEntity.getQty());
+                    obat.setBranchId(obatEntity.getBranchId());
 
                     JenisObat jenisObat = new JenisObat();
                     jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
@@ -177,6 +179,9 @@ public class ObatBoImpl implements ObatBo {
         String id = getIdNextObat();
         obatEntity.setIdObat("OBT"+id);
         obatEntity.setNamaObat(bean.getNamaObat());
+        obatEntity.setHarga(bean.getHarga());
+        obatEntity.setQty(bean.getQty());
+        obatEntity.setBranchId(bean.getBranchId());
         obatEntity.setFlag(bean.getFlag());
         obatEntity.setAction(bean.getAction());
         obatEntity.setCreatedDate(time);
@@ -199,8 +204,8 @@ public class ObatBoImpl implements ObatBo {
                 obatGejalaEntity.setIdObatGejala("OGJ"+id);
                 obatGejalaEntity.setIdObat(obatEntity.getIdObat());
                 obatGejalaEntity.setIdJenisObat(idJenisObat);
-                obatGejalaEntity.setFlag("Y");
-                obatGejalaEntity.setAction("U");
+                obatGejalaEntity.setFlag(bean.getFlag());
+                obatGejalaEntity.setAction(bean.getAction());
                 obatGejalaEntity.setCreatedDate(time);
                 obatGejalaEntity.setCreatedWho(userLogin);
                 obatGejalaEntity.setLastUpdate(time);
@@ -226,6 +231,7 @@ public class ObatBoImpl implements ObatBo {
         if (!obatEntities.isEmpty() && obatEntities.size() > 0)
         {
             ImSimrsObatEntity obatEntity = obatEntities.get(0);
+            obatEntity.setNamaObat(bean.getNamaObat());
             obatEntity.setQty(bean.getQty());
             obatEntity.setHarga(bean.getHarga());
 

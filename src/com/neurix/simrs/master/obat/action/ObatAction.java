@@ -12,7 +12,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ObatAction extends BaseMasterAction {
@@ -47,7 +50,17 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String add() {
-        return null;
+
+        logger.info("[ObatAction.add] start process >>>");
+
+        Obat obat = new Obat();
+        setObat(obat);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[ObatAction.add] end process <<<");
+        return "init_add";
     }
 
     @Override
@@ -72,6 +85,7 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String search() {
+
         logger.info("[ObatAction.search] START >>>>>>>");
 
         Obat obat = getObat();
@@ -90,12 +104,13 @@ public class ObatAction extends BaseMasterAction {
         session.setAttribute("listOfResult", obatList);
 
         logger.info("[ObatAction.search] END <<<<<<<");
-        return SUCCESS;
+        return "search";
+
     }
 
     @Override
-    public String initForm() {
-        return null;
+    public String initForm(){
+        return "search";
     }
 
     @Override
@@ -128,5 +143,124 @@ public class ObatAction extends BaseMasterAction {
         logger.info("[ObatAction.listObat] end process >>>");
         return obatList;
 
+    }
+
+    public List<Obat> getStokObat(String idObat){
+
+        logger.info("[ObatAction.getStokObat] start process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setBranchId(branchId);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getByCriteria(obat);
+        }catch (GeneralBOException e){
+            logger.error("[ObatAction.getStokObat] Error when get data obat ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatAction.getStokObat] end process >>>");
+        return obatList;
+
+    }
+
+    public List<Obat> listObatByJenis(String idjenisObat){
+
+        logger.info("[ObatAction.listObatByJenis] start process >>>");
+
+        List<Obat> obatList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        Obat obat = new Obat();
+        obat.setIdJenisObat(idjenisObat);
+        obat.setBranchId(branchId);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getByCriteria(obat);
+        }catch (GeneralBOException e){
+            logger.error("[ObatAction.listObatByJenis] Error when get data obat ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatAction.listObatByJenis] end process >>>");
+        return obatList;
+
+    }
+
+    public String saveObat(String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty){
+        logger.info("[ObatAction.saveObatInap] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+            Obat obat = new Obat();
+            obat.setNamaObat(namaObat);
+            obat.setHarga(harga);
+            obat.setQty(qty);
+            obat.setCreatedDate(updateTime);
+            obat.setCreatedWho(userLogin);
+            obat.setLastUpdate(updateTime);
+            obat.setLastUpdateWho(userLogin);
+            obat.setBranchId(userArea);
+            obat.setFlag("Y");
+            obat.setAction("C");
+
+            obatBo.saveAdd(obat, jenisObat);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[ObatAction.saveObatInap] end process >>>");
+        return SUCCESS;
+    }
+
+    public String editObat(String idObat, String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty){
+        logger.info("[ObatAction.saveObatInap] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+            Obat obat = new Obat();
+            obat.setIdObat(idObat);
+            obat.setNamaObat(namaObat);
+            obat.setHarga(harga);
+            obat.setQty(qty);
+            obat.setLastUpdate(updateTime);
+            obat.setLastUpdateWho(userLogin);
+            obat.setBranchId(userArea);
+            obat.setAction("U");
+
+            obatBo.saveEdit(obat, jenisObat);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[ObatAction.saveObatInap] end process >>>");
+        return SUCCESS;
     }
 }
