@@ -98,27 +98,38 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return sId;
     }
 
-    public List<Obat> getJenisObat(String id, String branch){
+    public List<Obat> getJenisObat(Obat bean){
 
         String branchId = "%";
+        String idObat   = "%";
+        String idJenis  = "%";
 
-        if (branch != null && !"".equalsIgnoreCase(branch))
-        {
-            branchId = branch;
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
         }
 
-        String SQL = "SELECT a.nama_jenis_obat, a.id_jenis_obat\n" +
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            idObat = bean.getIdObat();
+        }
+
+        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+            idJenis = bean.getIdJenisObat();
+        }
+
+        String SQL = "SELECT a.nama_jenis_obat, a.id_jenis_obat, c.id_obat, c.nama_obat\n" +
                 "FROM im_simrs_jenis_obat a \n" +
                 "INNER JOIN im_simrs_obat_gejala b ON a.id_jenis_obat = b.id_jenis_obat\n" +
                 "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
-                "WHERE c.id_obat = :id\n" +
+                "WHERE c.id_obat LIKE :id\n" +
                 "AND b.flag = 'Y'\n" +
+                "AND a.id_jenis_obat LIKE :jenis\n" +
                 "AND c.branch_id LIKE :branch";
 
         List<Obat> obats = new ArrayList<>();
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", id)
+                .setParameter("id", idObat)
+                .setParameter("jenis", idJenis)
                 .setParameter("branch", branchId)
                 .list();
 
@@ -126,9 +137,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         {
             Obat obat;
             for (Object[] obj : result){
+
                 obat = new Obat();
                 obat.setJenisObat(obj[0].toString());
                 obat.setIdJenisObat(obj[1].toString());
+                obat.setIdObat(obj[2].toString());
+                obat.setNamaObat(obj[3].toString());
                 obats.add(obat);
             }
         }

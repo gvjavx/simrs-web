@@ -185,7 +185,7 @@ public class ObatAction extends BaseMasterAction {
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         try {
-            obatList = obatBo.getByCriteria(obat);
+            obatList = obatBo.getJenisObat(obat);
         }catch (GeneralBOException e){
             logger.error("[ObatAction.listObatByJenis] Error when get data obat ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
@@ -276,8 +276,12 @@ public class ObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setBranchId(branchId);
+
         try {
-            obatList = obatBo.getJenisObat(idObat, branchId);
+            obatList = obatBo.getJenisObat(obat);
         }catch (GeneralBOException e){
             logger.error("[ObatAction.getJenisObatByIdObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());

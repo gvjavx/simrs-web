@@ -126,8 +126,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
-                                style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
+                                <img border="2" class="card card-4 pull-right"
+                                     src="<s:url value="/pages/images/ktp-tes.jpg"/>"
+                                     style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
@@ -169,7 +170,8 @@
                                     <tr>
                                         <td><b>Ruangan</b></td>
                                         <td>
-                                            <table><label class="label label-success"> <span id="no_ruang"></span> - <span id="name_ruang"></span></label></table>
+                                            <table><label class="label label-success"> <span id="no_ruang"></span> -
+                                                <span id="name_ruang"></span></label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -343,7 +345,7 @@
                                 <td>Tanggal</td>
                                 <td>ID Obat</td>
                                 <td>Obat</td>
-                                <td>Jenis Obat</td>
+                                <%--<td>Jenis Obat</td>--%>
                                 <td>Qty</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -843,7 +845,7 @@
                     <p id="obat_error"></p>
                 </div>
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group" id="jenis_form">
                         <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
                         <div class="col-md-7">
                             <s:action id="initJenis" namespace="/jenisobat"
@@ -862,7 +864,7 @@
                                id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="nama_form">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"
@@ -877,12 +879,20 @@
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group" id="nama_obat_form">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="nama_obat"></s:textfield>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                         <div class="col-md-7">
-                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control" cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
                         </div>
-                </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -899,6 +909,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" id="set_id_obat">
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1139,8 +1150,12 @@
             $('#load_diet, #warning_diet, #war_pagi1, #war_pagi2, #war_siang1, #war_siang2, #war_malam1, #war_malam2').hide();
             $('#modal-diet').modal('show');
         } else if (select == 6) {
-            $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
+            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
             $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
+            $('#jenis_form').show();
+            $('#nama_form').show();
+            $('#nama_obat_form').hide();
+            $('#ob_stok').val('');
             $('#ob_qty').val('1');
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
             $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
@@ -1603,16 +1618,16 @@
     }
 
     function listSelectObat(select) {
-        var idx     = select.selectedIndex;
+        var idx = select.selectedIndex;
         var idJenis = select.options[idx].value;
-        var option  = "<option value=''>[Select One]</option>";
-        var stok    = "";
+        var option = "<option value=''>[Select One]</option>";
+        var stok = "";
 
         if (idJenis != '') {
             ObatAction.listObat(idJenis, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "'>" + item.namaObat +  "</option>";
+                        option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
                     });
                 } else {
                     option = option;
@@ -1625,18 +1640,18 @@
         $('#ob_id_obat').html(option);
     }
 
-    function setStokObat(select){
+    function setStokObat(select) {
 
-        var idx     = select.selectedIndex;
-        var idObat  = select.options[idx].value;
-        var stok    = "";
+        var idx = select.selectedIndex;
+        var idObat = select.options[idx].value;
+        var stok = "";
 
         if (idObat != '') {
             ObatAction.getStokObat(idObat, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        if(item.idObat == idObat){
-                            if(item.qty != null){
+                        if (item.idObat == idObat) {
+                            if (item.qty != null) {
                                 stok = item.qty;
                             }
                         }
@@ -1649,31 +1664,33 @@
 
     function saveObat(id) {
 
-        var idJenis = $('#obat_jenis_obat').val();
-        var idObat  = $('#ob_id_obat').val();
-        var qty     = $('#ob_qty').val();
-        var stok    = $('#ob_stok').val();
+        var idJenis     = $('#obat_jenis_obat').val();
+        var idObat      = $('#ob_id_obat').val();
+        var qty         = $('#ob_qty').val();
+        var stok        = $('#ob_stok').val();
 
-        if(qty <= stok){
+        if (qty <= stok) {
 
-            if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
-                $('#save_obat').hide();
-                $('#load_obat').show();
+            var obat = $('#set_id_obat').val();
 
-                if (id != '') {
-                    dwr.engine.setAsync(true);
-                    ObatInapAction.editObatInap(id, idDetailCheckup, idObat, qty, function (response) {
-                        if (response == "success") {
-                            dwr.engine.setAsync(false);
-                            listObat();
-                            $('#modal-obat').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#close_pos').val(6);
-                        } else {
+            if (id != '') {
+                dwr.engine.setAsync(true);
+                ObatInapAction.editObatInap(id,idDetailCheckup, obat, qty, function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        listObat();
+                        $('#modal-obat').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(6);
+                    } else {
 
-                        }
-                    })
-                } else {
+                    }
+                })
+            } else {
+                if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
+                    $('#save_obat').hide();
+                    $('#load_obat').show();
+
                     dwr.engine.setAsync(true);
                     ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
                         if (response == "success") {
@@ -1686,21 +1703,21 @@
 
                         }
                     })
-                }
-            } else {
-                $('#warning_obat').show().fadeOut(5000);
-                $('#obat_error').text("Silahkan cek kembali data inputan..!");
-                if (idJenis == '') {
-                    $('#war_jenis_obat').show();
-                }
-                if (idObat == '') {
-                    $('#war_obat').show();
-                }
-                if (qty == '' || qty < 1) {
-                    $('#war_qty_obat').show();
+                } else {
+                    $('#warning_obat').show().fadeOut(5000);
+                    $('#obat_error').text("Silahkan cek kembali data inputan..!");
+                    if (idJenis == '') {
+                        $('#war_jenis_obat').show();
+                    }
+                    if (idObat == '') {
+                        $('#war_obat').show();
+                    }
+                    if (qty == '' || qty < 1) {
+                        $('#war_qty_obat').show();
+                    }
                 }
             }
-        }else{
+        } else {
             $('#warning_obat').show().fadeOut(5000);
             $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
         }
@@ -1712,6 +1729,7 @@
 
         ObatInapAction.listObatInap(idDetailCheckup, function (response) {
             data = response;
+            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
@@ -1737,9 +1755,9 @@
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + id + "</td>" +
                             "<td>" + obat + "</td>" +
-                            "<td>" + jenis + "</td>" +
+//                            "<td>" + jenis + "</td>" +
                             "<td>" + qty + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + item.idJenisObat + '\',\'' + item.idObat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + item.idObat + '\',\'' + item.qty + '\',\'' + item.stokMasterObat + '\',\'' + item.namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -1894,12 +1912,16 @@
         $('#modal-diet').modal('show');
     }
 
-    function editObat(id, jenis, obat, qty) {
-        $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObatEdit(this);");
+    function editObat(id, idobat, qty, stok, namaObat) {
+//        $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObatEdit(this);");
         $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
-        $('#obat_jenis_obat').val(jenis).trigger('change');
-        $('#ob_id_obat').val(obat).trigger('change');
+        $('#jenis_form').hide();
+        $('#nama_form').hide();
+        $('#nama_obat_form').show();
+        $('#nama_obat').val(namaObat);
         $('#ob_qty').val(qty);
+        $('#ob_stok').val(stok);
+        $('#set_id_obat').val(idobat);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
     }
@@ -1911,7 +1933,7 @@
         $('#modal-ruangan').modal('show');
     }
 
-    function listSelectObatEdit(select){
+    function listSelectObatEdit(select) {
         var idx = select.selectedIndex;
         var idJenis = select.options[idx].value;
         var option = "<option value=''>[Select One]</option>";
@@ -1935,23 +1957,23 @@
 
     function listRuanganInap() {
 
-        var table   = "";
-        var data    = [];
-        var no      = "";
-        var name    = "";
-        var kelas   = "";
+        var table = "";
+        var data = [];
+        var no = "";
+        var name = "";
+        var kelas = "";
 
         CheckupDetailAction.getListRuangInapByIdDetailCheckup(idDetailCheckup, function (response) {
             data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
-                    if(item.namaRangan != null){
+                    if (item.namaRangan != null) {
                         name = item.namaRangan;
                     }
-                    if(item.noRuangan != null){
-                        no  = item.noRuangan;
+                    if (item.noRuangan != null) {
+                        no = item.noRuangan;
                     }
-                    if(item.kelasRuanganName != null){
+                    if (item.kelasRuanganName != null) {
                         kelas = item.kelasRuanganName;
                     }
                     table += "<tr>" +

@@ -220,22 +220,21 @@ public class ObatInapBoImpl implements ObatInapBo {
             }
 
             if (obatEntity != null){
+                obatInap.setStokMasterObat(obatEntity.getQty());
 
-                obatInap.setStokMasterObat(obat.getQty());
-
-                JenisObat jenisObat = new JenisObat();
-                jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
-                List<ImSimrsJenisObatEntity> jenisObatEntityList = getListJenisObatEntity(jenisObat);
-
-                ImSimrsJenisObatEntity jenisObatEntity = new ImSimrsJenisObatEntity();
-                if (!jenisObatEntityList.isEmpty()){
-                    jenisObatEntity = jenisObatEntityList.get(0);
-                }
-
-                if (jenisObatEntity != null){
-                    obatInap.setIdJenisObat(jenisObatEntity.getIdJenisObat());
-                    obatInap.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
-                }
+//                JenisObat jenisObat = new JenisObat();
+//                jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
+//                List<ImSimrsJenisObatEntity> jenisObatEntityList = getListJenisObatEntity(jenisObat);
+//
+//                ImSimrsJenisObatEntity jenisObatEntity = new ImSimrsJenisObatEntity();
+//                if (!jenisObatEntityList.isEmpty()){
+//                    jenisObatEntity = jenisObatEntityList.get(0);
+//                }
+//
+//                if (jenisObatEntity != null){
+//                    obatInap.setIdJenisObat(jenisObatEntity.getIdJenisObat());
+//                    obatInap.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
+//                }
 
             }
 

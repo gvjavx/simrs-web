@@ -161,13 +161,13 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public List<Obat> getJenisObat(String idObat, String branchId) throws GeneralBOException {
+    public List<Obat> getJenisObat(Obat bean) throws GeneralBOException {
         logger.info("[ObatBoImpl.getJenisObat] Start >>>>>>>");
 
         List<Obat> obats = new ArrayList<>();
 
         try {
-            obats = obatDao.getJenisObat(idObat, branchId);
+            obats = obatDao.getJenisObat(bean);
         } catch (HibernateException e){
             logger.error("[ObatBoImpl.getJenisObat] error when get data obat by jenis obat "+ e.getMessage());
         }
