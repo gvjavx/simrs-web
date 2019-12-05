@@ -278,6 +278,8 @@ public class ObatBoImpl implements ObatBo {
             obatEntity.setNamaObat(bean.getNamaObat());
             obatEntity.setQty(bean.getQty());
             obatEntity.setHarga(bean.getHarga());
+            obatEntity.setLastUpdate(bean.getLastUpdate());
+            obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
                 obatDao.updateAndSave(obatEntity);
@@ -344,7 +346,7 @@ public class ObatBoImpl implements ObatBo {
                 throw new GeneralBOException("[ObatBoImpl.updateObatGejala] error when get data obat gejala "+ e.getMessage());
             }
 
-            if (obatGejalaEntities.isEmpty() && obatGejalaEntities.size() == 0)
+            if (!obatGejalaEntities.isEmpty() && obatGejalaEntities.size() > 0)
             {
                 ImSimrsObatGejalaEntity entity = obatGejalaEntities.get(0);
 

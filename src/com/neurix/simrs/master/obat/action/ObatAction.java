@@ -231,7 +231,7 @@ public class ObatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String editObat(String idObat, String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty){
+    public String editObat(String idObat, String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty, String flag){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -249,6 +249,7 @@ public class ObatAction extends BaseMasterAction {
             obat.setLastUpdate(updateTime);
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
+            obat.setFlag(flag);
             obat.setAction("U");
 
             obatBo.saveEdit(obat, jenisObat);
