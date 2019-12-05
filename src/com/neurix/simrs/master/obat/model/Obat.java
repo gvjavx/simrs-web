@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Obat extends BaseModel {
 
@@ -21,6 +22,15 @@ public class Obat extends BaseModel {
     private String branchId;
 
     private String jenisObat;
+    private List<Obat> labelJenisObat;
+
+    public List<Obat> getLabelJenisObat() {
+        return labelJenisObat;
+    }
+
+    public void setLabelJenisObat(List<Obat> labelJenisObat) {
+        this.labelJenisObat = labelJenisObat;
+    }
 
     public String getBranchId() {
         return branchId;
