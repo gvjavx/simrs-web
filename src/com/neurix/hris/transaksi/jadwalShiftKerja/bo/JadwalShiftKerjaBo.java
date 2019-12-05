@@ -4,9 +4,11 @@ import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.groupShift.model.GroupShift;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -26,4 +28,8 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     String saveTanggalOtomatis(JadwalShiftKerja searchBean) throws GeneralBOException;
 
     List<JadwalShiftKerja> getJadwalforReport(JadwalShiftKerja bean) throws GeneralBOException;
+
+    List<JadwalShiftKerjaDetail> getPegawaiByGrup(String kelompokPositionId, String unit) throws GeneralBOException;
+
+    List<JadwalPelayananDTO> getJadwalPelayanan(String idPelayanan, String kelompokId, String branchId, String nip, Date tanggal) throws GeneralBOException;
 }
