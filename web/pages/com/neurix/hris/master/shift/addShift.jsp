@@ -15,10 +15,12 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var shiftName = $("#shiftName").val();
-
-            //alert(namaAlat.value);
-            if (shiftName.value != '' ) {
-
+            var branchid = $("#branchId").val();
+            var grupId = $("#kelompokPositionId").val();
+            var jamKerjaAwal = $("#jamAwal").val();
+            var jamKerjaAkhir = $("#jamAkhir").val();
+            var flag = $("#flag").val();
+            if (shiftName != ''&&branchid!=''&&grupId!=''&&jamKerjaAwal!=''&&jamKerjaAkhir!=''&&flag!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -29,19 +31,29 @@
                 }
 
             } else {
-
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-                if (shiftName.value =='') {
-                    msg = 'Field <strong>Shift Name</strong> is required.' + '<br/>';
+                if (shiftName =='') {
+                    msg += 'Field <strong>Nama Shift</strong> is required.' + '<br/>';
                 }
-
-
+                if (branchid =='') {
+                    msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (grupId =='') {
+                    msg += 'Field <strong>Grup</strong> is required.' + '<br/>';
+                }
+                if (jamKerjaAwal =='') {
+                    msg += 'Field <strong>Jam Awal Kerja</strong> is required.' + '<br/>';
+                }
+                if (jamKerjaAkhir =='') {
+                    msg += 'Field <strong>Jam Akhir Kerja</strong> is required.' + '<br/>';
+                }
+                if (flag =='') {
+                    msg += 'Field <strong>Flag</strong> is required.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
 
@@ -97,45 +109,53 @@
         </tr>
     </table>
     <div class="form-group">
-        <label class="control-label col-sm-2">Shift Name :</label>
+        <label class="control-label col-sm-2">Unit :</label>
+        <div class="col-sm-8" align="left">
+            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+            <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="shift.idBranch"
+                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Pilih Satu]"
+                      cssClass="form-control"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Grup :</label>
+        <div class="col-sm-8" align="left">
+            <s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
+            <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name="shift.kelompokPositionId"
+                      required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Pilih Satu]" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Nama shift :</label>
         <div class="col-sm-8">
             <s:textfield id="shiftName" cssClass="form-control" name="shift.shiftName" required="false" disabled="false"/>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">Jam Awal :</label>
+        <label class="control-label col-sm-2">Jam Kerja :</label>
         <div class="col-sm-8">
-            <s:select cssClass="form-control" list="#{'01':'01', '02':'02','03':'03','04':'04','05':'05','06':'06','07':'07','08':'08','09':'09','10':'10','11':'11','12':'12','13':'13','14':'14','15':'15','16':'16','17':'17','18':'18','19':'19','20':'20','21':'21','22':'22','23':'23','24':'24'}" id="jamAwalJam" name="shift.jamAwalJam"
-                      headerKey="" headerValue="[Jam]"/>
-            <s:select cssClass="form-control" list="#{'00':'00', '30':'30'}" id="jamAwalMenit" name="shift.jamAwalMenit"
-                      headerKey="" headerValue="[Menit]"/>
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAwal" name="shift.jamAwal" size="12" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+                <div class="input-group-addon">
+                    s/d
+                </div>
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <s:textfield id="jamAkhir" name="shift.jamAkhir" size="12" cssClass="form-control pull-right"
+                             required="false" cssStyle=""/>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <label class="control-label col-sm-2">Jam Akhir :</label>
-        <div class="col-sm-8">
-            <s:select cssClass="form-control" list="#{'01':'01', '02':'02','03':'03','04':'04','05':'05','06':'06','07':'07','08':'08','09':'09','10':'10','11':'11','12':'12','13':'13','14':'14','15':'15','16':'16','17':'17','18':'18','19':'19','20':'20','21':'21','22':'22','23':'23','24':'24'}" id="jamAkhirJam" name="shift.jamAkhirJam"
-                      headerKey="" headerValue="[Jam]"/>
-            <s:select cssClass="form-control" list="#{'00':'00', '30':'30'}" id="jamAkhirMenit" name="shift.jamAkhirMenit"
-                      headerKey="" headerValue="[Menit]"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Branch :</label>
-        <div class="col-sm-8" align="left">
-            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-            <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="shift.idBranch"
-                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                      cssClass="form-control"/>
-        </div>
-    </div>
-
     <div class="form-group">
         <label class="control-label col-sm-2">Flag :</label>
         <div class="col-sm-8" align="left">
-            <s:select cssClass="form-control" list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="shift.flag"
-                      headerKey="" headerValue="[Select one]"/>
+            <s:select cssClass="form-control" list="#{'N':'NonAktif'}" id="flag" name="shift.flag"
+                      headerKey="Y" headerValue="Aktif"/>
         </div>
     </div>
 
@@ -169,7 +189,7 @@
                                 </br>
                                 </br>
                                 <center>
-                                    <img border="0" src="<s:url value="/pages/images/loading4.gif"/>" name="image_indicator_write">
+                                    <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" name="image_indicator_write">
                                 </center>
                             </sj:dialog>
 
@@ -222,3 +242,9 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function(){
+        $('#jamAwal').timepicker();
+        $('#jamAkhir').timepicker();
+    })
+</script>

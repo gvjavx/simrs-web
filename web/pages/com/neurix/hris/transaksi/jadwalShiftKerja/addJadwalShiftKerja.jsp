@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags" %>
@@ -11,6 +10,7 @@
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/JadwalShiftKerjaAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/GroupShiftAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ShiftAction.js"/>'></script>
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -46,10 +46,10 @@
             };
 
             $.subscribe('beforeProcessSave', function (event, data) {
-                var namaJadwal  = document.getElementById("jadwalName").value;
+                // var namaJadwal  = document.getElementById("jadwalName").value;
                 var unit = document.getElementById("branchid").value;
                 var tglAwal = document.getElementById("tglAwal").value;
-                if (namaJadwal!=""&&unit!=""&&tglAwal!="") {
+                if (unit!=""&&tglAwal!="") {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -62,9 +62,6 @@
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if ( namaJadwal == '') {
-                        msg += 'Field <strong>Nama Jadwal</strong> is required.' + '<br/>';
-                    }
                     if ( unit== '') {
                         msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
                     }
@@ -107,8 +104,6 @@
             <small>e-HEALTH</small>
         </h1>
     </section>
-
-
     <!-- Main content -->
     <section class="content">
 
@@ -129,16 +124,6 @@
                         </table>
 
                         <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Nama Jadwal :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield id="jadwalName" name="jadwalShiftKerja.jadwalShiftKerjaName" required="true" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Unit :</small></label>
@@ -169,19 +154,8 @@
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <s:textfield id="tglAkhir" name="jadwalShiftKerja.stTanggalAkhir" cssClass="form-control pull-right"
-                                                         required="false" cssStyle=""/>
+                                                         cssStyle=""/>
                                         </div>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Status Giling :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling" name="jadwalShiftKerja.statusGiling"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                     </table>
                                 </td>
                             </tr>
@@ -191,7 +165,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textarea rows="4" id="keterangan" name="jadwalShiftKerja.keterangan" required="false" cssClass="form-control"/>
+                                        <s:textarea rows="4" id="keterangan" name="jadwalShiftKerja.keterangan" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -206,10 +180,10 @@
                         </h3>
                         <br>
                         <center>
-                            <table id="showdata" width="80%">
+                            <table id="showdata" width="100%">
                                 <tr>
                                     <td align="center">
-                                        <table style="width: 80%;" class="shiftTable table table-bordered">
+                                        <table style="width: 100%;" class="shiftTable table table-bordered" id="shiftTable">
                                         </table>
                                     </td>
                                 </tr>
@@ -321,7 +295,6 @@
 
 <%@ include file="/pages/common/footer.jsp" %>
 
-
 <%@ include file="/pages/common/lastScript.jsp" %>
 
 </body>
@@ -335,13 +308,20 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myForm">
-                    <s:action id="comboGroupShift" namespace="/groupShift" name="initComboGroupShift_groupShift"/>
-                    <s:select cssClass="form-control" list="#comboGroupShift.listOfComboGroupShift" id="GroupShiftId" name=""
-                              required="true" listKey="groupShiftId" listValue="groupShiftName" headerKey="" cssStyle="display: none" headerValue="[Select one]" />
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label"><small>Shift </small></label>
+                                <label class="control-label">Grup</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
+                                <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name=""
+                                          required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" onchange="listShift();listPerson()" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-3 col-sm-1">
+                                <label class="control-label">Shift</label>
                             </div>
                             <div class="col-sm-4">
                                 <s:action id="comboShift" namespace="/groupShift" name="initComboShift_groupShift"/>
@@ -350,24 +330,14 @@
                             </div>
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label"><small>Group </small></label>
-                            </div>
-                            <div class="col-sm-4">
-                                <s:action id="comboGroup" namespace="/groupShift" name="initComboGroup_groupShift"/>
-                                <s:select cssClass="form-control" list="#comboGroup.listOfComboGroup" id="GroupId" name=""
-                                          required="true" listKey="groupId" listValue="groupName" headerKey="" headerValue="[Select one]" />
-                            </div>
-                        </div>
                     </div>
                     <br>
                     <br>
                     <center>
-                        <table id="showdata1" width="80%">
+                        <table id="showdata1" width="100%">
                             <tr>
                                 <td align="center">
-                                    <table style="width: 80%;" class="groupShiftTable table table-bordered" id="groupShiftTable">
+                                    <table style="width: 100%;" class="groupShiftTable table table-bordered" id="groupShiftTable">
                                     </table>
                                 </td>
                             </tr>
@@ -377,37 +347,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="btnSave" type="button" class="btn btn-default btn-success">Pilih</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="modal-member" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Group Member</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="myFormGroupMember">
-                    <center>
-                        <table id="showdata2" width="100%">
-                            <tr>
-                                <td align="center">
-                                    <table style="width: 100%;" class="groupMemberTable table table-bordered" id="groupMemberTable">
-
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </center>
-                    <br>
-                </form>
-            </div>
-            <div class="modal-footer">
+                <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Pilih</button>--%>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -416,145 +356,28 @@
 </html>
 
 <script>
-    window.loadShift =  function(){
-        $('.shiftTable').find('tbody').remove();
-        $('.shiftTable').find('thead').remove();
-        dwr.engine.setAsync(false);
-        var tmp_table = "";
-        JadwalShiftKerjaAction.searchGroupShift(function(listdata) {
-            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Delete</th>"+
-                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Shift</th>"+
-                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Group</th>"+
-                "</tr></thead>";
-            var i = i;
-            $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
-                    '<td align="center">' + (i + 1) + '</td>' +
-                    '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.groupShiftId+"' >" +
-                    "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_trash'>"+
-                    '</a>' +
-                    '</td>' +
-                    '<td align="center">' + item.shiftName + '</td>' +
-                    '<td align="center">' + item.groupName + '</td>' +
-                    "</tr>";
-            });
-            $('.shiftTable').append(tmp_table);
-        });
-    };
-    window.loadGroup =  function(){
-        dwr.engine.setAsync(false);
-        var shiftId=$('#ShiftId').val();
-        var groupId=$('#GroupId').val();
-        GroupShiftAction.searchGroupShiftId(groupId,shiftId,function(data) {
-            $('#GroupShiftId').val(data);
-        });
-        var groupShiftId=$('#GroupShiftId').val();
-        $('.groupShiftTable').find('tbody').remove();
-        $('.groupShiftTable').find('thead').remove();
-        if (groupShiftId!=""){
-            dwr.engine.setAsync(false);
-            var tmp_table = "";
-            JadwalShiftKerjaAction.searchGroup(groupShiftId,function(listdata) {
-                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc ; display:none'>Id</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>View</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Group Id</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Group Name</th>"+
-                    "</tr></thead>";
-                var i = i ;
-                $.each(listdata, function (i, item) {
-                    tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td style="display:none">' + item.groupShiftId + '</td>' +
-                        '<td >' + (i + 1) + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-view-member' data ='"+item.groupId+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>"+
-                        '</a>' +
-                        '</td>' +
-                        '<td>' + item.groupId + '</td>' +
-                        '<td>' + item.groupName + '</td>' +
-                        "</tr>";
-                });
-                $('.groupShiftTable').append(tmp_table);
-            });
-        }
-    };
     $(document).ready(function() {
-
+        $('#ShiftId').empty();
+        $('#ShiftId').append($("<option></option>")
+            .attr("value", '')
+            .text(''));
         $('#tglAwal').datepicker({
             dateFormat: 'dd/mm/yy'
         });
         $('#tglAkhir').datepicker({
             dateFormat: 'dd/mm/yy'
         });
-        loadShift();
-
-        $('.groupShiftTable').on('click', '.item-view-member', function () {
-            var id = $(this).attr('data');
-            $('.groupMemberTable').find('tbody').remove();
-            $('.groupMemberTable').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var tmp_table = "";
-            JadwalShiftKerjaAction.searchGroupMember(id,function(listdata) {
-                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Jabatan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Unit</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Bidang</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Status Giling</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Golongan</th>"+
-                    "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td >' + (i + 1) + '</td>' +
-                        '<td >' + item.nip + '</td>' +
-                        '<td >' + item.nama + '</td>' +
-                        '<td align="center">' + item.positionName + '</td>' +
-                        '<td align="center">' + item.branchName + '</td>' +
-                        '<td align="center">' + item.divisiName + '</td>' +
-                        '<td align="center">' + item.statusGilingName + '</td>' +
-                        '<td align="center">' + item.golonganName + '</td>' +
-                        "</tr>";
-                });
-                $('.groupMemberTable').append(tmp_table);
-                $("#groupMemberTable td:contains('null')").html("-");
-            });
-
-            $('#modal-member').find('.modal-title').text('View Member');
-            $('#modal-member').modal('show');
-        });
-        $('.shiftTable').on('click', '.item-delete-shift', function () {
-            var id = $(this).attr('data');
-            dwr.engine.setAsync(false);
-            if (confirm('Are you sure you want to delete this Record?')) {
-                JadwalShiftKerjaAction.deleteJadwalShiftKerja(id,function(listdata) {
-                    loadShift();
-                });
-                alert('Data Successfully Updated');
-            }
-        });
         $('#btnAddShift').click(function(){
-            $('#myForm')[0].reset();
-            $('#modal-edit').modal('show');
-            $('#myForm').attr('action', 'addShift');
-            $('#modal-edit').find('.modal-title').text('Add Shift');
-
-        });
-
-        $('.groupMemberTable').on('click', '.item-view', function () {
-            id = $(this).attr('data');
-            dwr.engine.setAsync(false);
-            loadMember();
-            $('#modal-view-study').find('.modal-title').text('View Study');
-            $('#modal-view-study').modal('show');
-            $('#ViewStudy').attr('action', 'editPerson');
+            var unit = $('#branchid').val();
+            if (unit!=''){
+                $('#ShiftId').empty();
+                $('#myForm')[0].reset();
+                $('#modal-edit').modal('show');
+                $('#myForm').attr('action', 'addShift');
+                $('#modal-edit').find('.modal-title').text('Add Shift');
+            }else{
+                alert("Isikan unit terlebih dahulu");
+            }
         });
 
         $('#GroupId').change(function(){
@@ -571,98 +394,116 @@
                 loadGroup();
             }
         });
-        $('#btnSave').click(function(){
-            var values = new Array();
-            var val1;
-            var table = $("#groupShiftTable");
-            table.find('tr').each(function (i) {
-                var $tds = $(this).find('td');
-                val1= $tds.eq(0).text();
-                if (val1!=''){
-                    values.push(val1);
-                }
-            });
-            if(values.length > 0){
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    table.find('tr').each(function (i) {
-                        var $tds = $(this).find('td');
-                        val1 = $tds.eq(0).text();
-                        if (val1 != '') {
-                            JadwalShiftKerjaAction.saveTmpShift(val1, function (listdata) {
-                                $('#modal-edit').modal('hide');
-                                $('#myForm')[0].reset();
-                                loadShift();
-                            });
-                        }
-                    });
-                    alert('Data Successfully Updated');
-                }
-            }else{
-                alert('Belum memilih Shift !');
-            }
-        });
-        $('.rekruitmenDetailTable').on('click', '.item-edit', function(){
-            var nip = $(this).attr('data');
-            dwr.engine.setAsync(false);
-            JadwalShiftKerjaAction.searchJadwalShiftKerjaPerson(nip ,function(listdata) {
+    });
+
+    window.listShift = function () {
+        var grup = $('#kelompokPositionId').val();
+        $('#ShiftId').empty();
+        if (grup!=''){
+            ShiftAction.searchShiftByGrup(grup, function (listdata) {
                 $.each(listdata, function (i, item) {
-                    $('#nipPosisi').val(item.nip);
-                    $('#nipNamaPosisi').val(item.namaPegawai);
-                    $('#posisiLamaPosisi').val(item.posisiLama).change();
-                    $('#posisiBaruPosisi').val(item.posisiBaru).change();
+                    $('#ShiftId').append($("<option></option>")
+                        .attr("value", item.shiftId)
+                        .text(item.shiftName));
                 });
             });
-
-            $('#modal-edit-posisi').find('.modal-title').text('Edit Posisi Baru');
-            $('#modal-edit-posisi').modal('show');
-            $('#myFormEdit').attr('action', 'editPerson');
-        });
-        $('.rekruitmenDetailTable').on('click', '.item-delete', function(){
-            var nip = $(this).attr('data');
+        } else{
+            $('#ShiftId').append($("<option></option>")
+                .attr("value", '')
+                .text(''));
+        }
+    };
+    window.listPerson= function () {
+        $('.groupShiftTable').empty();
+        var grup = $('#kelompokPositionId').val();
+        var unit = $('#branchid').val();
+        if (grup!=''&& unit!=''){
             dwr.engine.setAsync(false);
-            JadwalShiftKerjaAction.searchJadwalShiftKerjaPerson(nip ,function(listdata) {
+            var tmp_table = "";
+            JadwalShiftKerjaAction.searchPegawaiByGrup(grup,unit,function(listdata) {
+                tmp_table = "<thead><tr class='active'>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Tambahkan</th>"+
+                    "</tr></thead>";
+                var i = i;
                 $.each(listdata, function (i, item) {
-                    $('#nipHapus').val(item.nip);
-                    $('#nipNamaHapus').val(item.namaPegawai);
-                    $('#posisiLamaHapus').val(item.posisiLama).change();
-                    $('#posisiBaruHapus').val(item.posisiBaru).change();
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + item.nip + '</td>' +
+                        '<td align="center">' + item.namaPegawai + '</td>' +
+                        '<td align="center">' + item.positionName + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-add-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>'>"+
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                });
+                $('.groupShiftTable').append(tmp_table);
+                $('#groupShiftTable').DataTable({
+                    "pageLength": 20
                 });
             });
-
-            $('#modal-edit-hapus').find('.modal-title').text('Hapus Data');
-            $('#modal-edit-hapus').modal('show');
-            $('#myFormHapus').attr('action', 'deletePerson');
+        }
+    };
+    window.resultPerson= function () {
+        $('.shiftTable').empty();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        JadwalShiftKerjaAction.searchResultPegawai(function(listdata) {
+            tmp_table = "<thead><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Grup</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Shift</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Hapus</th>"+
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.nip + '</td>' +
+                    '<td align="center">' + item.namaPegawai + '</td>' +
+                    '<td align="center">' + item.positionName + '</td>' +
+                    '<td align="center">' + item.kelompokName + '</td>' +
+                    '<td align="center">' + item.shiftName + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
+                    "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>'>"+
+                    '</a>' +
+                    '</td>' +
+                    "</tr>";
+            });
+            $('.shiftTable').append(tmp_table);
+            $('#shiftTable').DataTable({
+                "pageLength": 20
+            });
         });
+    };
+    $('.groupShiftTable').on('click', '.item-add-shift', function () {
+        var nip = $(this).attr('data');
+        var nama = $(this).attr('nama');
+        var posisi = $(this).attr('posisi');
+        var grup = $('#kelompokPositionId').find('option:selected').text();
+        var shift = $('#ShiftId').find('option:selected').text();
+        var shiftId = $('#ShiftId').find('option:selected').val();
+        dwr.engine.setAsync(false);
 
-        $('#btnSavePosisi').click(function(){
-            var nip = $('#nipPosisi').val();
-            var posisiBaru = $('#posisiBaruPosisi').val();
-            if (posisiBaru!=''){
-                if (confirm('Are you sure you want to edit this Record?')) {
-                    JadwalShiftKerjaAction.editJadwalShiftKerjaPerson(nip,posisiBaru ,function(listdata) {
-                        $('#modal-edit-posisi').modal('hide');
-                        $('#myFormEdit')[0].reset();
-                        location.reload()
-                    });
-                }
-                alert('Data Successfully Updated');
-            }
-            else {
-                alert ("masukkan posisi baru");
-            }
-
+        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,shift,shiftId,function() {
+            resultPerson();
+            listPerson();
         });
-        $('#btnSavehapus').click(function(){
-            if (confirm('Are you sure you want to delete this Record?')) {
-                var nip = $('#nipHapus').val();
-                JadwalShiftKerjaAction.deleteJadwalShiftKerjaPerson(nip,function(listdata) {
-                    $('#modal-edit-hapus').modal('hide');
-                    $('#myFormHapus')[0].reset();
-                    location.reload()
-                });
-                alert('Data Successfully Updated');
-            }
+    });
+    $('.shiftTable').on('click', '.item-delete-shift', function () {
+        var nip = $(this).attr('data');
+        dwr.engine.setAsync(false);
+        JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
+            resultPerson();
         });
     });
 </script>
