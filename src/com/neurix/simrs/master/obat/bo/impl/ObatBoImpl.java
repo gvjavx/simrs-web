@@ -89,6 +89,7 @@ public class ObatBoImpl implements ObatBo {
                         String listJenisObat = "";
                         for (ImSimrsObatGejalaEntity gejalaEntity : obatGejalaEntities)
                         {
+                            StringBuilder addedScript = new StringBuilder();
                             JenisObat jenisObat = new JenisObat();
                             jenisObat.setIdJenisObat(gejalaEntity.getIdJenisObat());
                             List<ImSimrsJenisObatEntity> jenisObatEntityList = getListEntityJenisObat(jenisObat);
@@ -99,12 +100,12 @@ public class ObatBoImpl implements ObatBo {
                                 if(jenisObatEntity != null)
                                 {
 //                                    listJenisObat = listJenisObat + "<div style=\"background-color: #6ac8eb; color: #fff; padding: 10px\">"+jenisObatEntity.getNamaJenisObat()+"</div>";
-                                    listJenisObat = listJenisObat + jenisObatEntity.getNamaJenisObat() +", ";
+                                    listJenisObat = listJenisObat + addedScript.append("<label class=\"label label-primary\">"+jenisObatEntity.getNamaJenisObat()+"</label>");
                                 }
 
                             }
                         }
-                        obat.setJenisObat(listJenisObat);
+                        obat.setJenisObat(listJenisObat.toString());
                     }
                     result.add(obat);
                 }

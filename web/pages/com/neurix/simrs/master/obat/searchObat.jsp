@@ -173,7 +173,7 @@
                                 <tr>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="jenisObat"/></td>
+                                    <td><s:property escape="false" value="jenisObat"/></td>
                                     <td><s:property value="qty"/></td>
                                     <td align="center">
                                         <%--<s:url var="add_periksa_radiologi" namespace="/obat" action="add_radiologi" escapeAmp="false">--%>
