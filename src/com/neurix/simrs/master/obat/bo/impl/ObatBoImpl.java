@@ -159,6 +159,22 @@ public class ObatBoImpl implements ObatBo {
         return obats;
     }
 
+    @Override
+    public List<Obat> getJenisObat(String idObat, String branchId) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getJenisObat] Start >>>>>>>");
+
+        List<Obat> obats = new ArrayList<>();
+
+        try {
+            obats = obatDao.getJenisObat(idObat, branchId);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getJenisObat] error when get data obat by jenis obat "+ e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.getJenisObat] End <<<<<<<");
+        return obats;
+    }
+
     private List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException{
         logger.info("[ObatBoImpl.getListEntityObat] Start >>>>>>>");
 
@@ -176,8 +192,9 @@ public class ObatBoImpl implements ObatBo {
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
             hsCriteria.put("branch_id", bean.getBranchId());
         }
-
-        hsCriteria.put("flag", "Y");
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            hsCriteria.put("flag", bean.getFlag());
+        }
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
         try {

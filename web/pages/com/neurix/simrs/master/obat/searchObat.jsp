@@ -78,6 +78,12 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Flag</label>
+                                    <div class="col-sm-4">
+                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'Y':'Active','N':'Non Active'}" headerKey="" headerValue="[Select One]" name="obat.flag"/>
+                                    </div>
+                                </div>
 
                                 <br>
                                 <div class="form-group">
@@ -281,9 +287,15 @@
 <script type='text/javascript'>
 
     function showModal(){
+
+        $('#add_nama_obat, #add_harga, #add_stok').val('');
+        $('#add_jenis_obat').val('').trigger('change');
+
         var id = "";
+        $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
+
     }
 
     function toContent() {
@@ -365,10 +377,27 @@
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#add_nama_obat').val(nama);
-        $('#add_jenis_obat').val('');
+        $('#add_jenis_obat').val(listSelectObatEdit(id)).trigger('change');
         $('#add_harga').val(harga);
         $('#add_stok').val(stok);
         $('#modal-obat').modal('show');
+    }
+
+    function listSelectObatEdit(idObat){
+        var data = [];
+        if (idObat != '') {
+            ObatAction.getJenisObatByIdObat(idObat, function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        data.push(item.idJenisObat)
+                    });
+                }
+            });
+        } else {
+            alert('id obat kosong');
+        }
+        console.log(data);
+        return data;
     }
 
 </script>
