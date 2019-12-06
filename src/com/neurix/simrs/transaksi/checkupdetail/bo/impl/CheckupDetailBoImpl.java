@@ -192,6 +192,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities) {
                 rawatInapEntity.setFlag("N");
                 rawatInapEntity.setAction("U");
+                rawatInapEntity.setTglKeluar(new Timestamp(System.currentTimeMillis()));
                 rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
                 try {
