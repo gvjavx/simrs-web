@@ -806,17 +806,20 @@
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
             var src = $('#img_ktp').attr('src');
-            $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
 
-            $('.mask').addClass('is-visible fadein').on('animationend', function(){
-                $(this).removeClass('fadein is-visible').addClass('is-visible');
-            });
+            if(src != null && src != ""){
+                $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
 
-            $('.close').on('click', function(){
-                $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
-                    $(this).removeClass('fadeout is-visible')
+                $('.mask').addClass('is-visible fadein').on('animationend', function(){
+                    $(this).removeClass('fadein is-visible').addClass('is-visible');
                 });
-            });
+
+                $('.close').on('click', function(){
+                    $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
+                        $(this).removeClass('fadeout is-visible')
+                    });
+                });
+            }
 
         });
 

@@ -252,7 +252,7 @@
                                                 style="margin-top: 15px;" id="print_ket"><i
                                                 class="fa fa-print"></i> Print
                                         </button>
-                                        <a href="initForm_radiologi.action" class="btn btn-warning" onclick=""
+                                        <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
                                            style="margin-top: 15px;" id="back_ket"><i
                                                 class="fa fa-arrow-left"></i> Back
                                         </a>

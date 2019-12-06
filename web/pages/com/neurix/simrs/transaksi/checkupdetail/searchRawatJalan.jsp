@@ -164,7 +164,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -173,12 +173,14 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_rawat_jalan}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
-                                        </s:a>
+                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                            <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
+                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_rawat_jalan}">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            </s:a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
