@@ -199,7 +199,7 @@ public class ObatBoImpl implements ObatBo {
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
         try {
-            obatEntityList = obatDao.getByCriteria(hsCriteria);
+            obatEntityList = obatDao.getListObatByCriteria(hsCriteria);
         } catch (HibernateException e){
             logger.error("[ObatBoImpl.getByCriteria] error when get data obat by get by criteria "+ e.getMessage());
         }

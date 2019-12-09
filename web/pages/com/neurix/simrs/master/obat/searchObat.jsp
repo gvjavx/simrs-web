@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
-                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'Y':'Active','N':'Non Active'}" headerKey="" headerValue="[Select One]" name="obat.flag"/>
+                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'N':'Non Active'}" headerKey="Y" headerValue="Active" name="obat.flag"/>
                                     </div>
                                 </div>
 
