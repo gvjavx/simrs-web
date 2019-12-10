@@ -180,7 +180,7 @@
                                             <%--<s:param name="id"><s:property value="idObat"/></s:param>--%>
                                         <%--</s:url>--%>
                                         <%--<s:a href="%{add_periksa_radiologi}">--%>
-                                            <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                            <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; width: 25px;">
                                         <%--</s:a>--%>
                                     </td>
                                 </tr>

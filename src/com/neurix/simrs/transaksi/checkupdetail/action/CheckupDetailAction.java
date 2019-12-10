@@ -32,6 +32,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,6 +267,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
+        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
@@ -287,6 +290,9 @@ public class CheckupDetailAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[CheckupDetailAction.initForm] start process >>>");
+
+        LocalDate today = LocalDate.now();
+        String stId = today.toString();
 
         HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
         setHeaderDetailCheckup(checkupdetail);
