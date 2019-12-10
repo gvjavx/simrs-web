@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
@@ -289,12 +290,15 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.initForm] start process >>>");
 
         HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
+        String userRoleLogin = CommonUtil.roleAsLogin();
+        if(CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)){
+            checkupdetail.setEnabledPoli(true);
+        }
         setHeaderDetailCheckup(checkupdetail);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        logger.info("[CheckupDetailAction.initForm] ID Pelayanan : "+CommonUtil.userPelayananIdLogin());
         logger.info("[CheckupDetailAction.initForm] end process <<<");
 
         return "search";

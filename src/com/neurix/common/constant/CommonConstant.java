@@ -116,6 +116,7 @@ public class CommonConstant {
     public final static String ROLE_OPERATOR_GPS = "OPERATOR_GPS";
     public final static String ROLE_ASMUD = "ASMUD";
     public final static String ROLE_MAPPER = "MAPPER";
+    public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
 
     public final static String BRANCH_KANTOR_DIREKSI = "KD01";
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
