@@ -313,6 +313,25 @@ public class CommonUtil {
         }
     }
 
+    public static String userPelayananIdLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+
+                String pelayananId = userDetailsLogin.getIdPleyanan();
+
+                return pelayananId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
     public static String numbericFormat(BigDecimal number,String pattern) {
 //        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format

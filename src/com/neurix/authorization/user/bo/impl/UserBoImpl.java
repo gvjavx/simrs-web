@@ -191,6 +191,7 @@ public class UserBoImpl implements UserBo {
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
 
+
             userDetailsLogin = new UserDetailsLogin();
             userDetailsLogin.setUserId(userId);
             userDetailsLogin.setUsername(username);
@@ -203,8 +204,9 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setUserCredentialsNonExpired(true);
             //userDetailsLogin.setPositionId(positionId.toString());
             //userDetailsLogin.setPositionName(positionName);
-            ItPersonilPositionEntity itPersonilPositionEntity = null ;
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
 
+            ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");
             if(itPersonilPositionEntity != null){
                 userDetailsLogin.setBranchId(itPersonilPositionEntity.getBranchId());
@@ -2012,6 +2014,9 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setAction(addUsers.getAction());
                 imUsersNew.setFlag("Y");
 
+                //sodiq, 10/12/2019, penambahan id pelayanan
+                imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+
                 String userid = addUsers.getUserId();
                 boolean isAda ;
 
@@ -2052,9 +2057,14 @@ public class UserBoImpl implements UserBo {
                 //save uers into table im_areas_branches_users, update by ferdi, 10-10-2016
                 ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
                 ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-                imAreasBranchesUsersPK.setUserId(userId);
-                imAreasBranchesUsersPK.setAreaId(areaId);
-                imAreasBranchesUsersPK.setBranchId(branchId);
+//                imAreasBranchesUsersPK.setUserId(userId);
+//                imAreasBranchesUsersPK.setAreaId(areaId);
+//                imAreasBranchesUsersPK.setBranchId(branchId);
+
+                //sodiq, 10/12/2019, penambahan user id, area id, dan branch id form front end
+                imAreasBranchesUsersPK.setUserId(addUsers.getUserId());
+                imAreasBranchesUsersPK.setAreaId(addUsers.getAreaId());
+                imAreasBranchesUsersPK.setBranchId(addUsers.getBranchId());
 
                 imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
                 imAreasBranchesUsers.setCreatedDate(addUsers.getCreatedDate());

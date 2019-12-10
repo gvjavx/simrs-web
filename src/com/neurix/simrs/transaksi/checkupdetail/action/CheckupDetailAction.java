@@ -294,6 +294,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
+        logger.info("[CheckupDetailAction.initForm] ID Pelayanan : "+CommonUtil.userPelayananIdLogin());
         logger.info("[CheckupDetailAction.initForm] end process <<<");
 
         return "search";

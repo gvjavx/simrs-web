@@ -42,6 +42,15 @@ public class ImBranches implements Serializable {
     private int maxJamIjinKeluar;
     private String strBiayaJasprod;
     private BigDecimal biayaJasprod;
+    private String areaId;
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
+    }
 
     public String getStrBiayaJasprod() {
         return strBiayaJasprod;
