@@ -45,6 +45,9 @@
         <property name="maxJamIjinKeluar">
             <column name="max_jam_ijin_keluar" sql-type="integer" />
         </property>
+        <property name="areaId">
+            <column name="area_id" sql-type="varchar" length="10"/>
+        </property>
         <property name="createdDate">
             <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
         </property>
