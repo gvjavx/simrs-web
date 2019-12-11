@@ -422,6 +422,8 @@ public class UserAction extends BaseMasterAction {
                         editUser.setLastUpdateWho(userLogin);
                         editUser.setAction("U");
 
+
+
                         userBoProxy.saveEdit(editUser);
                         users.setSuccessMessage("Data Successfully Updated");
 

@@ -26,14 +26,21 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CheckupDetailAction extends BaseMasterAction {
@@ -49,6 +56,61 @@ public class CheckupDetailAction extends BaseMasterAction {
     private KelasRuanganBo kelasRuanganBoProxy;
     private RuanganBo ruanganBoProxy;
     private KeteranganKeluarBo keteranganKeluarBoProxy;
+    private boolean enabledPoli = false;
+    private boolean enabledAddPasien = false;
+    private HeaderCheckup headerCheckup;
+
+    private File fileUpload;
+    private String fileUploadFileName;
+    private String fileUploadContentType;
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public HeaderCheckup getHeaderCheckup() {
+        return headerCheckup;
+    }
+
+    public void setHeaderCheckup(HeaderCheckup headerCheckup) {
+        this.headerCheckup = headerCheckup;
+    }
+
+    public boolean isEnabledAddPasien() {
+        return enabledAddPasien;
+    }
+
+    public void setEnabledAddPasien(boolean enabledAddPasien) {
+        this.enabledAddPasien = enabledAddPasien;
+    }
+
+    public boolean isEnabledPoli() {
+        return enabledPoli;
+    }
+
+    public void setEnabledPoli(boolean enabledPoli) {
+        this.enabledPoli = enabledPoli;
+    }
 
     public void setKeteranganKeluarBoProxy(KeteranganKeluarBo keteranganKeluarBoProxy) {
         this.keteranganKeluarBoProxy = keteranganKeluarBoProxy;
@@ -276,6 +338,15 @@ public class CheckupDetailAction extends BaseMasterAction {
             return ERROR;
         }
 
+        String userRoleLogin = CommonUtil.roleAsLogin();
+        if(CommonConstant.ROLE_ADMIN_RS.equalsIgnoreCase(userRoleLogin)){
+            setEnabledPoli(true);
+        }
+
+        if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)){
+            setEnabledAddPasien(true);
+        }
+
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
@@ -291,9 +362,20 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
         String userRoleLogin = CommonUtil.roleAsLogin();
-        if(CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)){
-            checkupdetail.setEnabledPoli(true);
+        String idPelayanan   = CommonUtil.userPelayananIdLogin();
+
+        if(CommonConstant.ROLE_ADMIN_RS.equalsIgnoreCase(userRoleLogin)){
+            setEnabledPoli(true);
         }
+
+        if(CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)){
+            checkupdetail.setIdPelayanan(idPelayanan);
+        }
+
+        if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)){
+            setEnabledAddPasien(true);
+        }
+
         setHeaderDetailCheckup(checkupdetail);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -382,7 +464,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket){
+    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup){
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         String status = "error";
@@ -391,6 +473,22 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setStatusPeriksa("3");
         headerDetailCheckup.setFlag("Y");
         headerDetailCheckup.setAction("U");
+        String tglCheckup = tglCekup;
+
+        if(tglCheckup != null && !"".equalsIgnoreCase(tglCheckup)){
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                java.util.Date date = format.parse(tglCheckup);
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                headerDetailCheckup.setTglCekup(sqlDate);
+            } catch (ParseException e) {
+                logger.error("[CheckupDetailAction.saveKeterangan] Error when format string to date for tgl cekup, ", e);
+            }
+        }
+
+        headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
 
         if ("selesai".equalsIgnoreCase(idKtg)){
             headerDetailCheckup.setKeteranganSelesai(ket);
@@ -592,7 +690,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public String saveUpdateRuangan(String idRuangan, String idDetailCheckup){
-        logger.info("[CheckupAction.saveUpdateRuangan] start process >>>");
+        logger.info("[CheckupDetailAction.saveUpdateRuangan] start process >>>");
 
         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan) && idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup))
         {
@@ -609,12 +707,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             return "ERROR, idRuangan OR idDetailCheckup Is NULL";
         }
 
-        logger.info("[CheckupAction.saveUpdateRuangan] end process >>>");
+        logger.info("[CheckupDetailAction.saveUpdateRuangan] end process >>>");
         return "SUCCESS";
     }
 
     public List<RawatInap> getListRuangInapByIdDetailCheckup(String idDetailCheckup){
-        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] start process >>>");
+        logger.info("[CheckupDetailAction.getListRuangInapByIdDetailCheckup] start process >>>");
 
         List<RawatInap> rawatInaps = new ArrayList<>();
 
@@ -631,9 +729,100 @@ public class CheckupDetailAction extends BaseMasterAction {
             addActionError("Error Found problem when get  Error when get data ruangan , please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[CheckupAction.getListRuangInapByIdDetailCheckup] end process >>>");
+        logger.info("[CheckupDetailAction.getListRuangInapByIdDetailCheckup] end process >>>");
         return rawatInaps;
     }
+
+    public String addRawatJalan() {
+
+        logger.info("[CheckupDetailAction.add] start process >>>");
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        setHeaderCheckup(checkup);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[CheckupDetailAction.add] end process <<<");
+
+        return "init_daftar";
+    }
+
+    public String saveAddRawatJalan(){
+
+        logger.info("[CheckupDetailAction.saveAdd] start process >>>");
+        try {
+            HeaderCheckup checkup = getHeaderCheckup();
+            String userLogin = CommonUtil.userLogin();
+            String userArea  = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            String tgl_lahir = checkup.getStTglLahir();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                java.util.Date date = format.parse(tgl_lahir);
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                checkup.setTglLahir(sqlDate);
+            } catch (ParseException e) {
+
+            }
+
+            checkup.setBranchId(userArea);
+            checkup.setCreatedWho(userLogin);
+            checkup.setLastUpdate(updateTime);
+            checkup.setCreatedDate(updateTime);
+            checkup.setLastUpdateWho(userLogin);
+            checkup.setAction("C");
+            checkup.setFlag("Y");
+            checkup.setStatusPeriksa("1");
+
+            String fileName = "";
+            if (this.fileUpload != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+
+                        // file name
+                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
+
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, fileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
+                            checkup.setUrlKtp(fileName);
+                            checkupBoProxy.saveAdd(checkup);
+                        } catch (IOException e) {
+                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
+                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
+                        }
+                    }
+                }
+            }
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[CheckupDetailAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[CheckupDetailAction.saveAdd] end process >>>");
+        return "init_daftar";
+
+    }
+
 
 
     @Override

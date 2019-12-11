@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -57,6 +58,25 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String jenisPeriksaPasien;
 
     private String urlKtp;
+
+    private Date tglCekup;
+    private String keteranganCekupUlang;
+
+    public Date getTglCekup() {
+        return tglCekup;
+    }
+
+    public void setTglCekup(Date tglCekup) {
+        this.tglCekup = tglCekup;
+    }
+
+    public String getKeteranganCekupUlang() {
+        return keteranganCekupUlang;
+    }
+
+    public void setKeteranganCekupUlang(String keteranganCekupUlang) {
+        this.keteranganCekupUlang = keteranganCekupUlang;
+    }
 
     public String getUrlKtp() {
         return urlKtp;

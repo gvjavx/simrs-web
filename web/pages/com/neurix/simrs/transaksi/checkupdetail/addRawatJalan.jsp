@@ -371,7 +371,7 @@
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                                       name="headerCheckup.idPelayanan" listKey="keterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
-                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}"
+                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this);"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
                                         </div>
@@ -409,21 +409,36 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <%--<div class="col-md-2">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">&nbsp;</label>--%>
+                                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_catatan"><i class="fa fa-times"></i>required</p>--%>
+                                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_catatan"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">&nbsp;</label>--%>
+                                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-2"><i class="fa fa-times"></i> required</p>--%>
+                                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-2"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">&nbsp;</label>--%>
+                                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-3"><i class="fa fa-times"></i> required</p>--%>
+                                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-3"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <div class="col-md-4" id="form-cekup" style="display: none;">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">&nbsp;</label>
-                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_catatan"><i class="fa fa-times"></i>required</p>
-                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_catatan"><i class="fa fa-check"></i> correct</p>
+                                    <label style="margin-top: 7px">Tanggal Chekup Ulang</label>
+                                    <div class="input-group date" style="margin-top: 7px">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">&nbsp;</label>
-                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-2"><i class="fa fa-times"></i> required</p>
-                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-2"><i class="fa fa-check"></i> correct</p>
-                                </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">&nbsp;</label>
-                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-3"><i class="fa fa-times"></i> required</p>
-                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-3"><i class="fa fa-check"></i> correct</p>
+                                    <label style="margin-top: 7px">Catatan</label>
+                                    <s:textarea cssClass="form-control" rows="5" id="cekup_ket" style="margin-top: 7px"></s:textarea>
                                 </div>
                             </div>
                         </div>
@@ -849,16 +864,19 @@
             $("#form-poli").attr('style', 'display:block');
             $("#kamar").attr('style', 'display:none');
             $("#form-selesai").hide();
+            $("#form-cekup").hide();
         }
         if (idKtg == "rujuk") {
             $("#kamar").attr('style', 'display:block');
             $("#form-poli").attr('style', 'display:none');
             $("#form-selesai").hide();
+            $("#form-cekup").hide();
         }
         if (idKtg == "selesai" || idKtg == "") {
             $("#kamar").attr('style', 'display:none');
             $("#form-poli").attr('style', 'display:none');
             $("#form-selesai").show();
+            $("#form-cekup").hide();
         }
     }
 
@@ -890,6 +908,8 @@
         var kamar       = "";
         var idDokter    = "";
         var ket_selesai = "";
+        var tgl_cekup   = "";
+        var ket_cekup   = "";
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
@@ -899,7 +919,7 @@
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, function (response) {
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai,tgl_cekup, ket_cekup, function (response) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(6);
                         $('#save_ket').show();
@@ -924,7 +944,7 @@
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter,ket_selesai, function (response) {
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter,ket_selesai,tgl_cekup, ket_cekup, function (response) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(6);
                         $('#save_ket').show();
@@ -943,12 +963,16 @@
             }
 
             if(idKtg == "selesai"){
+
                 ket_selesai = $('#ket_selesai').val();
+                tgl_cekup   = $('#tgl_cekup').val();
+                ket_cekup   = $('#cekup_ket').val();
+
                 if(ket_selesai != ''){
                     $('#save_ket').hide();
                     $('#load_ket').show();
                     dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, function (response) {
+                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter,ket_selesai,tgl_cekup, ket_cekup, function (response) {
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(6);
                         $('#save_ket').show();
@@ -1740,6 +1764,24 @@
         }
 
         $('#ob_id_obat').html(option);
+    }
+
+    function showFormCekup(select){
+        var idx = select.selectedIndex;
+        var idKet = select.options[idx].value;
+        if(idKet == "Cekup Ulang"){
+            $('#form-cekup').show();
+        }else{
+            $('#form-cekup').hide();
+        }
+    }function showFormCekup(select){
+        var idx = select.selectedIndex;
+        var idKet = select.options[idx].value;
+        if(idKet == "Cekup Ulang"){
+            $('#form-cekup').show();
+        }else{
+            $('#form-cekup').hide();
+        }
     }
 
 </script>

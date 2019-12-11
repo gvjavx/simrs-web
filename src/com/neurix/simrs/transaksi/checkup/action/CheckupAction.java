@@ -339,6 +339,7 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setLastUpdateWho(userLogin);
             checkup.setAction("C");
             checkup.setFlag("Y");
+            checkup.setStatusPeriksa("0");
 
             String fileName = "";
             if (this.fileUpload != null) {

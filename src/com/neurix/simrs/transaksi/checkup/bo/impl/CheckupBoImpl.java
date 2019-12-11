@@ -255,7 +255,7 @@ public class CheckupBoImpl implements CheckupBo {
                 detailCheckupEntity.setIdDetailCheckup("DCM"+id);
                 detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-                detailCheckupEntity.setStatusPeriksa("0");
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 detailCheckupEntity.setFlag("Y");
                 detailCheckupEntity.setAction("C");
                 detailCheckupEntity.setCreatedDate(bean.getCreatedDate());

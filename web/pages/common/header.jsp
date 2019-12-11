@@ -257,6 +257,11 @@ apply the skin class to the body tag so the changes take effect.
             dateFormat:'yy-mm-dd'
         });
 
+        $(".datepicker").datepicker({
+            autoclose: true,
+            dateFormat:'yy-mm-dd'
+        });
+
         $("#tgl_from, #tgl_to").datepicker({
             autoclose: true,
             dateFormat:'dd-mm-yy'

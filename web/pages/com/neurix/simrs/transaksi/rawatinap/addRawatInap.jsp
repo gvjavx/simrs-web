@@ -397,9 +397,24 @@
                                     <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                               name="headerCheckup.idPelayanan" listKey="keterangan"
                                               listValue="keterangan" cssStyle="width: 100%"
-                                              onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}"
+                                              onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; showFormCekup(this)"
                                               headerKey="" headerValue="[Select one]"
                                               cssClass="form-control select2"/>
+                                </div>
+                                <div class="form-group" id="form-cekup" style="display: none;">
+                                    <div class="form-group">
+                                        <label style="margin-top: 7px">Tanggal Chekup Ulang</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="margin-top: 7px">Catatan</label>
+                                        <s:textarea cssClass="form-control" rows="5" id="cekup_ket"></s:textarea>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-success" onclick="saveKeterangan()"
@@ -1071,12 +1086,14 @@
         var kamar = "";
         var idDokter = "";
         var ket_selesai = $('#ket_selesai').val();
+        var tgl_cekup   = $('#tgl_cekup').val();
+        var ket_cekup   = $('#cekup_ket').val();
 
         if (idKtg != '' && ket_selesai != '') {
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
                 $('#info_dialog').dialog('open');
                 $('#close_pos').val(8);
                 $('#save_ket').show();
@@ -2055,6 +2072,16 @@
             if (idRuang == '') {
                 $('#war_ruangan_ruang').show();
             }
+        }
+    }
+
+    function showFormCekup(select){
+        var idx = select.selectedIndex;
+        var idKet = select.options[idx].value;
+        if(idKet == "Cekup Ulang"){
+            $('#form-cekup').show();
+        }else{
+            $('#form-cekup').hide();
         }
     }
 
