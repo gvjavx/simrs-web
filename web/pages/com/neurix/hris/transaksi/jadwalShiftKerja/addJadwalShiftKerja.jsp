@@ -49,16 +49,27 @@
                 // var namaJadwal  = document.getElementById("jadwalName").value;
                 var unit = document.getElementById("branchid").value;
                 var tglAwal = document.getElementById("tglAwal").value;
+                var tglAkhir = document.getElementById("tglAkhir").value;
                 if (unit!=""&&tglAwal!="") {
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
+                    dwr.engine.setAsync(false);
+                    JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
+                        if (listdata=="00"){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        } else{
+                            // Cancel Submit comes with 1.8.0
+                            event.originalEvent.options.submit = false;
+                            var msg = "Tanggal ini sudah ada";
+                            document.getElementById('errorValidationMessage').innerHTML = msg;
 
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
-
+                            $.publish('showErrorValidationDialog');
+                        }
+                    });
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
@@ -400,6 +411,7 @@
         var grup = $('#kelompokPositionId').val();
         $('#ShiftId').empty();
         if (grup!=''){
+            dwr.engine.setAsync(false);
             ShiftAction.searchShiftByGrup(grup, function (listdata) {
                 $.each(listdata, function (i, item) {
                     $('#ShiftId').append($("<option></option>")
@@ -444,7 +456,8 @@
                 });
                 $('.groupShiftTable').append(tmp_table);
                 $('#groupShiftTable').DataTable({
-                    "pageLength": 20
+                    "pageLength": 20,
+                    "bDestroy":true
                 });
             });
         }
@@ -481,7 +494,8 @@
             });
             $('.shiftTable').append(tmp_table);
             $('#shiftTable').DataTable({
-                "pageLength": 20
+                "pageLength": 20,
+                "bDestroy":true
             });
         });
     };
@@ -500,10 +514,12 @@
         });
     });
     $('.shiftTable').on('click', '.item-delete-shift', function () {
-        var nip = $(this).attr('data');
-        dwr.engine.setAsync(false);
-        JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
-            resultPerson();
-        });
+        if (confirm("Apakah data ini ingin dihapus ?")){
+            var nip = $(this).attr('data');
+            dwr.engine.setAsync(false);
+            JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
+                resultPerson();
+            });
+        }
     });
 </script>
