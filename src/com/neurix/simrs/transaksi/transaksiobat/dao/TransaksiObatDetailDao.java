@@ -3,9 +3,12 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +47,12 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         List<ImtSimrsTransaksiObatDetailEntity> results = criteria.list();
 
         return results;
+    }
+
+    public String getNextId(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

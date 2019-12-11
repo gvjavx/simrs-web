@@ -1,46 +1,41 @@
-package com.neurix.simrs.transaksi.transaksiobat.model;
+package com.neurix.simrs.master.obatpoli.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
+/**
+ * Created by Toshiba on 11/12/2019.
+ */
+public class MtSimrsPermintaanObatPoliEntity implements Serializable {
 
-    private String idTransaksiObatDetail;
-    private String idApprovalObat;
+    private String idPermintaanObatPoli;
     private String idObat;
+    private String idPelayanan;
+    private String idApprovalObat;
     private BigInteger qty;
-
+    private String diterimaFlag;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String keterangan;
 
-    public String getKeterangan() {
-        return keterangan;
+    public String getDiterimaFlag() {
+        return diterimaFlag;
     }
 
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
     }
 
-    public String getIdTransaksiObatDetail() {
-        return idTransaksiObatDetail;
+    public String getIdPermintaanObatPoli() {
+        return idPermintaanObatPoli;
     }
 
-    public void setIdTransaksiObatDetail(String idTransaksiObatDetail) {
-        this.idTransaksiObatDetail = idTransaksiObatDetail;
-    }
-
-    public String getIdApprovalObat() {
-        return idApprovalObat;
-    }
-
-    public void setIdApprovalObat(String idApprovalObat) {
-        this.idApprovalObat = idApprovalObat;
+    public void setIdPermintaanObatPoli(String idPermintaanObatPoli) {
+        this.idPermintaanObatPoli = idPermintaanObatPoli;
     }
 
     public String getIdObat() {
@@ -49,6 +44,22 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
 
     public void setIdObat(String idObat) {
         this.idObat = idObat;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getIdApprovalObat() {
+        return idApprovalObat;
+    }
+
+    public void setIdApprovalObat(String idApprovalObat) {
+        this.idApprovalObat = idApprovalObat;
     }
 
     public BigInteger getQty() {

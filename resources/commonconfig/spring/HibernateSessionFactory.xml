@@ -319,6 +319,8 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsApprovalTransaksiObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsRiwayatTransaksiObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsTransaksiObatDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/permintaanresep/hibernate/MtSimrsPermintaanResepEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obatpoli/hibernate/MtSimrsPermintaanObatPoliEntity.hbm.xml</value>
 
             </list>
         </property>

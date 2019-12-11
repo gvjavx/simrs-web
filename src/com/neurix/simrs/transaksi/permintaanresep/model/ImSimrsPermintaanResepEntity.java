@@ -1,38 +1,40 @@
-package com.neurix.simrs.transaksi.transaksiobat.model;
+package com.neurix.simrs.transaksi.permintaanresep.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
+/**
+ * Created by Toshiba on 11/12/2019.
+ */
+public class ImSimrsPermintaanResepEntity implements Serializable {
 
-    private String idTransaksiObatDetail;
+    private String idPermintaanResep;
     private String idApprovalObat;
-    private String idObat;
-    private BigInteger qty;
-
+    private String idPasien;
+    private String idDetailCheckup;
+    private String keterangan;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String keterangan;
+    private String idDokter;
 
-    public String getKeterangan() {
-        return keterangan;
+    public String getIdDokter() {
+        return idDokter;
     }
 
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
     }
 
-    public String getIdTransaksiObatDetail() {
-        return idTransaksiObatDetail;
+    public String getIdPermintaanResep() {
+        return idPermintaanResep;
     }
 
-    public void setIdTransaksiObatDetail(String idTransaksiObatDetail) {
-        this.idTransaksiObatDetail = idTransaksiObatDetail;
+    public void setIdPermintaanResep(String idPermintaanResep) {
+        this.idPermintaanResep = idPermintaanResep;
     }
 
     public String getIdApprovalObat() {
@@ -43,20 +45,28 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
         this.idApprovalObat = idApprovalObat;
     }
 
-    public String getIdObat() {
-        return idObat;
+    public String getIdPasien() {
+        return idPasien;
     }
 
-    public void setIdObat(String idObat) {
-        this.idObat = idObat;
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
     }
 
-    public BigInteger getQty() {
-        return qty;
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
     }
 
-    public void setQty(BigInteger qty) {
-        this.qty = qty;
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public String getFlag() {

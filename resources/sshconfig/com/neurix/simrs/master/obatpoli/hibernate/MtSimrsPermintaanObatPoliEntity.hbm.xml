@@ -4,25 +4,27 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity" dynamic-update="true"
-           table="mt_simrs_transaksi_obat_detail" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.master.obatpoli.model.MtSimrsPermintaanObatPoliEntity" dynamic-update="true"
+           table="mt_simrs_permintaan_obat_poli" select-before-update="true" schema="public">
 
-        <id name="idTransaksiObatDetail">
-            <column name="id_transaksi_obat_detail" sql-type="varchar" length="30" not-null="true" />
+        <id name="idPermintaanObatPoli">
+            <column name="id_permintaan_obat_poli" sql-type="varchar" length="30" not-null="false" />
         </id>
 
-        <property name="idApprovalObat">
-            <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false"/>
-        </property>
         <property name="idObat">
             <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
         </property>
-        <property name="qty">
-            <column name="qty" sql-type="bigint" not-null="false"/>
+
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="30" not-null="false" />
         </property>
 
-        <property name="keterangan">
-            <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
+        <property name="idApprovalObat">
+            <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false" />
+        </property>
+
+        <property name="qty">
+            <column name="qty" sql-type="bigint"/>
         </property>
 
         <property name="flag">
@@ -43,6 +45,7 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+
 
     </class>
 </hibernate-mapping>

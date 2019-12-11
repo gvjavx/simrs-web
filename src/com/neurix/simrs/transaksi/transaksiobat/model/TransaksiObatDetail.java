@@ -10,6 +10,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String idApprovalObat;
     private String idObat;
     private BigInteger qty;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getIdTransaksiObatDetail() {
         return idTransaksiObatDetail;
