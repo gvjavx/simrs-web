@@ -4,11 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.transaksiObat.model.ImtSimrsTransaksiObatDetailEntity" dynamic-update="true"
-           table="mt_simrs_transaksi_obat_detail" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsRiwayatTransaksiObatEntity" dynamic-update="true"
+           table="mt_simrs_riwayat_transaksi_obat" select-before-update="true" schema="public">
 
-        <id name="idTransaksiObatDetail">
-            <column name="id_transaksi_obat_detail" sql-type="varchar" length="30" not-null="true" />
+        <id name="idRiwayatTransaksiObat">
+            <column name="id_riwayat_transaksi_obat" sql-type="varchar" length="30" not-null="true" />
         </id>
 
         <property name="idApprovalObat">
@@ -16,6 +16,12 @@
         </property>
         <property name="idObat">
             <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="tipePermintaan">
+            <column name="tipe_permintaan" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="totalHarga">
+            <column name="total_harga" sql-type="bigint" not-null="false"/>
         </property>
         <property name="qty">
             <column name="qty" sql-type="bigint" not-null="false"/>

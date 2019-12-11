@@ -4,28 +4,17 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.transaksiObat.model.ImtSimrsRiwayatTransaksiObat" dynamic-update="true"
-           table="mt_simrs_riwayat_transaksi_obat" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.master.obatpoli.model.MtSimrsObatPoliEntity" dynamic-update="true"
+           table="mt_simrs_obat_poli" select-before-update="true" schema="public">
 
-        <id name="idRiwayatTransaksiObat">
-            <column name="id_riwayat_transaksi_obat" sql-type="varchar" length="30" not-null="true" />
-        </id>
-
-        <property name="idApprovalObat">
-            <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false"/>
-        </property>
-        <property name="idObat">
-            <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
-        </property>
-        <property name="tipePermintaan">
-            <column name="tipe_permintaan" sql-type="varchar" length="5" not-null="false" />
-        </property>
-        <property name="totalHarga">
-            <column name="total_harga" sql-type="bigint" not-null="false"/>
-        </property>
-        <property name="qty">
-            <column name="qty" sql-type="bigint" not-null="false"/>
-        </property>
+        <composite-id  name="primaryKey" class="com.neurix.simrs.master.obatpoli.model.ObatPoliPk">
+            <key-property name="idObat">
+                <column name="id_obat" sql-type="varchar" length="30" not-null="true"/>
+            </key-property>
+            <key-property name="idPelayanan">
+                <column name="id_pelayanan" sql-type="varchar" length="30" not-null="true" />
+            </key-property>
+        </composite-id>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -45,6 +34,7 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+
 
     </class>
 </hibernate-mapping>

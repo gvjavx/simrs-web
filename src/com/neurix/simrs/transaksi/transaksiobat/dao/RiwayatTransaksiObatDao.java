@@ -1,7 +1,7 @@
-package com.neurix.simrs.master.transaksiObat.dao;
+package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.transaksiObat.model.ImtSimrsRiwayatTransaksiObatEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsRiwayatTransaksiObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;

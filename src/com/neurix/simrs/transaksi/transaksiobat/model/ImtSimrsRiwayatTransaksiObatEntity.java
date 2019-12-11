@@ -1,18 +1,17 @@
-package com.neurix.simrs.master.transaksiObat.model;
+package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class ImtSimrsApprovalTransaksiObatEntity implements Serializable{
+public class ImtSimrsRiwayatTransaksiObatEntity implements Serializable{
 
+    private String idRiwayatTransaksiObat;
     private String idApprovalObat;
     private String idObat;
-    private String idPelayanan;
-    private BigInteger qty;
     private String tipePermintaan;
-    private String approvalFlag;
-    private String approvePerson;
+    private BigInteger qty;
+    private BigInteger totalHarga;
 
     private String flag;
     private String action;
@@ -20,6 +19,14 @@ public class ImtSimrsApprovalTransaksiObatEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getIdRiwayatTransaksiObat() {
+        return idRiwayatTransaksiObat;
+    }
+
+    public void setIdRiwayatTransaksiObat(String idRiwayatTransaksiObat) {
+        this.idRiwayatTransaksiObat = idRiwayatTransaksiObat;
+    }
 
     public String getIdApprovalObat() {
         return idApprovalObat;
@@ -37,12 +44,12 @@ public class ImtSimrsApprovalTransaksiObatEntity implements Serializable{
         this.idObat = idObat;
     }
 
-    public String getIdPelayanan() {
-        return idPelayanan;
+    public String getTipePermintaan() {
+        return tipePermintaan;
     }
 
-    public void setIdPelayanan(String idPelayanan) {
-        this.idPelayanan = idPelayanan;
+    public void setTipePermintaan(String tipePermintaan) {
+        this.tipePermintaan = tipePermintaan;
     }
 
     public BigInteger getQty() {
@@ -53,28 +60,12 @@ public class ImtSimrsApprovalTransaksiObatEntity implements Serializable{
         this.qty = qty;
     }
 
-    public String getTipePermintaan() {
-        return tipePermintaan;
+    public BigInteger getTotalHarga() {
+        return totalHarga;
     }
 
-    public void setTipePermintaan(String tipePermintaan) {
-        this.tipePermintaan = tipePermintaan;
-    }
-
-    public String getApprovalFlag() {
-        return approvalFlag;
-    }
-
-    public void setApprovalFlag(String approvalFlag) {
-        this.approvalFlag = approvalFlag;
-    }
-
-    public String getApprovePerson() {
-        return approvePerson;
-    }
-
-    public void setApprovePerson(String approvePerson) {
-        this.approvePerson = approvePerson;
+    public void setTotalHarga(BigInteger totalHarga) {
+        this.totalHarga = totalHarga;
     }
 
     public String getFlag() {

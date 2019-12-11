@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.transaksiObat.model;
+package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import com.neurix.common.model.BaseModel;
 

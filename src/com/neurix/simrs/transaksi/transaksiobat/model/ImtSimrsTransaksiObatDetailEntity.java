@@ -1,17 +1,15 @@
-package com.neurix.simrs.master.transaksiObat.model;
+package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class ImtSimrsRiwayatTransaksiObatEntity implements Serializable{
+public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
 
-    private String idRiwayatTransaksiObat;
+    private String idTransaksiObatDetail;
     private String idApprovalObat;
     private String idObat;
-    private String tipePermintaan;
     private BigInteger qty;
-    private BigInteger totalHarga;
 
     private String flag;
     private String action;
@@ -20,12 +18,12 @@ public class ImtSimrsRiwayatTransaksiObatEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public String getIdRiwayatTransaksiObat() {
-        return idRiwayatTransaksiObat;
+    public String getIdTransaksiObatDetail() {
+        return idTransaksiObatDetail;
     }
 
-    public void setIdRiwayatTransaksiObat(String idRiwayatTransaksiObat) {
-        this.idRiwayatTransaksiObat = idRiwayatTransaksiObat;
+    public void setIdTransaksiObatDetail(String idTransaksiObatDetail) {
+        this.idTransaksiObatDetail = idTransaksiObatDetail;
     }
 
     public String getIdApprovalObat() {
@@ -44,28 +42,12 @@ public class ImtSimrsRiwayatTransaksiObatEntity implements Serializable{
         this.idObat = idObat;
     }
 
-    public String getTipePermintaan() {
-        return tipePermintaan;
-    }
-
-    public void setTipePermintaan(String tipePermintaan) {
-        this.tipePermintaan = tipePermintaan;
-    }
-
     public BigInteger getQty() {
         return qty;
     }
 
     public void setQty(BigInteger qty) {
         this.qty = qty;
-    }
-
-    public BigInteger getTotalHarga() {
-        return totalHarga;
-    }
-
-    public void setTotalHarga(BigInteger totalHarga) {
-        this.totalHarga = totalHarga;
     }
 
     public String getFlag() {
