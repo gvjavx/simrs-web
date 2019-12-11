@@ -133,5 +133,9 @@ public class CommonConstant {
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest";
     public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest";
 
+    public final static String LOGO_RS01 = "/pages/images/RS01.png";
+    public final static String LOGO_RS02 = "/pages/images/RS02.jpg";
+    public final static String LOGO_RS03 = "/pages/images/RS03.png";
+
 
 }
