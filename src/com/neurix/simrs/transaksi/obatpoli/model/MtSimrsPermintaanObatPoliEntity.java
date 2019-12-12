@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.obatpoli.model;
+package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -15,12 +15,21 @@ public class MtSimrsPermintaanObatPoliEntity implements Serializable {
     private String idApprovalObat;
     private BigInteger qty;
     private String diterimaFlag;
+    private String retureFlag;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getRetureFlag() {
+        return retureFlag;
+    }
+
+    public void setRetureFlag(String retureFlag) {
+        this.retureFlag = retureFlag;
+    }
 
     public String getDiterimaFlag() {
         return diterimaFlag;
