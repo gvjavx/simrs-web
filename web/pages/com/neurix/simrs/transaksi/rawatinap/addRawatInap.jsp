@@ -23,6 +23,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/OrderGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -77,6 +78,7 @@
                                     <s:hidden id="id_palayanan" name="rawatInap.idPelayanan"/>
                                     <s:hidden id="no_detail_checkup" name="rawatInap.idDetailCheckup"/>
                                     <s:hidden id="id_rawat_inap" name="rawatInap.idRawatInap"/>
+                                    <s:hidden id="id_pasien" name="rawatInap.idPasien"/>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -373,6 +375,26 @@
                             </tr>
                             </thead>
                             <tbody id="body_ruangan">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-header with-border" id="pos_rssep">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Resep Obat</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep</button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>No Resep</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_resep">
 
                             </tbody>
                         </table>
@@ -1002,12 +1024,139 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-resep-head">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rese_head">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <s:action id="initJenis" namespace="/jenisobat"
+                                      name="getListJenisObat_jenisobat"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initJenis.listOfJenisObat" id="resep_jenis"
+                                      listKey="idJenisObat" onchange="listSelectObat(this)"
+                                      listValue="namaJenisObat"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"
+                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
+                        <div class="col-md-7">
+                            <select class="form-control" id="resep_keterangan" style="margin-top: 7px">
+                                <option value="">[Select One]</option>
+                                <option value="2 x 1 /Hari">2 x 1 /Hari</option>
+                                <option value="3 x 1 /Hari">3 x 1 /Hari</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px"></label>
+                        <div class="col-md-7">
+                            <button class="btn btn-success pull-right" style="margin-top: 7px" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header with-border">
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Data obat sudah tersedia..!
+                </div>
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Resep Obat
+                </div>
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
+                        <thead>
+                        <td>Jenis</td>
+                        <td>Obat</td>
+                        <td>Qty</td>
+                        <td>Keterangan</td>
+                        <td align="center" width="5%">Action</td>
+                        </thead>
+                        <tbody id="body_detail">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_head"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-resep-detail">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Detail Resep</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_detail">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="mask"></div>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
-    var idPoli = $('#id_palayanan').val();
-    var idRawatInap = $('#id_rawat_inap').val();
+    var idPoli          = $('#id_palayanan').val();
+    var idRawatInap     = $('#id_rawat_inap').val();
+    var idPasien        = $('#id_pasien').val();
 
     $(document).ready(function () {
         $('#rawat_inap').addClass('active');
@@ -1079,12 +1228,12 @@
 
     function saveKeterangan() {
 
-        var idKtg = "selesai";
-        var noCheckup = $("#no_checkup").val();
-        var poli = "";
-        var kelas = "";
-        var kamar = "";
-        var idDokter = "";
+        var idKtg       = "selesai";
+        var noCheckup   = $("#no_checkup").val();
+        var poli        = "";
+        var kelas       = "";
+        var kamar       = "";
+        var idDokter    = "";
         var ket_selesai = $('#ket_selesai').val();
         var tgl_cekup   = $('#tgl_cekup').val();
         var ket_cekup   = $('#cekup_ket').val();
@@ -1146,6 +1295,8 @@
             desti = "#pos_ruangan";
         } else if (back == 8) {
             window.location.href = 'search_rawatinap.action';
+        } else if (back == 9){
+            desti = '#pos_rssep';
         }
 
         $('html, body').animate({
@@ -1197,6 +1348,8 @@
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
             $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
             $('#modal-obat').modal('show');
+        }else if (select == 7) {
+            $('#modal-resep-head').modal('show');
         }
     }
 
@@ -1675,6 +1828,7 @@
         }
 
         $('#ob_id_obat').html(option);
+        $('#resep_nama_obat').html(option);
     }
 
     function setStokObat(select) {
@@ -1697,6 +1851,7 @@
             });
         }
         $('#ob_stok').val(stok);
+        $('#resep_stok').val(stok);
     }
 
     function saveObat(id) {
@@ -2083,6 +2238,58 @@
         }else{
             $('#form-cekup').hide();
         }
+    }
+
+    function addObatToList(){
+        var jenis = $('#resep_jenis').val();
+        var obat  = $('#resep_nama_obat').val();
+        var ket   = $('#resep_keterangan').val();
+        var qty   = $('#resep_qty').val();
+        var cek   = false;
+        var data = $('#tabel_rese_detail').tableToJSON();
+        $.each(data, function (i, item) {
+            if(item.Obat == obat && item.Jenis == jenis){
+                cek = true;
+            }
+        });
+
+        if(cek){
+            $('#warning_data_exits').show().fadeOut(5000);
+        }else{
+            var row = '<tr id='+obat+'>' +
+                    '<td>'+jenis+'</td>' +
+                    '<td>'+obat+'</td>' +
+                    '<td>'+qty+'</td>' +
+                    '<td>'+ket+'</td>' +
+                    '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                    '</tr>';
+            $('#body_detail').append(row);
+        }
+    }
+
+    function delRowObat(id){
+        $('#'+id).remove();
+    }
+
+    function saveResepObat(){
+        var idDokter = $('#tin_id_dokter').val();
+        var data        = $('#tabel_rese_detail').tableToJSON();
+        var stringData  = JSON.stringify(data);
+        $('#save_resep_head').hide();
+        $('#load_resep_head').show()
+        PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
+            callback: function (response) {
+                if (response == "sucesss") {
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(9);
+                    $('#save_resep_head').show();
+                    $('#load_resep_head').hide();
+                } else {
+                    $('#save_resep_head').show();
+                    $('#load_resep_head').hide();
+                }
+            }
+        });
     }
 
 

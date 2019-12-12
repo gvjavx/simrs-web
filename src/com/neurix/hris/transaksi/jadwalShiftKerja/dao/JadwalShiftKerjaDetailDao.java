@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.jadwalShiftKerja.dao;
 
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.ItJadwalShiftKerjaDetailEntity;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.ItJadwalShiftKerjaEntity;

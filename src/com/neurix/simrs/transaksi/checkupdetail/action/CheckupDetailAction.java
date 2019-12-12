@@ -39,6 +39,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -329,6 +330,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
+        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
@@ -359,6 +362,9 @@ public class CheckupDetailAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[CheckupDetailAction.initForm] start process >>>");
+
+        LocalDate today = LocalDate.now();
+        String stId = today.toString();
 
         HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
         String userRoleLogin = CommonUtil.roleAsLogin();

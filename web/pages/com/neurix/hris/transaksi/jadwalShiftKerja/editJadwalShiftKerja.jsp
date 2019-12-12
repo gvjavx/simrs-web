@@ -111,10 +111,9 @@
             <tr>
                 <td align="center">
                     <s:form id="jadwalShiftKerjaForm" method="post"  theme="simple" namespace="/jadwalShiftKerja" action="saveEdit_jadwalShiftKerja.action" cssClass="well form-horizontal">
-
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
-
+                        <s:hidden name="jadwalShiftKerja.jadwalShiftKerjaId"/>
                         <table>
                             <tr>
                                 <td width="10%" align="center">
@@ -122,7 +121,6 @@
                                 </td>
                             </tr>
                         </table>
-
                         <table >
                             <tr>
                                 <td>
@@ -131,7 +129,7 @@
                                 <td>
                                     <table>
                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="jadwalShiftKerja.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
+                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="jadwalShiftKerja.branchId" disabled="true" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                     </table>
                                 </td>
                             </tr>
@@ -141,13 +139,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggal" cssClass="form-control pull-right"
-                                                         required="false" cssStyle=""/>
-                                        </div>
+                                        <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggal" cssClass="form-control pull-right"
+                                                     required="false" cssStyle="" readonly="true"/>
                                     </table>
                                 </td>
                             </tr>
@@ -194,8 +187,8 @@
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_jadwalShiftKerja.action"/>'">
-                                            <i class="fa fa-refresh"></i> Reset
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jadwalShiftKerja.action"/>'">
+                                            <i class="fa fa-refresh"></i> Close
                                         </button>
                                     </td>
                                 </tr>
@@ -354,12 +347,6 @@
         $('#ShiftId').append($("<option></option>")
             .attr("value", '')
             .text(''));
-        $('#tglAwal').datepicker({
-            dateFormat: 'dd/mm/yy'
-        });
-        $('#tglAkhir').datepicker({
-            dateFormat: 'dd/mm/yy'
-        });
         $('#btnAddShift').click(function(){
             var unit = $('#branchid').val();
             if (unit!=''){
@@ -437,7 +424,8 @@
                 });
                 $('.groupShiftTable').append(tmp_table);
                 $('#groupShiftTable').DataTable({
-                    "pageLength": 20
+                    "pageLength": 20,
+                    "bDestroy":true
                 });
             });
         }
@@ -474,7 +462,8 @@
             });
             $('.shiftTable').append(tmp_table);
             $('#shiftTable').DataTable({
-                "pageLength": 20
+                "pageLength": 20,
+                "bDestroy":true
             });
         });
     };

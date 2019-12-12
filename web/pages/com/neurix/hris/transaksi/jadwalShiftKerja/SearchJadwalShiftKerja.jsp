@@ -91,6 +91,17 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Nama Jadwal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield id="jadwalName" name="jadwalShiftKerja.jadwalShiftKerjaName" cssClass="form-control"
+                                                                     required="false" cssStyle=""/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Tanggal :</small></label>
                                                 </td>
                                                 <td>

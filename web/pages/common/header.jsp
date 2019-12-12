@@ -83,6 +83,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.js"/>"></script>
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.date.extensions.js"/>"></script>
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
+<script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>

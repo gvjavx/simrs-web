@@ -58,6 +58,15 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String jenisPeriksaPasien;
 
     private String urlKtp;
+    private Boolean enabledPoli;
+
+    public Boolean getEnabledPoli() {
+        return enabledPoli;
+    }
+
+    public void setEnabledPoli(Boolean enabledPoli) {
+        this.enabledPoli = enabledPoli;
+    }
 
     private Date tglCekup;
     private String keteranganCekupUlang;
