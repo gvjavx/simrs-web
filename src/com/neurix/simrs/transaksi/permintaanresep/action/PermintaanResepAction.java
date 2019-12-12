@@ -137,12 +137,12 @@ public class PermintaanResepAction extends BaseMasterAction{
 
     @Override
     public String search() {
-        return null;
+        return "search";
     }
 
     @Override
     public String initForm() {
-        return null;
+        return "search";
     }
 
     @Override
