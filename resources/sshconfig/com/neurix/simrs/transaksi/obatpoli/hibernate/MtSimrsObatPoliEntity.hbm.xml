@@ -4,10 +4,10 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.obatpoli.model.MtSimrsObatPoliEntity" dynamic-update="true"
+    <class name="com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity" dynamic-update="true"
            table="mt_simrs_obat_poli" select-before-update="true" schema="public">
 
-        <composite-id  name="primaryKey" class="com.neurix.simrs.master.obatpoli.model.ObatPoliPk">
+        <composite-id  name="primaryKey" class="com.neurix.simrs.transaksi.obatpoli.model.ObatPoliPk">
             <key-property name="idObat">
                 <column name="id_obat" sql-type="varchar" length="30" not-null="true"/>
             </key-property>

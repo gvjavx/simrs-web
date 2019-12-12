@@ -4,29 +4,30 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.obatpoli.model.MtSimrsPermintaanObatPoliEntity" dynamic-update="true"
+    <class name="com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity" dynamic-update="true"
            table="mt_simrs_permintaan_obat_poli" select-before-update="true" schema="public">
 
         <id name="idPermintaanObatPoli">
             <column name="id_permintaan_obat_poli" sql-type="varchar" length="30" not-null="false" />
         </id>
-
         <property name="idObat">
             <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
         </property>
-
         <property name="idPelayanan">
             <column name="id_pelayanan" sql-type="varchar" length="30" not-null="false" />
         </property>
-
         <property name="idApprovalObat">
             <column name="id_approval_obat" sql-type="varchar" length="30" not-null="false" />
         </property>
-
         <property name="qty">
             <column name="qty" sql-type="bigint"/>
         </property>
-
+        <property name="diterimaFlag">
+            <column name="diterima_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="retureFlag">
+            <column name="reture_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.obatpoli.model;
+package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.obatpoli.model;
+package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -14,6 +14,7 @@ public class PermintaanObatPoli{
     private String idPelayanan;
     private String namaPelayanan;
     private String diterimaFlag;
+    private String retureFlag;
     private String idApprovalObat;
     private BigInteger qty;
     private String flag;
@@ -22,6 +23,52 @@ public class PermintaanObatPoli{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private String approvalFlag;
+    private String approvePerson;
+
+    private Timestamp approvalLastUpdate;
+    private String approvalLastUpdateWho;
+
+    public String getRetureFlag() {
+        return retureFlag;
+    }
+
+    public void setRetureFlag(String retureFlag) {
+        this.retureFlag = retureFlag;
+    }
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public String getApprovePerson() {
+        return approvePerson;
+    }
+
+    public Timestamp getApprovalLastUpdate() {
+        return approvalLastUpdate;
+    }
+
+    public void setApprovalLastUpdate(Timestamp approvalLastUpdate) {
+        this.approvalLastUpdate = approvalLastUpdate;
+    }
+
+    public String getApprovalLastUpdateWho() {
+        return approvalLastUpdateWho;
+    }
+
+    public void setApprovalLastUpdateWho(String approvalLastUpdateWho) {
+        this.approvalLastUpdateWho = approvalLastUpdateWho;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
+
+    public void setApprovePerson(String approvePerson) {
+        this.approvePerson = approvePerson;
+    }
 
     public String getNamaObat() {
         return namaObat;

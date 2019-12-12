@@ -1,6 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.bo.impl;
 
-import com.neurix.simrs.master.obatpoli.dao.ObatPoliDao;
+import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransaksiObatDao;

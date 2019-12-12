@@ -1,15 +1,15 @@
-package com.neurix.simrs.master.obatpoli.model;
+package com.neurix.simrs.transaksi.obatpoli.model;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
  * Created by Toshiba on 10/12/2019.
  */
-public class MtSimrsObatPoliEntity implements Serializable {
+public class ObatPoli {
 
-    private ObatPoliPk primaryKey;
+    private String idObat;
+    private String idPelayanan;
     private BigInteger qty;
     private String flag;
     private String action;
@@ -18,12 +18,26 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public ObatPoliPk getPrimaryKey() {
-        return primaryKey;
+    private String namaObat;
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
     }
 
-    public void setPrimaryKey(ObatPoliPk primaryKey) {
-        this.primaryKey = primaryKey;
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
     }
 
     public BigInteger getQty() {

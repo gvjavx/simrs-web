@@ -194,6 +194,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
         obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
         obatDetailEntity.setIdObat(bean.getIdObat());
+        obatDetailEntity.setQty(bean.getQty());
         obatDetailEntity.setFlag("Y");
         obatDetailEntity.setAction("C");
         obatDetailEntity.setCreatedDate(bean.getCreatedDate());

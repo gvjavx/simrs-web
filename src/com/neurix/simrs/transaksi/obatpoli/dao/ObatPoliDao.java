@@ -1,7 +1,7 @@
-package com.neurix.simrs.master.obatpoli.dao;
+package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.obatpoli.model.MtSimrsObatPoliEntity;
+import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -23,11 +23,12 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsObatPoliEntity.class);
 
-        if (mapCriteria.get("id_obat") != null && mapCriteria.get("id_pelayanan") != null){
+        if (mapCriteria.get("id_obat") != null) {
             criteria.add(Restrictions.eq("primaryKey.idObat", mapCriteria.get("id_obat")));
+        }
+        if (mapCriteria.get("id_pelayanan") != null) {
             criteria.add(Restrictions.eq("primaryKey.idPelayanan", mapCriteria.get("id_pelayanan")));
         }
-
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }

@@ -20,13 +20,13 @@
           p:target-ref="obatInapBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionUserInterceptor</value>
+                <value>transactionObatInapInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionUserInterceptor"
+    <bean id="transactionObatInapInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
