@@ -14,4 +14,6 @@ public interface CheckupBo {
     public void saveAdd(HeaderCheckup bean)throws GeneralBOException;
     public void saveEdit(HeaderCheckup bean)throws GeneralBOException;
     Long saveErrorMessage(String message, String s);
+
+    HeaderCheckup completeBpjs(String nomorBpjs);
 }

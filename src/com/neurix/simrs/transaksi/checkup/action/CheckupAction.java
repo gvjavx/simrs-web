@@ -539,4 +539,22 @@ public class CheckupAction extends BaseMasterAction {
 
     }
 
+    public HeaderCheckup completeBpjs(String idBpjs){
+        logger.info("[CheckupAction.completeBpjs] start process >>>");
+
+        HeaderCheckup result = new HeaderCheckup();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            result = checkupBo.completeBpjs(idBpjs);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupAction.completeBpjs] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+        }
+
+        logger.info("[CheckupAction.completeBpjs] end process >>>");
+        return result;
+    }
+
 }

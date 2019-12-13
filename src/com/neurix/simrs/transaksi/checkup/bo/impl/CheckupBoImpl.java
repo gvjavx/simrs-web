@@ -9,6 +9,7 @@ import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
 import com.neurix.hris.master.provinsi.model.ImKotaEntity;
 import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
 import com.neurix.hris.master.statusRekruitment.bo.impl.StatusRekruitmentBoImpl;
+import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -21,25 +22,30 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
 
-public class CheckupBoImpl implements CheckupBo {
+public class CheckupBoImpl extends BpjsService implements CheckupBo {
     protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
 
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
     private ProvinsiDao provinsiDao;
     private DokterTeamDao dokterTeamDao;
+
+    public CheckupBoImpl() throws GeneralSecurityException, IOException {
+    }
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -470,6 +476,40 @@ public class CheckupBoImpl implements CheckupBo {
 
         logger.info("[CheckupBoImpl.getListEntityTeamDokter] End <<<<<<<<");
         return entities;
+    }
+
+    @Override
+    public HeaderCheckup completeBpjs(String nomorBpjs){
+        logger.info("[CheckupBoImpl.completeBpjs] Start >>>>>>>");
+
+        HeaderCheckup finalResult = new HeaderCheckup();
+        java.util.Date ys=new Date(); // membuat oject ys dari class Date
+
+        SimpleDateFormat s=new SimpleDateFormat("yyyy-MM-dd");
+        String tanggal =s.format(ys);
+
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/"+nomorBpjs+"/tglSEP/"+tanggal;
+        try {
+            String result = GET(feature);
+            JSONObject myResponseCheck = new JSONObject(result);
+            if (myResponseCheck.isNull("response")){
+                finalResult=null;
+                JSONObject response = myResponseCheck.getJSONObject("metaData");
+                logger.error("[CheckupBoImpl.completeBpjs] : "+response.getString("message"));
+            }else{
+                JSONObject response = myResponseCheck.getJSONObject("response");
+                JSONObject obj = response.getJSONObject("peserta");
+                finalResult.setNoKtp(obj.getString("nik"));
+                finalResult.setNama(obj.getString("nama"));
+                finalResult.setJenisKelamin(obj.getString("sex"));
+                finalResult.setStTglLahir(obj.getString("tglLahir"));
+            }
+        }catch (Exception e){
+            logger.error("[CheckupBoImpl.completeBpjs] Error when get data");
+        }
+
+        logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
+        return finalResult;
     }
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {

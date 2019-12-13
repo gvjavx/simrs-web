@@ -188,7 +188,7 @@
                                             <div class="col-md-8">
                                                 <div class="input-group date">
                                                     <s:textfield id="no_bpjs" name="headerCheckup.noBpjs" cssClass="form-control"/>
-                                                    <div class="input-group-addon btn btn-success">
+                                                    <div class="input-group-addon btn btn-success" id="btnSearchBpjsPerson">
                                                         <i class="fa fa-search" style="cursor: pointer"></i> Search
                                                     </div>
                                                 </div>
@@ -608,6 +608,24 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
+        $('#btnSearchBpjsPerson').click(function () {
+            var nobpjs=$('#no_bpjs').val();
+            if (nobpjs!=''){
+                CheckupAction.completeBpjs(nobpjs, function(response){
+                    if (response!=null){
+                        $('#no_ktp').val(response.noKtp);
+                        $('#nama_pasien').val(response.nama);
+                        $('#jenis_kelamin').val(response.jenisKelamin);
+                        $('#tanggal_lahir').val(response.stTglLahir);
+                    }else{
+                        alert("Data BPJS tidak ditemukan");
+                    }
+
+                });
+            } else{
+                alert("Nomor BPJS masih kosong");
+            }
+        });
 
         $('#pendaftaran').addClass('active');
 
