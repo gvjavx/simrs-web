@@ -390,8 +390,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Resep</td>
-                                <td>ID Resep</td>
+                                <td>Tanggal</td>
                                 <td>ID Resep</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -1154,26 +1153,39 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Detail Resep</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Resep Obat</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_detail">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    Silahkan cek kembali data inputan..!
                 </div>
-                <div class="row">
-
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
+                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    Data berhasil diupdate..!
                 </div>
+                    <div class="box">
+                        <table class="table table-striped table-bordered" id="tabel_rep">
+                            <thead>
+                            <td>Obat</td>
+                            <td>Qty</td>
+                            <td>Keterangan</td>
+                            <td align="center" width="5%">Action</td>
+                            </thead>
+                            <tbody id="body_detail_rep">
+                            </tbody>
+                        </table>
+                    </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
+                <%--<button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i--%>
+                        <%--class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -1196,6 +1208,7 @@
         listObat();
         listDiet();
         listRuanganInap();
+        listResepPasien();
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
@@ -1958,7 +1971,6 @@
 
         ObatInapAction.listObatInap(idDetailCheckup, function (response) {
             data = response;
-            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
@@ -2322,8 +2334,6 @@
         var data        = $('#tabel_rese_detail').tableToJSON();
         var stringData  = JSON.stringify(data);
 
-        console.log(stringData);
-
         if(stringData != '[]'){
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
@@ -2337,6 +2347,7 @@
                         $('#save_resep_head').show();
                         $('#load_resep_head').hide();
                         $('#modal-resep-head').modal('hide');
+                        listResepPasien();
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);
                         $('#save_resep_head').show();
@@ -2353,34 +2364,140 @@
 
         var table = "";
         var data = [];
-        var no = "";
-        var name = "";
-        var kelas = "";
 
-        CheckupDetailAction.getListRuangInapByIdDetailCheckup(idDetailCheckup, function (response) {
+        PermintaanResepAction.listResepPasien(idDetailCheckup, function (response) {
             data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
-                    if (item.namaRangan != null) {
-                        name = item.namaRangan;
+                    var idResep     = "";
+                    var tanggal     = item.createdDate;
+                    var dateFormat  = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+
+                    if (item.idPermintaanResep != null) {
+                        idResep = item.idPermintaanResep;
                     }
-                    if (item.noRuangan != null) {
-                        no = item.noRuangan;
-                    }
-                    if (item.kelasRuanganName != null) {
-                        kelas = item.kelasRuanganName;
-                    }
+
                     table += "<tr>" +
-                            "<td>" + name + "</td>" +
-                            "<td>" + no + "</td>" +
-                            "<td>" + kelas + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editRuangan(\'' + item.idKelas + '\',\'' + item.idRuangan + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + idResep + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;"> <img border="0" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>"
                 });
             }
         });
 
         $('#body_resep').html(table);
+    }
+
+    function detailResep(id){
+        $('#modal-resep-detail').modal('show');
+        listDetailResepPasien(id);
+    }
+
+    function listDetailResepPasien(idApprovalObat) {
+
+        var table = "";
+        var data = [];
+
+        PermintaanResepAction.listDetail(idApprovalObat, function (response) {
+            data = response;
+            console.log(data);
+            if (data != null) {
+                $.each(data, function (i, item) {
+
+                    var qty      = "";
+                    var namaObat = "";
+                    var ket      = "";
+                    var idObat   = "";
+
+                    if(item.idObat != null){
+                        idObat = item.idObat;
+                    }
+
+                    if (item.qty != null) {
+                        qty = item.qty;
+                    }
+
+                    if (item.namaObat != null) {
+                        namaObat = item.namaObat;
+                    }
+
+                    if (item.keterangan != null) {
+                        ket = item.keterangan;
+                    }
+
+                    table += "<tr>" +
+                            "<td>"+ '<span id=obat'+idObat+'>' + namaObat + '</span><input style="display:none; width: 120px;" type="text" id=newObat'+idObat+' class="form-control"><input type="hidden" id=idObat'+idObat+'>' + "</td>" +
+                            "<td>"+'<span id=qty'+idObat+'>'+ qty + '</span>'+
+                            '<input style="display:none; width: 80px" type="number" id=newQty'+idObat+' class="form-control">'+ "</td>" +
+                            "<td>"+'<span id=ket'+idObat+'>'+ ket + '</span>'+
+                            '<select class="form-control" id=newKet'+idObat+' style="display:none"'+
+                            '<option value="">[Select One]</option>'+
+                            '<option value="2 x 1 /Hari">2 x 1 /Hari</option>'+
+                            '<option value="3 x 1 /Hari">3 x 1 /Hari</option>'+
+                            '</select>'+ "</td>" +
+                            "<td align='center'>" + '<img border="0" id='+idObat+' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "</tr>"
+                });
+            }
+        });
+
+        $('#body_detail_rep').html(table);
+    }
+
+    function editObatResep(id, idObat, qty, ket){
+
+        if($('#'+idObat).attr('src') == '/simrs/pages/images/edit-flat-new.png'){
+            var url = '<s:url value="/pages/images/save_flat.png"/>';
+            $('#'+idObat).attr('src',url);
+            $('#obat'+idObat).hide();
+            $('#qty'+idObat).hide();
+            $('#ket'+idObat).hide();
+
+            $('#newObat'+idObat).show();
+            $('#newQty'+idObat).show();
+            $('#newKet'+idObat).show();
+
+        }else{
+            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
+            $('#'+idObat).attr('src',url);
+            $('#'+idObat).attr('onclick','saveDetailResep(\'' + id + '\',\'' + idObat + '\')');
+            $('#obat'+idObat).show();
+            $('#qty'+idObat).show();
+            $('#ket'+idObat).show();
+
+            $('#newObat'+idObat).hide();
+            $('#newQty'+idObat).hide();
+            $('#newKet'+idObat).hide();
+        }
+    }
+
+    function saveDetailResep(id, idObat){
+
+        var obat    = $('#newObat'+idObat).val();
+        var qty     = $('#newQty'+idObat).val();
+        var ket     = $('#newKet'+idObat).val();
+
+        if(obat != '' && qty != '' && ket != ''){
+            $('#save_resep_head').hide();
+            $('#load_resep_head').show();
+            dwr.engine.setAsync(true);
+            PermintaanResepAction.saveEditDetail(id, obat, qty, ket, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#success_detail').show().fadeOut(5000);
+                        listDetailResepPasien(id);
+                    } else {
+                        $('#warning_resep_head').show().fadeOut(5000);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                    }
+                }
+            });
+        }else{
+            $('#warning_detail').show().fadeOut(5000);
+        }
     }
 
 

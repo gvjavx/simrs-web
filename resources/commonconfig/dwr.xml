@@ -380,6 +380,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.rawatinap.model.RawatInap"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.ObatPoli"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
 
   </allow>
 

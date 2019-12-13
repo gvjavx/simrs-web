@@ -11,6 +11,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String idObat;
     private BigInteger qty;
     private String keterangan;
+    private String namaObat;
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
 
     public String getKeterangan() {
         return keterangan;
