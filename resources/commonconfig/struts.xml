@@ -172,9 +172,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/ordergizi/struts/OrderGiziAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/TransaksiObatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanresep/struts/PermintaanResepAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ObatPoliAction.xml"/>
-
-
-
-
 </struts>

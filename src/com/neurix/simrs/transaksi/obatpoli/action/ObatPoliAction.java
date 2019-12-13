@@ -25,6 +25,15 @@ public class ObatPoliAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(ObatPoliAction.class);
     private ObatPoli obatPoli;
     private ObatPoliBo obatPoliBoProxy;
+    private PermintaanObatPoli permintaanObatPoli;
+
+    public PermintaanObatPoli getPermintaanObatPoli() {
+        return permintaanObatPoli;
+    }
+
+    public void setPermintaanObatPoli(PermintaanObatPoli permintaanObatPoli) {
+        this.permintaanObatPoli = permintaanObatPoli;
+    }
 
     public ObatPoli getObatPoli() {
         return obatPoli;
@@ -247,6 +256,45 @@ public class ObatPoliAction extends BaseMasterAction {
         }
         return SUCCESS;
     }
+
+    public String monitoringRequest(){
+        logger.info("[ObatPoliAction.monitoringRequest] start process >>>");
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        setPermintaanObatPoli(permintaanObatPoli);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[ObatPoliAction.monitoringRequest] end process <<<");
+        return "obat_request";
+    }
+
+    public String searchMonitoringRequest() {
+        logger.info("[ObatPoliAction.searchMonitoringRequest] start process >>>");
+
+        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatPoliAction.searchMonitoringRequest] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", permintaanObatPoliList);
+
+        logger.info("[ObatPoliAction.searchMonitoringRequest] end process <<<");
+        return "obat_request";
+    }
+
 
 
     @Override
