@@ -16,12 +16,13 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -299,18 +300,23 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setNoCheckupOnline(noCheckupOnline);
             registrasiOnline.setNoKtp(noKtp);
             registrasiOnline.setNama(nama);
-            registrasiOnline.setDesaId(Long.valueOf(desaId));
+            registrasiOnline.setIdPasien(idPasien);
             registrasiOnline.setBranchId(branchId);
             registrasiOnline.setTempatLahir(tempatLahir);
             registrasiOnline.setProfesi(profesi);
             registrasiOnline.setJenisKelamin(jenisKelamin);
             registrasiOnline.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
+            registrasiOnline.setDesaId(Long.valueOf(desaId));
             registrasiOnline.setSuku(suku);
             registrasiOnline.setAgama(agama);
             registrasiOnline.setNoTelp(noTelp);
             registrasiOnline.setJalan(jalan);
             registrasiOnline.setValid("N");
-            registrasiOnline.setTglLahir(CommonUtil.convertStringToDate(tglLahir));
+
+            Date tempDate = Date.valueOf(tglLahir);
+            registrasiOnline.setTglLahir(tempDate);
+
+
             registrasiOnline.setStTglLahir(tglLahir);
 
             String ktpPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN;
@@ -335,6 +341,8 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
 
             try {
                 model = registrasiOnlineBoProxy.saveAdd(registrasiOnline);
+
+
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {

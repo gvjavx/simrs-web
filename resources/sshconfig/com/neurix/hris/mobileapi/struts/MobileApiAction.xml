@@ -134,6 +134,25 @@
         <action name="pelayanan/*" class="com.neurix.simrs.mobileapi.PelayananController">
             <interceptor-ref name="mobileStack"/>
         </action>
+
+        <action name="provinsi/*" class="com.neurix.simrs.mobileapi.ProvinsiController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="kota/*" class="com.neurix.simrs.mobileapi.KotaController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="kecamatan/*" class="com.neurix.simrs.mobileapi.KecamatanController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="desa/*" class="com.neurix.simrs.mobileapi.DesaController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="pasien/*" class="com.neurix.simrs.mobileapi.PasienController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

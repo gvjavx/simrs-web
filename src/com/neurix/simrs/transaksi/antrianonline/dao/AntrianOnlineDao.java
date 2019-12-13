@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.antrianonline.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -8,6 +10,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +56,69 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup) {
+        String searchPelayanan = "";
+        String searchNoCheckupOnline = "";
+        String searchDokter = "";
+        String searchTglCheckup = "";
+
+        if (idPelayanan!=null){
+            if(!idPelayanan.equalsIgnoreCase("")){
+                searchPelayanan = " and a.id_pelayanan = '" + idPelayanan + "' " ;
+            }
+        }
+
+        if (noCheckupOnline != null) {
+            if (!noCheckupOnline.equalsIgnoreCase("")) {
+                searchNoCheckupOnline = " and a.no_checkup_online = '" + noCheckupOnline + "' ";
+            }
+        }
+
+        if (idDokter != null) {
+            if (!idDokter.equalsIgnoreCase("")) {
+                searchDokter = " and a.id_dokter = '" + idDokter + "' ";
+            }
+        }
+
+        if (tglCheckup != null) {
+            if (!tglCheckup.equalsIgnoreCase("")) {
+                searchTglCheckup = " and a.tgl_checkup = '" + tglCheckup + "' ";
+            }
+        }
+
+
+        List<AntianOnline> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<>();
+        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update \n" +
+                "FROM it_simrs_antian_online a \n" +
+                "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
+                "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
+                "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
+                "WHERE a.flag = 'Y' \n" +
+                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup +
+                "ORDER BY b.last_update";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            AntianOnline result = new AntianOnline();
+            result.setIdAntrianOnline((String) row[0]);
+            result.setIdPelayanan((String) row[1]);
+            result.setIdDokter((String) row[2]);
+            result.setNamaDokter((String) row[3]);
+            result.setNamaPelayanan((String) row[4]);
+            result.setNoCheckupOnline((String) row[5]);
+            result.setNama((String) row[6]);
+            result.setTglCheckup(CommonUtil.convertDateToString((Date) row[7]));
+            result.setJamAwal((String) row[8]);
+            result.setJamAkhir((String) row[9]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
     }
 
 

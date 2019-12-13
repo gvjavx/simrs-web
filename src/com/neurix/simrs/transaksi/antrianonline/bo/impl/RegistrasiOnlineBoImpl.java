@@ -5,6 +5,7 @@ import com.neurix.authorization.company.model.ImAreasBranchesUsersPK;
 import com.neurix.authorization.user.dao.UserDao;
 import com.neurix.authorization.user.model.*;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
@@ -161,35 +162,38 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
         if (bean != null) {
 
             String idCheckupOnline = "";
-            String idPasien = "1";
+            String idPasien = "";
             idCheckupOnline = getNextCheckupOnlineId();
-//            idPasien = pasienDao.getNextIdPasien();
 
             ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
-//            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
-//
-//            pasienEntity.setIdPasien(idPasien);
-//            pasienEntity.setNama(bean.getNama());
-//            pasienEntity.setIdPasien(idPasien);
-//            pasienEntity.setJenisKelamin(bean.getJenisKelamin());
-//            pasienEntity.setProfesi(bean.getProfesi());
-//            pasienEntity.setNoTelp(bean.getNoTelp());
-//            pasienEntity.setSuku(bean.getSuku());
-//            pasienEntity.setTempatLahir(bean.getTempatLahir());
-//            pasienEntity.setTglLahir(bean.getTglLahir());
-//            pasienEntity.setJalan(bean.getJalan());
-//            pasienEntity.setDesaId(bean.getDesaId());
-//            pasienEntity.setNoKtp(bean.getNoKtp());
-//            pasienEntity.setUrlKtp(bean.getUrlKtp());
-//            pasienEntity.setAgama(bean.getAgama());
-//
-//            try {
-//                pasienDao.addAndSave(pasienEntity);
-//            } catch (HibernateException e) {
-//                logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data pasien" + e.getMessage());
-//                throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving pasien");
-//            }
+            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
 
+            if (bean.getIdPasien().isEmpty() || bean.getIdPasien() != null) {
+                idPasien = pasienDao.getNextIdPasien();
+
+                pasienEntity.setIdPasien(idPasien);
+                pasienEntity.setNama(bean.getNama());
+                pasienEntity.setJenisKelamin(bean.getJenisKelamin());
+                pasienEntity.setProfesi(bean.getProfesi());
+                pasienEntity.setNoTelp(bean.getNoTelp());
+                pasienEntity.setSuku(bean.getSuku());
+                pasienEntity.setTempatLahir(bean.getTempatLahir());
+                pasienEntity.setTglLahir(bean.getTglLahir());
+                pasienEntity.setJalan(bean.getJalan());
+                pasienEntity.setDesaId(bean.getDesaId());
+                pasienEntity.setNoKtp(bean.getNoKtp());
+                pasienEntity.setUrlKtp(bean.getUrlKtp());
+                pasienEntity.setAgama(bean.getAgama());
+
+                try {
+                    pasienDao.addAndSave(pasienEntity);
+                } catch (HibernateException e) {
+                    logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data pasien" + e.getMessage());
+                    throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving pasien");
+                }
+            } else {
+                idPasien = bean.getIdPasien();
+            }
 
             registrasiOnlineEntity.setNoCheckupOnline("CKO" + idCheckupOnline);
             registrasiOnlineEntity.setNama(bean.getNama());
@@ -241,9 +245,16 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             result.setAction(registrasiOnlineEntity.getAction());
             result.setFlag(registrasiOnlineEntity.getFlag());
             result.setValid(registrasiOnlineEntity.getValid());
-            result.setStTglLahir(registrasiOnlineEntity.getTglLahir().toString());
+            result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
             result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
+            result.setCreatedDate(registrasiOnlineEntity.getCreatedDate());
+            result.setCreatedWho(registrasiOnlineEntity.getCreatedWho());
+            result.setLastUpdate(registrasiOnlineEntity.getLastUpdate());
+            result.setLastUpdateWho(registrasiOnlineEntity.getLastUpdateWho());
+
+
         }
+
 
         logger.info("[RegistrasiOnlineBoImpl.saveAdd] End <<<<<<<");
         return result;
@@ -310,7 +321,7 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             result.setAction(registrasiOnlineEntity.getAction());
             result.setFlag(registrasiOnlineEntity.getFlag());
             result.setValid(registrasiOnlineEntity.getValid());
-            result.setStTglLahir(registrasiOnlineEntity.getTglLahir().toString());
+            result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
             result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
         }
 

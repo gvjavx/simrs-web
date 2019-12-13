@@ -101,6 +101,22 @@
             <filter-chain pattern="/mobileapi/pelayanan" filters="none" />
             <filter-chain pattern="/mobileapi/pelayanan/*" filters="none"/>
             <filter-chain pattern="/mobileapi/pelayanan/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/provinsi" filters="none" />
+            <filter-chain pattern="/mobileapi/provinsi/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/provinsi/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/kota" filters="none" />
+            <filter-chain pattern="/mobileapi/kota/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/kota/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/kecamatan" filters="none" />
+            <filter-chain pattern="/mobileapi/kecamatan/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/kecamatan/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/desa" filters="none" />
+            <filter-chain pattern="/mobileapi/desa/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/desa/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/pasien" filters="none" />
+            <filter-chain pattern="/mobileapi/pasien/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/pasien/*/**" filters="none"/>
+
 
             <filter-chain pattern="/**/*"
                           filters="

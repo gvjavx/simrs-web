@@ -14,6 +14,8 @@
 
     <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
           p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+          p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
     />
 
     <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

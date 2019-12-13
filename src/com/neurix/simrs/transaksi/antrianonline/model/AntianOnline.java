@@ -8,6 +8,9 @@ import java.sql.Timestamp;
 public class AntianOnline extends BaseModel implements Serializable {
 
     private String idAntrianOnline;
+    private String namaDokter;
+    private String nama;
+    private String namaPelayanan;
     private String noCheckupOnline;
     private String idPelayanan;
     private String idDokter;
@@ -17,6 +20,57 @@ public class AntianOnline extends BaseModel implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String jamAwal;
+    private String jamAkhir;
+    private String tglCheckup;
+
+    public String getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(String tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
 
     public String getIdAntrianOnline() {
         return idAntrianOnline;

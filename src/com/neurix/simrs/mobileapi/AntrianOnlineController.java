@@ -26,6 +26,11 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String noCheckupOnline;
     private String idPelayanan;
     private String idDokter;
+    private String createdDate;
+    private String branchId;
+    private String jamAwal;
+    private String jamAkhir;
+    private String tglCheckup;
     private String action;
 
     public Collection<AntianOnline> getListOfAntrianOnline() {
@@ -34,6 +39,46 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     public void setListOfAntrianOnline(Collection<AntianOnline> listOfAntrianOnline) {
         this.listOfAntrianOnline = listOfAntrianOnline;
+    }
+
+    public String getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(String tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
     }
 
     public String getIdAntrianOnline() {
@@ -104,6 +149,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         antianOnline.setIdPelayanan(idPelayanan);
         antianOnline.setIdDokter(idDokter);
         antianOnline.setNoCheckupOnline(noCheckupOnline);
+        antianOnline.setJamAkhir(jamAkhir);
+        antianOnline.setJamAwal(jamAwal);
+        antianOnline.setTglCheckup(tglCheckup);
 
         if (action.equalsIgnoreCase("tambah")) {
             try {
@@ -115,7 +163,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("show")) {
             try {
-                listOfAntrianOnline = antrianOnlineBoProxy.getByCriteria(antianOnline);
+                listOfAntrianOnline = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup);
             } catch (GeneralBOException e) {
 
             }
