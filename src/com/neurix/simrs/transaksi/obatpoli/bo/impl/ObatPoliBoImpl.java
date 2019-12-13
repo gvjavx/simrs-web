@@ -121,6 +121,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat());
                 if (simrsObatEntity != null){
                     permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
+                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
                 }
 
                 ImSimrsPelayananEntity pelayananEntity = getPoliById(permintaanObatPoli.getIdPelayanan());

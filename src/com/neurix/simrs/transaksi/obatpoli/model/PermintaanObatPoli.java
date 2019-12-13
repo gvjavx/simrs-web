@@ -36,6 +36,15 @@ public class PermintaanObatPoli{
     private String idJenisObat;
 
     private String keterangan;
+    private BigInteger qtyGudang;
+
+    public BigInteger getQtyGudang() {
+        return qtyGudang;
+    }
+
+    public void setQtyGudang(BigInteger qtyGudang) {
+        this.qtyGudang = qtyGudang;
+    }
 
     public String getKeterangan() {
         return keterangan;
