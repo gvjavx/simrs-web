@@ -295,8 +295,6 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-
-
         session.removeAttribute("listOfResult");
         logger.info("[CheckupAction.initForm] end process >>>");
         return "search";

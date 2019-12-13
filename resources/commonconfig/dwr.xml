@@ -360,6 +360,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.permintaanresep.action.PermintaanResepAction"/>
       </create>
 
+      <!--Resep Obat-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
@@ -374,6 +379,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksaradiologi.model.PeriksaRadiologi"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rawatinap.model.RawatInap"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.ObatPoli"/>
 
   </allow>
 

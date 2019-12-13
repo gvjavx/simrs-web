@@ -142,7 +142,7 @@
                                         </sj:submit>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
                                                 <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
-                                        <a type="button" class="btn btn-danger" href="initForm_checkup.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_permintaan.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -193,7 +193,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfResult">
+                            <s:iterator value="#session.listOfResult" id="listOfResult">
                                 <tr>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
@@ -201,23 +201,18 @@
                                     <td><s:property value="qty"/></td>
                                     <td><s:property value="keterangan"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"
-                                             style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:if test="#listRawatjalan.isRequest == true">
-                                            <s:a href="%{edit}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                     style="cursor: pointer; width: 25px; height: 25px">
-                                            </s:a>
+                                        <s:if test="#listOfResult.approvalFlag == null">
+                                            <s:if test="#listOfResult.request == true">
+                                                <s:a href="%{edit}" cssClass="btn btn-primary">
+                                                    Konfirmasi Request
+                                                </s:a>
+                                            </s:if>
+                                            <s:else>
+                                                <s:a href="%{edit}" cssClass="btn btn-primary">
+                                                    Konfirmasi Reture
+                                                </s:a>
+                                            </s:else>
                                         </s:if>
-                                        <s:else>
-                                            <s:a href="%{edit}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>"
-                                                     style="cursor: pointer; width: 25px; height: 25px">
-                                            </s:a>
-                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

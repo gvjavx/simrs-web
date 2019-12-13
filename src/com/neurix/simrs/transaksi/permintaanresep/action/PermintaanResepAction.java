@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +66,7 @@ public class PermintaanResepAction extends BaseMasterAction{
             permintaanResep.setLastUpdateWho(userLogin);
             permintaanResep.setAction("U");
             permintaanResep.setFlag("Y");
+            permintaanResep.setBranchId(userArea);
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
@@ -84,17 +86,18 @@ public class PermintaanResepAction extends BaseMasterAction{
         return SUCCESS;
     }
 
-    public List<PermintaanResep> listResepPasien(String idApprovalObat){
+    public List<PermintaanResep> listResepPasien(String IdChekupDetail){
 
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
         PermintaanResep permintaanResep = new PermintaanResep();
-        permintaanResep.setIdApprovalObat(idApprovalObat);
+        permintaanResep.setIdDetailCheckup(IdChekupDetail);
+        permintaanResep.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
 
-        if(!"".equalsIgnoreCase(idApprovalObat)){
+        if(!"".equalsIgnoreCase(IdChekupDetail)){
             try {
                 permintaanResepList = permintaanResepBo.getByCriteria(permintaanResep);
             }catch (GeneralBOException e){

@@ -23,6 +23,16 @@ public class PermintaanResep{
     private String idPelayanan;
     private String idDokter;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getIdDokter() {
         return idDokter;
     }

@@ -18,6 +18,16 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public ObatPoliPk getPrimaryKey() {
         return primaryKey;
     }

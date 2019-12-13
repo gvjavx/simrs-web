@@ -100,15 +100,21 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 "pop.last_update,\n" +
                 "pop.last_update_who \n" +
                 "FROM mt_simrs_permintaan_obat_poli pop\n" +
-                "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
-                "INNER JOIN im_simrs_obat_gejala og On og.id_obat = pop.id_obat\n" +
-                "WHERE pop.flag LIKE :flag \n" +
-                "AND ato.branch_id LIKE :branchId \n" +
-                "AND pop.id_obat LIKE :idObat \n" +
-                "AND ato.tipe_permintaan LIKE :tipePermintaan \n" +
-                "AND pop.id_pelayanan LIKE :idPelayanan \n" +
-                "AND og.id_jenis_obat LIKE :idJenisObat \n" +
-                "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli ";
+                "INNER JOIN \n" +
+                "(\n" +
+                "\tSELECT pop.id_permintaan_obat_poli\n" +
+                "\tFROM mt_simrs_permintaan_obat_poli pop\n" +
+                "\tINNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
+                "\tINNER JOIN im_simrs_obat_gejala og On og.id_obat = pop.id_obat\n" +
+                "\tWHERE pop.flag LIKE :flag \n" +
+                "\tAND ato.branch_id LIKE :branchId \n" +
+                "\tAND pop.id_obat LIKE :idObat \n" +
+                "\tAND ato.tipe_permintaan LIKE :tipePermintaan \n" +
+                "\tAND pop.id_pelayanan LIKE :idPelayanan \n" +
+                "\tAND og.id_jenis_obat LIKE :idJenisObat \n" +
+                "\tAND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli \n" +
+                "\tGROUP BY pop.id_permintaan_obat_poli \n" +
+                ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
