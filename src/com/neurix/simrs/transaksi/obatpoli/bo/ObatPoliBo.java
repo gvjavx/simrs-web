@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ObatPoliBo {
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException;
-    public List<PermintaanObatPoli> getPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException;
+    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException;
     public void saveAdd(ObatPoli bean) throws GeneralBOException;
     public void saveAddWithRequest(ObatPoli bean) throws GeneralBOException;
     public void saveRequest(PermintaanObatPoli bean) throws GeneralBOException;

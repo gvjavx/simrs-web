@@ -30,6 +30,53 @@ public class PermintaanObatPoli{
     private Timestamp approvalLastUpdate;
     private String approvalLastUpdateWho;
 
+    private String tipePermintaan;
+    private Boolean isRequest = false;
+    private String branchId;
+    private String idJenisObat;
+
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public Boolean getRequest() {
+        return isRequest;
+    }
+
+    public void setRequest(Boolean request) {
+        isRequest = request;
+    }
+
+    public String getTipePermintaan() {
+        return tipePermintaan;
+    }
+
+    public void setTipePermintaan(String tipePermintaan) {
+        this.tipePermintaan = tipePermintaan;
+    }
+
     public String getRetureFlag() {
         return retureFlag;
     }

@@ -154,6 +154,5 @@
     <import resource="sshconfig/com/neurix/simrs/master/lab/spring/LabBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/labdetail/spring/LabDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanresep/spring/PermintaanResepBean.xml"/>
-
-
+    <import resource="sshconfig/com/neurix/simrs/transaksi/obatpoli/spring/ObatPoliBean.xml"/>
 </beans>

@@ -54,6 +54,96 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         return results;
     }
 
+    public List<MtSimrsPermintaanObatPoliEntity> getListPermintaanObatPoliEntity(PermintaanObatPoli bean){
+        List<MtSimrsPermintaanObatPoliEntity> listOfResults = new ArrayList<>();
+
+        String branchId = "%";
+        String idPelayanan = "%";
+        String idObat = "%";
+        String idPermintaanObatPoli = "%";
+        String idJenisObat = "%";
+        String flag = "%";
+        String tipePermintaan = "%";
+
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+            idPelayanan = bean.getIdPelayanan();
+        }
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            idObat = bean.getIdObat();
+        }
+        if (bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())){
+            idPermintaanObatPoli = bean.getIdPermintaanObatPoli();
+        }
+        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+            idJenisObat = bean.getIdJenisObat();
+        }
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())){
+            tipePermintaan = bean.getTipePermintaan();
+        }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
+
+        String SQL = "SELECT \n" +
+                "pop.id_permintaan_obat_poli,\n" +
+                "pop.id_obat,\n" +
+                "pop.id_pelayanan,\n" +
+                "pop.id_approval_obat,\n" +
+                "pop.qty,\n" +
+                "pop.flag,\n" +
+                "pop.action,\n" +
+                "pop.created_date,\n" +
+                "pop.created_who,\n" +
+                "pop.last_update,\n" +
+                "pop.last_update_who \n" +
+                "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
+                "INNER JOIN im_simrs_obat_gejala og On og.id_obat = pop.id_obat\n" +
+                "WHERE pop.flag LIKE :flag \n" +
+                "AND ato.branch_id LIKE :branchId \n" +
+                "AND pop.id_obat LIKE :idObat \n" +
+                "AND ato.tipe_permintaan LIKE :tipePermintaan \n" +
+                "AND pop.id_pelayanan LIKE :idPelayanan \n" +
+                "AND og.id_jenis_obat LIKE :idJenisObat \n" +
+                "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("idObat", idObat)
+                .setParameter("idPermintaanObatPoli", idPermintaanObatPoli)
+                .setParameter("idJenisObat", idJenisObat)
+                .setParameter("tipePermintaan", tipePermintaan)
+                .setParameter("flag", flag)
+                .list();
+
+        if (results.size() > 0)
+        {
+            MtSimrsPermintaanObatPoliEntity obatPoliEntity;
+            for (Object[] obj : results){
+                obatPoliEntity = new MtSimrsPermintaanObatPoliEntity();
+                obatPoliEntity.setIdPermintaanObatPoli(obj[0].toString());
+                obatPoliEntity.setIdObat(obj[1].toString());
+                obatPoliEntity.setIdPelayanan(obj[2].toString());
+                obatPoliEntity.setIdApprovalObat(obj[3].toString());
+                obatPoliEntity.setQty((BigInteger) obj[4]);
+                obatPoliEntity.setFlag(obj[5].toString());
+                obatPoliEntity.setAction(obj[6].toString());
+                obatPoliEntity.setCreatedDate((Timestamp) obj[7]);
+                obatPoliEntity.setCreatedWho(obj[8].toString());
+                obatPoliEntity.setLastUpdate((Timestamp) obj[9]);
+                obatPoliEntity.setLastUpdateWho(obj[10].toString());
+                listOfResults.add(obatPoliEntity);
+            }
+        }
+
+
+        return listOfResults;
+    }
+
     public List<PermintaanObatPoli> getListPermintaanPoli(PermintaanObatPoli bean){
 
         String idPelayanan = "%";

@@ -5,6 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+    <bean id="permintaanObatPoliAction" class="com.neurix.simrs.transaksi.obatpoli.action.PermintaanObatPoliAction"
+          p:obatPoliBoProxy-ref="obatPoliBo"
+    />
+
     <bean id="obatPoliAction" class="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction"
           p:obatPoliBoProxy-ref="obatPoliBo"
     />
@@ -33,7 +37,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getObatPoliByCriteria">readOnly</prop>
-                <prop key="getPermintaanObatPoli">readOnly</prop>
+                <prop key="getSearchPermintaanObatPoli">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveAddWithRequest">PROPAGATION_REQUIRED</prop>
                 <prop key="saveRequest">PROPAGATION_REQUIRED</prop>

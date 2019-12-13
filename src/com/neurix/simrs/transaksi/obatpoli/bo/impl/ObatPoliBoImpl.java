@@ -71,11 +71,30 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     }
 
     @Override
-    public List<PermintaanObatPoli> getPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException {
-        logger.info("[ObatPoliBoImpl.getPermintaanObatPoli] START >>>>>>>>>>");
+    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getSearchPermintaanObatPoli] START >>>>>>>>>>");
 
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
-        List<MtSimrsPermintaanObatPoliEntity> entities = getListEntityPermintaanObat(bean);
+
+        if ("002".equalsIgnoreCase(bean.getTipePermintaan()))
+        {
+            bean.setRequest(true);
+        }
+        if ("003".equalsIgnoreCase(bean.getTipePermintaan()))
+        {
+            bean.setRequest(false);
+        }
+
+        List<MtSimrsPermintaanObatPoliEntity> entities = null;
+
+        try {
+            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean);
+        } catch (HibernateException e)
+        {
+            logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ",e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ",e);
+        }
+
         if (!entities.isEmpty() && entities.size() > 0)
         {
             PermintaanObatPoli permintaanObatPoli;
@@ -108,17 +127,24 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 ImtSimrsApprovalTransaksiObatEntity  approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
                 if (approvalEntity != null){
+
+                    if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())){
+                        permintaanObatPoli.setKeterangan("Telah Dikonfirmasi");
+                    }
+
                     permintaanObatPoli.setApprovalFlag(approvalEntity.getApprovalFlag());
                     permintaanObatPoli.setApprovePerson(approvalEntity.getApprovePerson());
                     permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
                     permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
                 }
 
+                permintaanObatPoli.setRequest(bean.getRequest());
+
                 permintaanObatPoliList.add(permintaanObatPoli);
             }
         }
 
-        logger.info("[ObatPoliBoImpl.getPermintaanObatPoli] END <<<<<<<<<<");
+        logger.info("[ObatPoliBoImpl.getSearchPermintaanObatPoli] END <<<<<<<<<<");
         return permintaanObatPoliList;
     }
 
