@@ -14,6 +14,16 @@ public class ApprovalTransaksiObat extends BaseModel {
     private String approvalFlag;
     private String approvePerson;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getIdApprovalObat() {
         return idApprovalObat;
     }

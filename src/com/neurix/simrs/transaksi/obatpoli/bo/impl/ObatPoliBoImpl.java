@@ -61,6 +61,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
                     }
+
+
                     obatPoliList.add(obatPoli);
                 }
             }
@@ -138,7 +140,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             ObatPoliPk obatPoliPk = new ObatPoliPk();
             obatPoliPk.setIdObat(bean.getIdObat());
             obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
-
+            newObatPoli.setBranchId(bean.getBranchId());
             newObatPoli.setPrimaryKey(obatPoliPk);
             newObatPoli.setQty(new BigInteger(String.valueOf(0)));
             newObatPoli.setFlag("Y");
@@ -175,6 +177,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             String id = getNextApprovalObatId();
             approvalEntity.setIdApprovalObat("INV"+id);
             approvalEntity.setIdPelayanan(bean.getIdPelayanan());
+            approvalEntity.setBranchId(bean.getBranchId());
             approvalEntity.setFlag("Y");
             approvalEntity.setAction("C");
             approvalEntity.setTipePermintaan("002");
@@ -228,7 +231,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             permintaanEntity.setCreatedWho(bean.getCreatedWho());
 
             try {
-                approvalTransaksiObatDao.addAndSave(approvalEntity);
+                permintaanObatPoliDao.addAndSave(permintaanEntity);
             } catch (HibernateException e){
                 logger.error("[ObatPoliBoImpl.saveAddWithRequest] ERROR when insert into permintaan obat. ",e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveAddWithRequest] ERROR when insert into permintaan obat. ",e);
@@ -239,7 +242,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             ObatPoliPk obatPoliPk = new ObatPoliPk();
             obatPoliPk.setIdObat(bean.getIdObat());
             obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
-
+            newObatPoli.setBranchId(bean.getBranchId());
             newObatPoli.setPrimaryKey(obatPoliPk);
             newObatPoli.setQty(new BigInteger(String.valueOf(0)));
             newObatPoli.setFlag("Y");
@@ -276,6 +279,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             String id = getNextApprovalObatId();
             approvalEntity.setIdApprovalObat("INV"+id);
             approvalEntity.setIdPelayanan(bean.getIdPelayanan());
+            approvalEntity.setBranchId(bean.getBranchId());
             approvalEntity.setFlag("Y");
             approvalEntity.setAction("C");
             approvalEntity.setTipePermintaan("002");
@@ -329,7 +333,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             newPermintaanEntity.setCreatedWho(bean.getCreatedWho());
 
             try {
-                approvalTransaksiObatDao.addAndSave(approvalEntity);
+                permintaanObatPoliDao.addAndSave(newPermintaanEntity);
             } catch (HibernateException e){
                 logger.error("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ",e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ",e);
@@ -355,6 +359,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             String id = getNextApprovalObatId();
             approvalEntity.setIdApprovalObat("INV"+id);
             approvalEntity.setIdPelayanan(bean.getIdPelayanan());
+            approvalEntity.setBranchId(bean.getBranchId());
             approvalEntity.setFlag("Y");
             approvalEntity.setAction("C");
             approvalEntity.setTipePermintaan("003");
@@ -409,7 +414,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             newPermintaanEntity.setCreatedWho(bean.getCreatedWho());
 
             try {
-                approvalTransaksiObatDao.addAndSave(approvalEntity);
+                permintaanObatPoliDao.addAndSave(newPermintaanEntity);
             } catch (HibernateException e){
                 logger.error("[ObatPoliBoImpl.saveReture] ERROR when insert into permintaan obat. ",e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveReture] ERROR when insert into permintaan obat. ",e);
@@ -428,6 +433,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         }
         if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
             hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            hsCriteria.put("branch_id", bean.getBranchId());
         }
         hsCriteria.put("flag", "Y");
 

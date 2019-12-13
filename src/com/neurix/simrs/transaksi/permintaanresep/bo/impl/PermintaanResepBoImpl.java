@@ -156,6 +156,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         approvalEntity.setLastUpdateWho(bean.getCreatedWho());
         approvalEntity.setCreatedDate(bean.getCreatedDate());
         approvalEntity.setCreatedWho(bean.getCreatedWho());
+        approvalEntity.setBranchId(bean.getBranchId());
 
         try {
             approvalTransaksiObatDao.addAndSave(approvalEntity);
@@ -194,6 +195,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                 detail.setIdObat(obj.getString("Obat"));
                 detail.setQty(new BigInteger(obj.getString("Qty")));
+                detail.setKeterangan(obj.getString("Keterangan"));
                 detail.setCreatedDate(bean.getCreatedDate());
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());

@@ -390,7 +390,9 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>No Resep</td>
+                                <td>ID Resep</td>
+                                <td>ID Resep</td>
+                                <td>ID Resep</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1034,7 +1036,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rese_head">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     Silahkan cek kembali data inputan!
                 </div>
@@ -1046,35 +1048,61 @@
                                       name="getListJenisObat_jenisobat"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initJenis.listOfJenisObat" id="resep_jenis"
-                                      listKey="idJenisObat" onchange="listSelectObat(this)"
+                                      listKey="idJenisObat"
+                                      onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"
                                       listValue="namaJenisObat"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_jenis"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"
-                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
+                                    onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">
                                 <option value="">[select one]</option>
                             </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                            <input style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}" style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_qty"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_qty"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <select class="form-control" id="resep_keterangan" style="margin-top: 7px">
+                            <select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"
+                                    class="form-control" id="resep_keterangan" style="margin-top: 7px">
                                 <option value="">[Select One]</option>
                                 <option value="2 x 1 /Hari">2 x 1 /Hari</option>
                                 <option value="3 x 1 /Hari">3 x 1 /Hari</option>
                             </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_ket"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_ket"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -2247,23 +2275,40 @@
         var qty   = $('#resep_qty').val();
         var cek   = false;
         var data = $('#tabel_rese_detail').tableToJSON();
-        $.each(data, function (i, item) {
-            if(item.Obat == obat && item.Jenis == jenis){
-                cek = true;
-            }
-        });
 
-        if(cek){
-            $('#warning_data_exits').show().fadeOut(5000);
+        if(jenis != '' && obat != '' && ket != '' && qty != ''){
+            $.each(data, function (i, item) {
+                if(item.Obat == obat && item.Jenis == jenis){
+                    cek = true;
+                }
+            });
+
+            if(cek){
+                $('#warning_data_exits').show().fadeOut(5000);
+            }else{
+                var row = '<tr id='+obat+'>' +
+                        '<td>'+jenis+'</td>' +
+                        '<td>'+obat+'</td>' +
+                        '<td>'+qty+'</td>' +
+                        '<td>'+ket+'</td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '</tr>';
+                $('#body_detail').append(row);
+            }
         }else{
-            var row = '<tr id='+obat+'>' +
-                    '<td>'+jenis+'</td>' +
-                    '<td>'+obat+'</td>' +
-                    '<td>'+qty+'</td>' +
-                    '<td>'+ket+'</td>' +
-                    '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                    '</tr>';
-            $('#body_detail').append(row);
+            if(jenis == ''){
+                $('#war_rep_jenis').show();
+            }
+            if(obat == ''){
+                $('#war_rep_obat').show();
+            }
+            if(qty == '' || qty <= 0){
+                $('#war_rep_qty').show();
+            }
+            if(ket == ''){
+                $('#war_rep_ket').show();
+            }
+            $('#warning_resep_head').show().fadeOut(5000);
         }
     }
 
@@ -2272,24 +2317,70 @@
     }
 
     function saveResepObat(){
+
         var idDokter = $('#tin_id_dokter').val();
         var data        = $('#tabel_rese_detail').tableToJSON();
         var stringData  = JSON.stringify(data);
-        $('#save_resep_head').hide();
-        $('#load_resep_head').show()
-        PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
-            callback: function (response) {
-                if (response == "sucesss") {
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(9);
-                    $('#save_resep_head').show();
-                    $('#load_resep_head').hide();
-                } else {
-                    $('#save_resep_head').show();
-                    $('#load_resep_head').hide();
+
+        console.log(stringData);
+
+        if(stringData != '[]'){
+            $('#save_resep_head').hide();
+            $('#load_resep_head').show();
+            dwr.engine.setAsync(true);
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(9);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                        $('#modal-resep-head').modal('hide');
+                    } else {
+                        $('#warning_resep_head').show().fadeOut(5000);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                    }
                 }
+            });
+        }else{
+            $('#warning_resep_head').show().fadeOut(5000);
+        }
+    }
+
+    function listResepPasien() {
+
+        var table = "";
+        var data = [];
+        var no = "";
+        var name = "";
+        var kelas = "";
+
+        CheckupDetailAction.getListRuangInapByIdDetailCheckup(idDetailCheckup, function (response) {
+            data = response;
+            if (data != null) {
+                $.each(data, function (i, item) {
+                    if (item.namaRangan != null) {
+                        name = item.namaRangan;
+                    }
+                    if (item.noRuangan != null) {
+                        no = item.noRuangan;
+                    }
+                    if (item.kelasRuanganName != null) {
+                        kelas = item.kelasRuanganName;
+                    }
+                    table += "<tr>" +
+                            "<td>" + name + "</td>" +
+                            "<td>" + no + "</td>" +
+                            "<td>" + kelas + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editRuangan(\'' + item.idKelas + '\',\'' + item.idRuangan + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "</tr>"
+                });
             }
         });
+
+        $('#body_resep').html(table);
     }
 
 

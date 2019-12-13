@@ -30,6 +30,16 @@ public class PermintaanObatPoli{
     private Timestamp approvalLastUpdate;
     private String approvalLastUpdateWho;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getRetureFlag() {
         return retureFlag;
     }
