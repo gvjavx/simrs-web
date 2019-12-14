@@ -117,6 +117,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                             logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. ",e);
                             throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. "+ e.getMessage());
                         }
+
+                        // kurangi stock obat
+                        ImSimrsObatEntity obatEntity = getObatById(resep.getIdObat());
+                        if (obatEntity != null){
+
+                            obatEntity.setQty(obatEntity.getQty().subtract(resep.getQty()));
+                            obatEntity.setAction("U");
+                            obatEntity.setLastUpdate(bean.getLastUpdate());
+                            obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            try {
+
+                            } catch (HibernateException e)
+                            {
+                                logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. ",e);
+                                throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. "+ e.getMessage());
+                            }
+                        }
                     }
 
                     PermintaanResep permintaanResep = new PermintaanResep();
@@ -212,6 +229,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     } catch (HibernateException e){
                         logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. ",e);
                         throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. "+ e.getMessage());
+                    }
+
+                    // kurangi stock obat
+                    ImSimrsObatEntity obatEntity = getObatById(obatDetail.getIdObat());
+                    if (obatEntity != null){
+
+                        obatEntity.setQty(obatEntity.getQty().subtract(obatDetail.getQty()));
+                        obatEntity.setAction("U");
+                        obatEntity.setLastUpdate(bean.getLastUpdate());
+                        obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        try {
+
+                        } catch (HibernateException e)
+                        {
+                            logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. ",e);
+                            throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. "+ e.getMessage());
+                        }
                     }
                 }
 
