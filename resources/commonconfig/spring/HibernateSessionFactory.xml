@@ -321,6 +321,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanresep/hibernate/MtSimrsPermintaanResepEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsObatPoliEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsPermintaanObatPoliEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/MtSimrsRiwayatPembelianObat.hbm.xml</value>
 
             </list>
         </property>

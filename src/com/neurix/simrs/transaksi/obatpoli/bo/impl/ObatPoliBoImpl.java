@@ -63,8 +63,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
                     }
-
-
                     obatPoliList.add(obatPoli);
                 }
             }
@@ -562,6 +560,74 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     @Override
     public void saveApproveReture(PermintaanObatPoli bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.saveApproveReture] START >>>>>>>>>>");
+
+        if (bean != null)
+        {
+            List<MtSimrsPermintaanObatPoliEntity> permintaanObatPoliEntities = getListEntityPermintaanObat(bean);
+            if (!permintaanObatPoliEntities.isEmpty() && permintaanObatPoliEntities.size() > 0)
+            {
+                MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = permintaanObatPoliEntities.get(0);
+                ImtSimrsApprovalTransaksiObatEntity approvalTransaksiObatEntity = getApprovalTransaksiById(permintaanObatPoliEntity.getIdApprovalObat());
+                if (approvalTransaksiObatEntity != null)
+                {
+                    // set aproval flag and person
+                    approvalTransaksiObatEntity.setApprovalFlag("N");
+                    approvalTransaksiObatEntity.setFlag("N");
+                    approvalTransaksiObatEntity.setAction("U");
+                    approvalTransaksiObatEntity.setApprovePerson(bean.getLastUpdateWho());
+                    approvalTransaksiObatEntity.setLastUpdate(bean.getLastUpdate());
+                    approvalTransaksiObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        approvalTransaksiObatDao.updateAndSave(approvalTransaksiObatEntity);
+                    } catch (HibernateException e){
+                        logger.error("[ObatPoliBoImpl.saveApproveReture] ERROR when update approval. ",e);
+                        throw new GeneralBOException("[ObatPoliBoImpl.saveApproveReture] ERROR when update approval. ",e);
+                    }
+
+                    TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                    transaksiObatDetail.setIdApprovalObat(approvalTransaksiObatEntity.getIdApprovalObat());
+                    transaksiObatDetail.setFlag("Y");
+                    List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityObatDetail(transaksiObatDetail);
+
+                    if (!obatDetailEntities.isEmpty() && obatDetailEntities.size() > 0)
+                    {
+                        for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities)
+                        {
+                            obatDetailEntity.setFlag("N");
+                            obatDetailEntity.setAction("U");
+                            obatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                            obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            try {
+                                obatDetailDao.updateAndSave(obatDetailEntity);
+                            } catch (HibernateException e){
+                                logger.error("[ObatPoliBoImpl.saveApproveReture] ERROR when update obat Detail. ",e);
+                                throw new GeneralBOException("[ObatPoliBoImpl.saveApproveReture] ERROR when update obat Detail. ",e);
+                            }
+
+                            // updating qty obat after konfirmasi
+                            ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
+                            if (obatEntity != null)
+                            {
+                                BigInteger jmlh = obatEntity.getQty().add(obatDetailEntity.getQty());
+
+                                obatEntity.setQty(jmlh);
+                                obatEntity.setAction("U");
+                                obatEntity.setLastUpdate(bean.getLastUpdate());
+                                obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                try{
+                                    obatDao.updateAndSave(obatEntity);
+                                } catch (HibernateException e){
+                                    logger.error("[ObatPoliBoImpl.saveApproveReture] ERROR when update master obat. ",e);
+                                    throw new GeneralBOException("[ObatPoliBoImpl.saveApproveReture] ERROR when update master obat. ",e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         logger.info("[ObatPoliBoImpl.saveApproveReture] END <<<<<<<<<<");
     }
 

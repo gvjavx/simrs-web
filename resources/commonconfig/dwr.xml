@@ -365,6 +365,12 @@
           <param name="class" value="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction"/>
       </create>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
+
+
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>

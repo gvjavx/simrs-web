@@ -27,6 +27,10 @@
             <column name="qty" sql-type="bigint" not-null="false"/>
         </property>
 
+        <property name="noTransaksiPembelian">
+            <column name="no_transaksi_pembelian" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
