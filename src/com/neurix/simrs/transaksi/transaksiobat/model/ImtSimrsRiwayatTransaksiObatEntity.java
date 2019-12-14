@@ -19,6 +19,15 @@ public class ImtSimrsRiwayatTransaksiObatEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String noTransaksiPembelian;
+
+    public String getNoTransaksiPembelian() {
+        return noTransaksiPembelian;
+    }
+
+    public void setNoTransaksiPembelian(String noTransaksiPembelian) {
+        this.noTransaksiPembelian = noTransaksiPembelian;
+    }
 
     public String getIdRiwayatTransaksiObat() {
         return idRiwayatTransaksiObat;

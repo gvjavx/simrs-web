@@ -62,8 +62,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
                     }
-
-
                     obatPoliList.add(obatPoli);
                 }
             }
