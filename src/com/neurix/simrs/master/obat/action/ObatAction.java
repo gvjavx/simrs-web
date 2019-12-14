@@ -24,6 +24,15 @@ public class ObatAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(ObatAction.class);
     private ObatBo obatBoProxy;
     private Obat obat;
+    private List<Obat> listOfObat = new ArrayList<>();
+
+    public List<Obat> getListOfObat() {
+        return listOfObat;
+    }
+
+    public void setListOfObat(List<Obat> listOfObat) {
+        this.listOfObat = listOfObat;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -296,6 +305,27 @@ public class ObatAction extends BaseMasterAction {
 
         logger.info("[ObatAction.getJenisObatByIdObat] end process >>>");
         return obatList;
+
+    }
+
+    public String getListObat(){
+
+        logger.info("[ObatAction.getListObat] start process >>>");
+
+        List<Obat> obatList = new ArrayList<>();
+        Obat obat = new Obat();
+        obat.setBranchId(CommonUtil.userBranchLogin());
+        obat.setFlag("Y");
+
+        try {
+            obatList = obatBoProxy.getByCriteria(obat);
+        }catch (GeneralBOException e){
+            logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+
+        listOfObat.addAll(obatList);
+        logger.info("[ObatAction.getListObat] end process <<<");
+        return SUCCESS;
 
     }
 

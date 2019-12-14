@@ -11,4 +11,7 @@ import java.util.List;
 public interface TransaksiObatBo {
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveAdd(TransaksiObatDetail bean, List<TransaksiObatDetail> listOfObatResep, List<TransaksiObatDetail> listOfObat) throws GeneralBOException;
+
+    public List<TransaksiObatDetail> getByCriteria(TransaksiObatDetail bean) throws GeneralBOException;
+    public void saveEditDetail(TransaksiObatDetail bean) throws GeneralBOException;
 }

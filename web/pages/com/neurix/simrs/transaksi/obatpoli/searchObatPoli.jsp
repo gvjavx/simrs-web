@@ -110,7 +110,7 @@
                                                 <li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Tambah
                                                     & Request Obat</a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="#"><i class="fa fa-tv"></i> Monitoring Request</a></li>
+                                                <li><a href="monitoringRequest_obatpoli.action"><i class="fa fa-tv"></i> Monitoring Request</a></li>
                                             </ul>
                                         </div>
                                         <a type="button" class="btn btn-info" href="monitoringRequest_obatpoli.action">

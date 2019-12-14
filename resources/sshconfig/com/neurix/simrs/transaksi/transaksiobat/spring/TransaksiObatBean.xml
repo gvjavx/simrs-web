@@ -18,6 +18,7 @@
           p:permintaanResepDao-ref="permintaanResepDao"
           p:riwayatTransaksiObatDao-ref="riwayatTransaksiObatDao"
           p:riwayatTransPembelianObatDao-ref="riwayatTransPembelianObatDao"
+          p:obatPoliDao-ref="obatPoliDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -35,8 +36,10 @@
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
+                <prop key="getByCriteria">readOnly</prop>
                 <prop key="getSearchObatTransaksiByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditDetail">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

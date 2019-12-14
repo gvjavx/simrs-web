@@ -74,6 +74,7 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/obatpoli/searchObatPoli.jsp</result>
+            <result name="obat_request">/pages/com/neurix/simrs/transaksi/obatpoli/searchMonitoringRequest.jsp</result>
 
         </action>
 
