@@ -51,6 +51,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatPoli.setIdObat(obatPoliEntity.getPrimaryKey().getIdObat());
                     obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
                     obatPoli.setFlag(obatPoliEntity.getFlag());
+                    obatPoli.setQty(obatPoliEntity.getQty());
                     obatPoli.setAction(obatPoliEntity.getAction());
                     obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
                     obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
