@@ -122,6 +122,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         TransaksiObatDetail transaksiObatDetail = getTransaksiObatDetail();
         transaksiObatDetail.setLastUpdate(time);
         transaksiObatDetail.setLastUpdateWho(userLogin);
+        transaksiObatDetail.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             transaksiObatBoProxy.saveAdd(transaksiObatDetail, obatResepList, pembelianObatList);
@@ -211,6 +212,15 @@ public class TransaksiObatAction extends BaseMasterAction {
     public String init(){
         logger.info("[TransaksiObatAction.init] START >>>>>>>");
         logger.info("[TransaksiObatAction.init] END <<<<<<<");
+        return "search";
+    }
+
+    public String resetobat(){
+        logger.info("[TransaksiObatAction.resetobat] START >>>>>>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultObat");
+        searchResep();
+        logger.info("[TransaksiObatAction.resetobat] END <<<<<<<");
         return "search";
     }
 

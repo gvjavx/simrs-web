@@ -20,6 +20,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -216,8 +218,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
                     obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                     obatDetailEntity.setIdObat(obatDetail.getIdObat());
-                    obatDetail.setFlag("N");
-                    obatDetail.setAction("C");
+                    obatDetailEntity.setFlag("N");
+                    obatDetailEntity.setAction("C");
                     obatDetailEntity.setQty(obatDetail.getQty());
                     obatDetailEntity.setCreatedDate(bean.getLastUpdate());
                     obatDetailEntity.setCreatedWho(bean.getLastUpdateWho());
@@ -271,16 +273,25 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private void saveRiwayatTransaksi(List<ImtSimrsRiwayatTransaksiObatEntity> beans, TransaksiObatDetail bean) throws GeneralBOException{
         logger.info("[TransaksiObatBoImpl.saveRiwayatTransaksi] START >>>>>>");
 
-        Date now = new Date();
+        DateFormat dateFormat   = new SimpleDateFormat("yyyyMMdd");
+        Date now                = new Date();
+        String stDate           = dateFormat.format(now);
+        String id               = getNextTransPembelian();
+        String noPemebelian     = bean.getBranchId()+stDate+id;
+        Integer compare         = bean.getTotalBayar().compareTo(bean.getNominal());
 
-        String id = getNextTransPembelian();
-        String noPemebelian = bean.getBranchId()+now+id;
+        if (bean.getNominal() == null)
+            bean.setNominal(new BigInteger(String.valueOf(0)));
+        if (bean.getKembalian() == null)
+            bean.setKembalian(new BigInteger(String.valueOf(0)));
+        if (compare == -1)
+            bean.setKembalian(bean.getNominal().subtract(bean.getTotalBayar()));
 
         MtSimrsRiwayatPembelianObat pembelianObat = new MtSimrsRiwayatPembelianObat();
         pembelianObat.setNoPembelianObat(noPemebelian);
         pembelianObat.setTotalBayar(bean.getTotalBayar());
         pembelianObat.setNominal(bean.getNominal());
-        pembelianObat.setTotalDibayar(bean.getTotalDibayar());
+        pembelianObat.setTotalDibayar(bean.getNominal().subtract(bean.getKembalian()));
         pembelianObat.setKembalian(bean.getKembalian());
         pembelianObat.setFlag("Y");
         pembelianObat.setAction("C");
@@ -288,7 +299,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         pembelianObat.setCreatedWho(bean.getLastUpdateWho());
 
         try {
-
+            riwayatTransPembelianObatDao.addAndSave(pembelianObat);
         } catch (HibernateException e){
             logger.error("[TransaksiObatBoImpl.saveRiwayatTransaksi] ERROR when save pembayaran. ",e);
             throw new GeneralBOException("[TransaksiObatBoImpl.saveRiwayatTransaksi] ERROR when save pembayaran. "+ e.getMessage());

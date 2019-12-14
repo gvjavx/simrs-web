@@ -155,6 +155,10 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(5)"><i class="fa fa-plus"></i> Tambah Obat
                         </button>
+                        <button class="btn btn-danger btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="resetobat()">
+                            <i class="fa fa-refresh"></i> Reset
+                        </button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -209,7 +213,7 @@
                                     <label class="control-label col-sm-4">Total yang dibayar</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="total_dibayar" cssStyle="margin-top: 7px"
-                                                     name="transaksiObatDetail.totalDibayar" required="false"
+                                                     name="transaksiObatDetail.nominal" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -479,6 +483,7 @@
                         $('#modal-obat').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(5);
+//                        window.location.href = "/simrs/transaksi/init_transaksi.action";
                         $('#permintaanForm').submit();
                     } else {
 
@@ -498,6 +503,10 @@
                 $('#war_qty_obat').show();
             }
         }
+    }
+
+    function resetobat() {
+        window.location.href = "/simrs/transaksi/resetobat_transaksi.action";
     }
 
     function setStokObat(select){
