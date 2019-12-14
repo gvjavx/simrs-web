@@ -121,6 +121,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat());
                 if (simrsObatEntity != null){
                     permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
+                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
                 }
 
                 ImSimrsPelayananEntity pelayananEntity = getPoliById(permintaanObatPoli.getIdPelayanan());
@@ -448,6 +449,39 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             } catch (HibernateException e){
                 logger.error("[ObatPoliBoImpl.saveReture] ERROR when insert into permintaan obat. ",e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveReture] ERROR when insert into permintaan obat. ",e);
+            }
+
+            List<MtSimrsObatPoliEntity> obatPoliEntityList = new ArrayList<>();
+            ObatPoli obatPoli = new ObatPoli();
+            obatPoli.setIdObat(bean.getIdObat());
+            obatPoli.setIdPelayanan(bean.getIdPelayanan());
+            obatPoli.setBranchId(bean.getBranchId());
+
+            try {
+                obatPoliEntityList = getListEntityObatPoli(obatPoli);
+            }catch (HibernateException e){
+                logger.error("[ObatPoliBoImpl.saveReture] ERROR when update stok obat poli. ",e);
+                throw new GeneralBOException("[ObatPoliBoImpl.saveReture] ERROR when update stok obat poli. ",e);
+            }
+
+            MtSimrsObatPoliEntity obatPoliEntity = new MtSimrsObatPoliEntity();
+
+            if(!obatPoliEntityList.isEmpty()){
+                obatPoliEntity = obatPoliEntityList.get(0);
+                if(obatPoliEntity != null){
+                    obatPoliEntity.setQty(obatPoliEntity.getQty().subtract(bean.getQty()));
+                    obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    obatPoliEntity.setLastUpdate(bean.getLastUpdate());
+                    obatPoliEntity.setAction("U");
+
+                    try {
+                        obatPoliDao.updateAndSave(obatPoliEntity);
+                    }catch (HibernateException e){
+                        logger.error("[ObatPoliBoImpl.saveReture] ERROR when update save stok obat poli. ",e);
+                        throw new GeneralBOException("[ObatPoliBoImpl.saveReture] ERROR when update save stok obat poli. ",e);
+                    }
+                }
+
             }
         }
         logger.info("[ObatPoliBoImpl.saveReture] END <<<<<<<<<<");

@@ -176,8 +176,9 @@
                                                     <%--Konfirmasi Reture--%>
                                                 <%--</s:a>--%>
                                             <%--</s:else>--%>
-                                            <button class="btn btn-primary"><i class="fa fa-check"></i> Konfimasi Request</button>
+                                            <button class="btn btn-primary"><i class="fa fa-check"></i> Konfimasi Diterima</button>
                                         </s:if>
+                                        <button class="btn btn-primary"><i class="fa fa-check"></i> Konfimasi Diterima</button>
                                     </td>
                                 </tr>
                             </s:iterator>

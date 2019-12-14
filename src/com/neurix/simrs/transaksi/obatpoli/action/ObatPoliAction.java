@@ -295,7 +295,34 @@ public class ObatPoliAction extends BaseMasterAction {
         return "obat_request";
     }
 
+    public String saveKonfirmasiRequest(String idPermintaan){
+        logger.info("[TindakanRawatAction.saveKonfirmasiRequest] START process >>>");
+        try {
+            String userLogin        = CommonUtil.userLogin();
+            Timestamp updateTime    = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String branchId         = CommonUtil.userBranchLogin();
+            ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+            ObatPoliBo obatPoliBo   = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
+
+            PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+            obatPoli.setCreatedWho(userLogin);
+            obatPoli.setLastUpdate(updateTime);
+            obatPoli.setCreatedDate(updateTime);
+            obatPoli.setLastUpdateWho(userLogin);
+
+            obatPoliBo.saveApproveRequest(obatPoli);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[TindakanRawatAction.saveKonfirmasiRequest] ERROR when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            return e.getMessage();
+        }
+        logger.info("[TindakanRawatAction.saveKonfirmasiRequest] END process <<<");
+
+        return SUCCESS;
+    }
 
     @Override
     public String downloadPdf() {
