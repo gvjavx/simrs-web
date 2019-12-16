@@ -32,7 +32,7 @@ To change this template use File | Settings | File Templates.
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_pasien'/>";
+            window.location.href="<s:url action='initForm_ruangan'/>";
         }
 
     </script>
@@ -50,7 +50,7 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pasien
+            Ruangan
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -67,7 +67,7 @@ To change this template use File | Settings | File Templates.
                     <table width="100%" align="center">
                         <tr>
                             <td align="center">
-                                <s:form id="pasienForm" method="post"  theme="simple" namespace="/pasien" action="search_pasien.action" cssClass="form-horizontal">
+                                <s:form id="ruanganForm" method="post"  theme="simple" namespace="/ruangan" action="search_ruangan.action" cssClass="form-horizontal">
 
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
@@ -82,92 +82,55 @@ To change this template use File | Settings | File Templates.
                                     <table>
                                         <tr >
                                             <td>
-                                                <label class="control-label"><small>ID Pasien</small></label>
+                                                <label class="control-label"><small>ID Ruangan</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="id_pasien" name="pasien.idPasien" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="id_ruangan" name="ruangan.idRuangan" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>No KTP</small></label>
+                                                <label class="control-label"><small>Nama Ruangan</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="no_ktp" name="pasien.noKtp" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px"  id="nama_ruangan" name="ruangan.namaRuangan" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Nama Pasien</small></label>
+                                                <label class="control-label"><small>No Ruangan</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_pasien" name="pasien.nama" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="no_ruangan" name="ruangan.noRuangan" required="false" readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Poli</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:action id="initComboStatus" namespace="/rekruitmen" name="searchStatusRekruitmen_rekruitmen"/>
-                                                    <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listComboStatusRekruitmen" id="poli" name="pasien.poli" listKey="statusRekruitmentId" listValue="statusRekruitmentName"
-                                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Status</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:action id="initComboBranch" namespace="/admin/branch"
-                                                              name="initComboBranch_branch"/>
-                                                    <s:select cssStyle="margin-top: 7px" list="#initComboBranch.listOfComboBranch" id="status"
-                                                              name="rekruitmen.branchId" onchange="listPosisi()"
-                                                              listKey="branchId" listValue="branchName" headerKey=""
-                                                              headerValue="[Select one]" cssClass="form-control"/>
-                                                </table>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Alamat</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textarea cssStyle="margin-top: 7px"  id="alamat" name="pasien.alamat" required="false" readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
                                     </table>
                                     <br>
                                     <div id="actions" class="form-actions">
                                         <table align="center">
                                             <tr>
                                                 <td>
-                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="pasienForm" id="search" name="search"
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="ruanganForm" id="search" name="search"
                                                                onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
                                                 </td>
                                                 <td>
-                                                    <a href="add_pasien.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pasien</a>
+                                                    <s:url var="urlAdd" namespace="/ruangan" action="add_ruangan" escapeAmp="false">
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <button class="btn btn-success" ><i class="fa fa-plus"></i> Add Ruangan</button>
+                                                    </sj:a>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pasien"/>'">
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_ruangan"/>'">
                                                         <i class="fa fa-refresh"></i> Reset
                                                     </button>
                                                 </td>
@@ -194,7 +157,7 @@ To change this template use File | Settings | File Templates.
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                height="800" width="1100" autoOpen="false"
-                                                               title="Edit Pasien ">
+                                                               title="Ruangan ">
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
                                                                height="700" width="1100" autoOpen="false"
@@ -203,12 +166,12 @@ To change this template use File | Settings | File Templates.
                                                     </sj:dialog>
                                                     <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
                                                     <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
-                                                                   requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
+                                                                   requestURI="paging_displaytag_ruangan.action" export="true" id="row" pagesize="14" style="font-size:12">
                                                         <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
 <%--                                                            <s:if test="#attr.row.flagYes">--%>
-                                                                <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
+                                                                <s:url var="urlEdit" namespace="/ruangan" action="edit_ruangan" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.idRuangan"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                 </s:url>
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -218,8 +181,8 @@ To change this template use File | Settings | File Templates.
                                                         </display:column>
 
                                                         <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                            <s:url var="urlViewDelete" namespace="/pasien" action="delete_pasien" escapeAmp="false">
-                                                                <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
+                                                            <s:url var="urlViewDelete" namespace="/ruangan" action="delete_ruangan" escapeAmp="false">
+                                                                <s:param name="id"><s:property value="#attr.row.idRuangan" /></s:param>
                                                                 <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                             </s:url>
                                                             <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -227,18 +190,13 @@ To change this template use File | Settings | File Templates.
                                                             </sj:a>
 
                                                         </display:column>
+                                                        <display:column property="idRuangan" sortable="true" title="Ruangan ID"/>
+                                                        <display:column property="namaRuangan" sortable="true" title="Nama"  />
+                                                        <display:column property="noRuangan" sortable="true" title="No. Ruangan"  />
+                                                        <display:column property="statusRuangan" sortable="true" title="Status Ruangan" />
+                                                        <display:column property="namaKelasRuangan" sortable="true" title="Kelas Ruangan" />
+                                                        <display:column property="tarif" sortable="true" title="Tarif" />
 
-                                                        <display:column property="idPasien" sortable="true" title="Pasien ID"  />
-                                                        <display:column property="nama" sortable="true" title="Nama"  />
-                                                        <display:column property="jenisKelamin" sortable="true" title="Gender"  />
-                                                        <display:column property="noKtp" sortable="true" title="No. KTP" />
-                                                        <display:column property="noBpjs" sortable="true" title="No. BPJS" />
-                                                        <display:column property="tempatLahir" sortable="true" title="Temp. Lahir" />
-                                                        <display:column property="tglLahir" sortable="true" title="Tgl Lahir" />
-                                                        <display:column property="jalan" sortable="true" title="Jalan" />
-                                                        <display:column property="agama" sortable="true" title="Agama" />
-                                                        <display:column property="noTelp" sortable="true" title="No. Telp" />
-                                                        <display:column property="flag" sortable="true" title="flag" />
                                                     </display:table>
                                                 </td>
                                             </tr>

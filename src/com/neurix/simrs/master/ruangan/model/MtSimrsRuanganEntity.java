@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.ruangan.model;
 
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -20,6 +22,16 @@ public class MtSimrsRuanganEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity;
+
+    public ImSimrsKelasRuanganEntity getImSimrsKelasRuanganEntity() {
+        return imSimrsKelasRuanganEntity;
+    }
+
+    public void setImSimrsKelasRuanganEntity(ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity) {
+        this.imSimrsKelasRuanganEntity = imSimrsKelasRuanganEntity;
+    }
 
     public String getIdRuangan() {
         return idRuangan;
