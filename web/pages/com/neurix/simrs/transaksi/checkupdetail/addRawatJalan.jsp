@@ -23,6 +23,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -74,6 +75,7 @@
                                     <s:hidden id="no_checkup" name="headerDetailCheckup.noCheckup"></s:hidden>
                                     <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
+                                    <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -994,6 +996,7 @@
 
     var idDetailCheckup = $('#no_detail_checkup').val();
     var idPoli          = $('#id_palayanan').val();
+    var idPasien        = $('#id_pasien').val();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2026,7 +2029,7 @@
 
     function saveResepObat(){
 
-        var idDokter = $('#tin_id_dokter').val();
+        var idDokter    = $('#tin_id_dokter').val();
         var data        = $('#tabel_rese_detail').tableToJSON();
         var stringData  = JSON.stringify(data);
 
