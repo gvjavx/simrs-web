@@ -483,10 +483,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.completeBpjs] Start >>>>>>>");
 
         HeaderCheckup finalResult = new HeaderCheckup();
-        java.util.Date ys=new Date(); // membuat oject ys dari class Date
-
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, 1);
+        dt = c.getTime();
         SimpleDateFormat s=new SimpleDateFormat("yyyy-MM-dd");
-        String tanggal =s.format(ys);
+        String tanggal =s.format(dt);
 
         String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/"+nomorBpjs+"/tglSEP/"+tanggal;
         try {
