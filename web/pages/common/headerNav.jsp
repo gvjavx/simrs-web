@@ -411,6 +411,39 @@
                         <%--<li class="footer"><a href="#">View all</a></li>--%>
                     </ul>
                 </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
+                        <span class="hidden-xs">Muhammad Sodiq</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header" style="background-color: #30d196; height: 200px">
+                            <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
+
+                            <p>
+                                <span>Muhammad Sodiq</span>
+                                <small>PT. Nusantara Medika Utama</small>
+                                <span>&nbsp;</span>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <%--<div class="pull-left">--%>
+                                <%--<a href="#" class="btn btn-default btn-flat">Profile</a>--%>
+                            <%--</div>--%>
+                            <div onclick="logout()" style="cursor: pointer" class="pull-right">
+                                <a  class="btn btn-default"><i class="fa fa-sign-out"></i> Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <%--<li class="dropdown notifications-menu">--%>
+                    <%--<!-- Menu toggle button -->--%>
+                    <%--<a onclick="logout()" style="cursor: pointer">--%>
+                        <%--<i class="fa fa-sign-out"></i>--%>
+                    <%--</a>--%>
+                <%--</li>--%>
                 <!-- Tasks Menu -->
             </ul>
         </div>

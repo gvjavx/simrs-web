@@ -277,6 +277,87 @@
           <param name="class" value="com.neurix.hris.master.studyJurusan.action.StudyJurusanAction"/>
       </create>
       <convert converter="bean" match="com.neurix.hris.master.studyJurusan.model.StudyJurusan"/>
+
+      <!--DWR FOR SIMRS-->
+
+      <!--Tindaakan Rawat-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat"/>
+
+      <!--Header Checkup -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.checkup.action.CheckupAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+
+      <!--Team Dokter -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.teamdokter.action.TeamDokterAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.teamdokter.model.DokterTeam"/>
+
+      <!--Diagnosa Rawat -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.diagnosarawat.action.DiagnosaRawatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat"/>
+
+      <!--Checkup Detail -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"/>
+      </create>
+
+      <!--Pasien -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.pasien.action.PasienAction"/>
+      </create>
+
+      <!--Obat -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.obat.action.ObatAction"/>
+      </create>
+
+      <!--Obat Inap -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.obatinap.action.ObatInapAction"/>
+      </create>
+
+      <!--Lab -->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.lab.action.LabAction"/>
+      </create>
+
+      <!--Periksa Lab-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.periksalab.action.PeriksaLabAction"/>
+      </create>
+
+      <!--Lab Detail-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>
+      </create>
+
+      <!--Order Gizi-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.ordergizi.action.OrderGiziAction"/>
+      </create>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.Ruangan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pasien.model.Pasien"/>
+      <convert converter="bean" match="com.neurix.simrs.master.obat.model.Obat"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.obatinap.model.ObatInap"/>
+      <convert converter="bean" match="com.neurix.simrs.master.lab.model.Lab"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLab"/>
+      <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.ordergizi.model.OrderGizi"/>
+
   </allow>
 
 </dwr>

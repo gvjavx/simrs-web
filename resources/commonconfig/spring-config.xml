@@ -126,6 +126,33 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollMasterInsentif/spring/PayrollMasterInsentifBean.xml"/>
 
     <!--BEAN SIMRS HERE-->
+    <import resource="sshconfig/com/neurix/simrs/transaksi/checkup/spring/CheckupBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/checkupdetail/spring/DetailCheckupBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/rawatinap/spring/RawatInapBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/diagnosarawat/spring/DiagnosaRawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/teamdokter/spring/DokterTeamBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/tindakanrawat/spring/TindakanRawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/obatinap/spring/ObatInapBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/periksalab/spring/PeriksaLabBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/ordergizi/spring/OrderGiziBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/periksaradiologi/spring/PeriksaRadiologiBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/PelayananBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/JenisPeriksaPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/pasien/spring/PasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/statuspasien/spring/StatusPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/TindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kategoritindakan/spring/KategoriTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/dokter/spring/DokterBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/diagnosa/spring/DiagnosaBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kelasruangan/spring/KelasRuanganBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/RuanganBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/keterangankeluar/spring/KeteranganKeluarBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenisobat/spring/JenisObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/obat/spring/ObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/kategorilab/spring/KategoriLabBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/lab/spring/LabBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/labdetail/spring/LabDetailBean.xml"/>
 
 
 </beans>

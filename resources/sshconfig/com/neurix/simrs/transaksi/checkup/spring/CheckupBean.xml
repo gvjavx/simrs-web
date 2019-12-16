@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+    />
+
+    <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:provinsiDao-ref="provinsiDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+    />
+
+    <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="checkupBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionHeaderCheckupInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionHeaderCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>
