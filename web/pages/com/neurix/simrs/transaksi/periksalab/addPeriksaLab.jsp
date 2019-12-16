@@ -122,11 +122,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <%--<div class="card card-4 pull-right" style="cursor: pointer; margin-top: -90px;">--%>
-                                    <%--<img border="2" src="<s:url value="/pages/images/ktp-tes.jpg"/>">--%>
-                                <%--</div>--%>
-                                <img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"
-                                     style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">
+                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center" class="card card-4 pull-right">
+                                    <img border="2" id="img_ktp" src="<s:property value="periksaLab.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
+                                </div>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Poli</b></td>
@@ -254,7 +252,7 @@
                                                 style="margin-top: 15px;" id="print_ket"><i
                                                 class="fa fa-print"></i> Print
                                         </button>
-                                        <a href="initForm_radiologi.action" class="btn btn-warning" onclick=""
+                                        <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
                                            style="margin-top: 15px;" id="back_ket"><i
                                                 class="fa fa-arrow-left"></i> Back
                                         </a>
@@ -400,6 +398,8 @@
         </div>
     </div>
 </div>
+
+<div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -412,6 +412,25 @@
         listParameter();
         listLab();
         listSelectDokter();
+
+        $('#img_ktp').on('click', function(e){
+            e.preventDefault();
+            var src = $('#img_ktp').attr('src');
+
+            if(src != null && src != ""){
+                $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
+
+                $('.mask').addClass('is-visible fadein').on('animationend', function(){
+                    $(this).removeClass('fadein is-visible').addClass('is-visible');
+                });
+
+                $('.close').on('click', function(){
+                    $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
+                        $(this).removeClass('fadeout is-visible')
+                    });
+                });
+            }
+        });
     });
 
     function listSelectDokter() {

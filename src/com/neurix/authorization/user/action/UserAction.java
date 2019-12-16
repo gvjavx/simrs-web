@@ -422,6 +422,8 @@ public class UserAction extends BaseMasterAction {
                         editUser.setLastUpdateWho(userLogin);
                         editUser.setAction("U");
 
+
+
                         userBoProxy.saveEdit(editUser);
                         users.setSuccessMessage("Data Successfully Updated");
 
@@ -889,10 +891,22 @@ public class UserAction extends BaseMasterAction {
     public User getUserData(){
         logger.info("[UserAction.getUserData] start process >>>");
 
+        String branchId = CommonUtil.userBranchLogin();
+
         User user = new User();
         user.setUsername(CommonUtil.userLogin());
         user.setBranchName(CommonUtil.userBranchNameLogin());
         user.setAreaName(CommonUtil.userAreaName());
+        if("RS01".equalsIgnoreCase(branchId)){
+            user.setLogoBranch(CommonConstant.LOGO_RS01);
+        }else if("RS02".equalsIgnoreCase(branchId)){
+            user.setLogoBranch(CommonConstant.LOGO_RS02);
+        }else if("RS03".equalsIgnoreCase(branchId)){
+            user.setLogoBranch(CommonConstant.LOGO_RS03);
+        }else{
+            user.setLogoBranch(CommonConstant.LOGO_RS03);
+        }
+
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;

@@ -33,6 +33,9 @@ public class ObatInapDao extends GenericDao<ItSimrsObatInapEntity, String> {
             if (mapCriteria.get("id_obat")!=null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
+            if (mapCriteria.get("id_detail_checkup")!=null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+            }
 
         }
 

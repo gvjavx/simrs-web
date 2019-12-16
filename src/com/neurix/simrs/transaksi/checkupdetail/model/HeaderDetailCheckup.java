@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -52,6 +53,48 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String tempatTglLahir;
     private Boolean rawatInap = false;
 
+    private String nik;
+    private String idJenisPeriksaPasien;
+    private String jenisPeriksaPasien;
+
+    private String urlKtp;
+    private Boolean enabledPoli;
+
+    public Boolean getEnabledPoli() {
+        return enabledPoli;
+    }
+
+    public void setEnabledPoli(Boolean enabledPoli) {
+        this.enabledPoli = enabledPoli;
+    }
+
+    private Date tglCekup;
+    private String keteranganCekupUlang;
+
+    public Date getTglCekup() {
+        return tglCekup;
+    }
+
+    public void setTglCekup(Date tglCekup) {
+        this.tglCekup = tglCekup;
+    }
+
+    public String getKeteranganCekupUlang() {
+        return keteranganCekupUlang;
+    }
+
+    public void setKeteranganCekupUlang(String keteranganCekupUlang) {
+        this.keteranganCekupUlang = keteranganCekupUlang;
+    }
+
+    public String getUrlKtp() {
+        return urlKtp;
+    }
+
+    public void setUrlKtp(String urlKtp) {
+        this.urlKtp = urlKtp;
+    }
+
     public Boolean getRawatInap() {
         return rawatInap;
     }
@@ -59,10 +102,6 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     public void setRawatInap(Boolean rawatInap) {
         this.rawatInap = rawatInap;
     }
-
-    private String nik;
-    private String idJenisPeriksaPasien;
-    private String jenisPeriksaPasien;
 
     public String getNik() {
         return nik;

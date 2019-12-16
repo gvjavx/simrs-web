@@ -455,4 +455,27 @@ public class BranchAction extends BaseMasterAction {
         return listOfSearchBranch;
     }
 
+    public List<Branch> getListComboBranch(String areaId){
+        logger.info("[UserAction.getListComboBranch] start process >>>");
+
+        List<Branch> branchList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        Branch branch = new Branch();
+        branch.setAreaId(areaId);
+
+        try {
+            branchList = branchBo.getByCriteria(branch);
+        }catch (GeneralBOException e){
+            logger.error("[UserAction.getListComboBranch] Error when get data branch name ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[UserAction.getListComboBranch] end process <<<");
+        return branchList;
+
+    }
+
 }

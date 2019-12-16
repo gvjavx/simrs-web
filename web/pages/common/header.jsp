@@ -83,6 +83,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.js"/>"></script>
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.date.extensions.js"/>"></script>
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
+<script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
@@ -155,7 +156,96 @@ apply the skin class to the body tag so the changes take effect.
     .card-4 {
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    html, body {
+        height: 100%;
+    }
+
+    .img-list {
+        text-align: center;
+    }
+    .img-list li {
+        width: 250px;
+        display: inline-block;
+        list-style-type: none;
+    }
+    .img-list li img {
+        width: 100%;
+    }
+
+    .mask {
+        display: none;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+    }
+    .mask .img-box {
+        width: 100%;
+        max-width: 650px;
+        padding: 10px;
+        background: #fff;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .mask .img-box img {
+        width: 100%;
+    }
+    .mask .img-box .close {
+        color: #000;
+        background: rgba(255, 255, 255, 0.8);
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        position: absolute;
+        top: -35px;
+        right: -35px;
+        font-size: 24px;
+        font-weight: bold;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .mask .img-box .close:hover {
+        background: white;
+    }
+
+    .is-visible {
+        display: block !important;
+    }
+
+    .fadein {
+        animation: fadein 400ms ease-in-out;
+    }
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .fadeout {
+        animation: fadeout 400ms ease-in-out;
+    }
+
+    @keyframes fadeout {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
@@ -164,6 +254,11 @@ apply the skin class to the body tag so the changes take effect.
         //$('#popoverData').tooltip({container: 'body'});
         $('#myTable').DataTable();
         $("#tanggal_lahir").datepicker({
+            autoclose: true,
+            dateFormat:'yy-mm-dd'
+        });
+
+        $(".datepicker").datepicker({
             autoclose: true,
             dateFormat:'yy-mm-dd'
         });

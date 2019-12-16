@@ -55,6 +55,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String nama = "%";
             String idPelayanan = "%";
             String statusPeriksa = "%";
+            String branchId = "%";
 
             String dateFrom = "";
             String dateTo = "";
@@ -81,6 +82,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             if (bean.getStDateTo() != null && !"".equalsIgnoreCase(bean.getStDateTo())){
                 dateTo = bean.getStDateTo();
+            }
+
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = bean.getBranchId();
             }
 
 

@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -24,6 +25,24 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private Timestamp tglAntrian;
+    private Date tglCekup;
+    private String keteranganCekupUlang;
+
+    public Date getTglCekup() {
+        return tglCekup;
+    }
+
+    public void setTglCekup(Date tglCekup) {
+        this.tglCekup = tglCekup;
+    }
+
+    public String getKeteranganCekupUlang() {
+        return keteranganCekupUlang;
+    }
+
+    public void setKeteranganCekupUlang(String keteranganCekupUlang) {
+        this.keteranganCekupUlang = keteranganCekupUlang;
+    }
 
     public Timestamp getTglAntrian() {
         return tglAntrian;

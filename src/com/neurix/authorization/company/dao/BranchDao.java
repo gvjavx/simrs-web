@@ -46,7 +46,9 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
             if (mapCriteria.get("branch_address")!=null) {
                 criteria.add(Restrictions.ilike("branchAddress", "%" + (String)mapCriteria.get("branch_address") + "%"));
             }
-
+            if (mapCriteria.get("area_id")!=null) {
+                criteria.add(Restrictions.eq("areaId", (String)mapCriteria.get("area_id")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

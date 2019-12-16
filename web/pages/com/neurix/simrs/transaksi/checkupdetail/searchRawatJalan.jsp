@@ -64,6 +64,7 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+                                <s:if test="isEnabledPoli()">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
@@ -77,6 +78,10 @@
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
+                                </s:if>
+                                <s:else>
+                                    <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
+                                </s:else>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -110,12 +115,16 @@
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-4" style="margin-top: 7px">
+                                    <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
+                                        <s:if test="isEnabledAddPasien()">
+                                        <a type="button" class="btn btn-primary" href="addRawatJalan_checkupdetail.action"><i
+                                                class="fa fa-plus"></i> Tambah Rawat Pasien</a>
+                                        </s:if>
                                         <a type="button" class="btn btn-danger" href="initForm_checkupdetail.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -164,7 +173,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfUsers">
+                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -173,12 +182,14 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_rawat_jalan}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
-                                        </s:a>
+                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                            <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
+                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_rawat_jalan}">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                            </s:a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

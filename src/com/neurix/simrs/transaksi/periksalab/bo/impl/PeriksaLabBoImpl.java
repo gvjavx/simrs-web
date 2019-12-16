@@ -441,6 +441,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
                 entity.setAction(bean.getAction());
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setStatusPeriksa("1");
             }
 
             try {

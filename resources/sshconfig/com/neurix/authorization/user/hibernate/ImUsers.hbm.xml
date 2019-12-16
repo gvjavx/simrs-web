@@ -49,6 +49,11 @@
             <column name="flag" sql-type="varchar" length="1"/>
         </property>
 
+        <!--sodiq, 10/12/2019, Penambahan attribut id pelayanan-->
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="30"/>
+        </property>
+
         <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="position_id"/>

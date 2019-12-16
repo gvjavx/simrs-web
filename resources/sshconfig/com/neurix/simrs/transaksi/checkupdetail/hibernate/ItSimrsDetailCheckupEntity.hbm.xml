@@ -54,5 +54,11 @@
         <property name="tglAntrian">
             <column name="tgl_antrian" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="tglCekup">
+            <column name="tgl_cekup" sql-type="date" not-null="false" />
+        </property>
+        <property name="keteranganCekupUlang">
+            <column name="keterangan_cekup_ulang" sql-type="varchar" length="1000" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

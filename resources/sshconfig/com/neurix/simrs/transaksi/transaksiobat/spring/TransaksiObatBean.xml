@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="transaksiObatAction" class="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"
+          p:transaksiObatBoProxy-ref="transaksiObatBo"
+    />
+
+    <bean id="transaksiObatBo" class="com.neurix.simrs.transaksi.transaksiobat.bo.impl.TransaksiObatBoImpl"
+          p:obatDao-ref="obatDao"
+          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:pasienDao-ref="pasienDao"
+          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:riwayatTransaksiObatDao-ref="riwayatTransaksiObatDao"
+          p:riwayatTransPembelianObatDao-ref="riwayatTransPembelianObatDao"
+          p:obatPoliDao-ref="obatPoliDao"
+    />
+
+    <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="transaksiObatBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionObatDetailInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionObatDetailInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getSearchObatTransaksiByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditDetail">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="riwayatTransaksiObatDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransaksiObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="riwayatTransPembelianObatDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransPembelianObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
