@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class AntianOnline extends BaseModel implements Serializable {
 
     private String idAntrianOnline;
+    private String noAntrian;
     private String namaDokter;
     private String nama;
     private String namaPelayanan;
@@ -23,6 +24,14 @@ public class AntianOnline extends BaseModel implements Serializable {
     private String jamAwal;
     private String jamAkhir;
     private String tglCheckup;
+
+    public String getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(String noAntrian) {
+        this.noAntrian = noAntrian;
+    }
 
     public String getTglCheckup() {
         return tglCheckup;

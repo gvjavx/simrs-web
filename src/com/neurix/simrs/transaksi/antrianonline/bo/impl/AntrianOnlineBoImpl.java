@@ -134,12 +134,12 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
     }
 
     @Override
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup, String jamAwal, String jamAkhir) {
         logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] Start >>>>>>>");
 
         List<AntianOnline> result = new ArrayList<>();
         try {
-            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup);
+            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir);
         } catch (HibernateException e) {
             logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria "+e.getMessage());
             throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Error get antrian by criteria");

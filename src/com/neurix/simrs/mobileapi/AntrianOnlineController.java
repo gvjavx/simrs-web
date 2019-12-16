@@ -163,7 +163,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("show")) {
             try {
-                listOfAntrianOnline = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup);
+                listOfAntrianOnline = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir);
             } catch (GeneralBOException e) {
 
             }

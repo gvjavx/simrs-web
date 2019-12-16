@@ -58,11 +58,13 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         return sId;
     }
 
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup, String jamAwal, String jamAkhir) {
         String searchPelayanan = "";
         String searchNoCheckupOnline = "";
         String searchDokter = "";
         String searchTglCheckup = "";
+        String searchJamAwal = "";
+        String searchJamAkhir = "";
 
         if (idPelayanan!=null){
             if(!idPelayanan.equalsIgnoreCase("")){
@@ -88,6 +90,18 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             }
         }
 
+        if (jamAwal != null) {
+            if (!jamAwal.equalsIgnoreCase("")) {
+                searchJamAwal = " and a.jam_awal = '" + jamAwal + "' ";
+            }
+        }
+
+        if (jamAkhir != null) {
+            if (!jamAkhir.equalsIgnoreCase("")) {
+                searchJamAkhir = " and a.jam_akhir = '" + jamAkhir + "' ";
+            }
+        }
+
 
         List<AntianOnline> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<>();
@@ -97,13 +111,14 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
                 "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
                 "WHERE a.flag = 'Y' \n" +
-                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup +
+                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir +
                 "ORDER BY b.last_update";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
 
+        int counter = 1;
         for (Object[] row : results) {
             AntianOnline result = new AntianOnline();
             result.setIdAntrianOnline((String) row[0]);
@@ -116,6 +131,8 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             result.setTglCheckup(CommonUtil.convertDateToString((Date) row[7]));
             result.setJamAwal((String) row[8]);
             result.setJamAkhir((String) row[9]);
+            result.setNoAntrian(Integer.toString(counter));
+            counter++;
             listOfResult.add(result);
         }
         return listOfResult;

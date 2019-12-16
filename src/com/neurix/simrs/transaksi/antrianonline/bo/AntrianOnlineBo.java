@@ -12,5 +12,5 @@ import java.util.List;
 public interface AntrianOnlineBo {
     public List<AntianOnline> getByCriteria(AntianOnline bean)throws GeneralBOException;
     public void saveAdd(AntianOnline bean)throws GeneralBOException;
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup);
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup, String jamAwal, String jamAkhir);
 }
