@@ -297,6 +297,7 @@
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsPenjaminEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsTipePenjaminEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatGejalaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/tipepermintaan/hibernate/ImSimrsTipePermintaanEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntity.hbm.xml</value>
@@ -315,6 +316,13 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksaradiologi/hibernate/ItSimrsPeriksaRadiologiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/teamdokter/hibernate/ItSimrsDokterTeamEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/tindakanrawat/hibernate/ItSimrsTindakanRawatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsApprovalTransaksiObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsRiwayatTransaksiObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsTransaksiObatDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/permintaanresep/hibernate/MtSimrsPermintaanResepEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsObatPoliEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsPermintaanObatPoliEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/MtSimrsRiwayatPembelianObat.hbm.xml</value>
 
             </list>
         </property>

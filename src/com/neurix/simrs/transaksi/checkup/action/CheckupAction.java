@@ -295,8 +295,6 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-
-
         session.removeAttribute("listOfResult");
         logger.info("[CheckupAction.initForm] end process >>>");
         return "search";
@@ -339,6 +337,7 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setLastUpdateWho(userLogin);
             checkup.setAction("C");
             checkup.setFlag("Y");
+            checkup.setStatusPeriksa("0");
 
             String fileName = "";
             if (this.fileUpload != null) {
@@ -350,7 +349,7 @@ public class CheckupAction extends BaseMasterAction {
 
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
 
                         // persiapan pemindahan file

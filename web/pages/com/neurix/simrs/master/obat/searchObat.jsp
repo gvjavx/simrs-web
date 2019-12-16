@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
-                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'Y':'Active','N':'Non Active'}" headerKey="" headerValue="[Select One]" name="obat.flag"/>
+                                        <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'N':'Non Active'}" headerKey="Y" headerValue="Active" name="obat.flag"/>
                                     </div>
                                 </div>
 
@@ -180,7 +180,7 @@
                                             <%--<s:param name="id"><s:property value="idObat"/></s:param>--%>
                                         <%--</s:url>--%>
                                         <%--<s:a href="%{add_periksa_radiologi}">--%>
-                                            <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_approval.ico"/>" style="cursor: pointer">
+                                        <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
                                         <%--</s:a>--%>
                                     </td>
                                 </tr>

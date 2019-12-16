@@ -119,6 +119,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                         periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
                         periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         periksaLab.setNik(headerCheckup.getNoKtp());
+                        periksaLab.setUrlKtp(headerCheckup.getUrlKtp());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         periksaLab.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());

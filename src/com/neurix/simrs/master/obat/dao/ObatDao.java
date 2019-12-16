@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,8 +31,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("id_obat")!=null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
-            if (mapCriteria.get("nama_jenis_obat")!=null) {
-                criteria.add(Restrictions.ilike("namaObat", "%" + (String)mapCriteria.get("nama_jenis_obat") + "%"));
+            if (mapCriteria.get("nama_obat")!=null) {
+                criteria.add(Restrictions.ilike("namaObat", "%" + (String)mapCriteria.get("nama_obat") + "%"));
             }
             if (mapCriteria.get("id_jenis_obat")!=null) {
                 criteria.add(Restrictions.eq("idJenisObat", (String) mapCriteria.get("id_jenis_obat")));
@@ -149,5 +150,115 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obats;
     }
 
+    public List<ImSimrsObatEntity> getListObatByCriteria(Map criteria){
 
+        String idObat = "%";
+        String idJenisObat = "%";
+        String namaObat = "%";
+        String flag = "%";
+        String branchId = "%";
+
+        if (criteria.get("id_obat") != null){
+            idObat = criteria.get("id_obat").toString();
+        }
+        if (criteria.get("id_jenis_obat") != null){
+            idJenisObat = criteria.get("id_jenis_obat").toString();
+        }
+        if (criteria.get("nama_obat") != null){
+            namaObat = "%" +criteria.get("nama_obat").toString()+ "%";
+        }
+        if (criteria.get("branch_id") != null){
+            branchId = criteria.get("branch_id").toString();
+        }
+        if (criteria.get("flag") != null){
+            flag = criteria.get("flag").toString();
+        }
+
+        String SQL = "SELECT\n" +
+                "ob.id_obat,\n" +
+                "ob.nama_obat,\n" +
+                "ob.harga,\n" +
+                "ob.flag,\n" +
+                "ob.action,\n" +
+                "ob.created_date,\n" +
+                "ob.created_who,\n" +
+                "ob.last_update,\n" +
+                "ob.last_update_who,\n" +
+                "ob.qty,\n" +
+                "ob.branch_id\n" +
+                "FROM im_simrs_obat ob \n" +
+                "INNER JOIN (\n" +
+                "\tSELECT\n" +
+                "\tob.id_obat\n" +
+                "\tFROM im_simrs_obat ob\n" +
+                "\tINNER JOIN (SELECT * FROM im_simrs_obat_gejala WHERE flag = 'Y') og ON og.id_obat = ob.id_obat\n" +
+                "\tWHERE og.id_obat LIKE :idObat\n" +
+                "\tAND og.id_jenis_obat LIKE :idJenisObat\n" +
+                "\tAND ob.nama_obat LIKE :namaObat\n" +
+                "\tAND ob.flag = :flag\n" +
+                "\tAND ob.branch_id LIKE :branchId\n" +
+                "\tGROUP BY ob.id_obat\n" +
+                ") og ON og.id_obat = ob.id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idObat", idObat)
+                .setParameter("idJenisObat", idJenisObat)
+                .setParameter("flag", flag)
+                .setParameter("branchId", branchId)
+                .setParameter("namaObat", namaObat)
+                .list();
+
+        List<ImSimrsObatEntity> listOfResults = new ArrayList<>();
+        ImSimrsObatEntity obatEntity;
+        for (Object[] obj : results)
+        {
+            obatEntity = new ImSimrsObatEntity();
+            obatEntity.setIdObat(obj[0].toString());
+            obatEntity.setNamaObat(obj[1] == null ? "" : obj[1].toString());
+            obatEntity.setHarga(obj[2] == null ? null : (BigInteger) obj[2]);
+            obatEntity.setFlag(obj[3].toString());
+            obatEntity.setAction(obj[4].toString());
+            obatEntity.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+            obatEntity.setCreatedWho(obj[6] == null ? null : obj[6].toString());
+            obatEntity.setLastUpdate(obj[7] == null ? null : (Timestamp) obj[7]);
+            obatEntity.setLastUpdateWho(obj[8] == null ? null : obj[8].toString());
+            obatEntity.setQty(obj[9] == null ? null : (BigInteger) obj[9]);
+            obatEntity.setBranchId( obj[10] == null ? "" : obj[10].toString());
+            listOfResults.add(obatEntity);
+        }
+        return listOfResults;
+    }
+
+    public List<Obat> getListNamaObat(Obat bean){
+
+        String namaObat = "%";
+        String branchId = "%";
+
+        if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
+            namaObat = "%"+bean.getNamaObat()+"%";
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        String SQL = "SELECT id_obat, nama_obat FROM im_simrs_obat\n" +
+                "WHERE nama_obat LIKE :namaObat AND branch_id = :branchId\n AND flag = 'Y'" +
+                "ORDER BY nama_obat ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("namaObat", namaObat)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<Obat> listOfResults = new ArrayList<>();
+        Obat obatEntity;
+        for (Object[] obj : results)
+        {
+            obatEntity = new Obat();
+            obatEntity.setIdObat(obj[0].toString());
+            obatEntity.setNamaObat(obj[1] == null ? "" : obj[1].toString());
+            listOfResults.add(obatEntity);
+        }
+        return listOfResults;
+    }
 }

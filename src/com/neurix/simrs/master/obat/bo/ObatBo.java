@@ -12,4 +12,6 @@ public interface ObatBo{
     public List<Obat> getJenisObat(Obat bean) throws GeneralBOException;
     public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
     public void saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
+
+    public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;
 }

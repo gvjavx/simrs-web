@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
@@ -132,7 +133,13 @@ public class CheckupBoImpl implements CheckupBo {
             headerCheckup.setNoTelp(headerList.getNoTelp());
             headerCheckup.setIdJenisPeriksaPasien(headerList.getIdJenisPeriksaPasien());
             headerCheckup.setKeteranganKeluar(headerList.getKeteranganKeluar());
-            headerCheckup.setUrlKtp(headerList.getUrlKtp());
+
+            if(headerList.getUrlKtp() != null && !"".equalsIgnoreCase(headerList.getUrlKtp())){
+                String src = CommonConstant.URL_IMG + CommonConstant.RESOURCE_PATH_KTP_PASIEN + headerList.getUrlKtp();
+                headerCheckup.setUrlKtp(src);
+            }
+
+            logger.info("[CheckupBoImpl.getByCriteria] URL KTP : "+headerCheckup.getUrlKtp());
             headerCheckup.setBranchId(headerList.getBranchId());
             headerCheckup.setFlag(headerList.getFlag());
             headerCheckup.setCreatedDate(headerList.getCreatedDate());
@@ -248,7 +255,7 @@ public class CheckupBoImpl implements CheckupBo {
                 detailCheckupEntity.setIdDetailCheckup("DCM"+id);
                 detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-                detailCheckupEntity.setStatusPeriksa("0");
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 detailCheckupEntity.setFlag("Y");
                 detailCheckupEntity.setAction("C");
                 detailCheckupEntity.setCreatedDate(bean.getCreatedDate());

@@ -473,34 +473,25 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
         try {
             JadwalShiftKerja jadwalShiftKerja = getJadwalShiftKerja();
-            JadwalShiftKerjaDetail jadwalShiftKerjaDetail = new JadwalShiftKerjaDetail();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            jadwalShiftKerja.setCreatedWho(userLogin);
             jadwalShiftKerja.setLastUpdate(updateTime);
-            jadwalShiftKerja.setCreatedDate(updateTime);
             jadwalShiftKerja.setLastUpdateWho(userLogin);
-            jadwalShiftKerja.setAction("C");
+            jadwalShiftKerja.setAction("U");
             jadwalShiftKerja.setFlag("Y");
 
-            jadwalShiftKerjaDetail.setCreatedWho(userLogin);
-            jadwalShiftKerjaDetail.setLastUpdate(updateTime);
-            jadwalShiftKerjaDetail.setCreatedDate(updateTime);
-            jadwalShiftKerjaDetail.setLastUpdateWho(userLogin);
-            jadwalShiftKerjaDetail.setAction("C");
-            jadwalShiftKerjaDetail.setFlag("Y");
-            jadwalShiftKerjaBoProxy.saveEdit(jadwalShiftKerja, jadwalShiftKerjaDetail);
+            jadwalShiftKerjaBoProxy.saveEdit(jadwalShiftKerja);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                logger.error("[liburAction.saveEdit] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[liburAction.saveEdit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
@@ -508,6 +499,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultJadwalShiftKerja");
         session.removeAttribute("ListOfResultGroupShift");
+        session.removeAttribute("listOfResultPegawaiShift");
 
         logger.info("[liburAction.saveAdd] end process >>>");
         return null;
@@ -818,6 +810,63 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.deletePegawaiShift] end process <<<");
         return finalResult;
     }
+
+    public String cekTanggal(String branchId,String tanggalDari,String tanggalSampai) {
+        logger.info("[JadwalShiftKerjaAction.cekTanggal] start process >>>");
+        String status ="00";
+        List<JadwalShiftKerja> jadwalShiftKerjaList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+
+        try {
+            JadwalShiftKerja searchJadwalShiftKerja = new JadwalShiftKerja();
+            searchJadwalShiftKerja.setBranchId(branchId);
+            searchJadwalShiftKerja.setStTanggalAwal(tanggalDari);
+            searchJadwalShiftKerja.setStTanggalAkhir(tanggalSampai);
+
+            if (searchJadwalShiftKerja.getStTanggalAwal() != null && !"".equalsIgnoreCase(searchJadwalShiftKerja.getStTanggalAwal())) {
+                searchJadwalShiftKerja.setTanggalAwal(CommonUtil.convertToDate(searchJadwalShiftKerja.getStTanggalAwal()));
+            }
+            if (searchJadwalShiftKerja.getStTanggalAkhir() != null && !"".equalsIgnoreCase(searchJadwalShiftKerja.getStTanggalAkhir())) {
+                searchJadwalShiftKerja.setTanggalAkhir(CommonUtil.convertToDate(searchJadwalShiftKerja.getStTanggalAkhir()));
+            }
+
+            if ((searchJadwalShiftKerja.getStTanggalAkhir() == null || "".equalsIgnoreCase(searchJadwalShiftKerja.getStTanggalAkhir()))){
+                jadwalShiftKerjaList=jadwalShiftKerjaBo.getJadwalShiftKerjaByUnitAndTanggal(searchJadwalShiftKerja.getBranchId(),searchJadwalShiftKerja.getTanggalAwal());
+            } else{
+                Calendar start = Calendar.getInstance();
+                start.setTime(searchJadwalShiftKerja.getTanggalAwal());
+                Calendar end = Calendar.getInstance();
+                end.setTime(searchJadwalShiftKerja.getTanggalAkhir());
+                end.add(Calendar.DATE,1);
+                java.util.Date date;
+                for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                    Date tanggal = new java.sql.Date(date.getTime());
+                    List<JadwalShiftKerja> jadwalShiftKerjaList1 = jadwalShiftKerjaBo.getJadwalShiftKerjaByUnitAndTanggal(searchJadwalShiftKerja.getBranchId(),tanggal);
+                    jadwalShiftKerjaList.addAll(jadwalShiftKerjaList1);
+                }
+            }
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+            } catch (GeneralBOException e1) {
+                logger.error("[JadwalShiftKerjaAction.cekTanggal] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[JadwalShiftKerjaAction.cekTanggal] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        if (jadwalShiftKerjaList.size()!=0) {
+            status = "01";
+        }
+
+        logger.info("[JadwalShiftKerjaAction.cekTanggal] end process >>>");
+        return status;
+    }
+
     @Override
     public String downloadPdf() {
         return null;

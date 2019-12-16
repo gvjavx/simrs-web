@@ -85,6 +85,10 @@ public class BranchBoImpl implements BranchBo {
                 hsCriteria.put("branch_address", searchBranch.getBranchAddress());
             }
 
+            if (searchBranch.getAreaId() != null && !"".equalsIgnoreCase(searchBranch.getAreaId())) {
+                hsCriteria.put("area_id", searchBranch.getAreaId());
+            }
+
             if (searchBranch.getFlag() != null && !"".equalsIgnoreCase(searchBranch.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBranch.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -119,7 +123,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
                     resultBranch.setUangMakan(imBranches.getUangMakan());
                     resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
-                    resultBranch.setStrBiayaJasprod(CommonUtil.numbericFormat(imBranches.getBiayaJasprod(), "###,###"));
+//                    resultBranch.setStrBiayaJasprod(CommonUtil.numbericFormat(imBranches.getBiayaJasprod(), "###,###"));
 
                     resultBranch.setCreatedWho(imBranches.getCreatedWho());
                     resultBranch.setCreatedDate(imBranches.getCreatedDate());
@@ -128,6 +132,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setAction(imBranches.getAction());
                     resultBranch.setFlag(imBranches.getFlag());
                     resultBranch.setEnabled(imBranches.getEnabled());
+                    resultBranch.setAreaId(imBranches.getAreaId());
 
                     listOfResultBranch.add(resultBranch);
                 }
@@ -164,6 +169,7 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setLastUpdateWho(branch.getLastUpdateWho());
             imBranches.setLastUpdate(branch.getLastUpdate());
             imBranches.setAction(branch.getAction());
+            imBranches.setAreaId(branch.getAreaId());
             imBranches.setFlag("Y");
 
             String branchId = branch.getBranchId();
@@ -253,6 +259,7 @@ public class BranchBoImpl implements BranchBo {
                 imBranchesOld.setLastUpdate(branchNew.getLastUpdate());
                 imBranchesOld.setLastUpdateWho(branchNew.getLastUpdateWho());
                 imBranchesOld.setFlag(imBranchesOld.getFlag());
+                imBranchesOld.setAreaId(imBranchesOld.getAreaId());
 
                 try {
                     branchDao.updateAndSave(imBranchesOld);

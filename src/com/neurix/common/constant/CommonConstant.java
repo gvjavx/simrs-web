@@ -48,6 +48,7 @@ public class CommonConstant {
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
@@ -115,11 +116,15 @@ public class CommonConstant {
     public final static String ROLE_OPERATOR_GPS = "OPERATOR_GPS";
     public final static String ROLE_ASMUD = "ASMUD";
     public final static String ROLE_MAPPER = "MAPPER";
+    public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
+    public final static String ROLE_ADMIN_RS = "ADMIN RS";
+    public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
 
     public final static String BRANCH_KANTOR_DIREKSI = "KD01";
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
 
     public final static String HGU = "HGU";
+    public final static String URL_IMG = "/simrs/images";
 
     public final static String APP_NAME = "simrs";
     public final static String BPJS_CONS_ID = "10356";
@@ -127,6 +132,11 @@ public class CommonConstant {
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest";
     public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest";
+    public final static String BPJS_SERVICE_PCARE = "/pcare-rest-v3.0";
+
+    public final static String LOGO_RS01 = "/pages/images/RS01.png";
+    public final static String LOGO_RS02 = "/pages/images/RS02.jpg";
+    public final static String LOGO_RS03 = "/pages/images/RS03.png";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN="/pages/upload/image/pasien/";
 

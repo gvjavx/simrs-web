@@ -168,6 +168,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             ItSimrsHeaderDetailCheckupEntity entity = detailCheckupEntityList.get(0);
             entity.setStatusPeriksa(bean.getStatusPeriksa());
             entity.setKeteranganSelesai(bean.getKeteranganSelesai());
+            entity.setKeteranganCekupUlang(bean.getKeteranganCekupUlang());
+            entity.setTglCekup(bean.getTglCekup());
             entity.setJenisLab(bean.getJenisLab());
             entity.setFlag(bean.getFlag());
             entity.setAction(bean.getAction());
@@ -192,6 +194,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             for (ItSimrsRawatInapEntity rawatInapEntity : rawatInapEntities) {
                 rawatInapEntity.setFlag("N");
                 rawatInapEntity.setAction("U");
+                rawatInapEntity.setTglKeluar(new Timestamp(System.currentTimeMillis()));
                 rawatInapEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 rawatInapEntity.setLastUpdateWho(CommonUtil.userLogin());
                 try {

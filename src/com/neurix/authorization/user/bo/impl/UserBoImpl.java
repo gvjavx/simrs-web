@@ -191,6 +191,7 @@ public class UserBoImpl implements UserBo {
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
 
+
             userDetailsLogin = new UserDetailsLogin();
             userDetailsLogin.setUserId(userId);
             userDetailsLogin.setUsername(username);
@@ -203,8 +204,9 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setUserCredentialsNonExpired(true);
             //userDetailsLogin.setPositionId(positionId.toString());
             //userDetailsLogin.setPositionName(positionName);
-            ItPersonilPositionEntity itPersonilPositionEntity = null ;
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
 
+            ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");
             if(itPersonilPositionEntity != null){
                 userDetailsLogin.setBranchId(itPersonilPositionEntity.getBranchId());
@@ -556,6 +558,12 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-heartbeat\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Obat")) {
                             menuNameString = "<li id=\"menu_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-eyedropper\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Permintaan Obat Poli")) {
+                            menuNameString = "<li id=\"permintaan_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bullhorn\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Transaksi Obat")) {
+                            menuNameString = "<li id=\"transaksi_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-o\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Obat Poli")) {
+                            menuNameString = "<li id=\"obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else{
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
                         }
@@ -2012,6 +2020,13 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setAction(addUsers.getAction());
                 imUsersNew.setFlag("Y");
 
+                //sodiq, 10/12/2019, penambahan id pelayanan
+                if("35".equalsIgnoreCase(addUsers.getRoleId())){
+                    imUsersNew.setIdPelayanan("007");
+                }else{
+                    imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+                }
+
                 String userid = addUsers.getUserId();
                 boolean isAda ;
 
@@ -2052,9 +2067,14 @@ public class UserBoImpl implements UserBo {
                 //save uers into table im_areas_branches_users, update by ferdi, 10-10-2016
                 ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
                 ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-                imAreasBranchesUsersPK.setUserId(userId);
-                imAreasBranchesUsersPK.setAreaId(areaId);
-                imAreasBranchesUsersPK.setBranchId(branchId);
+//                imAreasBranchesUsersPK.setUserId(userId);
+//                imAreasBranchesUsersPK.setAreaId(areaId);
+//                imAreasBranchesUsersPK.setBranchId(branchId);
+
+                //sodiq, 10/12/2019, penambahan user id, area id, dan branch id form front end
+                imAreasBranchesUsersPK.setUserId(addUsers.getUserId());
+                imAreasBranchesUsersPK.setAreaId(addUsers.getAreaId());
+                imAreasBranchesUsersPK.setBranchId(addUsers.getBranchId());
 
                 imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
                 imAreasBranchesUsers.setCreatedDate(addUsers.getCreatedDate());

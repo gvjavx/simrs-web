@@ -111,6 +111,7 @@
 
 
         }
+
         $.subscribe('beforeProcessSave', function (event, data) {
             event.originalEvent.options.submit = true;
             $('#confirm_dialog').dialog('close');
@@ -315,7 +316,9 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Agama</label>
                                             <div class="col-md-8">
-                                               <s:select id="agama" name="headerCheckup.agama" list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}" headerKey="" headerValue="[Select One]" cssStyle="margin-top: 7px" cssClass="form-control"/>
+                                               <s:select id="agama" name="headerCheckup.agama" list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
+                                                         onchange="$(this).css('border','')"
+                                                         headerKey="" headerValue="[Select One]" cssStyle="margin-top: 7px" cssClass="form-control"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
