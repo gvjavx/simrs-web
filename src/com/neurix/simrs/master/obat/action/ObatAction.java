@@ -329,4 +329,30 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
+    public List<Obat> getListNamaObat(String namaObat){
+
+        logger.info("[ObatAction.getListNamaObat] start process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        Obat obat = new Obat();
+        obat.setNamaObat(namaObat);
+        obat.setBranchId(branchId);
+        obat.setFlag("Y");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getListNamaObat(obat);
+        }catch (GeneralBOException e){
+            logger.error("[ObatAction.getListNamaObat] Error when get data obat ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatAction.getListNamaObat] end process >>>");
+        return obatList;
+
+    }
+
 }

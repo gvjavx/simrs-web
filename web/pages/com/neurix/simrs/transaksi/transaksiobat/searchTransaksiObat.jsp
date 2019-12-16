@@ -16,8 +16,99 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
     <script type='text/javascript'>
 
+        function formatRupiah(angka) {
+            if (angka != '' && angka != null) {
+                var reverse = angka.toString().split('').reverse().join(''),
+                        ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }else{
+                return 0;
+            }
+        }
+
+        function formatRupiah2(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
         $(document).ready(function () {
-            $('#permintaan_obat').addClass('active');
+
+            $('#transaksi_obat').addClass('active');
+            var total = $('#total_bayar').val();
+            $('#show_nominal').val("Rp. " + formatRupiah(total));
+
+            var nominal = document.getElementById('nominal_dibayar');
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value, 'Rp. ');
+
+                var bayar       = nominal.value.replace('Rp. ', '');
+                var valBayar    = bayar.replace(/[.]/g, '');
+                $('#total_dibayar').val(valBayar);
+
+                var a = parseInt(total);
+                var b = parseInt(valBayar);
+
+                if(b >= a){
+                    var kembalian = valBayar - total;
+                    $('#kembalian').val(""+kembalian);
+                    $('#nominal_kembalian').val('Rp. '+formatRupiah(kembalian));
+                }else{
+                    $('#kembalian').val('');
+                    $('#nominal_kembalian').val('');
+                }
+            });
+        });
+
+        function confirm(){
+
+            var total       = $('#total_bayar').val();
+            var bayar       = $('#total_dibayar').val();
+            var kembalian   = $('#kembalian').val();
+
+            if(bayar != ''){
+                if(parseInt(bayar) >= parseInt(total)){
+                    $("html, body").animate({ scrollTop: 0 }, 600);
+                    $('#confirm_dialog').dialog('open');
+                }else{
+                    $('#warning_bayar').show().fadeOut(5000);
+                    $('#msg_error').text("Jumlah bayar tidak boleh kurang dari total bayar..!");
+                }
+            }else{
+                $('#warning_bayar').show().fadeOut(5000);
+                $('#msg_error').text("Silahkan cek kembali data inputan..!");
+            }
+        }
+
+        $.subscribe('beforeProcessSave', function (event, data) {
+            event.originalEvent.options.submit = true;
+            $('#confirm_dialog').dialog('close');
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            $.publish('showDialog');
+        });
+
+        $.subscribe('successDialog', function (event, data) {
+            if (event.originalEvent.request.status == 200) {
+                jQuery(".ui-dialog-titlebar-close").hide();
+                $("html, body").animate({ scrollTop: 0 }, 600);
+                $.publish('showInfoDialog');
+            }
+        });
+
+        $.subscribe('errorDialog', function (event, data) {
+            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialog');
         });
 
     </script>
@@ -50,7 +141,8 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="permintaanForm" method="post" namespace="/transaksi" action="search_transaksi.action"
+                            <s:form id="permintaanForm" method="post" namespace="/transaksi"
+                                    action="search_transaksi.action"
                                     theme="simple" cssClass="form-horizontal">
 
                                 <div class="form-group">
@@ -130,18 +222,18 @@
                                     <td><s:property value="qty"/></td>
                                     <td><s:property value="harga"/></td>
                                     <td><s:property value="totalHarga"/></td>
-                                    <%--<td align="center">--%>
+                                        <%--<td align="center">--%>
                                         <%--<s:if test="#listOfResultResep.approvalFlag == null">--%>
-                                            <%--<s:if test="#listOfResultResep.request == true">--%>
-                                                <%--<button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Request</button>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:else>--%>
-                                                <%--<s:a href="%{edit}" cssClass="btn btn-primary">--%>
-                                                    <%--Konfirmasi Reture--%>
-                                                <%--</s:a>--%>
-                                            <%--</s:else>--%>
+                                        <%--<s:if test="#listOfResultResep.request == true">--%>
+                                        <%--<button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Request</button>--%>
                                         <%--</s:if>--%>
-                                    <%--</td>--%>
+                                        <%--<s:else>--%>
+                                        <%--<s:a href="%{edit}" cssClass="btn btn-primary">--%>
+                                        <%--Konfirmasi Reture--%>
+                                        <%--</s:a>--%>
+                                        <%--</s:else>--%>
+                                        <%--</s:if>--%>
+                                        <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -163,9 +255,9 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Obat</td>
-                                <td>Qty</td>
-                                <td>Harga Satuan</td>
-                                <td>Harga Total</td>
+                                <td align="center">Qty</td>
+                                <td align="right">Harga Satuan</td>
+                                <td align="right">Harga Total</td>
                                 <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
@@ -173,21 +265,31 @@
                             <s:iterator value="#session.listOfResultObat" id="listOfResultObat">
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td><s:property value="harga"/></td>
-                                    <td><s:property value="totalHarga"/></td>
-                                    <%--<td align="center">--%>
-                                            <%--<s:if test="#listOfResultResep.approvalFlag == null">--%>
-                                            <%--<s:if test="#listOfResultResep.request == true">--%>
-                                            <%--<button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Request</button>--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:else>--%>
-                                            <%--<s:a href="%{edit}" cssClass="btn btn-primary">--%>
-                                            <%--Konfirmasi Reture--%>
-                                            <%--</s:a>--%>
-                                            <%--</s:else>--%>
-                                            <%--</s:if>--%>
-                                    <%--</td>--%>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                        <%--<td align="center">--%>
+                                        <%--<s:if test="#listOfResultResep.approvalFlag == null">--%>
+                                        <%--<s:if test="#listOfResultResep.request == true">--%>
+                                        <%--<button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Request</button>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                        <%--<s:a href="%{edit}" cssClass="btn btn-primary">--%>
+                                        <%--Konfirmasi Reture--%>
+                                        <%--</s:a>--%>
+                                        <%--</s:else>--%>
+                                        <%--</s:if>--%>
+                                        <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -196,58 +298,85 @@
 
                     <div class="box-header with-border"></div>
                     <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_bayar">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_error"></p>
+                        </div>
                         <div class="form-group">
-                            <s:form id="pembayaranForm" method="post" namespace="/transaksi" action="pembayaran_transaksi.action"
+                            <s:form id="pembayaranForm" method="post" namespace="/transaksi"
+                                    action="pembayaran_transaksi.action"
                                     theme="simple" cssClass="form-horizontal">
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Total</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="total_bayar" cssStyle="margin-top: 7px"
-                                                     name="transaksiObatDetail.totalBayar" required="false"
-                                                     readonly="false" cssClass="form-control" readOnly="true"/>
+                                        <s:textfield id="show_nominal" cssStyle="margin-top: 7px"
+                                                     cssClass="form-control" readOnly="true"/>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>
+                                        <s:hidden name="transaksiObatDetail.totalBayar" id="total_bayar"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Total yang dibayar</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="total_dibayar" cssStyle="margin-top: 7px"
-                                                     name="transaksiObatDetail.nominal" required="false"
-                                                     readonly="false" cssClass="form-control"/>
+                                            <%--<s:textfield id="nominal_dibayar" cssStyle="margin-top: 7px"--%>
+                                            <%--required="false"--%>
+                                            <%--readonly="false" cssClass="form-control" onkeypress="showChanges()"/>--%>
+                                        <input class="form-control" style="margin-top: 7px" id="nominal_dibayar">
                                     </div>
+                                    <s:hidden name="transaksiObatDetail.nominal" id="total_dibayar"></s:hidden>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kembalian</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="kembalian" cssStyle="margin-top: 7px"
-                                                     name="transaksiObatDetail.kembalian" required="false"
+                                        <s:textfield id="nominal_kembalian" cssStyle="margin-top: 7px"
+                                                     required="false"
                                                      readonly="false" cssClass="form-control" readOnly="true"/>
                                     </div>
+                                    <s:hidden name="transaksiObatDetail.kembalian" id="kembalian"></s:hidden>
                                 </div>
 
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="pembayaranForm"
-                                                   id="save" name="save"
-                                                   onClickTopics="showDialogLoading"
-                                                   onCompleteTopics="closeDialogLoading">
-                                            <i class="fa fa-check"></i>
-                                            Bayar
-                                        </sj:submit>
+                                        <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                                class="fa fa-arrow-right"></i> Bayar
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
 
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
-                                                   closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Confirmation Dialog">
+                                            <center><img border="0" style="height: 40px; width: 40px"
+                                                         src="<s:url value="/pages/images/icon_warning.ico"/>"
+                                                         name="icon_success">
+                                                Do you want to save this record?
+                                            </center>
+                                            <br>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-warning"
+                                                        onclick="$('#confirm_dialog').dialog('close')"><i
+                                                        class="fa fa-times"></i> No
+                                                </button>
+                                                <sj:submit targets="crud" type="button" cssClass="btn btn-success"
+                                                           formIds="pembayaranForm" id="save" name="save"
+                                                           onBeforeTopics="beforeProcessSave"
+                                                           onCompleteTopics="closeDialog,successDialog"
+                                                           onSuccessTopics="successDialog" onErrorTopics="errorDialog">
+                                                    <i class="fa fa-arrow-right"></i>
+                                                    yes
+                                                </sj:submit>
+                                            </div>
+                                        </sj:dialog>
+
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog"
+                                                   modal="true"
                                                    resizable="false"
-                                                   height="250" width="600" autoOpen="false"
-                                                   title="Searching ...">
+                                                   height="250" width="600" autoOpen="false" title="Saving ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -256,13 +385,33 @@
                                                      name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
-                                                   resizable="false" cssStyle="text-align:left;"
-                                                   height="650" width="900" autoOpen="false" title="View Detail"
+
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
                                         >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                                         alt="Loading..."/></center>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            Record has been saved successfully.
                                         </sj:dialog>
+
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                        >
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+
                                     </div>
                                 </div>
                             </s:form>
@@ -464,10 +613,10 @@
 
     function saveObat(id) {
 
-        var idJenis     = $('#obat_jenis_obat').val();
-        var idObat      = $('#ob_id_obat').val();
-        var qty         = $('#ob_qty').val();
-        var stok        = $('#ob_stok').val();
+        var idJenis = $('#obat_jenis_obat').val();
+        var idObat = $('#ob_id_obat').val();
+        var qty = $('#ob_qty').val();
+        var stok = $('#ob_stok').val();
 
         if (idObat != '' && qty > 0) {
 
@@ -489,7 +638,7 @@
 
                     }
                 })
-            }else{
+            } else {
                 $('#warning_obat').show().fadeOut(5000);
                 $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
             }
@@ -509,18 +658,18 @@
         window.location.href = "/simrs/transaksi/resetobat_transaksi.action";
     }
 
-    function setStokObat(select){
+    function setStokObat(select) {
 
-        var idx     = select.selectedIndex;
-        var idObat  = select.options[idx].value;
-        var stok    = "";
+        var idx = select.selectedIndex;
+        var idObat = select.options[idx].value;
+        var stok = "";
 
         if (idObat != '') {
             ObatAction.getStokObat(idObat, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        if(item.idObat == idObat){
-                            if(item.qty != null){
+                        if (item.idObat == idObat) {
+                            if (item.qty != null) {
                                 stok = item.qty;
                             }
                         }
@@ -531,7 +680,7 @@
         $('#ob_stok').val(stok);
     }
 
-    function showRequest(id, obat, qty, qtygudang, namapoli){
+    function showRequest(id, obat, qty, qtygudang, namapoli) {
         $('#modal-request').modal('show');
         $('#req-2_nama').val(obat);
         $('#req-2_qty_gudang').val(qtygudang);
@@ -545,7 +694,7 @@
         $('#load_req-2').show();
 
         dwr.engine.setAsync(true);
-        ObatPoliAction.saveKonfirmasiRequest(id,{
+        ObatPoliAction.saveKonfirmasiRequest(id, {
             callback: function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);

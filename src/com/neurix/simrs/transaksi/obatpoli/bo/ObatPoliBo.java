@@ -19,4 +19,6 @@ public interface ObatPoliBo {
 
     public void saveApproveRequest(PermintaanObatPoli bean) throws GeneralBOException;
     public void saveApproveReture(PermintaanObatPoli bean) throws GeneralBOException;
+
+    public void saveApproveDiterima(PermintaanObatPoli bean) throws GeneralBOException;
 }

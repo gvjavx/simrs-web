@@ -1161,7 +1161,7 @@
                     Silahkan cek kembali data inputan..!
                 </div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
-                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
                     Data berhasil diupdate..!
                 </div>
                     <div class="box">
@@ -2290,7 +2290,7 @@
 
         if(jenis != '' && obat != '' && ket != '' && qty != ''){
             $.each(data, function (i, item) {
-                if(item.Obat == obat && item.Jenis == jenis){
+                if(item.Obat == obat){
                     cek = true;
                 }
             });
@@ -2428,7 +2428,7 @@
 
                     table += "<tr>" +
                             "<td>"+ '<span id=obat'+idObat+'>' + namaObat + '</span><input style="display:none; width: 120px;" type="text" id=newObat'+idObat+' class="form-control"><input type="hidden" id=idObat'+idObat+'>' + "</td>" +
-                            "<td>"+'<span id=qty'+idObat+'>'+ qty + '</span>'+
+                            "<td>"+'<span id=qty'+idObat+'>'+ qty + '</span>'+'<input type="hidden" id=newId'+idObat+' value='+idObat+'>'+
                             '<input style="display:none; width: 80px" type="number" id=newQty'+idObat+' class="form-control">'+ "</td>" +
                             "<td>"+'<span id=ket'+idObat+'>'+ ket + '</span>'+
                             '<select class="form-control" id=newKet'+idObat+' style="display:none"'+
@@ -2436,7 +2436,8 @@
                             '<option value="2 x 1 /Hari">2 x 1 /Hari</option>'+
                             '<option value="3 x 1 /Hari">3 x 1 /Hari</option>'+
                             '</select>'+ "</td>" +
-                            "<td align='center'>" + '<img border="0" id='+idObat+' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" id='+idObat+' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">'+
+                            '<img border="0" id=save'+idObat+' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\''+item.idApprovalObat+'\')" src="<s:url value="/pages/images/save_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px; display: none">'+ "</td>" +
                             "</tr>"
                 });
             }
@@ -2445,23 +2446,23 @@
         $('#body_detail_rep').html(table);
     }
 
-    function editObatResep(id, idObat, qty, ket){
+    function editObatResep(id, idObat, qty, ket, namaObat){
 
         if($('#'+idObat).attr('src') == '/simrs/pages/images/edit-flat-new.png'){
-            var url = '<s:url value="/pages/images/save_flat.png"/>';
+            var url = '<s:url value="/pages/images/cnacel-flat.png"/>';
             $('#'+idObat).attr('src',url);
             $('#obat'+idObat).hide();
             $('#qty'+idObat).hide();
             $('#ket'+idObat).hide();
 
-            $('#newObat'+idObat).show();
-            $('#newQty'+idObat).show();
-            $('#newKet'+idObat).show();
+            $('#newObat'+idObat).show().val(namaObat);
+            $('#newQty'+idObat).show().val(qty);
+            $('#newKet'+idObat).show().val(ket);
+            $('#save'+idObat).show();
 
         }else{
             var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
             $('#'+idObat).attr('src',url);
-            $('#'+idObat).attr('onclick','saveDetailResep(\'' + id + '\',\'' + idObat + '\')');
             $('#obat'+idObat).show();
             $('#qty'+idObat).show();
             $('#ket'+idObat).show();
@@ -2469,12 +2470,13 @@
             $('#newObat'+idObat).hide();
             $('#newQty'+idObat).hide();
             $('#newKet'+idObat).hide();
+            $('#save'+idObat).hide();
         }
     }
 
-    function saveDetailResep(id, idObat){
+    function saveDetailResep(id, idObat, idApp){
 
-        var obat    = $('#newObat'+idObat).val();
+        var obat    = $('#newId'+idObat).val();
         var qty     = $('#newQty'+idObat).val();
         var ket     = $('#newKet'+idObat).val();
 
@@ -2487,7 +2489,7 @@
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#success_detail').show().fadeOut(5000);
-                        listDetailResepPasien(id);
+                        listDetailResepPasien(idApp);
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);
                         $('#save_resep_head').show();
@@ -2498,6 +2500,14 @@
         }else{
             $('#warning_detail').show().fadeOut(5000);
         }
+    }
+
+    function getNamaObat(){
+        ObatAction.getListNamaObat( function (response) {
+            $.each(response ,function(i, item){
+
+            })
+        })
     }
 
 

@@ -111,6 +111,7 @@
 
 
         }
+
         $.subscribe('beforeProcessSave', function (event, data) {
             event.originalEvent.options.submit = true;
             $('#confirm_dialog').dialog('close');

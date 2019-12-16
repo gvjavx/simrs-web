@@ -292,6 +292,21 @@ public class ObatBoImpl implements ObatBo {
         }
     }
 
+    @Override
+    public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getListNamaObat] Start >>>>>>>");
+        List<Obat> listOfResult = new ArrayList();
+        try {
+            listOfResult = obatDao.getListNamaObat(bean);
+        } catch (HibernateException e) {
+            logger.error("[ObatBoImpl.getListNamaObat Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[ObatBoImpl.getListNamaObat] End >>>>>>>");
+        return listOfResult;
+
+    }
+
     private void updateObatGejala(List<String> idJenisObats, String idObat) throws GeneralBOException{
         logger.info("[ObatBoImpl.updateObatGejala] Start >>>>>>>");
 

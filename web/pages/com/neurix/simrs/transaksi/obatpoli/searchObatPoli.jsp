@@ -377,10 +377,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jumlah Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                         <div class="col-md-7">
-                            <s:textfield value="1" type="number" min="1" cssClass="form-control"
+                            <input type="text" style="margin-top: 7px" class="form-control" readonly="true" id="req-2_stok">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px"><span id="label_stok"></span>Jumlah Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="req-2_qty"
+                                         onchange="var warn =$('#war_req-2_qty').is(':visible'); if (warn){$('#cor_req-2_qty').show().fadeOut(3000);$('#war_req-2_qty').hide()}"
                                          onkeypress="var warn =$('#war_req-2_qty').is(':visible'); if (warn){$('#cor_req-2_qty').show().fadeOut(3000);$('#war_req-2_qty').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
@@ -530,19 +537,25 @@
     }
 
     function showRequestReture(select, id, obat, qty){
+        $('#war_req-2_qty').hide();
+
         if(select == 1){
+            $('#label_stok').html("Request ");
             $('#judul').html('Request Obat');
         }else  if(select == 2){
+            $('#label_stok').html("Reture ");
             $('#judul').html('Reture Obat');
         }
             $('#modal-request').modal('show');
             $('#req-2_nama').val(obat);
+            $('#req-2_stok').val(qty);
             $('#save_req-2').attr('onclick', 'saveRequest(\'' + select + '\', \'' + id + '\')').show();
     }
 
     function saveRequest(select, id) {
 
         var qty     = $('#req-2_qty').val();
+        var stok    = $('#req-2_stok').val();
 
         if (qty > 0) {
 
@@ -568,29 +581,38 @@
                     }
                 });
             }else if(select == 2 ){
-                dwr.engine.setAsync(true);
-                ObatPoliAction.saveReture(id, qty, {
-                    callback: function (response) {
-                        if (response == "success") {
-                            dwr.engine.setAsync(false);
-                            $('#modal-request').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_req-2').show();
-                            $('#load_req-2').hide();
-                        } else {
-                            $('#warning_request-2').show().fadeOut(5000);
-                            $('#error_request-2').text('Transaksi untuk obat tersebut sudah ada..!');
-                            $('#save_req-2').show();
-                            $('#load_req-2').hide();
+
+                var intQty = parseInt(qty);
+                var intStok = parseInt(stok);
+
+                if(intQty <= intStok) {
+                    dwr.engine.setAsync(true);
+                    ObatPoliAction.saveReture(id, qty, {
+                        callback: function (response) {
+                            if (response == "success") {
+                                dwr.engine.setAsync(false);
+                                $('#modal-request').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_req-2').show();
+                                $('#load_req-2').hide();
+                            } else {
+                                $('#warning_request-2').show().fadeOut(5000);
+                                $('#error_request-2').text('Transaksi untuk obat tersebut sudah ada..!');
+                                $('#save_req-2').show();
+                                $('#load_req-2').hide();
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    $('#warning_request-2').show().fadeOut(5000);
+                    $('#error_request-2').text('Jumlah Reture tidak boleh melebihi stok..!');
+                }
             }
         } else {
             $('#warning_request-2').show().fadeOut(5000);
             $('#error_request-2').text('Silahkan cek kembali data inputan..!');
             if (qty == '' || qty <= 0) {
-                $('#war_req_qty').show();
+                $('#war_req-2_qty').show();
             }
         }
     }
