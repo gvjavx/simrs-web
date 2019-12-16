@@ -207,9 +207,7 @@
                                                 <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Request</button>
                                             </s:if>
                                             <s:else>
-                                                <s:a href="%{edit}" cssClass="btn btn-primary">
-                                                    Konfirmasi Reture
-                                                </s:a>
+                                                <button class="btn btn btn-danger" onclick="showReture('<s:property value="idPermintaanObatPoli"/>', '<s:property value="namaObat"/>', '<s:property value="qty"/>', '<s:property value="qtyGudang"/>', '<s:property value="namaPelayanan"/>')">Konfirmasi Reture</button>
                                             </s:else>
                                         </s:if>
                                     </td>
@@ -280,6 +278,61 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-reture">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="judul"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ret-2">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="error_ret-2"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="ret-2_nama">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">QTY Obat Request</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="ret-2_qty">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">QTY Obat Stock</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="ret-2_qty_gudang">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Poli</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="ret-2_poli">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_ret-2"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ret-2"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type='text/javascript'>
 
@@ -290,6 +343,15 @@
         $('#req-2_qty').val(qty);
         $('#req-2_poli').val(namapoli);
         $('#save_req-2').attr('onclick', 'saveRequest(\'' + id + '\')').show();
+    }
+
+    function showReture(id, obat, qty, qtygudang, namapoli){
+        $('#modal-reture').modal('show');
+        $('#ret-2_nama').val(obat);
+        $('#ret-2_qty_gudang').val(qtygudang);
+        $('#ret-2_qty').val(qty);
+        $('#ret-2_poli').val(namapoli);
+        $('#save_ret-2').attr('onclick', 'saveReture(\'' + id + '\')').show();
     }
 
     function saveRequest(id) {
@@ -310,6 +372,29 @@
                     $('#error_request-2').text(response);
                     $('#save_req-2').show();
                     $('#load_req-2').hide();
+                }
+            }
+        });
+    }
+
+    function saveReture(id) {
+        $('#save_ret-2').hide();
+        $('#load_ret-2').show();
+
+        dwr.engine.setAsync(true);
+        ObatPoliAction.saveKonfirmasiReture(id,{
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#modal-reture').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_ret-2').show();
+                    $('#load_ret-2').hide();
+                } else {
+                    $('#warning_ret-2').show().fadeOut(5000);
+                    $('#error_ret-2').text(response);
+                    $('#save_ret-2').show();
+                    $('#load_ret-2').hide();
                 }
             }
         });

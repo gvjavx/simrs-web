@@ -311,6 +311,7 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setCreatedDate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
+            obatPoli.setBranchId(branchId);
 
             obatPoliBo.saveApproveRequest(obatPoli);
 
@@ -320,6 +321,36 @@ public class ObatPoliAction extends BaseMasterAction {
             return e.getMessage();
         }
         logger.info("[TindakanRawatAction.saveKonfirmasiRequest] END process <<<");
+
+        return SUCCESS;
+    }
+
+    public String saveKonfirmasiReture(String idPermintaan){
+        logger.info("[TindakanRawatAction.saveKonfirmasiReture] START process >>>");
+        try {
+            String userLogin        = CommonUtil.userLogin();
+            Timestamp updateTime    = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String branchId         = CommonUtil.userBranchLogin();
+            ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+            ObatPoliBo obatPoliBo   = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+
+            PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+            obatPoli.setCreatedWho(userLogin);
+            obatPoli.setLastUpdate(updateTime);
+            obatPoli.setCreatedDate(updateTime);
+            obatPoli.setLastUpdateWho(userLogin);
+            obatPoli.setBranchId(branchId);
+
+            obatPoliBo.saveApproveReture(obatPoli);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[TindakanRawatAction.saveKonfirmasiReture] ERROR when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            return e.getMessage();
+        }
+        logger.info("[TindakanRawatAction.saveKonfirmasiReture] END process <<<");
 
         return SUCCESS;
     }

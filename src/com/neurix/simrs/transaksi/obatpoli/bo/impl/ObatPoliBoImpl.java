@@ -565,7 +565,20 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             List<MtSimrsPermintaanObatPoliEntity> permintaanObatPoliEntities = getListEntityPermintaanObat(bean);
             if (!permintaanObatPoliEntities.isEmpty() && permintaanObatPoliEntities.size() > 0)
             {
+                // set reture flag and flag permintaan obat poli
                 MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = permintaanObatPoliEntities.get(0);
+                permintaanObatPoliEntity.setRetureFlag("Y");
+                permintaanObatPoliEntity.setFlag("N");
+                permintaanObatPoliEntity.setAction("U");
+                permintaanObatPoliEntity.setLastUpdate(bean.getLastUpdate());
+                permintaanObatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    permintaanObatPoliDao.updateAndSave(permintaanObatPoliEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatPoliBoImpl.saveApproveReture] ERROR when update permintaan obat poli. ",e);
+                    throw new GeneralBOException("[ObatPoliBoImpl.saveApproveReture] ERROR when update permintaan obat poli. ",e);
+                }
+
                 ImtSimrsApprovalTransaksiObatEntity approvalTransaksiObatEntity = getApprovalTransaksiById(permintaanObatPoliEntity.getIdApprovalObat());
                 if (approvalTransaksiObatEntity != null)
                 {
