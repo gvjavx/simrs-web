@@ -19,6 +19,7 @@ public class ItSimrsAntianOnlineEntity implements Serializable {
     private String jamAwal;
     private String jamAkhir;
     private Date tglCheckup;
+    private String branchId;
 
     public String getJamAwal() {
         return jamAwal;
@@ -122,5 +123,13 @@ public class ItSimrsAntianOnlineEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 }

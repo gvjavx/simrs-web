@@ -44,8 +44,11 @@
         <property name="jamAkhir">
             <column name="jam_akhir" sql-type="varchar" length="50" not-null="false" />
         </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="4" not-null="false" />
+        </property>
         <property name="tglCheckup">
-            <column name="tgl_checkup" sql-type="date"  not-null="false" />
+            <column name="tgl_checkup" sql-type="date" not-null="false" />
         </property>
 
 

@@ -124,8 +124,6 @@ public class CommonConstant {
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
 
     public final static String HGU = "HGU";
-    public final static String URL_IMG = "/simrs/images";
-
     public final static String APP_NAME = "simrs";
     public final static String BPJS_CONS_ID = "10356";
     public final static String BPJS_SECRET_KEY = "7eT69578CF";

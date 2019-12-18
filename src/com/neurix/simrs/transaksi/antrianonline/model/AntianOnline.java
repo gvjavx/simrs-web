@@ -9,6 +9,7 @@ public class AntianOnline extends BaseModel implements Serializable {
 
     private String idAntrianOnline;
     private String noAntrian;
+    private String jumlahAntrian;
     private String namaDokter;
     private String nama;
     private String namaPelayanan;
@@ -24,6 +25,23 @@ public class AntianOnline extends BaseModel implements Serializable {
     private String jamAwal;
     private String jamAkhir;
     private String tglCheckup;
+    private String branchId;
+
+    public String getJumlahAntrian() {
+        return jumlahAntrian;
+    }
+
+    public void setJumlahAntrian(String jumlahAntrian) {
+        this.jumlahAntrian = jumlahAntrian;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getNoAntrian() {
         return noAntrian;

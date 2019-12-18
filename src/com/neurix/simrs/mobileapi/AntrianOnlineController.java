@@ -152,6 +152,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         antianOnline.setJamAkhir(jamAkhir);
         antianOnline.setJamAwal(jamAwal);
         antianOnline.setTglCheckup(tglCheckup);
+        antianOnline.setBranchId(branchId);
 
         if (action.equalsIgnoreCase("tambah")) {
             try {

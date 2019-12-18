@@ -132,6 +132,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             result.setJamAwal((String) row[8]);
             result.setJamAkhir((String) row[9]);
             result.setNoAntrian(Integer.toString(counter));
+            result.setJumlahAntrian(String.valueOf(results.size()));
             counter++;
             listOfResult.add(result);
         }
