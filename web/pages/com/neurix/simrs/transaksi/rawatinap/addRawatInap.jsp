@@ -1335,7 +1335,7 @@
         } else if (back == 7) {
             desti = "#pos_ruangan";
         } else if (back == 8) {
-            window.location.href = 'search_rawatinap.action';
+            window.location.href = 'initForm_rawatinap.action';
         } else if (back == 9){
             desti = '#pos_rssep';
         }

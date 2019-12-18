@@ -1215,7 +1215,7 @@
         } else if (back == 5) {
             desti = "#pos_obat";
         } else if (back == 6) {
-            window.location.href = 'search_checkupdetail.action';
+            window.location.href = 'initForm_checkupdetail.action';
         }else if (back == 9){
             desti = '#pos_rssep';
         }
