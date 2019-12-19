@@ -3,9 +3,12 @@ package com.neurix.simrs.master.kelasruangan.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,5 +41,12 @@ public class KelasRuanganDao extends GenericDao<ImSimrsKelasRuanganEntity, Strin
         List<ImSimrsKelasRuanganEntity> results = criteria.list();
 
         return results;
+    }
+
+    public String getNextIdKelasRuangan(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kelas_ruangan')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+        return sId;
     }
 }

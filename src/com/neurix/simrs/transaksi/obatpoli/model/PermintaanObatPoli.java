@@ -38,6 +38,16 @@ public class PermintaanObatPoli{
     private String keterangan;
     private BigInteger qtyGudang;
 
+    private String tujuanPelayanan;
+
+    public String getTujuanPelayanan() {
+        return tujuanPelayanan;
+    }
+
+    public void setTujuanPelayanan(String tujuanPelayanan) {
+        this.tujuanPelayanan = tujuanPelayanan;
+    }
+
     public BigInteger getQtyGudang() {
         return qtyGudang;
     }

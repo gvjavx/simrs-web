@@ -32,7 +32,7 @@ To change this template use File | Settings | File Templates.
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_rekruitmen'/>";
+            window.location.href="<s:url action='initForm_pasien'/>";
         }
 
     </script>
@@ -50,7 +50,7 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rekruitmen
+            Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -67,7 +67,7 @@ To change this template use File | Settings | File Templates.
                     <table width="100%" align="center">
                         <tr>
                             <td align="center">
-                                <s:form id="rekruitmenForm" method="post"  theme="simple" namespace="/rekruitmen" action="search_rekruitmen.action" cssClass="form-horizontal">
+                                <s:form id="pasienForm" method="post"  theme="simple" namespace="/pasien" action="search_pasien.action" cssClass="form-horizontal">
 
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
@@ -157,17 +157,17 @@ To change this template use File | Settings | File Templates.
                                         <table align="center">
                                             <tr>
                                                 <td>
-                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="rekruitmenForm" id="search" name="search"
+                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="pasienForm" id="search" name="search"
                                                                onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
                                                 </td>
                                                 <td>
-                                                    <a href="add_pasien.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Rekruitmen</a>
+                                                    <a href="add_pasien.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pasien</a>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_rekruitmen"/>'">
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pasien"/>'">
                                                         <i class="fa fa-refresh"></i> Reset
                                                     </button>
                                                 </td>
@@ -194,7 +194,7 @@ To change this template use File | Settings | File Templates.
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                height="800" width="1100" autoOpen="false"
-                                                               title="Rekruitmen ">
+                                                               title="Edit Pasien ">
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
                                                                height="700" width="1100" autoOpen="false"
@@ -204,110 +204,41 @@ To change this template use File | Settings | File Templates.
                                                     <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
                                                     <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
-                                                        <display:column media="html" title="<center>Cetak Kontrak</center>" style="text-align:center">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <s:url var="urlCetakKontrak" namespace="/rekruitmen" action="cetakKontrak_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId"/></s:param>
+                                                        <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
+                                                        <display:column media="html" title="Edit">
+<%--                                                            <s:if test="#attr.row.flagYes">--%>
+                                                                <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                 </s:url>
-                                                                <s:a href="%{urlCetakKontrak}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
-                                                                </s:a>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <display:column media="html" title="<center>Cetak Report</center>" style="text-align:center">
-                                                            <s:if test="#attr.row.readyclosed">
-                                                                <s:url var="urlCetakKontrak" namespace="/rekruitmen" action="printReportRekruitmen_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <s:a href="%{urlCetakKontrak}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
-                                                                </s:a>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <display:column media="html" title="Closed" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
-                                                            </s:if>
-                                                            <s:elseif test="#attr.row.readyclosed">
-                                                                <s:url var="urlAction" namespace="/rekruitmen" action="closed_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlAction}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon approval">
-                                                                </sj:a>
-                                                            </s:elseif>
-                                                            <s:else>
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <s:url var="urlViewDelete" namespace="/rekruitmen" action="delete_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <display:column media="html" title="Edit" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <s:url var="urlUploadDoc" namespace="/rekruitmen" action="uploadDocument_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlUploadDoc}">
+                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                                                 </sj:a>
-                                                            </s:else>
+<%--                                                            </s:if>--%>
                                                         </display:column>
-                                                        <display:column media="html" title="View" style="text-align:center;font-size:9">
-                                                            <s:url var="urlViewDelete" namespace="/rekruitmen" action="viewRekruitmen_rekruitmen" escapeAmp="false">
-                                                                <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
+
+                                                        <display:column media="html" title="Delete" style="text-align:center;font-size:9">
+                                                            <s:url var="urlViewDelete" namespace="/pasien" action="delete_pasien" escapeAmp="false">
+                                                                <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
                                                                 <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                             </s:url>
-                                                            <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                                            <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                                             </sj:a>
+
                                                         </display:column>
-                                                        <display:column media="html" title="Action" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.rekruitmenClosed">
-                                                                <%--<img border="0" src="<s:url value="/pages/images/icon_not_edit.png"/>" name="icon_edit">--%>
-                                                            </s:if>
-                                                            <s:else>
-                                                                <s:url var="urlAction" namespace="/rekruitmen" action="action_rekruitmen" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.calonPegawaiId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlAction}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_reassign.ico"/>" name="icon_reassign">
-                                                                </sj:a>
-                                                            </s:else>
-                                                        </display:column>
-                                                        <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
-                                                        <display:column property="namaCalonPegawai" sortable="true" title="Cal Peg Name"  />
+
+                                                        <display:column property="idPasien" sortable="true" title="Pasien ID"  />
+                                                        <display:column property="nama" sortable="true" title="Nama"  />
+                                                        <display:column property="jenisKelamin" sortable="true" title="Gender"  />
                                                         <display:column property="noKtp" sortable="true" title="No. KTP" />
-                                                        <display:column property="noTelp" sortable="true" title="No. Telp." />
-                                                        <display:column property="posisiName" sortable="true" title="Jabatan" />
-                                                        <display:column property="divisiName" sortable="true" title="Bidang" />
-                                                        <display:column property="branchName" sortable="true" title="Unit" />
-                                                        <display:column property="statusSaatIni" sortable="true" title="Status" />
+                                                        <display:column property="noBpjs" sortable="true" title="No. BPJS" />
+                                                        <display:column property="tempatLahir" sortable="true" title="Temp. Lahir" />
+                                                        <display:column property="tglLahir" sortable="true" title="Tgl Lahir" />
+                                                        <display:column property="jalan" sortable="true" title="Jalan" />
+                                                        <display:column property="agama" sortable="true" title="Agama" />
+                                                        <display:column property="noTelp" sortable="true" title="No. Telp" />
+                                                        <display:column property="flag" sortable="true" title="flag" />
                                                     </display:table>
                                                 </td>
                                             </tr>

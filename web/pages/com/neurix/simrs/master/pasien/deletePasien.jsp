@@ -6,16 +6,8 @@
 
 <html>
 <head>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/RekruitmenAction.js"/>'></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            window.close = function () {
-                //$('#waiting_dialog').dialog('close');
-                $('#view_dialog_menu').dialog('close');
-                $('#info_dialog').dialog('close');
-                window.location.href = "<s:url action='search_rekruitmen.action'/>";
-            };
-        })
+
         function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
@@ -23,20 +15,11 @@
             window.location.reload(true);
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            if (confirm('Do you want to save this record?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-            }  else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
         $.subscribe('beforeProcessDelete', function (event, data) {
             if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
                 $.publish('showDialog');
+
             } else {
                 // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
@@ -59,12 +42,9 @@
         });
 
         function cancelBtn() {
-            $('#view_dialog_menu_ijin_keluar').dialog('close');
-        }
+            $('#view_dialog_menu').dialog('close');
+        };
     </script>
-    <style>
-        th{ text-align: center;  }
-    </style>
 
 </head>
 
@@ -73,10 +53,10 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/rekruitmen" action="saveDelete_rekruitmen" cssClass="well form-horizontal">
+            <s:form id="deletePasienForm" method="post" theme="simple" namespace="/pasien" action="saveDelete_pasien" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Delete Rekruitmen</legend>
+                <legend align="left">Delete Pasien</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -88,346 +68,389 @@
                     <img id="myImage" src="" class="img-thumbnail img-responsive" width="200" height="150">
                 </div>
                 <table>
+                    <S:hidden name="pasien.idPasien">
+
+                    </S:hidden>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Calon Pegawai Id :</small></label>
-                        </td>
-                        <td>
-                            <s:textfield id="calonPegawaiId32" name="rekruitmen.calonPegawaiId" required="false" readonly="true" cssClass="form-control"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nama Calon Pegawai :</small></label>
+                            <label class="control-label">
+                                <small>Id Pasien</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="calonPegawaiName" name="rekruitmen.namaCalonPegawai" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
+                                             name="pasien.idPasien" required="false"
+                                             readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Gelar Depan :</small></label>
+                            <label class="control-label">
+                                <small>No BPJS</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="gelarDepan" name="rekruitmen.gelarDepan" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="no_bpjs" cssStyle="margin-top: 7px"
+                                             name="pasien.noBpjs" required="false"
+                                             readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label">
+                                <small>No KTP</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="no_ktp" name="pasien.noKtp"
+                                             required="false" readonly="true"
+                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Gelar Belakang :</small></label>
+                            <label class="control-label">
+                                <small>Nama Pasien</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="gelarBelakang" name="rekruitmen.gelarBelakang" required="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="nama_pasien2" name="pasien.nama"
+                                             required="false" readonly="true"
+                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>No. KTP :</small></label>
+                            <label class="control-label">
+                                <small>Jenis Kelamin :</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="noKtp" name="rekruitmen.noKtp" required="false" readonly="true" cssClass="form-control"/>
+                                <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
+                                          id="jenis_kelamin" name="pasien.jenisKelamin"
+                                          headerKey="" headerValue="[Select one]" readonly="true"
+                                          cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>No. HP :</small></label>
-                        </td>
-                        <td>
-                            <s:textfield id="noTelp" name="rekruitmen.noTelp" required="false" readonly="true" cssClass="form-control"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Alamat :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textarea rows="4"  id="tujuanRekruitmen" name="rekruitmen.alamat" required="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Provinsi :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="provinsi1" cssStyle="display: none" name="rekruitmen.provinsiId" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                                <s:textfield id="provinsi11" name="rekruitmen.provinsiName" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kabupaten :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kabupaten1" cssStyle="display: none" name="rekruitmen.kotaId" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                                <s:textfield id="kabupaten11" name="rekruitmen.kotaName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kecamatan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kecamatan1" cssStyle="display: none" name="rekruitmen.kecamatanId" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                                <s:textfield id="kecamatan11" name="rekruitmen.kecamatanName" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Desa :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="desa1" name="rekruitmen.desaId" required="true" readonly="true" disabled="false" cssClass="form-control"/>
-                                <s:textfield id="desa11" name="rekruitmen.desaName" required="true" readonly="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Rt / Rw :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="rtRw" name="rekruitmen.rtRw" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tempat / Tanggal Lahir :</small></label>
+                            <label class="control-label">
+                                <small>Tempat / Tanggal Lahir :</small>
+                            </label>
                         </td>
                         <td>
                             <table>
                                 <tr>
                                     <td>
-                                        <s:textfield id="tempatLahir" name="rekruitmen.tempatLahir" readonly="true" required="true" cssClass="form-control"/>
+                                        <s:textfield cssStyle="margin-top: 7px" id="tempat_Lahir" name="pasien.tempatLahir"
+                                                     required="true" cssClass="form-control" readonly="true"/>
                                     </td>
-                                    <td> / </td>
+                                    <td> /</td>
                                     <td>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon" >
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tanggalLahir" name="rekruitmen.stTanggalLahir" readonly="true" cssClass="form-control pull-right" required="false" />
+                                            <s:textfield id="tanggal_lahir"
+                                                         name="pasien.tglLahir"
+                                                         cssClass="form-control pull-right"
+                                                         readonly="true"
+                                                         required="false"/>
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Jenis Kelamin :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="jkel" name="rekruitmen.jenisKelamin" required="false" readonly="true" cssStyle="display:none;" cssClass="form-control"/>
-                                <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}" id="jenisKelamin" name="rekruitmen.jenisKelamin" disabled="true" readonly="true"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Status Keluarga :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="stsklg" name="rekruitmen.statusKeluarga" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:select list="#{'K':'Keluarga','B':'Single'}" id="statusKeluarga" name="rekruitmen.statusKeluarga"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Jumlah Anak :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="jumlahAnak" name="rekruitmen.jumlahAnak" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Calon Jabatan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="clnjbtn" name="rekruitmen.positionId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                <s:select list="#comboPosition.listOfComboPosition" id="positionId" name="rekruitmen.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" readonly="true" disabled="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Bidang :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="div" name="rekruitmen.departmentId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                <s:select list="#comboDivisi.listComboDepartment" id="departmentId" name="rekruitmen.departmentId" readonly="true" disabled="true"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Unit :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="un" name="rekruitmen.branchId" required="false" readonly="true" cssStyle="display: none"  cssClass="form-control"/>
-                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="rekruitmen.branchId" readonly="true" disabled="true"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
 
-                        </td>
-                    </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Status Pegawai :</small></label>
+                            <label class="control-label">
+                                <small>Agama</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="stspgwaio" name="rekruitmen.statusPegawai" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:select list="#{'KNS' : 'Karyawan Non Struktural', 'KS':'Karyawan Struktural'}"
-                                          id="statusPegawai" name="rekruitmen.statusPegawai" readonly="true" disabled="true"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#{'Islam':'Islam','Kristen':'Kristen','Hindu':'Hindu','Budha':'Budha'}" cssStyle="margin-top: 7px"
+                                          id="agama" name="pasien.agama"
+                                          headerKey="" headerValue="[Select one]"
+                                          readonly="true"
+                                          cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label">
+                                <small>No. Telp</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="no_telp" type="text" name="pasien.noTelp" required="false"
+                                             readonly="true" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label">
+                                <small>Suku</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="suku" type="text" name="pasien.suku" required="false"
+                                             readonly="true" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label">
+                                <small>Alamat :</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea rows="4" id="alamat" name="pasien.jalan"
+                                            required="false" readonly="true"
+                                            cssClass="form-control" cssStyle="margin-top: 7px"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tipe Pegawai :</small></label>
+                            <label class="control-label">
+                                <small>Provinsi :</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="tppgw" name="rekruitmen.tipePegawai" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
-                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="rekruitmen.tipePegawai" readonly="true" disabled="true"
-                                          listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="pasien.provinsiId" required="true" disabled="false"
+                                             cssClass="form-control" readonly="true"/>
+                                <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
+                                             name="pasien.provinsiId" required="true"
+                                             disabled="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
+                    <script type='text/javascript'>
+                        var functions, mapped;
+                        $('#provinsi').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
+
+                                var data = [];
+                                dwr.engine.setAsync(false);
+                                ProvinsiAction.initComboProvinsi(query, function (listdata) {
+                                    data = listdata;
+                                });
+
+                                $.each(data, function (i, item) {
+                                    var labelItem = item.provinsiName;
+                                    mapped[labelItem] = {id: item.provinsiId, label: labelItem};
+                                    functions.push(labelItem);
+                                });
+
+                                process(functions);
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                var namaAlat = selectedObj.label;
+                                document.getElementById("provinsi11").value = selectedObj.id;
+                                prov = selectedObj.id;
+                                return namaAlat;
+                            }
+                        });
+                    </script>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Status Giling :</small></label>
+                            <label class="control-label">
+                                <small>Kabupaten :</small>
+                            </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="stsglg" name="rekruitmen.statusGiling" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling" name="rekruitmen.statusGiling"
-                                          readonly="true" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="pasien.kotaId" required="true" disabled="false"
+                                             readonly="true" cssClass="form-control"/>
+                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
+                                             name="pasien.kotaId" required="true"
+                                             disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-                </table>
-                <br>
-                <br>
-                <center><h4>Study Rekruitmen</h4></center>
-                <br>
-                <table id="showdata" width="40%">
+                    <script type='text/javascript'>
+                        var functions, mapped;
+                        // var prov = document.getElementById("provinsi1").value;
+                        $('#kabupaten').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
+
+                                var data = [];
+                                dwr.engine.setAsync(false);
+                                ProvinsiAction.initComboKota(query, prov, function (listdata) {
+                                    data = listdata;
+                                });
+                                //alert(prov);
+                                $.each(data, function (i, item) {
+                                    //alert(item.kotaName);
+                                    var labelItem = item.kotaName;
+                                    mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                                    functions.push(labelItem);
+                                });
+
+                                process(functions);
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                var namaAlat = selectedObj.label;
+                                document.getElementById("kabupaten11").value = selectedObj.id;
+
+                                kab = selectedObj.id;
+                                return namaAlat;
+                            }
+                        });
+
+                        //
+                        //
+                    </script>
                     <tr>
-                        <td align="center">
-                            <s:set name="listOfRekruitmenStudy" value="#session.ListOfResultRekruitmenStudy" scope="request" />
-                            <display:table name="listOfRekruitmenStudy" class=" tableRekruitmen table table-condensed table-striped table-hover"
-                                           requestURI="paging_displaytag_rekruitmen.action" id="row" pagesize="20" style="font-size:12">
-                                <display:column property="tipeStudy" sortable="true" title="Jenjang"  />
-                                <display:column property="studyName" sortable="true" title="Nama Sekolah"  />
-                                <display:column property="tahunAwal" sortable="true" title="Tahun Masuk" />
-                                <display:column property="tahunAkhir" sortable="true" title="Tahun Lulus" />
-                                <display:column property="nilai" sortable="true" title="Nilai" />
-                            </display:table>
+                        <td>
+                            <label class="control-label">
+                                <small>Kecamatan :</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="pasien.kecamatanId" required="true" disabled="false"
+                                             readonly="true" cssClass="form-control"/>
+                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
+                                             name="pasien.kecamatanId" required="true"
+                                             disabled="false" cssClass="form-control"/>
+                            </table>
                         </td>
                     </tr>
-                </table>
-                <br>
-                <br>
-                <center><h4>Document Rekruitmen</h4></center>
-                <br>
-                <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuEdit" modal="true"
-                           height="500" width="900" autoOpen="false"
-                           title="View Document">
-                </sj:dialog>
-                <table id="showdata" width="30%">
+                    <script type='text/javascript'>
+                        var functions, mapped;
+                        var kab = document.getElementById("kabupaten").value;
+                        $('#kecamatan').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
+
+                                var data = [];
+                                dwr.engine.setAsync(false);
+                                ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
+                                    data = listdata;
+                                });
+                                //alert(prov);
+                                $.each(data, function (i, item) {
+                                    //alert(item.kotaName);
+                                    var labelItem = item.kecamatanName;
+                                    mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
+                                    functions.push(labelItem);
+                                });
+
+                                process(functions);
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                var namaAlat = selectedObj.label;
+                                document.getElementById("kecamatan11").value = selectedObj.id;
+
+                                kec = selectedObj.id;
+                                return namaAlat;
+                            }
+                        });
+                    </script>
                     <tr>
-                        <td align="center">
-                            <s:set name="listOfRekruitmenDocument" value="#session.listOfResultRekruitmenDocument" scope="request" />
-                            <display:table name="listOfRekruitmenDocument" class="tableRekruitmen table table-condensed table-striped table-hover"
-                                           requestURI="paging_displaytag_rekruitmen.action" id="row" pagesize="20" style="font-size:12;text-align:center">
-                                <display:column media="html" title="View Doc" style="text-align:center">
-                                    <s:url var="urlEdit" namespace="/rekruitmen" action="viewDoc_rekruitmen" escapeAmp="false">
-                                        <s:param name="id"><s:property value="#attr.row.uploadDocRekId"/></s:param>
-                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                    </s:url>
-                                    <sj:a onClickTopics="showDialogMenuEdit" href="%{urlEdit}">
-                                        <i class="fa fa-download" style="font-size: 21px"></i>
-                                    </sj:a>
-                                </display:column>
-                                <display:column property="documentName" style="text-align:center" sortable="true" title="Document Name"  />
-                            </display:table>
+                        <td>
+                            <label class="control-label">
+                                <small>Desa :</small>
+                            </label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px" id="desa" name="pasien.desa" required="true" disabled="false"
+                                             readonly="true" cssClass="form-control"/>
+                                <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
+                                             name="pasien.desaId" required="true"
+                                             disabled="false" cssClass="form-control"/>
+                            </table>
                         </td>
                     </tr>
+                    <script type='text/javascript'>
+                        var functions, mapped;
+                        $('#desa').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
+
+                                var data = [];
+                                dwr.engine.setAsync(false);
+                                ProvinsiAction.initComboDesa(query, kec, function (listdata) {
+                                    data = listdata;
+                                });
+                                //alert(prov);
+                                $.each(data, function (i, item) {
+                                    //alert(item.kotaName);
+                                    var labelItem = item.desaName;
+                                    mapped[labelItem] = {id: item.desaId, label: labelItem};
+                                    functions.push(labelItem);
+                                });
+
+                                process(functions);
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                var namaAlat = selectedObj.label;
+                                document.getElementById("desa11").value = selectedObj.id;
+
+                                desa = selectedObj.id;
+                                return namaAlat;
+                            }
+                        });
+                    </script>
                 </table>
                 <br>
                 <br>
-                <center><h4>Status Rekruitmen</h4></center>
-                <br>
-                <table id="showdata" width="50%">
-                    <tr>
-                        <td align="center">
-                            <s:set name="listOfRekruitmenStatus" value="#session.listOfResultRekruitmenStatus" scope="request" />
-                            <display:table name="listOfRekruitmenStatus" class=" tableRekruitmen table table-condensed table-striped table-hover"
-                                           requestURI="paging_displaytag_rekruitmen.action" id="row" pagesize="20" style="font-size:12">
-                                <display:column property="statusRekruitmenName" sortable="true" title="Record Status"  />
-                                <display:column property="tanggalProses" sortable="true" title="Tanggal Proses" />
-                                <display:column property="keterangan" sortable="true" title="Keterangan" />
-                            </display:table>
-                        </td>
-                    </tr>
-                </table>
-                <br>
-                <div id="actions" class="form-actions">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <sj:submit targets="crud" type="button" cssClass="btn btn-danger" formIds="modifyRolefuncForm" id="save12" name="save"
-                                           onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                           onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                                    <i class="fa fa-trash"></i>
-                                    Delete
-                                </sj:submit>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary" onclick="window.location.href='<s:url action="search_rekruitmen.action"/>'">
-                                    <i class="fa fa-refresh"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deletePasienForm" id="delete" name="delete"
+                                   onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </sj:submit>
+                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                            <i class="fa fa-refresh"/> Cancel
+                        </button>
+                    </div>
                 </div>
+
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
@@ -450,7 +473,8 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                      close();
+                                                                    //$(this).dialog('close');
+                                                                      callSearch();
                                                                    }
                                                             }"
                                         >
@@ -497,12 +521,3 @@
 </table>
 </body>
 </html>
-<script>
-    $(document).ready(function(){
-        var id = $('#calonPegawaiId32').val();
-        dwr.engine.setAsync(false);
-        RekruitmenAction.searchProfilPhoto(id, function (listdata) {
-            $("#myImage").attr("src",listdata);
-        });
-    })
-</script>

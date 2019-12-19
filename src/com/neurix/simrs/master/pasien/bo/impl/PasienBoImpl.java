@@ -1,6 +1,8 @@
 package com.neurix.simrs.master.pasien.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.belajar.model.Belajar;
+import com.neurix.hris.master.cuti.model.ImCutiEntity;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
@@ -8,10 +10,10 @@ import com.neurix.simrs.master.pasien.model.Pasien;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Toshiba on 13/11/2019.
@@ -21,6 +23,7 @@ public class PasienBoImpl implements PasienBo {
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(PasienBoImpl.class);
 
     private PasienDao pasienDao;
+    private Date date;
 
     @Override
     public List<Pasien> getByCriteria(Pasien bean) throws GeneralBOException {
@@ -83,6 +86,9 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.setTemplatePasien] Start >>>>>>>");
         List<Pasien> list = new ArrayList<>();
 
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         Pasien pasien;
         for (ImSimrsPasienEntity data : listEntity){
             pasien = new Pasien();
@@ -92,8 +98,11 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoKtp(data.getNoKtp());
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
-            pasien.setTglLahir(data.getTglLahir());
-            pasien.setDesaId(data.getDesaId());
+
+            String strDate = formatter.format(data.getTglLahir());
+            pasien.setTglLahir(strDate);
+
+            pasien.setDesaId(data.getDesaId().toString());
             pasien.setJalan(data.getJalan());
             pasien.setSuku(data.getSuku());
             pasien.setAgama(data.getAgama());
@@ -121,15 +130,26 @@ public class PasienBoImpl implements PasienBo {
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             String id = getIdPasien();
 
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+
+            try{
+                date = formater.parse(pasien.getTglLahir());
+//                tglLahir = formater.format(date);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+
             pasienEntity.setIdPasien(id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
-            pasienEntity.setTglLahir(pasien.getTglLahir());
-            pasienEntity.setDesaId(pasien.getDesaId());
-            pasienEntity.setJalan(pasien.getJalan());
+            pasienEntity.setNoTelp(pasien.getNoTelp());
+            pasienEntity.setTglLahir(date);
+            BigInteger bigInteger = new BigInteger(pasien.getDesaId());
+            pasienEntity.setDesaId(bigInteger);
+            pasienEntity.setJalan(pasien.getAlamat());
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
             pasienEntity.setProfesi(pasien.getProfesi());
@@ -168,13 +188,24 @@ public class PasienBoImpl implements PasienBo {
 
             if (pasienEntity != null){
 
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+
+                try{
+                    date = formater.parse(pasien.getTglLahir());
+//                tglLahir = formater.format(date);
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+
                 pasienEntity.setNama(pasien.getNama());
                 pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
                 pasienEntity.setNoKtp(pasien.getNoKtp());
                 pasienEntity.setNoBpjs(pasien.getNoBpjs());
                 pasienEntity.setTempatLahir(pasien.getTempatLahir());
-                pasienEntity.setTglLahir(pasien.getTglLahir());
-                pasienEntity.setDesaId(pasien.getDesaId());
+
+                pasienEntity.setTglLahir(date);
+                BigInteger bigInteger = new BigInteger(pasien.getDesaId());
+                pasienEntity.setDesaId(bigInteger);
                 pasienEntity.setJalan(pasien.getJalan());
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());
@@ -206,6 +237,73 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
+    public void saveDelete(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveDelete] start process");
+
+        if (bean!=null) {
+
+            String idPasien = bean.getIdPasien();
+
+            ImSimrsPasienEntity entity = null;
+            try {
+                // Get data from database by ID
+                entity = pasienDao.getById("idPasien", idPasien);
+            } catch (HibernateException e) {
+                logger.error("[CutiBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+
+            if (entity != null) {
+
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+
+                try{
+                    date = formater.parse(bean.getTglLahir());
+//                tglLahir = formater.format(date);
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+
+                // Modify from bean to entity serializable
+                entity.setNama(bean.getNama());
+                entity.setJenisKelamin(bean.getJenisKelamin());
+                entity.setNoKtp(bean.getNoKtp());
+                entity.setNoBpjs(bean.getNoBpjs());
+                entity.setTempatLahir(bean.getTempatLahir());
+
+                entity.setTglLahir(date);
+                BigInteger bigInteger = new BigInteger(bean.getDesaId());
+                entity.setDesaId(bigInteger);
+                entity.setJalan(bean.getJalan());
+                entity.setSuku(bean.getSuku());
+                entity.setAgama(bean.getAgama());
+                entity.setProfesi(bean.getProfesi());
+                entity.setNoTelp(bean.getNoTelp());
+                entity.setUrlKtp(bean.getNoKtp());
+                entity.setFlag(bean.getFlag());
+                entity.setAction("U");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    // Delete (Edit) into database
+                    pasienDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[CutiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Cuti, please info to your admin..." + e.getMessage());
+                }
+
+
+            } else {
+                logger.error("[CutiBoImpl.saveDelete] Error, not found data Cuti with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Cuti with request id, please check again your data ...");
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveEdit] End <<<<<<<");
+    }
+
+    @Override
     public List<Pasien> getListComboPasien(String query) throws GeneralBOException {
         logger.info("[PasienBoImpl.getListComboPasien] Start >>>>>>>");
 
@@ -226,6 +324,58 @@ public class PasienBoImpl implements PasienBo {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<Pasien> getDataPasien(String desaId) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getDataPasien] Start >>>>>>>");
+        List<Pasien> list = new ArrayList<>();
+        List<Object[]> imSimrsPasienEntities = null;
+        try {
+            imSimrsPasienEntities = pasienDao.getListAlamat(desaId);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        Pasien pasien;
+        if (imSimrsPasienEntities != null){
+            for (Object[] data: imSimrsPasienEntities){
+                pasien = new Pasien();
+                pasien.setDesaId(data[0].toString());
+                pasien.setDesa(data[1].toString());
+                pasien.setKecamatan(data[2].toString());
+                pasien.setKota(data[3].toString());
+                pasien.setProvinsi(data[4].toString());
+                list.add(pasien);
+            }
+        }
+
+        logger.info("[PasienBoImpl.getDataPasien] End <<<<<<<");
+        return list;
+    }
+
+    @Override
+    public Boolean isUserPasienById(String userId, String password) throws GeneralBOException {
+        logger.info("[PasienBoImpl.isUserPasienById] Start >>>>>>>");
+
+        Boolean isFound = false;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pasien", userId);
+        hsCriteria.put("password", password);
+
+        List<ImSimrsPasienEntity> pasienEntities = null;
+        try {
+            pasienEntities = pasienDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.isUserPasienById] Error when search pasien by criteria "+e.getMessage());
+            throw new GeneralBOException("[PasienBoImpl.isUserPasienById] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0){
+            isFound = true;
+        }
+
+        logger.info("[PasienBoImpl.isUserPasienById] End <<<<<<<");
+        return isFound;
+    }
 
     public String getIdPasien(){
         logger.info("[PasienBoImpl.getIdPasien] Start >>>>>>>");
@@ -241,10 +391,12 @@ public class PasienBoImpl implements PasienBo {
         return id;
     }
 
-
-
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
     }
 
+    @Override
+    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+        return null;
+    }
 }

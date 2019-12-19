@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
@@ -8,6 +9,7 @@ import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -26,6 +28,16 @@ public class ObatPoliAction extends BaseMasterAction {
     private ObatPoli obatPoli;
     private ObatPoliBo obatPoliBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
+
+    private List<ObatPoli> listOfObatPoli = new ArrayList<>();
+
+    public List<ObatPoli> getListOfObatPoli() {
+        return listOfObatPoli;
+    }
+
+    public void setListOfObatPoli(List<ObatPoli> listOfObatPoli) {
+        this.listOfObatPoli = listOfObatPoli;
+    }
 
     public PermintaanObatPoli getPermintaanObatPoli() {
         return permintaanObatPoli;
@@ -104,6 +116,13 @@ public class ObatPoliAction extends BaseMasterAction {
 
         logger.info("[ObatPoliAction.initForm] start process >>>");
         ObatPoli obatPoli = new ObatPoli();
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+
+        if(CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        }
+
+        setPermintaanObatPoli(permintaanObatPoli);
         setObatPoli(obatPoli);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -149,7 +168,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveAddRequest(String idObat, BigInteger qty){
+    public String saveAddRequest(String request){
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
             String userLogin    = CommonUtil.userLogin();
@@ -158,8 +177,6 @@ public class ObatPoliAction extends BaseMasterAction {
             Timestamp updateTime= new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             ObatPoli obatPoli = new ObatPoli();
-            obatPoli.setIdObat(idObat);
-            obatPoli.setQty(qty);
             obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setBranchId(userArea);
 
@@ -173,8 +190,12 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setFlag("Y");
 
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+            try {
+                obatPoliBo.saveAddWithRequest(obatPoli, request);
+            }catch (JSONException e){
+                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+            }
 
-            obatPoliBo.saveAddWithRequest(obatPoli);
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -221,7 +242,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveReture(String idObat, BigInteger qty){
+    public String saveAddReture(String reture){
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
             String userLogin    = CommonUtil.userLogin();
@@ -230,8 +251,6 @@ public class ObatPoliAction extends BaseMasterAction {
             Timestamp updateTime= new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
-            obatPoli.setIdObat(idObat);
-            obatPoli.setQty(qty);
             obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setBranchId(userArea);
 
@@ -245,8 +264,11 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setFlag("Y");
 
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
-
-            obatPoliBo.saveReture(obatPoli);
+            try {
+                obatPoliBo.saveReture(obatPoli, reture);
+            }catch (JSONException e){
+                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+            }
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -255,44 +277,6 @@ public class ObatPoliAction extends BaseMasterAction {
             return ERROR;
         }
         return SUCCESS;
-    }
-
-    public String monitoringRequest(){
-        logger.info("[ObatPoliAction.monitoringRequest] start process >>>");
-        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
-        setPermintaanObatPoli(permintaanObatPoli);
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
-
-        logger.info("[ObatPoliAction.monitoringRequest] end process <<<");
-        return "obat_request";
-    }
-
-    public String searchMonitoringRequest() {
-        logger.info("[ObatPoliAction.searchMonitoringRequest] start process >>>");
-
-        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
-        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
-        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
-
-        try {
-            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[ObatPoliAction.searchMonitoringRequest] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
-        }
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", permintaanObatPoliList);
-
-        logger.info("[ObatPoliAction.searchMonitoringRequest] end process <<<");
-        return "obat_request";
     }
 
     public String saveKonfirmasiRequest(String idPermintaan){
@@ -387,6 +371,131 @@ public class ObatPoliAction extends BaseMasterAction {
         logger.info("[TindakanRawatAction.saveKonfirmasiReture] END process <<<");
 
         return SUCCESS;
+    }
+
+    public String searchStok() {
+        logger.info("[ObatPoliAction.searchStok] start process >>>");
+
+        ObatPoli obatPoli = getObatPoli();
+        List<ObatPoli> listObatPoli = new ArrayList();
+        obatPoli.setBranchId(CommonUtil.userBranchLogin());
+        obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+
+        try {
+            listObatPoli = obatPoliBoProxy.getObatPoliByCriteria(obatPoli);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatPoliAction.search] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listObatPoli);
+
+        logger.info("[ObatPoliAction.searchStok] end process <<<");
+        return "search";
+    }
+
+    public String searchPermintaanObatPoli() {
+        logger.info("[ObatPoliAction.searchRequest] start process >>>");
+
+        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatPoliAction.searchRequest] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", permintaanObatPoliList);
+
+        logger.info("[ObatPoliAction.searchRequest] end process <<<");
+        return "search";
+    }
+
+    public String searchPermintaanObatGudang() {
+        logger.info("[ObatPoliAction.searchRequest] start process >>>");
+
+        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatPoliAction.searchRequest] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", permintaanObatPoliList);
+
+        logger.info("[ObatPoliAction.searchRequest] end process <<<");
+        return "search";
+    }
+
+    public String getListObatPoli(){
+
+        logger.info("[ObatPoliAction.getListObatPoli] start process >>>");
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+        ObatPoli obatPoli = new ObatPoli();
+        obatPoli.setBranchId(CommonUtil.userBranchLogin());
+        obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+
+        try {
+            obatPoliList = obatPoliBoProxy.getObatPoliByCriteria(obatPoli);
+        }catch (GeneralBOException e){
+            logger.error("[ObatPoliAction.getListObatPoli] Error when get poli obat ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+
+        listOfObatPoli.addAll(obatPoliList);
+        logger.info("[ObatPoliAction.getListObatPoli] end process <<<");
+        return SUCCESS;
+
+    }
+
+    public List<ObatPoli> getStokObatPoli(String idObat){
+
+        logger.info("[ObatPoliAction.getStokObat] start process >>>");
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        ObatPoli obatpoli = new ObatPoli();
+        obatpoli.setIdObat(idObat);
+        obatpoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatpoli.setBranchId(branchId);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        try {
+            obatPoliList = obatPoliBo.getObatPoliByCriteria(obatpoli);
+        }catch (GeneralBOException e){
+            logger.error("[ObatPoliAction.getStokObat] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatPoliAction.getStokObat] end process >>>");
+        return obatPoliList;
+
     }
 
     @Override

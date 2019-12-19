@@ -44,6 +44,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
+            if (mapCriteria.get("password") != null){
+                criteria.add(Restrictions.eq("password", mapCriteria.get("password").toString()));
+            }
         }
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();
@@ -58,6 +61,28 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();
         return listOfResult;
+    }
+
+    public List<Object[]> getListAlamat(String desaId){
+
+        String sql = "SELECT \n" +
+                "\t\tdesa.desa_id,\n" +
+                "                desa.desa_name, \n" +
+                "                kecamatan.kecamatan_name, \n" +
+                "                kota.kota_name, \n" +
+                "                provinsi.provinsi_name \n" +
+                "                FROM \n" +
+                "                (SELECT * FROM im_hris_desa) desa INNER JOIN  \n" +
+                "                (SELECT * FROM im_hris_kecamatan) kecamatan ON desa.kecamatan_id = kecamatan.kecamatan_id INNER JOIN \n" +
+                "                (SELECT * FROM im_hris_kota) kota ON kecamatan.kota_id = kota.kota_id INNER JOIN \n" +
+                "                (SELECT * FROM im_hris_provinsi) provinsi ON kota.provinsi_id = provinsi.provinsi_id \n" +
+                "                WHERE desa.desa_id = :desaId";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("desaId", desaId)
+                .list();
+
+        return result;
     }
 
     public String getNextIdPasien(){
