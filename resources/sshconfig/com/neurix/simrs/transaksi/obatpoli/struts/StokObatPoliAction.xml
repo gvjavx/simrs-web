@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="obatpoli2" namespace="/obatpoli2" extends="struts-default, jasperreports-default, json-default">
+    <package name="stokobat" namespace="/stokobat" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,12 +69,11 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_obatpoli2"
+        <action name="*_stokobat"
                 class="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/obatpoli/searchObatPoli.jsp</result>
-            <result name="obat_request">/pages/com/neurix/simrs/transaksi/obatpoli/searchMonitoringRequest.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/stokobatpoli/searchStokObatPoli.jsp</result>
 
         </action>
 

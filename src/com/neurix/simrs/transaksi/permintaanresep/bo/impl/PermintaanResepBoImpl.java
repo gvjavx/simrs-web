@@ -193,7 +193,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 JSONObject obj = json.getJSONObject(i);
 
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                detail.setIdObat(obj.getString("Obat"));
+                detail.setIdObat(obj.getString("ID"));
                 detail.setQty(new BigInteger(obj.getString("Qty")));
                 detail.setKeterangan(obj.getString("Keterangan"));
                 detail.setCreatedDate(bean.getCreatedDate());

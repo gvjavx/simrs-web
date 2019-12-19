@@ -82,31 +82,33 @@ public class TransaksiObatAction extends BaseMasterAction {
         TransaksiObatDetail transaksiObatDetail = getTransaksiObatDetail();
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
-        if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep()))
-        {
-            try {
-                obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
-            } catch (GeneralBOException e){
-                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
-                addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. "+ e.getMessage());
+        if(transaksiObatDetail != null) {
+
+            if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
+                try {
+                    obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
+                } catch (GeneralBOException e) {
+                    logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                    addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+                }
             }
         }
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
+            // hitung total bayar
+            BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+            BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
 
-        // hitung total bayar
-        BigInteger hitungTotalResep     = hitungTotalBayar(obatDetailList);
-        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+            transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+            setTransaksiObatDetail(transaksiObatDetail);
 
-        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-        setTransaksiObatDetail(transaksiObatDetail);
+            session.removeAttribute("listOfResultResep");
+            session.setAttribute("listOfResultResep", obatDetailList);
 
-        session.removeAttribute("listOfResultResep");
-        session.setAttribute("listOfResultResep", obatDetailList);
+            logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
+            return "search";
 
-        logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
-        return "search";
     }
 
     public String pembayaran(){
