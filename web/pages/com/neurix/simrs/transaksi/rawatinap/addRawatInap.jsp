@@ -1760,7 +1760,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter) {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != '') {
 
             $('#save_lab').hide();
             $('#load_lab').show();

@@ -77,6 +77,8 @@
             <result name="add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>
             <result name="edit">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>
             <result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>
+            <result name="failure">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>
 
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->

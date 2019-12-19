@@ -29,7 +29,7 @@
             <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/department" action="saveDelete_department" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">View Rekruitmen</legend>
+                <legend align="left">View Pasienn</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
