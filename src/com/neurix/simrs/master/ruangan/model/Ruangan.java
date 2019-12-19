@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.ruangan.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -21,6 +22,7 @@ public class Ruangan extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaKelasRuangan;
 
     public String getIdRuangan() {
         return idRuangan;
@@ -144,5 +146,13 @@ public class Ruangan extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getNamaKelasRuangan() {
+        return namaKelasRuangan;
+    }
+
+    public void setNamaKelasRuangan(String namaKelasRuangan) {
+        this.namaKelasRuangan = namaKelasRuangan;
     }
 }

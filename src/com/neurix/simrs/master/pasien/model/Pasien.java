@@ -22,12 +22,21 @@ public class Pasien {
     private String profesi;
     private String noTelp;
     private String urlKtp;
+    private String alamat;
+    private String provinsiId;
+    private String kotaId;
+    private String kecamatanId;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private String provinsi;
+    private String kota;
+    private String kecamatan;
+    private String desa;
 
     public String getIdPasien() {
         return idPasien;
@@ -189,6 +198,70 @@ public class Pasien {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getProvinsiId() {
+        return provinsiId;
+    }
+
+    public void setProvinsiId(String provinsiId) {
+        this.provinsiId = provinsiId;
+    }
+
+    public String getKotaId() {
+        return kotaId;
+    }
+
+    public void setKotaId(String kotaId) {
+        this.kotaId = kotaId;
+    }
+
+    public String getKecamatanId() {
+        return kecamatanId;
+    }
+
+    public void setKecamatanId(String kecamatanId) {
+        this.kecamatanId = kecamatanId;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getDesa() {
+        return desa;
+    }
+
+    public void setDesa(String desa) {
+        this.desa = desa;
+    }
+
     @Override
     public String toString() {
         return "Pasien{" +
@@ -212,6 +285,14 @@ public class Pasien {
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", alamat='" + alamat + '\'' +
+                ", provinsiId='" + provinsiId + '\'' +
+                ", kotaId='" + kotaId + '\'' +
+                ", kecamatanId='" + kecamatanId + '\'' +
+                ", provinsi='" + provinsi + '\'' +
+                ", kota='" + kota + '\'' +
+                ", kecamatan='" + kecamatan + '\'' +
+                ", desa='" + desa + '\'' +
                 '}';
     }
 }

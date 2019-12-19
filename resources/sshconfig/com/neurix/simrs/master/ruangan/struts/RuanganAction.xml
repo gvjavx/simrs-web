@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="pasien" namespace="/pasien" extends="struts-default, jasperreports-default, json-default">
+    <package name="ruangan" namespace="/ruangan" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,16 +69,15 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_pasien"
-                class="com.neurix.simrs.master.pasien.action.PasienAction" method="{1}">
+        <action name="*_ruangan"
+                class="com.neurix.simrs.master.ruangan.action.RuanganAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/pasien/searchPasien.jsp</result>
-            <result name="add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>
-            <result name="edit">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>
-            <result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/ruangan/searchRuangan.jsp</result>
+            <result name="add">/pages/com/neurix/simrs/master/ruangan/addRuangan.jsp</result>
+            <result name="edit">/pages/com/neurix/simrs/master/ruangan/editRuangan.jsp</result>
+            <result name="delete">//pages/com/neurix/simrs/master/ruangan/deleteRuangan.jsp</result>
+            <result name="failure">/pages/com/neurix/simrs/master/ruangan/editRuangan.jsp</result>
 
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
@@ -95,10 +94,10 @@
         </action>
 
 
-        <action name="paging_displaytag_pasien"
-                class="com.neurix.simrs.master.pasien.action.PasienAction" method="paging">
+        <action name="paging_displaytag_ruangan"
+                class="com.neurix.simrs.master.ruangan.action.RuanganAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/pasien/searchPasien.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/ruangan/searchRuangan.jsp</result>
         </action>
 
     </package>

@@ -162,6 +162,8 @@
     <include file="sshconfig/com/neurix/simrs/master/kategorilab/struts/KategoriLabAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/lab/struts/LabAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/labdetail/struts/LabDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/RuanganAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/kelasruangan/struts/KelasRuanganAction.xml"/>
 
     <!--TRANSAKSI -->
     <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>
