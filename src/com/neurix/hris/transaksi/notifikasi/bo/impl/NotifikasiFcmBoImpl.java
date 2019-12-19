@@ -41,6 +41,7 @@ public class NotifikasiFcmBoImpl implements NotifikasiFcmBo {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             fcm.setUserId(bean.getUserId());
             fcm.setTokenFcm(bean.getTokenFcm());
+            fcm.setTokenExpo(bean.getTokenExpo());
             fcm.setUserName(bean.getUserName());
             fcm.setCreatedWho(bean.getCreatedWho());
             fcm.setCreatedDate(updateTime);

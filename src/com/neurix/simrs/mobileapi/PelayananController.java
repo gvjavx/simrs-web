@@ -13,6 +13,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
+import com.kinoroy.expo.push.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +37,7 @@ public class PelayananController implements ModelDriven<Object> {
     private String branchId;
     private String flag;
     private String action;
+    private String nip;
 
     public static Logger getLogger() {
         return logger;
@@ -126,6 +128,14 @@ public class PelayananController implements ModelDriven<Object> {
         this.action = action;
     }
 
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
     @Override
     public Object getModel() {
         return (listOfPelayanan != null ? listOfPelayanan : model);
@@ -139,10 +149,9 @@ public class PelayananController implements ModelDriven<Object> {
         List<Dokter> listDokter = new ArrayList<>();
         List<JadwalPelayananDTO> listJadwalPelayananDTO = new ArrayList<>();
 
-
         if (action.equalsIgnoreCase("show")) {
             try {
-                listJadwalPelayananDTO = jadwalShiftKerjaBoProxy.getJadwalPelayanan("", "", branchId, "", CommonUtil.convertStringToDate(tglCheckup));
+                listJadwalPelayananDTO = jadwalShiftKerjaBoProxy.getJadwalPelayanan(idPelayanan, "", branchId, nip, CommonUtil.convertStringToDate(tglCheckup));
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -171,11 +180,7 @@ public class PelayananController implements ModelDriven<Object> {
 
                 i++;
             }
-
-
         }
-
-
         if (action.equalsIgnoreCase("detail")) {
             try {
                 listDokter = dokterBoProxy.getByIdPelayanan(idPelayanan, branchId);
@@ -187,18 +192,6 @@ public class PelayananController implements ModelDriven<Object> {
 
                 }
             }
-
-//            try {
-//                listJadwalPelayananDTO = jadwalShiftKerjaBoProxy.getJadwalPelayanan(idPelayanan,);
-//            } catch (GeneralBOException e) {
-//                Long logId = null;
-//                try {
-////                                    logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "registrasi online index");
-//                } catch (GeneralBOException el) {
-//
-//                }
-//            }
-
         }
 
         logger.info("[PelayananController.create] end process POST / <<<");

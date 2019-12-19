@@ -6,6 +6,7 @@ public class NotifikasiFcm extends BaseModel{
     private String userId;
     private String userName;
     private String tokenFcm;
+    private String tokenExpo;
 
     public String getUserId() {
         return userId;
@@ -29,5 +30,13 @@ public class NotifikasiFcm extends BaseModel{
 
     public void setTokenFcm(String tokenFcm) {
         this.tokenFcm = tokenFcm;
+    }
+
+    public String getTokenExpo() {
+        return tokenExpo;
+    }
+
+    public void setTokenExpo(String tokenExpo) {
+        this.tokenExpo = tokenExpo;
     }
 }
