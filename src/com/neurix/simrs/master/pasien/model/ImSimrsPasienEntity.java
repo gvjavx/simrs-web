@@ -1,8 +1,10 @@
 package com.neurix.simrs.master.pasien.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.sql.Date;
+
+import java.util.Date;
 
 
 /**
@@ -16,7 +18,9 @@ public class ImSimrsPasienEntity implements Serializable{
     private String noBpjs;
     private String tempatLahir;
     private Date tglLahir;
-    private Long desaId;
+
+    private BigInteger desaId;
+
     private String jalan;
     private String suku;
     private String agama;
@@ -29,6 +33,30 @@ public class ImSimrsPasienEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private String provinsi;
+    private String kota;
+    private String kecamatan;
+    private String desa;
+
+    private String email;
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getIdPasien() {
         return idPasien;
@@ -86,11 +114,20 @@ public class ImSimrsPasienEntity implements Serializable{
         this.tglLahir = tglLahir;
     }
 
-    public Long getDesaId() {
+//    public String getDesaId() {
+//        return desaId;
+//    }
+//
+//    public void setDesaId(String desaId) {
+//        this.desaId = desaId;
+//    }
+
+
+    public BigInteger getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(Long desaId) {
+    public void setDesaId(BigInteger desaId) {
         this.desaId = desaId;
     }
 
@@ -190,6 +227,38 @@ public class ImSimrsPasienEntity implements Serializable{
         this.urlKtp = urlKtp;
     }
 
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getDesa() {
+        return desa;
+    }
+
+    public void setDesa(String desa) {
+        this.desa = desa;
+    }
+
     @Override
     public String toString() {
         return "ImSimrsPasienEntity{" +
@@ -213,6 +282,10 @@ public class ImSimrsPasienEntity implements Serializable{
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
+                ", provinsi='" + provinsi + '\'' +
+                ", kota='" + kota + '\'' +
+                ", kecamatan='" + kecamatan + '\'' +
+                ", desa='" + desa + '\'' +
                 '}';
     }
 }

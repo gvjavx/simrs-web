@@ -350,6 +350,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             setEnabledAddPasien(true);
         }
 
+        if(CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)){
+            HeaderDetailCheckup headerDetailCheckup1 = new HeaderDetailCheckup();
+            headerDetailCheckup1.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+            setHeaderDetailCheckup(headerDetailCheckup1);
+        }
+
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");

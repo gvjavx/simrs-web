@@ -10,6 +10,7 @@
 
     <bean id="pasienController" class="com.neurix.simrs.mobileapi.PasienController"
           p:pasienBoProxy-ref="pasienBoProxy"
+
     />
 
     <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
@@ -32,6 +33,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="isUserPasienById">readOnly</prop>
                 <prop key="getListComboPasien">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>

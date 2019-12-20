@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="permintaan" namespace="/permintaan" extends="struts-default, jasperreports-default, json-default">
+    <package name="obatpoli" namespace="/obatpoli" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,11 +69,11 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_permintaan"
-                class="com.neurix.simrs.transaksi.obatpoli.action.PermintaanObatPoliAction" method="{1}">
+        <action name="*_obatpoli"
+                class="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/obatpoli/searchPermintaanPoli.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/permintaanobatpoli/searchPermintaanObatPoli.jsp</result>
 
         </action>
 

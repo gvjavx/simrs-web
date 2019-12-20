@@ -51,6 +51,9 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
-
+        <many-to-one name="imSimrsKelasRuanganEntity" class="com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="id_kelas_ruangan"></column>
+        </many-to-one>
     </class>
 </hibernate-mapping>

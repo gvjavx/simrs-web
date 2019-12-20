@@ -39,7 +39,6 @@
             <filter-chain pattern="/dashboard.action" filters="none" />
             <filter-chain pattern="/dwr/**" filters="none" />
 
-            <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
             <filter-chain pattern="/mobileapi/cronproccess" filters="none" />
             <filter-chain pattern="/mobileapi/loginmobile" filters="none" />
             <filter-chain pattern="/mobileapi/loginmobile/*" filters="none" />
@@ -113,9 +112,11 @@
             <filter-chain pattern="/mobileapi/desa" filters="none" />
             <filter-chain pattern="/mobileapi/desa/*" filters="none"/>
             <filter-chain pattern="/mobileapi/desa/*/**" filters="none"/>
-            <filter-chain pattern="/mobileapi/pasien" filters="none" />
-            <filter-chain pattern="/mobileapi/pasien/*" filters="none"/>
-            <filter-chain pattern="/mobileapi/pasien/*/**" filters="none"/>
+
+            <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
+            <filter-chain pattern="/mobileapi/loginpasien" filters="none" />
+            <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
+            <filter-chain pattern="/mobileapi/loginpasien/*/**" filters="none" />
 
 
             <filter-chain pattern="/**/*"

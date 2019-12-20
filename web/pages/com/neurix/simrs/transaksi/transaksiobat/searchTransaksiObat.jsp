@@ -167,6 +167,9 @@
                                         <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
+                                        <a type="button" class="btn btn-info" href="initForm_transaksi.action">
+                                            <i class="fa fa-history"></i> Riwayat Transaksi
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -208,9 +211,9 @@
                             <tr bgcolor="#90ee90">
                                 <td>Atas Nama</td>
                                 <td>Obat</td>
-                                <td>Qty</td>
-                                <td>Harga Satuan</td>
-                                <td>Harga Total</td>
+                                <td align="center">Qty</td>
+                                <td align="right">Harga Satuan</td>
+                                <td align="right">Harga Total</td>
                                 <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
@@ -219,9 +222,15 @@
                                 <tr>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td><s:property value="harga"/></td>
-                                    <td><s:property value="totalHarga"/></td>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <td align="right"><script>var val = <s:property value="harga"/>;
+                                    if (val != null && val != '') {
+                                        document.write("Rp. " + formatRupiah(val) + ",-")
+                                    }</script></td>
+                                    <td align="right"> <script>var val = <s:property value="totalHarga"/>;
+                                    if (val != null && val != '') {
+                                        document.write("Rp. " + formatRupiah(val) + ",-")
+                                    }</script></td>
                                         <%--<td align="center">--%>
                                         <%--<s:if test="#listOfResultResep.approvalFlag == null">--%>
                                         <%--<s:if test="#listOfResultResep.request == true">--%>

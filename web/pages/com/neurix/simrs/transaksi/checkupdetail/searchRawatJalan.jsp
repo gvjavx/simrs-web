@@ -80,6 +80,21 @@
                                 </div>
                                 </s:if>
                                 <s:else>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Poli</label>
+                                        <div class="col-sm-4">
+                                            <s:action id="initComboPoli" namespace="/checkup"
+                                                      name="getComboPelayanan_checkup"/>
+                                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                      list="#initComboPoli.listOfPelayanan" id="poli"
+                                                      name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                      listValue="namaPelayanan"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2" theme="simple" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </s:else>
+                                <s:else>
                                     <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                 </s:else>
                                 <div class="form-group">

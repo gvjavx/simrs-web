@@ -122,6 +122,7 @@
         <action name="testbpjs/*" class="com.neurix.hris.mobileapi.TestBpjsController">
             <interceptor-ref name="mobileStack"/>
         </action>
+<<<<<<< HEAD
 
         <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">
             <interceptor-ref name="mobileStack"/>
@@ -150,7 +151,9 @@
         <action name="desa/*" class="com.neurix.simrs.mobileapi.DesaController">
             <interceptor-ref name="mobileStack"/>
         </action>
-        <action name="pasien/*" class="com.neurix.simrs.mobileapi.PasienController">
+
+        <action name="loginpasien/*" class="com.neurix.simrs.mobileapi.PasienController">
+
             <interceptor-ref name="mobileStack"/>
         </action>
     </package>

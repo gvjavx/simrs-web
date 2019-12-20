@@ -3,10 +3,12 @@ package com.neurix.simrs.master.ruangan.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,5 +57,12 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         List<MtSimrsRuanganEntity> results = criteria.list();
 
         return results;
+    }
+
+    public String getNextIdRuangan(){
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_ruangan')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
     }
 }

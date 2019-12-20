@@ -64,7 +64,7 @@
                 //$('#waiting_dialog').dialog('close');
                 $('#view_dialog_menu').dialog('close');
                 $('#info_dialog').dialog('close');
-                window.location.href = "<s:url action='search_rekruitmen.action'/>";
+                window.location.href = "<s:url action='search_pasien.action'/>";
             };
             window.close2 = function () {
                 //$('#waiting_dialog').dialog('close');
@@ -79,29 +79,25 @@
             }
 
             $.subscribe('beforeProcessSave', function (event, data) {
-                var capeg = document.getElementById("calonPegawaiId").value;
-                var namacalon = document.getElementById("calonPegawaiName").value;
-                var nohp = document.getElementById("noTelp").value;
+                var noBpjs = document.getElementById("no_bpjs").value;
+                // var idPasien = document.getElementById("id_pasien").value;
+                var noKtp = document.getElementById("no_ktp").value;
+                var namaPasien = document.getElementById("nama_pasien").value;
+                var jenisKelamin = document.getElementById("jenis_kelamin").value;
+                var tempatLahir = document.getElementById("tempat_Lahir").value;
+                var tglLahir = document.getElementById("tanggal_lahir").value;
+                var agama = document.getElementById("agama").value;
+                var noTelp = document.getElementById("no_telp").value;
+                var suku = document.getElementById("suku").value;
                 var alamat = document.getElementById("alamat").value;
                 var provinsi = document.getElementById("provinsi11").value;
                 var kabupaten = document.getElementById("kabupaten11").value;
                 var kecamatan = document.getElementById("kecamatan11").value;
                 var desa = document.getElementById("desa11").value;
-                var rtrw = document.getElementById("rtRw").value;
-                var tempatlhr = document.getElementById("tempatLahir").value;
-                var tgllhr = document.getElementById("tanggalLahir").value;
-                var statusklg = document.getElementById("statusKeluarga").value;
-                var clnjbtn = document.getElementById("positionId").value;
-                var unit = document.getElementById("branchId").value;
-                var statuspgw = document.getElementById("statusPegawai").value;
-                var tipepgw = document.getElementById("tipePegawai1").value;
-                var stsrkrtmn = document.getElementById("statusRekruitmen12").value;
-                var keterangan = document.getElementById("keterangan").value;
 
-
-                if (capeg != '' && namacalon != '' && nohp != '' && alamat != '' && provinsi != '' && kabupaten != '' &&
-                        kecamatan != '' && desa != '' && rtrw != '' && tempatlhr != '' && tgllhr != '' && clnjbtn != '' &&
-                        unit != '' && statuspgw != '' && tipepgw != '' && statusklg != '' && stsrkrtmn != '' && keterangan != '') {
+                if (noBpjs != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
+                        && tglLahir != '' && agama != '' && noTelp != '' && suku != '' && alamat != '' && provinsi != '' && kabupaten != ''  && kecamatan != ''
+                        && desa != '') {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -118,14 +114,32 @@
 
                     var msg = "";
 
-                    if (capeg == '') {
-                        msg += 'Field <strong>Calon Pegawai Id</strong> is required.' + '<br/>';
+                    if (noBpjs == '') {
+                        msg += 'Field <strong>No. BPJS</strong> is required.' + '<br/>';
                     }
-                    if (namacalon == '') {
-                        msg += 'Field <strong>Nama Calon Pegawai</strong> is required.' + '<br/>';
+                    if (noKtp == '') {
+                        msg += 'Field <strong>No. KTP</strong> is required.' + '<br/>';
                     }
-                    if (nohp == '') {
-                        msg += 'Field <strong>No Telepon</strong> is required.' + '<br/>';
+                    if (namaPasien == '') {
+                        msg += 'Field <strong>Nama Pasien</strong> is required.' + '<br/>';
+                    }
+                    if (jenisKelamin == '') {
+                        msg += 'Field <strong>Jenis Kelamin</strong> is required.' + '<br/>';
+                    }
+                    if (tempatLahir == '') {
+                        msg += 'Field <strong>Tempat Lahir</strong> is required.' + '<br/>';
+                    }
+                    if (tglLahir == '') {
+                        msg += 'Field <strong>Tgl Lahir</strong> is required.' + '<br/>';
+                    }
+                    if (agama == '') {
+                        msg += 'Field <strong>Agama</strong> is required.' + '<br/>';
+                    }
+                    if (noTelp == '') {
+                        msg += 'Field <strong>No. Telp</strong> is required.' + '<br/>';
+                    }
+                    if (suku == '') {
+                        msg += 'Field <strong>Suku</strong> is required.' + '<br/>';
                     }
                     if (alamat == '') {
                         msg += 'Field <strong>Alamat</strong> is required.' + '<br/>';
@@ -142,74 +156,45 @@
                     if (desa == '') {
                         msg += 'Field <strong>Desa</strong> is required.' + '<br/>';
                     }
-                    if (rtrw == '') {
-                        msg += 'Field <strong>RT RW</strong> is required.' + '<br/>';
-                    }
-                    if (tempatlhr == '') {
-                        msg += 'Field <strong>Tempat Lahir</strong> is required.' + '<br/>';
-                    }
-                    if (tgllhr == '') {
-                        msg += 'Field <strong>tanggal Lahir</strong> is required.' + '<br/>';
-                    }
-                    if (statusglg == '') {
-                        msg += 'Field <strong>Status Giling</strong> is required.' + '<br/>';
-                    }
-                    if (statusklg == '') {
-                        msg += 'Field <strong>Status Keluarga</strong> is required.' + '<br/>';
-                    }
-                    if (statuspgw == '') {
-                        msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
-                    }
-                    if (clnjbtn == '') {
-                        msg += 'Field <strong>Calon Jabatan</strong> is required.' + '<br/>';
-                    }
-                    if (unit == '') {
-                        msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
-                    }
-                    if (tipepgw == '') {
-                        msg += 'Field <strong>Tipe Pegawai</strong> is required.' + '<br/>';
-                    }
-                    if (stsrkrtmn == '') {
-                        msg += 'Field <strong>Status Rekruitmen</strong> is required.' + '<br/>';
-                    }
-                    if (keterangan == '') {
-                        msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
-                    }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
 
                     $.publish('showErrorValidationDialog');
 
                 }
             });
-            $.subscribe('beforeProcessSaveDocument', function (event, data) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $('#modal-edit-document').modal('hide');
-                    $('#myFormDocument12')[0].reset();
-                    alert('Record has been Deleted successfully.');
-                    loadRekruitmen();
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
-                }
-            });
-            $.subscribe('successDialogDocument', function (event, data) {
-                loadRekruitmen();
-            });
-            $.subscribe('loadfoto', function (event, data) {
-                loadFoto();
-            });
-            $.subscribe('beforeProcessDelete', function (event, data) {
-                if (confirm('Do you want to delete this record ?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
 
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
-                }
-            });
 
+
+            // $.subscribe('beforeProcessSaveDocument', function (event, data) {
+            //     if (confirm('Do you want to save this record?')) {
+            //         event.originalEvent.options.submit = true;
+            //         $('#modal-edit-document').modal('hide');
+            //         $('#myFormDocument12')[0].reset();
+            //         alert('Record has been Deleted successfully.');
+            //         loadRekruitmen();
+            //     } else {
+            //         // Cancel Submit comes with 1.8.0
+            //         event.originalEvent.options.submit = false;
+            //     }
+            // });
+            // $.subscribe('successDialogDocument', function (event, data) {
+            //     loadRekruitmen();
+            // });
+            // $.subscribe('loadfoto', function (event, data) {
+            //     loadFoto();
+            // });
+            // $.subscribe('beforeProcessDelete', function (event, data) {
+            //     if (confirm('Do you want to delete this record ?')) {
+            //         event.originalEvent.options.submit = true;
+            //         $.publish('showDialog');
+            //
+            //     } else {
+            //         // Cancel Submit comes with 1.8.0
+            //         event.originalEvent.options.submit = false;
+            //     }
+            // });
+            //
+            //
 
             $.subscribe('successDialog2', function (event, data) {
                 if (event.originalEvent.request.status == 200) {
@@ -294,20 +279,6 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>ID Pasien</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                                 name="pasien.idPasien" required="false"
-                                                                 readonly="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
                                                     <small>No KTP</small>
                                                 </label>
                                             </td>
@@ -369,7 +340,7 @@
                                                                     <i class="fa fa-calendar"></i>
                                                                 </div>
                                                                 <s:textfield id="tanggal_lahir"
-                                                                             name="pasien.tanggalLahir"
+                                                                             name="pasien.tglLahir"
                                                                              cssClass="form-control pull-right"
                                                                              required="false"/>
                                                             </div>
@@ -387,13 +358,28 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:select list="#{'Islam':'Islam','Kristen':'Kristen'}" cssStyle="margin-top: 7px"
+                                                    <s:select list="#{'Islam':'Islam','Kristen':'Kristen','Hindu':'Hindu','Budha':'Budha'}" cssStyle="margin-top: 7px"
                                                               id="agama" name="pasien.agama"
                                                               headerKey="" headerValue="[Select one]"
                                                               cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label">
+                                                    <small>No. Telp</small>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:textfield id="no_telp" type="text" name="pasien.noTelp" required="false"
+                                                                 readonly="false" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </table>
+                                            </td>
+                                        </tr>
+
                                         <tr>
                                             <td>
                                                 <label class="control-label">
@@ -623,149 +609,8 @@
                                                 }
                                             });
                                         </script>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Rt / Rw :</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="rt_rw" name="pasien.rtRw" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
                                         <br>
                                         <br>
-                                        <tr>
-                                        <td>
-                                            <label class="control-label">
-                                                <h4>Data Penanggung Jawab</h4>
-                                            </label>
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Nama</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_penanggung" name="pasien.rtRw" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>No Telp</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="no_telp" name="rekruitmen.rtRw" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Hubungan</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="hubungan" name="rekruitmen.rtRw" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <h4>Data Kunjungan</h4>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Poli</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="poli" name="pasien.idPoli" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Dokter</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="dokter" name="pasien.idDokter" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Penjamin</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="penjamin" name="pasien.penjamin" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Kunjungan</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="kunjungan" name="pasien.kunjungan" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Perujuk/Asal</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="perujuk" name="pasien.rtRw" required="true"
-                                                                 disabled="false" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-
                                     </table>
                                     <br><br>
 
@@ -787,7 +632,7 @@
                                                 <td>
                                                     <button type="button" class="btn btn-danger"
                                                             onclick="window.location.href='<s:url
-                                                                    action="add_rekruitmen.action"/>'">
+                                                                    action="add_pasien.action"/>'">
                                                         <i class="fa fa-refresh"></i> Reset
                                                     </button>
                                                 </td>
@@ -955,66 +800,6 @@
                 $("#profile-image1").attr("src",listdata.fotoUpload);
             })
         };
-        window.loadRekruitmen = function () {
-            //alert(nip);
-            $('.rekruitmenStudyTable').find('tbody').remove();
-            $('.rekruitmenStudyTable').find('thead').remove();
-            $('.rekruitmenDocumentTable').find('tbody').remove();
-            $('.rekruitmenDocumentTable').find('thead').remove();
-            dwr.engine.setAsync(false);
-            var tmp_table_study = "";
-            RekruitmenAction.searchRekruitmenStudy(function (listdata) {
-                tmp_table_study = "<thead style='font-size: 14px' ><tr class='active'>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>View</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Jenjang</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Nama Sekolah</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tahun Akhir</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nilai</th>" +
-                        "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    tmp_table_study += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-study' data ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' + item.tipeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.stTahunAwal + '</td>' +
-                            '<td align="center">' + item.stTahunAkhir + '</td>' +
-                            '<td align="center">' + item.nilai + '</td>' +
-                            "</tr>";
-                });
-                $('.rekruitmenStudyTable').append(tmp_table_study);
-            });
-            dwr.engine.setAsync(false);
-            var tmp_table_document = "";
-            var calonPegawaiId = document.getElementById("calonPegawaiId").value;
-            RekruitmenAction.searchRekruitmenDocument(calonPegawaiId, function (listdata) {
-                tmp_table_document = "<thead style='font-size: 14px' ><tr class='active'>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>View</th>" +
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Document</th>" +
-                        "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    tmp_table_document += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.documentName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' + item.documentName + '</td>' +
-                            "</tr>";
-                });
-                $('.rekruitmenDocumentTable').append(tmp_table_document);
-            });
-        };
         $('#btnSaveStudy').click(function () {
             var url = $('#myFormStudy').attr('action');
             var data = $('#myFormStudy').serialize();
@@ -1036,7 +821,6 @@
                                 alert('Data Successfully Added');
                                 $('#modal-edit-study').modal('hide');
                                 $('#myFormStudy')[0].reset();
-                                loadRekruitmen();
                             });
                         }
                     } else{

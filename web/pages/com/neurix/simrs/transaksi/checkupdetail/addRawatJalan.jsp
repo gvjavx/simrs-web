@@ -840,33 +840,42 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
-                        <div class="col-md-7">
-                            <s:action id="initJenis" namespace="/jenisobat"
-                                      name="getListJenisObat_jenisobat"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initJenis.listOfJenisObat" id="resep_jenis"
-                                      listKey="idJenisObat"
-                                      onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"
-                                      listValue="namaJenisObat"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_rep_jenis"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                                      <%--name="getListJenisObat_jenisobat"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--list="#initJenis.listOfJenisObat" id="resep_jenis"--%>
+                                      <%--listKey="idJenisObat"--%>
+                                      <%--onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"--%>
+                                      <%--listValue="namaJenisObat"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_rep_jenis"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"
-                                    onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">
-                                <option value="">[select one]</option>
-                            </select>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"--%>
+                                    <%--onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">--%>
+                                <%--<option value="">[select one]</option>--%>
+                            <%--</select>--%>
+                            <s:action id="initObat" namespace="/obat"
+                                      name="getListObat_obat"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initObat.listOfObat" id="resep_nama_obat"
+                                      listKey="idObat + '|' + namaObat + '|' + qty"
+                                      onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)"
+                                      listValue="namaObat"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -875,6 +884,12 @@
                                id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                            <div class="col-md-7">
+                                <input style="margin-top: 7px" class="form-control" type="number" min="1" id="resep_stok" readonly>
+                            </div>
+                        </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -890,12 +905,13 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"
-                                    class="form-control" id="resep_keterangan" style="margin-top: 7px">
-                                <option value="">[Select One]</option>
-                                <option value="2 x 1 /Hari">2 x 1 /Hari</option>
-                                <option value="3 x 1 /Hari">3 x 1 /Hari</option>
-                            </select>
+                            <%--<select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"--%>
+                                    <%--class="form-control" id="resep_keterangan" style="margin-top: 7px">--%>
+                                <%--<option value="">[Select One]</option>--%>
+                                <%--<option value="2 x 1 /Hari">2 x 1 /Hari</option>--%>
+                                <%--<option value="3 x 1 /Hari">3 x 1 /Hari</option>--%>
+                            <%--</select>--%>
+                            <textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px" oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -922,7 +938,7 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
                         <thead>
-                        <td>Jenis</td>
+                        <td>ID</td>
                         <td>Obat</td>
                         <td>Qty</td>
                         <td>Keterangan</td>
@@ -937,7 +953,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-arrow-right"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_head"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1215,7 +1231,7 @@
         } else if (back == 5) {
             desti = "#pos_obat";
         } else if (back == 6) {
-            window.location.href = 'search_checkupdetail.action';
+            window.location.href = 'initForm_checkupdetail.action';
         }else if (back == 9){
             desti = '#pos_rssep';
         }
@@ -1980,16 +1996,19 @@
     }
 
     function addObatToList(){
-        var jenis = $('#resep_jenis').val();
+//        var jenis = $('#resep_jenis').val();
         var obat  = $('#resep_nama_obat').val();
         var ket   = $('#resep_keterangan').val();
         var qty   = $('#resep_qty').val();
         var cek   = false;
+        var id    = obat.split('|')[0];
+        var nama  = obat.split('|')[1];
+        var stokApotek  = obat.split('|')[2];
         var data = $('#tabel_rese_detail').tableToJSON();
 
-        if(jenis != '' && obat != '' && ket != '' && qty != ''){
+        if(obat != '' && ket != '' && qty != ''){
             $.each(data, function (i, item) {
-                if(item.Obat == obat){
+                if(item.ID == id){
                     cek = true;
                 }
             });
@@ -1997,12 +2016,12 @@
             if(cek){
                 $('#warning_data_exits').show().fadeOut(5000);
             }else{
-                var row = '<tr id='+obat+'>' +
-                        '<td>'+jenis+'</td>' +
-                        '<td>'+obat+'</td>' +
+                var row = '<tr id='+id+'>' +
+                        '<td>'+id+'</td>' +
+                        '<td>'+nama+'</td>' +
                         '<td>'+qty+'</td>' +
                         '<td>'+ket+'</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
                 $('#body_detail').append(row);
             }
@@ -2208,6 +2227,20 @@
             })
         })
     }
+
+    function setStokObatApotek(select) {
+
+        var idx = select.selectedIndex;
+        var idObat = select.options[idx].value;
+        console.log(idObat);
+        var stok = 0;
+        var id    = idObat.split('|')[0];
+        var nama  = idObat.split('|')[1];
+        var stokApotek  = idObat.split('|')[2];
+
+        $('#resep_stok').val(stokApotek);
+    }
+
 
 
 </script>
