@@ -8,6 +8,10 @@
           p:pasienBoProxy-ref="pasienBo"
     />
 
+    <bean id="pasienController" class="com.neurix.simrs.mobileapi.pasien.PasienController"
+          p:pasienBoProxy-ref="pasienBo"
+    />
+
     <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
          p:pasienDao-ref="pasienDao"
     />

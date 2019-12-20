@@ -92,8 +92,9 @@
             <filter-chain pattern="/mobileapi/historycuti" filters="none"/>
 
             <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
+            <filter-chain pattern="/mobileapi/loginpasien" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
-
+            <filter-chain pattern="/mobileapi/loginpasien/*/**" filters="none" />
 
             <filter-chain pattern="/**/*"
                           filters="
