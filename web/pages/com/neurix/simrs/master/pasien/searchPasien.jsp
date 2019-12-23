@@ -112,36 +112,6 @@ To change this template use File | Settings | File Templates.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Poli</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:action id="initComboStatus" namespace="/rekruitmen" name="searchStatusRekruitmen_rekruitmen"/>
-                                                    <s:select cssStyle="margin-top: 7px" list="#initComboStatus.listComboStatusRekruitmen" id="poli" name="pasien.poli" listKey="statusRekruitmentId" listValue="statusRekruitmentName"
-                                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>Status</small>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:action id="initComboBranch" namespace="/admin/branch"
-                                                              name="initComboBranch_branch"/>
-                                                    <s:select cssStyle="margin-top: 7px" list="#initComboBranch.listOfComboBranch" id="status"
-                                                              name="rekruitmen.branchId" onchange="listPosisi()"
-                                                              listKey="branchId" listValue="branchName" headerKey=""
-                                                              headerValue="[Select one]" cssClass="form-control"/>
-                                                </table>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
                                                 <label class="control-label"><small>Alamat</small></label>
                                             </td>
                                             <td>
@@ -201,6 +171,13 @@ To change this template use File | Settings | File Templates.
                                                                title="Rekruitmen ">
                                                         <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                     </sj:dialog>
+
+                                                    <sj:dialog id="view_dialog_user" openTopics="showDialogMenuUser" modal="true"
+                                                               height="300" width="500" autoOpen="false"
+                                                               title="Edit for Mobile User">
+                                                        <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                    </sj:dialog>
+
                                                     <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
                                                     <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
@@ -231,6 +208,8 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="idPasien" sortable="true" title="Pasien ID"  />
                                                         <display:column property="nama" sortable="true" title="Nama"  />
                                                         <display:column property="jenisKelamin" sortable="true" title="Gender"  />
+                                                        <display:column property="email" sortable="true" title="Email" />
+                                                        <display:column property="password" sortable="true" title="Password" />
                                                         <display:column property="noKtp" sortable="true" title="No. KTP" />
                                                         <display:column property="noBpjs" sortable="true" title="No. BPJS" />
                                                         <display:column property="tempatLahir" sortable="true" title="Temp. Lahir" />
@@ -239,6 +218,39 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="agama" sortable="true" title="Agama" />
                                                         <display:column property="noTelp" sortable="true" title="No. Telp" />
                                                         <display:column property="flag" sortable="true" title="flag" />
+
+
+                                                        <display:column media="html" title="User" style="text-align:center;font-size:9">
+                                                            <s:if test="#attr.row.password == null">
+                                                                <s:url var="urlViewDelete" namespace="/pasien" action="view_pasien" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
+                                                                    <s:param name="tipe">create</s:param>
+                                                                </s:url>
+                                                                <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
+                                                                    <i class="fa fa-plus"></i> Create User
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                </sj:a>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:url var="urlViewDelete" namespace="/pasien" action="view_pasien" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
+                                                                    <s:param name="tipe">edit</s:param>
+                                                                </s:url>
+                                                                <sj:a cssClass="btn btn-primary" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
+                                                                   <i class="fa fa-edit"></i> Edit Password
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                </sj:a>
+                                                            </s:else>
+                                                        </display:column>
+                                                        <display:column media="html" title="Print Card" style="text-align:center;font-size:9">
+                                                            <s:url var="urlViewDelete" namespace="/pasien" action="printCard_pasien" escapeAmp="false">
+                                                                <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
+                                                            </s:url>
+                                                            <s:a cssClass="btn btn-danger" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_printer_new">
+                                                            </s:a>
+                                                        </display:column>
+
                                                     </display:table>
                                                 </td>
                                             </tr>
