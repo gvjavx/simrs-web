@@ -43,6 +43,7 @@
                 <prop key="saveAddWithRequest">PROPAGATION_REQUIRED</prop>
                 <prop key="saveRequest">PROPAGATION_REQUIRED</prop>
                 <prop key="saveReture">PROPAGATION_REQUIRED</prop>
+                <prop key="saveApproveDiterima">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

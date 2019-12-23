@@ -2,6 +2,7 @@ package com.neurix.simrs.master.pelayanan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -24,6 +25,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         if (mapCriteria != null) {
             if (mapCriteria.get("id_pelayanan") != null){
                 criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
+            }
+            if (mapCriteria.get("not_poli") != null){
+                criteria.add(Restrictions.ne("notPoli", mapCriteria.get("not_poli").toString()));
             }
         }
         criteria.add(Restrictions.eq("flag", "Y"));

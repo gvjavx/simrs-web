@@ -17,6 +17,28 @@
             $('#obat_poli_open').addClass('menu-open');
         });
 
+        function showModal(select) {
+            if (select == 1) {
+                $('#req_nama_obat').val('').trigger('change');
+                $('#req_qty').val('');
+                $('#req_stok').val('');
+                $('#req_stok_apotek').val('');
+                $('#req_qty').val('');
+                $('#body_request').html('');
+                $('#req_nama_obat').attr("onchange", "var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)");
+                $('#req_nama_pelayanan').attr("onchange", "var warn =$('#war_req_pelayanan').is(':visible'); if (warn){$('#cor_req_pelayanan').show().fadeOut(3000);$('#war_req_pelayanan').hide()}; setObatPoli(this)");
+                $('#modal-request-obat').modal('show');
+            } else if (select == 2) {
+                $('#ret_nama_obat, #ret_nama_pelayanan').val('').trigger('change');
+                $('#ret_qty').val('');
+                $('#ret_stok').val('');
+                $('#ret_qty').val('');
+                $('#body_reture').html('');
+                $('#modal-reture-obat').modal('show');
+            }
+        }
+
+
     </script>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
@@ -53,7 +75,8 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatPoliForm" method="post" namespace="/obatpoli"
-                                    action="searchPermintaanObatPoli_obatpoli.action" theme="simple" cssClass="form-horizontal">
+                                    action="searchPermintaanObatPoli_obatpoli.action" theme="simple"
+                                    cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
@@ -122,11 +145,13 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i> Request Obat</a></li>
-                                                <li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Reture Obat</a></li>
+                                                <li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i>
+                                                    Request Obat</a></li>
+                                                <li onclick="showModal(2)"><a href="#"><i class="fa fa-refresh"></i>
+                                                    Reture Obat</a></li>
                                             </ul>
                                         </div>
-                                        <%--<a class="btn btn-primary" onclick="showModal(1)"><i class="fa fa-plus"></i>--%>
+                                            <%--<a class="btn btn-primary" onclick="showModal(1)"><i class="fa fa-plus"></i>--%>
                                             <%--Request Obat</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_obatpoli.action">
                                             <i class="fa fa-refresh"></i> Reset
@@ -189,31 +214,23 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
                                 <td>ID Permintaan</td>
-                                <td>Nama Obat</td>
-                                <td>Qty</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatInap">
+                            <s:iterator value="#session.listOfResult" status="listObatPoli" id="listObatPoli" var="listObatPoli">
                                 <tr>
-                                    <td><s:property value="idObat"/></td>
-                                    <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td><s:property value="keterangan"/></td>
+                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="idPermintaanObatPoli"/></td>
+                                    <td><s:if test="#listObatPoli.keterangan == 'Menunggu Konfirmasi'">
+                                        <label class="label label-warning"><s:property value="keterangan"/></label>
+                                    </s:if><s:else>
+                                        <label class="label label-success"><s:property value="keterangan"/></label>
+                                    </s:else></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow"
-                                             onclick="showRequestReture(1,'<s:property value="idObat"/>','<s:property
-                                                     value="namaObat"/>','<s:property value="qty"/>')"
-                                             src="<s:url value="/pages/images/request.png"/>"
-                                             style="cursor: pointer; height: 25px; width: 25px;">
-                                        <img border="0" class="hvr-grow"
-                                             onclick="showRequestReture(2,'<s:property value="idObat"/>','<s:property
-                                                     value="namaObat"/>','<s:property value="qty"/>')"
-                                             src="<s:url value="/pages/images/return.ico"/>"
-                                             style="cursor: pointer; height: 25px; width: 25px;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -242,17 +259,40 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Tujuan Pelayanan</label>
                         <div class="col-md-7">
-                            <s:action id="initObat" namespace="/obat"
-                                      name="getListObat_obat"/>
+                            <s:action id="initTujuan" namespace="/obatpoli"
+                                      name="getTujuanPelayanan_obatpoli"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initObat.listOfObat" id="req_nama_obat"
-                                      listKey="idObat + '|' + namaObat + '|' + qty"
-                                      onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"
-                                      listValue="namaObat"
+                                      list="#initTujuan.listOfTujuanPelayanan" id="req_nama_pelayanan"
+                                      listKey="idPelayanan + '|' + namaPelayanan"
+                                      listValue="namaPelayanan"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_req_pelayanan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_req_pelayanan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <%--<s:action id="initObat" namespace="/obat"--%>
+                            <%--name="getListObat_obat"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                            <%--list="#initObat.listOfObat" id="req_nama_obat"--%>
+                            <%--listKey="idObat + '|' + namaObat + '|' + qty"--%>
+                            <%--onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"--%>
+                            <%--listValue="namaObat"--%>
+                            <%--headerKey="" headerValue="[Select one]"--%>
+                            <%--cssClass="form-control select2"/>--%>
+                            <select class="form-control select2" style="width: 100%" id="req_nama_obat"
+                                    onchange="setStokObatPoli(this)">
+                                <option value="">[Select One]</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -290,7 +330,10 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">
-                            <button class="btn btn-success pull-right" style="margin-top: 7px"
+                            <button class="btn btn-danger pull-right" style="margin-top: 7px" onclick="resetAll(1)"><i
+                                    class="fa fa-refresh"></i> Reset
+                            </button>
+                            <button class="btn btn-success pull-right" style="margin-top: 7px; margin-right: 4px"
                                     onclick="addObatToList(1)"><i class="fa fa-plus"></i> Tambah
                             </button>
                         </div>
@@ -300,13 +343,16 @@
                 </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Data obat sudah tersedia..!
+                    <p id="msg-req"></p>
                 </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Request Obat
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Request Obat, Tujuan <b><span
+                        id="req_tujuan"></span></b>
                 </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_request">
                         <thead>
+                        <%--<td>Id_Tujuan</td>--%>
+                        <%--<td>Tujuan</td>--%>
                         <td>ID</td>
                         <td>Nama Obat</td>
                         <td>Qty</td>
@@ -315,6 +361,7 @@
                         <tbody id="body_request">
                         </tbody>
                     </table>
+                    <input type="hidden" id="req_id_pelayanan">
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -348,6 +395,26 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tujuan Pelayanan</label>
+                        <div class="col-md-7">
+                            <s:action id="initTujuan" namespace="/obatpoli"
+                                      name="getTujuanPelayanan_obatpoli"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initTujuan.listOfTujuanPelayanan" id="ret_nama_pelayanan"
+                                      listKey="idPelayanan + '|' + namaPelayanan"
+                                      onchange="var warn =$('#war_ret_pelayanan').is(':visible'); if (warn){$('#cor_ret_pelayanan').show().fadeOut(3000);$('#war_ret_pelayanan').hide()}"
+                                      listValue="namaPelayanan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_ret_pelayanan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_ret_pelayanan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <s:action id="initObatPoli" namespace="/obatpoli"
@@ -367,12 +434,6 @@
                                id="cor_ret_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Stok Obat Apotek</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<input class="form-control" style="margin-top: 7px" readonly id="ret_stok_apotek">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Obat Poli</label>
                         <div class="col-md-7">
@@ -396,7 +457,10 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">
-                            <button class="btn btn-success pull-right" style="margin-top: 7px"
+                            <button class="btn btn-danger pull-right" style="margin-top: 7px" onclick="resetAll(2)"><i
+                                    class="fa fa-refresh"></i> Reset
+                            </button>
+                            <button class="btn btn-success pull-right" style="margin-top: 7px; margin-right: 4px"
                                     onclick="addObatToList(2)"><i class="fa fa-plus"></i> Tambah
                             </button>
                         </div>
@@ -406,13 +470,16 @@
                 </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits_ret">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Data obat sudah tersedia..!
+                    <p id="msg-ret"></p>
                 </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Reture Obat
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Reture Obat, Tujuan <b><span
+                        id="ret_tujuan"></span></b>
                 </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_reture">
                         <thead>
+                        <%--<td>Id_Tujuan</td>--%>
+                        <%--<td>Tujuan</td>--%>
                         <td>ID</td>
                         <td>Nama Obat</td>
                         <td>Qty</td>
@@ -421,6 +488,7 @@
                         <tbody id="body_reture">
                         </tbody>
                     </table>
+                    <input type="hidden" id="ret_id_pelayanan">
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -445,34 +513,15 @@
         window.location.reload(true);
     }
 
-    function showModal(select) {
-        if (select == 1) {
-            $('#req_nama_obat').val('').trigger('change');
-            $('#req_qty').val('');
-            $('#req_stok').val('');
-            $('#req_stok_apotek').val('');
-            $('#req_qty').val('');
-            $('#body_request').html('');
-            $('#modal-request-obat').modal('show');
-        } else if (select == 2) {
-            $('#ret_nama_obat').val('').trigger('change');
-            $('#ret_qty').val('');
-            $('#ret_stok').val('');
-            $('#ret_qty').val('');
-            $('#body_reture').html('');
-            $('#modal-reture-obat').modal('show');
-        }
-    }
-
     function setStokObatPoli(select) {
 
         var idx = select.selectedIndex;
         var idObat = select.options[idx].value;
         console.log(idObat);
         var stok = 0;
-        var id    = idObat.split('|')[0];
-        var nama  = idObat.split('|')[1];
-        var stokApotek  = idObat.split('|')[2];
+        var id = idObat.split('|')[0];
+        var nama = idObat.split('|')[1];
+        var stokApotek = idObat.split('|')[2];
 
         if (idObat != '') {
             ObatPoliAction.getStokObatPoli(id, function (response) {
@@ -482,7 +531,7 @@
                             if (item.idObat == id) {
                                 stok = item.qty;
                             }
-                        }else{
+                        } else {
                             stok = 0;
                         }
                     });
@@ -494,104 +543,156 @@
         $('#req_stok_apotek').val(stokApotek);
     }
 
-    function setStokPoli(select){
+    function setStokPoli(select) {
         var idx = select.selectedIndex;
         var idObat = select.options[idx].value;
-        var id    = idObat.split('|')[0];
-        var nama  = idObat.split('|')[1];
-        var stok  = idObat.split('|')[2];
+        var id = idObat.split('|')[0];
+        var nama = idObat.split('|')[1];
+        var stok = idObat.split('|')[2];
 
         $('#ret_stok').val(stok);
     }
 
-    function addObatToList(select){
+    function setObatPoli(select) {
+        var idx = select.selectedIndex;
+        var poli = select.options[idx].value;
+        var idPel = poli.split('|')[0];
+        var namePel = poli.split('|')[1];
+        var option = "<option value=''>[Select One]</option>";
 
-        if(select == 1){
+        if (poli != '') {
+            ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
+                if (response != null) {
+                    console.log(response);
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qty + "'>" + item.namaObat + "</option>";
+                    });
+                }
+            });
+        } else {
+            option = "";
+        }
+        $('#req_nama_obat').html(option);
+    }
+
+    function addObatToList(select) {
+
+        if (select == 1) {
             var obat = $('#req_nama_obat').val();
-            var qty  = $('#req_qty').val();
-            var stok  = $('#req_stok_apotek').val();
+            var qty = $('#req_qty').val();
+            var stok = $('#req_stok_apotek').val();
             var data = $('#tabel_request').tableToJSON();
+            var tujuan = $('#req_nama_pelayanan').val();
+            var id  = "";
+            var nama  = "";
+            var idTujuan  = "";
+            var namaTujuan  = "";
 
-            var id    = obat.split('|')[0];
-            var nama  = obat.split('|')[1];
+            var cek = false;
 
-            var cek     = false;
+            if (obat != '' && qty != '') {
 
-            if(obat != '' && qty != ''){
+               id = obat.split('|')[0];
+               nama = obat.split('|')[1];
+               idTujuan = tujuan.split('|')[0];
+               namaTujuan = tujuan.split('|')[1];
 
-                if(parseInt(qty) <= parseInt(stok)){
+                if (parseInt(qty) <= parseInt(stok)) {
+
                     $.each(data, function (i, item) {
-                        if(item.ID  == id){
+                        if (item.ID == id) {
                             cek = true;
                         }
                     });
 
-                    if(cek){
+                    if (cek) {
                         $('#warning_data_exits').show().fadeOut(5000);
-                    }else{
-                        var row = '<tr id='+id+'>' +
-                                '<td>'+id+'</td>' +
-                                '<td>'+nama+'</td>' +
-                                '<td>'+qty+'</td>' +
+                        $('#msg-req').text("Data obat sudah tersedia..!");
+                    } else {
+                        $('#req_nama_pelayanan').attr('disabled', true);
+                        $('#req_tujuan').html(namaTujuan);
+                        $('#req_id_pelayanan').val(idTujuan);
+                        var row = '<tr id=' + id + '>' +
+                                '<td>' + id + '</td>' +
+                                '<td>' + nama + '</td>' +
+                                '<td>' + qty + '</td>' +
                                 '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                                 '</tr>';
                         $('#body_request').append(row);
                     }
-                }else{
+                } else {
                     $('#warning_request').show().fadeOut(5000);
                     $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
                 }
-            }else{
-                if(obat == ''){
+            } else {
+                if (tujuan == '') {
+                    $('#war_req_pelayanan').show();
+                }
+                if (obat == '' || obat == null) {
                     $('#war_req_obat').show();
                 }
-                if(qty == '' || qty <= 0){
+                if (qty == '' || qty <= 0) {
                     $('#war_req_qty').show();
                 }
                 $('#warning_request').show().fadeOut(5000);
                 $('#msg_request').text('Silahkan cek kembali data inputan...!');
             }
-        }else if(select == 2){
+        } else if (select == 2) {
 
             var obat = $('#ret_nama_obat').val();
-            var qty  = $('#ret_qty').val();
-            var stok  = $('#ret_stok').val();
+            var qty = $('#ret_qty').val();
+            var stok = $('#ret_stok').val();
             var data = $('#tabel_reture').tableToJSON();
+            var tujuan = $('#ret_nama_pelayanan').val();
+            var id = "";
+            var nama = "";
+            var idTujuan  = "";
+            var namaTujuan  = "";
 
-            var id    = obat.split('|')[0];
-            var nama  = obat.split('|')[1];
+            var cek = false;
 
-            var cek     = false;
+            if (obat != '' && qty != '') {
 
-            if(obat != '' && qty != ''){
+                id = obat.split('|')[0];
+                nama = obat.split('|')[1];
+                idTujuan = tujuan.split('|')[0];
+                namaTujuan = tujuan.split('|')[1];
 
-                if(parseInt(qty) <= parseInt(stok) ){
+                if (parseInt(qty) <= parseInt(stok)) {
+
                     $.each(data, function (i, item) {
-                        if(item.ID  == id){
+                        if (item.ID == id) {
                             cek = true;
                         }
                     });
 
-                    if(cek){
+                    if (cek) {
                         $('#warning_data_exits_ret').show().fadeOut(5000);
-                    }else{
-                        var row = '<tr id='+id+'>' +
-                                '<td>'+id+'</td>' +
-                                '<td>'+nama+'</td>' +
-                                '<td>'+qty+'</td>' +
+                        $('#msg-ret').text("Data obat sudah tersedia..!");
+                    } else {
+                        $('#ret_nama_pelayanan').attr('disabled', true);
+                        $('#ret_tujuan').html(namaTujuan);
+                        $('#ret_id_pelayanan').val(idTujuan);
+                        var row = '<tr id=' + id + '>' +
+                                '<td>' + id + '</td>' +
+                                '<td>' + nama + '</td>' +
+                                '<td>' + qty + '</td>' +
                                 '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                                 '</tr>';
                         $('#body_reture').append(row);
                     }
-                }else{
+                } else {
                     $('#warning_reture').show().fadeOut(5000);
                     $('#msg_reture').text('Jumlah reture tidak boleh melebihi stok...!');
                 }
-            }else{
-                if(obat == ''){
+            } else {
+                if (tujuan == '') {
+                    $('#war_ret_pelayanan').show();
+                }
+                if (obat == '' || obat == null) {
                     $('#war_ret_obat').show();
                 }
-                if(qty == '' || qty <= 0){
+                if (qty == '' || qty <= 0) {
                     $('#war_ret_qty').show();
                 }
                 $('#warning_reture').show().fadeOut(5000);
@@ -601,15 +702,16 @@
 
     }
 
-    function delRowObat(id){
-        $('#'+id).remove();
+    function delRowObat(id) {
+        $('#' + id).remove();
     }
 
     function saveAddRequest(select) {
 
-        if(select == 1){
-            var data        = $('#tabel_request').tableToJSON();
-            var stringData  = JSON.stringify(data);
+        if (select == 1) {
+            var data = $('#tabel_request').tableToJSON();
+            var idTujuan = $('#req_id_pelayanan').val();
+            var stringData = JSON.stringify(data);
 
             if (stringData != '[]') {
 
@@ -617,7 +719,7 @@
                 $('#load_request').show();
 
                 dwr.engine.setAsync(true);
-                ObatPoliAction.saveAddRequest(stringData, {
+                ObatPoliAction.saveAddRequest(stringData, idTujuan,{
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
@@ -636,10 +738,11 @@
             } else {
                 $('#warning_request').show().fadeOut(5000);
             }
-        }else if(select == 2){
+        } else if (select == 2) {
 
-            var data        = $('#tabel_reture').tableToJSON();
-            var stringData  = JSON.stringify(data);
+            var data = $('#tabel_reture').tableToJSON();
+            var idTujuan = $('#ret_id_pelayanan').val();
+            var stringData = JSON.stringify(data);
 
             if (stringData != '[]') {
 
@@ -647,7 +750,7 @@
                 $('#load_reture').show();
 
                 dwr.engine.setAsync(true);
-                ObatPoliAction.saveAddReture(stringData, {
+                ObatPoliAction.saveAddReture(stringData, idTujuan,{
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
@@ -668,6 +771,27 @@
             }
         }
 
+    }
+
+    function resetAll(select){
+        if(select == 1){
+            $('#req_nama_obat').val('').trigger('change');
+            $('#req_qty').val('');
+            $('#req_stok_apotek').val('');
+            $('#req_stok').val('');
+            $('#req_nama_pelayanan').val('').trigger('change').attr('disabled',false);
+            $('#body_request').html('');
+            $('#req_id_pelayanan').val('');
+            $('#req_tujuan').html('');
+        }else if (select == 2){
+            $('#ret_nama_obat').val('').trigger('change');
+            $('#ret_qty').val('');
+            $('#ret_stok').val('');
+            $('#ret_nama_pelayanan').val('').trigger('change').attr('disabled', false);
+            $('#body_reture').html('');
+            $('#ret_id_pelayanan').val('');
+            $('#ret_tujuan').html('');
+        }
     }
 
 

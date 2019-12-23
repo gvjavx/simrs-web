@@ -46,7 +46,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("idTransaksiObatDetail"));
+        criteria.addOrder(Order.asc("idObat"));
 
         List<ImtSimrsTransaksiObatDetailEntity> results = criteria.list();
 

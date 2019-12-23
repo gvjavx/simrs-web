@@ -20,6 +20,16 @@ public class ObatPoli {
 
     private String branchId;
 
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
     public String getBranchId() {
         return branchId;
     }

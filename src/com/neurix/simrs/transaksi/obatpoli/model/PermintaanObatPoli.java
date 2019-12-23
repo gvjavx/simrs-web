@@ -40,6 +40,26 @@ public class PermintaanObatPoli{
 
     private String tujuanPelayanan;
 
+    private String qtyApprove;
+
+    private String qtyPoli;
+
+    public String getQtyPoli() {
+        return qtyPoli;
+    }
+
+    public void setQtyPoli(String qtyPoli) {
+        this.qtyPoli = qtyPoli;
+    }
+
+    public String getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(String qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
+
     public String getTujuanPelayanan() {
         return tujuanPelayanan;
     }
