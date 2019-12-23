@@ -279,6 +279,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setNik(headerCheckup.getNoKtp());
                         detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
+                        detailCheckup.setTinggi(headerCheckup.getTinggi());
+                        detailCheckup.setBerat(headerCheckup.getBerat());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());

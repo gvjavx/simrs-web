@@ -60,6 +60,25 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String urlKtp;
     private Boolean enabledPoli;
 
+    private String tinggi;
+    private String berat;
+
+    public String getTinggi() {
+        return tinggi;
+    }
+
+    public void setTinggi(String tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    public String getBerat() {
+        return berat;
+    }
+
+    public void setBerat(String berat) {
+        this.berat = berat;
+    }
+
     public Boolean getEnabledPoli() {
         return enabledPoli;
     }
