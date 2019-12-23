@@ -39,7 +39,6 @@
             <filter-chain pattern="/dashboard.action" filters="none" />
             <filter-chain pattern="/dwr/**" filters="none" />
 
-            <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
             <filter-chain pattern="/mobileapi/cronproccess" filters="none" />
             <filter-chain pattern="/mobileapi/loginmobile" filters="none" />
             <filter-chain pattern="/mobileapi/loginmobile/*" filters="none" />
@@ -91,6 +90,10 @@
             <filter-chain pattern="/mobileapi/payrol" filters="none"/>
             <filter-chain pattern="/mobileapi/payrol/*" filters="none"/>
             <filter-chain pattern="/mobileapi/historycuti" filters="none"/>
+
+            <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
+            <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

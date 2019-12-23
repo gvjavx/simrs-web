@@ -93,21 +93,30 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
             }
         }
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
-            // hitung total bayar
-            BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-            BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
-            transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-            setTransaksiObatDetail(transaksiObatDetail);
+        // hitung total bayar
+        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
 
-            session.removeAttribute("listOfResultResep");
-            session.setAttribute("listOfResultResep", obatDetailList);
+        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+        setTransaksiObatDetail(transaksiObatDetail);
 
-            logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
-            return "search";
+        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
+
+        if (jml != null && !jml.equals(0)){
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+        } else {
+            transaksiObatDetail.setTotalBayar(jml);
+        }
+
+        setTransaksiObatDetail(transaksiObatDetail);
+        session.removeAttribute("listOfResultResep");
+        session.setAttribute("listOfResultResep", obatDetailList);
+        logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
+        return "search";
 
     }
 

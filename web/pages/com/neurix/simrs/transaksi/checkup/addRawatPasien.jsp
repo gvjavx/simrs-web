@@ -142,6 +142,8 @@
         }
 
 
+
+
     </script>
 </head>
 
@@ -181,6 +183,20 @@
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                                 <%--<button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Pasien Baru</button>--%>
                             </div>
+                            <div id="alert-pasien" style="display: none;" class="alert alert-warning alert-dismissible">
+                                <button type="button" class="close" onclick="closeAlert()" aria-hidden="true">×</button>
+                                <div id="nama-pasien"></div>
+                                <div id="tgl-periksa"></div>
+                                <hr>
+                                <table style="color: #fff;">
+                                    <tr>
+                                        <td><strong>Alergi</strong></td><td><strong>&nbsp;:&nbsp;</strong></td><td><div id="alergi"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Diagnosa Terakhir</strong></td><td><strong>&nbsp;:&nbsp;</strong></td><td><div id="diagnosa"></div></td>
+                                    </tr>
+                                </table>
+                            </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -202,16 +218,9 @@
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
-
-                                                    <%--<s:action id="initSelectPasien" namespace="/pasien"--%>
-                                                              <%--name="getListComboSelectPasien_pasien"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--list="#initSelectPasien.listOfpasien" id="id_pasien"--%>
-                                                              <%--name="headerCheckup.idPasien" listKey="idPasien+,+nama"--%>
-                                                              <%--listValue="idPasien" onchange="$(this).css('border','')"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-
+                                                <%--<button class="btn btn-success" onclick="alertPasien()" style="cursor: pointer">--%>
+                                                    <%--alert--%>
+                                                <%--</button>--%>
                                             </div>
 
                                             <script type="application/javascript">
@@ -253,6 +262,9 @@
                                                     },
                                                     updater: function (item) {
                                                         var selectedObj = mapped[item];
+
+                                                        alertPasien(selectedObj.id);
+
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
                                                         $('#jenis_kelamin').val(selectedObj.sex);
@@ -664,6 +676,46 @@
         $('#dokter').html(option);
     }
 
+    function alertPasien(noPasien) {
+
+        var namapasien  = "";
+        var diagnosa    = "";
+        var tglperiksa  = "";
+        var alergi      = "";
+
+//        alert(noPasien);
+        CheckupAction.initAlertPasien(noPasien, function(response){
+            if(response != null && response.namaPasien != null){
+
+                namapasien  = "<h4><i class=\"fa fa-user\"></i> "+ response.namaPasien +"</h4>";
+                diagnosa    = response.diagnosa;
+                tglperiksa  = "Pemeriksaan terakhir pasien pada : <strong>"+ response.stTgl +"</strong>";
+
+                if (response.listOfAlergi != null){
+                    $.each(response.listOfAlergi, function (i, item) {
+                        if(alergi != ""){
+                            alergi = alergi + ", "+ item
+                        }  else {
+                            alergi = item
+                        }
+                    });
+                }
+
+                $("#tgl-periksa").html(tglperiksa);
+                $("#nama-pasien").html(namapasien);
+                $("#alergi").html(alergi);
+                $("#diagnosa").html(diagnosa);
+                $("#alert-pasien").removeAttr("style");
+            } else {
+                closeAlert();
+            }
+        });
+    }
+
+    function closeAlert() {
+        $("#alert-pasien").attr("style","display:none");
+    }
+
     var functions, mapped;
     $('#provinsi').typeahead({
         minLength: 1,
@@ -693,6 +745,8 @@
             return namaAlat;
         }
     });
+
+
 </script>
 <script type='text/javascript'>
     var functions, mapped;

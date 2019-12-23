@@ -44,6 +44,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
+            if (mapCriteria.get("password") != null){
+                criteria.add(Restrictions.eq("password", mapCriteria.get("password").toString()));
+            }
         }
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();

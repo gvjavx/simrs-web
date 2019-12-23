@@ -194,6 +194,54 @@
                     </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user-md"></i> Tinggi & Berat Badan</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <label>Tinggi</label>
+                                    <s:textfield id="tinggi" name="headerDetailCheckup.tinggi" cssClass="form-control"/>
+                                    <span class="input-group-addon">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <label>Berat Badan</label>
+                                    <s:textfield id="berat" name="headerDetailCheckup.berat" cssClass="form-control"/>
+                                    <span class="input-group-addon">Kg</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <br>
+                            <button onclick="#" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                        </div>
+                    </div>
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user-md"></i> Alergi</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Alergi
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Alergi</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_alergi">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
                     </div>
@@ -1023,6 +1071,7 @@
         listLab();
         listObat();
         listResepPasien();
+        listAlergi();
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
@@ -1231,7 +1280,7 @@
         } else if (back == 5) {
             desti = "#pos_obat";
         } else if (back == 6) {
-            window.location.href = 'search_checkupdetail.action';
+            window.location.href = 'initForm_checkupdetail.action';
         }else if (back == 9){
             desti = '#pos_rssep';
         }
@@ -2162,6 +2211,23 @@
         });
 
         $('#body_detail_rep').html(table);
+    }
+
+    function listAlergi() {
+
+        var table = "";
+        var noCheckup = $("#no_checkup").val();
+        CheckupAction.getListAlergi( noCheckup, function (response) {
+            if(response != null){
+                $.each(response, function (i, item) {
+                    table += "<tr>" +
+                        "<td>"+item.alergi+"</td>" +
+                        "<td align=\"center\"></td>" +
+                        "</tr>";
+                });
+            }
+        });
+        $('#body_alergi').html(table);
     }
 
     function editObatResep(id, idObat, qty, ket, namaObat){

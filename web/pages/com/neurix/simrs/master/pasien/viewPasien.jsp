@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/RekruitmenAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/RekruitmenAction.js"/>'></script>--%>
     <script type="text/javascript">
         function callSearch() {
             //$('#waiting_dialog').dialog('close');

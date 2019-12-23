@@ -115,6 +115,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setCreatedWho(data.getCreatedWho());
             pasien.setLastUpdate(data.getLastUpdate());
             pasien.setLastUpdateWho(data.getLastUpdateWho());
+            pasien.setEmail(data.getEmail());
+            pasien.setPassword(data.getPassword());
             list.add(pasien);
         }
 
@@ -352,6 +354,74 @@ public class PasienBoImpl implements PasienBo {
         return list;
     }
 
+    @Override
+    public Boolean isUserPasienById(String userId, String password) throws GeneralBOException {
+        logger.info("[PasienBoImpl.isUserPasienById] Start >>>>>>>");
+
+        Boolean isFound = false;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pasien", userId);
+        hsCriteria.put("password", password);
+
+        List<ImSimrsPasienEntity> pasienEntities = null;
+        try {
+            pasienEntities = pasienDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.isUserPasienById] Error when search pasien by criteria "+e.getMessage());
+            throw new GeneralBOException("[PasienBoImpl.isUserPasienById] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0){
+            isFound = true;
+        }
+
+        logger.info("[PasienBoImpl.isUserPasienById] End <<<<<<<");
+        return isFound;
+    }
+
+    @Override
+    public void saveEditPassword(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveEditPassword] Start >>>>>>>");
+
+        List<ImSimrsPasienEntity> pasienEntities = getEntityByCriteria(bean);
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0)
+        {
+            ImSimrsPasienEntity pasienEntity = pasienEntities.get(0);
+            pasienEntity.setPassword(bean.getPassword());
+            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pasienEntity.setLastUpdate(bean.getLastUpdate());
+            try {
+                pasienDao.updateAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.isUserPasienById] Error when update pasien. "+e.getMessage());
+                throw new GeneralBOException("[PasienBoImpl.isUserPasienById] Error when update pasien. "+e.getMessage());
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveEditPassword] End <<<<<<<");
+    }
+
+    @Override
+    public void saveCreateUserPasien(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveCreateUserPasien] Start >>>>>>>");
+
+        List<ImSimrsPasienEntity> pasienEntities = getEntityByCriteria(bean);
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0)
+        {
+            ImSimrsPasienEntity pasienEntity = pasienEntities.get(0);
+            pasienEntity.setPassword("123");
+            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pasienEntity.setLastUpdate(bean.getLastUpdate());
+            try {
+                pasienDao.updateAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.saveCreateUserPasien] Error when update pasien. "+e.getMessage());
+                throw new GeneralBOException("[PasienBoImpl.saveCreateUserPasien] Error when update pasien. "+e.getMessage());
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveCreateUserPasien] End <<<<<<<");
+    }
 
     public String getIdPasien(){
         logger.info("[PasienBoImpl.getIdPasien] Start >>>>>>>");
@@ -366,8 +436,6 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.getIdPasien] End <<<<<<<");
         return id;
     }
-
-
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;

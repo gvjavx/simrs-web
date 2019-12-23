@@ -1,107 +1,61 @@
-package com.neurix.simrs.transaksi.checkup.model;
+package com.neurix.simrs.mobileapi.pasien.model;
+
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by Toshiba on 08/11/2019.
+ * Created by Toshiba on 07/11/2019.
  */
-public class ItSimrsHeaderChekupEntity implements Serializable {
-    private String noCheckup;
+public class Pasien implements Serializable, Comparable<Pasien> {
+
     private String idPasien;
     private String nama;
     private String jenisKelamin;
     private String noKtp;
+    private String noBpjs;
     private String tempatLahir;
-    private Date tglLahir;
-    private BigInteger desaId;
+    private String tglLahir;
+    private String desaId;
     private String jalan;
     private String suku;
     private String agama;
     private String profesi;
     private String noTelp;
-    private String idJenisPeriksaPasien;
-    private String keteranganKeluar;
     private String urlKtp;
-    private String branchId;
+    private String alamat;
+    private String provinsiId;
+    private String kotaId;
+    private String kecamatanId;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String jenisKunjungan;
-    private String namaPenanggung;
-    private String hubunganKeluarga;
-    private String rujuk;
-    private String urlDocRujuk;
-    private String tinggi;
-    private String berat;
 
-    public String getUrlDocRujuk() {
-        return urlDocRujuk;
+    private String provinsi;
+    private String kota;
+    private String kecamatan;
+    private String desa;
+
+    private String password;
+    private String email;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setUrlDocRujuk(String urlDocRujuk) {
-        this.urlDocRujuk = urlDocRujuk;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getTinggi() {
-        return tinggi;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTinggi(String tinggi) {
-        this.tinggi = tinggi;
-    }
-
-    public String getBerat() {
-        return berat;
-    }
-
-    public void setBerat(String berat) {
-        this.berat = berat;
-    }
-
-    public String getNamaPenanggung() {
-        return namaPenanggung;
-    }
-
-    public void setNamaPenanggung(String namaPenanggung) {
-        this.namaPenanggung = namaPenanggung;
-    }
-
-    public String getHubunganKeluarga() {
-        return hubunganKeluarga;
-    }
-
-    public void setHubunganKeluarga(String hubunganKeluarga) {
-        this.hubunganKeluarga = hubunganKeluarga;
-    }
-
-    public String getRujuk() {
-        return rujuk;
-    }
-
-    public void setRujuk(String rujuk) {
-        this.rujuk = rujuk;
-    }
-
-    public String getJenisKunjungan() {
-        return jenisKunjungan;
-    }
-
-    public void setJenisKunjungan(String jenisKunjungan) {
-        this.jenisKunjungan = jenisKunjungan;
-    }
-
-    public String getNoCheckup() {
-        return noCheckup;
-    }
-
-    public void setNoCheckup(String noCheckup) {
-        this.noCheckup = noCheckup;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getIdPasien() {
@@ -136,6 +90,14 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
         this.noKtp = noKtp;
     }
 
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
+
     public String getTempatLahir() {
         return tempatLahir;
     }
@@ -144,19 +106,19 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
         this.tempatLahir = tempatLahir;
     }
 
-    public Date getTglLahir() {
+    public String getTglLahir() {
         return tglLahir;
     }
 
-    public void setTglLahir(Date tglLahir) {
+    public void setTglLahir(String tglLahir) {
         this.tglLahir = tglLahir;
     }
 
-    public BigInteger getDesaId() {
+    public String getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(BigInteger desaId) {
+    public void setDesaId(String desaId) {
         this.desaId = desaId;
     }
 
@@ -200,36 +162,12 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
         this.noTelp = noTelp;
     }
 
-    public String getIdJenisPeriksaPasien() {
-        return idJenisPeriksaPasien;
-    }
-
-    public void setIdJenisPeriksaPasien(String idJenisPeriksaPasien) {
-        this.idJenisPeriksaPasien = idJenisPeriksaPasien;
-    }
-
-    public String getKeteranganKeluar() {
-        return keteranganKeluar;
-    }
-
-    public void setKeteranganKeluar(String keteranganKeluar) {
-        this.keteranganKeluar = keteranganKeluar;
-    }
-
     public String getUrlKtp() {
         return urlKtp;
     }
 
     public void setUrlKtp(String urlKtp) {
         this.urlKtp = urlKtp;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 
     public String getFlag() {
@@ -280,33 +218,106 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getProvinsiId() {
+        return provinsiId;
+    }
+
+    public void setProvinsiId(String provinsiId) {
+        this.provinsiId = provinsiId;
+    }
+
+    public String getKotaId() {
+        return kotaId;
+    }
+
+    public void setKotaId(String kotaId) {
+        this.kotaId = kotaId;
+    }
+
+    public String getKecamatanId() {
+        return kecamatanId;
+    }
+
+    public void setKecamatanId(String kecamatanId) {
+        this.kecamatanId = kecamatanId;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getKota() {
+        return kota;
+    }
+
+    public void setKota(String kota) {
+        this.kota = kota;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getDesa() {
+        return desa;
+    }
+
+    public void setDesa(String desa) {
+        this.desa = desa;
+    }
+
     @Override
     public String toString() {
-        return "ItSimrsHeaderChekupEntity{" +
-                "noCheckup='" + noCheckup + '\'' +
-                ", idPasien='" + idPasien + '\'' +
+        return "Pasien{" +
+                "idPasien='" + idPasien + '\'' +
                 ", nama='" + nama + '\'' +
                 ", jenisKelamin='" + jenisKelamin + '\'' +
                 ", noKtp='" + noKtp + '\'' +
+                ", noBpjs='" + noBpjs + '\'' +
                 ", tempatLahir='" + tempatLahir + '\'' +
-                ", tglLahir=" + tglLahir +
-                ", desaId=" + desaId +
+                ", tglLahir='" + tglLahir + '\'' +
+                ", desaId='" + desaId + '\'' +
                 ", jalan='" + jalan + '\'' +
                 ", suku='" + suku + '\'' +
                 ", agama='" + agama + '\'' +
                 ", profesi='" + profesi + '\'' +
                 ", noTelp='" + noTelp + '\'' +
-                ", idJenisPeriksaPasien='" + idJenisPeriksaPasien + '\'' +
-                ", keteranganKeluar='" + keteranganKeluar + '\'' +
                 ", urlKtp='" + urlKtp + '\'' +
-                ", branchId='" + branchId + '\'' +
                 ", flag='" + flag + '\'' +
                 ", action='" + action + '\'' +
                 ", createdDate=" + createdDate +
                 ", createdWho='" + createdWho + '\'' +
                 ", lastUpdate=" + lastUpdate +
                 ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                ", jenisKunjungan='" + jenisKunjungan + '\'' +
+                ", alamat='" + alamat + '\'' +
+                ", provinsiId='" + provinsiId + '\'' +
+                ", kotaId='" + kotaId + '\'' +
+                ", kecamatanId='" + kecamatanId + '\'' +
+                ", provinsi='" + provinsi + '\'' +
+                ", kota='" + kota + '\'' +
+                ", kecamatan='" + kecamatan + '\'' +
+                ", desa='" + desa + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Pasien o) {
+        return 0;
     }
 }

@@ -79,6 +79,8 @@
             <result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>
             <result name="success_save_add">/pages/com/neurix/simrs/master/pasien/addPasien.jsp</result>
             <result name="failure">/pages/com/neurix/simrs/master/pasien/editPasien.jsp</result>
+            <result name="create_user">/pages/com/neurix/simrs/master/pasien/createUserPasien.jsp</result>
+            <result name="edit_password">/pages/com/neurix/simrs/master/pasien/editPasswordPasien.jsp</result>
 
             <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
             <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
@@ -86,7 +88,12 @@
 
 
 
-
+            <result name="print_card" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/katuPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
 
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->

@@ -297,6 +297,8 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckupAlergi"/>
 
       <!--Team Dokter -->
       <create creator="new">
@@ -392,6 +394,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.ObatPoli"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.AlertPasien"/>
 
   </allow>
 
