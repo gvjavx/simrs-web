@@ -8,6 +8,9 @@ import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -36,6 +39,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     private CheckupDetailDao checkupDetailDao;
     private DokterTeamDao dokterTeamDao;
+    private HeaderCheckupDao headerCheckupDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -182,6 +186,29 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 logger.error("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup ",e);
                 throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update detail checkup "+e.getMessage());
             }
+
+            // update tgl kluar if selesai
+            if ("selesai".equalsIgnoreCase(bean.getStatus()))
+            {
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setNoCheckup(entity.getNoCheckup());
+                List<ItSimrsHeaderChekupEntity> headerChekupEntities = getListEntityCheckup(headerCheckup);
+                if (headerChekupEntities != null && headerChekupEntities.size() > 0)
+                {
+                    ItSimrsHeaderChekupEntity headerChekupEntity = headerChekupEntities.get(0);
+                    headerChekupEntity.setLastUpdate(bean.getLastUpdate());
+                    headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    headerChekupEntity.setAction("U");
+                    headerChekupEntity.setTglKeluar(bean.getLastUpdate());
+
+                    try {
+                        headerCheckupDao.updateAndSave(headerChekupEntity);
+                    } catch (HibernateException e){
+                        logger.error("[CheckupDetailBoImpl.saveEdit] Error when update checkup ",e);
+                        throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update checkup "+e.getMessage());
+                    }
+                }
+            }
         }
 
         RawatInap rawatInap = new RawatInap();
@@ -229,6 +256,24 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+    private List<ItSimrsHeaderChekupEntity> getListEntityCheckup(HeaderCheckup bean) throws GeneralBOException{
+        logger.info("[CheckupDetailBoImpl.saveEdit] Start >>>>>>>");
+        List<ItSimrsHeaderChekupEntity> entities = null;
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", bean.getNoCheckup());
+
+        try {
+            entities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.saveEdit] ERROR when get by criteria"+ e.getMessage());
+            throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] ERROR when get by criteria"+ e.getMessage());
+        }
+
+        logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+        return entities;
     }
 
     @Override
@@ -519,5 +564,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setRuanganDao(RuanganDao ruanganDao) {
         this.ruanganDao = ruanganDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
     }
 }

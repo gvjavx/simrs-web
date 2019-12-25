@@ -21,6 +21,7 @@
           p:pelayananDao-ref="pelayananDao"
           p:dokterTeamDao-ref="dokterTeamDao"
           p:ruanganDao-ref="ruanganDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -22,6 +22,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -623,6 +624,54 @@ public class CheckupBoImpl implements CheckupBo {
 
         logger.info("[CheckupBoImpl.getAlertPasien] End <<<<<<<<");
         return alertPasien;
+    }
+
+    @Override
+    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.listOfRekamMedic] Start >>>>>>>>");
+
+        List<ItSimrsHeaderChekupEntity> headerChekupEntities = null;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pasien", idPasien);
+        hsCriteria.put("tgl_keluar_not_null", "Y");
+
+        try {
+            headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.listOfRekamMedic] Error when get checkup criteria ",e);
+            throw new GeneralBOException("[CheckupBoImpl.listOfRekamMedic] Error when get checkup criteria "+e.getMessage());
+        }
+
+        List<AlertPasien> alertPasienList = new ArrayList<>();
+        if (headerChekupEntities != null && headerChekupEntities.size() > 0){
+            AlertPasien alertPasien;
+            for (ItSimrsHeaderChekupEntity headerChekupEntity : headerChekupEntities)
+            {
+                alertPasien = new AlertPasien();
+                alertPasien.setNoCheckup(headerChekupEntity.getNoCheckup());
+                alertPasien.setNamaPasien(headerChekupEntity.getNama());
+
+                AlertPasien alertPasienDiagnosa = new AlertPasien();
+                try {
+                    alertPasienDiagnosa = headerCheckupDao.gelLastDiagnosa(headerChekupEntity.getNoCheckup(), "");
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.listOfRekamMedic] Error when get diagnosa ",e);
+                    throw new GeneralBOException("[CheckupBoImpl.listOfRekamMedic] Error when get diagnosa "+e.getMessage());
+                }
+
+                if (alertPasienDiagnosa != null){
+                    alertPasien.setDiagnosa(alertPasienDiagnosa.getDiagnosa());
+                }
+
+                Long time = headerChekupEntity.getTglKeluar().getTime();
+                Date date = new Date(time);
+                alertPasien.setStTgl(date.toString());
+                alertPasienList.add(alertPasien);
+            }
+        }
+
+        logger.info("[CheckupBoImpl.listOfRekamMedic] End <<<<<<<<");
+        return alertPasienList;
     }
 
     private String getNextIdAlergi(){

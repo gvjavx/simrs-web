@@ -21,5 +21,6 @@ public interface CheckupBo {
     public void saveEditAlergi(CheckupAlergi bean) throws GeneralBOException;
     public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) throws GeneralBOException;
     public AlertPasien getAlertPasien(String idPasien, String branchId) throws GeneralBOException;
+    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException;
     Long saveErrorMessage(String message, String s);
 }

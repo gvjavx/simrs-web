@@ -63,6 +63,16 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String tinggi;
     private String berat;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getTinggi() {
         return tinggi;
     }
