@@ -158,7 +158,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            Tambah Rawat IGD Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -172,8 +172,8 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-plus"></i> Inputan Data Pasien</h3>
                     </div>
-                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup"
-                            action="saveAdd_checkup.action" theme="simple">
+                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/igd"
+                            action="saveAddRawatIgd_igd.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pasien" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -484,7 +484,7 @@
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control select2"/>
+                                                          cssClass="form-control select2" disabled="true"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -607,7 +607,6 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_checkup.action';
                                                                                      }
                                                                             }"
                                     >
@@ -618,7 +617,8 @@
                                     <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                height="250" width="600" autoOpen="false" title="Error Dialog"
                                                buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                                'OK':function() { $('#error_dialog').dialog('close');
+                                                                                 window.location.href = 'initForm_igd.action';}
                                                                             }"
                                     >
                                         <div class="alert alert-danger alert-dismissible">
@@ -641,9 +641,12 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    var idPelayanan = $('#poli').val();
+
     $(document).ready(function () {
 
-        $('#pendaftaran').addClass('active');
+        $('#igd').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -678,13 +681,15 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
+
+        listDokter(idPelayanan);
     });
 
     function listDokter(idPelayanan){
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
+//        var idx = idPelayanan.selectedIndex;
+//        var idPoli = idPelayanan.options[idx].value;
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function(response){
+        CheckupAction.listOfDokter(idPelayanan, function(response){
             option = "<option value=''>[Select One]</option>";
             if (response != null){
                 $.each(response, function (i, item) {
@@ -694,6 +699,7 @@
                option = option;
             }
         });
+
         $('#dokter').html(option);
     }
 

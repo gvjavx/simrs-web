@@ -20,6 +20,51 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idDokter;
+    private String branchId;
+    private String isUmum;
+    private String status;
+    private Timestamp tglAntrian;
+    private String tujuanPelayanan;
+
+    public String getTujuanPelayanan() {
+        return tujuanPelayanan;
+    }
+
+    public void setTujuanPelayanan(String tujuanPelayanan) {
+        this.tujuanPelayanan = tujuanPelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIsUmum() {
+        return isUmum;
+    }
+
+    public void setIsUmum(String isUmum) {
+        this.isUmum = isUmum;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getTglAntrian() {
+        return tglAntrian;
+    }
+
+    public void setTglAntrian(Timestamp tglAntrian) {
+        this.tglAntrian = tglAntrian;
+    }
 
     public String getIdDokter() {
         return idDokter;

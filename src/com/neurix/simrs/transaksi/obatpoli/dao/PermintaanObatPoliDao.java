@@ -54,7 +54,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         return results;
     }
 
-    public List<MtSimrsPermintaanObatPoliEntity> getListPermintaanObatPoliEntity(PermintaanObatPoli bean){
+    public List<MtSimrsPermintaanObatPoliEntity> getListPermintaanObatPoliEntity(PermintaanObatPoli bean, boolean isPoli){
         List<MtSimrsPermintaanObatPoliEntity> listOfResults = new ArrayList<>();
 
         String branchId = "%";
@@ -91,37 +91,73 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             flag = bean.getFlag();
         }
 
-        String SQL = "SELECT\n" +
-                "pop.id_permintaan_obat_poli,\n" +
-                "pop.id_obat,\n" +
-                "pop.id_pelayanan,\n" +
-                "pop.id_approval_obat,\n" +
-                "pop.qty,\n" +
-                "pop.flag,\n" +
-                "pop.action,\n" +
-                "pop.created_date,\n" +
-                "pop.created_who,\n" +
-                "pop.last_update,\n" +
-                "pop.last_update_who,\n" +
-                "pop.tujuan_pelayanan\n" +
-                "FROM mt_simrs_permintaan_obat_poli pop\n" +
-                "INNER JOIN\n" +
-                "(\n" +
-                "SELECT pop.id_permintaan_obat_poli\n" +
-                "FROM mt_simrs_permintaan_obat_poli pop\n" +
-                "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
-                "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
-                "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
-                "WHERE pop.flag LIKE :flag\n" +
-                "AND ato.branch_id LIKE :branchId\n" +
-                "AND tod.id_obat LIKE :idObat\n" +
-                "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
-                "AND pop.id_pelayanan LIKE :idPelayanan\n" +
-                "AND og.id_jenis_obat LIKE :idJenisObat\n" +
-                "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                "AND pop.tujuan_pelayanan LIKE :idTujuan\n" +
-                "GROUP BY pop.id_permintaan_obat_poli\n" +
-                ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
+        String SQL = "";
+
+        if(isPoli){
+               SQL   = "SELECT\n" +
+                    "pop.id_permintaan_obat_poli,\n" +
+                    "pop.id_obat,\n" +
+                    "pop.id_pelayanan,\n" +
+                    "pop.id_approval_obat,\n" +
+                    "pop.qty,\n" +
+                    "pop.flag,\n" +
+                    "pop.action,\n" +
+                    "pop.created_date,\n" +
+                    "pop.created_who,\n" +
+                    "pop.last_update,\n" +
+                    "pop.last_update_who,\n" +
+                    "pop.tujuan_pelayanan\n" +
+                    "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                    "INNER JOIN\n" +
+                    "(\n" +
+                    "SELECT pop.id_permintaan_obat_poli\n" +
+                    "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                    "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
+                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                    "WHERE pop.flag LIKE :flag\n" +
+                    "AND ato.branch_id LIKE :branchId\n" +
+                    "AND tod.id_obat LIKE :idObat\n" +
+                    "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
+                    "AND pop.id_pelayanan LIKE :idPelayanan\n" +
+                    "AND og.id_jenis_obat LIKE :idJenisObat\n" +
+                    "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
+                    "AND pop.tujuan_pelayanan NOT LIKE :idTujuan\n" +
+                    "GROUP BY pop.id_permintaan_obat_poli\n" +
+                    ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
+        }else{
+            SQL   = "SELECT\n" +
+                    "pop.id_permintaan_obat_poli,\n" +
+                    "pop.id_obat,\n" +
+                    "pop.id_pelayanan,\n" +
+                    "pop.id_approval_obat,\n" +
+                    "pop.qty,\n" +
+                    "pop.flag,\n" +
+                    "pop.action,\n" +
+                    "pop.created_date,\n" +
+                    "pop.created_who,\n" +
+                    "pop.last_update,\n" +
+                    "pop.last_update_who,\n" +
+                    "pop.tujuan_pelayanan\n" +
+                    "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                    "INNER JOIN\n" +
+                    "(\n" +
+                    "SELECT pop.id_permintaan_obat_poli\n" +
+                    "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                    "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
+                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                    "WHERE pop.flag LIKE :flag\n" +
+                    "AND ato.branch_id LIKE :branchId\n" +
+                    "AND tod.id_obat LIKE :idObat\n" +
+                    "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
+                    "AND pop.id_pelayanan LIKE :idPelayanan\n" +
+                    "AND og.id_jenis_obat LIKE :idJenisObat\n" +
+                    "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
+                    "AND pop.tujuan_pelayanan LIKE :idTujuan\n" +
+                    "GROUP BY pop.id_permintaan_obat_poli\n" +
+                    ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
+        }
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)

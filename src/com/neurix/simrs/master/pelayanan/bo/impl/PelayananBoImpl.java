@@ -55,4 +55,17 @@ public class PelayananBoImpl implements PelayananBo{
         logger.info("[pelayananBoImpl.getListAllPelayanan] End <<<<<<");
         return result;
     }
+
+    @Override
+    public List<Pelayanan> getListApotek() throws GeneralBOException {
+
+        List<Pelayanan> listApotek = new ArrayList<>();
+        try {
+            listApotek =  pelayananDao.getListApotek();
+        }catch (HibernateException e){
+            logger.error("[pelayananBoImpl.getListAllPelayanan] Error get pelayanan data apotek "+e.getMessage());
+        }
+
+        return listApotek;
+    }
 }

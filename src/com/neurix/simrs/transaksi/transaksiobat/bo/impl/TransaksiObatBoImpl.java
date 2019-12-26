@@ -611,6 +611,52 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             logger.info("[DiagnosaRawatBoImpl.saveEditDetail] End <<<<<<<<<");
     }
 
+    @Override
+    public List<PermintaanResep> getListResepPasien(PermintaanResep bean) throws GeneralBOException {
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        if(bean != null){
+            try {
+                permintaanResepList = transaksiObatDetailDao.getListResepPasien(bean);
+            }catch (HibernateException e){
+                logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
+                throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
+            }
+        }
+
+        return permintaanResepList;
+    }
+
+    @Override
+    public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException {
+
+        ImSimrsPermintaanResepEntity entity = new ImSimrsPermintaanResepEntity();
+
+        try {
+            entity = permintaanResepDao.getById("idPermintaanResep", bean.getIdPermintaanResep());
+        }catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.saveAntrianResep] Error when get by id resep ", e);
+            throw new GeneralBOException("Error when get by ud resep " + e.getMessage());
+        }
+
+        if(entity != null){
+            entity.setStatus("0");
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setAction(bean.getAction());
+            entity.setIsUmum(bean.getIsUmum());
+            entity.setTglAntrian(bean.getLastUpdate());
+
+            try{
+                permintaanResepDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                logger.error("[TransaksiObatBoImpl.saveAntrianResep] Error when update resep ", e);
+                throw new GeneralBOException("Error when update resep " + e.getMessage());
+            }
+        }
+
+    }
+
     private List<ImtSimrsTransaksiObatDetailEntity> getListEntityResepDetail(TransaksiObatDetail bean) throws GeneralBOException{
         logger.info("[TransaksiObatBoImpl.getListEntityResep] START >>>>>>>");
 

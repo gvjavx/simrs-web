@@ -563,7 +563,6 @@
         if (poli != '') {
             ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
                 if (response != null) {
-                    console.log(response);
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qty + "'>" + item.namaObat + "</option>";
                     });

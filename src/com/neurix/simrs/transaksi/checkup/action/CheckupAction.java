@@ -54,6 +54,7 @@ public class CheckupAction extends BaseMasterAction {
 
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
+    private List<Pelayanan> listOfApotek = new ArrayList<>();
 
     private HeaderCheckup headerCheckup;
     private String id;
@@ -61,6 +62,42 @@ public class CheckupAction extends BaseMasterAction {
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+
+    private File fileUploadDoc;
+    private String fileUploadFileNameDoc;
+    private String fileUploadContentTypeDoc;
+
+    public List<Pelayanan> getListOfApotek() {
+        return listOfApotek;
+    }
+
+    public void setListOfApotek(List<Pelayanan> listOfApotek) {
+        this.listOfApotek = listOfApotek;
+    }
+
+    public File getFileUploadDoc() {
+        return fileUploadDoc;
+    }
+
+    public void setFileUploadDoc(File fileUploadDoc) {
+        this.fileUploadDoc = fileUploadDoc;
+    }
+
+    public String getFileUploadFileNameDoc() {
+        return fileUploadFileNameDoc;
+    }
+
+    public void setFileUploadFileNameDoc(String fileUploadFileNameDoc) {
+        this.fileUploadFileNameDoc = fileUploadFileNameDoc;
+    }
+
+    public String getFileUploadContentTypeDoc() {
+        return fileUploadContentTypeDoc;
+    }
+
+    public void setFileUploadContentTypeDoc(String fileUploadContentTypeDoc) {
+        this.fileUploadContentTypeDoc = fileUploadContentTypeDoc;
+    }
 
     public File getFileUpload() {
         return fileUpload;
@@ -364,13 +401,40 @@ public class CheckupAction extends BaseMasterAction {
                             FileUtils.copyFile(this.fileUpload, fileToCreate);
                             logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
                             checkup.setUrlKtp(fileName);
-                            checkupBoProxy.saveAdd(checkup);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
                     }
                 }
             }
+
+            if (this.fileUploadDoc != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentTypeDoc)) {
+                    if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
+
+                        // file name
+                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadFileNameDoc;
+
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, fileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            checkup.setUrlDocRujuk(fileName);
+                        } catch (IOException e) {
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            checkupBoProxy.saveAdd(checkup);
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -414,6 +478,20 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfPelayanan.addAll(pelayananList);
+        return "init_add";
+    }
+
+    public String getComboApotek(){
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = pelayananBoProxy.getListApotek();
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
         return "init_add";
     }
 

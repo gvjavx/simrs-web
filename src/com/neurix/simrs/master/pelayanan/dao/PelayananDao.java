@@ -6,6 +6,7 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +34,32 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         criteria.add(Restrictions.eq("flag", "Y"));
         List<ImSimrsPelayananEntity> result = criteria.list();
         return result;
+    }
+
+    public List<Pelayanan> getListApotek(){
+
+        String SQL = "SELECT id_pelayanan, nama_pelayanan FROM im_simrs_pelayanan \n" +
+                "WHERE is_poli = 'N' \n" +
+                "AND nama_pelayanan NOT LIKE 'IGD'\n" +
+                "AND flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            Pelayanan pelayanan;
+            for (Object[] obj : results)
+            {
+                pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayananList.add(pelayanan);
+            }
+        }
+
+        return pelayananList;
     }
 }

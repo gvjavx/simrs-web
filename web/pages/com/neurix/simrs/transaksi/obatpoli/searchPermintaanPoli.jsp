@@ -477,7 +477,7 @@
         $('#save_ret').hide();
         $('#load_ret').show();
         dwr.engine.setAsync(true);
-        PermintaanObatPoliAction.saveKonfirmasiReture(idPermintaan, { callback: function (response) {
+        PermintaanObatPoliAction.saveKonfirmasiReture(idPermintaan, false, { callback: function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-reture').modal('hide');

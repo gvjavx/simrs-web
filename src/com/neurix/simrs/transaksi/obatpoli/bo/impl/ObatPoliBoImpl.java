@@ -74,7 +74,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     }
 
     @Override
-    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException {
+    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.getSearchPermintaanObatPoli] START >>>>>>>>>>");
 
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         List<MtSimrsPermintaanObatPoliEntity> entities = null;
 
         try {
-            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean);
+            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean, isPoli);
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
             throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
@@ -151,42 +151,42 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return permintaanObatPoliList;
     }
 
+//    @Override
+//    public void saveAdd(ObatPoli bean) throws GeneralBOException {
+//        logger.info("[ObatPoliBoImpl.saveAdd] START >>>>>>>>>>");
+//
+//        List<MtSimrsObatPoliEntity> obatPoliEntity = getListEntityObatPoli(bean);
+//        if (obatPoliEntity.size() > 0) {
+//            logger.error("[ObatPoliBoImpl.saveAdd] WARNING data telah ada pada. ");
+//            throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] WARNING data telah ada pada. ");
+//        } else {
+//            MtSimrsObatPoliEntity newObatPoli = new MtSimrsObatPoliEntity();
+//            ObatPoliPk obatPoliPk = new ObatPoliPk();
+//            obatPoliPk.setIdObat(bean.getIdObat());
+//            obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
+//            newObatPoli.setBranchId(bean.getBranchId());
+//            newObatPoli.setPrimaryKey(obatPoliPk);
+//            newObatPoli.setQty(new BigInteger(String.valueOf(0)));
+//            newObatPoli.setFlag("Y");
+//            newObatPoli.setAction("C");
+//            newObatPoli.setLastUpdate(bean.getCreatedDate());
+//            newObatPoli.setLastUpdateWho(bean.getCreatedWho());
+//            newObatPoli.setCreatedDate(bean.getCreatedDate());
+//            newObatPoli.setCreatedWho(bean.getCreatedWho());
+//
+//            try {
+//                obatPoliDao.addAndSave(newObatPoli);
+//            } catch (HibernateException e) {
+//                logger.error("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
+//                throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
+//            }
+//        }
+//
+//        logger.info("[ObatPoliBoImpl.saveAdd] END <<<<<<<<<<");
+//    }
+
     @Override
-    public void saveAdd(ObatPoli bean) throws GeneralBOException {
-        logger.info("[ObatPoliBoImpl.saveAdd] START >>>>>>>>>>");
-
-        List<MtSimrsObatPoliEntity> obatPoliEntity = getListEntityObatPoli(bean);
-        if (obatPoliEntity.size() > 0) {
-            logger.error("[ObatPoliBoImpl.saveAdd] WARNING data telah ada pada. ");
-            throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] WARNING data telah ada pada. ");
-        } else {
-            MtSimrsObatPoliEntity newObatPoli = new MtSimrsObatPoliEntity();
-            ObatPoliPk obatPoliPk = new ObatPoliPk();
-            obatPoliPk.setIdObat(bean.getIdObat());
-            obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
-            newObatPoli.setBranchId(bean.getBranchId());
-            newObatPoli.setPrimaryKey(obatPoliPk);
-            newObatPoli.setQty(new BigInteger(String.valueOf(0)));
-            newObatPoli.setFlag("Y");
-            newObatPoli.setAction("C");
-            newObatPoli.setLastUpdate(bean.getCreatedDate());
-            newObatPoli.setLastUpdateWho(bean.getCreatedWho());
-            newObatPoli.setCreatedDate(bean.getCreatedDate());
-            newObatPoli.setCreatedWho(bean.getCreatedWho());
-
-            try {
-                obatPoliDao.addAndSave(newObatPoli);
-            } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
-            }
-        }
-
-        logger.info("[ObatPoliBoImpl.saveAdd] END <<<<<<<<<<");
-    }
-
-    @Override
-    public void saveAddWithRequest(PermintaanObatPoli bean, String request) throws GeneralBOException, JSONException {
+    public void saveRequest(PermintaanObatPoli bean, String request) throws GeneralBOException, JSONException {
         logger.info("[ObatPoliBoImpl.saveAddWithRequest] START >>>>>>>>>>");
         List<PermintaanObatPoli> obatPoliEntity = new ArrayList<>();
 
@@ -283,6 +283,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatDetailEntity.setLastUpdate(bean.getCreatedDate());
                     obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
                     obatDetailEntity.setKeterangan("Permintaan Obat");
+
                     try {
                         obatDetailDao.addAndSave(obatDetailEntity);
                     } catch (HibernateException e) {
@@ -290,26 +291,49 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                         throw new GeneralBOException("[PermintaanResepBoImpl.saveAddWithRequest]  ERROR when insert into transaksi obat detail. ", e);
                     }
 
-                    // save to table obat poli
-                    MtSimrsObatPoliEntity newObatPoli = new MtSimrsObatPoliEntity();
-                    ObatPoliPk obatPoliPk = new ObatPoliPk();
-                    obatPoliPk.setIdObat(obj.getString("ID"));
-                    obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
-                    newObatPoli.setBranchId(bean.getBranchId());
-                    newObatPoli.setPrimaryKey(obatPoliPk);
-                    newObatPoli.setQty(new BigInteger(String.valueOf(0)));
-                    newObatPoli.setFlag("Y");
-                    newObatPoli.setAction("C");
-                    newObatPoli.setLastUpdate(bean.getCreatedDate());
-                    newObatPoli.setLastUpdateWho(bean.getCreatedWho());
-                    newObatPoli.setCreatedDate(bean.getCreatedDate());
-                    newObatPoli.setCreatedWho(bean.getCreatedWho());
+                    //cek in table obat poli
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdObat(obj.getString("ID"));
+                    obatPoli.setIdPelayanan(bean.getIdPelayanan());
+                    obatPoli.setBranchId(bean.getBranchId());
+                    MtSimrsObatPoliEntity obatPoliEntityList = getObaPolitById(obatPoli);
 
-                    try {
-                        obatPoliDao.addAndSave(newObatPoli);
-                    } catch (HibernateException e) {
-                        logger.error("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
-                        throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
+                    if(obatPoliEntityList != null){
+
+                        //update obat poli
+                        obatPoliEntityList.setAction("U");
+                        obatPoliEntityList.setLastUpdate(bean.getLastUpdate());
+                        obatPoliEntityList.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            obatPoliDao.updateAndSave(obatPoliEntityList);
+                        } catch (HibernateException e) {
+                            logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                            throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                        }
+
+                    }else{
+                        // save to table obat poli
+                        MtSimrsObatPoliEntity newObatPoli = new MtSimrsObatPoliEntity();
+                        ObatPoliPk obatPoliPk = new ObatPoliPk();
+                        obatPoliPk.setIdObat(obj.getString("ID"));
+                        obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
+                        newObatPoli.setBranchId(bean.getBranchId());
+                        newObatPoli.setPrimaryKey(obatPoliPk);
+                        newObatPoli.setQty(new BigInteger(String.valueOf(0)));
+                        newObatPoli.setFlag("Y");
+                        newObatPoli.setAction("C");
+                        newObatPoli.setLastUpdate(bean.getCreatedDate());
+                        newObatPoli.setLastUpdateWho(bean.getCreatedWho());
+                        newObatPoli.setCreatedDate(bean.getCreatedDate());
+                        newObatPoli.setCreatedWho(bean.getCreatedWho());
+
+                        try {
+                            obatPoliDao.addAndSave(newObatPoli);
+                        } catch (HibernateException e) {
+                            logger.error("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
+                            throw new GeneralBOException("[ObatPoliBoImpl.saveAdd] ERROR when insert into obat poli. ", e);
+                        }
                     }
                 }
             }
@@ -317,85 +341,85 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         logger.info("[ObatPoliBoImpl.saveAddWithRequest] END <<<<<<<<<<");
     }
-
-    @Override
-    public void saveRequest(PermintaanObatPoli bean) throws GeneralBOException {
-        logger.info("[ObatPoliBoImpl.saveRequest] START >>>>>>>>>>");
-
-        List<MtSimrsPermintaanObatPoliEntity> permintaanEntity = getListEntityPermintaanObat(bean);
-        if (permintaanEntity.size() > 0) {
-            logger.error("[ObatPoliBoImpl.saveRequest] WARNING data telah ada pada transaksi untuk transaksi request. ");
-            throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] WARNING data telah ada pada transaksi untuk transaksi request. ");
-        } else {
-            // save to table approve
-            ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
-            String id = getNextApprovalObatId();
-            approvalEntity.setIdApprovalObat("INV" + id);
-            approvalEntity.setIdPelayanan(bean.getIdPelayanan());
-            approvalEntity.setBranchId(bean.getBranchId());
-            approvalEntity.setFlag("Y");
-            approvalEntity.setAction("C");
-            approvalEntity.setTipePermintaan("002");
-            approvalEntity.setLastUpdate(bean.getCreatedDate());
-            approvalEntity.setLastUpdateWho(bean.getCreatedWho());
-            approvalEntity.setCreatedDate(bean.getCreatedDate());
-            approvalEntity.setCreatedWho(bean.getCreatedWho());
-
-            try {
-                approvalTransaksiObatDao.addAndSave(approvalEntity);
-            } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.saveRequest] ERROR when insert into approval transaksi. ", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] ERROR when insert into approval transaksi. ", e);
-            }
-
-            // save to table detail transaksi
-            ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
-
-            id = getNextTransaksiObatDetail();
-            obatDetailEntity.setIdTransaksiObatDetail("ODT" + id);
-            obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-            obatDetailEntity.setIdObat(bean.getIdObat());
-            obatDetailEntity.setQty(bean.getQty());
-            obatDetailEntity.setFlag("Y");
-            obatDetailEntity.setAction("C");
-            obatDetailEntity.setCreatedDate(bean.getCreatedDate());
-            obatDetailEntity.setCreatedWho(bean.getCreatedWho());
-            obatDetailEntity.setLastUpdate(bean.getCreatedDate());
-            obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
-            obatDetailEntity.setKeterangan("Permintaan Obat");
-            try {
-                obatDetailDao.addAndSave(obatDetailEntity);
-            } catch (HibernateException e) {
-                logger.error("[PermintaanResepBoImpl.saveRequest]  ERROR when insert into transaksi obat detail. ", e);
-                throw new GeneralBOException("[PermintaanResepBoImpl.saveRequest]  ERROR when insert into transaksi obat detail. ", e);
-            }
-
-            // save to table permintaan transaksi
-            MtSimrsPermintaanObatPoliEntity newPermintaanEntity = new MtSimrsPermintaanObatPoliEntity();
-            id = getNextPermintaanObatId();
-            newPermintaanEntity.setIdPermintaanObatPoli("POP" + id);
-            newPermintaanEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-            newPermintaanEntity.setIdObat(bean.getIdObat());
-            newPermintaanEntity.setIdPelayanan(bean.getIdPelayanan());
-            newPermintaanEntity.setBranchId(bean.getBranchId());
-            newPermintaanEntity.setQty(bean.getQty());
-            newPermintaanEntity.setFlag("Y");
-            newPermintaanEntity.setAction("C");
-            newPermintaanEntity.setLastUpdate(bean.getCreatedDate());
-            newPermintaanEntity.setLastUpdateWho(bean.getCreatedWho());
-            newPermintaanEntity.setCreatedDate(bean.getCreatedDate());
-            newPermintaanEntity.setCreatedWho(bean.getCreatedWho());
-
-            try {
-                permintaanObatPoliDao.addAndSave(newPermintaanEntity);
-            } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ", e);
-            }
-        }
-
-        logger.info("[ObatPoliBoImpl.saveRequest] END <<<<<<<<<<");
-    }
+//
+//    @Override
+//    public void saveRequest(PermintaanObatPoli bean) throws GeneralBOException {
+//        logger.info("[ObatPoliBoImpl.saveRequest] START >>>>>>>>>>");
+//
+//        List<MtSimrsPermintaanObatPoliEntity> permintaanEntity = getListEntityPermintaanObat(bean);
+//        if (permintaanEntity.size() > 0) {
+//            logger.error("[ObatPoliBoImpl.saveRequest] WARNING data telah ada pada transaksi untuk transaksi request. ");
+//            throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] WARNING data telah ada pada transaksi untuk transaksi request. ");
+//        } else {
+//            // save to table approve
+//            ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
+//            String id = getNextApprovalObatId();
+//            approvalEntity.setIdApprovalObat("INV" + id);
+//            approvalEntity.setIdPelayanan(bean.getIdPelayanan());
+//            approvalEntity.setBranchId(bean.getBranchId());
+//            approvalEntity.setFlag("Y");
+//            approvalEntity.setAction("C");
+//            approvalEntity.setTipePermintaan("002");
+//            approvalEntity.setLastUpdate(bean.getCreatedDate());
+//            approvalEntity.setLastUpdateWho(bean.getCreatedWho());
+//            approvalEntity.setCreatedDate(bean.getCreatedDate());
+//            approvalEntity.setCreatedWho(bean.getCreatedWho());
+//
+//            try {
+//                approvalTransaksiObatDao.addAndSave(approvalEntity);
+//            } catch (HibernateException e) {
+//                logger.error("[ObatPoliBoImpl.saveRequest] ERROR when insert into approval transaksi. ", e);
+//                throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] ERROR when insert into approval transaksi. ", e);
+//            }
+//
+//            // save to table detail transaksi
+//            ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+//
+//            id = getNextTransaksiObatDetail();
+//            obatDetailEntity.setIdTransaksiObatDetail("ODT" + id);
+//            obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+//            obatDetailEntity.setIdObat(bean.getIdObat());
+//            obatDetailEntity.setQty(bean.getQty());
+//            obatDetailEntity.setFlag("Y");
+//            obatDetailEntity.setAction("C");
+//            obatDetailEntity.setCreatedDate(bean.getCreatedDate());
+//            obatDetailEntity.setCreatedWho(bean.getCreatedWho());
+//            obatDetailEntity.setLastUpdate(bean.getCreatedDate());
+//            obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
+//            obatDetailEntity.setKeterangan("Permintaan Obat");
+//            try {
+//                obatDetailDao.addAndSave(obatDetailEntity);
+//            } catch (HibernateException e) {
+//                logger.error("[PermintaanResepBoImpl.saveRequest]  ERROR when insert into transaksi obat detail. ", e);
+//                throw new GeneralBOException("[PermintaanResepBoImpl.saveRequest]  ERROR when insert into transaksi obat detail. ", e);
+//            }
+//
+//            // save to table permintaan transaksi
+//            MtSimrsPermintaanObatPoliEntity newPermintaanEntity = new MtSimrsPermintaanObatPoliEntity();
+//            id = getNextPermintaanObatId();
+//            newPermintaanEntity.setIdPermintaanObatPoli("POP" + id);
+//            newPermintaanEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+//            newPermintaanEntity.setIdObat(bean.getIdObat());
+//            newPermintaanEntity.setIdPelayanan(bean.getIdPelayanan());
+//            newPermintaanEntity.setBranchId(bean.getBranchId());
+//            newPermintaanEntity.setQty(bean.getQty());
+//            newPermintaanEntity.setFlag("Y");
+//            newPermintaanEntity.setAction("C");
+//            newPermintaanEntity.setLastUpdate(bean.getCreatedDate());
+//            newPermintaanEntity.setLastUpdateWho(bean.getCreatedWho());
+//            newPermintaanEntity.setCreatedDate(bean.getCreatedDate());
+//            newPermintaanEntity.setCreatedWho(bean.getCreatedWho());
+//
+//            try {
+//                permintaanObatPoliDao.addAndSave(newPermintaanEntity);
+//            } catch (HibernateException e) {
+//                logger.error("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ", e);
+//                throw new GeneralBOException("[ObatPoliBoImpl.saveRequest] ERROR when insert into permintaan obat. ", e);
+//            }
+//        }
+//
+//        logger.info("[ObatPoliBoImpl.saveRequest] END <<<<<<<<<<");
+//    }
 
     @Override
     public void saveReture(PermintaanObatPoli bean, String reture) throws GeneralBOException, JSONException {
@@ -503,6 +527,29 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                         logger.error("[PermintaanResepBoImpl.saveAddWithRequest]  ERROR when insert into transaksi obat detail. ", e);
                         throw new GeneralBOException("[PermintaanResepBoImpl.saveAddWithRequest]  ERROR when insert into transaksi obat detail. ", e);
                     }
+
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdObat(obj.getString("ID"));
+                    obatPoli.setIdPelayanan(bean.getIdPelayanan());
+                    obatPoli.setBranchId(bean.getBranchId());
+                    MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
+
+                    if(obatPoliEntity != null){
+
+                        BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Approve")));
+                        obatPoliEntity.setAction("U");
+                        obatPoliEntity.setQty(jmlh);
+                        obatPoliEntity.setLastUpdate(bean.getLastUpdate());
+                        obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            obatPoliDao.updateAndSave(obatPoliEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                            throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                        }
+                    }
+
                 }
             }
 

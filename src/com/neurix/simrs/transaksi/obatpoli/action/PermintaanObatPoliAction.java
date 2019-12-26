@@ -36,11 +36,12 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
         PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
         permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
         permintaanObatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+        boolean isPoli = false;
 
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
 
         try {
-            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli);
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
         } catch (HibernateException e){
             logger.error("[PermintaanObatPoliAction.search] ERROR when get data list obat, ", e);
             addActionError("[PermintaanObatPoliAction.search] ERROR when get data list obat, "+e.getMessage());

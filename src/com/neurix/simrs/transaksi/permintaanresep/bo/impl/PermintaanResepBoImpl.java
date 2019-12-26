@@ -178,6 +178,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setCreatedWho(bean.getCreatedWho());
         permintaanEntity.setLastUpdate(bean.getCreatedDate());
         permintaanEntity.setLastUpdateWho(bean.getCreatedWho());
+        permintaanEntity.setBranchId(bean.getBranchId());
+        permintaanEntity.setTujuanPelayanan(bean.getTujuanPelayanan());
+
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);

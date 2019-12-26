@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
@@ -141,6 +142,82 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         }
 
         return obatDetailEntities;
+    }
+
+    public List<PermintaanResep> getListResepPasien(PermintaanResep bean){
+
+        String isUmum         = "%";
+        String idTujuan       = "%";
+        String branchId       = "%";
+        String idResep        = "%";
+        String idDetil       = "%";
+        String nama           = "%";
+        String status         = "%";
+
+
+        if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
+            isUmum = bean.getIsUmum();
+        }
+        if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())){
+            idTujuan = bean.getTujuanPelayanan();
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+        if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())){
+            idResep = bean.getIdPermintaanResep();
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            idDetil = bean.getIdDetailCheckup();
+        }
+        if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+            nama = "%"+bean.getNamaPasien()+"%";
+        }
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+            status = bean.getStatus();
+        }
+
+        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan FROM mt_simrs_permintaan_resep a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
+                "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
+                "WHERE a.flag = 'Y' \n" +
+                "AND a.branch_id LIKE :branchId\n" +
+                "AND a.is_umum LIKE :isUmum\n" +
+                "AND a.id_permintaan_resep LIKE :idResep\n" +
+                "AND a.id_detail_checkup LIKE :idDetail\n" +
+                "AND c.nama LIKE :nama\n" +
+                "AND a.status LIKE :status\n" +
+                "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
+                "ORDER BY a.tgl_antrian ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("isUmum", isUmum)
+                .setParameter("idTujuan", idTujuan)
+                .setParameter("branchId", branchId)
+                .setParameter("idResep", idResep)
+                .setParameter("idDetail", idDetil)
+                .setParameter("nama", nama)
+                .setParameter("status", status)
+                .list();
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            PermintaanResep permintaanResep;
+            for (Object[] obj : results)
+            {
+                permintaanResep = new PermintaanResep();
+                permintaanResep.setIdPermintaanResep(obj[0].toString());
+                permintaanResep.setIdDetailCheckup(obj[1].toString());
+                permintaanResep.setNamaPasien(obj[2].toString());
+                permintaanResep.setStatus(obj[3].toString());
+                permintaanResepList.add(permintaanResep);
+            }
+        }
+
+        return permintaanResepList;
     }
 
     public String getNextId(){

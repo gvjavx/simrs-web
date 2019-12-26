@@ -124,7 +124,7 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i> Request Obat</a></li>
-                                                <li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Reture Obat</a></li>
+                                                <li onclick="showModal(2)"><a href="#"><i class="fa fa-refresh"></i> Reture Obat</a></li>
                                             </ul>
                                         </div>
                                             <%--<a class="btn btn-primary" onclick="showModal(1)"><i class="fa fa-plus"></i>--%>

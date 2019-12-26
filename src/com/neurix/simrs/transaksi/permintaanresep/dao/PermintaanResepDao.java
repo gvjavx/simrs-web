@@ -43,6 +43,8 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         return results;
     }
 
+
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_permintaan_resep')");
         Iterator<BigInteger> iter=query.list().iterator();
