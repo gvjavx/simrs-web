@@ -39,6 +39,15 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String urlDocRujuk;
     private String tinggi;
     private String berat;
+    private Timestamp tglKeluar;
+
+    public Timestamp getTglKeluar() {
+        return tglKeluar;
+    }
+
+    public void setTglKeluar(Timestamp tglKeluar) {
+        this.tglKeluar = tglKeluar;
+    }
 
     public String getUrlDocRujuk() {
         return urlDocRujuk;

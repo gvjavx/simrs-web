@@ -536,6 +536,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if ("selesai".equalsIgnoreCase(idKtg)){
             headerDetailCheckup.setKeteranganSelesai(ket);
+            headerDetailCheckup.setStatus(idKtg);
         }
         if ("pindah".equalsIgnoreCase(idKtg)){
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");

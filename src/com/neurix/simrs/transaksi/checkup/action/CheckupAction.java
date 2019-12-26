@@ -725,4 +725,22 @@ public class CheckupAction extends BaseMasterAction {
         return "success";
     }
 
+    public List<AlertPasien> listRekamMedic(String idPasien){
+        logger.info("[CheckupAction.getListRekamMedic] start process >>>");
+
+        List<AlertPasien> alertPasienList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            alertPasienList = checkupBo.listOfRekamMedic(idPasien);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListRekamMedic] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListRekamMedic] end process <<<");
+        return alertPasienList;
+    }
+
 }
