@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface PelayananBo {
     public List<Pelayanan> getListAllPelayanan() throws GeneralBOException;
+    public List<Pelayanan> getListApotek() throws GeneralBOException;
 }

@@ -18,6 +18,15 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String keterangan;
+    private BigInteger qtyApprove;
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
 
     public String getKeterangan() {
         return keterangan;

@@ -12,14 +12,15 @@ import java.util.List;
  */
 public interface ObatPoliBo {
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException;
-    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean) throws GeneralBOException;
-    public void saveAdd(ObatPoli bean) throws GeneralBOException;
-    public void saveAddWithRequest(ObatPoli bean, String request) throws GeneralBOException, JSONException;
-    public void saveRequest(PermintaanObatPoli bean) throws GeneralBOException;
+    public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
+    public void saveRequest(PermintaanObatPoli bean, String request) throws GeneralBOException, JSONException;
     public void saveReture(PermintaanObatPoli bean, String reture) throws GeneralBOException, JSONException;
 
-    public void saveApproveRequest(PermintaanObatPoli bean) throws GeneralBOException;
-    public void saveApproveReture(PermintaanObatPoli bean) throws GeneralBOException;
+    public void saveApproveRequest(PermintaanObatPoli bean, String request, boolean isPoli) throws GeneralBOException, JSONException;
+    public void saveApproveReture(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
 
-    public void saveApproveDiterima(PermintaanObatPoli bean) throws GeneralBOException;
+    public void saveApproveDiterima(PermintaanObatPoli bean, String request) throws GeneralBOException, JSONException;
+
+    public List<ObatPoli> getTujuanPelayanan(ObatPoli bean) throws GeneralBOException;
+    public List<PermintaanObatPoli> getDetailLitsPermintaan(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
 }

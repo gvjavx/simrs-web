@@ -53,7 +53,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         this.permintaanResepBoProxy = permintaanResepBoProxy;
     }
 
-    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep){
+    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek){
         logger.info("[PermintaanResepAction.saveResepPasien] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -72,6 +72,7 @@ public class PermintaanResepAction extends BaseMasterAction{
             permintaanResep.setAction("U");
             permintaanResep.setFlag("Y");
             permintaanResep.setBranchId(userArea);
+            permintaanResep.setTujuanPelayanan(tujuanApotek);
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");

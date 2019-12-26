@@ -2,8 +2,10 @@ package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
+import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
 
+        criteria.addOrder(Order.asc("primaryKey.idObat"));
         List<MtSimrsObatPoliEntity> results = criteria.list();
         return results;
     }
@@ -86,6 +89,38 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                 permintaanObatPoli.setIdPelayanan(obj[1].toString());
                 permintaanObatPoli.setBranchId(obj[2].toString());
                 obatPoliList.add(permintaanObatPoli);
+            }
+        }
+
+        return obatPoliList;
+    }
+
+    public List<ObatPoli> getTujuanPelyanan(ObatPoli bean){
+
+        String idPelayanan = "%";
+
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+            idPelayanan = bean.getIdPelayanan();
+        }
+
+        String SQL = "SELECT id_pelayanan, nama_pelayanan FROM im_simrs_pelayanan\n" +
+                "    WHERE id_pelayanan NOT LIKE :idPelayanan AND flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPelayanan", idPelayanan)
+                .list();
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            ObatPoli obatPoli;
+            for (Object[] obj : results)
+            {
+                obatPoli = new ObatPoli();
+                obatPoli.setIdPelayanan(obj[0].toString());
+                obatPoli.setNamaPelayanan(obj[1].toString());
+                obatPoliList.add(obatPoli);
             }
         }
 

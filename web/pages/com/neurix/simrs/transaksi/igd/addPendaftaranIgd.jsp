@@ -158,7 +158,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            Tambah Rawat IGD Pasien
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -172,8 +172,8 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-plus"></i> Inputan Data Pasien</h3>
                     </div>
-                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup"
-                            action="saveAdd_checkup.action" theme="simple">
+                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/igd"
+                            action="saveAddRawatIgd_igd.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pasien" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -484,7 +484,7 @@
                                                           name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                           listValue="namaPelayanan" onchange="$(this).css('border',''); listDokter(this)"
                                                           headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control select2"/>
+                                                          cssClass="form-control select2" disabled="true"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -547,10 +547,10 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <%--<div class="row">--%>
-                                    <%--<div class="col-md-6">--%>
-                                        <div class="form-group" style="display: inline;">
-                                            <%--<div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">--%>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">
                                                 <button type="button" class="btn btn-success" onclick="confirm()"><i
                                                         class="fa fa-arrow-right"></i> Save
                                                 </button>
@@ -560,12 +560,9 @@
                                                 <a type="button" class="btn btn-warning" href="initForm_checkup.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
-                                                <a type="button" id="btn-rm" style="display:none;" class="btn btn-primary" onclick="initRekamMedic()">
-                                                    <i class="fa fa-search"></i> View Rekam Medic
-                                                </a>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div style="display: none">
                                     <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
@@ -610,7 +607,6 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_checkup.action';
                                                                                      }
                                                                             }"
                                     >
@@ -621,7 +617,8 @@
                                     <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                height="250" width="600" autoOpen="false" title="Error Dialog"
                                                buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                                'OK':function() { $('#error_dialog').dialog('close');
+                                                                                 window.location.href = 'initForm_igd.action';}
                                                                             }"
                                     >
                                         <div class="alert alert-danger alert-dismissible">
@@ -642,41 +639,14 @@
     </section>
     <!-- /.content -->
 </div>
-
-<div class="modal fade" id="modal-rekam-medic">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No RM</td>
-                        <td>Nama Pasien</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Keluar</td>
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    var idPelayanan = $('#poli').val();
+
     $(document).ready(function () {
 
-        $('#pendaftaran').addClass('active');
+        $('#igd').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -711,13 +681,15 @@
         $("#imgInp").change(function () {
             readURL(this);
         });
+
+        listDokter(idPelayanan);
     });
 
     function listDokter(idPelayanan){
-        var idx = idPelayanan.selectedIndex;
-        var idPoli = idPelayanan.options[idx].value;
+//        var idx = idPelayanan.selectedIndex;
+//        var idPoli = idPelayanan.options[idx].value;
         var option = "";
-        CheckupAction.listOfDokter(idPoli, function(response){
+        CheckupAction.listOfDokter(idPelayanan, function(response){
             option = "<option value=''>[Select One]</option>";
             if (response != null){
                 $.each(response, function (i, item) {
@@ -727,6 +699,7 @@
                option = option;
             }
         });
+
         $('#dokter').html(option);
     }
 
@@ -760,35 +733,14 @@
                 $("#alergi").html(alergi);
                 $("#diagnosa").html(diagnosa);
                 $("#alert-pasien").removeAttr("style");
-                $("#btn-rm").removeAttr("style");
             } else {
                 closeAlert();
             }
         });
     }
 
-    function initRekamMedic() {
-        var idPasien    = $("#id_pasien").val();
-        var table       = "";
-
-        CheckupAction.listRekamMedic(idPasien, function(response){
-            $.each(response, function (i, item) {
-                table += "<tr>" +
-                    "<td>"+item.noCheckup+"</td>" +
-                    "<td>"+item.namaPasien+"</td>" +
-                    "<td>"+item.diagnosa+"</td>" +
-                    "<td>"+item.stTgl+"</td>" +
-                    "</tr>";
-            });
-
-            $("#modal-rekam-medic").modal('show');
-            $("#body-rekam-medic").html(table);
-        });
-    }
-
     function closeAlert() {
         $("#alert-pasien").attr("style","display:none");
-        $("#btn-rm").attr("style","display:none");
     }
 
     var functions, mapped;

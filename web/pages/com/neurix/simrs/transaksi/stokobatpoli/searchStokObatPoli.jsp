@@ -146,8 +146,8 @@
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Stok</td>
-                                <td>Status</td>
-                                <td align="center">Action</td>
+                                <%--<td>Status</td>--%>
+                                <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -156,15 +156,15 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="qty"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td align="center">
-                                        <img border="0" class="hvr-grow" onclick="showRequestReture(1,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"
-                                                 src="<s:url value="/pages/images/request.png"/>"
-                                                 style="cursor: pointer; height: 25px; width: 25px;">
-                                        <img border="0" class="hvr-grow" onclick="showRequestReture(2,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"
-                                             src="<s:url value="/pages/images/return.ico"/>"
-                                             style="cursor: pointer; height: 25px; width: 25px;">
-                                    </td>
+                                    <%--<td><s:property value="qty"/></td>--%>
+                                    <%--<td align="center">--%>
+                                        <%--<img border="0" class="hvr-grow" onclick="showRequestReture(1,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"--%>
+                                                 <%--src="<s:url value="/pages/images/request.png"/>"--%>
+                                                 <%--style="cursor: pointer; height: 25px; width: 25px;">--%>
+                                        <%--<img border="0" class="hvr-grow" onclick="showRequestReture(2,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"--%>
+                                             <%--src="<s:url value="/pages/images/return.ico"/>"--%>
+                                             <%--style="cursor: pointer; height: 25px; width: 25px;">--%>
+                                    <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>

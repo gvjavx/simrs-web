@@ -526,13 +526,13 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-unlock\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Dashboard")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Stok Obat Poli")) {
+                    }else if (menuName.equalsIgnoreCase("Stok Obat")) {
                         menuNameString = "<li id=\"stok_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Permintaan Obat Poli")) {
+                    }else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
                         menuNameString = "<li id=\"permintaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Permintaan Obat Gudang")) {
                         menuNameString = "<li id=\"permintaan_obat_gudang\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Penerimaan Obat Poli")) {
+                    }else if (menuName.equalsIgnoreCase("Penerimaan Obat")) {
                         menuNameString = "<li id=\"penerimaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
@@ -568,8 +568,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"menu_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-eyedropper\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Permintaan Obat Poli")) {
                             menuNameString = "<li id=\"permintaan_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bullhorn\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Transaksi Obat")) {
-                            menuNameString = "<li id=\"transaksi_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-o\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Transaksi Apotek")) {
+                            menuNameString = "<li id=\"transaksi_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("IGD")) {
+                            menuNameString = "<li id=\"igd\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
                         }
 //                        else if (menuName.equalsIgnoreCase("Obat Poli")) {
 //                            menuNameString = "<li id=\"obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
@@ -597,7 +599,7 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-check-square-o\"></i>";
                         }else if (("Setting").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-cogs\"></i>";
-                        }else if (("Obat Poli").equalsIgnoreCase(menuName)){
+                        }else if (("Obat").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";
                             idLi = "obat_poli_active";
                             openLu = "obat_poli_open";

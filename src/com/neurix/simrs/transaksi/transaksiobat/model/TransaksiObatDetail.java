@@ -27,6 +27,16 @@ public class TransaksiObatDetail extends BaseModel {
     private BigInteger nominal;
     private BigInteger kembalian;
 
+    private BigInteger qtyApprove;
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
+
     public BigInteger getNominal() {
         return nominal;
     }

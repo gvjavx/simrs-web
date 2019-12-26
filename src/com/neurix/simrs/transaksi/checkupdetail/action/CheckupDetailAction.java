@@ -65,6 +65,35 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String fileUploadFileName;
     private String fileUploadContentType;
 
+    private File fileUploadDoc;
+    private String fileUploadFileNameDoc;
+    private String fileUploadContentTypeDoc;
+
+
+    public File getFileUploadDoc() {
+        return fileUploadDoc;
+    }
+
+    public void setFileUploadDoc(File fileUploadDoc) {
+        this.fileUploadDoc = fileUploadDoc;
+    }
+
+    public String getFileUploadFileNameDoc() {
+        return fileUploadFileNameDoc;
+    }
+
+    public void setFileUploadFileNameDoc(String fileUploadFileNameDoc) {
+        this.fileUploadFileNameDoc = fileUploadFileNameDoc;
+    }
+
+    public String getFileUploadContentTypeDoc() {
+        return fileUploadContentTypeDoc;
+    }
+
+    public void setFileUploadContentTypeDoc(String fileUploadContentTypeDoc) {
+        this.fileUploadContentTypeDoc = fileUploadContentTypeDoc;
+    }
+
     public File getFileUpload() {
         return fileUpload;
     }
@@ -387,6 +416,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)){
+            checkupdetail.setIdPelayanan(idPelayanan);
             setEnabledAddPasien(true);
         }
 
@@ -748,22 +778,28 @@ public class CheckupDetailAction extends BaseMasterAction {
         return rawatInaps;
     }
 
-    public String addRawatJalan() {
+    public String addRawatIgd() {
 
         logger.info("[CheckupDetailAction.add] start process >>>");
 
         HeaderCheckup checkup = new HeaderCheckup();
+
+        if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            checkup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        }
+
         setHeaderCheckup(checkup);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+
 
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_daftar";
     }
 
-    public String saveAddRawatJalan(){
+    public String saveAddRawatIgd(){
 
         logger.info("[CheckupDetailAction.saveAdd] start process >>>");
         try {
@@ -790,6 +826,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setLastUpdateWho(userLogin);
             checkup.setAction("C");
             checkup.setFlag("Y");
+            checkup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
             checkup.setStatusPeriksa("1");
 
             String fileName = "";
@@ -813,7 +850,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                             FileUtils.copyFile(this.fileUpload, fileToCreate);
                             logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
                             checkup.setUrlKtp(fileName);
-                            checkupBoProxy.saveAdd(checkup);
                         } catch (IOException e) {
                             logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
                             throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
@@ -821,6 +857,34 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
                 }
             }
+
+            if (this.fileUploadDoc != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentTypeDoc)) {
+                    if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
+
+                        // file name
+                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadFileNameDoc;
+
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, fileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            checkup.setUrlDocRujuk(fileName);
+                        } catch (IOException e) {
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            checkupBoProxy.saveAdd(checkup);
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -834,7 +898,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
 
         logger.info("[CheckupDetailAction.saveAdd] end process >>>");
-        return "init_daftar";
+        return "search";
 
     }
 
