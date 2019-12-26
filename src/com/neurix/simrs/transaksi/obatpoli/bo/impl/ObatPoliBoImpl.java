@@ -536,7 +536,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                     if(obatPoliEntity != null){
 
-                        BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Approve")));
+                        BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Qty")));
                         obatPoliEntity.setAction("U");
                         obatPoliEntity.setQty(jmlh);
                         obatPoliEntity.setLastUpdate(bean.getLastUpdate());

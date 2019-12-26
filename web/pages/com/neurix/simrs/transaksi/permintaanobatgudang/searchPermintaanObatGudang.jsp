@@ -197,11 +197,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listObatGudang" status="listObatGudang">
+                            <s:iterator value="#session.listOfResult" id="listObatGudang" status="listObatGudang" var="tes">
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:if test="#listObatGudang.keterangan == 'Menunggu Konfirmasi'">
+                                    <td><s:if test='%{#session.listOfResult[#listObatGudang.index].keterangan.equalsIgnoreCase("Menunggu Konfirmasi")}'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-success"><s:property value="keterangan"/></label>

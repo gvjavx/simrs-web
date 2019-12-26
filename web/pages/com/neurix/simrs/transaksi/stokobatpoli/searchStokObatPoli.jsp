@@ -81,7 +81,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <button class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Obat</button>
+                                        <%--<button class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Obat</button>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
