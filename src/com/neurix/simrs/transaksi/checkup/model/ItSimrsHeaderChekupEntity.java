@@ -36,6 +36,42 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String namaPenanggung;
     private String hubunganKeluarga;
     private String rujuk;
+    private String urlDocRujuk;
+    private String tinggi;
+    private String berat;
+    private Timestamp tglKeluar;
+
+    public Timestamp getTglKeluar() {
+        return tglKeluar;
+    }
+
+    public void setTglKeluar(Timestamp tglKeluar) {
+        this.tglKeluar = tglKeluar;
+    }
+
+    public String getUrlDocRujuk() {
+        return urlDocRujuk;
+    }
+
+    public void setUrlDocRujuk(String urlDocRujuk) {
+        this.urlDocRujuk = urlDocRujuk;
+    }
+
+    public String getTinggi() {
+        return tinggi;
+    }
+
+    public void setTinggi(String tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    public String getBerat() {
+        return berat;
+    }
+
+    public void setBerat(String berat) {
+        this.berat = berat;
+    }
 
     public String getNamaPenanggung() {
         return namaPenanggung;

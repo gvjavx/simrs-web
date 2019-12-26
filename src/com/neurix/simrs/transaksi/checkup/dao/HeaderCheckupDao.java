@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -9,6 +10,8 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +47,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
             if (mapCriteria.get("list_no_checkup") != null) {
                 criteria.add(Restrictions.in("noCheckup", (List<String>) mapCriteria.get("list_no_checkup")));
+            }
+            if (mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
+            if (mapCriteria.get("tgl_keluar_not_null") != null) {
+                criteria.add(Restrictions.isNotNull("tglKeluar"));
             }
 
         List<ItSimrsHeaderChekupEntity> result = criteria.list();
@@ -167,6 +176,82 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         return listOfResult;
+    }
+
+    public AlertPasien getAlertPasien(String idPasien, String branchId){
+
+        if (branchId == null || "".equalsIgnoreCase(branchId)){
+            branchId = "%";
+        }
+
+        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_diagnosa_rawat WHERE jenis_diagnosa = '1') diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "WHERE ck.id_pasien = :idPasien \n" +
+                "AND ck.branch_id LIKE :branchId \n" +
+                "ORDER BY hdc.last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPasien", idPasien)
+                .list();
+
+        AlertPasien alertPasien = new AlertPasien();
+        for (Object[] obj : results){
+
+            alertPasien.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
+            alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
+            alertPasien.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+
+            if (obj[2] != null){
+                Timestamp lastUpdate = (Timestamp) obj[2];
+                Long time = lastUpdate.getTime();
+                Date date = new Date(time);
+                alertPasien.setStTgl(date.toString());
+            }
+        }
+
+        return alertPasien;
+    }
+
+    public AlertPasien gelLastDiagnosa(String noCheckup, String branchId){
+
+        if (branchId == null || "".equalsIgnoreCase(branchId)){
+            branchId = "%";
+        }
+
+        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_diagnosa_rawat WHERE jenis_diagnosa = '1') diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "WHERE ck.no_checkup = :noCheckup \n" +
+                "AND ck.branch_id LIKE :branchId \n" +
+                "ORDER BY hdc.last_update DESC\n" +
+                "LIMIT 1\n";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("noCheckup", noCheckup)
+                .list();
+
+        AlertPasien alertPasien = new AlertPasien();
+        for (Object[] obj : results){
+
+            alertPasien.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
+            alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
+            alertPasien.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+
+            if (obj[2] != null){
+                Timestamp lastUpdate = (Timestamp) obj[2];
+                Long time = lastUpdate.getTime();
+                Date date = new Date(time);
+                alertPasien.setStTgl(date.toString());
+            }
+        }
+
+        return alertPasien;
     }
 
     public String getNextSeq(){

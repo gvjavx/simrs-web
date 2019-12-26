@@ -50,10 +50,10 @@ public class BpjsService {
     public static String getBpjsTimestamp(){
 
         Calendar cal70 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        cal70.set(1970,1,1);
+        cal70.set(1970, Calendar.JANUARY,1);
 
         LocalDateTime ldt = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        int time = (int) ((System.currentTimeMillis()/1000) - ldt.getSecond());
+        int time = (int) ((System.currentTimeMillis()/1000) - cal70.getTimeInMillis());
         return String.valueOf(time);
 
     }

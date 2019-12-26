@@ -16,5 +16,12 @@ public interface PasienBo extends GeneralBo {
     public void saveEdit(Pasien pasien) throws GeneralBOException;
     public void saveDelete(Pasien bean) throws GeneralBOException;
     public List<Pasien> getListComboPasien(String query) throws GeneralBOException;
+
+    List<Pasien> getListComboPasienByBpjs(String query) throws GeneralBOException;
+
     public List<Pasien> getDataPasien(String desaId) throws GeneralBOException;
+
+    public void saveEditPassword(Pasien bean) throws GeneralBOException;
+    public void saveCreateUserPasien(Pasien bean) throws GeneralBOException;
+    public Boolean isUserPasienById(String userId, String password) throws GeneralBOException;
 }

@@ -390,7 +390,8 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>No Resep</td>
+                                <td>Tanggal</td>
+                                <td>ID Resep</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1034,7 +1035,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rese_head">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     Silahkan cek kembali data inputan!
                 </div>
@@ -1046,35 +1047,61 @@
                                       name="getListJenisObat_jenisobat"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initJenis.listOfJenisObat" id="resep_jenis"
-                                      listKey="idJenisObat" onchange="listSelectObat(this)"
+                                      listKey="idJenisObat"
+                                      onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"
                                       listValue="namaJenisObat"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_jenis"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"
-                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
+                                    onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">
                                 <option value="">[select one]</option>
                             </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                            <input style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}" style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_qty"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_qty"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <select class="form-control" id="resep_keterangan" style="margin-top: 7px">
+                            <select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"
+                                    class="form-control" id="resep_keterangan" style="margin-top: 7px">
                                 <option value="">[Select One]</option>
                                 <option value="2 x 1 /Hari">2 x 1 /Hari</option>
                                 <option value="3 x 1 /Hari">3 x 1 /Hari</option>
                             </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_ket"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_ket"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1126,26 +1153,39 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Detail Resep</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Resep Obat</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_detail">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    Silahkan cek kembali data inputan..!
                 </div>
-                <div class="row">
-
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    Data berhasil diupdate..!
                 </div>
+                    <div class="box">
+                        <table class="table table-striped table-bordered" id="tabel_rep">
+                            <thead>
+                            <td>Obat</td>
+                            <td>Qty</td>
+                            <td>Keterangan</td>
+                            <td align="center" width="5%">Action</td>
+                            </thead>
+                            <tbody id="body_detail_rep">
+                            </tbody>
+                        </table>
+                    </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
+                <%--<button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i--%>
+                        <%--class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -1168,6 +1208,7 @@
         listObat();
         listDiet();
         listRuanganInap();
+        listResepPasien();
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();
@@ -1294,7 +1335,7 @@
         } else if (back == 7) {
             desti = "#pos_ruangan";
         } else if (back == 8) {
-            window.location.href = 'search_rawatinap.action';
+            window.location.href = 'initForm_rawatinap.action';
         } else if (back == 9){
             desti = '#pos_rssep';
         }
@@ -1719,7 +1760,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter) {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != '') {
 
             $('#save_lab').hide();
             $('#load_lab').show();
@@ -1930,7 +1971,6 @@
 
         ObatInapAction.listObatInap(idDetailCheckup, function (response) {
             data = response;
-            console.log(data);
             if (data != null) {
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
@@ -2247,23 +2287,40 @@
         var qty   = $('#resep_qty').val();
         var cek   = false;
         var data = $('#tabel_rese_detail').tableToJSON();
-        $.each(data, function (i, item) {
-            if(item.Obat == obat && item.Jenis == jenis){
-                cek = true;
-            }
-        });
 
-        if(cek){
-            $('#warning_data_exits').show().fadeOut(5000);
+        if(jenis != '' && obat != '' && ket != '' && qty != ''){
+            $.each(data, function (i, item) {
+                if(item.Obat == obat){
+                    cek = true;
+                }
+            });
+
+            if(cek){
+                $('#warning_data_exits').show().fadeOut(5000);
+            }else{
+                var row = '<tr id='+obat+'>' +
+                        '<td>'+jenis+'</td>' +
+                        '<td>'+obat+'</td>' +
+                        '<td>'+qty+'</td>' +
+                        '<td>'+ket+'</td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '</tr>';
+                $('#body_detail').append(row);
+            }
         }else{
-            var row = '<tr id='+obat+'>' +
-                    '<td>'+jenis+'</td>' +
-                    '<td>'+obat+'</td>' +
-                    '<td>'+qty+'</td>' +
-                    '<td>'+ket+'</td>' +
-                    '<td align="center"><img border="0" onclick="delRowObat(\'' + obat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                    '</tr>';
-            $('#body_detail').append(row);
+            if(jenis == ''){
+                $('#war_rep_jenis').show();
+            }
+            if(obat == ''){
+                $('#war_rep_obat').show();
+            }
+            if(qty == '' || qty <= 0){
+                $('#war_rep_qty').show();
+            }
+            if(ket == ''){
+                $('#war_rep_ket').show();
+            }
+            $('#warning_resep_head').show().fadeOut(5000);
         }
     }
 
@@ -2272,24 +2329,185 @@
     }
 
     function saveResepObat(){
+
         var idDokter = $('#tin_id_dokter').val();
         var data        = $('#tabel_rese_detail').tableToJSON();
         var stringData  = JSON.stringify(data);
-        $('#save_resep_head').hide();
-        $('#load_resep_head').show()
-        PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
-            callback: function (response) {
-                if (response == "sucesss") {
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(9);
-                    $('#save_resep_head').show();
-                    $('#load_resep_head').hide();
-                } else {
-                    $('#save_resep_head').show();
-                    $('#load_resep_head').hide();
+
+        if(stringData != '[]'){
+            $('#save_resep_head').hide();
+            $('#load_resep_head').show();
+            dwr.engine.setAsync(true);
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(9);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                        $('#modal-resep-head').modal('hide');
+                        listResepPasien();
+                    } else {
+                        $('#warning_resep_head').show().fadeOut(5000);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                    }
                 }
+            });
+        }else{
+            $('#warning_resep_head').show().fadeOut(5000);
+        }
+    }
+
+    function listResepPasien() {
+
+        var table = "";
+        var data = [];
+
+        PermintaanResepAction.listResepPasien(idDetailCheckup, function (response) {
+            data = response;
+            if (data != null) {
+                $.each(data, function (i, item) {
+                    var idResep     = "";
+                    var tanggal     = item.createdDate;
+                    var dateFormat  = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+
+                    if (item.idPermintaanResep != null) {
+                        idResep = item.idPermintaanResep;
+                    }
+
+                    table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + idResep + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;"> <img border="0" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "</tr>"
+                });
             }
         });
+
+        $('#body_resep').html(table);
+    }
+
+    function detailResep(id){
+        $('#modal-resep-detail').modal('show');
+        listDetailResepPasien(id);
+    }
+
+    function listDetailResepPasien(idApprovalObat) {
+
+        var table = "";
+        var data = [];
+
+        PermintaanResepAction.listDetail(idApprovalObat, function (response) {
+            data = response;
+            console.log(data);
+            if (data != null) {
+                $.each(data, function (i, item) {
+
+                    var qty      = "";
+                    var namaObat = "";
+                    var ket      = "";
+                    var idObat   = "";
+
+                    if(item.idObat != null){
+                        idObat = item.idObat;
+                    }
+
+                    if (item.qty != null) {
+                        qty = item.qty;
+                    }
+
+                    if (item.namaObat != null) {
+                        namaObat = item.namaObat;
+                    }
+
+                    if (item.keterangan != null) {
+                        ket = item.keterangan;
+                    }
+
+                    table += "<tr>" +
+                            "<td>"+ '<span id=obat'+idObat+'>' + namaObat + '</span><input style="display:none; width: 120px;" type="text" id=newObat'+idObat+' class="form-control"><input type="hidden" id=idObat'+idObat+'>' + "</td>" +
+                            "<td>"+'<span id=qty'+idObat+'>'+ qty + '</span>'+'<input type="hidden" id=newId'+idObat+' value='+idObat+'>'+
+                            '<input style="display:none; width: 80px" type="number" id=newQty'+idObat+' class="form-control">'+ "</td>" +
+                            "<td>"+'<span id=ket'+idObat+'>'+ ket + '</span>'+
+                            '<select class="form-control" id=newKet'+idObat+' style="display:none"'+
+                            '<option value="">[Select One]</option>'+
+                            '<option value="2 x 1 /Hari">2 x 1 /Hari</option>'+
+                            '<option value="3 x 1 /Hari">3 x 1 /Hari</option>'+
+                            '</select>'+ "</td>" +
+                            "<td align='center'>" + '<img border="0" id='+idObat+' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">'+
+                            '<img border="0" id=save'+idObat+' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\''+item.idApprovalObat+'\')" src="<s:url value="/pages/images/save_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px; display: none">'+ "</td>" +
+                            "</tr>"
+                });
+            }
+        });
+
+        $('#body_detail_rep').html(table);
+    }
+
+    function editObatResep(id, idObat, qty, ket, namaObat){
+
+        if($('#'+idObat).attr('src') == '/simrs/pages/images/edit-flat-new.png'){
+            var url = '<s:url value="/pages/images/cnacel-flat.png"/>';
+            $('#'+idObat).attr('src',url);
+            $('#obat'+idObat).hide();
+            $('#qty'+idObat).hide();
+            $('#ket'+idObat).hide();
+
+            $('#newObat'+idObat).show().val(namaObat);
+            $('#newQty'+idObat).show().val(qty);
+            $('#newKet'+idObat).show().val(ket);
+            $('#save'+idObat).show();
+
+        }else{
+            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
+            $('#'+idObat).attr('src',url);
+            $('#obat'+idObat).show();
+            $('#qty'+idObat).show();
+            $('#ket'+idObat).show();
+
+            $('#newObat'+idObat).hide();
+            $('#newQty'+idObat).hide();
+            $('#newKet'+idObat).hide();
+            $('#save'+idObat).hide();
+        }
+    }
+
+    function saveDetailResep(id, idObat, idApp){
+
+        var obat    = $('#newId'+idObat).val();
+        var qty     = $('#newQty'+idObat).val();
+        var ket     = $('#newKet'+idObat).val();
+
+        if(obat != '' && qty != '' && ket != ''){
+            $('#save_resep_head').hide();
+            $('#load_resep_head').show();
+            dwr.engine.setAsync(true);
+            PermintaanResepAction.saveEditDetail(id, obat, qty, ket, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#success_detail').show().fadeOut(5000);
+                        listDetailResepPasien(idApp);
+                    } else {
+                        $('#warning_resep_head').show().fadeOut(5000);
+                        $('#save_resep_head').show();
+                        $('#load_resep_head').hide();
+                    }
+                }
+            });
+        }else{
+            $('#warning_detail').show().fadeOut(5000);
+        }
+    }
+
+    function getNamaObat(){
+        ObatAction.getListNamaObat( function (response) {
+            $.each(response ,function(i, item){
+
+            })
+        })
     }
 
 

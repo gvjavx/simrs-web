@@ -23,6 +23,25 @@ public class MtSimrsPermintaanObatPoliEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String branchId;
+    private String tujuanPelayanan;
+
+    public String getTujuanPelayanan() {
+        return tujuanPelayanan;
+    }
+
+    public void setTujuanPelayanan(String tujuanPelayanan) {
+        this.tujuanPelayanan = tujuanPelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getRetureFlag() {
         return retureFlag;
     }

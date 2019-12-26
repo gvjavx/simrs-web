@@ -18,7 +18,31 @@ public class ObatPoli {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String branchId;
+
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     private String namaObat;
+
+    public String getNamaObat() {
+        return namaObat;
+    }
 
     public void setNamaObat(String namaObat) {
         this.namaObat = namaObat;

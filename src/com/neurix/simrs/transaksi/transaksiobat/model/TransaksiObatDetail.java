@@ -12,6 +12,79 @@ public class TransaksiObatDetail extends BaseModel {
     private BigInteger qty;
     private String keterangan;
 
+    private String idPermintaanResep;
+    private String branchId;
+
+    private String namaObat;
+    private String namaPoli;
+    private String namaPasien;
+
+    private BigInteger harga;
+    private BigInteger totalHarga;
+
+    private BigInteger totalBayar;
+    private BigInteger totalDibayar;
+    private BigInteger nominal;
+    private BigInteger kembalian;
+
+    private BigInteger qtyApprove;
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
+
+    public BigInteger getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(BigInteger nominal) {
+        this.nominal = nominal;
+    }
+
+    public BigInteger getKembalian() {
+        return kembalian;
+    }
+
+    public void setKembalian(BigInteger kembalian) {
+        this.kembalian = kembalian;
+    }
+
+    public BigInteger getTotalBayar() {
+        return totalBayar;
+    }
+
+    public void setTotalBayar(BigInteger totalBayar) {
+        this.totalBayar = totalBayar;
+    }
+
+    public BigInteger getTotalDibayar() {
+        return totalDibayar;
+    }
+
+    public void setTotalDibayar(BigInteger totalDibayar) {
+        this.totalDibayar = totalDibayar;
+    }
+
+    public String getIdPermintaanResep() {
+        return idPermintaanResep;
+    }
+
+    public void setIdPermintaanResep(String idPermintaanResep) {
+        this.idPermintaanResep = idPermintaanResep;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getKeterangan() {
         return keterangan;
     }
@@ -50,5 +123,45 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setQty(BigInteger qty) {
         this.qty = qty;
+    }
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
+
+    public String getNamaPoli() {
+        return namaPoli;
+    }
+
+    public void setNamaPoli(String namaPoli) {
+        this.namaPoli = namaPoli;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public BigInteger getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigInteger harga) {
+        this.harga = harga;
+    }
+
+    public BigInteger getTotalHarga() {
+        return totalHarga;
+    }
+
+    public void setTotalHarga(BigInteger totalHarga) {
+        this.totalHarga = totalHarga;
     }
 }

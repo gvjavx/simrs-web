@@ -63,6 +63,14 @@
             <column name="url_ktp" sql-type="varchar" length="100"/>
         </property>
 
+        <property name="email">
+            <column name="email" sql-type="varchar" length="50"/>
+        </property>
+
+        <property name="password">
+            <column name="password" sql-type="varchar" length="30"/>
+        </property>
+
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

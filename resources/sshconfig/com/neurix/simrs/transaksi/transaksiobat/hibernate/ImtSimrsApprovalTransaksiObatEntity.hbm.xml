@@ -24,7 +24,12 @@
         <property name="tipePermintaan">
             <column name="tipe_permintaan" sql-type="varchar" length="5" not-null="false" />
         </property>
-
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvePerson">
+            <column name="approve_person" sql-type="varchar" length="100" not-null="false" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -42,6 +47,9 @@
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
         </property>
 
 

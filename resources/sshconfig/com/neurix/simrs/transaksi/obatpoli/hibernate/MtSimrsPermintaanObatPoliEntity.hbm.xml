@@ -46,6 +46,12 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="tujuanPelayanan">
+            <column name="tujuan_pelayanan" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
 
     </class>

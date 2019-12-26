@@ -41,5 +41,20 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="isUmum">
+            <column name="is_umum" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="tglAntrian">
+            <column name="tgl_antrian" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="tujuanPelayanan">
+            <column name="tujuan_pelayanan" sql-type="varchar" length="30" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

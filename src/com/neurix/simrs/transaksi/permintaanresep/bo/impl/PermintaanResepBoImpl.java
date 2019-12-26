@@ -156,6 +156,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         approvalEntity.setLastUpdateWho(bean.getCreatedWho());
         approvalEntity.setCreatedDate(bean.getCreatedDate());
         approvalEntity.setCreatedWho(bean.getCreatedWho());
+        approvalEntity.setBranchId(bean.getBranchId());
 
         try {
             approvalTransaksiObatDao.addAndSave(approvalEntity);
@@ -177,6 +178,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         permintaanEntity.setCreatedWho(bean.getCreatedWho());
         permintaanEntity.setLastUpdate(bean.getCreatedDate());
         permintaanEntity.setLastUpdateWho(bean.getCreatedWho());
+        permintaanEntity.setBranchId(bean.getBranchId());
+        permintaanEntity.setTujuanPelayanan(bean.getTujuanPelayanan());
+
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
@@ -192,8 +196,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 JSONObject obj = json.getJSONObject(i);
 
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                detail.setIdObat(obj.getString("Obat"));
+                detail.setIdObat(obj.getString("ID"));
                 detail.setQty(new BigInteger(obj.getString("Qty")));
+                detail.setKeterangan(obj.getString("Keterangan"));
                 detail.setCreatedDate(bean.getCreatedDate());
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());

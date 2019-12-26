@@ -27,7 +27,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
             criteria.add(Restrictions.eq("idPermintaanResep", mapCriteria.get("id_permintaan_resep").toString()));
         }
         if (mapCriteria.get("id_approval_obat") != null){
-            criteria.add(Restrictions.eq("idApprovalOba", mapCriteria.get("id_approval_obat").toString()));
+            criteria.add(Restrictions.eq("idApprovalObat", mapCriteria.get("id_approval_obat").toString()));
         }
         if (mapCriteria.get("id_pasien") != null){
             criteria.add(Restrictions.eq("idPasien", mapCriteria.get("id_pasien").toString()));
@@ -42,6 +42,8 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         List<ImSimrsPermintaanResepEntity> results = criteria.list();
         return results;
     }
+
+
 
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_permintaan_resep')");

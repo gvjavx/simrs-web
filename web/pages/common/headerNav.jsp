@@ -338,7 +338,8 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>e-H</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg" style="margin-left: -40px"><img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;"> <b>e-HEALTH</b></span>
+        <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;">--%>
+        <span class="logo-lg" style="margin-left: -40px"> <b>e-HEALTH</b></span>
     </a>
 
     <!-- Header Navbar -->

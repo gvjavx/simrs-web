@@ -60,6 +60,34 @@ public class HeaderCheckup {
     private String hubunganKeluarga;
     private String rujuk;
 
+    private String urlDocRujuk;
+    private String tinggi;
+    private String berat;
+
+    public String getUrlDocRujuk() {
+        return urlDocRujuk;
+    }
+
+    public void setUrlDocRujuk(String urlDocRujuk) {
+        this.urlDocRujuk = urlDocRujuk;
+    }
+
+    public String getTinggi() {
+        return tinggi;
+    }
+
+    public void setTinggi(String tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    public String getBerat() {
+        return berat;
+    }
+
+    public void setBerat(String berat) {
+        this.berat = berat;
+    }
+
     public String getNamaPenanggung() {
         return namaPenanggung;
     }

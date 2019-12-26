@@ -4,16 +4,11 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
-import com.neurix.hris.master.provinsi.model.ImDesaEntity;
-import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
-import com.neurix.hris.master.provinsi.model.ImKotaEntity;
-import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
-import com.neurix.hris.master.statusRekruitment.bo.impl.StatusRekruitmentBoImpl;
 import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
-import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
@@ -22,12 +17,11 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.sql.SQLException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -43,6 +37,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private CheckupDetailDao checkupDetailDao;
     private ProvinsiDao provinsiDao;
     private DokterTeamDao dokterTeamDao;
+    private CheckupAlergiDao checkupAlergiDao;
 
     public CheckupBoImpl() throws GeneralSecurityException, IOException {
     }
@@ -139,6 +134,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setNoTelp(headerList.getNoTelp());
             headerCheckup.setIdJenisPeriksaPasien(headerList.getIdJenisPeriksaPasien());
             headerCheckup.setKeteranganKeluar(headerList.getKeteranganKeluar());
+            headerCheckup.setTinggi(headerList.getTinggi());
+            headerCheckup.setBerat(headerList.getBerat());
 
             if(headerList.getUrlKtp() != null && !"".equalsIgnoreCase(headerList.getUrlKtp())){
                 String src = CommonConstant.URL_IMG + CommonConstant.RESOURCE_PATH_KTP_PASIEN + headerList.getUrlKtp();
@@ -479,40 +476,246 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public HeaderCheckup completeBpjs(String nomorBpjs){
+    public HeaderCheckup completeBpjs(String nomorBpjs) {
         logger.info("[CheckupBoImpl.completeBpjs] Start >>>>>>>");
 
         HeaderCheckup finalResult = new HeaderCheckup();
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, 1);
-        dt = c.getTime();
-        SimpleDateFormat s=new SimpleDateFormat("yyyy-MM-dd");
-        String tanggal =s.format(dt);
+        java.util.Date dt = new java.util.Date();
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggal = s.format(dt);
 
-        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/"+nomorBpjs+"/tglSEP/"+tanggal;
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/" + nomorBpjs + "/tglSEP/" + tanggal;
         try {
             String result = GET(feature);
             JSONObject myResponseCheck = new JSONObject(result);
-            if (myResponseCheck.isNull("response")){
-                finalResult=null;
+            if (myResponseCheck.isNull("response")) {
+                finalResult = null;
                 JSONObject response = myResponseCheck.getJSONObject("metaData");
-                logger.error("[CheckupBoImpl.completeBpjs] : "+response.getString("message"));
-            }else{
+                logger.error("[CheckupBoImpl.completeBpjs] : " + response.getString("message"));
+            } else {
                 JSONObject response = myResponseCheck.getJSONObject("response");
                 JSONObject obj = response.getJSONObject("peserta");
                 finalResult.setNoKtp(obj.getString("nik"));
                 finalResult.setNama(obj.getString("nama"));
                 finalResult.setJenisKelamin(obj.getString("sex"));
-                finalResult.setStTglLahir(obj.getString("tglLahir"));
+                String[] tglLahir =obj.getString("tglLahir").split("-");
+                finalResult.setStTglLahir(tglLahir[2]+"-"+tglLahir[1]+"-"+tglLahir[0]);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("[CheckupBoImpl.completeBpjs] Error when get data");
         }
 
         logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
         return finalResult;
+    }
+
+    @Override
+    public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.updatePenunjang] Start >>>>>>>>");
+
+        List<ItSimrsHeaderChekupEntity> chekupEntities = null;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", bean.getNoCheckup());
+
+        try {
+            chekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.updatePenunjang] Error when get data checkup ",e);
+            throw new GeneralBOException("[CheckupBoImpl.updatePenunjang]  Error when get data checkup "+e.getMessage());
+        }
+
+        if (chekupEntities.size() > 0){
+            ItSimrsHeaderChekupEntity chekupEntity = chekupEntities.get(0);
+            chekupEntity.setTinggi(bean.getTinggi());
+            chekupEntity.setBerat(bean.getBerat());
+            chekupEntity.setLastUpdate(bean.getLastUpdate());
+            chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                headerCheckupDao.updateAndSave(chekupEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.updatePenunjang] Error when update data checkup ",e);
+                throw new GeneralBOException("[CheckupBoImpl.updatePenunjang] Error when update data checkup "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupBoImpl.updatePenunjang] End <<<<<<<<");
+    }
+
+    @Override
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListAlergi] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSImrsCheckupAlergiEntity> alergiEntities = null;
+
+        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+            try {
+                alergiEntities = checkupAlergiDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.getListAlergi] Error when get criteria ",e);
+                throw new GeneralBOException("[CheckupBoImpl.getListAlergi] Error when get criteria "+e.getMessage());
+            }
+        }
+        logger.info("[CheckupBoImpl.getListAlergi] End <<<<<<<<");
+        return alergiEntities;
+    }
+
+    @Override
+    public void saveAddAlergi(CheckupAlergi bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveAddAlergi] Start >>>>>>>>");
+
+        ItSImrsCheckupAlergiEntity alergiEntity = new ItSImrsCheckupAlergiEntity();
+        alergiEntity.setNoCheckup(bean.getNoCheckup());
+        alergiEntity.setIdAlergi("ALG"+getNextIdAlergi());
+        alergiEntity.setAlergi(bean.getAlergi());
+        alergiEntity.setFlag("Y");
+        alergiEntity.setAction("C");
+        alergiEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        alergiEntity.setCreatedWho(CommonUtil.userLogin());
+        alergiEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        alergiEntity.setLastUpdateWho(CommonUtil.userLogin());
+
+        try {
+            checkupAlergiDao.addAndSave(alergiEntity);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.saveAddAlergi] Error when save Add ",e);
+            throw new GeneralBOException("[CheckupBoImpl.saveAddAlergi] Error when save Add "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.saveAddAlergi] End <<<<<<<<");
+    }
+
+    @Override
+    public void saveEditAlergi(CheckupAlergi bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveEditAlergi] Start >>>>>>>>");
+
+        if (bean.getIdAlergi() != null && !"".equalsIgnoreCase(bean.getIdAlergi())){
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_alergi", bean.getIdAlergi());
+
+            List<ItSImrsCheckupAlergiEntity> alergiEntities = null;
+            try {
+                alergiEntities = checkupAlergiDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveEditAlergi] Error when get criteria ",e);
+                throw new GeneralBOException("[CheckupBoImpl.saveEditAlergi] Error when get criteria "+e.getMessage());
+            }
+
+            if (alergiEntities != null && alergiEntities.size() > 0){
+                ItSImrsCheckupAlergiEntity alergiEntity = alergiEntities.get(0);
+
+                if (bean.getAlergi() != null && !"".equalsIgnoreCase(bean.getAlergi())){
+                    alergiEntity.setAlergi(bean.getAlergi());
+                }
+                if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                    alergiEntity.setFlag(bean.getFlag());
+                    alergiEntity.setAction("U");
+                }
+
+                alergiEntity.setLastUpdate(bean.getLastUpdate());
+                alergiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    checkupAlergiDao.updateAndSave(alergiEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveEditAlergi] Error when save update ",e);
+                    throw new GeneralBOException("[CheckupBoImpl.saveEditAlergi] Error when save update "+e.getMessage());
+                }
+            }
+        }
+
+        logger.info("[CheckupBoImpl.saveEditAlergi] End <<<<<<<<");
+    }
+
+    @Override
+    public AlertPasien getAlertPasien(String idPasien, String branchId) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getAlertPasien] Start >>>>>>>>");
+
+        AlertPasien alertPasien = new AlertPasien();
+
+        try {
+            alertPasien = headerCheckupDao.getAlertPasien(idPasien, branchId);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getAlertPasien] Error when get alert pasien ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getAlertPasien] Error when alert pasien "+e.getMessage());
+        }
+
+        List<String> listAlergi = new ArrayList<>();
+        if (alertPasien != null){
+            List<ItSImrsCheckupAlergiEntity> alergiEntities = getListAlergi(alertPasien.getNoCheckup());
+            if (alergiEntities != null && alergiEntities.size() > 0){
+                for (ItSImrsCheckupAlergiEntity alergiEntity : alergiEntities){
+                    listAlergi.add(alergiEntity.getAlergi());
+                }
+            }
+            alertPasien.setListOfAlergi(listAlergi);
+        }
+
+        logger.info("[CheckupBoImpl.getAlertPasien] End <<<<<<<<");
+        return alertPasien;
+    }
+
+    @Override
+    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.listOfRekamMedic] Start >>>>>>>>");
+
+        List<ItSimrsHeaderChekupEntity> headerChekupEntities = null;
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pasien", idPasien);
+        hsCriteria.put("tgl_keluar_not_null", "Y");
+
+        try {
+            headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.listOfRekamMedic] Error when get checkup criteria ",e);
+            throw new GeneralBOException("[CheckupBoImpl.listOfRekamMedic] Error when get checkup criteria "+e.getMessage());
+        }
+
+        List<AlertPasien> alertPasienList = new ArrayList<>();
+        if (headerChekupEntities != null && headerChekupEntities.size() > 0){
+            AlertPasien alertPasien;
+            for (ItSimrsHeaderChekupEntity headerChekupEntity : headerChekupEntities)
+            {
+                alertPasien = new AlertPasien();
+                alertPasien.setNoCheckup(headerChekupEntity.getNoCheckup());
+                alertPasien.setNamaPasien(headerChekupEntity.getNama());
+
+                AlertPasien alertPasienDiagnosa = new AlertPasien();
+                try {
+                    alertPasienDiagnosa = headerCheckupDao.gelLastDiagnosa(headerChekupEntity.getNoCheckup(), "");
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.listOfRekamMedic] Error when get diagnosa ",e);
+                    throw new GeneralBOException("[CheckupBoImpl.listOfRekamMedic] Error when get diagnosa "+e.getMessage());
+                }
+
+                if (alertPasienDiagnosa != null){
+                    alertPasien.setDiagnosa(alertPasienDiagnosa.getDiagnosa());
+                }
+
+                Long time = headerChekupEntity.getTglKeluar().getTime();
+                Date date = new Date(time);
+                alertPasien.setStTgl(date.toString());
+                alertPasienList.add(alertPasien);
+            }
+        }
+
+        logger.info("[CheckupBoImpl.listOfRekamMedic] End <<<<<<<<");
+        return alertPasienList;
+    }
+
+    private String getNextIdAlergi(){
+        String id = "";
+        try {
+            id = checkupAlergiDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.saveEditAlergi] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.updatePenunjang] Error when get seq "+e.getMessage());
+        }
+        return id;
     }
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
@@ -529,5 +732,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
         this.dokterTeamDao = dokterTeamDao;
+    }
+
+    public void setCheckupAlergiDao(CheckupAlergiDao checkupAlergiDao) {
+        this.checkupAlergiDao = checkupAlergiDao;
     }
 }

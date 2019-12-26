@@ -39,6 +39,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_MUTASI_FILE="/pages/upload/file/mutasi/";
 
     public final static String RESOURCE_PATH_KTP_PASIEN="/upload/ktp_pasien/";
+    public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN="/upload/surat_rujuk/";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK="/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";
@@ -97,8 +98,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD_PDF="/pages/upload/doc/pdf/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
-    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
     public final static String URL_IMAGE_LOGO_REPORT_BACKGROUND_PRAPRINT = "C:\\project\\e-farming\\web\\pages\\images\\pre-print.png";
@@ -119,6 +120,7 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
+    public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     public final static String BRANCH_KANTOR_DIREKSI = "KD01";
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
@@ -137,6 +139,9 @@ public class CommonConstant {
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.jpg";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
+
+    public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
+
 
 
 }

@@ -31,8 +31,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("id_obat")!=null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
-            if (mapCriteria.get("nama_jenis_obat")!=null) {
-                criteria.add(Restrictions.ilike("namaObat", "%" + (String)mapCriteria.get("nama_jenis_obat") + "%"));
+            if (mapCriteria.get("nama_obat")!=null) {
+                criteria.add(Restrictions.ilike("namaObat", "%" + (String)mapCriteria.get("nama_obat") + "%"));
             }
             if (mapCriteria.get("id_jenis_obat")!=null) {
                 criteria.add(Restrictions.eq("idJenisObat", (String) mapCriteria.get("id_jenis_obat")));
@@ -224,6 +224,39 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             obatEntity.setLastUpdateWho(obj[8] == null ? null : obj[8].toString());
             obatEntity.setQty(obj[9] == null ? null : (BigInteger) obj[9]);
             obatEntity.setBranchId( obj[10] == null ? "" : obj[10].toString());
+            listOfResults.add(obatEntity);
+        }
+        return listOfResults;
+    }
+
+    public List<Obat> getListNamaObat(Obat bean){
+
+        String namaObat = "%";
+        String branchId = "%";
+
+        if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
+            namaObat = "%"+bean.getNamaObat()+"%";
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        String SQL = "SELECT id_obat, nama_obat FROM im_simrs_obat\n" +
+                "WHERE nama_obat LIKE :namaObat AND branch_id = :branchId\n AND flag = 'Y'" +
+                "ORDER BY nama_obat ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("namaObat", namaObat)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<Obat> listOfResults = new ArrayList<>();
+        Obat obatEntity;
+        for (Object[] obj : results)
+        {
+            obatEntity = new Obat();
+            obatEntity.setIdObat(obj[0].toString());
+            obatEntity.setNamaObat(obj[1] == null ? "" : obj[1].toString());
             listOfResults.add(obatEntity);
         }
         return listOfResults;
