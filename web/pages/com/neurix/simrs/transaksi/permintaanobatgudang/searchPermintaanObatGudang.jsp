@@ -197,18 +197,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listObatGudang" status="listObatGudang" var="tes">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:if test='%{#session.listOfResult[#listObatGudang.index].keterangan.equalsIgnoreCase("Menunggu Konfirmasi")}'>
+                                    <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='%{#session.listOfResult[#listObatGudang.index].approvalFlag.equalsIgnoreCase("Y")}'>
-                                            <button class="btn btn-success" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"> Konfirmasi Diterima</button>
+                                        <s:if test='#row.approvalFlag == "Y" '>
+                                            <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"> <i class="fa fa-edit"></i></button>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -780,6 +780,24 @@
         } else {
             $('#warning_reture').show().fadeOut(5000);
         }
+    }
+
+    function printRequest(idApp, idPermin){
+        PermintaanObatPoliAction.printPermintaanObat(idApp, idPermin, { callback: function (response) {
+            if (response == "success") {
+                dwr.engine.setAsync(false);
+                $('#modal-reture').modal('hide');
+                $('#info_dialog').dialog('open');
+                $('#save_ret').show();
+                $('#load_ret').hide();
+            } else {
+                $('#warning_request').show().fadeOut(5000);
+                $('#msg_reture').text(response);
+                $('#save_ret').show();
+                $('#load_ret').hide();
+            }
+        }
+        });
     }
 
 

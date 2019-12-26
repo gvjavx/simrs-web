@@ -183,23 +183,23 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResult">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:if test="#listOfResult.keterangan == 'Menunggu Konfirmasi'">
+                                    <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td></td>
                                     <td align="center">
-                                        <s:if test="#listOfResult.approvalFlag == null">
-                                            <s:if test="#listOfResult.request == true">
-                                                <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')">Konfirmasi Request</button>
+                                        <s:if test='#row.approvalFlag == null'>
+                                            <s:if test='#row.request == true'>
+                                                <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                             </s:if>
                                             <s:else>
-                                                <button class="btn btn btn-danger" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')">Konfirmasi Reture</button>
+                                                <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                             </s:else>
                                         </s:if>
                                     </td>

@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,15 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
     private ObatPoliBo obatPoliBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
     private ObatPoli obatPoli;
+    private String idPermintaan;
+
+    public String getIdPermintaan() {
+        return idPermintaan;
+    }
+
+    public void setIdPermintaan(String idPermintaan) {
+        this.idPermintaan = idPermintaan;
+    }
 
     @Override
     public String search() {
@@ -111,6 +121,9 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setBranchId(branchId);
+            obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+            obatPoli.setBranchId(CommonUtil.userBranchLogin());
+
             try {
                 obatPoliBo.saveApproveRequest(obatPoli, request, isPoli);
             }catch (JSONException e){
@@ -143,6 +156,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setBranchId(branchId);
+            obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
 
             obatPoliBo.saveApproveReture(obatPoli, isPoli);
 
@@ -155,6 +169,25 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] END process <<<");
 
         return SUCCESS;
+    }
+
+    public String printPermintaanObat(){
+
+        String idPermintaan = getIdPermintaan();
+
+        reportParams.put("idPermintaan", idPermintaan);
+        reportParams.put("logo", "/simrs/pages/images/logo-nmu.png");
+        reportParams.put("keyCode", 123456789);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_permintaan_obat";
     }
 
 

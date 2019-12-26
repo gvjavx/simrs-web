@@ -44,6 +44,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanObatPoliAction.js"/>'></script>
 
 </head>
 
@@ -221,16 +222,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listObatPoli" id="listObatPoli" var="listObatPoli">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="createdDate"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:if test="#listObatPoli.keterangan == 'Menunggu Konfirmasi'">
+                                    <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
+                                        <s:if test='#row.approvalFlag == "Y" '>
+                                            <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -499,6 +503,65 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_reture"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-request-detail">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="judul_req"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_request_detail">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_request_detail"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tanggal Request</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="req_tanggal" style="margin-top: 7px">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly="true" id="req_id_permintaan" style="margin-top: 7px">
+                        </div>
+                    </div>
+                    <input type="hidden" id="req_id_approve">
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
+                </div>
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_request_detail">
+                        <thead>
+                        <td >ID</td>
+                        <td >Nama Obat</td>
+                        <td align="center">Request</td>
+                        <td align="center">Approve</td>
+                        </thead>
+                        <tbody id="body_request_detail">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_req_detail" onclick="saveConfirm()"><i
+                        class="fa fa-arrow-right"></i> Konfirmasi
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_req_detail"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -790,6 +853,63 @@
             $('#body_reture').html('');
             $('#ret_id_pelayanan').val('');
             $('#ret_tujuan').html('');
+        }
+    }
+
+    function confirm(idApp, idPermin, tanggal, tujuan){
+        $('#judul_req').html('Konfirmasi request diterima');
+        $('#req_id_permintaan').val(idPermin);
+        $('#req_tanggal').val(tanggal);
+        $('#req_id_approve').val(idApp);
+        $('#modal-request-detail').modal('show');
+        var table = "";
+        PermintaanObatPoliAction.listDetailPermintaan(idPermin, true, tujuan, {
+            callback: function (response) {
+                if(response != null){
+                    $.each(response, function (i, item) {
+                        table += "<tr>" +
+                                "<td>" + item.idObat + "</td>" +
+                                "<td>" + item.namaObat + "</td>" +
+                                "<td align='center'>" + item.qty + "</td>" +
+                                "<td align='center'>" + item.qtyApprove + "</td>" +
+                                "</tr>";
+                    });
+                }
+            }
+        });
+        $('#body_request_detail').html(table);
+    }
+
+    function saveConfirm(){
+        var data        = $('#tabel_request_detail').tableToJSON();
+        var stringData  = JSON.stringify(data);
+        var idApp       = $('#req_id_approve').val();
+        var idPermin    = $('#req_id_permintaan').val();
+
+        if (stringData != '[]') {
+
+            $('#save_req_detail').hide();
+            $('#load_req_detail').show();
+
+            dwr.engine.setAsync(true);
+            ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData,{
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#modal-request-detail').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#save_req_detail').show();
+                        $('#load_req_detail').hide();
+                    } else {
+                        $('#warning_reture').show().fadeOut(5000);
+                        $('#save_reture').show();
+                        $('#load_reture').hide();
+                    }
+                }
+            });
+
+        } else {
+            $('#warning_reture').show().fadeOut(5000);
         }
     }
 

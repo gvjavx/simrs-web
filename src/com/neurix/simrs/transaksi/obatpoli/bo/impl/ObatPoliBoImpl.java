@@ -639,11 +639,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                         }
 
                                         if(isPoli){
+
                                             // updating qty obat poli after konfirmasi
                                             ObatPoli obatPoli = new ObatPoli();
                                             obatPoli.setIdObat(obatDetailEntity.getIdObat());
-                                            obatPoli.setIdPelayanan(approvalTransaksiObatEntity.getIdPelayanan());
-                                            obatPoli.setBranchId(approvalTransaksiObatEntity.getBranchId());
+                                            obatPoli.setIdPelayanan(bean.getIdPelayanan());
+                                            obatPoli.setBranchId(bean.getBranchId());
                                             MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
                                             if(obatPoliEntity != null){
 
@@ -755,8 +756,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 // updating qty obat poli after konfirmasi
                                 ObatPoli obatPoli = new ObatPoli();
                                 obatPoli.setIdObat(obatDetailEntity.getIdObat());
-                                obatPoli.setIdPelayanan(approvalTransaksiObatEntity.getIdPelayanan());
-                                obatPoli.setBranchId(approvalTransaksiObatEntity.getBranchId());
+                                obatPoli.setIdPelayanan(bean.getIdPelayanan());
+                                obatPoli.setBranchId(bean.getBranchId());
                                 MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
                                 if(obatPoliEntity != null){
 
