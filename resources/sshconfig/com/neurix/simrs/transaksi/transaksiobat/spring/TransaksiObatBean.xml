@@ -19,6 +19,7 @@
           p:riwayatTransaksiObatDao-ref="riwayatTransaksiObatDao"
           p:riwayatTransPembelianObatDao-ref="riwayatTransPembelianObatDao"
           p:obatPoliDao-ref="obatPoliDao"
+          p:vendorDao-ref="vendorDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

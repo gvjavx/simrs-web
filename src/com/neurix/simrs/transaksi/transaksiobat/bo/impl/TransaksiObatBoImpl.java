@@ -7,6 +7,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.vendor.dao.VendorDao;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -41,6 +42,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private PasienDao pasienDao;
     private RiwayatTransPembelianObatDao riwayatTransPembelianObatDao;
     private ObatPoliDao obatPoliDao;
+    private VendorDao vendorDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -726,5 +728,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setObatPoliDao(ObatPoliDao obatPoliDao) {
         this.obatPoliDao = obatPoliDao;
+    }
+
+    public void setVendorDao(VendorDao vendorDao) {
+        this.vendorDao = vendorDao;
     }
 }
