@@ -79,13 +79,14 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
         return "search";
     }
 
-    public List<PermintaanObatPoli> listDetailPermintaan(String idPermintaan, boolean isPoli, String idTujuan){
+    public List<PermintaanObatPoli> listDetailPermintaan(String idPermintaan, boolean isPoli, String idTujuan, String flag){
 
         logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
         PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
         permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
         permintaanObatPoli.setTujuanPelayanan(idTujuan);
+        permintaanObatPoli.setFlag(flag);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
@@ -121,7 +122,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setBranchId(branchId);
-            obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+            obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
             obatPoli.setBranchId(CommonUtil.userBranchLogin());
 
             try {
@@ -156,7 +157,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setBranchId(branchId);
-            obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+            obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
             obatPoliBo.saveApproveReture(obatPoli, isPoli);
 

@@ -423,6 +423,37 @@
                                                      style="border: darkgray solid 1px; height: 170px"/>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Tinggi & Berat Badan</label>
+                                            <div class="col-md-3">
+                                                <s:textfield id="tinggi" cssStyle="margin-top: 7px" name="headerCheckup.tinggi" type="number" cssClass="form-control"/>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <p style="margin-top: 10px">&</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group date" style="margin-top: 7px">
+                                                    <s:textfield id="berat" name="headerCheckup.berat" cssClass="form-control" type="number"/>
+                                                    <div class="input-group-addon" style="margin-top: 7px">
+                                                        cm
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4">Diagnosa</label>
+                                            <div class="col-md-8">
+                                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                                          name="getListComboDiagnosa_checkupdetail"/>
+                                                <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                          onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                                          name="headerDetailCheckup.diagnosa" listKey="idDiagnosa"
+                                                          listValue="descOfDiagnosa"
+                                                          headerKey="" headerValue="[Select one]"
+                                                          cssClass="form-control select2"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -596,8 +627,12 @@
                                         Please don't close this window, server is processing your request ...
                                         <br>
                                         <center>
-                                            <img border="0" style="width: 150px; height: 150px"
-                                                 src="<s:url value="/pages/images/spinner.gif"/>"
+                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                 name="image_indicator_write">
+                                            <br>
+                                            <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                  name="image_indicator_write">
                                         </center>
                                     </sj:dialog>

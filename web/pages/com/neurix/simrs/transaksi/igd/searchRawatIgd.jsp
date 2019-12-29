@@ -47,7 +47,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" namespace="/igd" action="search_igd.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="igdForm" method="post" namespace="/igd" action="search_igd.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
@@ -131,7 +131,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="igdForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
@@ -140,7 +140,7 @@
                                         <a type="button" class="btn btn-primary" href="addRawatIgd_igd.action"><i
                                                 class="fa fa-plus"></i> Tambah Rawat IGD Pasien</a>
                                         </s:if>
-                                        <a type="button" class="btn btn-danger" href="initForm_checkupdetail.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -157,7 +157,13 @@
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
-                                                <img border="0" style="width: 150px; height: 150px" src="<s:url value="/pages/images/spinner.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
                                         <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"

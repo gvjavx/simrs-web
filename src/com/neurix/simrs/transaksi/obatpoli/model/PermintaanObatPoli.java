@@ -44,6 +44,16 @@ public class PermintaanObatPoli{
 
     private String qtyPoli;
 
+    private String namaTujuanPelayanan;
+
+    public String getNamaTujuanPelayanan() {
+        return namaTujuanPelayanan;
+    }
+
+    public void setNamaTujuanPelayanan(String namaTujuanPelayanan) {
+        this.namaTujuanPelayanan = namaTujuanPelayanan;
+    }
+
     public String getQtyPoli() {
         return qtyPoli;
     }

@@ -40,6 +40,9 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         if (mapCriteria.get("id_pelayanan") != null){
             criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
         }
+        if (mapCriteria.get("tujuan_pelayanan") != null){
+            criteria.add(Restrictions.eq("tujuanPelayanan", mapCriteria.get("tujuan_pelayanan").toString()));
+        }
         if (mapCriteria.get("diterima_flag") != null){
             criteria.add(Restrictions.eq("diterimaFlag", mapCriteria.get("diterima_flag").toString()));
         }
@@ -106,7 +109,9 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "pop.created_who,\n" +
                     "pop.last_update,\n" +
                     "pop.last_update_who,\n" +
-                    "pop.tujuan_pelayanan\n" +
+                    "pop.tujuan_pelayanan,\n" +
+                    "pop.diterima_flag,\n" +
+                    "pop.reture_flag\n" +
                     "FROM mt_simrs_permintaan_obat_poli pop\n" +
                     "INNER JOIN\n" +
                     "(\n" +
@@ -138,7 +143,9 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "pop.created_who,\n" +
                     "pop.last_update,\n" +
                     "pop.last_update_who,\n" +
-                    "pop.tujuan_pelayanan\n" +
+                    "pop.tujuan_pelayanan,\n" +
+                    "pop.diterima_flag,\n" +
+                    "pop.reture_flag\n" +
                     "FROM mt_simrs_permintaan_obat_poli pop\n" +
                     "INNER JOIN\n" +
                     "(\n" +
@@ -191,6 +198,15 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 obatPoliEntity.setLastUpdate((Timestamp) obj[9]);
                 obatPoliEntity.setLastUpdateWho(obj[10].toString());
                 obatPoliEntity.setTujuanPelayanan(obj[11].toString());
+
+                if(obj[12] != null && !"".equalsIgnoreCase(obj[12].toString())){
+                    obatPoliEntity.setDiterimaFlag(obj[12].toString());
+                }
+
+                if(obj[13] != null && !"".equalsIgnoreCase(obj[13].toString())){
+                    obatPoliEntity.setRetureFlag(obj[13].toString());
+                }
+
                 listOfResults.add(obatPoliEntity);
             }
         }
@@ -282,6 +298,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
 
         String idPermintaan = "%";
         String idTujuan     = "%";
+        String flag         = "%";
 
         if (bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())){
             idPermintaan = bean.getIdPermintaanObatPoli();
@@ -290,6 +307,11 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())){
             idTujuan = bean.getTujuanPelayanan();
         }
+
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
+
 
         String SQL              = "";
         List<Object[]> results  = new ArrayList<>();
@@ -303,15 +325,16 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
                     "INNER JOIN mt_simrs_obat_poli d ON b.id_obat = d.id_obat\n" +
                     "WHERE a.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                    "AND a.flag = 'Y' \n" +
-                    "AND b.flag = 'Y' \n" +
-                    "AND c.flag = 'Y' \n" +
+                    "AND a.flag LIKE :flag \n" +
+                    "AND b.flag LIKE :flag \n" +
+                    "AND c.flag LIKE 'Y' \n" +
                     "AND d.id_pelayanan LIKE :idTujuan\n" +
                     "ORDER BY b.id_obat ASC";
 
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPermintaanObatPoli", idPermintaan)
                     .setParameter("idTujuan", idTujuan)
+                    .setParameter("flag", flag)
                     .list();
 
         }else{
@@ -321,13 +344,14 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
                     "WHERE a.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                    "AND a.flag = 'Y'\n" +
-                    "AND b.flag = 'Y'\n" +
-                    "AND c.flag = 'Y'\n" +
+                    "AND a.flag LIKE :flag\n" +
+                    "AND b.flag LIKE :flag\n" +
+                    "AND c.flag LIKE 'Y'\n" +
                     "ORDER BY b.id_obat ASC";
 
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPermintaanObatPoli", idPermintaan)
+                    .setParameter("flag", flag)
                     .list();
         }
 

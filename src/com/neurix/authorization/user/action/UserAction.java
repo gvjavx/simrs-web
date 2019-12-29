@@ -897,16 +897,17 @@ public class UserAction extends BaseMasterAction {
         user.setUsername(CommonUtil.userLogin());
         user.setBranchName(CommonUtil.userBranchNameLogin());
         user.setAreaName(CommonUtil.userAreaName());
+
         if("RS01".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(CommonConstant.LOGO_RS01);
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS01);
         }else if("RS02".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(CommonConstant.LOGO_RS02);
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS02);
         }else if("RS03".equalsIgnoreCase(branchId)){
-            user.setLogoBranch(CommonConstant.LOGO_RS03);
-        }else{
-            user.setLogoBranch(CommonConstant.LOGO_RS03);
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS03);
         }
 
+        logger.info("[UserAction.getUserData] PATH LOGO : "+user.getLogoBranch());
+        logger.info("[UserAction.getUserData] GET CONTEXT : "+ServletActionContext.getRequest().getContextPath());
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;

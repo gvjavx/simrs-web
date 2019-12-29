@@ -884,6 +884,25 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
             }
 
+            if(checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())){
+
+                List<Diagnosa> diagnosaList = new ArrayList<>();
+                Diagnosa diagnosaResult = new Diagnosa();
+
+                Diagnosa diagnosa = new Diagnosa();
+                diagnosa.setIdDiagnosa(checkup.getDiagnosa());
+
+                try {
+                    diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+                }catch (GeneralBOException e){
+                    logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+                }
+                if (!diagnosaList.isEmpty()){
+                    diagnosaResult = diagnosaList.get(0);
+                    checkup.setNamaDiagnosa(diagnosaResult.getDescOfDiagnosa());
+                }
+            }
+
             checkupBoProxy.saveAdd(checkup);
 
         }catch (GeneralBOException e) {

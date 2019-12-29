@@ -64,6 +64,25 @@ public class HeaderCheckup {
     private String tinggi;
     private String berat;
 
+    private String diagnosa;
+    private String namaDiagnosa;
+
+    public String getNamaDiagnosa() {
+        return namaDiagnosa;
+    }
+
+    public void setNamaDiagnosa(String namaDiagnosa) {
+        this.namaDiagnosa = namaDiagnosa;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
     public String getUrlDocRujuk() {
         return urlDocRujuk;
     }
