@@ -69,7 +69,16 @@ public class ObatBoImpl implements ObatBo {
                     obat.setLastUpdateWho(obatEntity.getLastUpdateWho());
                     obat.setQty(obatEntity.getQty());
                     obat.setBranchId(obatEntity.getBranchId());
-
+                    obat.setQtyBox(obatEntity.getQtyBox());
+                    obat.setLembarPerBox(obatEntity.getLembarPerBox());
+                    obat.setQtyLembar(obatEntity.getQtyLembar());
+                    obat.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                    obat.setQtyBiji(obatEntity.getQtyBiji());
+                    obat.setAverageHargaBox(obatEntity.getAverageHargaBox());
+                    obat.setAverageHargaLembar(obatEntity.getAverageHargaLembar());
+                    obat.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
+                    obat.setIdPabrik(obatEntity.getIdPabrik());
+                    obat.setMerk(obatEntity.getMerk());
 
                     List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
 
