@@ -40,7 +40,7 @@
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
             </props>
@@ -297,6 +297,7 @@
                 <value>sshconfig/com/neurix/simrs/master/penjamin/hibernate/ImSimrsTipePenjaminEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatGejalaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/tipepermintaan/hibernate/ImSimrsTipePermintaanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/vendor/hibernate/ImSimrsVendorEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntity.hbm.xml</value>
@@ -323,6 +324,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsObatPoliEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsPermintaanObatPoliEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/MtSimrsRiwayatPembelianObat.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/MtSimrsPermintaanVendorEntity.hbm.xml</value>
 
             </list>
         </property>

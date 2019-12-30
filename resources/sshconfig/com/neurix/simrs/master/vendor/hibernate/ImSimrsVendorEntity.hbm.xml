@@ -4,15 +4,25 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity" dynamic-update="true"
-           table="im_simrs_pelayanan" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity" dynamic-update="true"
+           table="im_simrs_vendor_obat" select-before-update="true" schema="public">
 
 
-        <id name="idPelayanan">
-            <column name="id_pelayanan" sql-type="varchar" length="30" not-null="true" />
+        <id name="idVendor">
+            <column name="id_vendor" sql-type="varchar" length="10" not-null="true" />
         </id>
-        <property name="namaPelayanan">
-            <column name="nama_pelayanan" sql-type="varchar" length="100" not-null="false"/>
+
+        <property name="namaVendor">
+            <column name="nama_vendor" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="alamat">
+            <column name="alamat" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -32,13 +42,5 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="isPoli">
-            <column name="is_poli" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="isEksekutif">
-            <column name="is_eksekutif" sql-type="varchar" length="1" not-null="false" />
-        </property>
-
-
     </class>
 </hibernate-mapping>

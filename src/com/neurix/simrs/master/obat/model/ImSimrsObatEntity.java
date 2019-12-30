@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.obat.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -18,6 +19,105 @@ public class ImSimrsObatEntity implements Serializable{
     private String lastUpdateWho;
     private BigInteger qty;
     private String branchId;
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+    private BigInteger lembarPerBox;
+    private BigInteger bijiPerLembar;
+    private BigDecimal averageHargaBox;
+    private BigDecimal averageHargaLembar;
+    private BigDecimal averageHargaBiji;
+    private String idPabrik;
+    private String merk;
+    private String janisSatuan;
+
+    public String getJanisSatuan() {
+        return janisSatuan;
+    }
+
+    public void setJanisSatuan(String janisSatuan) {
+        this.janisSatuan = janisSatuan;
+    }
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public void setMerk(String merk) {
+        this.merk = merk;
+    }
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
+    public BigInteger getLembarPerBox() {
+        return lembarPerBox;
+    }
+
+    public void setLembarPerBox(BigInteger lembarPerBox) {
+        this.lembarPerBox = lembarPerBox;
+    }
+
+    public BigInteger getBijiPerLembar() {
+        return bijiPerLembar;
+    }
+
+    public void setBijiPerLembar(BigInteger bijiPerLembar) {
+        this.bijiPerLembar = bijiPerLembar;
+    }
+
+    public BigDecimal getAverageHargaBox() {
+        return averageHargaBox;
+    }
+
+    public void setAverageHargaBox(BigDecimal averageHargaBox) {
+        this.averageHargaBox = averageHargaBox;
+    }
+
+    public BigDecimal getAverageHargaLembar() {
+        return averageHargaLembar;
+    }
+
+    public void setAverageHargaLembar(BigDecimal averageHargaLembar) {
+        this.averageHargaLembar = averageHargaLembar;
+    }
+
+    public BigDecimal getAverageHargaBiji() {
+        return averageHargaBiji;
+    }
+
+    public void setAverageHargaBiji(BigDecimal averageHargaBiji) {
+        this.averageHargaBiji = averageHargaBiji;
+    }
 
     public BigInteger getQty() {
         return qty;
