@@ -36,6 +36,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,9 +67,18 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String fileUploadContentType;
 
     private File fileUploadDoc;
-    private String fileUploadFileNameDoc;
-    private String fileUploadContentTypeDoc;
+    private String fileUploadDocFileName;
+    private String fileUploadDocContentType;
 
+    private String idResep;
+
+    public String getIdResep() {
+        return idResep;
+    }
+
+    public void setIdResep(String idResep) {
+        this.idResep = idResep;
+    }
 
     public File getFileUploadDoc() {
         return fileUploadDoc;
@@ -78,20 +88,20 @@ public class CheckupDetailAction extends BaseMasterAction {
         this.fileUploadDoc = fileUploadDoc;
     }
 
-    public String getFileUploadFileNameDoc() {
-        return fileUploadFileNameDoc;
+    public String getFileUploadDocFileName() {
+        return fileUploadDocFileName;
     }
 
-    public void setFileUploadFileNameDoc(String fileUploadFileNameDoc) {
-        this.fileUploadFileNameDoc = fileUploadFileNameDoc;
+    public void setFileUploadDocFileName(String fileUploadDocFileName) {
+        this.fileUploadDocFileName = fileUploadDocFileName;
     }
 
-    public String getFileUploadContentTypeDoc() {
-        return fileUploadContentTypeDoc;
+    public String getFileUploadDocContentType() {
+        return fileUploadDocContentType;
     }
 
-    public void setFileUploadContentTypeDoc(String fileUploadContentTypeDoc) {
-        this.fileUploadContentTypeDoc = fileUploadContentTypeDoc;
+    public void setFileUploadDocContentType(String fileUploadDocContentType) {
+        this.fileUploadDocContentType = fileUploadDocContentType;
     }
 
     public File getFileUpload() {
@@ -859,11 +869,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             if (this.fileUploadDoc != null) {
-                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentTypeDoc)) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
 
                         // file name
-                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadFileNameDoc;
+                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadDocFileName;
 
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
@@ -921,7 +931,23 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     }
 
+    public String printResepPasien(){
 
+        String idResep = getIdResep();
+
+        reportParams.put("resepId", idResep);
+        reportParams.put("logo", "/simrs/pages/images/logo-nmu.png");
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_resep";
+    }
 
     @Override
     public String downloadPdf() {

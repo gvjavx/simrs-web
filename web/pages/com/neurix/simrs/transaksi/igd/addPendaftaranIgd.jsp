@@ -141,9 +141,6 @@
 
         }
 
-
-
-
     </script>
 </head>
 
@@ -259,7 +256,16 @@
                                                                 notelp:item.noTelp,
                                                                 urlktp:item.urlKtp,
                                                                 sex:item.jenisKelamin,
-                                                                agama:item.agama
+                                                                agama:item.agama,
+                                                                noBpjs:item.noBpjs,
+                                                                idProv:item.provinsiId,
+                                                                idKota:item.kotaId,
+                                                                idKec:item.kecamatanId,
+                                                                idDesa:item.desaId,
+                                                                prov:item.provinsi,
+                                                                kota:item.kota,
+                                                                kec:item.kecamatan,
+                                                                desa:item.desa
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -271,6 +277,7 @@
 
                                                         alertPasien(selectedObj.id);
 
+                                                        $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
                                                         $('#jenis_kelamin').val(selectedObj.sex);
@@ -281,6 +288,14 @@
                                                         $('#jalan').val(selectedObj.alamat);
                                                         $('#suku').val(selectedObj.urlktp);
                                                         $('#url').val(selectedObj.suku);
+                                                        $('#provinsi').val(selectedObj.prov);
+                                                        $('#kabupaten').val(selectedObj.kota);
+                                                        $('#kecamatan').val(selectedObj.kec);
+                                                        $('#desa').val(selectedObj.desa);
+                                                        $('#provinsi11').val(selectedObj.idProv);
+                                                        $('#kabupaten11').val(selectedObj.idKota);
+                                                        $('#kecamatan11').val(selectedObj.idKec);
+                                                        $('#desa11').val(selectedObj.idDesa);
                                                         return selectedObj.id;
                                                     }
                                                 });
@@ -425,17 +440,22 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Tinggi & Berat Badan</label>
-                                            <div class="col-md-3">
-                                                <s:textfield id="tinggi" cssStyle="margin-top: 7px" name="headerCheckup.tinggi" type="number" cssClass="form-control"/>
+                                            <div class="col-md-4">
+                                                <div class="input-group date" style="margin-top: 7px">
+                                                    <s:textfield id="tinggi" name="headerCheckup.tinggi" type="number" cssClass="form-control"/>
+                                                    <div class="input-group-addon" style="margin-top: 7px">
+                                                        cm
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-1">
-                                                <p style="margin-top: 10px">&</p>
-                                            </div>
+                                            <%--<div class="col-md-1">--%>
+                                                <%--<p style="margin-top: 10px">&</p>--%>
+                                            <%--</div>--%>
                                             <div class="col-md-4">
                                                 <div class="input-group date" style="margin-top: 7px">
                                                     <s:textfield id="berat" name="headerCheckup.berat" cssClass="form-control" type="number"/>
-                                                    <div class="input-group-addon" style="margin-top: 7px">
-                                                        cm
+                                                    <div class="input-group-addon" style="margin-top: 7px;">
+                                                        kg
                                                     </div>
                                                 </div>
                                             </div>
@@ -448,7 +468,7 @@
                                                 <s:select cssStyle="margin-top: 7px; width: 100%"
                                                           onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
                                                           list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                                          name="headerDetailCheckup.diagnosa" listKey="idDiagnosa"
+                                                          name="headerCheckup.diagnosa" listKey="idDiagnosa"
                                                           listValue="descOfDiagnosa"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control select2"/>
@@ -588,7 +608,7 @@
                                                 <button type="button" class="btn btn-danger" onclick="resetField()">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
@@ -642,6 +662,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
+                                                                                         window.location.href = 'initForm_igd.action';
                                                                                      }
                                                                             }"
                                     >
@@ -652,8 +673,7 @@
                                     <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                height="250" width="600" autoOpen="false" title="Error Dialog"
                                                buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close');
-                                                                                 window.location.href = 'initForm_igd.action';}
+                                                                                'OK':function() { $('#error_dialog').dialog('close');}
                                                                             }"
                                     >
                                         <div class="alert alert-danger alert-dismissible">

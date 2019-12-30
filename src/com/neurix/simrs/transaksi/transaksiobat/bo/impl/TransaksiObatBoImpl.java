@@ -640,12 +640,18 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         }
 
         if(entity != null){
-            entity.setStatus("0");
+
+            if("Y".equalsIgnoreCase(bean.getIsUmum())){
+                entity.setStatus("0");
+            }else{
+                entity.setStatus("3");
+            }
+
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setAction(bean.getAction());
             entity.setIsUmum(bean.getIsUmum());
-            entity.setTglAntrian(bean.getLastUpdate());
+            entity.setTglAntrian(bean.getTglAntrian());
 
             try{
                 permintaanResepDao.updateAndSave(entity);

@@ -45,7 +45,7 @@
 
         $(document).ready(function () {
 
-            $('#transaksi_obat').addClass('active');
+            $('#resep_poli').addClass('active');
             var total = $('#total_bayar').val();
             $('#show_nominal').val("Rp. " + formatRupiah(total));
 
@@ -279,6 +279,50 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Tambahan</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(5)"><i class="fa fa-plus"></i> Tambah Obat
+                        </button>
+                        <button class="btn btn-danger btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="resetobat()">
+                            <i class="fa fa-refresh"></i> Reset
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Obat</td>
+                                <td align="center">Qty</td>
+                                <td align="right">Harga Satuan</td>
+                                <td align="right">Harga Total</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResultObat" id="listOfResultObat">
+                                <tr>
+                                    <td><s:property value="namaObat"/></td>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_bayar">

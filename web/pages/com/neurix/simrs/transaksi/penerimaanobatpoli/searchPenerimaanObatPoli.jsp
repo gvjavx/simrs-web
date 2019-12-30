@@ -447,14 +447,14 @@
         });
     }
 
-    function saveReture(id) {
+    function saveReture() {
         var data = $('#tabel_reture').tableToJSON();
         var idPermintaan = $('#ret_id_permintaan').val();
         var stringData  = JSON.stringify(data);
         $('#save_ret').hide();
         $('#load_ret').show();
         dwr.engine.setAsync(true);
-        PermintaanObatPoliAction.saveKonfirmasiReture(idPermintaan, { callback: function (response) {
+        PermintaanObatPoliAction.saveKonfirmasiReture(idPermintaan, true, { callback: function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-reture').modal('hide');

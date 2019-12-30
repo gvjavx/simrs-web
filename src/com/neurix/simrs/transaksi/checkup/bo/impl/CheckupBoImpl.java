@@ -248,6 +248,8 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga());
             headerEntity.setRujuk(bean.getRujuk());
             headerEntity.setUrlDocRujuk(bean.getUrlDocRujuk());
+            headerEntity.setBerat(bean.getBerat());
+            headerEntity.setTinggi(bean.getTinggi());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);

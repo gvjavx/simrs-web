@@ -181,5 +181,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PenerimaanObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatGudangAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/IgdAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/ResepPoliAction.xml"/>
 
 </struts>

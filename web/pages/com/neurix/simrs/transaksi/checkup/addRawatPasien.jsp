@@ -239,6 +239,7 @@
                                                         });
 
                                                         $.each(data, function (i, item) {
+                                                            console.log(data);
                                                             var labelItem = "";
 
                                                             if(item.noBpjs != '' && item.noBpjs != null){
@@ -259,7 +260,16 @@
                                                                 notelp:item.noTelp,
                                                                 urlktp:item.urlKtp,
                                                                 sex:item.jenisKelamin,
-                                                                agama:item.agama
+                                                                agama:item.agama,
+                                                                noBpjs:item.noBpjs,
+                                                                idProv:item.provinsiId,
+                                                                idKota:item.kotaId,
+                                                                idKec:item.kecamatanId,
+                                                                idDesa:item.desaId,
+                                                                prov:item.provinsi,
+                                                                kota:item.kota,
+                                                                kec:item.kecamatan,
+                                                                desa:item.desa
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -271,6 +281,7 @@
 
                                                         alertPasien(selectedObj.id);
 
+                                                        $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
                                                         $('#jenis_kelamin').val(selectedObj.sex);
@@ -279,8 +290,18 @@
                                                         $('#agama').val(selectedObj.agama);
                                                         $('#profesi').val(selectedObj.profesi);
                                                         $('#jalan').val(selectedObj.alamat);
-                                                        $('#suku').val(selectedObj.urlktp);
-                                                        $('#url').val(selectedObj.suku);
+                                                        $('#suku').val(selectedObj.suku);
+                                                        $('#imgInp').val(selectedObj.urlktp);
+                                                        $('#img-upload').attr('src', selectedObj.urlktp);
+                                                        $('#provinsi').val(selectedObj.prov);
+                                                        $('#kabupaten').val(selectedObj.kota);
+                                                        $('#kecamatan').val(selectedObj.kec);
+                                                        $('#desa').val(selectedObj.desa);
+                                                        $('#provinsi11').val(selectedObj.idProv);
+                                                        $('#kabupaten11').val(selectedObj.idKota);
+                                                        $('#kecamatan11').val(selectedObj.idKec);
+                                                        $('#desa11').val(selectedObj.idDesa);
+                                                        console.log(selectedObj.urlktp);
                                                         return selectedObj.id;
                                                     }
                                                 });

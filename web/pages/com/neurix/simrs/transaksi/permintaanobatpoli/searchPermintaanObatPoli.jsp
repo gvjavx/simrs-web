@@ -237,10 +237,10 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null && #row.diterimaFlag == "" '>
+                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null'>
                                             <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                         </s:if>
-                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>
+                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y" && #row.retureFlag == null '>
                                             <button class="btn btn-warning" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="idPelayanan"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i></button>
                                         </s:if>
                                     </td>
@@ -314,7 +314,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat Apotek</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat Tujuan</label>
                         <div class="col-md-7">
                             <input class="form-control" style="margin-top: 7px" readonly id="req_stok_apotek">
                         </div>
@@ -606,7 +606,7 @@
                                    style="margin-top: 7px">
                         </div>
                     </div>
-                    <input type="hidden" id="ret_id_approve">
+                    <input type="hidden" id="ret_tujuan_id">
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
@@ -895,9 +895,10 @@
         }
     }
 
-    function showReture(idPermin, tanggal, idPelayanan) {
+    function showReture(idPermin, tanggal, idPelayanan, tujuan) {
         $('#ret_id_permintaan').val(idPermin);
         $('#ret_tanggal').val(tanggal);
+        $('#ret_tujuan_id').val(tujuan);
         $('#modal-reture-detail').modal('show');
         var table = "";
         PermintaanObatPoliAction.listDetailPermintaan(idPermin, true, idPelayanan, "N", {
@@ -952,7 +953,7 @@
     function saveAddReture(){
         var data = $('#tabel_reture_detail').tableToJSON();
         var stringData = JSON.stringify(data);
-        console.log(data);
+        var tujuan = $('#ret_tujuan_id').val();
 
         if (stringData != '[]') {
 
@@ -960,7 +961,7 @@
             $('#load_ret_detail').show();
 
             dwr.engine.setAsync(true);
-            ObatPoliAction.saveAddReture(stringData, "GDG", {
+            ObatPoliAction.saveAddReture(stringData, tujuan, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);

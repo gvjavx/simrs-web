@@ -386,7 +386,19 @@ apply the skin class to the body tag so the changes take effect.
             autoclose: true,
             dateFormat:'dd-mm-yy'
         });
+
+//        cekSession();
+
     });
+
+    <%--function cekSession(){--%>
+        <%--var persons = '<%= session.getAttribute("user_name") %>';--%>
+        <%--setInterval(function (){--%>
+<%--//            if(null == persons){--%>
+<%--//                logout();--%>
+<%--//            }--%>
+        <%--},1000);--%>
+    <%--}--%>
 
     $(function () {
         $('.select2').select2({});
