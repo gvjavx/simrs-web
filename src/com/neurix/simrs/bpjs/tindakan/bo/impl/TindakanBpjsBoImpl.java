@@ -5,8 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.bpjs.tindakan.bo.TindakanBpjsBo;
 import com.neurix.simrs.bpjs.tindakan.dao.TindakanBpjsDao;
-import com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity;
-import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
+import com.neurix.simrs.bpjs.tindakan.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
@@ -131,8 +130,6 @@ public class TindakanBpjsBoImpl extends BpjsService implements TindakanBpjsBo {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
         logger.info("[TindakanBoImpl.getListEntityJenisTindakan] End <<<<<<<");
     }
-
 }

@@ -53,7 +53,7 @@ public class BpjsService {
         cal70.set(1970, Calendar.JANUARY,1);
 
         LocalDateTime ldt = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        int time = (int) ((System.currentTimeMillis()/1000) - cal70.getTimeInMillis());
+        int time = (int) ((System.currentTimeMillis()/1000) - ldt.getSecond());
         return String.valueOf(time);
 
     }
@@ -108,6 +108,7 @@ public class BpjsService {
         con.setRequestProperty("X-cons-id", getConsId());
         con.setRequestProperty("X-Timestamp", getConsTimstamp());
         con.setRequestProperty("X-Signature", getSignature());
+
         BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
         String line;
