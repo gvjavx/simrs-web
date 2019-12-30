@@ -46,6 +46,33 @@
         <property name="qtyApprove">
             <column name="qty_approve" sql-type="bigint" not-null="false" />
         </property>
+        <property name="qtyBox">
+            <column name="qty_box" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="qtyLembar">
+            <column name="qty_lembar" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="qtyBiji">
+            <column name="qty_biji" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="lembarPerBox">
+            <column name="lembar_per_box" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="bijiPerLembar">
+            <column name="biji_per_lembar" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="averageHargaBox">
+            <column name="average_harga_box" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="averageHargaLembar">
+            <column name="average_harga_lembar" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="averageHargaBiji">
+            <column name="average_harga_biji" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="flagDiterima">
+            <column name="flag_diterima" sql-type="varchar" length="1" not-null="false"/>
+        </property>
 
     </class>
 </hibernate-mapping>

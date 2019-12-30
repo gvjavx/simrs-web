@@ -1,7 +1,14 @@
 package com.neurix.simrs.transaksi.permintaanvendor.model;
 
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -18,6 +25,80 @@ public class PermintaanVendor{
     private String createdWho;
     private String urlDocPo;
     private String branchId;
+
+    List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails = new ArrayList<>();
+
+    private String idObat;
+    private String namaObat;
+    private String namaVendor;
+    private BigInteger jumlahObat;
+    private String jenisSatuan;
+    private Integer jumlahSatuan;
+    private BigDecimal harga;
+
+    public List<ImtSimrsTransaksiObatDetailEntity> getTransaksiObatDetails() {
+        return transaksiObatDetails;
+    }
+
+    public void setTransaksiObatDetails(List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails) {
+        this.transaksiObatDetails = transaksiObatDetails;
+    }
+
+    public Integer getJumlahSatuan() {
+        return jumlahSatuan;
+    }
+
+    public void setJumlahSatuan(Integer jumlahSatuan) {
+        this.jumlahSatuan = jumlahSatuan;
+    }
+
+    public BigDecimal getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigDecimal harga) {
+        this.harga = harga;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
+
+    public String getNamaVendor() {
+        return namaVendor;
+    }
+
+    public void setNamaVendor(String namaVendor) {
+        this.namaVendor = namaVendor;
+    }
+
+    public BigInteger getJumlahObat() {
+        return jumlahObat;
+    }
+
+    public void setJumlahObat(BigInteger jumlahObat) {
+        this.jumlahObat = jumlahObat;
+    }
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
 
     public String getBranchId() {
         return branchId;
