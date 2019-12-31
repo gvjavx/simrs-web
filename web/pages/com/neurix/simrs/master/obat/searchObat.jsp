@@ -21,7 +21,7 @@
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
-
+<div class="se-pre-con"></div>
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -167,14 +167,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <sj:dialog autoOpen="false">
-                                <center>
-                                    <img border="0" style="height: 150px; width: 150px" src="<s:url value="/pages/images/spinner.gif"/>" name="image_indicator_read">
-                                    <br>
-                                    <b style="color: #00a65a; margin-top: -80px">Sedang memuat data....</b>
-                                </center>
-                                <br>
-                            </sj:dialog>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
                                     <td><s:property value="idObat"/></td>
