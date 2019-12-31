@@ -39,4 +39,17 @@ public interface BpjsBo{
     PesertaResponse GetPesertaBpjsByAPIBpjs(String noBpjs, String tanggalSep) throws GeneralBOException;
 
     PesertaResponse GetPesertaNikByAPIBpjs(String nik, String tanggalSep) throws GeneralBOException;
+
+    //----------------------------------------!! SEP !!-------------------------------------------//
+    SepResponse insertSepBpjs(SepRequest sepRequest) throws GeneralBOException;
+
+    SepResponse updateSepBpjs(SepRequest sepRequest) throws GeneralBOException;
+
+    SepResponse deleteSepBpjs(SepRequest sepRequest) throws GeneralBOException;
+
+    SepResponse GetSepBpjsByAPIBpjs(String noSep) throws GeneralBOException;
+
+    SepResponse updateTglPulangSepBpjs(SepRequest sepRequest) throws GeneralBOException;
+
+    SepResponse searchSepInacbgBpjs(String noSep) throws GeneralBOException;
 }

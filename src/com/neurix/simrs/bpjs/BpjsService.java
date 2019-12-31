@@ -8,13 +8,11 @@ import org.springframework.security.crypto.codec.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -95,7 +93,7 @@ public class BpjsService {
         return this.headers.get("consid").toString();
     }
 
-    public String GET(String feature) throws IOException, JSONException {
+    public String GET(String feature) throws IOException {
 
         StringBuffer result = new StringBuffer();
 
@@ -117,5 +115,36 @@ public class BpjsService {
         }
 
         return result.toString();
+    }
+    public String GETRequest(String feature,JSONObject request) throws IOException {
+
+        URL obj = new URL(feature);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // optional default is GET
+        con.setRequestMethod("GET");
+        con.setDoOutput( true );
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+        con.setRequestProperty("X-cons-id", getConsId());
+        con.setRequestProperty("X-Timestamp", getConsTimstamp());
+        con.setRequestProperty("X-Signature", getSignature());
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(request.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+            return "" + sb.toString();
+        } else {
+            return con.getResponseMessage();
+        }
     }
 }

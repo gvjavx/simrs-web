@@ -554,4 +554,323 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
         logger.info("[BPJSBoImpl.GetPesertaNikByAPIBpjs] End <<<<<<<");
         return finalResult;
     }
+
+
+    //----------------------------------------!! SEP !!-------------------------------------------//
+    @Override
+    public SepResponse insertSepBpjs(SepRequest sepRequest) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.insertSepBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/1.1/insert";
+        JSONObject request = null;
+        String jsonData="        {\n" +
+                "           \"request\": {\n" +
+                "              \"t_sep\": {\n" +
+                "                 \"noKartu\": \""+sepRequest.getNoKartu()+"\",\n" +
+                "                 \"tglSep\": \""+sepRequest.getTglSep()+"\",\n" +
+                "                 \"ppkPelayanan\": \""+sepRequest.getPpkPelayanan()+"\",\n" +
+                "                 \"jnsPelayanan\": \""+sepRequest.getJnsPelayanan()+"\",\n" +
+                "                 \"klsRawat\": \""+sepRequest.getKlsRawat()+"\",\n" +
+                "                 \"noMR\": \""+sepRequest.getNoMr()+"\",\n" +
+                "                 \"rujukan\": {\n" +
+                "                    \"asalRujukan\": \""+sepRequest.getAsalRujukan()+"\",\n" +
+                "                    \"tglRujukan\": \""+sepRequest.getTglRujukan()+"\",\n" +
+                "                    \"noRujukan\": \""+sepRequest.getNoRujukan()+"\",\n" +
+                "                    \"ppkRujukan\": \""+sepRequest.getPpkRujukan()+"\"\n" +
+                "                 },\n" +
+                "                 \"catatan\": \""+sepRequest.getCatatan()+"\",\n" +
+                "                 \"diagAwal\": \""+sepRequest.getDiagAwal()+"\",\n" +
+                "                 \"poli\": {\n" +
+                "                    \"tujuan\": \""+sepRequest.getPoliTujuan()+"\",\n" +
+                "                    \"eksekutif\": \""+sepRequest.getPoliEksekutif()+"\"\n" +
+                "                 },\n" +
+                "                 \"cob\": {\n" +
+                "                    \"cob\": \""+sepRequest.getCob()+"\"\n" +
+                "                 },\n" +
+                "                 \"katarak\": {\n" +
+                "                    \"katarak\": \""+sepRequest.getKatarak()+"\"\n" +
+                "                 },\n" +
+                "                 \"jaminan\": {\n" +
+                "                    \"lakaLantas\": \""+sepRequest.getLakaLantas()+"\",\n" +
+                "                    \"penjamin\": {\n" +
+                "                        \"penjamin\": \""+sepRequest.getPenjamin()+"\",\n" +
+                "                        \"tglKejadian\": \""+sepRequest.getTglKejadian()+"\",\n" +
+                "                        \"keterangan\": \""+sepRequest.getKeterangan()+"\",\n" +
+                "                        \"suplesi\": {\n" +
+                "                            \"suplesi\": \""+sepRequest.getSuplesi()+"\",\n" +
+                "                            \"noSepSuplesi\": \""+sepRequest.getNoSepSuplesi()+"\",\n" +
+                "                            \"lokasiLaka\": {\n" +
+                "                                \"kdPropinsi\": \""+sepRequest.getKdProvinsiLakaLantas()+"\",\n" +
+                "                                \"kdKabupaten\": \""+sepRequest.getKdKabupatenLakaLantas()+"\",\n" +
+                "                                \"kdKecamatan\": \""+sepRequest.getKdKecamatanLakaLantas()+"\"\n" +
+                "                                }\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                 },\n" +
+                "                 \"skdp\": {\n" +
+                "                    \"noSurat\": \""+sepRequest.getNoSuratSkdp()+"\",\n" +
+                "                    \"kodeDPJP\": \""+sepRequest.getKodeDpjp()+"\"\n" +
+                "                 },\n" +
+                "                 \"noTelp\": \""+sepRequest.getNoTelp()+"\",\n" +
+                "                 \"user\": \""+sepRequest.getUserPembuatSep()+"\"\n" +
+                "              }\n" +
+                "           }\n" +
+                "        }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        SepResponse sepResponse = new SepResponse();
+        try {
+            result = GETRequest(feature,request);
+            JSONObject myResponseCheck = new JSONObject(result);
+            JSONObject response = myResponseCheck.getJSONObject("response");
+            JSONObject sep = response.getJSONObject("sep");
+
+            sepResponse.setCatatan(sep.getString("catatan"));
+            sepResponse.setDiagnosa(sep.getString("diagnosa"));
+            sepResponse.setJnsPelayanan(sep.getString("jnsPelayanan"));
+            sepResponse.setKelasRawat(sep.getString("kelasRawat"));
+            sepResponse.setNoSep(sep.getString("noSep"));
+            sepResponse.setPenjamin(sep.getString("penjamin"));
+
+            JSONObject peserta = response.getJSONObject("peserta");
+            sepResponse.setAsuransi(peserta.getString("asuransi"));
+            sepResponse.setHakKelas(peserta.getString("hakKelas"));
+            sepResponse.setJnsPeserta(peserta.getString("jnsPeserta"));
+            sepResponse.setKelamin(peserta.getString("kelamin"));
+            sepResponse.setNama(peserta.getString("nama"));
+            sepResponse.setNoKartu(peserta.getString("noKartu"));
+            sepResponse.setNoMr(peserta.getString("noMr"));
+            sepResponse.setTglLahir(peserta.getString("tglLahir"));
+
+            JSONObject informasi = response.getJSONObject("informasi");
+            sepResponse.setDinsos(informasi.getString("Dinsos"));
+            sepResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+            sepResponse.setNoSktm(informasi.getString("noSKTM"));
+
+            sepResponse.setPoli(informasi.getString("poli"));
+            sepResponse.setPoliEksekutif(informasi.getString("poliEksekutif"));
+            sepResponse.setTglSep(informasi.getString("tglSep"));
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        logger.info("[BPJSBoImpl.insertSepBpjs] End <<<<<<<");
+        return sepResponse;
+    }
+    @Override
+    public SepResponse updateSepBpjs(SepRequest sepRequest) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.updateSepBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/1.1/Update";
+        JSONObject request = null;
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_sep\": {\n" +
+                "             \"noSep\": \""+sepRequest.getNoSep()+"\",\n" +
+                "             \"klsRawat\": \""+sepRequest.getKlsRawat()+"\",\n" +
+                "             \"noMR\": \""+sepRequest.getNoMr()+"\",\n" +
+                "             \"rujukan\": {\n" +
+                "                \"asalRujukan\": \""+sepRequest.getAsalRujukan()+"\",\n" +
+                "                \"tglRujukan\": \""+sepRequest.getTglRujukan()+"\",\n" +
+                "                \"noRujukan\": \""+sepRequest.getNoRujukan()+"\",\n" +
+                "                \"ppkRujukan\": \""+sepRequest.getPpkRujukan()+"\"\n" +
+                "             },\n" +
+                "             \"catatan\": \""+sepRequest.getCatatan()+"\",\n" +
+                "             \"diagAwal\": \""+sepRequest.getDiagAwal()+"\",\n" +
+                "             \"poli\": {\n" +
+                "                \"eksekutif\": \""+sepRequest.getPoliEksekutif()+"\"\n" +
+                "             },\n" +
+                "             \"cob\": {\n" +
+                "                \"cob\": \""+sepRequest.getCob()+"\"\n" +
+                "             },\n" +
+                "             \"katarak\":{\n" +
+                "                \"katarak\":\""+sepRequest.getKatarak()+"\"\n" +
+                "             },\n" +
+                "             \"skdp\":{\n" +
+                "                \"noSurat\":\""+sepRequest.getNoSuratSkdp()+"\",\n" +
+                "                \"kodeDPJP\":\""+sepRequest.getKodeDpjp()+"\"\n" +
+                "             },\n" +
+                "             \"jaminan\": {\n" +
+                "                \"lakaLantas\":\""+sepRequest.getLakaLantas()+"\",\n" +
+                "                \"penjamin\":\n" +
+                "                {\n" +
+                "                    \"penjamin\":\""+sepRequest.getPenjamin()+"\",\n" +
+                "                    \"tglKejadian\":\""+sepRequest.getTglKejadian()+"\",\n" +
+                "                    \"keterangan\":\""+sepRequest.getKeterangan()+"\",\n" +
+                "                    \"suplesi\":\n" +
+                "                        {\n" +
+                "                            \"suplesi\":\""+sepRequest.getSuplesi()+"\",\n" +
+                "                            \"noSepSuplesi\":\""+sepRequest.getNoSepSuplesi()+"\",\n" +
+                "                            \"lokasiLaka\": \n" +
+                "                                {\n" +
+                "                                \"kdPropinsi\":\""+sepRequest.getKdProvinsiLakaLantas()+"\",\n" +
+                "                                \"kdKabupaten\":\""+sepRequest.getKdKabupatenLakaLantas()+"\",\n" +
+                "                                \"kdKecamatan\":\""+sepRequest.getKdKecamatanLakaLantas()+"\"\n" +
+                "                                }\n" +
+                "                        }\t\t\t\t\t\n" +
+                "                }\n" +
+                "             },             \n" +
+                "             \"noTelp\": \""+sepRequest.getNoTelp()+"\",\n" +
+                "             \"user\": \""+sepRequest.getUserPembuatSep()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    } ";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        SepResponse sepResponse = new SepResponse();
+        try {
+            result = GETRequest(feature,request);
+            JSONObject myResponseCheck = new JSONObject(result);
+            sepResponse.setNoSep(myResponseCheck.getString("response"));
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        logger.info("[BPJSBoImpl.updateSepBpjs] End <<<<<<<");
+        return sepResponse;
+    }
+    @Override
+    public SepResponse deleteSepBpjs(SepRequest sepRequest) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.deleteSepBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/Delete";
+        JSONObject request = null;
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_sep\": {\n" +
+                "             \"noSep\": \""+sepRequest.getNoSep()+"\",\n" +
+                "             \"user\": \""+sepRequest.getUserPembuatSep()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        SepResponse sepResponse = new SepResponse();
+        try {
+            result = GETRequest(feature,request);
+            JSONObject myResponseCheck = new JSONObject(result);
+            sepResponse.setNoSep(myResponseCheck.getString("response"));
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        logger.info("[BPJSBoImpl.deleteSepBpjs] End <<<<<<<");
+        return sepResponse;
+    }
+
+    @Override
+    public SepResponse GetSepBpjsByAPIBpjs(String noSep) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.GetSepBpjsByAPIBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/"+noSep;
+        SepResponse finalResult = new SepResponse();
+        try {
+            String result = GET(feature);
+            JSONObject myResponseCheck = new JSONObject(result);
+            if (myResponseCheck.isNull("response")) {
+                JSONObject response = myResponseCheck.getJSONObject("metaData");
+                logger.error("[BPJSBoImpl.GetSepBpjsByAPIBpjs] : " + response.getString("message"));
+            } else {
+                JSONObject response = myResponseCheck.getJSONObject("response");
+                finalResult.setCatatan(response.getString("catatan"));
+                finalResult.setDiagnosa(response.getString("diagnosa"));
+                finalResult.setJnsPelayanan(response.getString("jnsPelayanan"));
+                finalResult.setKelasRawat(response.getString("kelasRawat"));
+                finalResult.setNoSep(response.getString("noSep"));
+                finalResult.setNoRujukan(response.getString("noRujukan"));
+                finalResult.setPenjamin(response.getString("penjamin"));
+
+                JSONObject peserta = response.getJSONObject("peserta");
+                finalResult.setAsuransi(peserta.getString("asuransi"));
+                finalResult.setHakKelas(peserta.getString("hakKelas"));
+                finalResult.setJnsPeserta(peserta.getString("jnsPeserta"));
+                finalResult.setKelamin(peserta.getString("kelamin"));
+                finalResult.setNama(peserta.getString("nama"));
+                finalResult.setNoKartu(peserta.getString("noKartu"));
+                finalResult.setNoMr(peserta.getString("noMr"));
+                finalResult.setTglLahir(peserta.getString("tglLahir"));
+
+                finalResult.setPenjamin(response.getString("poli"));
+                finalResult.setPenjamin(response.getString("poliEksekutif"));
+                finalResult.setPenjamin(response.getString("tglSep"));
+            }
+        } catch (Exception e) {
+            logger.error("[BPJSBoImpl.GetSepBpjsByAPIBpjs] Error when get data");
+        }
+        logger.info("[BPJSBoImpl.GetSepBpjsByAPIBpjs] End <<<<<<<");
+        return finalResult;
+    }
+    @Override
+    public SepResponse updateTglPulangSepBpjs(SepRequest sepRequest) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.updateTglPulangSepBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/Delete";
+        JSONObject request = null;
+        String jsonData="{  \n" +
+                "            \"request\": \n" +
+                "                {    \n" +
+                "                \"t_sep\":\n" +
+                "                    {\n" +
+                "                        \"noSep\":\""+sepRequest.getNoSep()+"\",\n" +
+                "                        \"tglPulang\":\""+sepRequest.getTglPulang()+"\",\n" +
+                "                        \"user\":\""+sepRequest.getUserPembuatSep()+"\"\t\n" +
+                "                    }\n" +
+                "                }\n" +
+                "        }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        SepResponse sepResponse = new SepResponse();
+        try {
+            result = GETRequest(feature,request);
+            JSONObject myResponseCheck = new JSONObject(result);
+            sepResponse.setNoSep(myResponseCheck.getString("response"));
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        logger.info("[BPJSBoImpl.updateTglPulangSepBpjs] End <<<<<<<");
+        return sepResponse;
+    }
+    @Override
+    public SepResponse searchSepInacbgBpjs(String noSep) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.searchSepInacbgBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/sep/cbg/"+noSep;
+        SepResponse finalResult = new SepResponse();
+        try {
+            String result = GET(feature);
+            JSONObject myResponseCheck = new JSONObject(result);
+            if (myResponseCheck.isNull("response")) {
+                JSONObject response = myResponseCheck.getJSONObject("metaData");
+                logger.error("[BPJSBoImpl.searchSepInacbgBpjs] : " + response.getString("message"));
+            } else {
+                JSONObject response = myResponseCheck.getJSONObject("response");
+                JSONObject peserta = response.getJSONObject("pesertasep");
+                finalResult.setKelamin(peserta.getString("kelamin"));
+                finalResult.setKelasRawat(peserta.getString("klsRawat"));
+                finalResult.setNama(peserta.getString("nama"));
+                finalResult.setNoKartu(peserta.getString("noKartuBpjs"));
+                finalResult.setNoMr(peserta.getString("noMr"));
+                finalResult.setNoRujukan(peserta.getString("noRujukan"));
+                finalResult.setTglLahir(peserta.getString("tglLahir"));
+                finalResult.setTglPelayanan(peserta.getString("tglPelayanan"));
+                finalResult.setTktPelayanan(peserta.getString("tktPelayanan"));
+            }
+        } catch (Exception e) {
+            logger.error("[BPJSBoImpl.searchSepInacbgBpjs] Error when get data");
+        }
+        logger.info("[BPJSBoImpl.searchSepInacbgBpjs] End <<<<<<<");
+        return finalResult;
+    }
+    //----------------------------------------!! END SEP !!-------------------------------------------//
 }
