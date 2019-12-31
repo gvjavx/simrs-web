@@ -191,9 +191,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             MtSimrsPermintaanVendorEntity permintaanVendorEntity = new MtSimrsPermintaanVendorEntity();
             permintaanVendorEntity.setIdPermintaanVendor("PVM"+nextIdPermintanVendor());
             permintaanVendorEntity.setIdVendor(bean.getIdVendor());
+            permintaanVendorEntity.setCreatedDate(bean.getCreatedDate());
+            permintaanVendorEntity.setCreatedWho(bean.getCreatedWho());
+            permintaanVendorEntity.setLastUpdate(bean.getLastUpdate());
+            permintaanVendorEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            permintaanVendorEntity.setAction(bean.getAction());
+            permintaanVendorEntity.setFlag(bean.getFlag());
+            permintaanVendorEntity.setBranchId(bean.getBranchId());
 
             try {
-
+                permintaanVendorDao.addAndSave(permintaanVendorEntity);
             } catch (HibernateException e){
                 logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when save data. "+e.getMessage());
                 throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when save data. "+e.getMessage());

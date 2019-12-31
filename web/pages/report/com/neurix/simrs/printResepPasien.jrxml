@@ -5,24 +5,18 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT * FROM mt_simrs_permintaan_resep LIMIT 1]]>
+		<![CDATA[SELECT a.id_permintaan_resep, a.id_pasien, a.id_detail_checkup, b.id_obat, c.nama_obat, b.qty, b.keterangan FROM mt_simrs_permintaan_resep a
+INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
+INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat
+WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 	</queryString>
 	<field name="id_permintaan_resep" class="java.lang.String"/>
-	<field name="id_approval_obat" class="java.lang.String"/>
 	<field name="id_pasien" class="java.lang.String"/>
 	<field name="id_detail_checkup" class="java.lang.String"/>
+	<field name="id_obat" class="java.lang.String"/>
+	<field name="nama_obat" class="java.lang.String"/>
+	<field name="qty" class="java.lang.Long"/>
 	<field name="keterangan" class="java.lang.String"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="tujuan_pelayanan" class="java.lang.String"/>
-	<field name="is_umum" class="java.lang.String"/>
-	<field name="tgl_antrian" class="java.sql.Time"/>
-	<field name="status" class="java.lang.String"/>
-	<field name="branch_id" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

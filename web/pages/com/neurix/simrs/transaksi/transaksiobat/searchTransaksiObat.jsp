@@ -42,11 +42,6 @@
             $.publish('showErrorDialog');
         });
 
-        function tes(){
-            var idResep = $('#add_resep').val();
-            alert(idResep);
-        }
-
     </script>
 </head>
 

@@ -114,14 +114,20 @@
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
-                                                <img border="0" style="width: 150px; height: 150px" src="<s:url value="/pages/images/spinner.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
-                                                   height="650" width="900" autoOpen="false" title="View Detail"
-                                        >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
-                                        </sj:dialog>
+                                        <%--<sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"--%>
+                                                   <%--height="650" width="900" autoOpen="false" title="View Detail"--%>
+                                        <%-->--%>
+                                            <%--<center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>--%>
+                                        <%--</sj:dialog>--%>
                                     </div>
                                 </div>
                                 <div class="form-group" style="display: none">
@@ -151,7 +157,7 @@
                     </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
-                            <thead >
+                            <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Id Obat</td>
                                 <td>Nama Obat</td>
@@ -242,6 +248,90 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_pabrik"
+                                         onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_pabrik"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_pabrik"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Merek</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_merek"
+                                         onkeypress="var warn =$('#war_merek').is(':visible'); if (warn){$('#cor_merek').show().fadeOut(3000);$('#war_merek').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_merek"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_merek"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah Box</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_box"
+                                         onkeypress="var warn =$('#war_box').is(':visible'); if (warn){$('#cor_box').show().fadeOut(3000);$('#war_box').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_box"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_box"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jml Lembar /Box</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_lembar_box"
+                                         onkeypress="var warn =$('#war_lembar_box').is(':visible'); if (warn){$('#cor_lembar_box').show().fadeOut(3000);$('#war_lembar_box').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_lembar_box"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_lembar_box"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah Lembar</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_lembar"
+                                         onkeypress="var warn =$('#war_lembar').is(':visible'); if (warn){$('#cor_lembar').show().fadeOut(3000);$('#war_box').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_lembar"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_lembar"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jml Biji /Lembar</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_biji_lembar"
+                                         onkeypress="var warn =$('#war_biji_lembar').is(':visible'); if (warn){$('#cor_biji_lembar').show().fadeOut(3000);$('#war_biji_box').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_biji_lembar"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_biji_lembar"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Harga Obat</label>
                         <div class="col-md-7">
                             <s:textfield type="number" min="1" cssClass="form-control"
@@ -256,17 +346,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah Bijit</label>
                         <div class="col-md-7">
-                            <s:textfield onkeypress="var warn =$('#war_stok').is(':visible'); if (warn){$('#cor_stok').show().fadeOut(3000);$('#war_stok').hide()}"
+                            <s:textfield onkeypress="var warn =$('#war_biji').is(':visible'); if (warn){$('#cor_biji').show().fadeOut(3000);$('#war_biji').hide()}"
                                     type="number" min="1" cssClass="form-control" cssStyle="margin-top: 7px" id="add_stok"></s:textfield>
                             <s:hidden id="add_flag"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_stok"><i class="fa fa-times"></i> required</p>
+                               id="war_biji"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_stok"><i class="fa fa-check"></i> correct</p>
+                               id="cor_biji"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>

@@ -22,7 +22,7 @@
                         ribuan = reverse.match(/\d{1,3}/g);
                 ribuan = ribuan.join('.').split('').reverse().join('');
                 return ribuan;
-            }else{
+            } else {
                 return 0;
             }
         }
@@ -53,39 +53,39 @@
             nominal.addEventListener('keyup', function (e) {
                 nominal.value = formatRupiah2(this.value, 'Rp. ');
 
-                var bayar       = nominal.value.replace('Rp. ', '');
-                var valBayar    = bayar.replace(/[.]/g, '');
+                var bayar = nominal.value.replace('Rp. ', '');
+                var valBayar = bayar.replace(/[.]/g, '');
                 $('#total_dibayar').val(valBayar);
 
                 var a = parseInt(total);
                 var b = parseInt(valBayar);
 
-                if(b >= a){
+                if (b >= a) {
                     var kembalian = valBayar - total;
-                    $('#kembalian').val(""+kembalian);
-                    $('#nominal_kembalian').val('Rp. '+formatRupiah(kembalian));
-                }else{
+                    $('#kembalian').val("" + kembalian);
+                    $('#nominal_kembalian').val('Rp. ' + formatRupiah(kembalian));
+                } else {
                     $('#kembalian').val('');
                     $('#nominal_kembalian').val('');
                 }
             });
         });
 
-        function confirm(){
+        function confirm() {
 
-            var total       = $('#total_bayar').val();
-            var bayar       = $('#total_dibayar').val();
-            var kembalian   = $('#kembalian').val();
+            var total = $('#total_bayar').val();
+            var bayar = $('#total_dibayar').val();
+            var kembalian = $('#kembalian').val();
 
-            if(bayar != ''){
-                if(parseInt(bayar) >= parseInt(total)){
-                    $("html, body").animate({ scrollTop: 0 }, 600);
+            if (bayar != '') {
+                if (parseInt(bayar) >= parseInt(total)) {
+                    $("html, body").animate({scrollTop: 0}, 600);
                     $('#confirm_dialog').dialog('open');
-                }else{
+                } else {
                     $('#warning_bayar').show().fadeOut(5000);
                     $('#msg_error').text("Jumlah bayar tidak boleh kurang dari total bayar..!");
                 }
-            }else{
+            } else {
                 $('#warning_bayar').show().fadeOut(5000);
                 $('#msg_error').text("Silahkan cek kembali data inputan..!");
             }
@@ -94,14 +94,14 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             event.originalEvent.options.submit = true;
             $('#confirm_dialog').dialog('close');
-            $("html, body").animate({ scrollTop: 0 }, 600);
+            $("html, body").animate({scrollTop: 0}, 600);
             $.publish('showDialog');
         });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
-                $("html, body").animate({ scrollTop: 0 }, 600);
+                $("html, body").animate({scrollTop: 0}, 600);
                 $.publish('showInfoDialog');
             }
         });
@@ -266,14 +266,61 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
-                                    <td align="right"><script>var val = <s:property value="harga"/>;
-                                    if (val != null && val != '') {
-                                        document.write("Rp. " + formatRupiah(val) + ",-")
-                                    }</script></td>
-                                    <td align="right"> <script>var val = <s:property value="totalHarga"/>;
-                                    if (val != null && val != '') {
-                                        document.write("Rp. " + formatRupiah(val) + ",-")
-                                    }</script></td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Tambahan</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px;"
+                                onclick="showModal(5)"><i class="fa fa-plus"></i> Tambah Obat
+                        </button>
+                        <button class="btn btn-danger btn-outline" style="margin-bottom: 10px;"
+                                onclick="resetobat()">
+                            <i class="fa fa-refresh"></i> Reset
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Obat</td>
+                                <td align="center">Qty</td>
+                                <td align="right">Harga Satuan</td>
+                                <td align="right">Harga Total</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResultObat" id="listOfResultObat">
+                                <tr>
+                                    <td><s:property value="namaObat"/></td>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
+                                    <td align="right">
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                        }</script>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -335,8 +382,10 @@
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
 
-                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
-                                                   height="200" width="400" autoOpen="false" title="Confirmation Dialog">
+                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false"
+                                                   title="Confirmation Dialog">
                                             <center><img border="0" style="height: 40px; width: 40px"
                                                          src="<s:url value="/pages/images/icon_warning.ico"/>"
                                                          name="icon_success">
@@ -370,13 +419,15 @@
                                                      src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
                                                      name="image_indicator_write">
                                                 <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false" closeOnEscape="false"
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                                                 'OK':function() {
@@ -385,11 +436,13 @@
                                                                                      }
                                                                             }"
                                         >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                                   resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                                 'OK':function() { $('#error_dialog').dialog('close'); }
@@ -397,7 +450,8 @@
                                         >
                                             <div class="alert alert-danger alert-dismissible">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -429,40 +483,40 @@
                 </div>
                 <div class="row">
                     <%--<div class="form-group" id="jenis_form">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                                      <%--name="getListJenisObat_jenisobat"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                      <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
-                                      <%--listKey="idJenisObat"--%>
-                                      <%--listValue="namaJenisObat"--%>
-                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                      <%--cssClass="form-control select2"/>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                    <%--name="getListJenisObat_jenisobat"/>--%>
+                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                    <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
+                    <%--listKey="idJenisObat"--%>
+                    <%--listValue="namaJenisObat"--%>
+                    <%--headerKey="" headerValue="[Select one]"--%>
+                    <%--cssClass="form-control select2"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
                     <%--</div>--%>
                     <div class="form-group" id="nama_form">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"--%>
-                                    <%--onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">--%>
-                                <%--<option value="">[select one]</option>--%>
+                            <%--onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">--%>
+                            <%--<option value="">[select one]</option>--%>
                             <%--</select>--%>
-                                <s:action id="initObatPoli" namespace="/obatpoli"
-                                          name="getListObatPoli_obatpoli"/>
-                                <s:select cssStyle="margin-top: 7px; width: 100%"
-                                          list="#initObatPoli.listOfObatPoli" id="ob_id_obat"
-                                          listKey="idObat + '|' + namaObat + '|' + qty"
-                                          listValue="namaObat"
-                                          onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);"
-                                          headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2"/>
+                            <s:action id="initObatPoli" namespace="/obatpoli"
+                                      name="getListObatPoli_obatpoli"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initObatPoli.listOfObatPoli" id="ob_id_obat"
+                                      listKey="idObat + '|' + namaObat + '|' + qty"
+                                      listValue="namaObat"
+                                      onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_obat"><i
@@ -505,7 +559,8 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_obat" onclick="saveObat()"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_obat" onclick="saveObat()"><i
+                        class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -519,16 +574,12 @@
 <script type='text/javascript'>
 
     function showModal(select) {
-//        var id = "";
         if (select == 5) {
-//            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
-//            $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
             $('#nama_form').show();
             $('#nama_obat_form').hide();
             $('#ob_stok').val('');
             $('#ob_qty').val('1');
-//            $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
             $('#load_obat, #warning_obat, #war_obat, #war_qty_obat').hide();
             $('#modal-obat').modal('show');
         }
@@ -557,7 +608,6 @@
 
     function saveObat() {
 
-//        var idJenis = $('#obat_jenis_obat').val();
         var idObat = $('#ob_id_obat').val();
         var qty = $('#ob_qty').val();
         var stok = $('#ob_stok').val();
@@ -571,10 +621,6 @@
 
                 $('#save_obat').hide();
                 $('#load_obat').show();
-
-                console.log(idObat);
-                console.log(id);
-                console.log(nama);
 
                 dwr.engine.setAsync(true);
                 TransaksiObatAction.saveAddObat(id, qty, function (response) {
@@ -602,35 +648,23 @@
     }
 
     function resetobat() {
-        window.location.href = "/simrs/transaksi/resetobat_transaksi.action";
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var id = url.searchParams.get("id");
+        window.location.href = "resetobat_transaksi.action?id="+id;
     }
 
     function setStokObat(select) {
 
-        if(select != '' && select != null){
+        if (select != '' && select != null) {
             var idx = select.selectedIndex;
             var idObat = select.options[idx].value;
-            var stok = 0;
-
-//        if (idObat != '') {
-//            ObatAction.getStokObat(idObat, function (response) {
-//                if (response != null) {
-//                    $.each(response, function (i, item) {
-//                        if (item.idObat == idObat) {
-//                            if (item.qty != null) {
-//                                stok = item.qty;
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
             var id = idObat.split('|')[0];
             var nama = idObat.split('|')[1];
             var stokOb = idObat.split('|')[2];
             $('#ob_stok').val(stokOb);
         }
-        }
+    }
 
 </script>
 

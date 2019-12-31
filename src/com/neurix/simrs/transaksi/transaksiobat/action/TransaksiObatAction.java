@@ -213,9 +213,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
 
         if (jml != null && !jml.equals(0)) {
-            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-        } else {
             transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
         }
 
         setTransaksiObatDetail(transaksiObatDetail);
@@ -337,7 +337,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         session.removeAttribute("listOfResultObat");
         searchResep();
         logger.info("[TransaksiObatAction.resetobat] END <<<<<<<");
-        return "search";
+        return "init_bayar";
     }
 
 
