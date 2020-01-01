@@ -180,9 +180,9 @@
                         <table id="myTable" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>ID Permintaan</td>
                                 <td>Tanggal</td>
                                 <td>Nama Pelayanan</td>
-                                <td>ID Permintaan</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -190,9 +190,9 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="createdDate"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
+                                    <td><s:property value="stCreatedDate"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>

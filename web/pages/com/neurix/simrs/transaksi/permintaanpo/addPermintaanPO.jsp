@@ -13,7 +13,42 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
+
             $('#permintaan_po').addClass('active');
+
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                        log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
         });
 
         function reture() {
@@ -95,7 +130,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         toContent();
+                                                                                         window.location.href = 'initForm_permintaanpo.action';
                                                                                      }
                                                                             }"
                                     >
@@ -202,12 +237,12 @@
                                                             Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload" onchange="$('#img_file').css('border','')"></s:file>
                                                         </span>
                                                     </span>
-                                    <input type="text" class="form-control" readonly placeholder="Dokumen PO">
+                                    <input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <a type="button" class="btn btn-success" onclick="savePermintaanPO()"><i class="fa fa-arrow-right"></i> Save</a>
-                                <a type="button" class="btn btn-danger" onclick="toContent()"><i class="fa fa-refresh"></i> Reset</a>
+                                <a type="button" class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</a>
                             </div>
                         </div>
                     </div>
@@ -220,7 +255,7 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function toContent() {
+    function reset(){
         window.location.reload(true);
     }
 
@@ -283,8 +318,10 @@
     }
 
     function savePermintaanPO() {
-//        var data = $('#tabel_reture_detail').tableToJSON();
-//        var stringData = JSON.stringify(data);
+        var data = $('#tabel_po').tableToJSON();
+        var stringData = JSON.stringify(data);
+        $('#waiting_dialog').dialog('open');
+
         var vendor = $('#nama_vendor').val();
 
         if (vendor != '') {
@@ -292,11 +329,13 @@
 //            $('#save_req_detail').hide();
 //            $('#load_ret_detail').show();
 //
-//            dwr.engine.setAsync(true);
-            PermintaanVendorAction.savePermintaanPO(vendor,{
+            dwr.engine.setAsync(true);
+            PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
                 callback: function (response) {
                     if (response == "success") {
-//                        dwr.engine.setAsync(false);
+                        dwr.engine.setAsync(false);
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
 //                        $('#modal-reture-detail').modal('hide');
 //                        $('#info_dialog').dialog('open');
 //                        $('#save_req_detail').show();

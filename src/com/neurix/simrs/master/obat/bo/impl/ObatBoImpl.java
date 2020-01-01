@@ -69,8 +69,13 @@ public class ObatBoImpl implements ObatBo {
                     obat.setLastUpdateWho(obatEntity.getLastUpdateWho());
                     obat.setQty(obatEntity.getQty());
                     obat.setBranchId(obatEntity.getBranchId());
-
-
+                    obat.setIdPabrik(obatEntity.getIdPabrik());
+                    obat.setMerk(obatEntity.getMerk());
+                    obat.setQtyBox(obatEntity.getQtyBox());
+                    obat.setLembarPerBox(obatEntity.getLembarPerBox());
+                    obat.setQtyLembar(obatEntity.getQtyLembar());
+                    obat.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                    obat.setQtyBiji(obatEntity.getQtyBiji());
                     List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
 
                     Map hsCriteria = new HashMap();
@@ -224,6 +229,13 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setHarga(bean.getHarga());
         obatEntity.setQty(bean.getQty());
         obatEntity.setBranchId(bean.getBranchId());
+        obatEntity.setMerk(bean.getMerk());
+        obatEntity.setIdPabrik(bean.getIdPabrik());
+        obatEntity.setQtyBox(bean.getQtyBox());
+        obatEntity.setQtyLembar(bean.getQtyLembar());
+        obatEntity.setLembarPerBox(bean.getLembarPerBox());
+        obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
+        obatEntity.setQtyBiji(bean.getQtyBiji());
         obatEntity.setFlag(bean.getFlag());
         obatEntity.setAction(bean.getAction());
         obatEntity.setCreatedDate(time);

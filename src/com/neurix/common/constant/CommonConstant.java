@@ -40,6 +40,7 @@ public class CommonConstant {
 
     public final static String RESOURCE_PATH_KTP_PASIEN="/upload/ktp_pasien/";
     public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN="/upload/surat_rujuk/";
+    public final static String RESOURCE_PATH_DOC_PO="/upload/surat_po/";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK="/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";

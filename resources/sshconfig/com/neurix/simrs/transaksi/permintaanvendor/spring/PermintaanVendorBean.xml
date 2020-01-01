@@ -11,6 +11,9 @@
 
     <bean id="permintaanVendorBo" class="com.neurix.simrs.transaksi.permintaanvendor.bo.Impl.PermintaanVendorBoImpl"
          p:permintaanVendorDao-ref="permintaanVendorDao"
+         p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+         p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+         p:obatDao-ref="obatDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -29,7 +32,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveListObatPo">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

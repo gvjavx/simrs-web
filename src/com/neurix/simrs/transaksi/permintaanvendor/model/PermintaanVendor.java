@@ -36,6 +36,36 @@ public class PermintaanVendor{
     private Integer jumlahSatuan;
     private BigDecimal harga;
 
+    private String idPelayanan;
+
+    private String stCreatedDate;
+
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public List<ImtSimrsTransaksiObatDetailEntity> getTransaksiObatDetails() {
         return transaksiObatDetails;
     }

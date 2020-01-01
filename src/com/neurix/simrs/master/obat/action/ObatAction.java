@@ -120,11 +120,13 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String initForm(){
+        logger.info("[ObatAction.initForm] START >>>>>>>");
 
-        Obat obat = new Obat();
-        obat.setFlag("Y");
-        setObat(obat);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
 
+        setObat(new Obat());
+        logger.info("[ObatAction.initForm] END <<<<<<<");
         return "search";
     }
 
@@ -212,7 +214,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public String saveObat(String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty){
+    public String saveObat(String namaObat,List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigInteger harga){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -224,8 +226,14 @@ public class ObatAction extends BaseMasterAction {
 
             Obat obat = new Obat();
             obat.setNamaObat(namaObat);
+            obat.setMerk(merek);
+            obat.setIdPabrik(pabrik);
+            obat.setQtyBox(box);
+            obat.setLembarPerBox(lembarBox);
+            obat.setQtyLembar(lembar);
+            obat.setBijiPerLembar(bijiLembar);
+            obat.setQtyBiji(biji);
             obat.setHarga(harga);
-            obat.setQty(qty);
             obat.setCreatedDate(updateTime);
             obat.setCreatedWho(userLogin);
             obat.setLastUpdate(updateTime);

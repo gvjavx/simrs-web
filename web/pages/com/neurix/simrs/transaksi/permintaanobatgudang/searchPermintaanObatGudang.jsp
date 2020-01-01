@@ -215,7 +215,7 @@
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>

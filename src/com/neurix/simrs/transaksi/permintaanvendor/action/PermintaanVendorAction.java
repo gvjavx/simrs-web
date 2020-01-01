@@ -1,16 +1,21 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,33 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private PermintaanVendorBo permintaanVendorBoProxy;
     private PermintaanVendor permintaanVendor;
 
+    private File fileUpload;
+    private String fileUploadFileName;
+    private String fileUploadContentType;
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
 
     public static void setLogger(Logger logger) {
         PermintaanVendorAction.logger = logger;
@@ -112,7 +144,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "search";
     }
 
-    public String savePermintaanPO(String idVendor) {
+    public String savePermintaanPO(String idVendor, String po) {
 
         logger.info("[PermintaanVendorAction.savePermintaanPO] START >>>>>>>");
 
@@ -120,6 +152,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
         String userLogin = CommonUtil.userLogin();
         String userBranch = CommonUtil.userBranchLogin();
+        String idPelayanan = CommonUtil.userPelayananIdLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();
@@ -127,13 +160,46 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setCreatedDate(time);
         permintaanVendor.setLastUpdateWho(userLogin);
         permintaanVendor.setLastUpdate(time);
-        permintaanVendor.setAction("U");
+        permintaanVendor.setAction("C");
         permintaanVendor.setFlag("Y");
         permintaanVendor.setIdVendor(idVendor);
         permintaanVendor.setBranchId(userBranch);
+        permintaanVendor.setIdPelayanan(idPelayanan);
+
+        String fileName = "";
+        if (this.fileUpload != null) {
+            if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+                if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+
+                    // file name
+                    fileName = "DOC_PO"+"_"+this.fileUploadFileName;
+
+                    // deklarasi path file
+                    String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+                    logger.info("[savePermintaanPO.uploadImages] FILEPATH :" + filePath);
+
+                    // persiapan pemindahan file
+                    File fileToCreate = new File(filePath, fileName);
+
+                    try {
+                        // pemindahan file
+                        FileUtils.copyFile(this.fileUpload, fileToCreate);
+                        logger.info("[savePermintaanPO.uploadImages] SUCCES PINDAH");
+                        permintaanVendor.setUrlDocPo(fileName);
+                    } catch (IOException e) {
+                        logger.error("[savePermintaanPO.uploadImages] error, " + e.getMessage());
+                    }
+                }
+            }
+        }
 
         try {
-            permintaanVendorBo.saveListObatPo(permintaanVendor);
+            try {
+                permintaanVendorBo.saveListObatPo(permintaanVendor, po);
+            }catch (JSONException e){
+                logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);
+            }
         }catch (GeneralBOException e){
             logger.error("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. " + e.getMessage());

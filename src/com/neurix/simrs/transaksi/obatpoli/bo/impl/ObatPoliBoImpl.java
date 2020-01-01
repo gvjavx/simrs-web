@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -146,6 +147,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
                     permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
                 }
+
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
+
+                permintaanObatPoli.setStCreatedDate(formatDate);
 
                 permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
                 permintaanObatPoli.setRequest(bean.getRequest());
