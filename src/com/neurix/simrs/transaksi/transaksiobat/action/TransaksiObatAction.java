@@ -172,6 +172,20 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                         setPermintaanResep(resep);
 
+                        String userLogin = CommonUtil.userLogin();
+                        Timestamp time = new Timestamp(System.currentTimeMillis());
+                        PermintaanResep permintaanResep = new PermintaanResep();
+                        permintaanResep.setIdPermintaanResep(resep.getIdPermintaanResep());
+                        permintaanResep.setLastUpdate(time);
+                        permintaanResep.setLastUpdateWho(userLogin);
+
+                        try {
+                            transaksiObatBoProxy.updateAntrianResep(permintaanResep);
+                        }catch (GeneralBOException e){
+                            logger.error("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. ", e);
+                            addActionError("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. " + e.getMessage());
+                        }
+
                         break;
                     }
                 }

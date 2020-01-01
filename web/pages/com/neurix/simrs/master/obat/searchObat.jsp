@@ -237,7 +237,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
                         <div class="col-md-7">
-                            <s:textfield type="number" min="1" cssClass="form-control"
+                            <s:textfield type="text" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="add_pabrik"
                                          onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
                         </div>
@@ -251,7 +251,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Merek</label>
                         <div class="col-md-7">
-                            <s:textfield type="number" min="1" cssClass="form-control"
+                            <s:textfield type="text" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="add_merek"
                                          onkeypress="var warn =$('#war_merek').is(':visible'); if (warn){$('#cor_merek').show().fadeOut(3000);$('#war_merek').hide()}"></s:textfield>
                         </div>

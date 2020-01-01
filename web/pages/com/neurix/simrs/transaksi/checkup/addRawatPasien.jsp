@@ -258,7 +258,7 @@
                                                                 suku:item.suku,
                                                                 profesi:item.profesi,
                                                                 notelp:item.noTelp,
-                                                                urlktp:item.urlKtp,
+//                                                                urlktp:item.urlKtp,
                                                                 sex:item.jenisKelamin,
                                                                 agama:item.agama,
                                                                 noBpjs:item.noBpjs,
@@ -291,8 +291,8 @@
                                                         $('#profesi').val(selectedObj.profesi);
                                                         $('#jalan').val(selectedObj.alamat);
                                                         $('#suku').val(selectedObj.suku);
-                                                        $('#imgInp').val(selectedObj.urlktp);
-                                                        $('#img-upload').attr('src', selectedObj.urlktp);
+//                                                        $('#imgInp').val(selectedObj.urlktp);
+//                                                        $('#img-upload').attr('src', selectedObj.urlktp);
                                                         $('#provinsi').val(selectedObj.prov);
                                                         $('#kabupaten').val(selectedObj.kota);
                                                         $('#kecamatan').val(selectedObj.kec);
@@ -301,7 +301,6 @@
                                                         $('#kabupaten11').val(selectedObj.idKota);
                                                         $('#kecamatan11').val(selectedObj.idKec);
                                                         $('#desa11').val(selectedObj.idDesa);
-                                                        console.log(selectedObj.urlktp);
                                                         return selectedObj.id;
                                                     }
                                                 });

@@ -43,11 +43,6 @@
             $.publish('showErrorDialog');
         });
 
-        function tes(){
-            var idResep = $('#add_resep').val();
-            alert(idResep);
-        }
-
     </script>
 </head>
 
@@ -82,7 +77,6 @@
                                 </div>
                                 <div class="col-md-3 pull-right">
                                     <div class="input-group date">
-                                        <%--<s:textfield id="no_bpjs"  name="headerCheckup.noBpjs" cssClass="form-control"/>--%>
                                         <input class="form-control" id="add_resep" placeholder="ID RESEP" onchange="saveAntrian()">
                                         <div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">
                                             <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save

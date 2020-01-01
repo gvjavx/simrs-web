@@ -222,7 +222,7 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null && #row.diterimaFlag == "" '>
+                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null'>
                                             <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                         </s:if>
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>

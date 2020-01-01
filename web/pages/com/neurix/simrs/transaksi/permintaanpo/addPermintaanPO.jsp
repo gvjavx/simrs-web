@@ -174,26 +174,26 @@
                                 </div>
                             </div>
                             <%--<div class="col-md-6">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"--%>
-                                                  <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
-                                                  <%--id="jenis_kelamin" name="headerCheckup.jenisKelamin"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"--%>
-                                                  <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
-                                                  <%--id="jenis_kelamin" name="headerCheckup.jenisKelamin"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                            <%--<label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>--%>
+                            <%--<div class="col-md-8">--%>
+                            <%--<s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"--%>
+                            <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
+                            <%--id="jenis_kelamin" name="headerCheckup.jenisKelamin"--%>
+                            <%--headerKey="" headerValue="[Select one]"--%>
+                            <%--cssClass="form-control"/>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                            <%--<label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>--%>
+                            <%--<div class="col-md-8">--%>
+                            <%--<s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"--%>
+                            <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
+                            <%--id="jenis_kelamin" name="headerCheckup.jenisKelamin"--%>
+                            <%--headerKey="" headerValue="[Select one]"--%>
+                            <%--cssClass="form-control"/>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
                             <%--</div>--%>
                         </div>
                     </div>
@@ -202,7 +202,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-4">
-                                        <a type="button" class="btn btn-success" onclick="addToListPo()"><i class="fa fa-plus"></i> Tambah</a>
+                                        <a type="button" class="btn btn-success" onclick="addToListPo()"><i
+                                                class="fa fa-plus"></i> Tambah</a>
                                     </div>
                                 </div>
                             </div>
@@ -234,15 +235,18 @@
                                 <div class="input-group" id="img_file">
                                                     <span class="input-group-btn">
                                                         <span class="btn btn-default btn-file">
-                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload" onchange="$('#img_file').css('border','')"></s:file>
+                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                                            onchange="$('#img_file').css('border','')"></s:file>
                                                         </span>
                                                     </span>
                                     <input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <a type="button" class="btn btn-success" onclick="savePermintaanPO()"><i class="fa fa-arrow-right"></i> Save</a>
-                                <a type="button" class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i> Reset</a>
+                                <a type="button" class="btn btn-success" onclick="savePermintaanPO()"><i
+                                        class="fa fa-arrow-right"></i> Save</a>
+                                <a type="button" class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i>
+                                    Reset</a>
                             </div>
                         </div>
                     </div>
@@ -255,48 +259,48 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function reset(){
+    function reset() {
         window.location.reload(true);
     }
 
     function addToListPo() {
 
-        var vendor    = $('#nama_vendor').val();
-        var obat      = $('#nama_obat').val();
-        var data      = $('#tabel_po').tableToJSON();
+        var vendor = $('#nama_vendor').val();
+        var obat = $('#nama_obat').val();
+        var data = $('#tabel_po').tableToJSON();
 
-        var idObat   = "";
+        var idObat = "";
         var namaObat = "";
-        var qtyObat  = "";
+        var qtyObat = "";
 
         var cek = false;
 
         if (obat != '' && vendor != '') {
-            idObat   = obat.split('|')[0];
+            idObat = obat.split('|')[0];
             namaObat = obat.split('|')[1];
-            qtyObat  = obat.split('|')[2];
+            qtyObat = obat.split('|')[2];
 
 //            if (parseInt(qty) <= parseInt(stok)) {
-                $.each(data, function (i, item) {
-                    if (item.ID == idObat) {
-                        cek = true;
-                    }
-                });
-
-                if (cek) {
-                    $('#warning_po').show().fadeOut(5000);
-                    $('#msg_po').text('Data sudah tersedia dalam list...!');
-                } else {
-                    var row = '<tr id=' + idObat + '>' +
-                            '<td>' + idObat + '</td>' +
-                            '<td>' + namaObat + '</td>' +
-                            '<td>' + qtyObat + '</td>' +
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                            '</tr>';
-
-                    $('#body_po').append(row);
-                    $('#nama_vendor').attr('disabled', true);
+            $.each(data, function (i, item) {
+                if (item.ID == idObat) {
+                    cek = true;
                 }
+            });
+
+            if (cek) {
+                $('#warning_po').show().fadeOut(5000);
+                $('#msg_po').text('Data sudah tersedia dalam list...!');
+            } else {
+                var row = '<tr id=' + idObat + '>' +
+                        '<td>' + idObat + '</td>' +
+                        '<td>' + namaObat + '</td>' +
+                        '<td>' + qtyObat + '</td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '</tr>';
+
+                $('#body_po').append(row);
+                $('#nama_vendor').attr('disabled', true);
+            }
 //            } else {
 //                $('#warning_request').show().fadeOut(5000);
 //                $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
@@ -320,6 +324,7 @@
     function savePermintaanPO() {
         var data = $('#tabel_po').tableToJSON();
         var stringData = JSON.stringify(data);
+        var fileUpload = $('#imgInp').val();
         $('#waiting_dialog').dialog('open');
 
         var vendor = $('#nama_vendor').val();
