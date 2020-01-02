@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -185,7 +186,17 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "ob.last_update,\n" +
                 "ob.last_update_who,\n" +
                 "ob.qty,\n" +
-                "ob.branch_id\n" +
+                "ob.branch_id,\n" +
+                "ob.id_pabrik,\n" +
+                "ob.merk,\n" +
+                "ob.qty_box,\n" +
+                "ob.lembar_per_box,\n" +
+                "ob.qty_lembar,\n" +
+                "ob.biji_per_lembar,\n" +
+                "ob.qty_biji,\n" +
+                "ob.average_harga_box,\n" +
+                "ob.average_harga_lembar,\n" +
+                "ob.average_harga_biji\n" +
                 "FROM im_simrs_obat ob \n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -224,6 +235,17 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             obatEntity.setLastUpdateWho(obj[8] == null ? null : obj[8].toString());
             obatEntity.setQty(obj[9] == null ? null : (BigInteger) obj[9]);
             obatEntity.setBranchId( obj[10] == null ? "" : obj[10].toString());
+            obatEntity.setIdPabrik(obj[11] == null ? null : obj[11].toString());
+            obatEntity.setMerk(obj[12] == null ? null : obj[12].toString());
+            obatEntity.setQtyBox(obj[13] == null ? null : (BigInteger) obj[13]);
+            obatEntity.setLembarPerBox(obj[14] == null ? null :(BigInteger) obj[14]);
+            obatEntity.setQtyLembar(obj[15] == null ? null :(BigInteger) obj[15]);
+            obatEntity.setBijiPerLembar(obj[16] == null ? null :(BigInteger) obj[16]);
+            obatEntity.setQtyBiji(obj[17] == null ? null :(BigInteger) obj[17]);
+            obatEntity.setAverageHargaBox(obj[18] == null ? null :(BigDecimal) obj[18]);
+            obatEntity.setAverageHargaLembar(obj[19] == null ? null :(BigDecimal) obj[19]);
+            obatEntity.setAverageHargaBiji(obj[20] == null ? null :(BigDecimal) obj[20]);
+
             listOfResults.add(obatEntity);
         }
         return listOfResults;

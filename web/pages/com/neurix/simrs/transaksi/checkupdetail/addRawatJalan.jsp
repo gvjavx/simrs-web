@@ -44,7 +44,7 @@
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
-
+<div class="se-pre-con"></div>
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -2382,13 +2382,19 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;"> <img border="0" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            "</td>" +
                             "</tr>"
                 });
             }
         });
 
         $('#body_resep').html(table);
+    }
+
+    function printResep(id){
+        window.location.href = 'printResepPasien_checkupdetail.action?idResep='+id;
     }
 
     function detailResep(id) {

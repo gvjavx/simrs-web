@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.permintaanvendor.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.vividsolutions.jts.geom.LineSegment;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ import java.util.List;
  */
 public interface PermintaanVendorBo {
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException;
-    public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
+    public void saveListObatPo(PermintaanVendor bean, String po) throws GeneralBOException, JSONException;
 }

@@ -44,6 +44,26 @@ public class PermintaanObatPoli{
 
     private String qtyPoli;
 
+    private String namaTujuanPelayanan;
+
+    private String stCreatedDate;
+
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public String getNamaTujuanPelayanan() {
+        return namaTujuanPelayanan;
+    }
+
+    public void setNamaTujuanPelayanan(String namaTujuanPelayanan) {
+        this.namaTujuanPelayanan = namaTujuanPelayanan;
+    }
+
     public String getQtyPoli() {
         return qtyPoli;
     }

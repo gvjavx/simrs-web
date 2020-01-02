@@ -23,6 +23,7 @@
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="se-pre-con"></div>
 
 <%@ include file="/pages/common/headerNav.jsp" %>
 
@@ -180,8 +181,12 @@
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
-                                                <img border="0" style="width: 150px; height: 150px"
-                                                     src="<s:url value="/pages/images/spinner.gif"/>"
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
@@ -205,33 +210,42 @@
                         <table id="myTable" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>ID Permintaan</td>
                                 <td>Tanggal</td>
                                 <td>Nama Pelayanan</td>
-                                <td>ID Permintaan</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResult">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="createdDate"/></td>
-                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
-                                    <td><s:if test="#listOfResult.keterangan == 'Menunggu Konfirmasi'">
+                                    <td><s:property value="stCreatedDate"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td></td>
                                     <td align="center">
-                                        <s:if test="#listOfResult.approvalFlag == null">
-                                            <s:if test="#listOfResult.request == true">
-                                                <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')">Konfirmasi Request</button>
+                                        <s:if test='#row.approvalFlag == null'>
+                                            <s:if test='#row.request == true'>
+                                                <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                             </s:if>
                                             <s:else>
-                                                <button class="btn btn btn-danger" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')">Konfirmasi Reture</button>
+                                                <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
+                                                <button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>
                                             </s:else>
                                         </s:if>
+                                        <s:elseif test='#row.approvalFlag == "Y" '>
+                                            <s:url var="print_permintaan" namespace="/permintaangudang" action="printPermintaanObat_permintaangudang" escapeAmp="false">
+                                                <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_permintaan}" cssClass="btn btn-info">
+                                                <i class="fa fa-print"></i>
+                                            </s:a>
+                                        </s:elseif>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -478,6 +492,24 @@
         $('#load_ret').show();
         dwr.engine.setAsync(true);
         PermintaanObatPoliAction.saveKonfirmasiReture(idPermintaan, false, { callback: function (response) {
+            if (response == "success") {
+                dwr.engine.setAsync(false);
+                $('#modal-reture').modal('hide');
+                $('#info_dialog').dialog('open');
+                $('#save_ret').show();
+                $('#load_ret').hide();
+            } else {
+                $('#warning_request').show().fadeOut(5000);
+                $('#msg_reture').text(response);
+                $('#save_ret').show();
+                $('#load_ret').hide();
+            }
+        }
+        });
+    }
+
+    function printRequest(idApp, idPermin){
+        PermintaanObatPoliAction.printPermintaanObat(idApp, idPermin, { callback: function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-reture').modal('hide');

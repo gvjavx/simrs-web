@@ -18,4 +18,5 @@ public interface TransaksiObatBo {
 
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean) throws GeneralBOException;
     public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException;
+    public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException;
 }

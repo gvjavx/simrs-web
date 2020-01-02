@@ -172,6 +172,20 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                         setPermintaanResep(resep);
 
+                        String userLogin = CommonUtil.userLogin();
+                        Timestamp time = new Timestamp(System.currentTimeMillis());
+                        PermintaanResep permintaanResep = new PermintaanResep();
+                        permintaanResep.setIdPermintaanResep(resep.getIdPermintaanResep());
+                        permintaanResep.setLastUpdate(time);
+                        permintaanResep.setLastUpdateWho(userLogin);
+
+                        try {
+                            transaksiObatBoProxy.updateAntrianResep(permintaanResep);
+                        }catch (GeneralBOException e){
+                            logger.error("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. ", e);
+                            addActionError("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. " + e.getMessage());
+                        }
+
                         break;
                     }
                 }
@@ -213,9 +227,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
 
         if (jml != null && !jml.equals(0)) {
-            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-        } else {
             transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
         }
 
         setTransaksiObatDetail(transaksiObatDetail);
@@ -337,7 +351,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         session.removeAttribute("listOfResultObat");
         searchResep();
         logger.info("[TransaksiObatAction.resetobat] END <<<<<<<");
-        return "search";
+        return "init_bayar";
     }
 
 
@@ -349,7 +363,6 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<PermintaanResep> listResep = new ArrayList();
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
-        permintaanResep.setIsUmum("Y");
 
         try {
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
@@ -370,7 +383,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     }
 
-    public String saveAntrianResep(String idResep) {
+    public String saveAntrianResep(String idResep, String isUmum) {
 
         logger.info("[TransaksiObatAction.saveAntrianResep] START >>>>>>>");
 
@@ -382,8 +395,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setLastUpdateWho(userLogin);
         permintaanResep.setLastUpdate(time);
+        permintaanResep.setTglAntrian(time);
         permintaanResep.setAction("U");
-        permintaanResep.setIsUmum("Y");
+        permintaanResep.setIsUmum(isUmum);
         permintaanResep.setIdPermintaanResep(idResep);
 
         try {

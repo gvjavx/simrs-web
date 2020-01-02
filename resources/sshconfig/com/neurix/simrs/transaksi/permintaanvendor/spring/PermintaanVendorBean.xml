@@ -6,14 +6,14 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="permintaanVendorAction" class="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"
-
+          p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
     />
 
     <bean id="permintaanVendorBo" class="com.neurix.simrs.transaksi.permintaanvendor.bo.Impl.PermintaanVendorBoImpl"
-          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
-          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
-          p:obatDao-ref="obatDao"
-          p:permintaanVendorDao-ref="permintaanVendorDao"
+         p:permintaanVendorDao-ref="permintaanVendorDao"
+         p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+         p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+         p:obatDao-ref="obatDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -7,7 +7,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-HEALTH</title>
+    <title>e-HEALTH NMU</title>
     <link rel="shortcut icon" href="<s:url value="/pages/images/logo-nmu.webp"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/pages/css/style-login.css"/>"/>
 
@@ -23,6 +23,21 @@
     </style>
     <![endif]-->
     <sj:head jqueryui="true" jquerytheme="pepper-grinder"/>
+
+    <style>
+        .spin {
+            -webkit-animation: rotation 1s infinite linear;
+        }
+
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(359deg);
+            }
+        }
+    </style>
 </head>
 <script type="text/javascript">
     function validationSubmit() {
@@ -177,9 +192,18 @@
                 <div id="waiting_dialog" style="font-size:14px;font-family: Arial, Helvetica, sans-serif;text-align : center;background-color: rgba(255, 255, 255, 1);">
                     Please wait a moment, server is loging in your account ...
                     </br>
-                    </br>
-                    </br>
-                    <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" width="20%" name="image_indicator_read">
+                    <%--</br>--%>
+                    <%--<img border="0" src="<s:url value="/pages/images/spinner.gif"/>" width="20%" name="image_indicator_read">--%>
+                    <center>
+                        <div style="display: inline-block">
+                        <img border="0" style="width: 100px; height: 90px; margin-top: 20px"
+                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                             name="image_indicator_write">
+                        <img class="spin" border="0" style="width: 40px; height: 40px; margin-left: -50px; margin-bottom: 10px"
+                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                             name="image_indicator_write">
+                        </div>
+                    </center>
                 </div>
 
                 <script type='text/javascript'>

@@ -22,6 +22,9 @@ public class Obat extends BaseModel {
     private BigInteger qty;
     private String branchId;
 
+    private String jenisObat;
+    private List<Obat> labelJenisObat;
+
     private BigInteger qtyBox;
     private BigInteger qtyLembar;
     private BigInteger qtyBiji;
@@ -32,9 +35,15 @@ public class Obat extends BaseModel {
     private BigDecimal averageHargaBiji;
     private String idPabrik;
     private String merk;
+    private String janisSatuan;
 
-    private String jenisObat;
-    private List<Obat> labelJenisObat;
+    public String getJanisSatuan() {
+        return janisSatuan;
+    }
+
+    public void setJanisSatuan(String janisSatuan) {
+        this.janisSatuan = janisSatuan;
+    }
 
     public List<Obat> getLabelJenisObat() {
         return labelJenisObat;

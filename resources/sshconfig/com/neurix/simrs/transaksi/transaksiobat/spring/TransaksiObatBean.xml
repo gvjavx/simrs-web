@@ -49,5 +49,9 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="riwayatTransPembelianObatDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransPembelianObatDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="approvalTransaksiObatDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transaksiObatDetailDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

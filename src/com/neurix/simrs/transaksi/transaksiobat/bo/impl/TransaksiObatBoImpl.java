@@ -631,6 +631,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     @Override
     public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.saveAntrianResep] START >>>>>>>>>");
 
         ImSimrsPermintaanResepEntity entity = new ImSimrsPermintaanResepEntity();
 
@@ -642,12 +643,18 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         }
 
         if(entity != null){
-            entity.setStatus("0");
+
+            if("Y".equalsIgnoreCase(bean.getIsUmum())){
+                entity.setStatus("0");
+            }else{
+                entity.setStatus("3");
+            }
+
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setAction(bean.getAction());
             entity.setIsUmum(bean.getIsUmum());
-            entity.setTglAntrian(bean.getLastUpdate());
+            entity.setTglAntrian(bean.getTglAntrian());
 
             try{
                 permintaanResepDao.updateAndSave(entity);
@@ -656,7 +663,39 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 throw new GeneralBOException("Error when update resep " + e.getMessage());
             }
         }
+        logger.info("[TransaksiObatBoImpl.saveAntrianResep] END >>>>>>>>>");
 
+    }
+
+    @Override
+    public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException {
+
+        logger.info("[TransaksiObatBoImpl.updateAntrianResep] START >>>>>>>>>");
+
+        ImSimrsPermintaanResepEntity entity = new ImSimrsPermintaanResepEntity();
+
+        try {
+            entity = permintaanResepDao.getById("idPermintaanResep", bean.getIdPermintaanResep());
+        }catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.updateAntrianResep] Error when get by id resep ", e);
+            throw new GeneralBOException("Error when get by ud resep " + e.getMessage());
+        }
+
+        if(entity != null){
+
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setAction("U");
+            entity.setStatus("3");
+
+            try{
+                permintaanResepDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                logger.error("[TransaksiObatBoImpl.updateAntrianResep] Error when update resep ", e);
+                throw new GeneralBOException("Error when update resep " + e.getMessage());
+            }
+        }
+        logger.info("[TransaksiObatBoImpl.updateAntrianResep] END >>>>>>>>>");
     }
 
     private List<ImtSimrsTransaksiObatDetailEntity> getListEntityResepDetail(TransaksiObatDetail bean) throws GeneralBOException{

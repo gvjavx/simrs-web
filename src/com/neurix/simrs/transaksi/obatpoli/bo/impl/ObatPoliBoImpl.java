@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 permintaanObatPoli.setDiterimaFlag(permintaanObatPoli.getDiterimaFlag());
                 permintaanObatPoli.setRetureFlag(permintaanObatPoli.getRetureFlag());
                 permintaanObatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+                permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
+                permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
 
                 ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat());
                 if (simrsObatEntity != null) {
@@ -120,9 +123,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
                 }
 
-                ImSimrsPelayananEntity pelayananEntity = getPoliById(permintaanObatPoli.getIdPelayanan());
+                ImSimrsPelayananEntity pelayananEntity = getPoliById(permintaanObatPoliEntity.getIdPelayanan());
                 if (pelayananEntity != null) {
                     permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+                }
+
+                ImSimrsPelayananEntity tujuanPelayananEntity = getPoliById(permintaanObatPoliEntity.getTujuanPelayanan());
+                if (tujuanPelayananEntity != null) {
+                    permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
                 }
 
                 ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
@@ -139,6 +147,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
                     permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
                 }
+
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
+
+                permintaanObatPoli.setStCreatedDate(formatDate);
 
                 permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
                 permintaanObatPoli.setRequest(bean.getRequest());
@@ -536,7 +548,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                     if(obatPoliEntity != null){
 
-                        BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Approve")));
+                        BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Qty")));
                         obatPoliEntity.setAction("U");
                         obatPoliEntity.setQty(jmlh);
                         obatPoliEntity.setLastUpdate(bean.getLastUpdate());
@@ -639,11 +651,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                         }
 
                                         if(isPoli){
+
                                             // updating qty obat poli after konfirmasi
                                             ObatPoli obatPoli = new ObatPoli();
                                             obatPoli.setIdObat(obatDetailEntity.getIdObat());
-                                            obatPoli.setIdPelayanan(approvalTransaksiObatEntity.getIdPelayanan());
-                                            obatPoli.setBranchId(approvalTransaksiObatEntity.getBranchId());
+                                            obatPoli.setIdPelayanan(bean.getTujuanPelayanan());
+                                            obatPoli.setBranchId(bean.getBranchId());
                                             MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
                                             if(obatPoliEntity != null){
 
@@ -755,8 +768,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 // updating qty obat poli after konfirmasi
                                 ObatPoli obatPoli = new ObatPoli();
                                 obatPoli.setIdObat(obatDetailEntity.getIdObat());
-                                obatPoli.setIdPelayanan(approvalTransaksiObatEntity.getIdPelayanan());
-                                obatPoli.setBranchId(approvalTransaksiObatEntity.getBranchId());
+                                obatPoli.setIdPelayanan(bean.getIdPelayanan());
+                                obatPoli.setBranchId(bean.getBranchId());
                                 MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
                                 if(obatPoliEntity != null){
 
@@ -1004,6 +1017,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
             hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
         }
+        if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())) {
+            hsCriteria.put("tujuan_pelayanan", bean.getTujuanPelayanan());
+        }
         if (bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())) {
             hsCriteria.put("id_permintaan_obat_poli", bean.getIdPermintaanObatPoli());
         }
@@ -1037,7 +1053,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_approval_obat", id);
-        hsCriteria.put("flag", "Y");
+//        hsCriteria.put("flag", "Y");
 
         try {
             obatEntities = approvalTransaksiObatDao.getByCriteria(hsCriteria);

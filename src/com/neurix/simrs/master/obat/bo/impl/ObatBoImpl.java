@@ -233,6 +233,13 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setHarga(bean.getHarga());
         obatEntity.setQty(bean.getQty());
         obatEntity.setBranchId(bean.getBranchId());
+        obatEntity.setMerk(bean.getMerk());
+        obatEntity.setIdPabrik(bean.getIdPabrik());
+        obatEntity.setQtyBox(bean.getQtyBox());
+        obatEntity.setQtyLembar(bean.getQtyLembar());
+        obatEntity.setLembarPerBox(bean.getLembarPerBox());
+        obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
+        obatEntity.setQtyBiji(bean.getQtyBiji());
         obatEntity.setFlag(bean.getFlag());
         obatEntity.setAction(bean.getAction());
         obatEntity.setCreatedDate(time);
