@@ -157,17 +157,32 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse saveUpdateListObat(String id, String qty, String jenisSatuan){
+    public CheckObatResponse saveUpdateListObat(String idTransaksiDetailObat, String qty, String jenisSatuan){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntityList = (List) session.getAttribute("listOfObatDetail");
+        List<TransaksiObatDetail> obatDetailList = (List) session.getAttribute("listOfObatDetail");
+
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        transaksiObatDetail.setIdTransaksiObatDetail(idTransaksiDetailObat);
+        transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
+
+        if ("box".equalsIgnoreCase(jenisSatuan)){
+            transaksiObatDetail.setQtyBox(new BigInteger(qty));
+        } else if ("lembar".equalsIgnoreCase(jenisSatuan)){
+            transaksiObatDetail.setQtyLembar(new BigInteger(qty));
+        } else {
+            transaksiObatDetail.setQtyBiji(new BigInteger(qty));
+        }
 
         try {
-
+            permintaanVendorBoProxy.saveUpdateTransObatDetail(transaksiObatDetail);
         } catch (HibernateException e){
-
+            logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ", e);
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. "+ e);
         }
 
         logger.info("[PermintaanVendorAction.checkIdPabrikan] END <<<<<<<");

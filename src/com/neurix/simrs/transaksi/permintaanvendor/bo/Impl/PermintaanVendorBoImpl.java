@@ -117,6 +117,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
+                                transaksiObatDetails.add(transaksiObatDetail);
                             }
                             permintaanVendor.setListOfTransaksiObatDetail(transaksiObatDetails);
                         }
@@ -337,6 +338,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 //            }
         }
         logger.info("[PermintaanVendorBoImpl.saveListObatPo] END <<<");
+    }
+
+    @Override
+    public void saveUpdateTransObatDetail(TransaksiObatDetail transaksiObatDetail) throws GeneralBOException {
+
     }
 
     private String nextIdPermintanVendor(){
