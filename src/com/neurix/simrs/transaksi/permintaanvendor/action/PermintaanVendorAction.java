@@ -4,7 +4,11 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import org.apache.commons.io.FileUtils;
@@ -93,7 +97,80 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
     @Override
     public String edit() {
-        return null;
+        logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
+
+        String id = getId();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(id);
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+        try {
+            permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.edit] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfObatDetail");
+
+        if (permintaanVendorList.size() > 0){
+            setPermintaanVendor(permintaanVendorList.get(0));
+            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getTransaksiObatDetails());
+        }
+
+        logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
+        return "init_edit";
+    }
+
+    public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan, String branchId){
+        logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
+
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdPabrik(idPabrikScan);
+        obat.setBranchId(branchId);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        List<Obat> obats = new ArrayList<>();
+        try {
+            obats = obatBo.getByCriteria(obat);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.checkIdPabrikan] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.checkIdPabrikan] ERROR error when get searh obat. " + e.getMessage());
+        }
+
+        if (obats.size() > 0){
+            checkObatResponse.setStatus("success");
+            checkObatResponse.setMessage("Obat Terverivikasi");
+        } else {
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("Obat Tidak Ditemukan Check Kembali Obat Anda");
+        }
+
+        logger.info("[PermintaanVendorAction.checkIdPabrikan] END <<<<<<<");
+        return checkObatResponse;
+    }
+
+    public CheckObatResponse saveUpdateListObat(String id, String qty, String jenisSatuan){
+        logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntityList = (List) session.getAttribute("listOfObatDetail");
+
+        try {
+
+        } catch (HibernateException e){
+
+        }
+
+        logger.info("[PermintaanVendorAction.checkIdPabrikan] END <<<<<<<");
+        return checkObatResponse;
     }
 
     @Override
@@ -237,6 +314,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         logger.info("[PermintaanVendorAction.savePermintaanPO] END <<<<<<<");
         return SUCCESS;
     }
+
 
 
     @Override

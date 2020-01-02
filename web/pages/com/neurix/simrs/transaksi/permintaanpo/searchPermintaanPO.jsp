@@ -184,7 +184,12 @@
                                     </s:else></td>
                                     <td align="center">
                                         <s:if test='#row.approvalFlag == null '>
-                                            <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
+                                            <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{verify_po}">
+                                                <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                            </s:a>
                                         </s:if>
                                         <s:if test='#row.approvalFlag == "Y"'>
                                             <button class="btn btn-warning" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="idPelayanan"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i></button>

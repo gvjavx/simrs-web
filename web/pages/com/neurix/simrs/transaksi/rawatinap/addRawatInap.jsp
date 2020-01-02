@@ -223,10 +223,32 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-header with-border" id="pos_nosa">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Tanggal</td>
+                                <td>ID Diagnosa</td>
+                                <td>Keterangan</td>
+                                <td>Jenis Diagnosa</td>
+                                <td align="center">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_diagnosa">
 
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="box-header with-border" id="pos_tin">
                     </div>
-
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                     </div>
@@ -249,30 +271,6 @@
                             </tr>
                             </thead>
                             <tbody id="body_tindakan">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="box-header with-border" id="pos_nosa">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Diagnosa</td>
-                                <td>Keterangan</td>
-                                <td>Jenis Diagnosa</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_diagnosa">
-
                             </tbody>
                         </table>
                     </div>
