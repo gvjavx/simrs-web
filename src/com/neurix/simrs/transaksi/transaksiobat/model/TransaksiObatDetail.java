@@ -39,6 +39,15 @@ public class TransaksiObatDetail extends BaseModel {
     private BigDecimal averageHargaLembar;
     private BigDecimal averageHargaBiji;
     private String flagDiterima;
+    private String jenisSatuan;
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
 
     public String getFlagDiterima() {
         return flagDiterima;
