@@ -168,14 +168,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setIdTransaksiObatDetail(idTransaksiDetailObat);
         transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
-
-        if ("box".equalsIgnoreCase(jenisSatuan)){
-            transaksiObatDetail.setQtyBox(new BigInteger(qty));
-        } else if ("lembar".equalsIgnoreCase(jenisSatuan)){
-            transaksiObatDetail.setQtyLembar(new BigInteger(qty));
-        } else {
-            transaksiObatDetail.setQtyBiji(new BigInteger(qty));
-        }
+        transaksiObatDetail.setJenisSatuan(jenisSatuan);
+        transaksiObatDetail.setQty(new BigInteger(qty));
 
         try {
             permintaanVendorBoProxy.saveUpdateTransObatDetail(transaksiObatDetail);

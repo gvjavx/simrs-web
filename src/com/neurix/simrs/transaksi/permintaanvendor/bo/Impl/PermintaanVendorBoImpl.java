@@ -341,8 +341,34 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     @Override
-    public void saveUpdateTransObatDetail(TransaksiObatDetail transaksiObatDetail) throws GeneralBOException {
+    public void saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] START >>>");
 
+        List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(bean);
+        if (transaksiObatDetailEntities.size() > 0){
+            ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = transaksiObatDetailEntities.get(0);
+
+            transaksiObatDetailEntity.setQtyApprove(bean.getQty());
+//            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
+//                transaksiObatDetailEntity.setQtyBox(bean.getQty());
+//            } else if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
+//                transaksiObatDetailEntity.setQtyLembar(bean.getQty());
+//            } else {
+//                transaksiObatDetailEntity.setQtyBiji(bean.getQty());
+//            }
+            transaksiObatDetailEntity.setFlagDiterima("Y");
+            transaksiObatDetailEntity.setAction("U");
+            transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+            transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
+            } catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. "+e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. "+e.getMessage());
+            }
+        }
+        logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] END <<<");
     }
 
     private String nextIdPermintanVendor(){
