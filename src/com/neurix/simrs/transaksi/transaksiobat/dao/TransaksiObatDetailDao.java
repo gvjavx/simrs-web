@@ -42,9 +42,10 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             if (mapCriteria.get("qty")!=null) {
                 criteria.add(Restrictions.eq("qty", mapCriteria.get("qty")));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
         }
-
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idObat"));

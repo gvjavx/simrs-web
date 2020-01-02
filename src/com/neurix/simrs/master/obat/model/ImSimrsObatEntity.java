@@ -29,15 +29,6 @@ public class ImSimrsObatEntity implements Serializable{
     private BigDecimal averageHargaBiji;
     private String idPabrik;
     private String merk;
-    private String janisSatuan;
-
-    public String getJanisSatuan() {
-        return janisSatuan;
-    }
-
-    public void setJanisSatuan(String janisSatuan) {
-        this.janisSatuan = janisSatuan;
-    }
 
     public String getIdPabrik() {
         return idPabrik;

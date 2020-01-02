@@ -41,6 +41,15 @@ public class PermintaanVendor{
     private String stCreatedDate;
 
     private String keterangan;
+    private String approvalFlag;
+
+    public String getApprovalFlag() {
+        return approvalFlag;
+    }
+
+    public void setApprovalFlag(String approvalFlag) {
+        this.approvalFlag = approvalFlag;
+    }
 
     public String getKeterangan() {
         return keterangan;

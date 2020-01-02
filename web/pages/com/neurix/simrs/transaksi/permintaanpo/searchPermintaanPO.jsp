@@ -174,6 +174,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
+                                    <%--transaksiObatDetails--%>
                                     <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
@@ -182,10 +183,10 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null && #row.diterimaFlag == "" '>
+                                        <s:if test='#row.approvalFlag == null '>
                                             <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                         </s:if>
-                                        <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>
+                                        <s:if test='#row.approvalFlag == "Y"'>
                                             <button class="btn btn-warning" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="idPelayanan"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i></button>
                                         </s:if>
                                     </td>

@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface PermintaanVendorBo {
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException;
-    public void saveListObatPo(PermintaanVendor bean, String po) throws GeneralBOException, JSONException;
+    public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
 }

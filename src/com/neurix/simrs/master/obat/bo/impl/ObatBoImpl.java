@@ -69,13 +69,17 @@ public class ObatBoImpl implements ObatBo {
                     obat.setLastUpdateWho(obatEntity.getLastUpdateWho());
                     obat.setQty(obatEntity.getQty());
                     obat.setBranchId(obatEntity.getBranchId());
-                    obat.setIdPabrik(obatEntity.getIdPabrik());
-                    obat.setMerk(obatEntity.getMerk());
                     obat.setQtyBox(obatEntity.getQtyBox());
                     obat.setLembarPerBox(obatEntity.getLembarPerBox());
                     obat.setQtyLembar(obatEntity.getQtyLembar());
                     obat.setBijiPerLembar(obatEntity.getBijiPerLembar());
                     obat.setQtyBiji(obatEntity.getQtyBiji());
+                    obat.setAverageHargaBox(obatEntity.getAverageHargaBox());
+                    obat.setAverageHargaLembar(obatEntity.getAverageHargaLembar());
+                    obat.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
+                    obat.setIdPabrik(obatEntity.getIdPabrik());
+                    obat.setMerk(obatEntity.getMerk());
+
                     List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
 
                     Map hsCriteria = new HashMap();
@@ -242,6 +246,16 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setCreatedWho(userLogin);
         obatEntity.setLastUpdate(time);
         obatEntity.setLastUpdateWho(userLogin);
+        obatEntity.setQtyBox(bean.getQtyBox());
+        obatEntity.setLembarPerBox(bean.getLembarPerBox());
+        obatEntity.setQtyLembar(bean.getQtyLembar());
+        obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
+        obatEntity.setQtyBiji(bean.getQtyBiji());
+        obatEntity.setAverageHargaBox(bean.getAverageHargaBox());
+        obatEntity.setAverageHargaLembar(bean.getAverageHargaLembar());
+        obatEntity.setAverageHargaBiji(bean.getAverageHargaBiji());
+        obatEntity.setIdPabrik(bean.getIdPabrik());
+        obatEntity.setMerk(bean.getMerk());
 
         try {
             obatDao.addAndSave(obatEntity);
@@ -292,6 +306,16 @@ public class ObatBoImpl implements ObatBo {
             obatEntity.setHarga(bean.getHarga());
             obatEntity.setLastUpdate(bean.getLastUpdate());
             obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            obatEntity.setQtyBox(bean.getQtyBox());
+            obatEntity.setLembarPerBox(bean.getLembarPerBox());
+            obatEntity.setQtyLembar(bean.getQtyLembar());
+            obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
+            obatEntity.setQtyBiji(bean.getQtyBiji());
+            obatEntity.setAverageHargaBox(bean.getAverageHargaBox());
+            obatEntity.setAverageHargaLembar(bean.getAverageHargaLembar());
+            obatEntity.setAverageHargaBiji(bean.getAverageHargaBiji());
+            obatEntity.setIdPabrik(bean.getIdPabrik());
+            obatEntity.setMerk(bean.getMerk());
 
             try {
                 obatDao.updateAndSave(obatEntity);

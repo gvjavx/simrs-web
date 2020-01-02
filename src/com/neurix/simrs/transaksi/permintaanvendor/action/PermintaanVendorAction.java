@@ -6,16 +6,22 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,13 +172,40 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setBranchId(userBranch);
         permintaanVendor.setIdPelayanan(idPelayanan);
 
+        List<ImtSimrsTransaksiObatDetailEntity> detailEntityList = new ArrayList<>();
+        ImtSimrsTransaksiObatDetailEntity obatDetailEntity;
+
+        try {
+            if(po != null && !"".equalsIgnoreCase(po)){
+                JSONArray json = new JSONArray(po);
+                for (int i = 0; i < json.length(); i++) {
+                    obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+
+                    JSONObject obj = json.getJSONObject(i);
+
+                    obatDetailEntity.setIdObat(obj.getString("ID"));
+                    obatDetailEntity.setQtyBox(new BigInteger(obj.getString("Box")));
+                    obatDetailEntity.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
+                    obatDetailEntity.setQtyLembar(new BigInteger(obj.getString("Lembar")));
+                    obatDetailEntity.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
+                    obatDetailEntity.setQtyBiji(new BigInteger(obj.getString("Biji")));
+                    obatDetailEntity.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
+                    detailEntityList.add(obatDetailEntity);
+                }
+
+                permintaanVendor.setTransaksiObatDetails(detailEntityList);
+            }
+        } catch (JSONException e) {
+            logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);
+        }
+
         String fileName = "";
         if (this.fileUpload != null) {
             if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
                 if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
 
                     // file name
-                    fileName = "DOC_PO"+"_"+this.fileUploadFileName;
+                    fileName = "DOC_PO" + "_" + this.fileUploadFileName;
 
                     // deklarasi path file
                     String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO;
@@ -195,12 +228,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         try {
-            try {
-                permintaanVendorBo.saveListObatPo(permintaanVendor, po);
-            }catch (JSONException e){
-                logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);
-            }
-        }catch (GeneralBOException e){
+            permintaanVendorBo.saveListObatPo(permintaanVendor);
+        } catch (GeneralBOException e) {
             logger.error("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. " + e.getMessage());
         }

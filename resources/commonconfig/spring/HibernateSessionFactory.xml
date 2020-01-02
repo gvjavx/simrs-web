@@ -247,7 +247,6 @@
                 <value>sshconfig/com/neurix/hris/master/masaTanam/hibernate/ImMasaTanamEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/notifikasi/hibernate/ItNotifikasiFcm.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspek.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekDetail.hbm.xml</value>
@@ -268,7 +267,6 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollMasterInsentif/hibernate/ImPayrollMasterInsentifEntity.hbm.xml</value>
-
 
                 <!--Hibernate Config For SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/master/jenisobat/hibernate/ImSimrsJenisObatEntity.hbm.xml</value>
@@ -325,7 +323,6 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/obatpoli/hibernate/MtSimrsPermintaanObatPoliEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/MtSimrsRiwayatPembelianObat.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/MtSimrsPermintaanVendorEntity.hbm.xml</value>
-
             </list>
         </property>
     </bean>
