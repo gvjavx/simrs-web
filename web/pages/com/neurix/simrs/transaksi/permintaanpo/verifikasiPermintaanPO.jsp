@@ -13,7 +13,6 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-
             $('#permintaan_po').addClass('active');
 
         });
@@ -135,9 +134,9 @@
                                     <td align="center"><s:property value="bijiPerLembar"/></td>
                                     <td align="center"><s:property value="qtyBiji"/></td>
                                     <td align="right"><s:property value="averageHargaBox"/></td>
-                                    <td align="center"><input class="form-control" style="width: 150px" id=""></td>
+                                    <td align="center"><input onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
                                     <%--not verified--%>
-                                    <td align="center"><span class="label label-success"> Verified</span></td>
+                                    <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -169,29 +168,16 @@
         window.location.reload(true);
     }
 
-    function jmlLembar() {
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
+    function verify(id, value){
 
-        if (lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0) {
-            var lembarBox = parseInt(lembarBox) * parseInt(box);
-            $('#lembar').val(lembarBox);
-        } else {
-            $('#lembar').val('');
+        if("7001502151224" == value){
+            $('#pabrik'+id).attr('readonly', true);
+            $('#status'+id).html("Verified").addClass("label label-success");
+        }else {
+            $('#pabrik'+id).attr('readonly', true);
+            $('#status'+id).html("Not Verified").addClass("label label-danger");
         }
-    }
-
-    function jmlBiji() {
-
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-
-        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0) {
-            var jmlBiji = parseInt(lembar) * parseInt(bijiLembar);
-            $('#biji').val(jmlBiji);
-        } else {
-            $('#biji').val('');
-        }
+        console.log(value);
     }
 
     function confirm() {
