@@ -88,7 +88,37 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
                         if (transaksiObatDetailEntities.size() > 0)
                         {
-                            permintaanVendor.setTransaksiObatDetails(transaksiObatDetailEntities);
+                            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+                            TransaksiObatDetail transaksiObatDetail1;
+                            for (ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity : transaksiObatDetailEntities){
+
+                                ImSimrsObatEntity obatEntity = getObatById(transaksiObatDetailEntity.getIdObat());
+
+                                transaksiObatDetail = new TransaksiObatDetail();
+                                transaksiObatDetail.setIdTransaksiObatDetail(transaksiObatDetailEntity.getIdTransaksiObatDetail());
+                                transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
+                                transaksiObatDetail.setIdApprovalObat(transaksiObatDetailEntity.getIdApprovalObat());
+                                transaksiObatDetail.setIdObat(transaksiObatDetailEntity.getIdObat());
+                                transaksiObatDetail.setFlag(transaksiObatDetailEntity.getFlag());
+                                transaksiObatDetail.setAction(transaksiObatDetailEntity.getAction());
+                                transaksiObatDetail.setCreatedDate(transaksiObatDetailEntity.getCreatedDate());
+                                transaksiObatDetail.setLastUpdate(transaksiObatDetailEntity.getLastUpdate());
+                                transaksiObatDetail.setCreatedWho(transaksiObatDetailEntity.getCreatedWho());
+                                transaksiObatDetail.setLastUpdateWho(transaksiObatDetailEntity.getLastUpdateWho());
+                                transaksiObatDetail.setKeterangan(transaksiObatDetailEntity.getKeterangan());
+                                transaksiObatDetail.setQtyApprove(transaksiObatDetailEntity.getQtyApprove());
+                                transaksiObatDetail.setQtyBox(transaksiObatDetailEntity.getQtyBox());
+                                transaksiObatDetail.setQtyLembar(transaksiObatDetailEntity.getQtyLembar());
+                                transaksiObatDetail.setQtyBiji(transaksiObatDetailEntity.getQtyBiji());
+                                transaksiObatDetail.setLembarPerBox(transaksiObatDetailEntity.getLembarPerBox());
+                                transaksiObatDetail.setBijiPerLembar(transaksiObatDetailEntity.getBijiPerLembar());
+                                transaksiObatDetail.setAverageHargaBox(transaksiObatDetailEntity.getAverageHargaBox());
+                                transaksiObatDetail.setAverageHargaLembar(transaksiObatDetailEntity.getAverageHargaLembar());
+                                transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
+                                transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
+                                transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
+                            }
+                            permintaanVendor.setListOfTransaksiObatDetail(transaksiObatDetails);
                         }
                     }
                     permintaanVendorList.add(permintaanVendor);
@@ -248,17 +278,18 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. "+e.getMessage());
             }
 
-            if (bean.getTransaksiObatDetails().size() > 0){
-                for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : bean.getTransaksiObatDetails())
+            if (bean.getListOfTransaksiObatDetail().size() > 0){
+                for (TransaksiObatDetail obatDetail : bean.getListOfTransaksiObatDetail())
                 {
+                    ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
                     obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                     obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
-                    obatDetailEntity.setQtyBox(obatDetailEntity.getQtyBox());
-                    obatDetailEntity.setLembarPerBox(obatDetailEntity.getLembarPerBox());
-                    obatDetailEntity.setQtyLembar(obatDetailEntity.getQtyLembar());
-                    obatDetailEntity.setBijiPerLembar(obatDetailEntity.getBijiPerLembar());
-                    obatDetailEntity.setQtyBiji(obatDetailEntity.getQtyBiji());
-                    obatDetailEntity.setAverageHargaBox(obatDetailEntity.getAverageHargaBox());
+                    obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
+                    obatDetailEntity.setLembarPerBox(obatDetail.getLembarPerBox());
+                    obatDetailEntity.setQtyLembar(obatDetail.getQtyLembar());
+                    obatDetailEntity.setBijiPerLembar(obatDetail.getBijiPerLembar());
+                    obatDetailEntity.setQtyBiji(obatDetail.getQtyBiji());
+                    obatDetailEntity.setAverageHargaBox(obatDetail.getAverageHargaBox());
                     obatDetailEntity.setFlag("Y");
                     obatDetailEntity.setAction("C");
                     obatDetailEntity.setCreatedDate(bean.getCreatedDate());

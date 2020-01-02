@@ -11,6 +11,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -116,7 +117,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         if (permintaanVendorList.size() > 0){
             setPermintaanVendor(permintaanVendorList.get(0));
-            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getTransaksiObatDetails());
+            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getListOfTransaksiObatDetail());
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
@@ -249,28 +250,28 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setBranchId(userBranch);
         permintaanVendor.setIdPelayanan(idPelayanan);
 
-        List<ImtSimrsTransaksiObatDetailEntity> detailEntityList = new ArrayList<>();
-        ImtSimrsTransaksiObatDetailEntity obatDetailEntity;
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+        TransaksiObatDetail obatDetail;
 
         try {
             if(po != null && !"".equalsIgnoreCase(po)){
                 JSONArray json = new JSONArray(po);
                 for (int i = 0; i < json.length(); i++) {
-                    obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+                    obatDetail = new TransaksiObatDetail();
 
                     JSONObject obj = json.getJSONObject(i);
 
-                    obatDetailEntity.setIdObat(obj.getString("ID"));
-                    obatDetailEntity.setQtyBox(new BigInteger(obj.getString("Box")));
-                    obatDetailEntity.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
-                    obatDetailEntity.setQtyLembar(new BigInteger(obj.getString("Lembar")));
-                    obatDetailEntity.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
-                    obatDetailEntity.setQtyBiji(new BigInteger(obj.getString("Biji")));
-                    obatDetailEntity.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
-                    detailEntityList.add(obatDetailEntity);
+                    obatDetail.setIdObat(obj.getString("ID"));
+                    obatDetail.setQtyBox(new BigInteger(obj.getString("Box")));
+                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
+                    obatDetail.setQtyLembar(new BigInteger(obj.getString("Lembar")));
+                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
+                    obatDetail.setQtyBiji(new BigInteger(obj.getString("Biji")));
+                    obatDetail.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
+                    obatDetailList.add(obatDetail);
                 }
 
-                permintaanVendor.setTransaksiObatDetails(detailEntityList);
+                permintaanVendor.setListOfTransaksiObatDetail(obatDetailList);
             }
         } catch (JSONException e) {
             logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);

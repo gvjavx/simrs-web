@@ -26,7 +26,7 @@ public class PermintaanVendor{
     private String urlDocPo;
     private String branchId;
 
-    List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails = new ArrayList<>();
+    List<TransaksiObatDetail> listOfTransaksiObatDetail = new ArrayList<>();
 
     private String idObat;
     private String namaObat;
@@ -75,12 +75,12 @@ public class PermintaanVendor{
         this.idPelayanan = idPelayanan;
     }
 
-    public List<ImtSimrsTransaksiObatDetailEntity> getTransaksiObatDetails() {
-        return transaksiObatDetails;
+    public List<TransaksiObatDetail> getListOfTransaksiObatDetail() {
+        return listOfTransaksiObatDetail;
     }
 
-    public void setTransaksiObatDetails(List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails) {
-        this.transaksiObatDetails = transaksiObatDetails;
+    public void setListOfTransaksiObatDetail(List<TransaksiObatDetail> listOfTransaksiObatDetail) {
+        this.listOfTransaksiObatDetail = listOfTransaksiObatDetail;
     }
 
     public Integer getJumlahSatuan() {
