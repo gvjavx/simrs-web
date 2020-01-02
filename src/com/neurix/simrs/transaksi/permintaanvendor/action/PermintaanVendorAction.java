@@ -124,7 +124,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "init_edit";
     }
 
-    public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan, String branchId){
+    public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -132,7 +132,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         Obat obat = new Obat();
         obat.setIdObat(idObat);
         obat.setIdPabrik(idPabrikScan);
-        obat.setBranchId(branchId);
+        obat.setBranchId(CommonUtil.userBranchLogin());
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");

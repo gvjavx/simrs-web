@@ -14,6 +14,14 @@
 
         $(document).ready(function () {
             $('#permintaan_po').addClass('active');
+            $('table.tabel_po')
+                    .find('tr')
+                    .last()
+                    .find('input[type="text"]')
+                    .first()
+                    .focus();
+
+            $('input').first().focus();
 
         });
 
@@ -169,15 +177,29 @@
     }
 
     function verify(id, value){
-
-        if("7001502151224" == value){
-            $('#pabrik'+id).attr('readonly', true);
-            $('#status'+id).html("Verified").addClass("label label-success");
-        }else {
-            $('#pabrik'+id).attr('readonly', true);
-            $('#status'+id).html("Not Verified").addClass("label label-danger");
+        if(id != '' && value != ''){
+            dwr.engine.setAsync(true);
+            PermintaanVendorAction.checkIdPabrikan(id, value, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                    } else {
+                        $('#warning_po').show().fadeOut(5000);
+                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                    }
+                }
+            });
         }
-        console.log(value);
+//        if("7001502151224" == value){
+//            $('#pabrik'+id).attr('readonly', true);
+//            $('#status'+id).html("Verified").addClass("label label-success");
+//        }else {
+//            $('#pabrik'+id).attr('readonly', true);
+//            $('#status'+id).html("Not Verified").addClass("label label-danger");
+//        }
+//        console.log(value);
     }
 
     function confirm() {
