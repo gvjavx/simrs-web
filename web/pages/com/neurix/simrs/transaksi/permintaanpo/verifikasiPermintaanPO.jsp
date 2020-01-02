@@ -13,8 +13,15 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-
             $('#permintaan_po').addClass('active');
+            $('table.tabel_po')
+                    .find('tr')
+                    .last()
+                    .find('input[type="text"]')
+                    .first()
+                    .focus();
+
+            $('input').first().focus();
 
         });
 
@@ -135,9 +142,9 @@
                                     <td align="center"><s:property value="bijiPerLembar"/></td>
                                     <td align="center"><s:property value="qtyBiji"/></td>
                                     <td align="right"><s:property value="averageHargaBox"/></td>
-                                    <td align="center"><input class="form-control" style="width: 150px" id=""></td>
+                                    <td align="center"><input onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
                                     <%--not verified--%>
-                                    <td align="center"><span class="label label-success"> Verified</span></td>
+                                    <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -169,29 +176,30 @@
         window.location.reload(true);
     }
 
-    function jmlLembar() {
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
-
-        if (lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0) {
-            var lembarBox = parseInt(lembarBox) * parseInt(box);
-            $('#lembar').val(lembarBox);
-        } else {
-            $('#lembar').val('');
+    function verify(id, value){
+        if(id != '' && value != ''){
+            dwr.engine.setAsync(true);
+            PermintaanVendorAction.checkIdPabrikan(id, value, {
+                callback: function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                    } else {
+                        $('#warning_po').show().fadeOut(5000);
+                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                    }
+                }
+            });
         }
-    }
-
-    function jmlBiji() {
-
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-
-        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0) {
-            var jmlBiji = parseInt(lembar) * parseInt(bijiLembar);
-            $('#biji').val(jmlBiji);
-        } else {
-            $('#biji').val('');
-        }
+//        if("7001502151224" == value){
+//            $('#pabrik'+id).attr('readonly', true);
+//            $('#status'+id).html("Verified").addClass("label label-success");
+//        }else {
+//            $('#pabrik'+id).attr('readonly', true);
+//            $('#status'+id).html("Not Verified").addClass("label label-danger");
+//        }
+//        console.log(value);
     }
 
     function confirm() {
