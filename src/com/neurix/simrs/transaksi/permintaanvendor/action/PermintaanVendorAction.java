@@ -288,11 +288,16 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     JSONObject obj = json.getJSONObject(i);
 
                     obatDetail.setIdObat(obj.getString("ID"));
-                    obatDetail.setQtyBox(new BigInteger(obj.getString("Box")));
-                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
-                    obatDetail.setQtyLembar(new BigInteger(obj.getString("Lembar")));
-                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
-                    obatDetail.setQtyBiji(new BigInteger(obj.getString("Biji")));
+                    if(obj.getString("Jml Box") != "-"){
+                        obatDetail.setQtyBox(new BigInteger(obj.getString("Jml Box")));
+                    }
+                    if(obj.getString("Jml Lembar") != "-"){
+                        obatDetail.setQtyLembar(new BigInteger(obj.getString("Jml Lembar")));
+                    }
+//                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
+//                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
+//                    obatDetail.setQtyBiji(new BigInteger(obj.getString("Biji")));
+                    obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
                     obatDetail.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
                     obatDetailList.add(obatDetail);
                 }
