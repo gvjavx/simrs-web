@@ -37,6 +37,16 @@ public class Obat extends BaseModel {
     private String merk;
     private String janisSatuan;
 
+    private BigDecimal hargaTerakhir;
+
+    public BigDecimal getHargaTerakhir() {
+        return hargaTerakhir;
+    }
+
+    public void setHargaTerakhir(BigDecimal hargaTerakhir) {
+        this.hargaTerakhir = hargaTerakhir;
+    }
+
     public String getJanisSatuan() {
         return janisSatuan;
     }

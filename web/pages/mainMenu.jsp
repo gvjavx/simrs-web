@@ -76,65 +76,65 @@
             </p>
         </div>
 
-        <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                    <span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-dokter.png"/>"></span>
+        <%--<div class="row">--%>
+            <%--<div class="col-md-3 col-sm-6 col-xs-12">--%>
+                <%--<div class="info-box">--%>
+                    <%--<span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-dokter.png"/>"></span>--%>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Dokter</span>
-                        <span class="info-box-number">100<small> Orang</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
+                    <%--<div class="info-box-content">--%>
+                        <%--<span class="info-box-text">Dokter</span>--%>
+                        <%--<span class="info-box-number">100<small> Orang</small></span>--%>
+                    <%--</div>--%>
+                    <%--<!-- /.info-box-content -->--%>
+                <%--</div>--%>
+                <%--<!-- /.info-box -->--%>
+            <%--</div>--%>
+            <%--<!-- /.col -->--%>
+            <%--<div class="col-md-3 col-sm-6 col-xs-12">--%>
+                <%--<div class="info-box">--%>
 
-                    <span class="info-box-icon bg-green"><img style="width: 30px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-perawat.png"/>"></span>
+                    <%--<span class="info-box-icon bg-green"><img style="width: 30px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-perawat.png"/>"></span>--%>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Perawat</span>
-                        <span class="info-box-number">200<small> Orang</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
+                    <%--<div class="info-box-content">--%>
+                        <%--<span class="info-box-text">Perawat</span>--%>
+                        <%--<span class="info-box-number">200<small> Orang</small></span>--%>
+                    <%--</div>--%>
+                    <%--<!-- /.info-box-content -->--%>
+                <%--</div>--%>
+                <%--<!-- /.info-box -->--%>
+            <%--</div>--%>
+            <%--<!-- /.col -->--%>
 
-            <!-- fix for small devices only -->
-            <div class="clearfix visible-sm-block"></div>
+            <%--<!-- fix for small devices only -->--%>
+            <%--<div class="clearfix visible-sm-block"></div>--%>
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                    <span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-poli.png"/>"></span>
+            <%--<div class="col-md-3 col-sm-6 col-xs-12">--%>
+                <%--<div class="info-box">--%>
+                    <%--<span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-poli.png"/>"></span>--%>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Poli</span>
-                        <span class="info-box-number">10<small> unit</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                    <span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-pasien.png"/>"></span>
+                    <%--<div class="info-box-content">--%>
+                        <%--<span class="info-box-text">Poli</span>--%>
+                        <%--<span class="info-box-number">10<small> unit</small></span>--%>
+                    <%--</div>--%>
+                    <%--<!-- /.info-box-content -->--%>
+                <%--</div>--%>
+                <%--<!-- /.info-box -->--%>
+            <%--</div>--%>
+            <%--<!-- /.col -->--%>
+            <%--<div class="col-md-3 col-sm-6 col-xs-12">--%>
+                <%--<div class="info-box">--%>
+                    <%--<span class="info-box-icon bg-green"><img style="width: 50px; height: 50px; margin-top: 18px" src="<s:url value="/pages/images/logo-pasien.png"/>"></span>--%>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Pasien</span>
-                        <span class="info-box-number">1000<small> Orang</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
-        </div>
+                    <%--<div class="info-box-content">--%>
+                        <%--<span class="info-box-text">Pasien</span>--%>
+                        <%--<span class="info-box-number">1000<small> Orang</small></span>--%>
+                    <%--</div>--%>
+                    <%--<!-- /.info-box-content -->--%>
+                <%--</div>--%>
+                <%--<!-- /.info-box -->--%>
+            <%--</div>--%>
+            <%--<!-- /.col -->--%>
+        <%--</div>--%>
 
     </section>
     <!-- /.content -->

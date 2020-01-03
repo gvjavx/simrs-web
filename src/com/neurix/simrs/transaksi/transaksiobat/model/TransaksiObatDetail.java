@@ -41,6 +41,16 @@ public class TransaksiObatDetail extends BaseModel {
     private String flagDiterima;
     private String jenisSatuan;
 
+    private BigDecimal hargaTerakhir;
+
+    public BigDecimal getHargaTerakhir() {
+        return hargaTerakhir;
+    }
+
+    public void setHargaTerakhir(BigDecimal hargaTerakhir) {
+        this.hargaTerakhir = hargaTerakhir;
+    }
+
     public String getJenisSatuan() {
         return jenisSatuan;
     }

@@ -205,6 +205,9 @@ public class ObatBoImpl implements ObatBo {
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
             hsCriteria.put("flag", bean.getFlag());
         }
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        }
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
         try {

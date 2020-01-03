@@ -6,6 +6,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.vendor.bo.VendorBo;
+import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -38,10 +40,25 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(PermintaanVendorAction.class);
     private PermintaanVendorBo permintaanVendorBoProxy;
     private PermintaanVendor permintaanVendor;
+    private VendorBo vendorBoProxy;
 
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+
+    private List<Vendor> listOfVendor = new ArrayList<>();
+
+    public List<Vendor> getListOfVendor() {
+        return listOfVendor;
+    }
+
+    public void setListOfVendor(List<Vendor> listOfVendor) {
+        this.listOfVendor = listOfVendor;
+    }
+
+    public void setVendorBoProxy(VendorBo vendorBoProxy) {
+        this.vendorBoProxy = vendorBoProxy;
+    }
 
     public File getFileUpload() {
         return fileUpload;
@@ -325,6 +342,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public String getComboVendor(){
+
+        List<Vendor> listVendor = new ArrayList<>();
+        Vendor vendor = new Vendor();
+
+        try {
+            listVendor = vendorBoProxy.getByCriteria(vendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.getComboVendor] Error when get data for combo list of vendor", e);
+            addActionError(" Error when get data for combo list of vendor" + e.getMessage());
+        }
+
+        listOfVendor.addAll(listVendor);
+
+        return SUCCESS;
+    }
 
 
     @Override

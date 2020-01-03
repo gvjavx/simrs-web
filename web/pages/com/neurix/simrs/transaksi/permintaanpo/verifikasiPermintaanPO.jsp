@@ -14,14 +14,6 @@
 
         $(document).ready(function () {
             $('#permintaan_po').addClass('active');
-            $('table.tabel_po')
-                    .find('tr')
-                    .last()
-                    .find('input[type="text"]')
-                    .first()
-                    .focus();
-
-            $('input').first().focus();
 
         });
 
@@ -129,13 +121,15 @@
                                 <td align="right">Harga</td>
                                 <td align="center">Verify</td>
                                 <td align="center">Status</td>
+                                <td align="center">Approve</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfObatDetail" var="row">
                                 <tr>
                                     <td><s:property value="idObat"/></td>
-                                    <td><s:property value="idObat"/></td>
+                                    <td><s:property value="namaObat"/></td>
                                     <td align="center"> <s:property value="qtyBox"/></td>
                                     <td align="center"><s:property value="lembarPerBox"/></td>
                                     <td align="center"><s:property value="qtyLembar"/></td>
@@ -143,8 +137,9 @@
                                     <td align="center"><s:property value="qtyBiji"/></td>
                                     <td align="right"><s:property value="averageHargaBox"/></td>
                                     <td align="center"><input onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
-                                    <%--not verified--%>
                                     <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
+                                    <td align="center"><input type="number" onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
+                                    <td align="center"><a type="button" class="btn btn-success"><i class="fa fa-edit"></i> </a></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -177,29 +172,23 @@
     }
 
     function verify(id, value){
+        var status = false;
         if(id != '' && value != ''){
+            $('#status'+id).html('<i class="fa fa-spinner fa-spin"></i>');
             dwr.engine.setAsync(true);
             PermintaanVendorAction.checkIdPabrikan(id, value, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
-                        $('#waiting_dialog').dialog('close');
-                        $('#info_dialog').dialog('open');
+                        $('#pabrik'+id).attr('readonly', true).blur();
+                        $('#status'+id).html("Sesuai").addClass("label label-success");
                     } else {
-                        $('#warning_po').show().fadeOut(5000);
-                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                        $('#pabrik'+id).attr('readonly', true).blur();
+                        $('#status'+id).html("Tidak Sesuai").addClass("label label-danger");
                     }
                 }
             });
         }
-//        if("7001502151224" == value){
-//            $('#pabrik'+id).attr('readonly', true);
-//            $('#status'+id).html("Verified").addClass("label label-success");
-//        }else {
-//            $('#pabrik'+id).attr('readonly', true);
-//            $('#status'+id).html("Not Verified").addClass("label label-danger");
-//        }
-//        console.log(value);
     }
 
     function confirm() {
