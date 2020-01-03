@@ -191,6 +191,7 @@ public class UserBoImpl implements UserBo {
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
 
+
             userDetailsLogin = new UserDetailsLogin();
             userDetailsLogin.setUserId(userId);
             userDetailsLogin.setUsername(username);
@@ -203,8 +204,9 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setUserCredentialsNonExpired(true);
             //userDetailsLogin.setPositionId(positionId.toString());
             //userDetailsLogin.setPositionName(positionName);
-            ItPersonilPositionEntity itPersonilPositionEntity = null ;
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
 
+            ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");
             if(itPersonilPositionEntity != null){
                 userDetailsLogin.setBranchId(itPersonilPositionEntity.getBranchId());
@@ -227,8 +229,8 @@ public class UserBoImpl implements UserBo {
                     userDetailsLogin.setPositionName("");
                 }
             }else{
-                userDetailsLogin.setBranchId("");
-                userDetailsLogin.setBranchName("");
+                userDetailsLogin.setBranchId(branchId);
+                userDetailsLogin.setBranchName(branchName);
                 userDetailsLogin.setDivisiId("");
                 userDetailsLogin.setDivisiName("");
                 userDetailsLogin.setPositionId("");
@@ -524,7 +526,15 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-unlock\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Dashboard")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
-                    } else {
+                    }else if (menuName.equalsIgnoreCase("Stok Obat")) {
+                        menuNameString = "<li id=\"stok_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
+                        menuNameString = "<li id=\"permintaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Permintaan Obat Gudang")) {
+                        menuNameString = "<li id=\"permintaan_obat_gudang\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Penerimaan Obat")) {
+                        menuNameString = "<li id=\"penerimaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
                     }
 
@@ -544,18 +554,47 @@ public class UserBoImpl implements UserBo {
 
                         if(menuName.equalsIgnoreCase("Dashboard")){
                                 menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
-                        }else{
+                        }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat")) {
+                            menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Rawat Jalan")) {
+                            menuNameString = "<li id=\"rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-stethoscope\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
+                            menuNameString = "<li id=\"rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Periksa Lab")) {
+                            menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-hospital-o\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
+                            menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-heartbeat\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Obat")) {
+                            menuNameString = "<li id=\"menu_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
+                            menuNameString = "<li id=\"permintaan_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Transaksi Apotek")) {
+                            menuNameString = "<li id=\"transaksi_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("IGD")) {
+                            menuNameString = "<li id=\"igd\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Resep Poli")) {
+                            menuNameString = "<li id=\"resep_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-text-o\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Permintaan PO")) {
+                            menuNameString = "<li id=\"permintaan_po\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
+                        }
+//                        else if (menuName.equalsIgnoreCase("Obat Poli")) {
+//                            menuNameString = "<li id=\"obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+//                        }
+                        else{
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
                         }
                     }else{
-                        if(i > 0){
-                            itemMenuTmp = (List) listdownMenu.get(i - 1);
-                            if(!itemMenuTmp.get(2).equals("2")){
-                                menuNameString = "</ul>" +
-                                        "</li>";
-                            }
-                        }
+                        //sodiq 17-12-2019, dicomment agar tidak benrantakan di sidebar
+//                        if(i > 0){
+//                            itemMenuTmp = (List) listdownMenu.get(i - 1);
+//                            if(!itemMenuTmp.get(2).equals("2")){
+//                                menuNameString = "</ul>" +
+//                                        "</li>";
+//                            }
+//                        }
                         String icon ="";
+                        String idLi = "";
+                        String openLu ="";
                         if (("Transaksi").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-folder-open\"></i>";
                         } else if (("Master").equalsIgnoreCase(menuName)){
@@ -564,15 +603,19 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-check-square-o\"></i>";
                         }else if (("Setting").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-cogs\"></i>";
+                        }else if (("Obat").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-medkit\"></i>";
+                            idLi = "obat_poli_active";
+                            openLu = "obat_poli_open";
                         }
                         menuNameString +=
-                                "<li class=\"treeview\"> " +
-                                        "<a href=\"#\">"+icon+"<span>"+menuName+"</span>" +
+                                "<li class=\"treeview\" id="+idLi+"> " +
+                                        "<a href=\"#\">"+icon+"<span> "+" "+ menuName+"</span>" +
                                         "<span class=\"pull-right-container\">" +
                                         "<i class=\"fa fa-angle-left pull-right\"></i>"+
                                         "<span>"+
                                         "</a>" +
-                                        "<ul class=\"treeview-menu\">";
+                                        "<ul class=\"treeview-menu\" id="+openLu+">";
                     }
                 } else if(itemMenu.get(2).equals("3")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
@@ -2000,6 +2043,13 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setAction(addUsers.getAction());
                 imUsersNew.setFlag("Y");
 
+                //sodiq, 10/12/2019, penambahan id pelayanan
+                if("35".equalsIgnoreCase(addUsers.getRoleId())){
+                    imUsersNew.setIdPelayanan("007");
+                }else{
+                    imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+                }
+
                 String userid = addUsers.getUserId();
                 boolean isAda ;
 
@@ -2040,9 +2090,14 @@ public class UserBoImpl implements UserBo {
                 //save uers into table im_areas_branches_users, update by ferdi, 10-10-2016
                 ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
                 ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-                imAreasBranchesUsersPK.setUserId(userId);
-                imAreasBranchesUsersPK.setAreaId(areaId);
-                imAreasBranchesUsersPK.setBranchId(branchId);
+//                imAreasBranchesUsersPK.setUserId(userId);
+//                imAreasBranchesUsersPK.setAreaId(areaId);
+//                imAreasBranchesUsersPK.setBranchId(branchId);
+
+                //sodiq, 10/12/2019, penambahan user id, area id, dan branch id form front end
+                imAreasBranchesUsersPK.setUserId(addUsers.getUserId());
+                imAreasBranchesUsersPK.setAreaId(addUsers.getAreaId());
+                imAreasBranchesUsersPK.setBranchId(addUsers.getBranchId());
 
                 imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
                 imAreasBranchesUsers.setCreatedDate(addUsers.getCreatedDate());

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="checkupDetailAction" class="com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
+          p:tindakanBoProxy-ref="tindakanBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:keteranganKeluarBoProxy-ref="keteranganKeluarBoProxy"
+    />
+
+    <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:statusPasienDao-ref="statusPasienDao"
+          p:rawatInapDao-ref="rawatInapDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+          p:ruanganDao-ref="ruanganDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+    />
+
+    <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="checkupDetailBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionDetailCheckupInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionDetailCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="checkupDetailDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+</beans>

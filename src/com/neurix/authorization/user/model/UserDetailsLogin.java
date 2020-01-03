@@ -54,6 +54,16 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private String customerNPWP;
     private String customerEmail;
 
+    private String idPleyanan;
+
+    public String getIdPleyanan() {
+        return idPleyanan;
+    }
+
+    public void setIdPleyanan(String idPleyanan) {
+        this.idPleyanan = idPleyanan;
+    }
+
     public String getDivisiId() {
         return divisiId;
     }

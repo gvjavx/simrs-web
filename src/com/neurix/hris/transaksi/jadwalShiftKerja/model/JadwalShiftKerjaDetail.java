@@ -14,7 +14,62 @@ import java.sql.Date;
 public class JadwalShiftKerjaDetail extends BaseModel {
     private String jadwalShiftKerjaDetailId;
     private String jadwalShiftKerjaId;
+    private String nip;
+    private String namaPegawai;
+    private String shiftId;
     private String shiftGroupId;
+
+    private String positionName;
+    private String shiftName;
+    private String kelompokName;
+
+    public String getShiftName() {
+        return shiftName;
+    }
+
+    public void setShiftName(String shiftName) {
+        this.shiftName = shiftName;
+    }
+
+    public String getKelompokName() {
+        return kelompokName;
+    }
+
+    public void setKelompokName(String kelompokName) {
+        this.kelompokName = kelompokName;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
 
     public String getJadwalShiftKerjaDetailId() {
         return jadwalShiftKerjaDetailId;

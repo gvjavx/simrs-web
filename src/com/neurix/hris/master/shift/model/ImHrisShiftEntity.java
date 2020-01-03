@@ -18,6 +18,15 @@ public class ImHrisShiftEntity implements Serializable {
     private String flag;
     private String action;
     private String IdBranch;
+    private String kelompokPositionId;
+
+    public String getKelompokPositionId() {
+        return kelompokPositionId;
+    }
+
+    public void setKelompokPositionId(String kelompokPositionId) {
+        this.kelompokPositionId = kelompokPositionId;
+    }
 
     public String getIdBranch() {
         return IdBranch;

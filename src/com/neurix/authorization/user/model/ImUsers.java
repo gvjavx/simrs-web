@@ -212,6 +212,16 @@ public class ImUsers implements Serializable {
         this.positionId = positionId;
     }
 
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     private ImBiodataEntity imBiodataEntity;
 
     public ImBiodataEntity getImBiodataEntity() {

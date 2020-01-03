@@ -38,11 +38,20 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_REKRUITMEN_FILE="/pages/upload/file/rekruitmen/";
     public final static String RESOURCE_PATH_MUTASI_FILE="/pages/upload/file/mutasi/";
 
+    public final static String RESOURCE_PATH_KTP_PASIEN="/upload/ktp_pasien/";
+    public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN="/upload/surat_rujuk/";
+    public final static String RESOURCE_PATH_DOC_PO="/upload/surat_po/";
+
     public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK="/pages/upload/";
     public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_DEFAULT_MAP ="/pages/upload/map/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY="C:\\xampp\\tomcat\\webapps\\";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="C:\\tomcat-7-64x\\webapps";
+
+    //sodiq, 18 Nov 2019, Upload KTP pasien
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -90,8 +99,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD_PDF="/pages/upload/doc/pdf/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
-    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
+//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
     public final static String URL_IMAGE_LOGO_REPORT_BACKGROUND_PRAPRINT = "C:\\project\\e-farming\\web\\pages\\images\\pre-print.png";
@@ -109,11 +118,16 @@ public class CommonConstant {
     public final static String ROLE_OPERATOR_GPS = "OPERATOR_GPS";
     public final static String ROLE_ASMUD = "ASMUD";
     public final static String ROLE_MAPPER = "MAPPER";
+    public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
+    public final static String ROLE_ADMIN_RS = "ADMIN RS";
+    public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
+    public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
     public final static String BRANCH_KANTOR_DIREKSI = "KD01";
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
 
     public final static String HGU = "HGU";
+    public final static String URL_IMG = "/simrs/images";
 
     public final static String APP_NAME = "simrs";
     public final static String BPJS_CONS_ID = "10356";
@@ -121,6 +135,14 @@ public class CommonConstant {
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest";
     public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest";
+    public final static String BPJS_SERVICE_PCARE = "/pcare-rest-v3.0";
+
+    public final static String LOGO_RS01 = "/pages/images/RS01.png";
+    public final static String LOGO_RS02 = "/pages/images/RS02.png";
+    public final static String LOGO_RS03 = "/pages/images/RS03.png";
+
+    public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
+
 
 
 }

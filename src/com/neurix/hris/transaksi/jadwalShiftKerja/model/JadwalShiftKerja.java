@@ -18,6 +18,8 @@ public class JadwalShiftKerja extends BaseModel {
     private String branchId;
     private String statusGiling;
     private String keterangan;
+    private String stTanggal;
+
 
     private String statusGilingName;
     private String branchName;
@@ -31,6 +33,32 @@ public class JadwalShiftKerja extends BaseModel {
     private Date tanggalAkhir;
 
     private String nip;
+    private String namaPegawai;
+    private String positionName;
+
+    public String getStTanggal() {
+        return stTanggal;
+    }
+
+    public void setStTanggal(String stTanggal) {
+        this.stTanggal = stTanggal;
+    }
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
 
     private boolean tamp=true;
 

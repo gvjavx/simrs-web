@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.master.obat.model.ImSimrsObatEntity" dynamic-update="true"
+           table="im_simrs_obat" select-before-update="true" schema="public">
+
+
+        <id name="idObat">
+            <column name="id_obat" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="namaObat">
+            <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="idJenisObat">
+            <column name="id_jenis_obat" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="harga">
+            <column name="harga" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="true" />
+        </property>
+        <property name="qty">
+            <column name="qty" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="qtyBox">
+            <column name="qty_box" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="qtyLembar">
+            <column name="qty_lembar" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="qtyBiji">
+            <column name="qty_biji" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="lembarPerBox">
+            <column name="lembar_per_box" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="bijiPerLembar">
+            <column name="biji_per_lembar" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="averageHargaBox">
+            <column name="average_harga_box" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="averageHargaLembar">
+            <column name="average_harga_lembar" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="averageHargaBiji">
+            <column name="average_harga_biji" sql-type="numeric" not-null="false"/>
+        </property>
+
+        <property name="merk">
+            <column name="merk" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+
+        <property name="idPabrik">
+            <column name="id_pabrik" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+
+        <property name="hargaTerakhir">
+            <column name="harga_terakhir" sql-type="numeric" not-null="false"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

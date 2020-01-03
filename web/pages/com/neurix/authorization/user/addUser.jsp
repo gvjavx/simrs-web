@@ -137,6 +137,7 @@
 
     </script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -199,15 +200,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.branchId">Unit :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                            <s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.divisiId">Bagian :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
@@ -231,7 +223,19 @@
                                             <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
                                             <s:select list="#comboArea.listOfComboAreas" id="areaid" name="users.areaId"
                                                       listKey="areaId" listValue="areaName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control"/>
+                                                      cssClass="form-control"
+                                                      onchange="selectOptionBranch(this)"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5">Unit :</label>
+                                        <div class="col-sm-3">
+                                            <%--<s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>--%>
+                                            <%--<s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"--%>
+                                                      <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"--%>
+                                                      <%--cssClass="form-control" />--%>
+                                            <select class="form-control" name="users.branchId" id="branchid"></select>
                                         </div>
                                     </div>
 
@@ -241,7 +245,21 @@
                                             <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                                             <s:select list="#comboRole.listOfComboRoles" id="roleid" name="users.roleId"
                                                       listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control"/>
+                                                      cssClass="form-control"
+                                                      onchange="showSelectPoli(this)"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="poli-form" style="display: none">
+                                        <label class="control-label col-sm-5" for="users.roleId">Poli :</label>
+                                        <div class="col-sm-3">
+                                            <s:action id="initComboPoli" namespace="/checkup"
+                                                      name="getComboPelayanan_checkup"/>
+                                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                      list="#initComboPoli.listOfPelayanan" id="poli"
+                                                      name="users.idPelayanan" listKey="idPelayanan"
+                                                      listValue="namaPelayanan"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2" theme="simple"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -380,6 +398,34 @@
                         .text(item.positionName));
             });
         });
+    }
+
+    function selectOptionBranch(select){
+        var idx     = select.selectedIndex;
+        var idArea  = select.options[idx].value;
+        var option = "";
+
+        BranchAction.getListComboBranch(idArea, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.branchId + "'>" + item.branchName + "</option>";
+                });
+            } else {
+                option = option;
+            }
+        });
+        $('#branchid').html(option);
+    }
+
+    function showSelectPoli(select){
+        var idx     = select.selectedIndex;
+        var idRole  = select.options[idx].value;
+        if(idRole == 34){
+            $('#poli-form').show();
+        }else{
+            $('#poli-form').hide();
+        }
     }
 </script>
 <%@ include file="/pages/common/footer.jsp" %>

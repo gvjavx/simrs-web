@@ -18,7 +18,7 @@
 
     <%--</header>--%>
     <br><br><br><br>
-    <div style="text-align: center; width: 200px; background-color: #edcccc; padding: 20px; border-radius: 10px;color: red;margin: auto;">
+    <div style="text-align: center; width: 200px; background-color: #50d4a3; padding: 20px; border-radius: 10px;color: #FFF;margin: auto;">
         <h3>Good Bye...</h3>
     </div>
 </div>

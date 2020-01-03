@@ -134,6 +134,7 @@ public class MainMenuTag extends TagSupport {
                 photoUpload = userDetailsLogin.getPhotoUpload();
                 listOfMenuString = userDetailsLogin.getMenus();
 
+
                 //for payment-gateway
 //                customerId = userDetailsLogin.getCustomerId();
 //                customerName = userDetailsLogin.getCustomerName();
@@ -178,6 +179,11 @@ public class MainMenuTag extends TagSupport {
 //                    photoUserUrl =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY   + contextPath + CommonConstant.RESOURCE_PATH_USER_PHOTO + CommonConstant.RESOURCE_PATH_UNKNOWN_PHOTO;
                 }
 
+                session.setAttribute("user_name", userName);
+                session.setAttribute("user_area", areaName);
+                session.setAttribute("user_branch", branchName);
+                session.setAttribute("user_position", positionName);
+                session.setAttribute("user_photo", photoUserUrl);
             }
         }
         /*if(statusCaption.equals("") || statusCaption == null){
@@ -192,23 +198,23 @@ public class MainMenuTag extends TagSupport {
                 "    <section class=\"sidebar\">\n" +
                 "\n" +
                 "      <!-- Sidebar user panel (optional) -->\n" +
-                "      <div class=\"user-panel\">\n" +
-                "        <div class=\"pull-left image\">\n" +
-                "          <a id='popoverData' rel=\"popover\" data-placement=\"bottom\" data-original-title='<b>"+userName+"</b>' data-trigger=\"hover\" " +
-                "data-content='<b>Branch : " + branchName +" <br/>Divisi : "+divisiName+"<br/> Position : "+positionName+" </b>' data-html='true' data-container='body' data-toogle='tooltip'"+
-                "href='/hris/biodata/Form_biodata.action'><img src=\"").append(photoUserUrl).append("\" class=\"img-circle\" alt=\"User Image\" width='50px'></a>\n" +
-                "        </div>\n" +
-                "        <div class=\"pull-left info\">\n" +
-                "          <p>").append(userName).append("</p>\n" +
-                "          <!-- Status -->\n" +
-                "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> "+ statusCaption +"</a>\n" +
-                "        </div>\n" +
-                "      </div>\n" +
+//                "      <div class=\"user-panel\">\n" +
+//                "        <div class=\"pull-left image\">\n" +
+//                "          <a id='popoverData' rel=\"popover\" data-placement=\"bottom\" data-original-title='<b>"+userName+"</b>' data-trigger=\"hover\" " +
+//                "data-content='<b>Branch : " + branchName +" <br/>Divisi : "+divisiName+"<br/> Position : "+positionName+" </b>' data-html='true' data-container='body' data-toogle='tooltip'"+
+//                "href='/hris/biodata/Form_biodata.action'><img src=\"").append(photoUserUrl).append("\" class=\"img-circle\" alt=\"User Image\" width='50px'></a>\n" +
+//                "        </div>\n" +
+//                "        <div class=\"pull-left info\">\n" +
+//                "          <p>").append(userName).append("</p>\n" +
+//                "          <!-- Status -->\n" +
+//                "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> "+ statusCaption +"</a>\n" +
+//                "        </div>\n" +
+//                "      </div>\n" +
                 "\n"
         );
 
-        addedScript.append("<ul class=\"sidebar-menu\">\n" +
-//                "        <li class=\"header\">HEADER</li>\n" +
+        addedScript.append("<ul class=\"sidebar-menu\" style=\"margin-top:10px\">\n" +
+//                "        <li class=\"header\">MAIN MENU</li>\n" +
                 "        <!-- Optionally, you can add icons to the links -->\n");
 
         //looping menu

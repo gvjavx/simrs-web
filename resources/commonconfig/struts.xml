@@ -143,7 +143,7 @@
     <include file="sshconfig/com/neurix/hris/master/dashboardAbsensi/struts/DashboardAbsensiAction.xml"/>
 
     <!--Medical Kacamata-->
-    <include file="sshconfig/com/neurix/hris/transaksi/medicalKacamata/struts/MedicalKacamataAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/transaksi/medicalKacresources/sshconfig/com/neurix/simrs/transaksi/periksalab/struts/PeriksaLabAction.xmlamata/struts/MedicalKacamataAction.xml"/>
 
     <!--Im Medical Kacamata-->
     <include file="sshconfig/com/neurix/hris/master/medicalBiayaKacamata/struts/MedicalBiayaKacamataAction.xml"/>
@@ -155,5 +155,33 @@
 
 
     <!--Struts Route Config For SIMRS Is Here-->
+    <!--MASTER -->
+    <include file="sshconfig/com/neurix/simrs/master/pasien/struts/PasienAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/jenisobat/struts/JenisObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/obat/struts/ObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/kategorilab/struts/KategoriLabAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/lab/struts/LabAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/labdetail/struts/LabDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/RuanganAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/kelasruangan/struts/KelasRuanganAction.xml"/>
+
+    <!--TRANSAKSI -->
+    <include file="sshconfig/com/neurix/simrs/transaksi/checkup/struts/CheckupAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/CheckupDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RawatInapAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/periksalab/struts/PeriksaLabAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/periksaradiologi/struts/PeriksaRadiologiAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/ordergizi/struts/OrderGiziAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/TransaksiObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/permintaanresep/struts/PermintaanResepAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanGudangAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ObatPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/StokObatPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PenerimaanObatPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatGudangAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/IgdAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/ResepPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanVendorAction.xml"/>
 
 </struts>

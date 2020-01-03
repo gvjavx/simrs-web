@@ -19,6 +19,15 @@ public class ImHrisShiftHistory implements Serializable {
     private String action;
     private String id;
     private String idBranch;
+    private String kelompokPositionId;
+
+    public String getKelompokPositionId() {
+        return kelompokPositionId;
+    }
+
+    public void setKelompokPositionId(String kelompokPositionId) {
+        this.kelompokPositionId = kelompokPositionId;
+    }
 
     public String getIdBranch() {
         return idBranch;
