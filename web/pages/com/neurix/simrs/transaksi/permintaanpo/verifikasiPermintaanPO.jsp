@@ -14,14 +14,6 @@
 
         $(document).ready(function () {
             $('#permintaan_po').addClass('active');
-            $('table.tabel_po')
-                    .find('tr')
-                    .last()
-                    .find('input[type="text"]')
-                    .first()
-                    .focus();
-
-            $('input').first().focus();
 
         });
 
@@ -135,7 +127,7 @@
                             <s:iterator value="#session.listOfObatDetail" var="row">
                                 <tr>
                                     <td><s:property value="idObat"/></td>
-                                    <td><s:property value="idObat"/></td>
+                                    <td><s:property value="namaObat"/></td>
                                     <td align="center"> <s:property value="qtyBox"/></td>
                                     <td align="center"><s:property value="lembarPerBox"/></td>
                                     <td align="center"><s:property value="qtyLembar"/></td>
@@ -177,17 +169,19 @@
     }
 
     function verify(id, value){
+        var status = false;
         if(id != '' && value != ''){
+            $('#status'+id).html('<i class="fa fa-spinner fa-spin"></i>');
             dwr.engine.setAsync(true);
             PermintaanVendorAction.checkIdPabrikan(id, value, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
-                        $('#waiting_dialog').dialog('close');
-                        $('#info_dialog').dialog('open');
+                        $('#pabrik'+id).attr('readonly', true).blur();
+                        $('#status'+id).html("Sesuai").addClass("label label-success");
                     } else {
-                        $('#warning_po').show().fadeOut(5000);
-                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                        $('#pabrik'+id).attr('readonly', true).blur();
+                        $('#status'+id).html("Tidak Sesuai").addClass("label label-danger");
                     }
                 }
             });

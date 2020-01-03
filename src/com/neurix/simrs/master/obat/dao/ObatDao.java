@@ -25,20 +25,20 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
     @Override
     public List<ImSimrsObatEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsObatEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsObatEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("id_obat")!=null) {
+        if (mapCriteria != null) {
+            if (mapCriteria.get("id_obat") != null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
-            if (mapCriteria.get("nama_obat")!=null) {
-                criteria.add(Restrictions.ilike("namaObat", "%" + (String)mapCriteria.get("nama_obat") + "%"));
+            if (mapCriteria.get("nama_obat") != null) {
+                criteria.add(Restrictions.ilike("namaObat", "%" + (String) mapCriteria.get("nama_obat") + "%"));
             }
-            if (mapCriteria.get("id_jenis_obat")!=null) {
+            if (mapCriteria.get("id_jenis_obat") != null) {
                 criteria.add(Restrictions.eq("idJenisObat", (String) mapCriteria.get("id_jenis_obat")));
             }
-            if (mapCriteria.get("branch_id")!=null) {
+            if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
         }
@@ -53,11 +53,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return results;
     }
 
-    public List<Obat> getListObatByJenisObat(String id, String branch){
+    public List<Obat> getListObatByJenisObat(String id, String branch) {
 
         String branchId = "%";
-        if (branch != null && !"".equalsIgnoreCase(branch))
-        {
+        if (branch != null && !"".equalsIgnoreCase(branch)) {
             branchId = branch;
         }
 
@@ -79,10 +78,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .setParameter("branch", branchId)
                 .list();
 
-        if (!result.isEmpty() && result.size() > 0)
-        {
+        if (!result.isEmpty() && result.size() > 0) {
             Obat obat;
-            for (Object[] obj : result){
+            for (Object[] obj : result) {
                 obat = new Obat();
                 obat.setIdObat(obj[0].toString());
                 obat.setNamaObat(obj[1].toString());
@@ -93,28 +91,28 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obats;
     }
 
-    public String getNextId(){
+    public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_obat')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
     }
 
-    public List<Obat> getJenisObat(Obat bean){
+    public List<Obat> getJenisObat(Obat bean) {
 
         String branchId = "%";
-        String idObat   = "%";
-        String idJenis  = "%";
+        String idObat = "%";
+        String idJenis = "%";
 
-        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             branchId = bean.getBranchId();
         }
 
-        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
             idObat = bean.getIdObat();
         }
 
-        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())){
+        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
             idJenis = bean.getIdJenisObat();
         }
 
@@ -135,10 +133,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .setParameter("branch", branchId)
                 .list();
 
-        if (!result.isEmpty() && result.size() > 0)
-        {
+        if (!result.isEmpty() && result.size() > 0) {
             Obat obat;
-            for (Object[] obj : result){
+            for (Object[] obj : result) {
 
                 obat = new Obat();
                 obat.setJenisObat(obj[0].toString());
@@ -151,28 +148,32 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obats;
     }
 
-    public List<ImSimrsObatEntity> getListObatByCriteria(Map criteria){
+    public List<ImSimrsObatEntity> getListObatByCriteria(Map criteria) {
 
         String idObat = "%";
         String idJenisObat = "%";
+        String idPabrik = "%";
         String namaObat = "%";
         String flag = "%";
         String branchId = "%";
 
-        if (criteria.get("id_obat") != null){
+        if (criteria.get("id_obat") != null) {
             idObat = criteria.get("id_obat").toString();
         }
-        if (criteria.get("id_jenis_obat") != null){
+        if (criteria.get("id_jenis_obat") != null) {
             idJenisObat = criteria.get("id_jenis_obat").toString();
         }
-        if (criteria.get("nama_obat") != null){
-            namaObat = "%" +criteria.get("nama_obat").toString()+ "%";
+        if (criteria.get("nama_obat") != null) {
+            namaObat = "%" + criteria.get("nama_obat").toString() + "%";
         }
-        if (criteria.get("branch_id") != null){
+        if (criteria.get("branch_id") != null) {
             branchId = criteria.get("branch_id").toString();
         }
-        if (criteria.get("flag") != null){
+        if (criteria.get("flag") != null) {
             flag = criteria.get("flag").toString();
+        }
+        if (criteria.get("id_pabrik") != null) {
+            idPabrik = criteria.get("id_pabrik").toString();
         }
 
         String SQL = "SELECT\n" +
@@ -206,8 +207,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "\tWHERE og.id_obat LIKE :idObat\n" +
                 "\tAND og.id_jenis_obat LIKE :idJenisObat\n" +
                 "\tAND ob.nama_obat LIKE :namaObat\n" +
-                "\tAND ob.flag = :flag\n" +
+                "\tAND ob.flag LIKE :flag\n" +
                 "\tAND ob.branch_id LIKE :branchId\n" +
+                "\tAND ob.id_pabrik LIKE :idPabrik\n" +
                 "\tGROUP BY ob.id_obat\n" +
                 ") og ON og.id_obat = ob.id_obat";
 
@@ -216,13 +218,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 .setParameter("idJenisObat", idJenisObat)
                 .setParameter("flag", flag)
                 .setParameter("branchId", branchId)
+                .setParameter("idPabrik", idPabrik)
                 .setParameter("namaObat", namaObat)
                 .list();
 
         List<ImSimrsObatEntity> listOfResults = new ArrayList<>();
         ImSimrsObatEntity obatEntity;
-        for (Object[] obj : results)
-        {
+        for (Object[] obj : results) {
             obatEntity = new ImSimrsObatEntity();
             obatEntity.setIdObat(obj[0].toString());
             obatEntity.setNamaObat(obj[1] == null ? "" : obj[1].toString());
@@ -234,32 +236,32 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             obatEntity.setLastUpdate(obj[7] == null ? null : (Timestamp) obj[7]);
             obatEntity.setLastUpdateWho(obj[8] == null ? null : obj[8].toString());
             obatEntity.setQty(obj[9] == null ? null : (BigInteger) obj[9]);
-            obatEntity.setBranchId( obj[10] == null ? "" : obj[10].toString());
+            obatEntity.setBranchId(obj[10] == null ? "" : obj[10].toString());
             obatEntity.setIdPabrik(obj[11] == null ? null : obj[11].toString());
             obatEntity.setMerk(obj[12] == null ? null : obj[12].toString());
             obatEntity.setQtyBox(obj[13] == null ? null : (BigInteger) obj[13]);
-            obatEntity.setLembarPerBox(obj[14] == null ? null :(BigInteger) obj[14]);
-            obatEntity.setQtyLembar(obj[15] == null ? null :(BigInteger) obj[15]);
-            obatEntity.setBijiPerLembar(obj[16] == null ? null :(BigInteger) obj[16]);
-            obatEntity.setQtyBiji(obj[17] == null ? null :(BigInteger) obj[17]);
-            obatEntity.setAverageHargaBox(obj[18] == null ? null :(BigDecimal) obj[18]);
-            obatEntity.setAverageHargaLembar(obj[19] == null ? null :(BigDecimal) obj[19]);
-            obatEntity.setAverageHargaBiji(obj[20] == null ? null :(BigDecimal) obj[20]);
+            obatEntity.setLembarPerBox(obj[14] == null ? null : (BigInteger) obj[14]);
+            obatEntity.setQtyLembar(obj[15] == null ? null : (BigInteger) obj[15]);
+            obatEntity.setBijiPerLembar(obj[16] == null ? null : (BigInteger) obj[16]);
+            obatEntity.setQtyBiji(obj[17] == null ? null : (BigInteger) obj[17]);
+            obatEntity.setAverageHargaBox(obj[18] == null ? null : (BigDecimal) obj[18]);
+            obatEntity.setAverageHargaLembar(obj[19] == null ? null : (BigDecimal) obj[19]);
+            obatEntity.setAverageHargaBiji(obj[20] == null ? null : (BigDecimal) obj[20]);
 
             listOfResults.add(obatEntity);
         }
         return listOfResults;
     }
 
-    public List<Obat> getListNamaObat(Obat bean){
+    public List<Obat> getListNamaObat(Obat bean) {
 
         String namaObat = "%";
         String branchId = "%";
 
-        if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
-            namaObat = "%"+bean.getNamaObat()+"%";
+        if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())) {
+            namaObat = "%" + bean.getNamaObat() + "%";
         }
-        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             branchId = bean.getBranchId();
         }
 
@@ -274,8 +276,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         List<Obat> listOfResults = new ArrayList<>();
         Obat obatEntity;
-        for (Object[] obj : results)
-        {
+        for (Object[] obj : results) {
             obatEntity = new Obat();
             obatEntity.setIdObat(obj[0].toString());
             obatEntity.setNamaObat(obj[1] == null ? "" : obj[1].toString());
