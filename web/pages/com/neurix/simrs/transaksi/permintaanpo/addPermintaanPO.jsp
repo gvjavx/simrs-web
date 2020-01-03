@@ -94,11 +94,19 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Nama Vendor</label>
                                     <div class="col-md-8">
-                                        <s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"
-                                                  cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                  id="nama_vendor"
+                                        <s:action id="initVendor" namespace="/permintaanpo"
+                                                  name="getComboVendor_permintaanpo"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initVendor.listOfVendor" id="nama_vendor"
+                                                  name="headerCheckup.idPelayanan" listKey="idVendor"
+                                                  listValue="namaVendor"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <%--<s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"--%>
+                                        <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
+                                        <%--id="nama_vendor"--%>
+                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                        <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -108,7 +116,7 @@
                                                   name="getListObat_obat"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + qty"
+                                                  listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar"
                                                   onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; resetField();"
                                                   listValue="namaObat"
                                                   headerKey="" headerValue="[Select one]"
@@ -116,17 +124,23 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Box</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>
+                                        <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
+                                        <s:select list="#{'Box':'Box','Lembar':'Lembar','Biji':'Biji'}"
+                                                  cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
+                                                  id="jenis_satuan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="lembar_box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar();">
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<input class="form-control" id="lembar_box" type="number"--%>
+                                               <%--style="margin-top: 7px" min="0" oninput="jmlLembar();">--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group" style="display: none">
                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
                                                resizable="false"
@@ -176,8 +190,10 @@
                                                          alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
-                                                   height="200" width="400" autoOpen="false" title="Confirmation Dialog">
+                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false"
+                                                   title="Confirmation Dialog">
                                             <center><img border="0" style="height: 40px; width: 40px"
                                                          src="<s:url value="/pages/images/icon_warning.ico"/>"
                                                          name="icon_success">
@@ -185,10 +201,12 @@
                                             </center>
                                             <br>
                                             <div class="modal-footer">
-                                                <a type="button" class="btn btn-warning" style="color: white;" onclick="$('#confirm_dialog').dialog('close')">
+                                                <a type="button" class="btn btn-warning" style="color: white;"
+                                                   onclick="$('#confirm_dialog').dialog('close')">
                                                     <i class="fa fa-times"></i> No
                                                 </a>
-                                                <a type="button" class="btn btn-success" style="color: white;" onclick="savePermintaanPO()">
+                                                <a type="button" class="btn btn-success" style="color: white;"
+                                                   onclick="savePermintaanPO()">
                                                     <i class="fa fa-arrow-right"></i> Yes
                                                 </a>
                                             </div>
@@ -198,23 +216,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Biji/Lembar</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="biji_lembar" type="number" style="margin-top: 7px" oninput="jmlBiji()"/>
+                                        <input class="form-control" id="jumlah" type="number"
+                                               style="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="lembar" type="number" style="margin-top: 7px" readonly="true"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Biji</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="biji" type="number" style="margin-top: 7px" readonly="true"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<input class="form-control" id="lembar" type="number" style="margin-top: 7px"--%>
+                                               <%--readonly="true"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Biji</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<input class="form-control" id="biji" type="number" style="margin-top: 7px"--%>
+                                               <%--readonly="true"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
@@ -231,7 +252,8 @@
                                     <div class="col-md-8 col-md-offset-4">
                                         <a type="button" class="btn btn-success" onclick="addToListPo()"><i
                                                 class="fa fa-plus"></i> Tambah</a>
-                                        <a type="button" class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i>
+                                        <a type="button" class="btn btn-danger" onclick="reset()"><i
+                                                class="fa fa-refresh"></i>
                                             Reset</a>
                                     </div>
                                 </div>
@@ -248,11 +270,10 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
                                 <td>Obat</td>
-                                <td>Box</td>
-                                <td>Lembar/Box</td>
-                                <td>Lembar</td>
-                                <td>Biji/Lembar</td>
-                                <td>Biji</td>
+                                <td align="center">Jumlah</td>
+                                <td align="center">Jenis Satuan</td>
+                                <td align="center">Jml Box</td>
+                                <td align="center">Jml Lembar</td>
                                 <td align="right">Harga</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -279,7 +300,8 @@
                             <div class="col-md-4">
                                 <a type="button" class="btn btn-success" onclick="confirm()"><i
                                         class="fa fa-arrow-right"></i> Save</a>
-                                <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i class="fa fa-arrow-left"></i>
+                                <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
+                                        class="fa fa-arrow-left"></i>
                                     Back</a>
                             </div>
                         </div>
@@ -297,71 +319,78 @@
         window.location.reload(true);
     }
 
-    function jmlLembar(){
-        var box         = $('#box').val();
-        var lembarBox   = $('#lembar_box').val();
+    function jmlLembar() {
+        var box = $('#box').val();
+        var lembarBox = $('#lembar_box').val();
 
-        if(lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0){
+        if (lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0) {
             var lembarBox = parseInt(lembarBox) * parseInt(box);
             $('#lembar').val(lembarBox);
-        }else{
+        } else {
             $('#lembar').val('');
         }
     }
 
-    function jmlBiji(){
+    function jmlBiji() {
 
-        var lembar      = $('#lembar').val();
-        var bijiLembar  = $('#biji_lembar').val();
+        var lembar = $('#lembar').val();
+        var bijiLembar = $('#biji_lembar').val();
 
-        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0){
+        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0) {
             var jmlBiji = parseInt(lembar) * parseInt(bijiLembar);
             $('#biji').val(jmlBiji);
-        }else{
+        } else {
             $('#biji').val('');
         }
     }
 
-    function confirm(){
-        var data        = $('#tabel_po').tableToJSON();
-        var stringData  = JSON.stringify(data);
-        var vendor      = $('#nama_vendor').val();
-        if(stringData != '[]' && vendor != ''){
+    function confirm() {
+        var data = $('#tabel_po').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var vendor = $('#nama_vendor').val();
+        if (stringData != '[]' && vendor != '') {
             $('#confirm_dialog').dialog('open');
-        }else{
+        } else {
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
     }
 
-    function resetField(){
-        $('#box, #lembar_box, #lembar, #biji_lembar, #biji, #harga').val('');
+    function resetField() {
+        $('#jumlah, #harga').val('');
     }
 
     function addToListPo() {
 
         var vendor = $('#nama_vendor').val();
         var obat = $('#nama_obat').val();
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-        var biji = $('#biji').val();
+        var jenis = $('#jenis_satuan').val();
+        var jumlah = $('#jumlah').val();
         var harga = $('#harga').val();
         var data = $('#tabel_po').tableToJSON();
 
-        var idObat = "";
-        var namaObat = "";
-        var qtyObat = "";
+        var idObat = "-";
+        var namaObat = "-";
+        var qtyBox = "-";
+        var qtyLembar = "-";
 
         var cek = false;
 
         if (obat != '' && vendor != '') {
-            idObat = obat.split('|')[0];
-            namaObat = obat.split('|')[1];
-            qtyObat = obat.split('|')[2];
+            console.log(obat);
+            if(obat.split('|')[0] != 'null' && obat.split('|')[0] != ''){
+                idObat = obat.split('|')[0];
+            }
+            if(obat.split('|')[1] != 'null' && obat.split('|')[1] != ''){
+                namaObat = obat.split('|')[1];
+            }
+            if(obat.split('|')[2] != 'null' && obat.split('|')[2] != ''){
+                qtyBox = obat.split('|')[2];
+            }
+            if(obat.split('|')[3] != 'null' && obat.split('|')[3] != ''){
+                qtyLembar = obat.split('|')[3];
+            }
 
-//            if (parseInt(qty) <= parseInt(stok)) {
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
                     cek = true;
@@ -375,28 +404,22 @@
                 var row = '<tr id=' + idObat + '>' +
                         '<td>' + idObat + '</td>' +
                         '<td>' + namaObat + '</td>' +
-                        '<td>' + box + '</td>' +
-                        '<td>' + lembarBox + '</td>' +
-                        '<td>' + lembar + '</td>' +
-                        '<td>' + bijiLembar + '</td>' +
-                        '<td>' + biji + '</td>' +
+                        '<td align="center">' + jumlah + '</td>' +
+                        '<td align="center">' + jenis + '</td>' +
+                        '<td align="center">' + qtyBox + '</td>' +
+                        '<td align="center">' + qtyLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
+                $('#jenis_satuan').attr('disabled', true);
             }
-//            } else {
-//                $('#warning_request').show().fadeOut(5000);
-//                $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
-//            }
         } else {
             if (obat == '') {
-//                $('#war_req_obat').show();
             }
             if (vendor == '') {
-//                $('#war_req_qty').show();
             }
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
@@ -409,23 +432,23 @@
 
     function savePermintaanPO() {
         $('#confirm_dialog').dialog('close');
-        var data        = $('#tabel_po').tableToJSON();
-        var stringData  = JSON.stringify(data);
-        var vendor      = $('#nama_vendor').val();
+        var data = $('#tabel_po').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var vendor = $('#nama_vendor').val();
         $('#waiting_dialog').dialog('open');
-            dwr.engine.setAsync(true);
-            PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#waiting_dialog').dialog('close');
-                        $('#info_dialog').dialog('open');
-                    } else {
-                        $('#warning_po').show().fadeOut(5000);
-                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
-                    }
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#warning_po').show().fadeOut(5000);
+                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
                 }
-            });
+            }
+        });
     }
 
 </script>
