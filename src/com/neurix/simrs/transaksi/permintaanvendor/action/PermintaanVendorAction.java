@@ -41,10 +41,19 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private PermintaanVendorBo permintaanVendorBoProxy;
     private PermintaanVendor permintaanVendor;
     private VendorBo vendorBoProxy;
+    private Vendor vendor;
 
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
 
     private List<Vendor> listOfVendor = new ArrayList<>();
 
@@ -135,6 +144,26 @@ public class PermintaanVendorAction extends BaseMasterAction {
         if (permintaanVendorList.size() > 0){
             setPermintaanVendor(permintaanVendorList.get(0));
             session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getListOfTransaksiObatDetail());
+
+            Vendor vendor = new Vendor();
+            vendor.setIdVendor(permintaanVendorList.get(0).getIdVendor());
+            List<Vendor> vendorList = new ArrayList<>();
+
+            try {
+                vendorList = vendorBoProxy.getByCriteria(vendor);
+            }catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.edit] ERROR error when get searh vendor. ", e);
+                addActionError("[PermintaanVendorAction.edit] ERROR error when get searh vendor. " + e.getMessage());
+            }
+
+            Vendor vendorResult =  new Vendor();
+            if (!vendorList.isEmpty()){
+                vendorResult = vendorList.get(0);
+                if(vendorResult != null){
+                    setVendor(vendorResult);
+                }
+            }
+
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
@@ -288,17 +317,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     JSONObject obj = json.getJSONObject(i);
 
                     obatDetail.setIdObat(obj.getString("ID"));
-                    if(obj.getString("Jml Box") != "-"){
-                        obatDetail.setQtyBox(new BigInteger(obj.getString("Jml Box")));
+                    if("Box".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                        obatDetail.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
                     }
-                    if(obj.getString("Jml Lembar") != "-"){
-                        obatDetail.setQtyLembar(new BigInteger(obj.getString("Jml Lembar")));
+                    if("Lembar".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                        obatDetail.setAverageHargaLembar(new BigDecimal(obj.getString("Harga")));
                     }
-//                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("Lembar/Box")));
-//                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("Biji/Lembar")));
-//                    obatDetail.setQtyBiji(new BigInteger(obj.getString("Biji")));
+                    if("Biji".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                        obatDetail.setAverageHargaBiji(new BigDecimal(obj.getString("Harga")));
+                    }
+
+                    obatDetail.setQty(new BigInteger(obj.getString("Jumlah")));
                     obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
-                    obatDetail.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
                     obatDetailList.add(obatDetail);
                 }
 
