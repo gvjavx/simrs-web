@@ -77,5 +77,10 @@
         <property name="idPabrik">
             <column name="id_pabrik" sql-type="varchar" length="100" not-null="false"/>
         </property>
+
+        <property name="hargaTerakhir">
+            <column name="harga_terakhir" sql-type="numeric" not-null="false"/>
+        </property>
+
     </class>
 </hibernate-mapping>

@@ -121,6 +121,8 @@
                                 <td align="right">Harga</td>
                                 <td align="center">Verify</td>
                                 <td align="center">Status</td>
+                                <td align="center">Approve</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -135,8 +137,9 @@
                                     <td align="center"><s:property value="qtyBiji"/></td>
                                     <td align="right"><s:property value="averageHargaBox"/></td>
                                     <td align="center"><input onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
-                                    <%--not verified--%>
                                     <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
+                                    <td align="center"><input type="number" onchange="verify('<s:property value="idObat"/>', this.value)" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
+                                    <td align="center"><a type="button" class="btn btn-success"><i class="fa fa-edit"></i> </a></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -186,14 +189,6 @@
                 }
             });
         }
-//        if("7001502151224" == value){
-//            $('#pabrik'+id).attr('readonly', true);
-//            $('#status'+id).html("Verified").addClass("label label-success");
-//        }else {
-//            $('#pabrik'+id).attr('readonly', true);
-//            $('#status'+id).html("Not Verified").addClass("label label-danger");
-//        }
-//        console.log(value);
     }
 
     function confirm() {

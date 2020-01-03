@@ -30,6 +30,16 @@ public class ImSimrsObatEntity implements Serializable{
     private String idPabrik;
     private String merk;
 
+    private BigDecimal hargaTerakhir;
+
+    public BigDecimal getHargaTerakhir() {
+        return hargaTerakhir;
+    }
+
+    public void setHargaTerakhir(BigDecimal hargaTerakhir) {
+        this.hargaTerakhir = hargaTerakhir;
+    }
+
     public String getIdPabrik() {
         return idPabrik;
     }

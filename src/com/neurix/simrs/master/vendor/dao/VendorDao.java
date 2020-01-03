@@ -24,10 +24,12 @@ public class VendorDao extends GenericDao<ImSimrsVendorEntity, String> {
     public List<ImSimrsVendorEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsVendorEntity.class);
-        if (mapCriteria.get("id_vendor") != null)
+        if (mapCriteria.get("id_vendor") != null){
             criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
-        if (mapCriteria.get("flag") != null)
+        }
+        if (mapCriteria.get("flag") != null) {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        }
 
         List<ImSimrsVendorEntity> list = criteria.list();
         return list;
