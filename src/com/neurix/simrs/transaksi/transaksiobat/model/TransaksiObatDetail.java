@@ -43,6 +43,16 @@ public class TransaksiObatDetail extends BaseModel {
 
     private BigDecimal hargaTerakhir;
 
+    private BigDecimal hargaPo;
+
+    public BigDecimal getHargaPo() {
+        return hargaPo;
+    }
+
+    public void setHargaPo(BigDecimal hargaPo) {
+        this.hargaPo = hargaPo;
+    }
+
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;
     }

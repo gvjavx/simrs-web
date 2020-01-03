@@ -58,6 +58,7 @@ public class VendorBoImpl implements VendorBo {
                     vendor.setNoTelp(vendorEntity.getNoTelp());
                     vendor.setEmail(vendorEntity.getEmail());
                     vendor.setFlag(vendorEntity.getFlag());
+                    vendor.setAlamat(vendorEntity.getAlamat());
                     vendor.setAction(vendorEntity.getAction());
                     vendor.setCreatedDate(vendorEntity.getCreatedDate());
                     vendor.setCreatedWho(vendorEntity.getCreatedWho());

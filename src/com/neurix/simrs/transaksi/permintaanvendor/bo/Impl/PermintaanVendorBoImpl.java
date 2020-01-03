@@ -110,6 +110,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setQtyBox(transaksiObatDetailEntity.getQtyBox());
                                 transaksiObatDetail.setQtyLembar(transaksiObatDetailEntity.getQtyLembar());
                                 transaksiObatDetail.setQtyBiji(transaksiObatDetailEntity.getQtyBiji());
+                                transaksiObatDetail.setQty(transaksiObatDetailEntity.getQty());
                                 transaksiObatDetail.setLembarPerBox(transaksiObatDetailEntity.getLembarPerBox());
                                 transaksiObatDetail.setBijiPerLembar(transaksiObatDetailEntity.getBijiPerLembar());
                                 transaksiObatDetail.setAverageHargaBox(transaksiObatDetailEntity.getAverageHargaBox());
@@ -117,6 +118,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
+
+                                if("Box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                    transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBox());
+                                }
+                                if("Lembar".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                    transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaLembar());
+                                }
+                                if("Biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                    transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBiji());
+                                }
                                 transaksiObatDetails.add(transaksiObatDetail);
                             }
                             permintaanVendor.setListOfTransaksiObatDetail(transaksiObatDetails);
@@ -286,10 +297,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                     obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
                     obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
+                    obatDetailEntity.setIdObat(obatDetail.getIdObat());
                     obatDetailEntity.setLembarPerBox(obatDetail.getLembarPerBox());
                     obatDetailEntity.setQtyLembar(obatDetail.getQtyLembar());
                     obatDetailEntity.setBijiPerLembar(obatDetail.getBijiPerLembar());
                     obatDetailEntity.setQtyBiji(obatDetail.getQtyBiji());
+                    obatDetailEntity.setQty(obatDetail.getQty());
                     obatDetailEntity.setAverageHargaBox(obatDetail.getAverageHargaBox());
                     obatDetailEntity.setFlag("Y");
                     obatDetailEntity.setAction("C");
@@ -297,6 +310,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatDetailEntity.setCreatedWho(bean.getCreatedWho());
                     obatDetailEntity.setLastUpdate(bean.getLastUpdate());
                     obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
                     obatDetailEntity.setKeterangan("Permintaan PO");
 
                     try {
