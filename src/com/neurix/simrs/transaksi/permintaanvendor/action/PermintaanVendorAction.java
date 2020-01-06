@@ -8,11 +8,9 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
-import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
-import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -391,6 +389,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         listOfVendor.addAll(listVendor);
 
+        return SUCCESS;
+    }
+
+    public String saveApprove(){
+        logger.info("[PermintaanVendorAction.saveApprove] START >>>>>>>");
+
+
+
+        logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
         return SUCCESS;
     }
 
