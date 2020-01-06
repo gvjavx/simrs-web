@@ -359,6 +359,36 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     }
 
+    @Override
+    public void saveNewPabrik(TransaksiObatDetail bean) throws GeneralBOException {
+//        ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+//        obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+//        obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
+//        obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
+//        obatDetailEntity.setIdObat(obatDetail.getIdObat());
+//        obatDetailEntity.setLembarPerBox(obatDetail.getLembarPerBox());
+//        obatDetailEntity.setQtyLembar(obatDetail.getQtyLembar());
+//        obatDetailEntity.setBijiPerLembar(obatDetail.getBijiPerLembar());
+//        obatDetailEntity.setQtyBiji(obatDetail.getQtyBiji());
+//        obatDetailEntity.setQty(obatDetail.getQty());
+//        obatDetailEntity.setAverageHargaBox(obatDetail.getAverageHargaBox());
+//        obatDetailEntity.setFlag("Y");
+//        obatDetailEntity.setAction("C");
+//        obatDetailEntity.setCreatedDate(bean.getCreatedDate());
+//        obatDetailEntity.setCreatedWho(bean.getCreatedWho());
+//        obatDetailEntity.setLastUpdate(bean.getLastUpdate());
+//        obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//        obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
+//        obatDetailEntity.setKeterangan("Permintaan PO");
+//
+//        try {
+//            transaksiObatDetailDao.addAndSave(obatDetailEntity);
+//        } catch (HibernateException e){
+//            logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+//            throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+//        }
+    }
+
     private String nextIdPermintanVendor(){
         logger.info("[PermintaanVendorBoImpl.nextIdPermintanVendor] START >>>");
         String id = "";

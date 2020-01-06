@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -397,6 +398,48 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         listOfVendor.addAll(listVendor);
 
+        return SUCCESS;
+    }
+
+    public String saveNewPabrik(String namaObat,List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigInteger harga){
+
+        logger.info("[PermintaanVendorAction.saveObatInap] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+            Obat obat = new Obat();
+            obat.setNamaObat(namaObat);
+            obat.setMerk(merek);
+            obat.setIdPabrik(pabrik);
+            obat.setQtyBox(box);
+            obat.setLembarPerBox(lembarBox);
+            obat.setQtyLembar(lembar);
+            obat.setBijiPerLembar(bijiLembar);
+            obat.setQtyBiji(biji);
+            obat.setHarga(harga);
+            obat.setCreatedDate(updateTime);
+            obat.setCreatedWho(userLogin);
+            obat.setLastUpdate(updateTime);
+            obat.setLastUpdateWho(userLogin);
+            obat.setBranchId(userArea);
+            obat.setFlag("Y");
+            obat.setAction("C");
+
+            obatBo.saveAdd(obat, jenisObat);
+
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PermintaanVendorAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PermintaanVendorAction.saveObatInap] end process >>>");
         return SUCCESS;
     }
 
