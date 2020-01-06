@@ -15,6 +15,7 @@
          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
          p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
          p:obatDao-ref="obatDao"
+          p:tempObatGejalaDao-ref="tempObatGejalaDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -39,6 +40,8 @@
     </bean>
 
     <bean id="permintaanVendorDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tempObatGejalaDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

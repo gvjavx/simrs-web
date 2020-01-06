@@ -5,6 +5,7 @@ import com.neurix.simrs.master.obat.dao.ObatDao;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
+import com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
@@ -37,6 +38,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private ApprovalTransaksiObatDao approvalTransaksiObatDao;
     private TransaksiObatDetailDao transaksiObatDetailDao;
     private ObatDao obatDao;
+    private TempObatGejalaDao tempObatGejalaDao;
 
 
     @Override
@@ -385,6 +387,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] END <<<");
     }
 
+    @Override
+    public void saveConfirm(TransaksiObatDetail bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.saveConfirm] START >>>");
+
+        
+
+        logger.info("[PermintaanVendorBoImpl.saveConfirm] END <<<");
+    }
+
     private String nextIdPermintanVendor(){
         logger.info("[PermintaanVendorBoImpl.nextIdPermintanVendor] START >>>");
         String id = "";
@@ -422,6 +433,17 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return id;
     }
 
+    private String getNextIdTmpObatGejala() throws GeneralBOException{
+        String id = "";
+        try {
+            id = tempObatGejalaDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getNextIdTmpObatGejala] ERROR when get next seq. ",e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getNextIdTmpObatGejala] ERRO Rwhen get next seq. ",e);
+        }
+        return id;
+    }
+
     public static Logger getLogger() {
         return logger;
     }
@@ -444,5 +466,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setObatDao(ObatDao obatDao) {
         this.obatDao = obatDao;
+    }
+
+    public void setTempObatGejalaDao(TempObatGejalaDao tempObatGejalaDao) {
+        this.tempObatGejalaDao = tempObatGejalaDao;
     }
 }
