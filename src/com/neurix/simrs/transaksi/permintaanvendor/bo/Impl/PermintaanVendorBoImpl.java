@@ -44,14 +44,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.getByCriteria] START >>>");
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
             List<MtSimrsPermintaanVendorEntity> permintaanVendorEntities = getListEntityVendor(bean);
-            if (permintaanVendorEntities != null && permintaanVendorEntities.size() > 0)
-            {
+            if (permintaanVendorEntities != null && permintaanVendorEntities.size() > 0) {
                 PermintaanVendor permintaanVendor;
-                for (MtSimrsPermintaanVendorEntity permintaanVendorEntity : permintaanVendorEntities)
-                {
+                for (MtSimrsPermintaanVendorEntity permintaanVendorEntity : permintaanVendorEntities) {
                     permintaanVendor = new PermintaanVendor();
                     permintaanVendor.setIdPermintaanVendor(permintaanVendorEntity.getIdPermintaanVendor());
                     permintaanVendor.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
@@ -67,8 +65,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setLastUpdate(permintaanVendorEntity.getLastUpdate());
                     permintaanVendor.setLastUpdateWho(permintaanVendorEntity.getLastUpdateWho());
 
-                    if (!"".equalsIgnoreCase(permintaanVendor.getIdApprovalObat()))
-                    {
+                    if (!"".equalsIgnoreCase(permintaanVendor.getIdApprovalObat())) {
                         ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanVendor.getIdApprovalObat());
                         if (approvalEntity != null) {
 
@@ -86,11 +83,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                         // transaksi obat detail
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
-                        if (transaksiObatDetailEntities.size() > 0)
-                        {
+                        if (transaksiObatDetailEntities.size() > 0) {
                             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                             TransaksiObatDetail transaksiObatDetail1;
-                            for (ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity : transaksiObatDetailEntities){
+                            for (ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity : transaksiObatDetailEntities) {
 
                                 ImSimrsObatEntity obatEntity = getObatById(transaksiObatDetailEntity.getIdObat());
 
@@ -119,13 +115,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
 
-                                if("Box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                if ("Box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBox());
                                 }
-                                if("Lembar".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                if ("Lembar".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaLembar());
                                 }
-                                if("Biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())){
+                                if ("Biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBiji());
                                 }
                                 transaksiObatDetails.add(transaksiObatDetail);
@@ -142,34 +138,34 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return permintaanVendorList;
     }
 
-    public List<MtSimrsPermintaanVendorEntity> getListEntityVendor(PermintaanVendor bean)throws GeneralBOException{
+    public List<MtSimrsPermintaanVendorEntity> getListEntityVendor(PermintaanVendor bean) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getListEntityVendor] START >>>");
 
         List<MtSimrsPermintaanVendorEntity> permintaanVendorEntityList = null;
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
-            if (bean.getIdPermintaanVendor() != null && !"".equalsIgnoreCase(bean.getIdPermintaanVendor())){
+            if (bean.getIdPermintaanVendor() != null && !"".equalsIgnoreCase(bean.getIdPermintaanVendor())) {
                 hsCriteria.put("id_permintaan_vendor", bean.getIdPermintaanVendor());
             }
-            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())){
+            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())) {
                 hsCriteria.put("id_approval_obat", bean.getIdApprovalObat());
             }
-            if (bean.getIdVendor() != null && !"".equalsIgnoreCase(bean.getIdVendor())){
+            if (bean.getIdVendor() != null && !"".equalsIgnoreCase(bean.getIdVendor())) {
                 hsCriteria.put("id_vendor", bean.getIdVendor());
             }
-            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 hsCriteria.put("branch_id", bean.getBranchId());
             }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
 
             try {
                 permintaanVendorEntityList = permintaanVendorDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[PermintaanVendorBoImpl.getListEntityVendor] ERROR when get data. "+e.getMessage());
-                throw new GeneralBOException("[PermintaanVendorBoImpl.getListEntityVendor] ERROR when get data. "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[PermintaanVendorBoImpl.getListEntityVendor] ERROR when get data. " + e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.getListEntityVendor] ERROR when get data. " + e.getMessage());
             }
         }
 
@@ -181,16 +177,24 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.getListEntityTransObatDetail] START >>>>>>");
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
-        if (!"".equalsIgnoreCase(bean.getIdApprovalObat())){
+        if (!"".equalsIgnoreCase(bean.getIdApprovalObat())) {
             Map hsCriteria = new HashMap();
-            hsCriteria.put("id_approval_obat", bean.getIdApprovalObat());
-            hsCriteria.put("flag", bean.getFlag());
+            if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())) {
+                hsCriteria.put("id_transaksi_obat_detail", bean.getIdTransaksiObatDetail());
+            }
+
+            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())) {
+                hsCriteria.put("id_approval_obat", bean.getIdApprovalObat());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                hsCriteria.put("flag", bean.getFlag());
+            }
 
             try {
                 obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[PermintaanVendorBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. ",e);
-                throw new GeneralBOException("[PermintaanVendorBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. "+ e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[PermintaanVendorBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. ", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. " + e.getMessage());
             }
         }
 
@@ -198,7 +202,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return obatDetailEntities;
     }
 
-    private ImtSimrsApprovalTransaksiObatEntity getApprovalTransaksiById(String id) throws GeneralBOException{
+    private ImtSimrsApprovalTransaksiObatEntity getApprovalTransaksiById(String id) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getApprovalTransaksiById] START >>>>>>>>>>");
 
         List<ImtSimrsApprovalTransaksiObatEntity> obatEntities = new ArrayList<>();
@@ -209,20 +213,19 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         try {
             obatEntities = approvalTransaksiObatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[PermintaanVendorBoImpl.getApprovalTransaksiById] ERROR when get approval transaksi obat entity by criteria. ",e);
-            throw new GeneralBOException("[PermintaanVendorBoImpl.getApprovalTransaksiById] ERROR when get approval transaksi obat entity by criteria. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorBoImpl.getApprovalTransaksiById] ERROR when get approval transaksi obat entity by criteria. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getApprovalTransaksiById] ERROR when get approval transaksi obat entity by criteria. ", e);
         }
 
-        if (!obatEntities.isEmpty() && obatEntities.size() > 0)
-        {
+        if (!obatEntities.isEmpty() && obatEntities.size() > 0) {
             return obatEntities.get(0);
         }
         logger.info("[PermintaanVendorBoImpl.getApprovalTransaksiById] END <<<<<<<<<<");
         return null;
     }
 
-    private ImSimrsObatEntity getObatById(String id) throws GeneralBOException{
+    private ImSimrsObatEntity getObatById(String id) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getObatById] START >>>>>>>>>>");
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
 
@@ -232,13 +235,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         try {
             obatEntities = obatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ",e);
-            throw new GeneralBOException("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ", e);
         }
 
-        if (!obatEntities.isEmpty() && obatEntities.size() > 0)
-        {
+        if (!obatEntities.isEmpty() && obatEntities.size() > 0) {
             return obatEntities.get(0);
         }
 
@@ -250,7 +252,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.saveListObatPo] START >>>");
 
-        if (bean != null){
+        if (bean != null) {
             ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
             String id = getNextApprovalObatId();
             approvalEntity.setIdApprovalObat("INV" + id);
@@ -272,7 +274,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
 
             MtSimrsPermintaanVendorEntity permintaanVendorEntity = new MtSimrsPermintaanVendorEntity();
-            permintaanVendorEntity.setIdPermintaanVendor("PVM"+nextIdPermintanVendor());
+            permintaanVendorEntity.setIdPermintaanVendor("PVM" + nextIdPermintanVendor());
             permintaanVendorEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
             permintaanVendorEntity.setIdVendor(bean.getIdVendor());
             permintaanVendorEntity.setBranchId(bean.getBranchId());
@@ -285,16 +287,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             try {
                 permintaanVendorDao.addAndSave(permintaanVendorEntity);
-            } catch (HibernateException e){
-                logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. "+e.getMessage());
-                throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. " + e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create permintaan vendor. " + e.getMessage());
             }
 
-            if (bean.getListOfTransaksiObatDetail().size() > 0){
-                for (TransaksiObatDetail obatDetail : bean.getListOfTransaksiObatDetail())
-                {
+            if (bean.getListOfTransaksiObatDetail().size() > 0) {
+                for (TransaksiObatDetail obatDetail : bean.getListOfTransaksiObatDetail()) {
                     ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
-                    obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                    obatDetailEntity.setIdTransaksiObatDetail("ODT" + getNextTransaksiObatDetail());
                     obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
                     obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
                     obatDetailEntity.setIdObat(obatDetail.getIdObat());
@@ -315,41 +316,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                     try {
                         transaksiObatDetailDao.addAndSave(obatDetailEntity);
-                    } catch (HibernateException e){
-                        logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
-                        throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                    } catch (HibernateException e) {
+                        logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. " + e.getMessage());
                     }
                 }
             }
-
-//            if (po != null && !"".equalsIgnoreCase(po)) {
-//                JSONArray json = new JSONArray(po);
-//                for (int i = 0; i < json.length(); i++) {
-//
-//                    JSONObject obj = json.getJSONObject(i);
-//                    ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
-//
-//                    id = getNextTransaksiObatDetail();
-//                    obatDetailEntity.setIdTransaksiObatDetail("ODT" + id);
-//                    obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-//                    obatDetailEntity.setIdObat(obj.getString("ID"));
-//                    obatDetailEntity.setQty(new BigInteger(obj.getString("Qty")));
-//                    obatDetailEntity.setFlag(bean.getFlag());
-//                    obatDetailEntity.setAction(bean.getAction());
-//                    obatDetailEntity.setCreatedDate(bean.getCreatedDate());
-//                    obatDetailEntity.setCreatedWho(bean.getCreatedWho());
-//                    obatDetailEntity.setLastUpdate(bean.getCreatedDate());
-//                    obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
-//                    obatDetailEntity.setKeterangan("Permintaan PO");
-//
-//                    try {
-//                        transaksiObatDetailDao.addAndSave(obatDetailEntity);
-//                    } catch (HibernateException e) {
-//                        logger.error("[PermintaanVendorBoImpl.saveListObatPo]  ERROR when insert into transaksi obat detail. ", e);
-//                        throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo]  ERROR when insert into transaksi obat detail. ", e);
-//                    }
-//                }
-//            }
         }
         logger.info("[PermintaanVendorBoImpl.saveListObatPo] END <<<");
     }
@@ -359,27 +331,28 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] START >>>");
 
         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(bean);
-        if (transaksiObatDetailEntities.size() > 0){
+        if (transaksiObatDetailEntities.size() > 0) {
             ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = transaksiObatDetailEntities.get(0);
 
             transaksiObatDetailEntity.setQtyApprove(bean.getQty());
-//            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
+            transaksiObatDetailEntity.setFlagDiterima("Y");
+            transaksiObatDetailEntity.setAction("U");
+            transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+            transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            //            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
 //                transaksiObatDetailEntity.setQtyBox(bean.getQty());
 //            } else if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
 //                transaksiObatDetailEntity.setQtyLembar(bean.getQty());
 //            } else {
 //                transaksiObatDetailEntity.setQtyBiji(bean.getQty());
 //            }
-            transaksiObatDetailEntity.setFlagDiterima("Y");
-            transaksiObatDetailEntity.setAction("U");
-            transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
-            transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
                 transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
-            } catch (HibernateException e){
-                logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. "+e.getMessage());
-                throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
             }
         }
         logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] END <<<");
@@ -415,39 +388,39 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 //        }
     }
 
-    private String nextIdPermintanVendor(){
+    private String nextIdPermintanVendor() {
         logger.info("[PermintaanVendorBoImpl.nextIdPermintanVendor] START >>>");
         String id = "";
 
         try {
             id = permintaanVendorDao.getNextSeq();
-        } catch (HibernateException e){
-            logger.error("[PermintaanVendorBoImpl.nextIdPermintanVendor] ERROR when get data. "+e.getMessage());
-            throw new GeneralBOException("[PermintaanVendorBoImpl.nextIdPermintanVendor] ERROR when get data. "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorBoImpl.nextIdPermintanVendor] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.nextIdPermintanVendor] ERROR when get data. " + e.getMessage());
         }
 
         logger.info("[PermintaanVendorBoImpl.nextIdPermintanVendor] END <<<");
         return id;
     }
 
-    private String getNextApprovalObatId() throws GeneralBOException{
+    private String getNextApprovalObatId() throws GeneralBOException {
         String id = "";
         try {
             id = approvalTransaksiObatDao.getNextId();
-        } catch (HibernateException e){
-            logger.error("[PermintaanVendorBoImpl.getNextApprovalObatId] ERROR when get next seq. ",e);
-            throw new GeneralBOException("[PermintaanVendorBoImpl.getNextApprovalObatId] ERRO Rwhen get next seq. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorBoImpl.getNextApprovalObatId] ERROR when get next seq. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getNextApprovalObatId] ERRO Rwhen get next seq. ", e);
         }
         return id;
     }
 
-    private String getNextTransaksiObatDetail() throws GeneralBOException{
+    private String getNextTransaksiObatDetail() throws GeneralBOException {
         String id = "";
         try {
             id = transaksiObatDetailDao.getNextId();
-        } catch (HibernateException e){
-            logger.error("[PermintaanVendorBoImpl.getNextTransaksiObatDetail] ERROR when get next seq. ",e);
-            throw new GeneralBOException("[PermintaanVendorBoImpl.getNextTransaksiObatDetail] ERRO Rwhen get next seq. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanVendorBoImpl.getNextTransaksiObatDetail] ERROR when get next seq. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getNextTransaksiObatDetail] ERRO Rwhen get next seq. ", e);
         }
         return id;
     }

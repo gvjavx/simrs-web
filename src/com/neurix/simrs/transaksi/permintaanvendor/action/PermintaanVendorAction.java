@@ -202,7 +202,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse saveUpdateListObat(String idTransaksiDetailObat, String qty, String jenisSatuan){
+    public CheckObatResponse saveUpdateListObat(String idTransaksiDetailObat, String qty){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -213,7 +213,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setIdTransaksiObatDetail(idTransaksiDetailObat);
         transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
-        transaksiObatDetail.setJenisSatuan(jenisSatuan);
+//        transaksiObatDetail.setJenisSatuan(jenisSatuan);
         transaksiObatDetail.setQty(new BigInteger(qty));
 
         try {

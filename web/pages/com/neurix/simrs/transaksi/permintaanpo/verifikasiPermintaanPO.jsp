@@ -177,8 +177,8 @@
                                     <td align="right"><s:property value="hargaPo"/></td>
                                     <td align="center"><input
                                             onchange="verify('<s:property value="idObat"/>', this.value, '<s:property
-                                                    value="qty"/>')" class="form-control" style="width: 150px"
-                                            id='pabrik<s:property value="idObat"/>'></td>
+                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>')" class="form-control" style="width: 150px"
+                                            id='pabrik<s:property value="idTransaksiObatDetail"/>'></td>
                                     <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
                                     <td align="center"><span id='approve<s:property value="idObat"/>'></span></td>
                                     <%--<td align="center"><span id='qtyDefault<s:property value="idObat"/>'></span><input--%>
@@ -228,18 +228,18 @@
                         </table>
                     </div>
                     </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <a type="button" class="btn btn-success" onclick="confirm()"><i
-                                        class="fa fa-arrow-right"></i> Save</a>
-                                <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
-                                        class="fa fa-arrow-left"></i>
-                                    Back</a>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="box-header with-border"></div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<a type="button" class="btn btn-success" onclick="confirm()"><i--%>
+                                        <%--class="fa fa-arrow-right"></i> Save</a>--%>
+                                <%--<a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i--%>
+                                        <%--class="fa fa-arrow-left"></i>--%>
+                                    <%--Back</a>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
             </div>
         </div>
@@ -469,7 +469,7 @@
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
     }
-    function verify(id, value, qty) {
+    function verify(id, value, qty, idDetail) {
         var status = false;
         if (id != '' && value != '') {
             $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
@@ -482,7 +482,7 @@
                         $('#status' + id).html("Sesuai").addClass("label label-success");
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\')').show();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\')').show();
                         $('#modal-approve').modal('show');
 //                        $('#qtyDefault' + id).html(qty);
 //                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
@@ -539,21 +539,26 @@
         }
     }
 
-    function saveApprove(id){
+    function saveApprove(id, idDetail){
 
         $('#save_approve').hide();
         $('#load_approve').show();
 
+        var qty = $('#app_qty_app').val();
+
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveApprove(vendor, stringData, {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty,{
             callback: function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
+                    $('#modal-approve').modal('hide');
+//                    $('#waiting_dialog').dialog('close');
+//                    $('#info_dialog').dialog('open');
                 } else {
-                    $('#warning_po').show().fadeOut(5000);
-                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+//                    $('#warning_po').show().fadeOut(5000);
+//                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
                 }
             }
         });
