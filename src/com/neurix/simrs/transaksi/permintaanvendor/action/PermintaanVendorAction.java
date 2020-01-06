@@ -399,7 +399,17 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<TransaksiObatDetail> transaksiObatDetails = (List) session.getAttribute("listOfObatDetail");
         List<TransaksiObatDetail> transaksiObatDetailNew = (List) session.getAttribute("listOfObatDetailNew");
 
+        PermintaanVendor permintaanVendor = getPermintaanVendor();
+        permintaanVendor.setBranchId(CommonUtil.userBranchLogin());
+        permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
 
+        try {
+            permintaanVendorBoProxy.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.saveApprove] Error when save data approve PO", e);
+            addActionError(" Error when save data approve PO" + e.getMessage());
+        }
 
         logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
         return SUCCESS;

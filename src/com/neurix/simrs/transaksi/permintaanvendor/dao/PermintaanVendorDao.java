@@ -38,6 +38,27 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return list;
     }
 
+    public Boolean isAvailNotConfirm(String idApprovalObat){
+
+        Boolean check = true;
+        if (!"".equalsIgnoreCase(idApprovalObat)){
+            String SQL = "SELECT id_transaksi_obat_detail, id_obat \n" +
+                    "FROM mt_simrs_transaksi_obat_detail \n" +
+                    "WHERE flag_diterima is null\n" +
+                    "AND id_approval_obat = :id";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idApprovalObat)
+                    .list();
+
+            if (result.size() > 0){
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
     public String getNextSeq(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('sq_permintaan_vendor')");
         Iterator<BigInteger> iter=query.list().iterator();

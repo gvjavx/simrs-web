@@ -43,6 +43,16 @@ public class PermintaanVendor{
     private String keterangan;
     private String approvalFlag;
 
+    private Boolean enableApprove = false;
+
+    public Boolean getEnableApprove() {
+        return enableApprove;
+    }
+
+    public void setEnableApprove(Boolean enableApprove) {
+        this.enableApprove = enableApprove;
+    }
+
     public String getApprovalFlag() {
         return approvalFlag;
     }

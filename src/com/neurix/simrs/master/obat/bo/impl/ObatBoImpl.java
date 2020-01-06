@@ -462,7 +462,7 @@ public class ObatBoImpl implements ObatBo {
         String id = "";
 
         try {
-            id = obatGejalaDao.getNextId();
+            id = obatDao.getNextId();
         } catch (HibernateException e){
             logger.error("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, "+e.getMessage());
             throw new GeneralBOException("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, "+e.getMessage());
