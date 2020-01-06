@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.permintaanvendor.model.ImSimrsTempObatGejalaEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -14,22 +15,22 @@ import java.util.Map;
 /**
  * Created by reza on 06/01/20.
  */
-public class TempObatGejalaDao extends GenericDao<ImSimrsObatGejalaEntity, String> {
+public class TempObatGejalaDao extends GenericDao<ImSimrsTempObatGejalaEntity, String> {
     @Override
-    protected Class<ImSimrsObatGejalaEntity> getEntityClass() {
-        return ImSimrsObatGejalaEntity.class;
+    protected Class<ImSimrsTempObatGejalaEntity> getEntityClass() {
+        return ImSimrsTempObatGejalaEntity.class;
     }
 
     @Override
-    public List<ImSimrsObatGejalaEntity> getByCriteria(Map mapCriteria) {
+    public List<ImSimrsTempObatGejalaEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsObatGejalaEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTempObatGejalaEntity.class);
 
         if (criteria != null)
             if (mapCriteria.get("id_trans_obat_detail") != null)
                 criteria.add(Restrictions.eq("idTransObatDetail", mapCriteria.get("id_trans_obat_detail").toString()));
 
-        List<ImSimrsObatGejalaEntity> list = criteria.list();
+        List<ImSimrsTempObatGejalaEntity> list = criteria.list();
         return list;
     }
 

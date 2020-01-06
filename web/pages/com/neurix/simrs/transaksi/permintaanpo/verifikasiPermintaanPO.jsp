@@ -163,7 +163,7 @@
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
                                 <%--<td align="center">Approve</td>--%>
-                                <td align="center">Action</td>
+                                <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -171,28 +171,41 @@
                                 <tr id='row<s:property value="idObat"/>'>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td align="center"><span id='qty<s:property value="idObat"/>'><s:property
-                                            value="qty"/></span></td>
+                                    <td align="center"><span id='qty<s:property value="idObat"/>'><s:property value="qty"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right"><s:property value="hargaPo"/></td>
                                     <td align="center"><input
                                             onchange="verify('<s:property value="idObat"/>', this.value, '<s:property
-                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>')" class="form-control" style="width: 150px"
+                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>')" class="form-control" style="width: 150px"
                                             id='pabrik<s:property value="idTransaksiObatDetail"/>'></td>
-                                    <td align="center"><span id='status<s:property value="idObat"/>'></span></td>
-                                    <td align="center"><span id='approve<s:property value="idObat"/>'></span></td>
+                                    <td align="center">
+                                    <s:if test='#row.flagDiterima == "Y"'>
+                                            <span class="label label-success">Sesuai</span>
+                                    </s:if>
+                                        <s:if test='#row.flagDiterima == "N"'>
+                                            <span class="label label-danger">Tidak Sesuai</span>
+                                        </s:if>
+                                        <span id='status<s:property value="idObat"/>'></span></td>
+                                    <td align="center">
+                                     <s:if test='#row.flagDiterima == "Y"'>
+                                            <span class="label label-success">Setuju</span>
+                                     </s:if>
+                                        <s:if test='#row.flagDiterima == "N"'>
+                                            <span class="label label-danger">Tidak Setuju</span>
+                                        </s:if>
+                                        <span id='approve<s:property value="idObat"/>'></span></td>
                                     <%--<td align="center"><span id='qtyDefault<s:property value="idObat"/>'></span><input--%>
                                             <%--value='<s:property value="qty"/>' type="number" class="form-control"--%>
                                             <%--style="width: 150px; display: none"--%>
                                             <%--id='qtyApprove<s:property value="idObat"/>'></td>--%>
-                                    <td align="center"><img border="0" id='tombol<s:property value="idObat"/>'
-                                                            class="hvr-grow"
-                                                            src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                            style="cursor: pointer; height: 25px; width: 25px; display: none">
-                                        <img border="0" onclick="delRowObat('<s:property value="idObat"/>')"
-                                             id='hapus<s:property value="idObat"/>' class="hvr-grow"
-                                             src="<s:url value="/pages/images/cnacel-flat.png"/>"
-                                             style="cursor: pointer; height: 25px; width: 25px; display: none"></td>
+                                    <%--<td align="center"><img border="0" id='tombol<s:property value="idObat"/>'--%>
+                                                            <%--class="hvr-grow"--%>
+                                                            <%--src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
+                                                            <%--style="cursor: pointer; height: 25px; width: 25px; display: none">--%>
+                                        <%--<img border="0" onclick="delRowObat('<s:property value="idObat"/>')"--%>
+                                             <%--id='hapus<s:property value="idObat"/>' class="hvr-grow"--%>
+                                             <%--src="<s:url value="/pages/images/cnacel-flat.png"/>"--%>
+                                             <%--style="cursor: pointer; height: 25px; width: 25px; display: none"></td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -297,7 +310,7 @@
                         <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
                         <div class="col-md-7">
                             <s:textfield type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_pabrik"
+                                         cssStyle="margin-top: 7px" id="add_pabrik" readonly="true"
                                          onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
@@ -322,49 +335,75 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jumlah Box</label>
-                        <div class="col-md-3">
-                            <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_box"
-                                         onkeypress="$(this).css('border', '')"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="margin-top: 10px">Lembar/Box</p>
-                        </div>
-                        <div class="col-md-3">
-                            <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_lembar_box"
-                                         onkeypress="$(this).css('border', '')"></s:textfield>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jumlah Lembar</label>
-                        <div class="col-md-3">
-                            <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_lembar"
-                                         onkeypress="$(this).css('border', '')"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="margin-top: 10px">Biji/Lembar</p>
-                        </div>
-                        <div class="col-md-3">
-                            <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_biji_lembar"
-                                         onkeypress="$(this).css('border', '')"></s:textfield>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jml Biji</label>
+                        <label class="col-md-3" style="margin-top: 7px">Lembar/Box</label>
                         <div class="col-md-7">
                             <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_biji"
-                                         onkeypress="var warn =$('#war_biji').is(':visible'); if (warn){$('#cor_biji').show().fadeOut(3000);$('#war_biji').hide()}"></s:textfield>
+                                         cssStyle="margin-top: 7px" id="add_lembar_box"
+                                         onkeypress="var warn =$('#war_lembar_box').is(':visible'); if (warn){$('#cor_lembar_box').show().fadeOut(3000);$('#war_lembar_box').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_biji"><i class="fa fa-times"></i> required</p>
+                               id="war_lembar_box"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_biji"><i class="fa fa-check"></i> correct</p>
+                               id="cor_lembar_box"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Biji/Lembar</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_biji_lembar"
+                                         onkeypress="var warn =$('#war_biji_lembar').is(':visible'); if (warn){$('#cor_biji_lembar').show().fadeOut(3000);$('#war_biji_lembar').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_biji_lembar"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_biji_lembar"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Qty Request</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control" disabled="true"
+                                         cssStyle="margin-top: 7px" id="add_qty_request"
+                                         onkeypress="var warn =$('#war_qty_request').is(':visible'); if (warn){$('#cor_qty_request').show().fadeOut(3000);$('#war_qty_request').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_qty_request"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_qty_request"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Qty Approve</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_qty_approve"
+                                         onkeypress="var warn =$('#war_qty_approve').is(':visible'); if (warn){$('#cor_qty_approve').show().fadeOut(3000);$('#war_qty_approve').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_qty_approve"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_qty_approve"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'box':'Box','bembar':'Lembar','biji':'Biji'}"
+                                      cssStyle="margin-top: 7px; width: 100%" onchange="var warn =$('#war_jenis_satuan').is(':visible'); if (warn){$('#cor_jenis_satuan').show().fadeOut(3000);$('#war_jenis_satuan').hide()}"
+                                      id="add_jenis_satuan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2" disabled="true"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_satuan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -453,6 +492,32 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Konfirmasi ID Pabrik baru</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <p>Tekan tombol <b>Tambah obat</b> untuk menambahkan obat tersebut.</p>
+                    <p>Tekan tombol <b>Cancel obat</b> untuk membatalkan obat tersebut.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-arrow-right"></i> Tambah Obat
+                </button>
+                <button type="button" class="btn btn-danger" id="delete_confirm"><i class="fa fa-ban"></i> Cancel Obat
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -460,16 +525,24 @@
         window.location.reload(true);
     }
 
-    function showModal(idObat) {
-        $('#add_nama_obat, #add_harga, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji').val('');
+    function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga) {
+
+        $('#add_merek, #add_lembar_box, #add_biji_lembar').val('');
         $('#add_jenis_obat').val('').trigger('change');
+        $('#add_pabrik').val(pabrik);
+        $('#add_nama_obat').val('');
+        $('#add_jenis_satuan').val(satuan).trigger('change');
         var id = "";
-        $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_pabrik, #war_merek, #war_biji').hide();
+        $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_pabrik, #war_merek').hide();
         $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border', '');
-        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
+        $('#add_qty_request, #add_qty_approve').val(qty);
+        $('#add_harga').val(harga);
+        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\')').show();
         $('#modal-obat').modal('show');
+        $('#modal-confirm').modal('hide');
     }
-    function verify(id, value, qty, idDetail) {
+
+    function verify(id, value, qty, idDetail, nama, jenis, harga) {
         var status = false;
         if (id != '' && value != '') {
             $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
@@ -493,10 +566,31 @@
                         $('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');
                         $('#tombol' + id).show().attr('src', url);
                         $('#hapus' + id).show();
+                        $('#modal-confirm').modal('show');
+                        $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\')');
                     }
                 }
             });
         }
+    }
+
+    function saveApprove(id, idDetail){
+        var qty = $('#app_qty_app').val();
+        $('#save_approve').hide();
+        $('#load_approve').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, function (response) {
+            if (response == "success") {
+                dwr.engine.setAsync(false);
+                $('#modal-approve').modal('hide');
+                $('#approve' + id).html("Setuju").addClass("label label-success");
+            } else {
+                $('#save_obat').show();
+                $('#load_obat').hide();
+                $('#warning_obat').show().fadeOut(5000);
+                $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+            }
+        })
     }
 
     function editQty(id) {
@@ -537,32 +631,6 @@
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
-    }
-
-    function saveApprove(id, idDetail){
-
-        $('#save_approve').hide();
-        $('#load_approve').show();
-
-        var qty = $('#app_qty_app').val();
-
-        dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty,{
-            callback: function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    $('#save_approve').show();
-                    $('#load_approve').hide();
-                    $('#modal-approve').modal('hide');
-//                    $('#waiting_dialog').dialog('close');
-//                    $('#info_dialog').dialog('open');
-                } else {
-//                    $('#warning_po').show().fadeOut(5000);
-//                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
-                }
-            }
-        });
-
     }
 
     function resetField() {
@@ -638,23 +706,20 @@
         $('#row' + id).remove();
     }
 
-    function saveObat(id){
+    function saveObat(id, idDetail, qty, satuan, idObat){
 
         var nama        = $('#add_nama_obat').val();
         var jenis       = $('#add_jenis_obat').val();
         var merek       = $('#add_merek').val();
         var pabrik      = $('#add_pabrik').val();
-        var box         = $('#add_box').val();
         var lembarBox   = $('#add_lembar_box').val();
-        var lembar      = $('#add_lembar').val();
         var bijiLembar  = $('#add_biji_lembar').val();
-        var biji        = $('#add_biji').val();
+        var qtyApp      = $('#add_qty_approve').val();
         var harga       = $('#add_harga').val();
         var flag        = $('#add_flag').val();
+        var jenisSatuan        = $('#add_jenis_satuan').val();
 
-        if (nama != '' && jenis != null && harga != '' && parseInt(biji) > 0 && box != ''
-                && lembarBox != '' && lembar != '' && bijiLembar != '' && biji != '' && pabrik != ''
-                && merek != '' && pabrik != '') {
+        if (nama != '' && jenis != null && harga != '' && lembarBox != '' && bijiLembar != '' && merek != '' && pabrik != '' && qtyApp != '') {
 
             $('#save_obat').hide();
             $('#load_obat').show();
@@ -665,22 +730,7 @@
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
-//                        $('#info_dialog').dialog('open');
-
-                        var row = '<tr id=' + idObat + '>' +
-                                '<td>' + idObat + '</td>' +
-                                '<td>' + namaObat + '</td>' +
-                                '<td>' + box + '</td>' +
-                                '<td>' + lembarBox + '</td>' +
-                                '<td>' + lembar + '</td>' +
-                                '<td>' + bijiLembar + '</td>' +
-                                '<td>' + biji + '</td>' +
-                                '<td align="right">' + harga + '</td>' +
-                                '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                                '</tr>';
-
                         $('#body_po').append(row);
-
                     } else {
                         $('#save_obat').show();
                         $('#load_obat').hide();
@@ -690,12 +740,11 @@
                 })
             } else {
                 dwr.engine.setAsync(true);
-                ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, harga, function (response) {
+                PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(1);
+                        $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
                     } else {
                         $('#save_obat').show();
                         $('#load_obat').hide();
@@ -720,29 +769,23 @@
             if (merek == '') {
                 $('#war_merek').show();
             }
-            if (box == '') {
-                $('#add_box').css('border','red solid 1px');
-            }
             if (lembarBox == '') {
-                $('#add_lembar_box').css('border','red solid 1px');
-            }
-            if (lembar == '') {
-                $('#add_lembar').css('border','red solid 1px');
+                $('#war_lembar_box').show();
             }
             if (bijiLembar == '') {
-                $('#add_biji_lembar').css('border','red solid 1px');
+                $('#war_biji_lembar').show();
             }
-            if (biji == '') {
-                $('#war_biji').show();
+            if (jenisSatuan == '' || jenisSatuan == null) {
+                $('#war_jenis').show();
             }
             if (pabrik == '') {
                 $('#war_pabrik').show();
             }
+            if (qtyApp == '') {
+                $('#war_qty_approve').show();
+            }
         }
     }
-
-
-
 
 
     function savePermintaanPO() {

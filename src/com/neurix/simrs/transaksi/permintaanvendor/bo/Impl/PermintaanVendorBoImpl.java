@@ -6,6 +6,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao;
+import com.neurix.simrs.transaksi.permintaanvendor.model.ImSimrsTempObatGejalaEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
@@ -361,33 +362,96 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     @Override
-    public void saveNewPabrik(TransaksiObatDetail bean) throws GeneralBOException {
-//        ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
-//        obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
-//        obatDetailEntity.setIdApprovalObat(permintaanVendorEntity.getIdApprovalObat());
-//        obatDetailEntity.setQtyBox(obatDetail.getQtyBox());
-//        obatDetailEntity.setIdObat(obatDetail.getIdObat());
-//        obatDetailEntity.setLembarPerBox(obatDetail.getLembarPerBox());
-//        obatDetailEntity.setQtyLembar(obatDetail.getQtyLembar());
-//        obatDetailEntity.setBijiPerLembar(obatDetail.getBijiPerLembar());
-//        obatDetailEntity.setQtyBiji(obatDetail.getQtyBiji());
-//        obatDetailEntity.setQty(obatDetail.getQty());
-//        obatDetailEntity.setAverageHargaBox(obatDetail.getAverageHargaBox());
-//        obatDetailEntity.setFlag("Y");
-//        obatDetailEntity.setAction("C");
-//        obatDetailEntity.setCreatedDate(bean.getCreatedDate());
-//        obatDetailEntity.setCreatedWho(bean.getCreatedWho());
-//        obatDetailEntity.setLastUpdate(bean.getLastUpdate());
-//        obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//        obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
-//        obatDetailEntity.setKeterangan("Permintaan PO");
-//
-//        try {
-//            transaksiObatDetailDao.addAndSave(obatDetailEntity);
-//        } catch (HibernateException e){
-//            logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
-//            throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
-//        }
+    public void saveNewPabrik(TransaksiObatDetail bean, List<String> idJenisObats) throws GeneralBOException {
+
+        if (bean != null){
+
+            ImtSimrsTransaksiObatDetailEntity entityList = new ImtSimrsTransaksiObatDetailEntity();
+
+            try {
+                entityList = transaksiObatDetailDao.getById("idTransaksiObatDetail", bean.getIdTransaksiObatDetail());
+            }catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+            }
+
+            if(entityList != null){
+
+                entityList.setFlagDiterima("N");
+
+                try {
+                    transaksiObatDetailDao.updateAndSave(entityList);
+                }catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                }
+
+                ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+                obatDetailEntity.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
+                obatDetailEntity.setQtyBox(bean.getQtyBox());
+                obatDetailEntity.setIdObat(bean.getIdObat());
+                obatDetailEntity.setNamaObatBaru(bean.getNamaObat());
+                obatDetailEntity.setLembarPerBox(bean.getLembarPerBox());
+                obatDetailEntity.setQtyLembar(bean.getQtyLembar());
+                obatDetailEntity.setBijiPerLembar(bean.getBijiPerLembar());
+                obatDetailEntity.setQtyBiji(bean.getQtyBiji());
+                obatDetailEntity.setQty(bean.getQty());
+                obatDetailEntity.setQtyApprove(bean.getQty());
+                obatDetailEntity.setAverageHargaBox(bean.getAverageHargaBox());
+                obatDetailEntity.setFlag(bean.getFlag());
+                obatDetailEntity.setAction(bean.getAction());
+                obatDetailEntity.setCreatedDate(bean.getCreatedDate());
+                obatDetailEntity.setCreatedWho(bean.getCreatedWho());
+                obatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                obatDetailEntity.setJenisSatuan(bean.getJenisSatuan());
+                obatDetailEntity.setFlagDiterima(bean.getFlagDiterima());
+                obatDetailEntity.setKeterangan("Permintaan PO");
+
+                if("box".equalsIgnoreCase(bean.getJenisSatuan())){
+                    obatDetailEntity.setAverageHargaBox(bean.getHargaPo());
+                }
+
+                if("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
+                    obatDetailEntity.setAverageHargaLembar(bean.getHargaPo());
+                }
+
+                if ("biji".equalsIgnoreCase(bean.getJenisSatuan())){
+                    obatDetailEntity.setAverageHargaBiji(bean.getHargaPo());
+                }
+
+                try {
+                    transaksiObatDetailDao.addAndSave(obatDetailEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveListObatPo] ERROR when create obat detail. "+e.getMessage());
+                }
+
+                if (!idJenisObats.isEmpty() && idJenisObats.size() > 0){
+                    for (String idJenisObat : idJenisObats) {
+                        ImSimrsTempObatGejalaEntity tempObatGejalaEntity = new ImSimrsTempObatGejalaEntity();
+                        tempObatGejalaEntity.setIdTempObatGejala("OGJ"+getNextIdTmpObatGejala());
+                        tempObatGejalaEntity.setIdTransObatDetail(bean.getIdTransaksiObatDetail());
+                        tempObatGejalaEntity.setIdJenisObat(idJenisObat);
+                        tempObatGejalaEntity.setFlag(bean.getFlag());
+                        tempObatGejalaEntity.setAction(bean.getAction());
+                        tempObatGejalaEntity.setCreatedDate(bean.getCreatedDate());
+                        tempObatGejalaEntity.setCreatedWho(bean.getCreatedWho());
+                        tempObatGejalaEntity.setLastUpdate(bean.getLastUpdate());
+                        tempObatGejalaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            tempObatGejalaDao.addAndSave(tempObatGejalaEntity);
+                        } catch (HibernateException e){
+                            logger.error("[ObatBoImpl.saveAdd] error when insert new obat gejala "+ e.getMessage());
+                            throw new GeneralBOException("[ObatBoImpl.saveAdd] error when insert new obat gejala "+ e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void saveConfirm(TransaksiObatDetail bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException {

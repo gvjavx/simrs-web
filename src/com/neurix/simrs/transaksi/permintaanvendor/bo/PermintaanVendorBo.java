@@ -14,7 +14,7 @@ import java.util.List;
 public interface PermintaanVendorBo {
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException;
     public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
-    public void saveNewPabrik(TransaksiObatDetail bean) throws GeneralBOException;
+    public void saveNewPabrik(TransaksiObatDetail bean, List<String> idJenisObats) throws GeneralBOException;
     public void saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveConfirm(TransaksiObatDetail bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException;
 }

@@ -34,6 +34,16 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
 
     private BigDecimal hargaTerakhir;
 
+    private String namaObatBaru;
+
+    public String getNamaObatBaru() {
+        return namaObatBaru;
+    }
+
+    public void setNamaObatBaru(String namaObatBaru) {
+        this.namaObatBaru = namaObatBaru;
+    }
+
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;
     }
