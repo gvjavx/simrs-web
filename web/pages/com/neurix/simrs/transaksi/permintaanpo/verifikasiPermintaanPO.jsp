@@ -482,7 +482,7 @@
                         $('#status' + id).html("Sesuai").addClass("label label-success");
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#app_qty_app').focusin();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\')').show();
                         $('#modal-approve').modal('show');
 //                        $('#qtyDefault' + id).html(qty);
 //                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
@@ -537,6 +537,27 @@
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
+    }
+
+    function saveApprove(id){
+
+        $('#save_approve').hide();
+        $('#load_approve').show();
+
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveApprove(vendor, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#warning_po').show().fadeOut(5000);
+                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
+                }
+            }
+        });
+
     }
 
     function resetField() {

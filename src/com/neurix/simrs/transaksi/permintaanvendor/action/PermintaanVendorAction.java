@@ -8,11 +8,9 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
-import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
-import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -208,21 +206,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<TransaksiObatDetail> obatDetailList = (List) session.getAttribute("listOfObatDetail");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<TransaksiObatDetail> obatDetailList = (List) session.getAttribute("listOfObatDetail");
 
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdTransaksiObatDetail(idTransaksiDetailObat);
         transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
-
-        if ("box".equalsIgnoreCase(jenisSatuan)){
-            transaksiObatDetail.setQtyBox(new BigInteger(qty));
-        } else if ("lembar".equalsIgnoreCase(jenisSatuan)){
-            transaksiObatDetail.setQtyLembar(new BigInteger(qty));
-        } else {
-            transaksiObatDetail.setQtyBiji(new BigInteger(qty));
-        }
+        transaksiObatDetail.setJenisSatuan(jenisSatuan);
+        transaksiObatDetail.setQty(new BigInteger(qty));
 
         try {
             permintaanVendorBoProxy.saveUpdateTransObatDetail(transaksiObatDetail);
@@ -401,7 +393,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveNewPabrik(String namaObat,List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigInteger harga){
+    public String saveNewPabrik(String namaObat,List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigInteger harga) {
 
         logger.info("[PermintaanVendorAction.saveObatInap] start process >>>");
         try {
@@ -432,7 +424,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             obatBo.saveAdd(obat, jenisObat);
 
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[PermintaanVendorAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
@@ -440,6 +432,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         logger.info("[PermintaanVendorAction.saveObatInap] end process >>>");
+        return SUCCESS;
+    }
+
+    public String saveApprove(){
+        logger.info("[PermintaanVendorAction.saveApprove] START >>>>>>>");
+
+
+
+        logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
         return SUCCESS;
     }
 
