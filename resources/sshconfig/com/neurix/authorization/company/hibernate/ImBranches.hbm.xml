@@ -48,6 +48,21 @@
         <property name="areaId">
             <column name="area_id" sql-type="varchar" length="10"/>
         </property>
+        <property name="constId">
+            <column name="const_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="secretKey">
+            <column name="secret_key" sql-type="varchar" length="10"/>
+        </property>
+        <property name="username">
+            <column name="username" sql-type="varchar" length="10"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar" length="10"/>
+        </property>
+        <property name="kdAplikasi">
+            <column name="kd_aplikasi" sql-type="varchar" length="10"/>
+        </property>
         <property name="createdDate">
             <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
         </property>

@@ -3,6 +3,9 @@ package com.neurix.hris.mobileapi;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
+import com.neurix.simrs.bpjs.bo.BpjsBo;
+import com.neurix.simrs.bpjs.model.PoliResponse;
+import com.neurix.simrs.bpjs.model.SepRequest;
 import com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity;
 import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
 import com.opensymphony.xwork2.ModelDriven;
@@ -27,24 +30,30 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
 
     private Poli model;
     private List<Poli> listOfPoli = new ArrayList<>();
+    private BpjsBo bpjsBoProxy;
+
+    public void setBpjsBoProxy(BpjsBo bpjsBoProxy) {
+        this.bpjsBoProxy = bpjsBoProxy;
+    }
 
     private static transient Logger logger = Logger.getLogger(TestBpjsController.class);
 
     public TestBpjsController() throws GeneralSecurityException, IOException {
     }
 
-    public HttpHeaders index() throws IOException, GeneralSecurityException, JSONException {
-        getPoli("");
-
-        TindakanBpjs tindakanBpjs = new TindakanBpjs();
-        GetTindakanByAPIBpjs(tindakanBpjs);
+    public HttpHeaders index() {
+        listPoli();
+        //        getPoli("");
+        //        sendSep();
+        //        TindakanBpjs tindakanBpjs = new TindakanBpjs();
+        //        GetTindakanByAPIBpjs(tindakanBpjs);
         return new DefaultHttpHeaders("index").disableCaching();
     }
 
-    public void getPoli(String query) throws GeneralSecurityException, IOException, JSONException {
+    /*public void getPoli(String query) throws GeneralSecurityException, IOException, JSONException {
 
         String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/referensi/poli/gigi";
-        String result = GET(feature);
+        String result = GET(feature,"KD01");
         JSONObject myResponseCheck = new JSONObject(result);
         JSONObject response = myResponseCheck.getJSONObject("response");
         JSONArray arrResponse = response.getJSONArray("poli");
@@ -58,9 +67,9 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
             poli.setNama(obj.getString("nama"));
             listOfPoli.add(poli);
         }
-    }
+    }*/
 
-    public void GetTindakanByAPIBpjs(TindakanBpjs bean) throws GeneralBOException {
+    /*public void GetTindakanByAPIBpjs(TindakanBpjs bean) throws GeneralBOException {
         logger.info("[TindakanBoImpl.getListEntityJenisTindakan] Start >>>>>>>");
         String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_PCARE + "/tindakan/kdTkp/10/0/3";
         String result = null;
@@ -92,8 +101,56 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
         logger.info("[TindakanBoImpl.getListEntityJenisTindakan] End <<<<<<<");
+    }*/
+
+    public void sendSep(){
+        SepRequest sepRequest = new SepRequest();
+        sepRequest.setNoKartu("0001112230666");
+        sepRequest.setTglSep("2017-10-18");
+        sepRequest.setPpkPelayanan("0301R001");
+        sepRequest.setJnsPelayanan("2");
+        sepRequest.setKlsRawat("3");
+        sepRequest.setNoMr("123456");
+        sepRequest.setAsalRujukan("1");
+        sepRequest.setTglRujukan("2017-10-17");
+        sepRequest.setNoRujukan("123456");
+        sepRequest.setPpkRujukan("00010001");
+        sepRequest.setCatatan("test");
+        sepRequest.setDiagAwal("A00.1");
+        sepRequest.setPoliTujuan("INT");
+        sepRequest.setPoliEksekutif("0");
+        sepRequest.setCob("0");
+        sepRequest.setKatarak("0");
+        sepRequest.setLakaLantas("0");
+        sepRequest.setPenjamin("");
+        sepRequest.setTglKejadian("");
+        sepRequest.setKeterangan("");
+        sepRequest.setSuplesi("");
+        sepRequest.setNoSepSuplesi("");
+        sepRequest.setKdProvinsiLakaLantas("");
+        sepRequest.setKdKecamatanLakaLantas("");
+        sepRequest.setKdKabupatenLakaLantas("");
+        sepRequest.setNoSuratSkdp("000002");
+        sepRequest.setKodeDpjp("31661");
+        sepRequest.setNoTelp("081919999");
+        sepRequest.setUserPembuatSep("Coba Ws");
+        try {
+            bpjsBoProxy.insertSepBpjs(sepRequest,"RS01");
+        }catch (Exception e){
+            logger.error("[TestBpjsController.sendSep] Error : " + "[" + e + "]");
+        }
+    }
+    public void listPoli(){
+        List<PoliResponse> poliResponseList = new ArrayList<>();
+        try {
+            poliResponseList= bpjsBoProxy.GetPoliByAPIBpjs("gigi","RS01");
+        }catch (Exception e){
+            logger.error("[TestBpjsController.sendSep] Error : " + "[" + e + "]");
+        }
+        for (PoliResponse poliResponse : poliResponseList){
+            logger.info(poliResponse.getNamaPoliBpjs());
+        }
     }
 
     @Override

@@ -26,6 +26,44 @@ public class SepResponse {
     private String tktPelayanan;
     private String tglPelayanan;
 
+    //suplesi
+    private String noRegister;
+    private String noSepAwal;
+    private String noSuratJaminan;
+    private String tglKejadian;
+
+    public String getTglKejadian() {
+        return tglKejadian;
+    }
+
+    public void setTglKejadian(String tglKejadian) {
+        this.tglKejadian = tglKejadian;
+    }
+
+    public String getNoSuratJaminan() {
+        return noSuratJaminan;
+    }
+
+    public void setNoSuratJaminan(String noSuratJaminan) {
+        this.noSuratJaminan = noSuratJaminan;
+    }
+
+    public String getNoSepAwal() {
+        return noSepAwal;
+    }
+
+    public void setNoSepAwal(String noSepAwal) {
+        this.noSepAwal = noSepAwal;
+    }
+
+    public String getNoRegister() {
+        return noRegister;
+    }
+
+    public void setNoRegister(String noRegister) {
+        this.noRegister = noRegister;
+    }
+
     public String getTglPelayanan() {
         return tglPelayanan;
     }

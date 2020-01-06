@@ -15,25 +15,7 @@ import java.util.Set;
 public class ImBranches implements Serializable {
 
     private String statusPabrik;
-
-    public String getStatusPabrik() {
-        return statusPabrik;
-    }
-
-    public void setStatusPabrik(String statusPabrik) {
-        this.statusPabrik = statusPabrik;
-    }
-
     private String mt;
-
-    public String getMt() {
-        return mt;
-    }
-
-    public void setMt(String mt) {
-        this.mt = mt;
-    }
-
     private BigDecimal faktorJubileum;
     private BigDecimal faktorJasprod;
     private String masaTanam;
@@ -43,6 +25,65 @@ public class ImBranches implements Serializable {
     private String strBiayaJasprod;
     private BigDecimal biayaJasprod;
     private String areaId;
+    private String constId;
+    private String secretKey;
+    private String username;
+    private String password;
+    private String kdAplikasi;
+
+    public String getMt() {
+        return mt;
+    }
+
+    public void setMt(String mt) {
+        this.mt = mt;
+    }
+    public String getStatusPabrik() {
+        return statusPabrik;
+    }
+
+    public void setStatusPabrik(String statusPabrik) {
+        this.statusPabrik = statusPabrik;
+    }
+    public String getConstId() {
+        return constId;
+    }
+
+    public void setConstId(String constId) {
+        this.constId = constId;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getKdAplikasi() {
+        return kdAplikasi;
+    }
+
+    public void setKdAplikasi(String kdAplikasi) {
+        this.kdAplikasi = kdAplikasi;
+    }
 
     public String getAreaId() {
         return areaId;

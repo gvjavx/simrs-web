@@ -90,30 +90,4 @@ public class TindakanBpjsAction extends BaseMasterAction {
         return null;
     }
 
-    public void GetTindakanByAPIBpjs(){
-        logger.info("[TindakanAction.GetTindakanByAPIBpjs] start process >>>");
-
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TindakanBpjsBo tindakanBo= (TindakanBpjsBo) ctx.getBean("tindakanBoProxy");
-
-        String userLogin = CommonUtil.userLogin();
-        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-        TindakanBpjs tindakanBpjs = new TindakanBpjs();
-        tindakanBpjs.setFlag("Y");
-        tindakanBpjs.setAction("C");
-        tindakanBpjs.setCreatedWho(userLogin);
-        tindakanBpjs.setCreatedDate(updateTime);
-        tindakanBpjs.setLastUpdate(updateTime);
-        tindakanBpjs.setLastUpdateWho(userLogin);
-        try {
-            tindakanBo.GetTindakanByAPIBpjs(tindakanBpjs);
-        }catch (GeneralBOException e){
-            logger.error("[TindakanAction.GetTindakanByAPIBpjs] Error when get data tindakan ," + "Found problem when searching data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-        }
-
-        logger.info("[TindakanAction.GetTindakanByAPIBpjs] end process >>>");
-    }
-
 }

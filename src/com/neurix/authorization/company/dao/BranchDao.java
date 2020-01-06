@@ -91,7 +91,6 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
 
         return results;
     }
-
     public List<ImBranches> getAllBranch() throws HibernateException {
 
         List<ImBranches> results = this.sessionFactory.getCurrentSession().createCriteria(ImBranches.class)
@@ -110,6 +109,23 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
 
     public void addAndSaveHistory(ImBranchesHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
+    }
+    public ImBranches getConsSecrBranchById(String id) throws HibernateException {
+        ImBranches result = new ImBranches();
+        List<ImBranches> results = this.sessionFactory.getCurrentSession().createCriteria(ImBranches.class)
+                .add(Restrictions.eq("primaryKey.id",id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("primaryKey.id"))
+                .list();
 
+        for (ImBranches data : results ){
+            result.setBranchName(data.getBranchName());
+            result.setConstId(data.getConstId());
+            result.setSecretKey(data.getSecretKey());
+            result.setUsername(data.getUsername());
+            result.setPassword(data.getPassword());
+            result.setKdAplikasi(data.getKdAplikasi());
+        }
+        return result;
     }
 }

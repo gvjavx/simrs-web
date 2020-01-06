@@ -18,6 +18,7 @@
           p:provinsiDao-ref="provinsiDao"
           p:dokterTeamDao-ref="dokterTeamDao"
           p:checkupAlergiDao-ref="checkupAlergiDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

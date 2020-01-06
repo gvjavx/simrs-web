@@ -643,7 +643,7 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         try {
-            result = checkupBo.completeBpjs(idBpjs);
+            result = checkupBo.completeBpjs(idBpjs,"RS01");
         }catch (GeneralBOException e){
             logger.error("[CheckupAction.completeBpjs] Error when searching data, Found problem when searching data, please inform to your admin.", e);
         }

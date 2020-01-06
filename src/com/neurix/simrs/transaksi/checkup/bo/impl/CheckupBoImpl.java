@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -38,6 +40,15 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private ProvinsiDao provinsiDao;
     private DokterTeamDao dokterTeamDao;
     private CheckupAlergiDao checkupAlergiDao;
+    private BranchDao branchDao;
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public CheckupBoImpl() throws GeneralSecurityException, IOException {
     }
@@ -476,7 +487,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public HeaderCheckup completeBpjs(String nomorBpjs) {
+    public HeaderCheckup completeBpjs(String nomorBpjs,String unitId) {
         logger.info("[CheckupBoImpl.completeBpjs] Start >>>>>>>");
 
         HeaderCheckup finalResult = new HeaderCheckup();
@@ -485,25 +496,38 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         String tanggal = s.format(dt);
 
         String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/" + nomorBpjs + "/tglSEP/" + tanggal;
+
+        ImBranches resultBranch = null;
         try {
-            String result = GET(feature);
-            JSONObject myResponseCheck = new JSONObject(result);
-            if (myResponseCheck.isNull("response")) {
-                finalResult = null;
-                JSONObject response = myResponseCheck.getJSONObject("metaData");
-                logger.error("[CheckupBoImpl.completeBpjs] : " + response.getString("message"));
-            } else {
-                JSONObject response = myResponseCheck.getJSONObject("response");
-                JSONObject obj = response.getJSONObject("peserta");
-                finalResult.setNoKtp(obj.getString("nik"));
-                finalResult.setNama(obj.getString("nama"));
-                finalResult.setJenisKelamin(obj.getString("sex"));
-                String[] tglLahir =obj.getString("tglLahir").split("-");
-                finalResult.setStTglLahir(tglLahir[2]+"-"+tglLahir[1]+"-"+tglLahir[0]);
-            }
-        } catch (Exception e) {
-            logger.error("[CheckupBoImpl.completeBpjs] Error when get data");
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.completeBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
         }
+
+        if (resultBranch != null){
+            try {
+                String result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    finalResult = null;
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[CheckupBoImpl.completeBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONObject obj = response.getJSONObject("peserta");
+                    finalResult.setNoKtp(obj.getString("nik"));
+                    finalResult.setNama(obj.getString("nama"));
+                    finalResult.setJenisKelamin(obj.getString("sex"));
+                    String[] tglLahir =obj.getString("tglLahir").split("-");
+                    finalResult.setStTglLahir(tglLahir[2]+"-"+tglLahir[1]+"-"+tglLahir[0]);
+                }
+            } catch (Exception e) {
+                logger.error("[CheckupBoImpl.completeBpjs] Error when get data");
+            }
+        }
+
 
         logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
         return finalResult;
