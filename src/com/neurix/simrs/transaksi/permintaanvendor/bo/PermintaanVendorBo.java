@@ -16,4 +16,5 @@ public interface PermintaanVendorBo {
     public void saveListObatPo(PermintaanVendor bean) throws GeneralBOException;
     public void saveNewPabrik(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveUpdateTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
+    public void saveConfirm(TransaksiObatDetail bean, List<TransaksiObatDetail> listObat, List<TransaksiObatDetail> listObatNew) throws GeneralBOException;
 }

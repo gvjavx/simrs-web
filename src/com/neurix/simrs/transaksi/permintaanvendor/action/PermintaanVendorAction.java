@@ -438,6 +438,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
     public String saveApprove(){
         logger.info("[PermintaanVendorAction.saveApprove] START >>>>>>>");
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> transaksiObatDetails = (List) session.getAttribute("listOfObatDetail");
+        List<TransaksiObatDetail> transaksiObatDetailNew = (List) session.getAttribute("listOfObatDetailNew");
+
 
 
         logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
