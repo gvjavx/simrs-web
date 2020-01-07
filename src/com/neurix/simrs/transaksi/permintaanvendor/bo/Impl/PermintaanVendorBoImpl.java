@@ -528,7 +528,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         }
                     }
                 }
-
             }
         }
 

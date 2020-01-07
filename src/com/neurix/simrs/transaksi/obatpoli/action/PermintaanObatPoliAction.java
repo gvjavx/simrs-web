@@ -18,7 +18,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -112,7 +111,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         }
     }
 
-    public String saveKonfirmasiRequest(String request, String idPermintaan, boolean isPoli) {
+    public String saveKonfirmasiRequest(String request, String idPermintaan, boolean isPoli) throws JSONException{
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -130,40 +129,23 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
             obatPoli.setBranchId(CommonUtil.userBranchLogin());
 
-            List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
-            TransaksiObatDetail obatDetail;
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+            JSONArray json = new JSONArray(request);
+
+            TransaksiObatDetail transaksiObatDetail;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                transaksiObatDetail = new TransaksiObatDetail();
+                transaksiObatDetail.setIdObat(obj.getString("ID"));
+                transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("Approve")));
+                transaksiObatDetails.add(transaksiObatDetail);
+            }
 
             try {
-
-                if (request != null && !"".equalsIgnoreCase(request)) {
-                    JSONArray json = new JSONArray(request);
-                    for (int i = 0; i < json.length(); i++) {
-                        obatDetail = new TransaksiObatDetail();
-
-                        JSONObject obj = json.getJSONObject(i);
-
-                        obatDetail.setIdObat(obj.getString("ID"));
-//                        if ("box".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
-//                            obatDetail.setAverageHargaBox(new BigDecimal(obj.getString("Harga")));
-//                        }
-//                        if ("lembar".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
-//                            obatDetail.setAverageHargaLembar(new BigDecimal(obj.getString("Harga")));
-//                        }
-//                        if ("biji".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
-//                            obatDetail.setAverageHargaBiji(new BigDecimal(obj.getString("Harga")));
-//                        }
-
-                        obatDetail.setQtyApprove(new BigInteger(obj.getString("Approve")));
-                        obatDetail.setQty(new BigInteger(obj.getString("Jumlah")));
-                        obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
-                        obatDetailList.add(obatDetail);
-                    }
-                }
-
-                obatPoliBo.saveApproveRequest(obatPoli, obatDetailList, isPoli);
-
-            } catch (JSONException e) {
-                logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);
+                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
+            }catch (JSONException e){
+                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
 
         } catch (GeneralBOException e) {

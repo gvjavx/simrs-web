@@ -203,13 +203,14 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveAddReture(String reture, String idTujuan) {
+    public String saveAddReture(String reture, String idTujuan) throws JSONException{
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
-            String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
-            String idPelayanan = CommonUtil.userPelayananIdLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            String userLogin    = CommonUtil.userLogin();
+            String userArea     = CommonUtil.userBranchLogin();
+            String idPelayanan  = CommonUtil.userPelayananIdLogin();
+            Timestamp updateTime= new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdPelayanan(idPelayanan);
@@ -226,9 +227,27 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setFlag("Y");
 
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+            List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+            if (reture != null && !"".equalsIgnoreCase(reture)) {
+                JSONArray json = new JSONArray(reture);
+
+                PermintaanObatPoli permintaanObatPoli;
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
+
+                    permintaanObatPoli = new PermintaanObatPoli();
+                    permintaanObatPoli.setIdObat(obj.getString("ID"));
+                    permintaanObatPoli.setIdPelayanan(idPelayanan);
+                    permintaanObatPoli.setBranchId(userArea);
+                    permintaanObatPoli.setQty(new BigInteger(obj.getString("Qty")));
+                    permintaanObatPoliList.add(permintaanObatPoli);
+                }
+            }
+
             try {
-                obatPoliBo.saveReture(obatPoli, reture);
-            } catch (JSONException e) {
+                obatPoliBo.saveReture(obatPoli, permintaanObatPoliList);
+            }catch (JSONException e){
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
 
