@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -539,76 +540,73 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 if ("Y".equalsIgnoreCase(obatDetail.getFlagDiterima())){
                     ImSimrsObatEntity obatEntity = getObatById(obatDetail.getIdObat());
 
-                    if (obatEntity != null)
-                    {
-//                        if (obatEntity.getAverageHargaBiji() != null){
+                    if (obatEntity != null) {
 
-                            BigInteger ttlQtyLembar   = obatEntity.getQtyLembar().add(obatEntity.getQtyBox().multiply(obatEntity.getLembarPerBox()));
-                            BigInteger ttlQtyOldStock = obatEntity.getQtyBiji().add(ttlQtyLembar);
+                        BigInteger ttlQtyLembar = obatEntity.getQtyLembar().add(obatEntity.getQtyBox().multiply(obatEntity.getLembarPerBox()));
+                        BigInteger ttlQtyOldStock = obatEntity.getQtyBiji().add(ttlQtyLembar);
 
-                            BigDecimal ttlAvgHargaBoxStock    = obatEntity.getAverageHargaBox().multiply(new BigDecimal(obatEntity.getQtyBox()));
-                            BigDecimal ttlAvgHargaLembarStock = obatEntity.getAverageHargaLembar().multiply(new BigDecimal(obatEntity.getQtyLembar()));
-                            BigDecimal ttlAvgHargaBijiStock   = obatEntity.getAverageHargaBiji().multiply(new BigDecimal(obatEntity.getQtyBiji()));
-                            BigDecimal ttlAvgHargaOldStock    = ttlAvgHargaBijiStock.add(ttlAvgHargaLembarStock.add(ttlAvgHargaBoxStock));
+                        BigDecimal ttlAvgHargaBoxStock = obatEntity.getAverageHargaBox().multiply(new BigDecimal(obatEntity.getQtyBox()));
+                        BigDecimal ttlAvgHargaLembarStock = obatEntity.getAverageHargaLembar().multiply(new BigDecimal(obatEntity.getQtyLembar()));
+                        BigDecimal ttlAvgHargaBijiStock = obatEntity.getAverageHargaBiji().multiply(new BigDecimal(obatEntity.getQtyBiji()));
+                        BigDecimal ttlAvgHargaOldStock = ttlAvgHargaBijiStock.add(ttlAvgHargaLembarStock.add(ttlAvgHargaBoxStock));
 
-                            BigInteger ttlQtyNewStock   = new BigInteger(String.valueOf(0));
-                            BigDecimal ttlHargaNewStock = new BigDecimal(0);
+                        BigInteger ttlQtyNewStock = new BigInteger(String.valueOf(0));
+                        BigDecimal ttlHargaNewStock = new BigDecimal(0);
 
-                            if ("box".equalsIgnoreCase(obatDetail.getJenisSatuan())){
-                                ttlQtyNewStock      = obatDetail.getQtyApprove().multiply(obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar()));
-                                ttlHargaNewStock    = obatDetail.getAverageHargaBox();
-                            }
-                            if ("lembar".equalsIgnoreCase(obatDetail.getJenisSatuan())){
-                                ttlQtyNewStock      = obatDetail.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
-                                ttlHargaNewStock    = obatDetail.getAverageHargaLembar();
-                            }
-                            if ("biji".equalsIgnoreCase(obatDetail.getJenisSatuan())){
-                                ttlQtyNewStock      = obatDetail.getQtyApprove();
-                                ttlHargaNewStock    = obatDetail.getAverageHargaBiji();
-                            }
+                        if ("box".equalsIgnoreCase(obatDetail.getJenisSatuan())) {
+                            ttlQtyNewStock = obatDetail.getQtyApprove().multiply(obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar()));
+                            ttlHargaNewStock = obatDetail.getAverageHargaBox().multiply(new BigDecimal(obatDetail.getQtyApprove()));
+                        }
+                        if ("lembar".equalsIgnoreCase(obatDetail.getJenisSatuan())) {
+                            ttlQtyNewStock = obatDetail.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
+                            ttlHargaNewStock = obatDetail.getAverageHargaLembar().multiply(new BigDecimal(obatDetail.getQtyApprove()));
+                        }
+                        if ("biji".equalsIgnoreCase(obatDetail.getJenisSatuan())) {
+                            ttlQtyNewStock = obatDetail.getQtyApprove();
+                            ttlHargaNewStock = obatDetail.getAverageHargaBiji().multiply(new BigDecimal(obatDetail.getQtyApprove()));
+                        }
 
-                            BigInteger ttlQty   = ttlQtyOldStock.add(ttlQtyNewStock);
-                            BigDecimal ttlHarga = ttlAvgHargaOldStock.add(ttlHargaNewStock);
+                        BigInteger ttlQty = ttlQtyOldStock.add(ttlQtyNewStock);
+                        BigDecimal ttlHarga = ttlAvgHargaOldStock.add(ttlHargaNewStock);
 
-                            BigDecimal newAvgHargaPerBiji   = ttlHarga.divide(new BigDecimal(ttlQty));
-                            BigDecimal newAvgHargaPerLembar = newAvgHargaPerBiji.multiply(new BigDecimal(obatEntity.getBijiPerLembar()));
-                            BigDecimal newAvgHargaPerBox    = newAvgHargaPerLembar.multiply(new BigDecimal(obatEntity.getLembarPerBox()));
+                        BigDecimal newAvgHargaPerBiji = ttlHarga.divide(new BigDecimal(ttlQty), 2, RoundingMode.HALF_UP);
+                        BigDecimal newAvgHargaPerLembar = newAvgHargaPerBiji.multiply(new BigDecimal(obatEntity.getBijiPerLembar()));
+                        BigDecimal newAvgHargaPerBox = newAvgHargaPerLembar.multiply(new BigDecimal(obatEntity.getLembarPerBox()));
 
-                            BigInteger newQtyBox     = new BigInteger(String.valueOf(0));
-                            BigInteger newQtyLembar  = new BigInteger(String.valueOf(0));
-                            BigInteger newQtyBiji    = new BigInteger(String.valueOf(0));
+                        BigInteger newQtyBox = new BigInteger(String.valueOf(0));
+                        BigInteger newQtyLembar = new BigInteger(String.valueOf(0));
+                        BigInteger newQtyBiji = new BigInteger(String.valueOf(0));
 
-                            BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+                        BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
-                            newQtyBox = ttlQty.divide(cons);
-                            if (!ttlQty.mod(cons).equals(0)){
+                        newQtyBox = ttlQty.divide(cons);
+                        if (!ttlQty.mod(cons).equals(0)) {
 
-                                BigInteger sisaBiji = ttlQty.mod(cons);
-                                if (!sisaBiji.divide(obatEntity.getBijiPerLembar()).equals(0)){
-                                    newQtyLembar    = sisaBiji.divide(obatEntity.getBijiPerLembar());
-                                }
-
-                                if (!sisaBiji.mod(obatEntity.getBijiPerLembar()).equals(0)){
-                                    newQtyBiji      = sisaBiji.mod(obatEntity.getBijiPerLembar());
-                                }
+                            BigInteger sisaBiji = ttlQty.mod(cons);
+                            if (!sisaBiji.divide(obatEntity.getBijiPerLembar()).equals(0)) {
+                                newQtyLembar = sisaBiji.divide(obatEntity.getBijiPerLembar());
                             }
 
-                            obatEntity.setAverageHargaBiji(newAvgHargaPerBiji);
-                            obatEntity.setAverageHargaLembar(newAvgHargaPerLembar);
-                            obatEntity.setAverageHargaBox(newAvgHargaPerBox);
-
-                            obatEntity.setQtyBiji(newQtyBiji);
-                            obatEntity.setQtyLembar(newQtyLembar);
-                            obatEntity.setQtyBox(newQtyBox);
-
-                            try {
-                                obatDao.updateAndSave(obatEntity);
-                            } catch (HibernateException e){
-                                logger.error("[PermintaanVendorBoImpl.saveConfirm] ERROR when save data. "+e.getMessage());
-                                throw new GeneralBOException("[PermintaanVendorBoImpl.saveConfirm] ERROR when save data. "+e.getMessage());
+                            if (!sisaBiji.mod(obatEntity.getBijiPerLembar()).equals(0)) {
+                                newQtyBiji = sisaBiji.mod(obatEntity.getBijiPerLembar());
                             }
                         }
-//                    }
+
+                        obatEntity.setAverageHargaBiji(newAvgHargaPerBiji);
+                        obatEntity.setAverageHargaLembar(newAvgHargaPerLembar);
+                        obatEntity.setAverageHargaBox(newAvgHargaPerBox);
+
+                        obatEntity.setQtyBiji(newQtyBiji);
+                        obatEntity.setQtyLembar(newQtyLembar);
+                        obatEntity.setQtyBox(newQtyBox);
+
+                        try {
+                            obatDao.updateAndSave(obatEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[PermintaanVendorBoImpl.saveConfirm] ERROR when save data. " + e.getMessage());
+                            throw new GeneralBOException("[PermintaanVendorBoImpl.saveConfirm] ERROR when save data. " + e.getMessage());
+                        }
+                    }
                 }
             }
         }
