@@ -7,14 +7,18 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -107,7 +111,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
         }
     }
 
-    public String saveKonfirmasiRequest(String request, String idPermintaan, boolean isPoli){
+    public String saveKonfirmasiRequest(String request, String idPermintaan, boolean isPoli) throws JSONException{
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
         try {
             String userLogin        = CommonUtil.userLogin();
@@ -125,8 +129,21 @@ public class PermintaanObatPoliAction extends BaseTransactionAction{
             obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
             obatPoli.setBranchId(CommonUtil.userBranchLogin());
 
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+            JSONArray json = new JSONArray(request);
+
+            TransaksiObatDetail transaksiObatDetail;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                transaksiObatDetail = new TransaksiObatDetail();
+                transaksiObatDetail.setIdObat(obj.getString("ID"));
+                transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("Approve")));
+                transaksiObatDetails.add(transaksiObatDetail);
+            }
+
             try {
-                obatPoliBo.saveApproveRequest(obatPoli, request, isPoli);
+                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
             }catch (JSONException e){
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
