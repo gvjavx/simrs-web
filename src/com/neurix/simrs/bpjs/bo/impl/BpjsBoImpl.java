@@ -1,5 +1,6 @@
 package com.neurix.simrs.bpjs.bo.impl;
 
+import com.google.gson.Gson;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
@@ -1399,6 +1400,1128 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
     }
 
     //----------------------------------------!! END SEP !!-------------------------------------------//
+
+    //----------------------------------------!! RUJUKAN !!-------------------------------------------//
+    @Override
+    public RujukanResponse caraRujukanBerdasarNomorBpjs(String noRujukan,String jenisCari, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] Start >>>>>>>");
+        String feature = "";
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        //Jenis Cari
+        //R = rumah sakit
+        //P = Pcare
+        switch (jenisCari){
+            case "R":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/"+noRujukan;
+            break;
+            case "P":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/"+noRujukan;
+            break;
+        }
+        if (!feature.equalsIgnoreCase("")){
+            String result;
+
+            ImBranches resultBranch = null;
+            try {
+                // Get data from database by ID
+                resultBranch = branchDao.getConsSecrBranchById(unitId);
+            } catch (HibernateException e) {
+                logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+            }
+            if (resultBranch != null){
+                try {
+                    result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                    JSONObject myResponseCheck = new JSONObject(result);
+                    if (myResponseCheck.isNull("response")) {
+                        JSONObject response = myResponseCheck.getJSONObject("metaData");
+                        logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] : " + response.getString("message"));
+                    } else {
+                        JSONObject response = myResponseCheck.getJSONObject("response");
+                            JSONObject rujukan = response.getJSONObject("rujukan");
+
+                                JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
+                                    rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                                    rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+
+                                rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
+                                rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+
+                                JSONObject pelayanan = rujukan.getJSONObject("pelayanan");
+                                    rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                                    rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+
+                                JSONObject peserta = rujukan.getJSONObject("peserta");
+                                    JSONObject cob = peserta.getJSONObject("cob");
+                                        rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                                        rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                                        rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                                        rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+
+                                JSONObject hakKelas = peserta.getJSONObject("hakKelas");
+                                    rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                                    rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+
+                                JSONObject informasi = peserta.getJSONObject("informasi");
+                                    rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                                    rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                                    rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+
+                                JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
+                                    rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                                    rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+
+                                JSONObject mr = peserta.getJSONObject("mr");
+                                    rujukanResponse.setNoMr(mr.getString("noMR"));
+                                    rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+
+                                rujukanResponse.setNama(peserta.getString("nama"));
+                                rujukanResponse.setNik(peserta.getString("nik"));
+                                rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                                rujukanResponse.setPisa(peserta.getString("pisa"));
+
+                                JSONObject provUmum = peserta.getJSONObject("provUmum");
+                                    rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                                    rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+
+                                rujukanResponse.setSex(peserta.getString("sex"));
+
+                                JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
+                                    rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                                    rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+
+                                rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                                rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                                rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                                rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+
+                                JSONObject umur = peserta.getJSONObject("umur");
+                                    rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                                    rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+
+                            JSONObject poliRujukan = rujukan.getJSONObject("poliRujukan");
+                                rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                                rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+
+                            JSONObject provPerujuk = rujukan.getJSONObject("provPerujuk");
+                                rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                                rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+
+                            rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
+                    }
+                } catch (IOException | JSONException |GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] End <<<<<<<");
+        return rujukanResponse;
+    }
+    @Override
+    public RujukanResponse caraRujukanBerdasarNomorkartuBpjs(String noRujukan, String jenisCari, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjs] Start >>>>>>>");
+        String feature = "";
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        //Jenis Cari
+        //R = rumah sakit
+        //P = Pcare
+        switch (jenisCari){
+            case "R":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/Peserta/"+noRujukan;
+                break;
+            case "P":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/Peserta/"+noRujukan;
+                break;
+        }
+        if (!feature.equalsIgnoreCase("")){
+            String result;
+
+            ImBranches resultBranch = null;
+            try {
+                // Get data from database by ID
+                resultBranch = branchDao.getConsSecrBranchById(unitId);
+            } catch (HibernateException e) {
+                logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjs] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+            }
+            if (resultBranch != null){
+                try {
+                    result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                    JSONObject myResponseCheck = new JSONObject(result);
+                    if (myResponseCheck.isNull("response")) {
+                        JSONObject response = myResponseCheck.getJSONObject("metaData");
+                        logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjs] : " + response.getString("message"));
+                    } else {
+                        JSONObject response = myResponseCheck.getJSONObject("response");
+                        JSONObject rujukan = response.getJSONObject("rujukan");
+
+                        JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
+                        rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                        rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+
+                        rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
+                        rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+
+                        JSONObject pelayanan = rujukan.getJSONObject("pelayanan");
+                        rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                        rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+
+                        JSONObject peserta = rujukan.getJSONObject("peserta");
+                        JSONObject cob = peserta.getJSONObject("cob");
+                        rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                        rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                        rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                        rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+
+                        JSONObject hakKelas = peserta.getJSONObject("hakKelas");
+                        rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                        rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+
+                        JSONObject informasi = peserta.getJSONObject("informasi");
+                        rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                        rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                        rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+
+                        JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
+                        rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                        rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+
+                        JSONObject mr = peserta.getJSONObject("mr");
+                        rujukanResponse.setNoMr(mr.getString("noMR"));
+                        rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+
+                        rujukanResponse.setNama(peserta.getString("nama"));
+                        rujukanResponse.setNik(peserta.getString("nik"));
+                        rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                        rujukanResponse.setPisa(peserta.getString("pisa"));
+
+                        JSONObject provUmum = peserta.getJSONObject("provUmum");
+                        rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                        rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+
+                        rujukanResponse.setSex(peserta.getString("sex"));
+
+                        JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
+                        rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                        rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+
+                        rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                        rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                        rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                        rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+
+                        JSONObject umur = peserta.getJSONObject("umur");
+                        rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                        rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+
+                        JSONObject poliRujukan = rujukan.getJSONObject("poliRujukan");
+                        rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                        rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+
+                        JSONObject provPerujuk = rujukan.getJSONObject("provPerujuk");
+                        rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                        rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+
+                        rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
+                    }
+                } catch (IOException | JSONException |GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjs] End <<<<<<<");
+        return rujukanResponse;
+    }
+
+    @Override
+    public List<RujukanResponse> caraRujukanBerdasarNomorkartuBpjsList(String noRujukan, String jenisCari, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] Start >>>>>>>");
+        List<RujukanResponse> rujukanResponseList = new ArrayList<>();
+        String feature = "";
+        //Jenis Cari
+        //R = rumah sakit
+        //P = Pcare
+        switch (jenisCari){
+            case "R":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/List/Peserta/"+noRujukan;
+                break;
+            case "P":
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/List/Peserta/"+noRujukan;
+                break;
+        }
+        if (!feature.equalsIgnoreCase("")){
+            String result;
+
+            ImBranches resultBranch = null;
+            try {
+                // Get data from database by ID
+                resultBranch = branchDao.getConsSecrBranchById(unitId);
+            } catch (HibernateException e) {
+                logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+            }
+            if (resultBranch != null){
+                try {
+                    result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                    JSONObject myResponseCheck = new JSONObject(result);
+                    if (myResponseCheck.isNull("response")) {
+                        JSONObject response = myResponseCheck.getJSONObject("metaData");
+                        logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] : " + response.getString("message"));
+                    } else {
+                        JSONObject response = myResponseCheck.getJSONObject("response");
+                        JSONArray rujukan = response.getJSONArray("rujukan");
+                        int length = rujukan.length();
+                        for (int i=0;i<length;i++) {
+                            JSONObject obj = rujukan.getJSONObject(i);
+                            RujukanResponse rujukanResponse = new RujukanResponse();
+                            JSONObject diagnosa = obj.getJSONObject("diagnosa");
+                            rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                            rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+
+                            rujukanResponse.setKeluhan(obj.getString("keluhan"));
+                            rujukanResponse.setNoKunjungan(obj.getString("noKunjungan"));
+
+                            JSONObject pelayanan = obj.getJSONObject("pelayanan");
+                            rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                            rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+
+                            JSONObject peserta = obj.getJSONObject("peserta");
+                            JSONObject cob = peserta.getJSONObject("cob");
+                            rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                            rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                            rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                            rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+
+                            JSONObject hakKelas = peserta.getJSONObject("hakKelas");
+                            rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                            rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+
+                            JSONObject informasi = peserta.getJSONObject("informasi");
+                            rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                            rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                            rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+
+                            JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
+                            rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                            rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+
+                            JSONObject mr = peserta.getJSONObject("mr");
+                            rujukanResponse.setNoMr(mr.getString("noMR"));
+                            rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+
+                            rujukanResponse.setNama(peserta.getString("nama"));
+                            rujukanResponse.setNik(peserta.getString("nik"));
+                            rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                            rujukanResponse.setPisa(peserta.getString("pisa"));
+
+                            JSONObject provUmum = peserta.getJSONObject("provUmum");
+                            rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                            rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+
+                            rujukanResponse.setSex(peserta.getString("sex"));
+
+                            JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
+                            rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                            rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+
+                            rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                            rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                            rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                            rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+
+                            JSONObject umur = peserta.getJSONObject("umur");
+                            rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                            rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+
+                            JSONObject poliRujukan = obj.getJSONObject("poliRujukan");
+                            rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                            rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+
+                            JSONObject provPerujuk = obj.getJSONObject("provPerujuk");
+                            rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                            rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+
+                            rujukanResponse.setTglKunjungan(obj.getString("tglKunjungan"));
+
+                            rujukanResponseList.add(rujukanResponse);
+                        }
+
+                    }
+                } catch (IOException | JSONException |GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] End <<<<<<<");
+        return rujukanResponseList;
+    }
+
+    @Override
+    public RujukanResponse insertRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.insertRujukanBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Rujukan/insert";
+        JSONObject request = null;
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_rujukan\": {\n" +
+                "             \"noSep\": \""+rujukanRequest.getNoSep()+"\",\n" +
+                "             \"tglRujukan\": \""+rujukanRequest.getTglRujukan()+"\",\n" +
+                "             \"ppkDirujuk\": \""+rujukanRequest.getPpkDirujuk()+"\",\n" +
+                "             \"jnsPelayanan\": \""+rujukanRequest.getJnsPelayanan()+"\",\n" +
+                "             \"catatan\": \""+rujukanRequest.getCatatan()+"\",\n" +
+                "             \"diagRujukan\": \""+rujukanRequest.getDiagRujukan()+"\",\n" +
+                "             \"tipeRujukan\": \""+rujukanRequest.getTipeRujukan()+"\",\n" +
+                "             \"poliRujukan\": \""+rujukanRequest.getPoliRujukan()+"\",\n" +
+                "             \"user\": \""+rujukanRequest.getUserPembuatRujukan()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.insertRujukanBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.insertRujukanBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONObject rujukan = response.getJSONObject("rujukan");
+                    JSONObject AsalRujukan = rujukan.getJSONObject("AsalRujukan");
+                    rujukanResponse.setKodeAsalRujukan(AsalRujukan.getString("kode"));
+                    rujukanResponse.setNamaAsalRujukan(AsalRujukan.getString("nama"));
+
+                    JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
+                    rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                    rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+
+                    JSONObject peserta = rujukan.getJSONObject("peserta");
+                    rujukanResponse.setAsuransi(peserta.getString("asuransi"));
+                    rujukanResponse.setKodeHakKelas(peserta.getString("hakKelas"));
+                    rujukanResponse.setKodeJenisPeserta(peserta.getString("jnsPeserta"));
+                    rujukanResponse.setSex(peserta.getString("kelamin"));
+                    rujukanResponse.setNama(peserta.getString("nama"));
+                    rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                    rujukanResponse.setNoMr(peserta.getString("noMr"));
+                    rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+
+                    JSONObject poliTujuan = rujukan.getJSONObject("poliTujuan");
+                    rujukanResponse.setKodePoliRujukan(poliTujuan.getString("kode"));
+                    rujukanResponse.setNamaPoliRujukan(poliTujuan.getString("nama"));
+
+                    rujukanResponse.setTglRujukan(rujukan.getString("tglRujukan"));
+                    rujukanResponse.setNoRujukan(rujukan.getString("noRujukan"));
+
+                    JSONObject tujuanRujukan = rujukan.getJSONObject("tujuanRujukan");
+                    rujukanResponse.setKodeTujuanRujukan(tujuanRujukan.getString("kode"));
+                    rujukanResponse.setNamaTujuanRujukan(tujuanRujukan.getString("nama"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.insertRujukanBpjs] End <<<<<<<");
+        return rujukanResponse;
+    }
+
+    @Override
+    public RujukanResponse updateRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.updateRujukanBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Rujukan/update";
+        JSONObject request = null;
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_rujukan\": {\n" +
+                "             \"noRujukan\": \""+rujukanRequest.getNoRujukan()+"\",\n" +
+                "             \"ppkDirujuk\": \""+rujukanRequest.getPpkDirujuk()+"\",\n" +
+                "             \"tipe\": \""+rujukanRequest.getTipeRujukan()+"\",\n" +
+                "             \"jnsPelayanan\": \""+rujukanRequest.getJnsPelayanan()+"\",\n" +
+                "             \"catatan\": \""+rujukanRequest.getCatatan()+"\",\n" +
+                "             \"diagRujukan\": \""+rujukanRequest.getDiagRujukan()+"\",\n" +
+                "             \"tipeRujukan\": \""+rujukanRequest.getTipeRujukan()+"\",\n" +
+                "             \"poliRujukan\": \""+rujukanRequest.getPoliRujukan()+"\",\n" +
+                "             \"user\": \""+rujukanRequest.getUserPembuatRujukan()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.updateRujukanBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.updateRujukanBpjs] : " + response.getString("message"));
+                } else {
+                    rujukanResponse.setNoRujukan(myResponseCheck.getString("response"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.updateRujukanBpjs] End <<<<<<<");
+        return rujukanResponse;
+    }
+    @Override
+    public RujukanResponse deleteRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.deleteRujukanBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Rujukan/delete";
+        JSONObject request = null;
+        String jsonData="{\n" +
+                "        \"request\": {\n" +
+                "            \"t_rujukan\": {\n" +
+                "                \"noRujukan\": \""+rujukanRequest.getNoRujukan()+"\",\n" +
+                "                \"user\": \""+rujukanRequest.getUserPembuatRujukan()+"\"\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.deleteRujukanBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.deleteRujukanBpjs] : " + response.getString("message"));
+                } else {
+                    rujukanResponse.setNoRujukan(myResponseCheck.getString("response"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.deleteRujukanBpjs] End <<<<<<<");
+        return rujukanResponse;
+    }
+
+    //----------------------------------------!! END OF RUJUKAN !!-------------------------------------------//
+
+    //----------------------------------------!! LPK !!-------------------------------------------//
+    @Override
+    public LPKResponse insertLPKBpjs(LPKRequest lpkRequest, List<DiagnosaResponse> diagnosaResponseList, List<TindakanResponse> tindakanResponseList, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.insertLPKBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/LPK/insert";
+        JSONObject request = null;
+        List<TindakanLPK> tindakanLPKList = new ArrayList<>();
+        List<DiagnosaLPK> diagnosaLPKList = new ArrayList<>();
+
+        for (DiagnosaResponse diagnosa : diagnosaResponseList){
+            DiagnosaLPK data = new DiagnosaLPK();
+            data.setKode(diagnosa.getKodeDiagnosaBpjs());
+            data.setLevel(diagnosa.getLevelDiagnosa());
+            diagnosaLPKList.add(data);
+        }
+        for (TindakanResponse tindakan : tindakanResponseList){
+            TindakanLPK data = new TindakanLPK();
+            data.setKode(tindakan.getKodeTindakanBpjs());
+        }
+        String jsonDiagnosa = new Gson().toJson(diagnosaLPKList);
+        String jsonTindakan = new Gson().toJson(tindakanLPKList);
+
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_lpk\": {\n" +
+                "             \"noSep\": \""+lpkRequest.getNoSep()+"\",\n" +
+                "             \"tglMasuk\": \""+lpkRequest.getTglMasuk()+"\",\n" +
+                "             \"tglKeluar\": \""+lpkRequest.getTglKeluar()+"\",\n" +
+                "             \"jaminan\": \""+lpkRequest.getJaminan()+"\",\n" +
+                "             \"poli\": {\n" +
+                "                \"poli\": \""+lpkRequest.getKdPoli()+"\"\n" +
+                "             },\n" +
+                "             \"perawatan\": {\n" +
+                "                \"ruangRawat\": \""+lpkRequest.getRuangRawat()+"\",\n" +
+                "                \"kelasRawat\": \""+lpkRequest.getKelasRawat()+"\",\n" +
+                "                \"spesialistik\": \""+lpkRequest.getSpesialistik()+"\",\n" +
+                "                \"caraKeluar\": \""+lpkRequest.getCaraKeluar()+"\",\n" +
+                "                \"kondisiPulang\": \""+lpkRequest.getKondisiPulang()+"\"\n" +
+                "             },\n" +
+                "             \"diagnosa\": "+jsonDiagnosa+",\n" +
+                "             \"procedure\": "+jsonTindakan+",\n" +
+                "             \"rencanaTL\": {\n" +
+                "                \"tindakLanjut\": \""+lpkRequest.getTindakLanjut()+"\",\n" +
+                "                \"dirujukKe\": {\n" +
+                "                   \"kodePPK\": \""+lpkRequest.getKodePPKDirujuk()+"\"\n" +
+                "                },\n" +
+                "                \"kontrolKembali\": {\n" +
+                "                   \"tglKontrol\": \""+lpkRequest.getTglKontrolKembali()+"\",\n" +
+                "                   \"poli\": \""+lpkRequest.getPoliKontrolKembali()+"\"\n" +
+                "                }\n" +
+                "             },\n" +
+                "             \"DPJP\": \""+lpkRequest.getKodeDpjp()+"\",\n" +
+                "             \"user\": \""+lpkRequest.getUserPembuat()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        LPKResponse lpkResponse = new LPKResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.insertLPKBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.insertLPKBpjs] : " + response.getString("message"));
+                } else {
+                    lpkResponse.setNoSep(myResponseCheck.getString("response"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.insertLPKBpjs] End <<<<<<<");
+        return lpkResponse;
+    }
+    @Override
+    public LPKResponse updateLPKBpjs(LPKRequest lpkRequest, List<DiagnosaResponse> diagnosaResponseList, List<TindakanResponse> tindakanResponseList, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.updateLPKBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/LPK/update";
+        JSONObject request = null;
+        List<TindakanLPK> tindakanLPKList = new ArrayList<>();
+        List<DiagnosaLPK> diagnosaLPKList = new ArrayList<>();
+
+        for (DiagnosaResponse diagnosa : diagnosaResponseList){
+            DiagnosaLPK data = new DiagnosaLPK();
+            data.setKode(diagnosa.getKodeDiagnosaBpjs());
+            data.setLevel(diagnosa.getLevelDiagnosa());
+            diagnosaLPKList.add(data);
+        }
+        for (TindakanResponse tindakan : tindakanResponseList){
+            TindakanLPK data = new TindakanLPK();
+            data.setKode(tindakan.getKodeTindakanBpjs());
+        }
+        String jsonDiagnosa = new Gson().toJson(diagnosaLPKList);
+        String jsonTindakan = new Gson().toJson(tindakanLPKList);
+
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_lpk\": {\n" +
+                "             \"noSep\": \""+lpkRequest.getNoSep()+"\",\n" +
+                "             \"tglMasuk\": \""+lpkRequest.getTglMasuk()+"\",\n" +
+                "             \"tglKeluar\": \""+lpkRequest.getTglKeluar()+"\",\n" +
+                "             \"jaminan\": \""+lpkRequest.getJaminan()+"\",\n" +
+                "             \"poli\": {\n" +
+                "                \"poli\": \""+lpkRequest.getKdPoli()+"\"\n" +
+                "             },\n" +
+                "             \"perawatan\": {\n" +
+                "                \"ruangRawat\": \""+lpkRequest.getRuangRawat()+"\",\n" +
+                "                \"kelasRawat\": \""+lpkRequest.getKelasRawat()+"\",\n" +
+                "                \"spesialistik\": \""+lpkRequest.getSpesialistik()+"\",\n" +
+                "                \"caraKeluar\": \""+lpkRequest.getCaraKeluar()+"\",\n" +
+                "                \"kondisiPulang\": \""+lpkRequest.getKondisiPulang()+"\"\n" +
+                "             },\n" +
+                "             \"diagnosa\": "+jsonDiagnosa+",\n" +
+                "             \"procedure\": "+jsonTindakan+",\n" +
+                "             \"rencanaTL\": {\n" +
+                "                \"tindakLanjut\": \""+lpkRequest.getTindakLanjut()+"\",\n" +
+                "                \"dirujukKe\": {\n" +
+                "                   \"kodePPK\": \""+lpkRequest.getKodePPKDirujuk()+"\"\n" +
+                "                },\n" +
+                "                \"kontrolKembali\": {\n" +
+                "                   \"tglKontrol\": \""+lpkRequest.getTglKontrolKembali()+"\",\n" +
+                "                   \"poli\": \""+lpkRequest.getPoliKontrolKembali()+"\"\n" +
+                "                }\n" +
+                "             },\n" +
+                "             \"DPJP\": \""+lpkRequest.getKodeDpjp()+"\",\n" +
+                "             \"user\": \""+lpkRequest.getUserPembuat()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        LPKResponse lpkResponse = new LPKResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.updateLPKBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.updateLPKBpjs] : " + response.getString("message"));
+                } else {
+                    lpkResponse.setNoSep(myResponseCheck.getString("response"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.updateLPKBpjs] End <<<<<<<");
+        return lpkResponse;
+    }
+    @Override
+    public LPKResponse deleteLPKBpjs(LPKRequest lpkRequest, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.deleteLPKBpjs] Start >>>>>>>");
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/LPK/delete";
+        JSONObject request = null;
+
+        String jsonData="{\n" +
+                "       \"request\": {\n" +
+                "          \"t_lpk\": {\n" +
+                "             \"noSep\": \""+lpkRequest.getNoSep()+"\"\n" +
+                "          }\n" +
+                "       }\n" +
+                "    }";
+        try {
+            request = new JSONObject(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = null;
+        LPKResponse lpkResponse = new LPKResponse();
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.deleteLPKBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                result = GETRequest(feature,request,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.deleteLPKBpjs] : " + response.getString("message"));
+                } else {
+                    lpkResponse.setNoSep(myResponseCheck.getString("response"));
+                }
+
+            } catch (IOException | JSONException | GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("[BPJSBoImpl.deleteLPKBpjs] End <<<<<<<");
+        return lpkResponse;
+    }
+
+    @Override
+    public List<LPKResponse> dataLPKBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.dataLPKBpjs] Start >>>>>>>");
+        List<LPKResponse> lpkResponseList= new ArrayList<>();
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/LPK/TglMasuk/"+tglMasuk+"/JnsPelayanan/"+jnsPelayanan;
+        String result;
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        if (resultBranch != null){
+            try {
+                result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONObject lpk = response.getJSONObject("lpk");
+                    JSONArray list = lpk.getJSONArray("list");
+                    int length = list.length();
+                    for (int i=0;i<length;i++) {
+                        JSONObject obj = list.getJSONObject(i);
+                        LPKResponse lpkResponse = new LPKResponse();
+                        JSONObject DPJP = obj.getJSONObject("DPJP");
+                        JSONObject dokter = DPJP.getJSONObject("dokter");
+                        lpkResponse.setKodeDokterDpjp(dokter.getString("kode"));
+                        lpkResponse.setNamaDokterDpjp(dokter.getString("nama"));
+
+                        List<DiagnosaResponse> diagnosaResponses = new ArrayList<>();
+                        JSONObject diagnosa = obj.getJSONObject("diagnosa");
+                        JSONArray listDiagnosa = diagnosa.getJSONArray("list");
+                        int lengthDiagnosa = listDiagnosa.length();
+                        for (int j=0;j<lengthDiagnosa;j++) {
+                            JSONObject objDiagnosa = list.getJSONObject(j);
+                            DiagnosaResponse diagnosaResponse = new DiagnosaResponse();
+                            diagnosaResponse.setLevelDiagnosa(objDiagnosa.getString("level"));
+                            JSONObject diagnosaObj = objDiagnosa.getJSONObject("list");
+                            diagnosaResponse.setKodeDiagnosaBpjs(diagnosaObj.getString("kode"));
+                            diagnosaResponse.setNamaDiagnosaBpjs(diagnosaObj.getString("nama"));
+                            diagnosaResponses.add(diagnosaResponse);
+                        }
+                        lpkResponse.setDiagnosaResponseList(diagnosaResponses);
+
+                        lpkResponse.setJnsPelayanan(obj.getString("jnsPelayanan"));
+                        lpkResponse.setNoSep(obj.getString("noSep"));
+
+                        JSONObject perawatan = obj.getJSONObject("perawatan");
+                        JSONObject caraKeluar = perawatan.getJSONObject("perawatan");
+                        lpkResponse.setKodeCaraKeluar(caraKeluar.getString("kode"));
+                        lpkResponse.setNamaCaraKeluar(caraKeluar.getString("nama"));
+
+                        JSONObject kelasRawat = perawatan.getJSONObject("kelasRawat");
+                        lpkResponse.setKodeKelasRawat(kelasRawat.getString("kode"));
+                        lpkResponse.setNamaKelasRawat(kelasRawat.getString("nama"));
+
+                        JSONObject ruangRawat = perawatan.getJSONObject("ruangRawat");
+                        lpkResponse.setKodeRuangRawat(ruangRawat.getString("kode"));
+                        lpkResponse.setNamaRuangRawat(ruangRawat.getString("nama"));
+
+                        JSONObject spesialistik = perawatan.getJSONObject("spesialistik");
+                        lpkResponse.setKodeSpesialistik(spesialistik.getString("kode"));
+                        lpkResponse.setNamaSpesialistik(spesialistik.getString("nama"));
+
+                        JSONObject peserta = obj.getJSONObject("peserta");
+                        lpkResponse.setKelamin(peserta.getString("kelamin"));
+                        lpkResponse.setNama(peserta.getString("nama"));
+                        lpkResponse.setNoKartu(peserta.getString("noKartu"));
+                        lpkResponse.setNoMr(peserta.getString("noMR"));
+                        lpkResponse.setTglLahir(peserta.getString("tglLahir"));
+
+                        JSONObject poli = obj.getJSONObject("poli");
+                        lpkResponse.setPoliEksekutif(poli.getString("eksekutif"));
+                        JSONObject poliPoli = poli.getJSONObject("poli");
+                        lpkResponse.setKodePoli(poliPoli.getString("kode"));
+
+                        List<TindakanResponse> tindakanResponses = new ArrayList<>();
+                        JSONObject tindakan = obj.getJSONObject("procedure");
+                        JSONArray listTindakan = tindakan.getJSONArray("list");
+                        int lengthTindakan = listTindakan.length();
+                        for (int k=0;k<lengthTindakan;k++) {
+                            JSONObject objTindakan = list.getJSONObject(k);
+                            TindakanResponse tindakanResponse = new TindakanResponse();
+                            JSONObject diagnosaObj = objTindakan.getJSONObject("list");
+                            tindakanResponse.setKodeTindakanBpjs(diagnosaObj.getString("kode"));
+                            tindakanResponse.setNamaTindakanBpjs(diagnosaObj.getString("nama"));
+                            tindakanResponses.add(tindakanResponse);
+                        }
+                        lpkResponse.setTindakanResponseList(tindakanResponses);
+
+                        lpkResponse.setRencanaTl(obj.getString("rencanaTL"));
+                        lpkResponse.setTglKeluar(obj.getString("tglKeluar"));
+                        lpkResponse.setTglMasuk(obj.getString("tglMasuk"));
+
+                        lpkResponseList.add(lpkResponse);
+                    }
+                }
+            } catch (IOException | JSONException |GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("[BPJSBoImpl.caraRujukanBerdasarNomorkartuBpjsList] End <<<<<<<");
+        return lpkResponseList;
+    }
+
+    //----------------------------------------!! END OF LPK !!-------------------------------------------//
+
+    //----------------------------------------!! MONITORING !!-------------------------------------------//
+    @Override
+    public List<MonitoringDataKunjunganResponse> monitoringDataKunjunganBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.monitoringDataKunjunganBpjs] Start >>>>>>>");
+        List<MonitoringDataKunjunganResponse> monitoringDataKunjunganResponseList= new ArrayList<>();
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Monitoring/Kunjungan/Tanggal/"+tglMasuk+"/JnsPelayanan/"+jnsPelayanan;
+        String result;
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.monitoringDataKunjunganBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        if (resultBranch != null){
+            try {
+                result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.monitoringDataKunjunganBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONArray array = response.getJSONArray("sep");
+                    int lengthMonitoring = array.length();
+                    for (int i=0;i<lengthMonitoring;i++) {
+                        JSONObject obj= array.getJSONObject(i);
+                        MonitoringDataKunjunganResponse data = new MonitoringDataKunjunganResponse();
+                        data.setDiagnosa(obj.getString("diagnosa"));
+                        data.setJnsPelayanan(obj.getString("jnsPelayanan"));
+                        data.setKelasRawat(obj.getString("kelasRawat"));
+                        data.setNama(obj.getString("nama"));
+                        data.setNoKartu(obj.getString("noKartu"));
+                        data.setNoSep(obj.getString("noSep"));
+                        data.setNoRujukan(obj.getString("noRujukan"));
+                        data.setPoli(obj.getString("poli"));
+                        data.setTglPlgSep(obj.getString("tglPlgSep"));
+                        data.setTglSep(obj.getString("tglSep"));
+
+                        monitoringDataKunjunganResponseList.add(data);
+                    }
+                }
+            } catch (IOException | JSONException |GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("[BPJSBoImpl.monitoringDataKunjunganBpjs] End <<<<<<<");
+        return monitoringDataKunjunganResponseList;
+    }
+
+    @Override
+    public List<DataKlaimResponse> monitoringDataKlaimBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.monitoringDataKlaimBpjs] Start >>>>>>>");
+        List<DataKlaimResponse> dataKlaimResponseList= new ArrayList<>();
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Monitoring/Klaim/Tanggal/"+tglMasuk+"/JnsPelayanan/"+jnsPelayanan;
+        String result;
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.monitoringDataKlaimBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        if (resultBranch != null){
+            try {
+                result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.monitoringDataKlaimBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONArray array = response.getJSONArray("klaim");
+                    int lengthMonitoring = array.length();
+                    for (int i=0;i<lengthMonitoring;i++) {
+                        JSONObject obj= array.getJSONObject(i);
+                        DataKlaimResponse data = new DataKlaimResponse();
+
+                        JSONObject Inacbg = obj.getJSONObject("Inacbg");
+                        data.setKodeInaCbg(Inacbg.getString("kode"));
+                        data.setNamaInaCbg(Inacbg.getString("nama"));
+
+                        JSONObject biaya = obj.getJSONObject("biaya");
+                        data.setByPengajuan(biaya.getString("byPengajuan"));
+                        data.setBySetujui(biaya.getString("bySetujui"));
+                        data.setByTarifGrouper(biaya.getString("byTarifGruper"));
+                        data.setByTarifRs(biaya.getString("byTarifRS"));
+                        data.setByTopUp(biaya.getString("byTopup"));
+
+                        data.setKelasRawat(obj.getString("kelasRawat"));
+                        data.setNoFPK(obj.getString("noFPK"));
+                        data.setNoSep(obj.getString("noSEP"));
+
+                        JSONObject peserta = obj.getJSONObject("peserta");
+                        data.setNamaPeserta(peserta.getString("nama"));
+                        data.setNoKartu(peserta.getString("noKartu"));
+                        data.setNoMr(peserta.getString("noMR"));
+
+                        data.setPoli(obj.getString("poli"));
+                        data.setStatus(obj.getString("status"));
+                        data.setTglPulang(obj.getString("tglPulang"));
+                        data.setTglSep(obj.getString("tglSep"));
+
+                        dataKlaimResponseList.add(data);
+                    }
+                }
+            } catch (IOException | JSONException |GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("[BPJSBoImpl.monitoringDataKlaimBpjs] End <<<<<<<");
+        return dataKlaimResponseList;
+    }
+
+    @Override
+    public List<HistoryPelayananPesertaResponse> monitoringHistoryPelayananBpjs(String noKartu, String tglMulaiPencarian, String tglAkhirPencarian, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.monitoringHistoryPelayananBpjs] Start >>>>>>>");
+        List<HistoryPelayananPesertaResponse> historyPelayananPesertaResponseList= new ArrayList<>();
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/monitoring/HistoriPelayanan/NoKartu/"+noKartu+"/tglMulai/"+tglMulaiPencarian+"/tglAkhir/"+tglAkhirPencarian;
+        String result;
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.monitoringHistoryPelayananBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        if (resultBranch != null){
+            try {
+                result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.monitoringHistoryPelayananBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONArray array = response.getJSONArray("histori");
+                    int lengthMonitoring = array.length();
+                    for (int i=0;i<lengthMonitoring;i++) {
+                        JSONObject obj= array.getJSONObject(i);
+                        HistoryPelayananPesertaResponse data = new HistoryPelayananPesertaResponse();
+                        data.setDiagnosa(obj.getString("diagnosa"));
+                        data.setJnsPelayanan(obj.getString("jnsPelayanan"));
+                        data.setKelasRawat(obj.getString("kelasRawat"));
+                        data.setNamaPeserta(obj.getString("namaPeserta"));
+                        data.setNoKartu(obj.getString("noKartu"));
+                        data.setNoSep(obj.getString("noSep"));
+                        data.setNoRujukan(obj.getString("noRujukan"));
+                        data.setPoli(obj.getString("poli"));
+                        data.setPpkPelayanan(obj.getString("ppkPelayanan"));
+                        data.setTglPlgSep(obj.getString("tglPlgSep"));
+                        data.setTglSep(obj.getString("tglSep"));
+
+                        historyPelayananPesertaResponseList.add(data);
+                    }
+                }
+            } catch (IOException | JSONException |GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("[BPJSBoImpl.monitoringHistoryPelayananBpjs] End <<<<<<<");
+        return historyPelayananPesertaResponseList;
+    }
+
+    @Override
+    public List<KlaimJasaRaharjaResponse> monitoringKlaimJasaRaharjaBpjs(String tglMulai,String tglAkhir, String unitId) throws GeneralBOException {
+        logger.info("[BPJSBoImpl.monitoringKlaimJasaRaharjaBpjs] Start >>>>>>>");
+        List<KlaimJasaRaharjaResponse> klaimJasaRaharjaResponseList= new ArrayList<>();
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/monitoring/JasaRaharja/tglMulai/"+tglMulai+"/tglAkhir/"+tglAkhir;
+        String result;
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[BPJSBoImpl.monitoringKlaimJasaRaharjaBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        if (resultBranch != null){
+            try {
+                result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[BPJSBoImpl.monitoringKlaimJasaRaharjaBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONArray array = response.getJSONArray("histori");
+                    int lengthMonitoring = array.length();
+                    for (int i=0;i<lengthMonitoring;i++) {
+                        JSONObject obj= array.getJSONObject(i);
+                        KlaimJasaRaharjaResponse data = new KlaimJasaRaharjaResponse();
+                        JSONObject sep = obj.getJSONObject("sep");
+                        data.setNoSep(sep.getString("noSEP"));
+                        data.setTglSep(sep.getString("tglSEP"));
+                        data.setTglPlgSep(sep.getString("tglPlgSEP"));
+                        data.setNoMr(sep.getString("noMr"));
+                        data.setJnsPelayanan(sep.getString("jnsPelayanan"));
+                        data.setPoli(sep.getString("poli"));
+                        data.setDiagnosa(sep.getString("diagnosa"));
+                        JSONObject peserta = obj.getJSONObject("peserta");
+                        data.setNoKartu(peserta.getString("noKartu"));
+                        data.setNama(peserta.getString("nama"));
+                        data.setNoMrPeserta(peserta.getString("noMR"));
+
+                        JSONObject jasaRaharja = obj.getJSONObject("jasaRaharja");
+                        data.setTglKejadian(jasaRaharja.getString("tglKejadian"));
+                        data.setNoRegister(jasaRaharja.getString("noRegister"));
+                        data.setKetStatusDijamin(jasaRaharja.getString("ketStatusDijamin"));
+                        data.setKetStatusDikirim(jasaRaharja.getString("ketStatusDikirim"));
+                        data.setBiayaDijamin(jasaRaharja.getString("biayaDijamin"));
+                        data.setPlafon(jasaRaharja.getString("plafon"));
+                        data.setJmlDibayar(jasaRaharja.getString("jmlDibayar"));
+                        data.setResultJasaRaharja(jasaRaharja.getString("resultsJasaRaharja"));
+
+                        klaimJasaRaharjaResponseList.add(data);
+                    }
+                }
+            } catch (IOException | JSONException |GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("[BPJSBoImpl.monitoringKlaimJasaRaharjaBpjs] End <<<<<<<");
+        return klaimJasaRaharjaResponseList;
+    }
+    //----------------------------------------!! END OF MONITORING !!-------------------------------------------//
+
     @Override
     public String coba(){
         return "Sukses";

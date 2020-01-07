@@ -61,5 +61,39 @@ public interface BpjsBo{
 
     //----------------------------------------!! END SEP !!-------------------------------------------//
 
+    //----------------------------------------!! RUJUKAN !!-------------------------------------------//
+    RujukanResponse caraRujukanBerdasarNomorBpjs(String noRujukan,String jenisCari, String unitId) throws GeneralBOException;
+
+    RujukanResponse caraRujukanBerdasarNomorkartuBpjs(String noRujukan, String jenisCari, String unitId) throws GeneralBOException;
+
+    List<RujukanResponse> caraRujukanBerdasarNomorkartuBpjsList(String noRujukan, String jenisCari, String unitId) throws GeneralBOException;
+
+    RujukanResponse insertRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException;
+
+    RujukanResponse updateRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException;
+
+    RujukanResponse deleteRujukanBpjs(RujukanRequest rujukanRequest, String unitId) throws GeneralBOException;
+    //----------------------------------------!! END OF RUJUKAN !!-------------------------------------------//
+
+    //----------------------------------------!! LPK !!-------------------------------------------//
+    LPKResponse insertLPKBpjs(LPKRequest lpkRequest,List<DiagnosaResponse> diagnosaResponseList,List<TindakanResponse> tindakanResponseList, String unitId) throws GeneralBOException;
+
+    //----------------------------------------!! END OF LPK !!-------------------------------------------//
+
+    LPKResponse updateLPKBpjs(LPKRequest lpkRequest, List<DiagnosaResponse> diagnosaResponseList, List<TindakanResponse> tindakanResponseList, String unitId) throws GeneralBOException;
+
+    LPKResponse deleteLPKBpjs(LPKRequest lpkRequest, String unitId) throws GeneralBOException;
+
+    List<LPKResponse> dataLPKBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException;
+
+    //----------------------------------------!! MONITORING !!-------------------------------------------//
+    List<MonitoringDataKunjunganResponse> monitoringDataKunjunganBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException;
+
+    List<DataKlaimResponse> monitoringDataKlaimBpjs(String tglMasuk, String jnsPelayanan, String unitId) throws GeneralBOException;
+
+    List<HistoryPelayananPesertaResponse> monitoringHistoryPelayananBpjs(String noKartu, String tglMulaiPencarian, String tglAkhirPencarian, String unitId) throws GeneralBOException;
+
+    List<KlaimJasaRaharjaResponse> monitoringKlaimJasaRaharjaBpjs(String tglMulai, String tglAkhir, String unitId) throws GeneralBOException;
+
     String coba();
 }
