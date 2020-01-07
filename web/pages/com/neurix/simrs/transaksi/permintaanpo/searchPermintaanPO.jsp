@@ -191,9 +191,14 @@
                                                 <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                             </s:a>
                                         </s:if>
-                                        <s:if test='#row.approvalFlag == "Y"'>
-                                            <button class="btn btn-warning" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="createdDate"/>','<s:property value="idPelayanan"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i></button>
-                                        </s:if>
+                                        <s:url var="approve_po" namespace="/permintaanpo" action="initApproval_permintaanpo" escapeAmp="false">
+                                            <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{approve_po}">
+                                        <%--<s:if test='#row.approvalFlag == "Y"'>--%>
+                                            <button class="btn btn-success"><i class="fa fa-check"></i></button>
+                                        <%--</s:if>--%>
+                                        </s:a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -312,111 +317,6 @@
     </div>
 </div>
 
-
-<%--<div class="modal fade" id="modal-reture-obat">--%>
-<%--<div class="modal-dialog modal-flat">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header" style="background-color: #00a65a">--%>
-<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-<%--<span aria-hidden="true">&times;</span></button>--%>
-<%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Reture Obat Gudang</h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
-<%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_reture">--%>
-<%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-<%--<p id="msg_reture"></p>--%>
-<%--</div>--%>
-<%--<div class="row">--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Nama Obat</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<s:action id="initObatPoli" namespace="/obatpoli"--%>
-<%--name="getListObatPoli_obatpoli"/>--%>
-<%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-<%--list="#initObatPoli.listOfObatPoli" id="ret_nama_obat"--%>
-<%--listKey="idObat + '|' + namaObat + '|' + qty"--%>
-<%--onchange="var warn =$('#war_ret_obat').is(':visible'); if (warn){$('#cor_ret_obat').show().fadeOut(3000);$('#war_ret_obat').hide()}; setStokPoli(this)"--%>
-<%--listValue="namaObat"--%>
-<%--headerKey="" headerValue="[Select one]"--%>
-<%--cssClass="form-control select2"/>--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_ret_obat"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_ret_obat"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
-<%--&lt;%&ndash;<label class="col-md-3" style="margin-top: 7px">Stok Obat Apotek</label>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<div class="col-md-7">&ndash;%&gt;--%>
-<%--&lt;%&ndash;<input class="form-control" style="margin-top: 7px" readonly id="ret_stok_apotek">&ndash;%&gt;--%>
-<%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Stok Obat Poli</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<input class="form-control" style="margin-top: 7px" readonly id="ret_stok">--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px">Jumlah Reture</label>--%>
-<%--<div class="col-md-7">--%>
-<%--<input oninput="var warn =$('#war_ret_qty').is(':visible'); if (warn){$('#cor_ret_qty').show().fadeOut(3000);$('#war_ret_qty').hide()}"--%>
-<%--style="margin-top: 7px" class="form-control" type="number" min="1"--%>
-<%--id="ret_qty">--%>
-<%--</div>--%>
-<%--<div class="col-md-2">--%>
-<%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="war_ret_qty"><i class="fa fa-times"></i> required</p>--%>
-<%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-<%--id="cor_ret_qty"><i class="fa fa-check"></i> correct</p>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
-<%--<div class="col-md-7">--%>
-<%--<button class="btn btn-success pull-right" style="margin-top: 7px"--%>
-<%--onclick="addObatToList(2)"><i class="fa fa-plus"></i> Tambah--%>
-<%--</button>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="box-header with-border">--%>
-<%--</div>--%>
-<%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits_ret">--%>
-<%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-<%--Data obat sudah tersedia..!--%>
-<%--</div>--%>
-<%--<div class="box-header with-border"><i class="fa fa-file-o"></i> Reture Obat--%>
-<%--</div>--%>
-<%--<div class="box">--%>
-<%--<table class="table table-striped table-bordered" id="tabel_reture">--%>
-<%--<thead>--%>
-<%--<td>ID</td>--%>
-<%--<td>Nama Obat</td>--%>
-<%--<td>Qty</td>--%>
-<%--<td align="center" width="5%">Action</td>--%>
-<%--</thead>--%>
-<%--<tbody id="body_reture">--%>
-<%--</tbody>--%>
-<%--</table>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="modal-footer" style="background-color: #cacaca">--%>
-<%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-<%--</button>--%>
-<%--<button type="button" class="btn btn-success" id="save_reture" onclick="saveAddRequest(2)"><i--%>
-<%--class="fa fa-arrow-right"></i> Request--%>
-<%--</button>--%>
-<%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
-<%--id="load_reture"><i--%>
-<%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-<%--</button>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
 
 <div class="modal fade" id="modal-request-detail">
     <div class="modal-dialog modal-flat">

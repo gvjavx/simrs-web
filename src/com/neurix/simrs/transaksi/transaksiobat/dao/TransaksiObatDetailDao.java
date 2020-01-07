@@ -45,6 +45,12 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             if(mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+            if(mapCriteria.get("flag_diterima") != null){
+                criteria.add(Restrictions.eq("flagDiterima", mapCriteria.get("flag_diterima")));
+            }
+//            if(mapCriteria.get("flag_diterima_r") != null){
+//                criteria.add(Restrictions.not(Restrictions.like("flagDiterima", mapCriteria.get("flag_diterima_r"))));
+//            }
         }
 
         // Order by

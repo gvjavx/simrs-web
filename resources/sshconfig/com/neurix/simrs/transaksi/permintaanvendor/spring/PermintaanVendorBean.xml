@@ -35,6 +35,7 @@
             <props>
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveListObatPo">PROPAGATION_REQUIRED</prop>
+                <prop key="saveConfirm">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

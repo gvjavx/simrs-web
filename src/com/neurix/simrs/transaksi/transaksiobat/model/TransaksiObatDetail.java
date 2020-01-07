@@ -45,6 +45,25 @@ public class TransaksiObatDetail extends BaseModel {
 
     private BigDecimal hargaPo;
 
+    private String merek;
+    private String idPabrik;
+
+    public String getMerek() {
+        return merek;
+    }
+
+    public void setMerek(String merek) {
+        this.merek = merek;
+    }
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
     public BigDecimal getHargaPo() {
         return hargaPo;
     }

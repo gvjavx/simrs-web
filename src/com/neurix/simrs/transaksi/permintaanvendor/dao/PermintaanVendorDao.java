@@ -25,14 +25,18 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
     public List<MtSimrsPermintaanVendorEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsPermintaanVendorEntity.class);
-        if (mapCriteria.get("id_permintaan_vendor") != null)
+        if (mapCriteria.get("id_permintaan_vendor") != null){
             criteria.add(Restrictions.eq("idPermintaanVendor", mapCriteria.get("id_permintaan_vendor").toString()));
-        if (mapCriteria.get("id_approval_obat") != null)
+        }
+        if (mapCriteria.get("id_approval_obat") != null){
             criteria.add(Restrictions.eq("idApprovalObat", mapCriteria.get("id_approval_obat").toString()));
-        if (mapCriteria.get("branch_id") != null)
+        }
+        if (mapCriteria.get("branch_id") != null){
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
-        if (mapCriteria.get("flag") != null)
+        }
+        if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        }
 
         List<MtSimrsPermintaanVendorEntity> list = criteria.list();
         return list;

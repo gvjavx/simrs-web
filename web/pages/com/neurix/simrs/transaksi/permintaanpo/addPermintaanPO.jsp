@@ -116,7 +116,7 @@
                                                   name="getListObat_obat"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar"
+                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
                                                   onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; resetField();"
                                                   listValue="namaObat"
                                                   headerKey="" headerValue="[Select one]"
@@ -127,7 +127,7 @@
                                     <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
                                     <div class="col-md-8">
                                         <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
-                                        <s:select list="#{'Box':'Box','Lembar':'Lembar','Biji':'Biji'}"
+                                        <s:select list="#{'box':'Box','bembar':'Lembar','biji':'Biji'}"
                                                   cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
                                                   id="jenis_satuan"
                                                   headerKey="" headerValue="[Select one]"
@@ -272,8 +272,8 @@
                                 <td>Obat</td>
                                 <td align="center">Jumlah</td>
                                 <td align="center">Jenis Satuan</td>
-                                <td align="center">Jml Box</td>
-                                <td align="center">Jml Lembar</td>
+                                <td align="center">Jml Lembar/Box</td>
+                                <td align="center">Jml Biji/Lembar</td>
                                 <td align="right">Harga</td>
                                 <td align="center">Action</td>
                             </tr>
