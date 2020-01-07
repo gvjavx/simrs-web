@@ -353,11 +353,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = transaksiObatDetailEntities.get(0);
 
             transaksiObatDetailEntity.setQtyApprove(bean.getQty());
-            transaksiObatDetailEntity.setFlagDiterima("Y");
+            transaksiObatDetailEntity.setFlagDiterima(bean.getFlagDiterima());
             transaksiObatDetailEntity.setIdPabrik(bean.getIdPabrik());
             transaksiObatDetailEntity.setAction("U");
             transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
             transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            transaksiObatDetailEntity.setKeterangan(bean.getKeterangan());
 
             try {
                 transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
@@ -388,6 +389,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 entityList.setFlagDiterima("N");
                 entityList.setIdPabrik(bean.getIdPabrik());
                 entityList.setMrek(bean.getMerek());
+                entityList.setKeterangan(bean.getKeterangan());
 
                 try {
                     transaksiObatDetailDao.updateAndSave(entityList);

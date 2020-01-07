@@ -202,7 +202,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik){
+    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, String keterangan){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -213,6 +213,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
         transaksiObatDetail.setQty(new BigInteger(qty));
         transaksiObatDetail.setIdPabrik(idPabrik);
+        transaksiObatDetail.setFlagDiterima(flag);
+        transaksiObatDetail.setKeterangan(keterangan);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
@@ -428,6 +430,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             obatDetail.setQtyApprove(qtyApp);
             obatDetail.setFlag("Y");
             obatDetail.setFlagDiterima("R");
+            obatDetail.setKeterangan("Buat obat baru");
             obatDetail.setAction("C");
 
             permintaanVendorBo.saveNewPabrik(obatDetail, jenisObat);

@@ -168,10 +168,7 @@
                                     <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right"><s:property value="hargaPo"/></td>
-                                    <td align="center"><input value='<s:property value="idPabrik"/>'
-                                            onchange="verify('<s:property value="idObat"/>', this.value, '<s:property
-                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>')" class="form-control" style="width: 150px"
-                                            id='pabrik<s:property value="idTransaksiObatDetail"/>'></td>
+                                    <td align="center"><input value='<s:property value="idPabrik"/>' onchange="verify('<s:property value="idObat"/>', this.value, '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>')" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
                                     <td align="center">
                                     <s:if test='#row.flagDiterima == "Y"'>
                                             <span class="label label-success">Sesuai</span>
@@ -424,9 +421,9 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Konfirmasi Qty Approve</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_approve">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_approve"></p>
+                <div class="alert alert-success alert-dismissible" id="warning_approve">
+                    <h4><i class="icon fa fa-ban"></i> Info!</h4>
+                    ID pabrik berhasil di verifikasi...!
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -481,7 +478,12 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Konfirmasi ID Pabrik baru</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+                <div class="alert alert-danger alert-dismissible">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    ID pabrik tidak sesuai...!
+                </div>
+                <div class="alert alert-warning alert-dismissible">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
                     <p>Tekan tombol <b>Tambah obat</b> untuk menambahkan obat tersebut.</p>
                     <p>Tekan tombol <b>Cancel obat</b> untuk membatalkan obat tersebut.</p>
                 </div>
@@ -491,7 +493,10 @@
                 </button>
                 <button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-arrow-right"></i> Tambah Obat
                 </button>
-                <button type="button" class="btn btn-danger" id="delete_confirm"><i class="fa fa-ban"></i> Cancel Obat
+                <button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-ban"></i> Cancel Obat
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-danger" id="load_confirm"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -534,23 +539,28 @@
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
-                        $('#pabrik' + id).attr('readonly', true).blur();
                         $('#status' + id).html("Sesuai").addClass("label label-success");
+                        $('#pabrik' + id).attr('readonly', true).blur();
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\')').show();
+                        $('#save_approve').show();
+                        $('#load_approve').hide();
                         $('#modal-approve').modal('show');
 //                        $('#qtyDefault' + id).html(qty);
 //                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
                     } else {
                         $('#pabrik' + id).attr('readonly', true).blur();
                         $('#status' + id).html("Tidak Sesuai").addClass("label label-danger");
-                        var url = '<s:url value="/pages/images/new-flat-plus.png"/>';
-                        $('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');
-                        $('#tombol' + id).show().attr('src', url);
-                        $('#hapus' + id).show();
+                        <%--var url = '<s:url value="/pages/images/new-flat-plus.png"/>';--%>
+                        <%--$('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');--%>
+                        <%--$('#tombol' + id).show().attr('src', url);--%>
+                        <%--$('#hapus' + id).show();--%>
+                        $('#cancel_confirm').show();
+                        $('#load_confirm').hide();
                         $('#modal-confirm').modal('show');
                         $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
+                        $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' + id + '\', \'' + idDetail + '\')');
                     }
                 }
             });
@@ -562,7 +572,7 @@
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik,  function (response) {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", "Setuju",  function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-approve').modal('hide');
@@ -572,6 +582,22 @@
                 $('#load_obat').hide();
                 $('#warning_obat').show().fadeOut(5000);
                 $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+            }
+        })
+    }
+
+    function saveNotApprove(id, idDetail, idPabrik){
+        $('#cancel_confirm').hide();
+        $('#load_confirm').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveUpdateListObat(idDetail, 0, idPabrik, "N", "Dibatalkan",  function (response) {
+            if (response == "success") {
+                $('#cancel_confirm').show();
+                $('#load_confirm').hide();
+                dwr.engine.setAsync(true);
+                dwr.engine.setAsync(false);
+                $('#modal-confirm').modal('hide');
+                $('#approve'+ id).html("Dibatalkan").addClass("label label-warning");
             }
         })
     }
