@@ -162,4 +162,5 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/transaksiobat/spring/TransaksiObatBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/bpjs/spring/BpjsBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/bpjs/aplicare/AplicareBean.xml"/>
 </beans>
