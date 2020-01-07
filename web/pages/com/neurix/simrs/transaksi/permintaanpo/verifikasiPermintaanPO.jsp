@@ -572,7 +572,7 @@
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", "Setuju",  function (response) {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-approve').modal('hide');
@@ -590,7 +590,7 @@
         $('#cancel_confirm').hide();
         $('#load_confirm').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, 0, idPabrik, "N", "Dibatalkan",  function (response) {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, 0, idPabrik, "X", function (response) {
             if (response == "success") {
                 $('#cancel_confirm').show();
                 $('#load_confirm').hide();
