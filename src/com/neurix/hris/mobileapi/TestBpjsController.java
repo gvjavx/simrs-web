@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,19 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
     }
 
     public HttpHeaders index() throws IOException, GeneralSecurityException, JSONException {
-        getPoli("");
+//        getPoli("");
+//
+//        TindakanBpjs tindakanBpjs = new TindakanBpjs();
+//        GetTindakanByAPIBpjs(tindakanBpjs);
 
-        TindakanBpjs tindakanBpjs = new TindakanBpjs();
-        GetTindakanByAPIBpjs(tindakanBpjs);
+        BigInteger n = new BigInteger(String.valueOf(10));
+        BigInteger divide = n.divide(new BigInteger(String.valueOf(3)));
+        BigInteger mod = n.mod(new BigInteger(String.valueOf(3)));
+
+        logger.info("nilai n = "+ n);
+        logger.info("n divide 3 = "+ divide);
+        logger.info("n mod 3 = "+ mod);
+
         return new DefaultHttpHeaders("index").disableCaching();
     }
 

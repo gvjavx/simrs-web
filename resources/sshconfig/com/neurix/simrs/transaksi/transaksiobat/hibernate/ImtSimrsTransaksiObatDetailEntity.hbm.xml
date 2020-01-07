@@ -82,6 +82,12 @@
         <property name="namaObatBaru">
             <column name="nama_obat_baru" sql-type="varchar" length="100" not-null="false"/>
         </property>
+        <property name="idPabrik">
+            <column name="id_pabrik" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="mrek">
+            <column name="mrek" sql-type="varchar" length="100" not-null="false"/>
+        </property>
 
     </class>
 </hibernate-mapping>

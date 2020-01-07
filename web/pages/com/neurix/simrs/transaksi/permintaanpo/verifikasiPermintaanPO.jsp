@@ -10,15 +10,6 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
-    <script type='text/javascript'>
-
-        $(document).ready(function () {
-            $('#permintaan_po').addClass('active');
-
-        });
-
-    </script>
-
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
 
 </head>
@@ -63,7 +54,10 @@
                             <tr>
                                 <td width="17%"><b>ID Vendor</b></td>
                                 <td>
-                                    <table><s:label name="vendor.idVendor"></s:label></table>
+                                    <table>
+                                        <s:label name="vendor.idVendor"></s:label>
+                                        <s:hidden name="permintaanVendor.idApprovalObat" id="id_approval"></s:hidden>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>
@@ -156,14 +150,13 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
                                 <td>Nama Obat</td>
-                                <td align="center">Jumlah</td>
+                                <td align="center">Qty Request</td>
+                                <td align="center">Qty Approve</td>
                                 <td align="center">Satuan Jenis</td>
                                 <td align="right">Harga</td>
                                 <td align="center">Verify</td>
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
-                                <%--<td align="center">Approve</td>--%>
-                                <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -172,11 +165,12 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><span id='qty<s:property value="idObat"/>'><s:property value="qty"/></span></td>
+                                    <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right"><s:property value="hargaPo"/></td>
-                                    <td align="center"><input
+                                    <td align="center"><input value='<s:property value="idPabrik"/>'
                                             onchange="verify('<s:property value="idObat"/>', this.value, '<s:property
-                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>')" class="form-control" style="width: 150px"
+                                                    value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>')" class="form-control" style="width: 150px"
                                             id='pabrik<s:property value="idTransaksiObatDetail"/>'></td>
                                     <td align="center">
                                     <s:if test='#row.flagDiterima == "Y"'>
@@ -224,15 +218,12 @@
                         <table class="table table-bordered table-striped" id="tabel_new_po">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID</td>
                                 <td>Nama Obat</td>
-                                <td align="center">Jumlah</td>
+                                <td align="center">Qty Request</td>
+                                <td align="center">Qty Approve</td>
                                 <td align="center">Satuan Jenis</td>
-                                <td align="right">Jml Box</td>
-                                <td align="center">Jml Lembar</td>
                                 <td align="center">Lembar/Box</td>
                                 <td align="center">Biji/Lembar</td>
-                                <td align="center">Biji</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -241,18 +232,7 @@
                         </table>
                     </div>
                     </div>
-                    <%--<div class="box-header with-border"></div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-4">--%>
-                                <%--<a type="button" class="btn btn-success" onclick="confirm()"><i--%>
-                                        <%--class="fa fa-arrow-right"></i> Save</a>--%>
-                                <%--<a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i--%>
-                                        <%--class="fa fa-arrow-left"></i>--%>
-                                    <%--Back</a>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                    <div class="box-header with-border"></div>
                 </div>
             </div>
         </div>
@@ -521,11 +501,14 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function reset() {
-        window.location.reload(true);
-    }
+    var idApprovalObat = $('#id_approval').val();
 
-    function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga) {
+    $(document).ready(function () {
+        $('#permintaan_po').addClass('active');
+        listNewObat(idApprovalObat);
+    });
+
+    function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga, idApp) {
 
         $('#add_merek, #add_lembar_box, #add_biji_lembar').val('');
         $('#add_jenis_obat').val('').trigger('change');
@@ -537,12 +520,12 @@
         $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border', '');
         $('#add_qty_request, #add_qty_approve').val(qty);
         $('#add_harga').val(harga);
-        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\')').show();
+        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\',\'' + idApp + '\')').show();
         $('#modal-obat').modal('show');
         $('#modal-confirm').modal('hide');
     }
 
-    function verify(id, value, qty, idDetail, nama, jenis, harga) {
+    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp) {
         var status = false;
         if (id != '' && value != '') {
             $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
@@ -555,7 +538,7 @@
                         $('#status' + id).html("Sesuai").addClass("label label-success");
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\')').show();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
                         $('#modal-approve').modal('show');
 //                        $('#qtyDefault' + id).html(qty);
 //                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
@@ -567,19 +550,19 @@
                         $('#tombol' + id).show().attr('src', url);
                         $('#hapus' + id).show();
                         $('#modal-confirm').modal('show');
-                        $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\')');
+                        $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
                     }
                 }
             });
         }
     }
 
-    function saveApprove(id, idDetail){
+    function saveApprove(id, idDetail, idPabrik){
         var qty = $('#app_qty_app').val();
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, function (response) {
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik,  function (response) {
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-approve').modal('hide');
@@ -593,120 +576,7 @@
         })
     }
 
-    function editQty(id) {
-        if ($('#tombol' + id).attr('src') == '/simrs/pages/images/edit-flat-new.png') {
-            var url = '<s:url value="/pages/images/save_flat.png"/>';
-            $('#tombol' + id).attr('src', url);
-            $('#qtyDefault' + id).hide();
-            $('#qtyApprove' + id).show();
-        } else {
-            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
-            var qty = $('#qty' + id).text();
-            var approve = $('#qtyApprove' + id).val();
-
-            if (approve != '') {
-                if (parseInt(approve) <= parseInt(qty)) {
-                    $('#tombol' + id).attr('src', url);
-                    $('#qtyDefault' + id).html($('#qtyApprove' + id).val()).show();
-                    $('#qtyApprove' + id).hide();
-                } else {
-                    $('#warning_po').show().fadeOut(5000);
-                    $('#msg_po').text("Qty Approve tidak boleh melebihi qty permintaan...!");
-                }
-            } else {
-                $('#warning_po').show().fadeOut(5000);
-                $('#msg_po').text("Silahkan cek kembali data inputan...!");
-            }
-        }
-    }
-
-    function confirm() {
-        var data = $('#tabel_po').tableToJSON();
-        var stringData = JSON.stringify(data);
-        console.log(data);
-        var vendor = $('#nama_vendor').val();
-        if (stringData != '[]' && vendor != '') {
-            $('#confirm_dialog').dialog('open');
-        } else {
-            $('#warning_po').show().fadeOut(5000);
-            $('#msg_po').text('Silahkan cek kembali data inputan...!');
-        }
-    }
-
-    function resetField() {
-        $('#box, #lembar_box, #lembar, #biji_lembar, #biji, #harga').val('');
-    }
-
-    function addToListPo() {
-
-        var vendor = $('#nama_vendor').val();
-        var obat = $('#nama_obat').val();
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-        var biji = $('#biji').val();
-        var harga = $('#harga').val();
-        var data = $('#tabel_po').tableToJSON();
-
-        var idObat = "";
-        var namaObat = "";
-        var qtyObat = "";
-
-        var cek = false;
-
-        if (obat != '' && vendor != '') {
-            idObat = obat.split('|')[0];
-            namaObat = obat.split('|')[1];
-            qtyObat = obat.split('|')[2];
-
-//            if (parseInt(qty) <= parseInt(stok)) {
-            $.each(data, function (i, item) {
-                if (item.ID == idObat) {
-                    cek = true;
-                }
-            });
-
-            if (cek) {
-                $('#warning_po').show().fadeOut(5000);
-                $('#msg_po').text('Data sudah tersedia dalam list...!');
-            } else {
-                var row = '<tr id=' + idObat + '>' +
-                        '<td>' + idObat + '</td>' +
-                        '<td>' + namaObat + '</td>' +
-                        '<td>' + box + '</td>' +
-                        '<td>' + lembarBox + '</td>' +
-                        '<td>' + lembar + '</td>' +
-                        '<td>' + bijiLembar + '</td>' +
-                        '<td>' + biji + '</td>' +
-                        '<td align="right">' + harga + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                        '</tr>';
-
-                $('#body_po').append(row);
-                $('#nama_vendor').attr('disabled', true);
-            }
-//            } else {
-//                $('#warning_request').show().fadeOut(5000);
-//                $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
-//            }
-        } else {
-            if (obat == '') {
-//                $('#war_req_obat').show();
-            }
-            if (vendor == '') {
-//                $('#war_req_qty').show();
-            }
-            $('#warning_po').show().fadeOut(5000);
-            $('#msg_po').text('Silahkan cek kembali data inputan...!');
-        }
-    }
-
-    function delRowObat(id) {
-        $('#row' + id).remove();
-    }
-
-    function saveObat(id, idDetail, qty, satuan, idObat){
+    function saveObat(id, idDetail, qty, satuan, idObat, idApp){
 
         var nama        = $('#add_nama_obat').val();
         var jenis       = $('#add_jenis_obat').val();
@@ -740,10 +610,11 @@
                 })
             } else {
                 dwr.engine.setAsync(true);
-                PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, function (response) {
+                PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, idApp, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
+                        listNewObat(idApp);
                         $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
                     } else {
                         $('#save_obat').show();
@@ -787,24 +658,23 @@
         }
     }
 
-
-    function savePermintaanPO() {
-        $('#confirm_dialog').dialog('close');
-        var data = $('#tabel_po').tableToJSON();
-        var stringData = JSON.stringify(data);
-        var vendor = $('#nama_vendor').val();
-        $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
-            callback: function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                } else {
-                    $('#warning_po').show().fadeOut(5000);
-                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
-                }
+    function listNewObat(idApproval){
+        var table = "";
+        PermintaanVendorAction.searchNewListObat(idApproval, function (response) {
+            if (response != null) {
+                $('#new_obat').show();
+                $.each(response, function (i, item) {
+                    table += "<tr>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + item.qty + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td align='center'>" + item.jenisSatuan + "</td>" +
+                            "<td align='center'>" + item.lembarPerBox + "</td>" +
+                            "<td align='center'>" + item.bijiPerLembar + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "</tr>";
+                });
+                $('#body_new_pabrik').html(table);
             }
         });
     }

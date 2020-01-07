@@ -202,7 +202,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String saveUpdateListObat(String idTransaksiDetailObat, String qty){
+    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -212,6 +212,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
         transaksiObatDetail.setQty(new BigInteger(qty));
+        transaksiObatDetail.setIdPabrik(idPabrik);
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
 
@@ -392,7 +394,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveNewPabrik(String idTranskasi, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigDecimal harga, BigInteger qty, BigInteger qtyApp, String jenisSatuan) {
+    public String saveNewPabrik(String idTranskasi, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigDecimal harga, BigInteger qty, BigInteger qtyApp, String jenisSatuan, String idApproval) {
 
         logger.info("[PermintaanVendorAction.saveNewPabrik] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -409,6 +411,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             TransaksiObatDetail obatDetail = new TransaksiObatDetail();
 
             obatDetail.setIdTransaksiObatDetail(idTranskasi);
+            obatDetail.setIdApprovalObat(idApproval);
             obatDetail.setNamaObat(namaObat);
             obatDetail.setMerek(merek);
             obatDetail.setIdPabrik(pabrik);
@@ -448,35 +451,107 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<TransaksiObatDetail> transaksiObatDetails = (List) session.getAttribute("listOfObatDetail");
         List<TransaksiObatDetail> transaksiObatDetailNew = (List) session.getAttribute("listOfObatDetailNew");
 
-
-
-        logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
-        return SUCCESS;
-    }
-
-    public String searchNewListObat() {
-        logger.info("[PermintaanVendorAction.searchNewListObat] START process >>>");
-
         PermintaanVendor permintaanVendor = getPermintaanVendor();
-        List<PermintaanVendor> listOfPemintaanVendor = new ArrayList();
         permintaanVendor.setBranchId(CommonUtil.userBranchLogin());
+        permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
 
         try {
-            listOfPemintaanVendor = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+            permintaanVendorBoProxy.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.saveApprove] Error when save data approve PO", e);
+            addActionError(" Error when save data approve PO" + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
+        return "init_approve";
+    }
+
+    public List<TransaksiObatDetail> searchNewListObat(String idApproval) {
+        logger.info("[PermintaanVendorAction.searchNewListObat] START process >>>");
+
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+
+        TransaksiObatDetail detail = new TransaksiObatDetail();
+        detail.setIdApprovalObat(idApproval);
+        detail.setFlagDiterima("R");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            obatDetails = permintaanVendorBo.getNewObatDetail(detail);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PermintaanVendorAction.searchNewListObat] Error when searching permintan vendor by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PermintaanVendorAction.searchNewListObat] Error when searching permintan vendor by criteria,", e);
+        }
+
+        logger.info("[PermintaanVendorAction.searchNewListObat] END process <<<");
+        return obatDetails;
+
+    }
+
+    public String initApproval() {
+
+        logger.info("[PermintaanVendorAction.initApproval] START process >>>");
+
+        String id = getId();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(id);
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+        try {
+            permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.initApproval] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.initApproval] ERROR error when get searh obat. " + e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfObatDetail");
 
-        session.removeAttribute("listOfObatDetailNew");
-        session.setAttribute("listOfObatDetailNew", listOfPemintaanVendor);
+        if (permintaanVendorList.size() > 0){
+            setPermintaanVendor(permintaanVendorList.get(0));
+            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getListOfTransaksiObatDetail());
 
-        logger.info("[PermintaanVendorAction.searchNewListObat] END process <<<");
-        return "search";
+            Vendor vendor = new Vendor();
+            vendor.setIdVendor(permintaanVendorList.get(0).getIdVendor());
+            List<Vendor> vendorList = new ArrayList<>();
+
+            try {
+                vendorList = vendorBoProxy.getByCriteria(vendor);
+            }catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.initApproval] ERROR error when get searh vendor. ", e);
+                addActionError("[PermintaanVendorAction.initApproval] ERROR error when get searh vendor. " + e.getMessage());
+            }
+
+            Vendor vendorResult =  new Vendor();
+            if (!vendorList.isEmpty()){
+                vendorResult = vendorList.get(0);
+                if(vendorResult != null){
+                    setVendor(vendorResult);
+                }
+            }
+
+            List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+            TransaksiObatDetail detail = new TransaksiObatDetail();
+            detail.setIdApprovalObat(permintaanVendorList.get(0).getIdApprovalObat());
+            detail.setFlagDiterima("R");
+
+            try {
+                obatDetailList = permintaanVendorBoProxy.getNewObatDetail(detail);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanVendorAction.initApproval] Error when searching permintan vendor by criteria,", e);
+            }
+
+            session.setAttribute("listOfObatDetailNew", obatDetailList);
+
+        }
+
+        logger.info("[PermintaanVendorAction.initApproval] END process <<<");
+
+        return "init_approve";
+
     }
 
 
