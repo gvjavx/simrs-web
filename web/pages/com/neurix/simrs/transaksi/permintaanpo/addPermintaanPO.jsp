@@ -116,7 +116,7 @@
                                                   name="getListObat_obat"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar"
+                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
                                                   onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; resetField();"
                                                   listValue="namaObat"
                                                   headerKey="" headerValue="[Select one]"
@@ -272,8 +272,8 @@
                                 <td>Obat</td>
                                 <td align="center">Jumlah</td>
                                 <td align="center">Jenis Satuan</td>
-                                <td align="center">Jml Box</td>
-                                <td align="center">Jml Lembar</td>
+                                <td align="center">Jml Lembar/Box</td>
+                                <td align="center">Jml Biji/Lembar</td>
                                 <td align="right">Harga</td>
                                 <td align="center">Action</td>
                             </tr>

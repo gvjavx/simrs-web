@@ -204,9 +204,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
-            if (bean.getFlagDiterima() != null && !"".equalsIgnoreCase(bean.getFlagDiterima())) {
-                hsCriteria.put("flag_diterima_r", bean.getFlagDiterima());
-            }
+//            if (bean.getFlagDiterima() != null && !"".equalsIgnoreCase(bean.getFlagDiterima())) {
+//                hsCriteria.put("flag_diterima_r", bean.getFlagDiterima());
+//            }
 
             try {
                 obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
@@ -539,7 +539,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                     if (obatEntity != null)
                     {
-                        if (obatEntity.getAverageHargaBiji() != null){
+//                        if (obatEntity.getAverageHargaBiji() != null){
 
                             BigInteger ttlQtyLembar   = obatEntity.getQtyLembar().add(obatEntity.getQtyBox().multiply(obatEntity.getLembarPerBox()));
                             BigInteger ttlQtyOldStock = obatEntity.getQtyBiji().add(ttlQtyLembar);
@@ -606,7 +606,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 throw new GeneralBOException("[PermintaanVendorBoImpl.saveConfirm] ERROR when save data. "+e.getMessage());
                             }
                         }
-                    }
+//                    }
                 }
             }
         }

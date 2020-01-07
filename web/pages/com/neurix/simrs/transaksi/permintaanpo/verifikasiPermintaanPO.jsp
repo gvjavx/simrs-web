@@ -505,7 +505,7 @@
 
     $(document).ready(function () {
         $('#permintaan_po').addClass('active');
-        listNewObat(idApprovalObat);
+//        listNewObat(idApprovalObat);
     });
 
     function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga, idApp) {
