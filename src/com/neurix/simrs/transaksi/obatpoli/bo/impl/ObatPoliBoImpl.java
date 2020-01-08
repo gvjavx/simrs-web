@@ -554,7 +554,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             // save to table detail transaksi
 
-            for (PermintaanObatPoli permintaanObatPoli : permintaanEntityList){
+            for (PermintaanObatPoli permintaanObatPoli : permintaanObatPoliList){
 
                 ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
 
@@ -730,83 +730,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                             }
                         }
                     }
-
-//                    TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
-//                    transaksiObatDetail.setIdApprovalObat(approvalTransaksiObatEntity.getIdApprovalObat());
-//                    transaksiObatDetail.setFlag("Y");
-//                    List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityObatDetail(transaksiObatDetail);
-//
-//                    if (!obatDetailEntities.isEmpty() && obatDetailEntities.size() > 0)
-//                    {
-//                        for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities) {
-//                            if (request != null && !"".equalsIgnoreCase(request)) {
-//                                JSONArray json = new JSONArray(request);
-//                                for (int i = 0; i < json.length(); i++) {
-//                                    JSONObject obj = json.getJSONObject(i);
-//                                    if (obatDetailEntity.getIdObat().equalsIgnoreCase(obj.getString("ID")))
-//                                    {
-//
-//                                        obatDetailEntity.setLastUpdate(bean.getLastUpdate());
-//                                        obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                                        obatDetailEntity.setAction("U");
-//                                        obatDetailEntity.setQtyApprove(new BigInteger(obj.getString("Approve")));
-//
-//                                        try {
-//                                            obatDetailDao.updateAndSave(obatDetailEntity);
-//                                        } catch (HibernateException e) {
-//                                            logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update obat Detail. ", e);
-//                                            throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update obat Detai. ", e);
-//                                        }
-//
-//                                        if(isPoli){
-//
-//                                            // updating qty obat poli after konfirmasi
-//                                            ObatPoli obatPoli = new ObatPoli();
-//                                            obatPoli.setIdObat(obatDetailEntity.getIdObat());
-//                                            obatPoli.setIdPelayanan(bean.getTujuanPelayanan());
-//                                            obatPoli.setBranchId(bean.getBranchId());
-//                                            MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
-//                                            if(obatPoliEntity != null){
-//
-//                                                BigInteger jmlh = obatPoliEntity.getQty().subtract(new BigInteger(obj.getString("Approve")));
-//                                                obatPoliEntity.setAction("U");
-//                                                obatPoliEntity.setQty(jmlh);
-//                                                obatPoliEntity.setLastUpdate(bean.getLastUpdate());
-//                                                obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//
-//                                                try {
-//                                                    obatPoliDao.updateAndSave(obatPoliEntity);
-//                                                } catch (HibernateException e) {
-//                                                    logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-//                                                    throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-//                                                }
-//                                            }
-//                                        }else{
-//                                            // updating qty obat master after konfirmasi
-//                                            ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
-//                                            if (obatEntity != null) {
-//                                                if (obatEntity.getIdObat().equalsIgnoreCase(obj.getString("ID"))) {
-//
-//                                                    BigInteger jmlh = obatEntity.getQty().subtract(new BigInteger(obj.getString("Approve")));
-//                                                    obatEntity.setAction("U");
-//                                                    obatEntity.setQty(jmlh);
-//                                                    obatEntity.setLastUpdate(bean.getLastUpdate());
-//                                                    obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//
-//                                                    try {
-//                                                        obatDao.updateAndSave(obatEntity);
-//                                                    } catch (HibernateException e) {
-//                                                        logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-//                                                        throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
                 }
             }
         }

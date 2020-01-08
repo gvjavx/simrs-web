@@ -195,9 +195,9 @@
                                             <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
                                         </s:url>
                                         <s:a href="%{approve_po}">
-                                        <%--<s:if test='#row.approvalFlag == "Y"'>--%>
+                                        <s:if test='#row.approvalFlag == true'>
                                             <button class="btn btn-success"><i class="fa fa-check"></i></button>
-                                        <%--</s:if>--%>
+                                        </s:if>
                                         </s:a>
                                     </td>
                                 </tr>

@@ -531,8 +531,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
         }
 
-        // update to master obat
-        if (listObat != null && listObat.size() > 0)
+        // update to master obat k/k j        if (listObat != null && listObat.size() > 0)
         {
             for (TransaksiObatDetail obatDetail : listObat)
             {

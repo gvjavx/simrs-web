@@ -40,7 +40,14 @@
         <property name="qty">
             <column name="qty" sql-type="bigint" not-null="false" />
         </property>
-
-
+        <property name="qtyBox">
+            <column name="qty_box" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="qtyLembar">
+            <column name="qty_lembar" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="qtyBiji">
+            <column name="qty_biji" sql-type="bigint" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>
