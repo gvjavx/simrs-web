@@ -338,7 +338,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
 
         } else {
 
-            SQL = "SELECT b.id_obat, c.nama_obat, b.qty, c.qty as stok_gudang, b.id_approval_obat, b.qty_approve, c.qty_box, d.qty_lembar, c.qty_biji, c.lembar_per_box, c.biji_per_lembar, b.jenis_satuan\n" +
+            SQL = "SELECT b.id_obat, c.nama_obat, b.qty, c.qty as stok_gudang, b.id_approval_obat, b.qty_approve, c.qty_box, c.qty_lembar, c.qty_biji, c.lembar_per_box, c.biji_per_lembar, b.jenis_satuan\n" +
                     "FROM mt_simrs_permintaan_obat_poli a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat\n" +
@@ -360,8 +360,14 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             permintaanObatPoli = new PermintaanObatPoli();
             permintaanObatPoli.setIdObat(obj[0].toString());
             permintaanObatPoli.setNamaObat(obj[1].toString());
-            permintaanObatPoli.setQty(new BigInteger(obj[2].toString()));
-            permintaanObatPoli.setQtyGudang(new BigInteger(obj[3].toString()));
+
+            if(obj[2] != null){
+                permintaanObatPoli.setQty((BigInteger) obj[2]);
+            }
+            if(obj[3] != null){
+                permintaanObatPoli.setQtyGudang((BigInteger)obj[3]);
+            }
+
             permintaanObatPoli.setIdApprovalObat(obj[4].toString());
 
             if (obj[5] != null) {

@@ -398,7 +398,7 @@
                                 "<td align='center'>" + '<span id=qtyBiji' + item.idObat + '>' + qtyBiji + '</span>' + "</td>" +
                                 "<td align='center'>" + '<span id=qtyReq' + item.idObat + '>' + item.qty + '</span>' + "</td>" +
                                 "<td align='center'>" + '<span id=jenisSatuan' + item.idObat + '>' + item.jenisSatuan + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qtyApp' + item.idObat + '>' + item.qty + '</span>' + '<input type="number" min="1" id=newQty' + item.idObat + ' class="form-control" style="width:80px; display:none" value=' + item.qty + '>' + "</td>" +
+                                "<td align='center'>" + '<span id=qtyApp' + item.idObat + '>' + item.qty + '</span>' + "</td>" +
                                 "<td align='center'>" + '<img border="0" id=img' + item.idObat + ' class="hvr-grow" onclick="editQty(\'' + item.idObat + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                                 "</tr>";
                     });
@@ -490,25 +490,32 @@
             $('#warning_request').show().fadeOut(5000);
             $('#msg_request').text("Silahkan klik tombol save untuk menyimpan qty Approve..!");
         } else {
-            $('#save_req').hide();
-            $('#load_req').show();
-            dwr.engine.setAsync(true);
-            PermintaanObatPoliAction.saveKonfirmasiRequest(stringData, idPermintaan, true, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-request').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#save_req').show();
-                        $('#load_req').hide();
-                    } else {
-                        $('#warning_request').show().fadeOut(5000);
-                        $('#msg_request').text(response);
-                        $('#save_req').show();
-                        $('#load_req').hide();
+
+            if(stringData != '[]'){
+                $('#save_req').hide();
+                $('#load_req').show();
+                dwr.engine.setAsync(true);
+                PermintaanObatPoliAction.saveKonfirmasiRequest(stringData, idPermintaan, true, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            dwr.engine.setAsync(false);
+                            $('#modal-request').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#save_req').show();
+                            $('#load_req').hide();
+                        } else {
+                            $('#warning_request').show().fadeOut(5000);
+                            $('#msg_request').text(response);
+                            $('#save_req').show();
+                            $('#load_req').hide();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                $('#warning_request').show().fadeOut(5000);
+                $('#msg_request').text("Silahkan cek kembali inputan berikut..!");
+            }
+
         }
     }
 
