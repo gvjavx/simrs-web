@@ -887,7 +887,35 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 if (obatPoliEntityList.size() > 0) {
 
                     MtSimrsObatPoliEntity entityObatPoli = obatPoliEntityList.get(0);
-                    entityObatPoli.setQty(entityObatPoli.getQty().add(entity.getQtyApprove()));
+                    ImSimrsObatEntity obatEntity = getObatById(entity.getIdObat());
+
+                    BigInteger jmlApprove = entity.getQtyApprove();
+
+                    if ("box".equalsIgnoreCase(entity.getJenisSatuan())){
+                        entityObatPoli.setQtyBox(entity.getQtyBox().add(jmlApprove));
+                    }
+
+                    if ("lembar".equalsIgnoreCase(entity.getJenisSatuan()) && !obatEntity.getLembarPerBox().equals(new BigInteger(String.valueOf(0)))){
+
+                        if (jmlApprove.compareTo(obatEntity.getLembarPerBox()) == 1){
+
+                            BigInteger jmlBox = jmlApprove.divide(obatEntity.getLembarPerBox());
+                            BigInteger jmlLembar = jmlApprove.mod(obatEntity.getLembarPerBox());
+
+                            entityObatPoli.setQtyBox(jmlBox);
+                            entityObatPoli.setQtyLembar(jmlLembar);
+
+                        } else {
+                            BigInteger jmlLembar = jmlApprove.add(entityObatPoli.getQtyLembar());
+                            entityObatPoli.setQtyLembar(jmlLembar);
+                        }
+                    }
+
+                    if ("biji".equalsIgnoreCase(entity.getJenisSatuan()) && !obatEntity.getBijiPerLembar().equals(new BigInteger(String.valueOf(0)))){
+                        entityObatPoli.setQtyBiji(entity.getQtyBiji());
+                    }
+
+                    //entityObatPoli.setQty(entityObatPoli.getQty().add(entity.getQtyApprove()));
                     entityObatPoli.setLastUpdate(bean.getLastUpdate());
                     entityObatPoli.setLastUpdateWho(bean.getLastUpdateWho());
                     entityObatPoli.setAction(bean.getAction());
