@@ -1,21 +1,14 @@
 package com.neurix.hris.mobileapi;
 
-import com.neurix.common.constant.CommonConstant;
-import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
-import com.neurix.simrs.bpjs.bo.BpjsBo;
-import com.neurix.simrs.bpjs.model.PoliResponse;
-import com.neurix.simrs.bpjs.model.SepRequest;
-import com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity;
-import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
+import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
+import com.neurix.simrs.bpjs.vclaim.model.PoliResponse;
+import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 import com.neurix.simrs.bpjs.BpjsService;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
