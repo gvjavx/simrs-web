@@ -119,4 +119,6 @@ public class MtSimrsObatPoliEntity implements Serializable {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
+
 }

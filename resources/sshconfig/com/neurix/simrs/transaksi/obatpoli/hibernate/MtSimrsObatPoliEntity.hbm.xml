@@ -50,6 +50,5 @@
             <column name="qty_biji" sql-type="bigint" not-null="false" />
         </property>
 
-
     </class>
 </hibernate-mapping>
