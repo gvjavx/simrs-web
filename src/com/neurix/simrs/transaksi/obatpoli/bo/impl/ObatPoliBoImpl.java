@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
 import com.neurix.simrs.transaksi.obatpoli.dao.PermintaanObatPoliDao;
 import com.neurix.simrs.transaksi.obatpoli.model.*;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
@@ -1172,6 +1173,36 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         logger.info("[ObatPoliBoImpl.getEntityObatDetailById] END <<<<<<<<<<");
         return obatDetailEntities;
+    }
+
+    @Override
+    public CheckObatResponse checkObatStockLama(String idPabrik, String branchId) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] START >>>>>>>>>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        Map hsCriteria = new HashMap();
+
+        hsCriteria.put("branch_id", branchId);
+        hsCriteria.put("id_pabrik", idPabrik);
+        hsCriteria.put("asc","Y");
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.checkObatStockLama] ERROR when get data obat by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.checkObatStockLama] ERROR when get data obat by criteria.");
+        }
+
+        if (obatEntities.size() > 1){
+            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+
+
+        }
+
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] END <<<<<<<<<<");
+        return response;
     }
 
     private String getNextPermintaanObatId() throws GeneralBOException {

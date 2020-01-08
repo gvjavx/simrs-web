@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.obatpoli.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.json.JSONException;
 
@@ -24,4 +25,7 @@ public interface ObatPoliBo {
 
     public List<ObatPoli> getTujuanPelayanan(ObatPoli bean) throws GeneralBOException;
     public List<PermintaanObatPoli> getDetailLitsPermintaan(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
+
+    public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
+
 }

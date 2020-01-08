@@ -3,6 +3,7 @@ package com.neurix.simrs.master.obat.bo;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface ObatBo{
     public void saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
 
     public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;
+
+    public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
 }
