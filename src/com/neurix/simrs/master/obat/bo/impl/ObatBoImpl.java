@@ -108,7 +108,6 @@ public class ObatBoImpl implements ObatBo {
                                 ImSimrsJenisObatEntity jenisObatEntity = jenisObatEntityList.get(0);
                                 if(jenisObatEntity != null)
                                 {
-//                                    listJenisObat = listJenisObat + "<div style=\"background-color: #6ac8eb; color: #fff; padding: 10px\">"+jenisObatEntity.getNamaJenisObat()+"</div>";
                                     listJenisObat = listJenisObat + addedScript.append("<label class=\"label label-primary\">"+jenisObatEntity.getNamaJenisObat()+"</label>");
                                 }
 

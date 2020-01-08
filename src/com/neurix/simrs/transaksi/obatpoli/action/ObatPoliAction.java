@@ -184,6 +184,7 @@ public class ObatPoliAction extends BaseMasterAction {
                         JSONObject obj = json.getJSONObject(i);
                         obatDetail.setIdObat(obj.getString("ID"));
                         obatDetail.setQty(new BigInteger(obj.getString("Qty")));
+                        obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
                         obatDetailList.add(obatDetail);
                     }
                 }
@@ -203,14 +204,14 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveAddReture(String reture, String idTujuan) throws JSONException{
+    public String saveAddReture(String reture, String idTujuan) throws JSONException {
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
 
-            String userLogin    = CommonUtil.userLogin();
-            String userArea     = CommonUtil.userBranchLogin();
-            String idPelayanan  = CommonUtil.userPelayananIdLogin();
-            Timestamp updateTime= new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String userLogin = CommonUtil.userLogin();
+            String userArea = CommonUtil.userBranchLogin();
+            String idPelayanan = CommonUtil.userPelayananIdLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdPelayanan(idPelayanan);
@@ -247,7 +248,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
             try {
                 obatPoliBo.saveReture(obatPoli, permintaanObatPoliList);
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
 
@@ -280,7 +281,19 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
             try {
-                obatPoliBo.saveApproveDiterima(obatPoli, request);
+                List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+                if (request != null && !"".equalsIgnoreCase(request)) {
+                    JSONArray json = new JSONArray(request);
+                    TransaksiObatDetail detail;
+                    for (int i = 0; i < json.length(); i++) {
+                        JSONObject obj = json.getJSONObject(i);
+                        detail = new TransaksiObatDetail();
+                        detail.setIdObat(obj.getString("ID"));
+                        detail.setQtyApprove(new BigInteger(obj.getString("Approve")));
+                        transaksiObatDetails.add(detail);
+                    }
+                }
+                obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
             } catch (JSONException e) {
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }

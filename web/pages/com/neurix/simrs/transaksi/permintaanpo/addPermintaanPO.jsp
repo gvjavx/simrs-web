@@ -127,7 +127,7 @@
                                     <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
                                     <div class="col-md-8">
                                         <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
-                                        <s:select list="#{'box':'Box','bembar':'Lembar','biji':'Biji'}"
+                                        <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
                                                   cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
                                                   id="jenis_satuan"
                                                   headerKey="" headerValue="[Select one]"

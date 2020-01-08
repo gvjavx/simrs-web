@@ -48,14 +48,14 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/obat" action="search_obat.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
-                                                     name="obat.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="id_obat" cssStyle="margin-top: 7px"--%>
+                                                     <%--name="obat.idObat" required="false"--%>
+                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Obat</label>
                                     <div class="col-sm-4">
@@ -73,9 +73,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="obat.namaObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <s:action id="initObat" namespace="/obat"
+                                                  name="getListObat_obat"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initObat.listOfObat" id="nama_obat"
+                                                  listKey="idObat"
+                                                  listValue="namaObat"
+                                                  name="obat.idObat"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                        <%--<s:textfield id="nama_pasien" name="obat.namaObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -158,9 +167,12 @@
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Jenis Obat</td>
-                                <td>ID Pabrik</td>
                                 <td>Merk</td>
-                                <td>Stok</td>
+                                <td>Lembar/Box</td>
+                                <td>Biji/Lembar</td>
+                                <td>Stok Box</td>
+                                <td>Stok Lembar</td>
+                                <td>Stok Biji</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -170,9 +182,12 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property escape="false" value="jenisObat"/></td>
-                                    <td><s:property value="idPabrik"/></td>
                                     <td><s:property value="merk"/></td>
-                                    <td><s:property value="qty"/></td>
+                                    <td><s:property value="lembarPerBox"/></td>
+                                    <td><s:property value="bijiPerLembar"/></td>
+                                    <td><s:property value="qtyBox"/></td>
+                                    <td><s:property value="qtyLembar"/></td>
+                                    <td><s:property value="qtyBiji"/></td>
                                     <td align="center">
                                         <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
                                     </td>

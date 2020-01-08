@@ -20,6 +20,34 @@ public class MtSimrsObatPoliEntity implements Serializable {
 
     private String branchId;
 
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
     public String getBranchId() {
         return branchId;
     }

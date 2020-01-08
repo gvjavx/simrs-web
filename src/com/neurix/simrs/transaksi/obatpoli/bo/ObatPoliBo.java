@@ -20,7 +20,7 @@ public interface ObatPoliBo {
     public void saveApproveRequest(PermintaanObatPoli bean, List<TransaksiObatDetail> transList, boolean isPoli) throws GeneralBOException, JSONException;
     public void saveApproveReture(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
 
-    public void saveApproveDiterima(PermintaanObatPoli bean, String request) throws GeneralBOException, JSONException;
+    public void saveApproveDiterima(PermintaanObatPoli bean, List<TransaksiObatDetail> obatDetailList) throws GeneralBOException;
 
     public List<ObatPoli> getTujuanPelayanan(ObatPoli bean) throws GeneralBOException;
     public List<PermintaanObatPoli> getDetailLitsPermintaan(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
