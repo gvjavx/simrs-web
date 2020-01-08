@@ -11,6 +11,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -442,6 +443,13 @@ public class ObatBoImpl implements ObatBo {
             }
         }
         logger.info("[ObatBoImpl.updateObatGejala] End <<<<<<<");
+    }
+
+    @Override
+    public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] START >>>>>>>>>>");
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] END <<<<<<<<<<");
+        return null;
     }
 
     private String getIdNextObatGejala() throws GeneralBOException{

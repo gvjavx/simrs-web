@@ -5,6 +5,7 @@ import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -38,8 +39,11 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
+        if (mapCriteria.get("asc") != null){
+            criteria.addOrder(Order.asc("createdDate"));
+        }
 
-        criteria.addOrder(Order.asc("primaryKey.idObat"));
+        //criteria.addOrder(Order.asc("primaryKey.idObat"));
         List<MtSimrsObatPoliEntity> results = criteria.list();
         return results;
     }

@@ -4,12 +4,15 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -509,6 +512,24 @@ public class ObatPoliAction extends BaseMasterAction {
         logger.info("[ObatPoliAction.getTujuanPleyanan] end process <<<");
         return SUCCESS;
 
+    }
+
+    public CheckObatResponse checkStockLamaByIdPabrikan(String idPabrik){
+
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        String branchId = CommonUtil.userBranchLogin();
+
+        try {
+            checkObatResponse = obatPoliBo.checkObatStockLama(idPabrik, branchId);
+        } catch (HibernateException e){
+
+        }
+
+        return checkObatResponse;
     }
 
 
