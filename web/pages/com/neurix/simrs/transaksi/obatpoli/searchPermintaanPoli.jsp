@@ -427,7 +427,7 @@
                         <tr>
                             <td >ID</td>
                             <td >Nama Obat</td>
-                            <td align="center">Reture(Qty)</td>
+                            <td align="center">Qty Reture</td>
                         </tr>
                         </thead>
                         <tbody id="body_reture">
@@ -529,7 +529,7 @@
         $('#judul_ret').html("Konfirmasi Reture Obat");
         var table = "";
         var data = [];
-        PermintaanObatPoliAction.listDetailPermintaan(id,false, tujuan,{
+        PermintaanObatPoliAction.listDetailPermintaan(id, false, tujuan, "Y", {
             callback: function (response) {
                 if(response != null){
                     $.each(response, function (i, item) {
@@ -542,6 +542,7 @@
                 }
             }
         });
+
         $('#body_reture').html(table);
     }
 

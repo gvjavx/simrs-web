@@ -241,6 +241,7 @@ public class ObatPoliAction extends BaseMasterAction {
                     permintaanObatPoli.setIdObat(obj.getString("ID"));
                     permintaanObatPoli.setIdPelayanan(idPelayanan);
                     permintaanObatPoli.setBranchId(userArea);
+                    permintaanObatPoli.setJenisSatuan(obj.getString("Jenis Satuan"));
                     permintaanObatPoli.setQty(new BigInteger(obj.getString("Qty")));
                     permintaanObatPoliList.add(permintaanObatPoli);
                 }
@@ -289,7 +290,8 @@ public class ObatPoliAction extends BaseMasterAction {
                         JSONObject obj = json.getJSONObject(i);
                         detail = new TransaksiObatDetail();
                         detail.setIdObat(obj.getString("ID"));
-                        detail.setQtyApprove(new BigInteger(obj.getString("Approve")));
+                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                        detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                         transaksiObatDetails.add(detail);
                     }
                 }

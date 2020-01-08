@@ -429,6 +429,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                 obatDetailEntity.setIdObat(permintaanObatPoli.getIdObat());
                 obatDetailEntity.setQty(permintaanObatPoli.getQty());
+                obatDetailEntity.setJenisSatuan(permintaanObatPoli.getJenisSatuan());
                 obatDetailEntity.setFlag("Y");
                 obatDetailEntity.setAction("C");
                 obatDetailEntity.setCreatedDate(bean.getCreatedDate());
@@ -436,6 +437,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetailEntity.setLastUpdate(bean.getCreatedDate());
                 obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
                 obatDetailEntity.setKeterangan("Permintaan Obat");
+
                 try {
                     obatDetailDao.addAndSave(obatDetailEntity);
                 } catch (HibernateException e) {
@@ -778,9 +780,20 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                                 if (obatEntity != null) {
 
-                                    BigInteger jmlh = obatEntity.getQty().add(obatDetailEntity.getQty());
+                                    BigInteger jml = new BigInteger(String.valueOf(0));
 
-                                    obatEntity.setQty(jmlh);
+                                    if("box".equalsIgnoreCase(obatDetailEntity.getJenisSatuan())){
+                                        jml = obatEntity.getQtyBox().add(obatDetailEntity.getQty());
+                                    }
+                                    if("lembar".equalsIgnoreCase(obatDetailEntity.getJenisSatuan())){
+                                    }
+                                    if("biji".equalsIgnoreCase(obatDetailEntity.getJenisSatuan())){
+
+                                    }
+
+//                                    BigInteger jmlh = obatEntity.getQty().add(obatDetailEntity.getQty());
+
+                                    obatEntity.setQty(jml);
                                     obatEntity.setAction("U");
                                     obatEntity.setLastUpdate(bean.getLastUpdate());
                                     obatEntity.setLastUpdateWho(bean.getLastUpdateWho());

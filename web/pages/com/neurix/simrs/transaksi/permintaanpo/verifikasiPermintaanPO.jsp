@@ -230,12 +230,15 @@
                     </div>
                     </div>
                     <div class="box-header with-border"></div>
-                    <s:url var="selesai" namespace="/permintaanpo" action="initForm_permintaanpo" escapeAmp="false">
-                    </s:url>
-                    <s:a href="%{selesai}">
-                        <button class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>
-                    </s:a>
-                    <br>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <s:url var="selesai" namespace="/permintaanpo" action="initForm_permintaanpo" escapeAmp="false">
+                            </s:url>
+                            <s:a href="%{selesai}">
+                                <button class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>
+                            </s:a>
+                        </div>
+                    </div>
                     <br>
                 </div>
             </div>

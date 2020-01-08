@@ -388,8 +388,10 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             if (obj[10] != null) {
                 permintaanObatPoli.setBijiPerLembar((BigInteger) obj[10]);
             }
+            if (obj[11] != null) {
+                permintaanObatPoli.setJenisSatuan(obj[11].toString());
+            }
 
-            permintaanObatPoli.setJenisSatuan(obj[11].toString());
             listOfResults.add(permintaanObatPoli);
         }
         return listOfResults;
