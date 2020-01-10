@@ -156,7 +156,7 @@
                                                   list="#initObat.listOfObat" id="nama_obat"
                                                   listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
                                                   onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"
-                                                  listValue="idPabrik +'-'+ namaObat +'-'+'BL/BX:'+lembarPerBox+'-'+'BJ/LB:'+bijiPerLembar"
+                                                  listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                         <p style="color: red; display: none;"
@@ -280,7 +280,7 @@
                                         <input class="form-control" id="lembar_perbox" type="number"
                                                style="margin-top: 7px"
                                                oninput="var warn =$('#war_po_lembar_perbox').is(':visible'); if (warn){$('#cor_po_lembar_perbox').show().fadeOut(3000);$('#war_po_lembar_perbox').hide()};"
-                                        onchange="cekFisik()"/>
+                                               onchange="cekFisik()"/>
                                         <p style="color: red; display: none;"
                                            id="war_po_lembar_perbox"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -577,29 +577,30 @@
                 bijiPerLembar = obat.split('|')[3];
             }
 
-            if(lembarperBox != lembar && bijiPerLembar != biji){
+            if (lembarperBox != lembar && bijiPerLembar != biji) {
                 $('#warning_fisik').show();
-                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat,+"Jumlah Asal" +
-                        " Lembar/Box : "+lembarperBox+", menjadi : "+lembar+"" +
+                $('#msg_fisik').text("Terdapat perubahan bentuk fisik,"+ '<br>'+" Nama Obat: " + namaObat, +"Jumlah Asal" +
+                        " Lembar/Box : " + lembarperBox + ", menjadi : " + lembar + "" +
                         " Jumlah Asal" +
-                        " Biji/Lembar : "+bijiPerLembar+", menjadi : "+biji);
+                        " Biji/Lembar : " + bijiPerLembar + ", menjadi : " + biji);
+                console.log("dua");
+                if (lembarperBox != lembar) {
+                    $('#warning_fisik').show();
+                    $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: " + namaObat + "Jumlah Asal" +
+                            " Lembar/Box : " + lembarperBox + ", menjadi : " + lembar);
+                    console.log("lembar");
+                }
+                if (bijiPerLembar != biji) {
+                    $('#warning_fisik').show();
+                    $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: " + namaObat + "Jumlah Asal" +
+                            " Biji/lembar : " + bijiPerLembar + ", menjadi : " + biji);
+                    console.log("biji");
+                }
             }
 
-            if(lembarperBox != lembar){
-                $('#warning_fisik').show();
-                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat+"Jumlah Asal" +
-                        " Lembar/Box : "+lembarperBox+", menjadi : "+lembar);
-            }
-            if(bijiPerLembar != biji){
-                $('#warning_fisik').show();
-                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat+"Jumlah Asal" +
-                        " Biji/lembar : "+bijiPerLembar+", menjadi : "+biji);
-            }
+            console.log(lembar);
+            console.log(biji);
         }
-
-        console.log(lembar);
-        console.log(biji);
-    }
 
 </script>
 
