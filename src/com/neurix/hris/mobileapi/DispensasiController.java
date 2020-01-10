@@ -120,6 +120,8 @@ public class DispensasiController implements ModelDriven<Object> {
             ijinKeluar.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             ijinKeluar.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 
+            ijinKeluar.setOs((model.getOs()));
+
             List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
 
             for ( Notifikasi notifikasi : notifikasiList){

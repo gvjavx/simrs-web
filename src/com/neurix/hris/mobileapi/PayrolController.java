@@ -47,7 +47,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
         try {
             Connection connection = dataSource.getConnection();
 
-            JasperReport jasperReport = JasperCompileManager.compileReport("/opt/tomcat/webapps/hris/pages/report/com/neurix/hris/reportPayroll.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport("/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, connection);
 
             pathDocument = CommonConstant.RESOURCE_DOCUMENT_PAYROLL + idPayroll +".pdf";

@@ -87,7 +87,11 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
 
             } else if ("/mobileapi/loginpasien".equalsIgnoreCase(namespace)){
                 logger.info("[ExceptionHandlerInterceptor.loginpasien] skiping token");
-            } else {
+
+            } else if ("/mobileapi/pelayanan".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }
+            else {
 
                 String token = request.getHeader("tokenId");
                 if (token != null) {

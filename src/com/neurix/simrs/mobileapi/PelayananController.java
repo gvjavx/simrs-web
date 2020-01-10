@@ -15,9 +15,8 @@ import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 import com.kinoroy.expo.push.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author gondok
@@ -38,6 +37,7 @@ public class PelayananController implements ModelDriven<Object> {
     private String flag;
     private String action;
     private String nip;
+    private String channelId;
 
     public static Logger getLogger() {
         return logger;
@@ -136,6 +136,14 @@ public class PelayananController implements ModelDriven<Object> {
         this.nip = nip;
     }
 
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
     @Override
     public Object getModel() {
         return (listOfPelayanan != null ? listOfPelayanan : model);
@@ -191,6 +199,109 @@ public class PelayananController implements ModelDriven<Object> {
                 } catch (GeneralBOException el) {
 
                 }
+            }
+        }
+
+        if  (action.equalsIgnoreCase(("notif"))) {
+
+            List<String> somePushTokens = Arrays.asList("ExponentPushToken[a5ZnTeN_kK0DmkQT4ibUlP]");
+            List<String> ticketId = new ArrayList<>();
+
+            List<Message> messages = new ArrayList<>();
+            // You can check whether your push tokens are syntactically valid
+            for (String token : somePushTokens) {
+                // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+                if (!ExpoPushClient.isExpoPushToken(token)) {
+                    logger.error(token + " is not a valid Expo Push Token!");
+                }
+            }
+            for (String token : somePushTokens) {
+                // Construct a message
+                Message message = new Message.Builder()
+                        .to(token)
+                        .title("Nyoba")
+                        .sound("default")
+                        .priority(Priority.HIGH)
+                        .channelId(channelId)
+                        .body("Oke")
+                        .build();
+                messages.add(message);
+            }
+            // The Expo push service accepts batches of messages, no more than 100 at a time.
+            // If you know you're sending more than 100 messages,
+            // Use ExpoPushClient.chunkItems to get lists of 100 or less items
+            List<List<Message>> chunks = ExpoPushClient.chunkItems(messages);
+
+            for (List<Message> chunk : chunks) {
+                try {
+                    PushTicketResponse response = ExpoPushClient.sendPushNotifications(messages);
+                    List<ExpoError> errors = response.getErrors();
+                    // If there is an error with the *entire request*:
+                    // The errors object will be an list of errors,
+                    // (usually just one)
+                    if (errors != null) {
+                        for (ExpoError error : errors) {
+                            // Handle the errors
+                        }
+                    }
+                    // If there are errors that affect individual messages but not the entire request,
+                    // errors will be null and each push ticket will individually contain the status
+                    // of each message (ok or error)
+                    List<PushTicket> tickets = response.getTickets();
+                    if (tickets != null) {
+                        for (PushTicket ticket : tickets) {
+                            // Handle each ticket (namely, check the status, and save the ID!)
+                            // NOTE: If a ticket status is error, you can get the specific error
+                            // from the details object. You must handle it appropriately.
+                            // The error codes are listed in PushError
+                            if (ticket.getStatus() == Status.OK) {
+                                ticketId.add(ticket.getId());
+                                // Save this id somewhere for later
+                            } else {
+                                // Handle the error
+                                PushError e = ticket.getDetails().getError();
+                                switch (e) {
+                                    case MESSAGE_TOO_BIG:
+                                    case INVALID_CREDENTIALS:
+                                    case DEVICE_NOT_REGISTERED:
+                                    case MESSAGE_RATE_EXCEEDED:
+                                }
+
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+
+            // Later, you can get the Push Receipts using the ids you saved from above.
+            // Usually, the receipts are available within a few seconds, but when Expo is under load,
+            // it can take up to 30 min. Push Reciepts are available for at least 1 day
+
+            try {
+                PushReceiptResponse response = ExpoPushClient.getPushReciepts(ticketId);
+                Map<String, PushReceipt> receipts = response.getReceipts();
+                for (String id : ticketId) {
+                    PushReceipt rec = receipts.get(id);
+                    if (rec != null) {
+                        if (rec.getStatus() == Status.OK) {
+                            // It's all good!
+                        } else {
+                            // Handle the error
+                            PushError e = rec.getDetails().getError();
+                            switch (e) {
+                                case MESSAGE_TOO_BIG:
+                                case INVALID_CREDENTIALS:
+                                case DEVICE_NOT_REGISTERED:
+                                case MESSAGE_RATE_EXCEEDED:
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                // Handle a network error here
+                System.out.println(e.getMessage());
             }
         }
 

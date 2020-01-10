@@ -37,6 +37,7 @@ public class LemburController implements ModelDriven<Object> {
     private JamKerjaBo jamKerjaBoProxy;
     private BiodataBo biodataBoProxy;
 
+    private String nip;
     private String idLembur;
     private String id;
     private String who;
@@ -47,6 +48,14 @@ public class LemburController implements ModelDriven<Object> {
     private String tanggalAkhir;
     private String jamAwal;
     private String jamAkhir;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public void setJamKerjaBoProxy(JamKerjaBo jamKerjaBoProxy) {
         this.jamKerjaBoProxy = jamKerjaBoProxy;
@@ -73,7 +82,7 @@ public class LemburController implements ModelDriven<Object> {
 
         List<Object[]> daftarLembur = null;
         try {
-            daftarLembur = lemburBoProxy.findInfoLembur(idLembur, model.getNip());
+            daftarLembur = lemburBoProxy.findInfoLembur(idLembur, nip);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -182,7 +191,7 @@ public class LemburController implements ModelDriven<Object> {
             throw new GeneralBOException(e);
         }
 
-        if(lemburs != null){
+        if(lemburs != null && lemburs.size() != 0){
             for(Object[] obj : lemburs){
                 Lembur model = new Lembur();
                 model.setIdLembur(obj[0].toString());

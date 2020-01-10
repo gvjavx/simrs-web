@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.antrianonline.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -13,7 +14,7 @@ public class ItSimrsRegistrasiOnlineEntity implements Serializable {
     private String noKtp;
     private String tempatLahir;
     private Date tglLahir;
-    private Long desaId;
+    private BigInteger desaId;
     private String jalan;
     private String suku;
     private String agama;
@@ -94,11 +95,11 @@ public class ItSimrsRegistrasiOnlineEntity implements Serializable {
         this.tglLahir = tglLahir;
     }
 
-    public Long getDesaId() {
+    public BigInteger getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(Long desaId) {
+    public void setDesaId(BigInteger desaId) {
         this.desaId = desaId;
     }
 

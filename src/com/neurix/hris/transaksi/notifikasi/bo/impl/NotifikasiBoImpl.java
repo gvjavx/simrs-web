@@ -6,6 +6,7 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.ExpoPushNotif;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
@@ -403,10 +404,17 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(bean.getNip())){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), bean.getTipeNotifName(), bean.getNote(), CLICK_IJIN);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), bean.getTipeNotifName(), bean.getNote(), bean.getChannelId(), bean.getOs());
                     break;
                 }
             }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                if(entity.getUserId().equals(bean.getNip())){
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), bean.getTipeNotifName(), bean.getNote(), CLICK_IJIN);
+//                    break;
+//                }
+//            }
         }
 
         logger.info("[NotifikasiBoImpl.saveAdd] end process <<<");
@@ -612,24 +620,26 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         String createdWho=notifikasi.getCreatedWho();
         String to=notifikasi.getTo();
         String pengganti = notifikasi.getFromPerson();
+        String os = notifikasi.getOs();
+        String channelId = notifikasi.getChannelId();
 
         if (to!=null){
             if (("atasan").equalsIgnoreCase(to)){
-                SendNotifKeAtasanLangsung(nip,id,tipeNotifId,tipeNotifName,note,createdWho);
+                SendNotifKeAtasanLangsung(nip,id,tipeNotifId,tipeNotifName,note,createdWho, os, channelId);
             }else if (("kabag").equalsIgnoreCase(to)){
-                SendNotifKeKabag(nip,id,tipeNotifId,tipeNotifName,note,createdWho);
+                SendNotifKeKabag(nip,id,tipeNotifId,tipeNotifName,note,createdWho, os, channelId);
             }else if (("kabid").equalsIgnoreCase(to)){
-                SendNotifKeKabid(nip,id,tipeNotifId,tipeNotifName,note,createdWho);
+                SendNotifKeKabid(nip,id,tipeNotifId,tipeNotifName,note,createdWho, os, channelId);
             }else if (("self").equalsIgnoreCase(to)){
-                SendNotifSelf(nip,id,tipeNotifName,note,createdWho);
+                SendNotifSelf(nip,id,tipeNotifName,note,createdWho, os, channelId);
             }else if (("plt").equalsIgnoreCase(to)){
-                SendNotifPlt(nip,id,tipeNotifName,note,createdWho,pengganti);
+                SendNotifPlt(nip,id,tipeNotifName,note,createdWho,pengganti, os, channelId);
             }
         }
     }
 
     @Override
-    public void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho){
+    public void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os, String channelId){
         List<PersonilPosition> personilPositionList;
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -680,16 +690,23 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                 if (entity.getUserId().equals(personilPosition.getNip())) {
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, channelId, os);
                     break;
                 }
             }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
+//                if (entity.getUserId().equals(personilPosition.getNip())) {
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+//                    break;
+//                }
+//            }
         }
     }
 
 
     @Override
-    public void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho){
+    public void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho, String os, String channelId){
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         // Send Notification
@@ -728,14 +745,21 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+                ExpoPushNotif.sendNotificationExpo(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), channelId, os);
                 break;
             }
         }
+
+//        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//            if(entity.getUserId().equals(nip)){
+//                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+//                break;
+//            }
+//        }
     }
 
     @Override
-    public void SendNotifPlt(String nip, String id, String tipeNotifName, String note, String createdWho,String pengganti){
+    public void SendNotifPlt(String nip, String id, String tipeNotifName, String note, String createdWho,String pengganti, String os, String channelId){
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         // Send Notification
@@ -774,14 +798,21 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+               ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), channelId, os);
                 break;
             }
         }
+
+//        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//            if(entity.getUserId().equals(nip)){
+//                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+//                break;
+//            }
+//        }
     }
 
     @Override
-    public void SendNotifKeKabag(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho){
+    public void SendNotifKeKabag(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os, String channelId){
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         List<PersonilPosition> personilPositionList = new ArrayList<>();
         action = "TASK_LEMBUR";
@@ -822,18 +853,25 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                 for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                     if(entity.getUserId().equals(personilPosition.getNip())){
-                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+                        ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, channelId, os);
                         break;
                     }
                 }
+
+//                for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                    if(entity.getUserId().equals(personilPosition.getNip())){
+//                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+//                        break;
+//                    }
+//                }
             }
         }else {
-            SendNotifKeKabid(nip,id,tipeNotifId,tipeNotifName,note,createdWho);
+            SendNotifKeKabid(nip,id,tipeNotifId,tipeNotifName,note,createdWho, os, channelId);
         }
 
     }
     @Override
-    public void SendNotifKeKabid(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho){
+    public void SendNotifKeKabid(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os, String channelId){
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         List<PersonilPosition> personilPositionList = daftarKabid(nip);
@@ -873,10 +911,17 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(personilPosition.getNip())){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, channelId, os);
                     break;
                 }
             }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                if(entity.getUserId().equals(personilPosition.getNip())){
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_IJIN);
+//                    break;
+//                }
+//            }
         }
     }
 

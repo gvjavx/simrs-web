@@ -118,6 +118,10 @@
             <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/pengajuanlembur" filters="none" />
+            <filter-chain pattern="/mobileapi/pengajuanlembur/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pengajuanlembur/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

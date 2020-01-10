@@ -16,6 +16,7 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -306,7 +307,8 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setProfesi(profesi);
             registrasiOnline.setJenisKelamin(jenisKelamin);
             registrasiOnline.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
-            registrasiOnline.setDesaId(Long.valueOf(desaId));
+            BigInteger bigInteger = new BigInteger(desaId);
+            registrasiOnline.setDesaId(bigInteger);
             registrasiOnline.setSuku(suku);
             registrasiOnline.setAgama(agama);
             registrasiOnline.setNoTelp(noTelp);

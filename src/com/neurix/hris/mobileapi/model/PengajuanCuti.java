@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class PengajuanCuti implements Serializable {
 
+    private String cutiPegawaiId;
     private String nip;
     private String namaPegawai;
     private String unitId;
@@ -33,6 +34,17 @@ public class PengajuanCuti implements Serializable {
 
     private String statusApprove;
     private String golongan;
+
+    private String channelId;
+    private String os;
+
+    public String getCutiPegawaiId() {
+        return cutiPegawaiId;
+    }
+
+    public void setCutiPegawaiId(String cutiPegawaiId) {
+        this.cutiPegawaiId = cutiPegawaiId;
+    }
 
     public String getGolongan() {
         return golongan;
@@ -208,5 +220,21 @@ public class PengajuanCuti implements Serializable {
 
     public void setCutiId(String cutiId) {
         this.cutiId = cutiId;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
     }
 }

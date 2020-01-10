@@ -4,6 +4,7 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.ExpoPushNotif;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
@@ -438,9 +439,9 @@ public class LemburBoImpl implements LemburBo {
                         returnLembur.setTipeLemburName("Non Rutin");
                     }
 
-                    if (CommonUtil.roleAsLogin().equalsIgnoreCase("ADMIN")){
-                        returnLembur.setCekAdmin(true);
-                    }
+//                    if (CommonUtil.roleAsLogin().equalsIgnoreCase("ADMIN")){
+//                        returnLembur.setCekAdmin(true);
+//                    }
                     listOfResult.add(returnLembur);
                 }
             }
@@ -684,10 +685,17 @@ public class LemburBoImpl implements LemburBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(atasanNip)){
-                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getChannelId(), bean.getOs());
                     break;
                 }
             }
+
+//            for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                if(entity.getUserId().equals(atasanNip)){
+//                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, ACTION_CLICK);
+//                    break;
+//                }
+//            }
         }
         logger.info("[IjinKeluarBoImpl.saveAdd] end process <<<");
         return null;

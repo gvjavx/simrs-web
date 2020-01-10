@@ -152,6 +152,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setLastUpdateWho(model.getNamaPegawai());
             cutiPegawai.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            cutiPegawai.setChannelId(model.getChannelId());
+            cutiPegawai.setOs(model.getOs());
 
             cutiPegawaiBoProxy.saveAdd(cutiPegawai);
         } catch (GeneralBOException e) {
@@ -205,6 +207,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             for(com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai modelCuti : listOfCuti){
                 if(modelCuti.getApprovalFlag() == null) {
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());
@@ -222,6 +225,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                 } else if(modelCuti.getApprovalFlag().equals("Y") && statusApprove.equals("Y")){
 
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());
@@ -238,6 +242,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                     listOfCutiPegawai.add(model);
                 } else if (modelCuti.getApprovalFlag().equals("N") && statusApprove.equals("N")){
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());
