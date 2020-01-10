@@ -473,6 +473,34 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.saveReture] END <<<<<<<<<<");
     }
 
+    private void updateAddStockObatPoli(ImSimrsObatEntity bean) throws GeneralBOException{
+        logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] START >>>>>>>>>>");
+
+
+
+        try {
+
+        } catch (HibernateException e){
+            logger.error("[ERROR] when save obat by criteria.");
+        }
+
+        logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
+    }
+
+    private void updateSubstractStockObatPoli(ImSimrsObatEntity bean) throws GeneralBOException{
+        logger.info("[ObatPoliBoImpl.updateSubstractStockObatPoli] START >>>>>>>>>>");
+
+
+
+        try {
+
+        } catch (HibernateException e){
+            logger.error("[ERROR] when save obat by criteria.");
+        }
+
+        logger.info("[ObatPoliBoImpl.updateSubstractStockObatPoli] END <<<<<<<<<<");
+    }
+
     @Override
     public void saveApproveRequest(PermintaanObatPoli bean, List<TransaksiObatDetail> transList, boolean isPoli) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.saveApproveRequest] START >>>>>>>>>>");
