@@ -10,6 +10,14 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+    <script>
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
+    </script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
 </head>
 
@@ -34,7 +42,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Approval Permintaan PO
+            Approval Permintaan Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -111,7 +119,7 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td align="center"><s:property value="qtyApprove"/></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
-                                    <td align="right"><s:property value="hargaPo"/></td>
+                                    <td align="right"><script> var harga = '<s:property value="hargaPo"/>'; document.write("Rp. "+formatRupiah(harga))</script></td>
                                     <td align="center">
                                         <s:if test='#row.flagDiterima == "Y"'>
                                             <span class="label label-success">Sesuai</span>
@@ -160,7 +168,7 @@
                                         <td align="center"><s:property value="qty"/></td>
                                         <td align="center"><s:property value="qtyApprove"/></td>
                                         <td align="center"><s:property value="jenisSatuan"/></td>
-                                        <td align="right"><s:property value="hargaPo"/></td>
+                                        <td align="right"><script> var harga = '<s:property value="hargaPo"/>'; document.write("Rp. "+formatRupiah(harga))</script></td>
                                         <td align="center"><s:property value="lembarPerBox"/></td>
                                         <td align="center"><s:property value="bijiPerLembar"/></td>
                                     </tr>

@@ -934,9 +934,21 @@ public class CheckupDetailAction extends BaseMasterAction {
     public String printResepPasien(){
 
         String idResep = getIdResep();
+        String id = getId();
 
         reportParams.put("resepId", idResep);
-        reportParams.put("logo", "/simrs/pages/images/logo-nmu.png");
+        reportParams.put("logo", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY+CommonConstant.LOGO_NMU);
+        reportParams.put("nik","");
+        reportParams.put("nama","");
+        reportParams.put("tglLahir","");
+        reportParams.put("jenisKelamin","");
+        reportParams.put("jenisPasien","");
+        reportParams.put("poli","");
+        reportParams.put("provinsi","");
+        reportParams.put("kabupaten","");
+        reportParams.put("kecamatan","");
+        reportParams.put("desa","");
+
 
         try {
             preDownload();

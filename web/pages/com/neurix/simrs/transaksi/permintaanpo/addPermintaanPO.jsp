@@ -12,6 +12,22 @@
     </style>
     <script type='text/javascript'>
 
+        function formatRupiah2(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
         $(document).ready(function () {
 
             $('#permintaan_po').addClass('active');
@@ -49,7 +65,19 @@
             $("#imgInp").change(function () {
                 readURL(this);
             });
+
+            var nominal = document.getElementById('harga');
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value, 'Rp. ');
+            });
         });
+
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
 
     </script>
 
@@ -70,7 +98,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Permintaan PO
+            Tambah Permintaan Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -100,8 +128,13 @@
                                                   list="#initVendor.listOfVendor" id="nama_vendor"
                                                   name="headerCheckup.idPelayanan" listKey="idVendor"
                                                   listValue="namaVendor"
+                                                  onchange="var warn =$('#war_po_vendor').is(':visible'); if (warn){$('#cor_po_vendor').show().fadeOut(3000);$('#war_po_vendor').hide()};"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_vendor"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_vendor"><i class="fa fa-check"></i> correct</p>
                                         <%--<s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"--%>
                                         <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
                                         <%--id="nama_vendor"--%>
@@ -117,10 +150,14 @@
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
                                                   listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
-                                                  onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; resetField();"
+                                                  onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField();"
                                                   listValue="namaObat"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_obat"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_obat"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -128,18 +165,23 @@
                                     <div class="col-md-8">
                                         <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
                                         <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
-                                                  cssStyle="margin-top: 7px; width: 100%" onchange="$(this).css('border','')"
+                                                  cssStyle="margin-top: 7px; width: 100%"
+                                                  onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
                                                   id="jenis_satuan"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jenis"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                                 <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<input class="form-control" id="lembar_box" type="number"--%>
-                                               <%--style="margin-top: 7px" min="0" oninput="jmlLembar();">--%>
-                                    <%--</div>--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="lembar_box" type="number"--%>
+                                <%--style="margin-top: 7px" min="0" oninput="jmlLembar();">--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <div class="form-group" style="display: none">
                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
@@ -219,27 +261,37 @@
                                     <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
                                     <div class="col-md-8">
                                         <input class="form-control" id="jumlah" type="number"
-                                               style="margin-top: 7px"/>
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                                 <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<input class="form-control" id="lembar" type="number" style="margin-top: 7px"--%>
-                                               <%--readonly="true"/>--%>
-                                    <%--</div>--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="lembar" type="number" style="margin-top: 7px"--%>
+                                <%--readonly="true"/>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4" style="margin-top: 7px">Jml Biji</label>--%>
-                                    <%--<div class="col-md-8">--%>
-                                        <%--<input class="form-control" id="biji" type="number" style="margin-top: 7px"--%>
-                                               <%--readonly="true"/>--%>
-                                    <%--</div>--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Biji</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="biji" type="number" style="margin-top: 7px"--%>
+                                <%--readonly="true"/>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="harga" type="number" style="margin-top: 7px"/>
+                                        <input class="form-control" id="harga" style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_harga"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_harga"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                             </div>
@@ -319,35 +371,19 @@
         window.location.reload(true);
     }
 
-    function jmlLembar() {
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
-
-        if (lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0) {
-            var lembarBox = parseInt(lembarBox) * parseInt(box);
-            $('#lembar').val(lembarBox);
-        } else {
-            $('#lembar').val('');
-        }
-    }
-
-    function jmlBiji() {
-
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-
-        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0) {
-            var jmlBiji = parseInt(lembar) * parseInt(bijiLembar);
-            $('#biji').val(jmlBiji);
-        } else {
-            $('#biji').val('');
-        }
-    }
-
     function confirm() {
         var data = $('#tabel_po').tableToJSON();
         var stringData = JSON.stringify(data);
         var vendor = $('#nama_vendor').val();
+        var result = [];
+        $.each(data, function (i, item) {
+            if(item.harga){
+                result.push("harga",formatRupiah(harga));
+            }
+        })
+
+        console.log(result);
+        console.log(data);
         if (stringData != '[]' && vendor != '') {
             $('#confirm_dialog').dialog('open');
         } else {
@@ -369,25 +405,25 @@
         var harga = $('#harga').val();
         var data = $('#tabel_po').tableToJSON();
 
-        var idObat = "-";
-        var namaObat = "-";
-        var qtyBox = "-";
-        var qtyLembar = "-";
+        var idObat = "";
+        var namaObat = "";
+        var qtyBox = "";
+        var qtyLembar = "";
 
         var cek = false;
 
-        if (obat != '' && vendor != '') {
-            console.log(obat);
-            if(obat.split('|')[0] != 'null' && obat.split('|')[0] != ''){
+        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '') {
+
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
                 idObat = obat.split('|')[0];
             }
-            if(obat.split('|')[1] != 'null' && obat.split('|')[1] != ''){
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
                 namaObat = obat.split('|')[1];
             }
-            if(obat.split('|')[2] != 'null' && obat.split('|')[2] != ''){
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
                 qtyBox = obat.split('|')[2];
             }
-            if(obat.split('|')[3] != 'null' && obat.split('|')[3] != ''){
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
                 qtyLembar = obat.split('|')[3];
             }
 
@@ -414,12 +450,23 @@
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
-                $('#jenis_satuan').attr('disabled', true);
+//                $('#jenis_satuan').attr('disabled', true);
             }
         } else {
-            if (obat == '') {
+            if (obat == '' || obat == null) {
+                $('#war_po_obat').show();
             }
-            if (vendor == '') {
+            if (vendor == '' || vendor == null) {
+                $('#war_po_vendor').show();
+            }
+            if (jenis == '' || jenis == null) {
+                $('#war_po_jenis').show();
+            }
+            if (jumlah <= 0) {
+                $('#war_po_jumlah').show();
+            }
+            if (harga == '') {
+                $('#war_po_harga').show();
             }
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');

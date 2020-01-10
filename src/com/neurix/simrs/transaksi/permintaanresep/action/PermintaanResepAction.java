@@ -92,6 +92,7 @@ public class PermintaanResepAction extends BaseMasterAction{
                         detail.setIdObat(obj.getString("ID"));
                         detail.setQty(new BigInteger(obj.getString("Qty")));
                         detail.setKeterangan(obj.getString("Keterangan"));
+                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
                         detailList.add(detail);
                     }
                 }
