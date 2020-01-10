@@ -452,6 +452,64 @@ public class ObatBoImpl implements ObatBo {
         return null;
     }
 
+    @Override
+    public CheckObatResponse checkFisikObat(Obat bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkFisikObat] START >>>>>>>>>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", bean.getIdObat());
+        hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        hsCriteria.put("branch_id", bean.getBranchId());
+        hsCriteria.put("desc", "Y");
+        hsCriteria.put("flag", "Y");
+
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.checkFisikObat] error when check fisik obat"+ e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.checkFisikObat] check fisik obat "+ e.getMessage());
+        }
+
+        if (obatEntities.size() > 0){
+            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+
+            if (obatEntity.getLembarPerBox().compareTo(bean.getLembarPerBox()) == 0 && obatEntity.getBijiPerLembar().compareTo(bean.getBijiPerLembar()) == 0) {
+                response.setStatus("success");
+                response.setMessage("Obat Sesuai");
+            } else {
+                response.setStatus("warning");
+
+                StringBuilder r = new StringBuilder();
+                r.append("Obat teridentifikasi berubah fisik");
+                r.append("\n");
+                r.append("Kode produksi : "+obatEntity.getIdPabrik());
+                r.append("Nama : "+obatEntity.getNamaObat());
+                r.append("Merk : "+obatEntity.getMerk());
+                r.append("\n");
+                r.append("Lembar/Box : "+obatEntity.getLembarPerBox());
+                r.append("Biji/Lembar : "+obatEntity.getBijiPerLembar());
+                r.append("\n");
+                r.append("Tgl diterimah : "+obatEntity.getCreatedDate());
+
+                response.setMessage(String.valueOf(r));
+            }
+        } else {
+            response.setStatus("new");
+
+            StringBuilder r = new StringBuilder();
+            r.append("Obat teridentifikasi baru");
+            r.append("Karna tidak ditemukan kecocokan kode produksi pada data master");
+            response.setMessage(String.valueOf(r));
+        }
+
+        logger.info("[ObatPoliBoImpl.checkFisikObat] END <<<<<<<<<<");
+        return response;
+    }
+
     private String getIdNextObatGejala() throws GeneralBOException{
         String id = "";
 

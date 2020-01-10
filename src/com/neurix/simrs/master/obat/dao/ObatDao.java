@@ -44,12 +44,25 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("id_pabrik") != null) {
                 criteria.add(Restrictions.eq("idPabrik", (String) mapCriteria.get("id_pabrik")));
             }
+
+            if (mapCriteria.get("lembar_per_box") != null){
+                criteria.add(Restrictions.eq("lembarPerBox", (BigInteger) mapCriteria.get("lembar_per_box")));
+            }
+
+            if (mapCriteria.get("biji_per_lembar") != null){
+                criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("bijiPerLembar")));
+            }
+
+            if (mapCriteria.get("asc") != null){
+                criteria.addOrder(Order.asc("createdDate"));
+            } else if (mapCriteria.get("desc") != null){
+                criteria.addOrder(Order.desc("createdDate"));
+            } else {
+                criteria.addOrder(Order.asc("idObat"));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-
-        // Order by
-        criteria.addOrder(Order.asc("idObat"));
 
         List<ImSimrsObatEntity> results = criteria.list();
 

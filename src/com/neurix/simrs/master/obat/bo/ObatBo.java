@@ -17,4 +17,5 @@ public interface ObatBo{
     public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;
 
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
+    public CheckObatResponse checkFisikObat(Obat bean) throws GeneralBOException;
 }
