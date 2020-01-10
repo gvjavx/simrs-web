@@ -493,7 +493,7 @@ public class ObatBoImpl implements ObatBo {
                 r.append("Lembar/Box : "+obatEntity.getLembarPerBox());
                 r.append("Biji/Lembar : "+obatEntity.getBijiPerLembar());
                 r.append("\n");
-                r.append("Tgl diterimah : "+obatEntity.getCreatedDate());
+                r.append("Tgl diterima : "+obatEntity.getCreatedDate());
 
                 response.setMessage(String.valueOf(r));
             }
