@@ -78,6 +78,13 @@
             <result name="init_edit">/pages/com/neurix/simrs/transaksi/permintaanpo/verifikasiPermintaanPO.jsp</result>
             <result name="init_approve">/pages/com/neurix/simrs/transaksi/permintaanpo/approvePermintaanPO.jsp</result>
 
+            <result name="print_po" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printPermintaanPO.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
     </package>
 </struts>
