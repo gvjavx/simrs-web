@@ -117,11 +117,7 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
                         </div>
-                        <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_fisik">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_fisik"></p>
-                        </div>
+                        <div id="warning_fisik"></div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -154,7 +150,7 @@
                                                   name="getListObat_obat"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
+                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"
                                                   onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"
                                                   listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"
                                                   headerKey="" headerValue="[Select one]"
@@ -165,34 +161,34 @@
                                            id="cor_po_obat"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
-                                    <div class="col-md-8">
-                                        <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
-                                        <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
-                                                  cssStyle="margin-top: 7px; width: 100%"
-                                                  onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
-                                                  id="jenis_satuan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                        <p style="color: red; display: none;"
-                                           id="war_po_jenis"><i class="fa fa-times"></i> required</p>
-                                        <p style="color: green; display: none;"
-                                           id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="jumlah" type="number"
-                                               style="margin-top: 7px"
-                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
-                                        <p style="color: red; display: none;"
-                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
-                                        <p style="color: green; display: none;"
-                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--&lt;%&ndash;<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>&ndash;%&gt;--%>
+                                <%--<s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"--%>
+                                <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                <%--onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"--%>
+                                <%--id="jenis_satuan"--%>
+                                <%--headerKey="" headerValue="[Select one]"--%>
+                                <%--cssClass="form-control select2"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_jenis"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jumlah</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="jumlah" type="number"--%>
+                                <%--style="margin-top: 7px"--%>
+                                <%--oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_jumlah"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--<div class="form-group">--%>
                                 <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
                                 <%--<div class="col-md-8">--%>
@@ -299,6 +295,52 @@
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Harga</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="harga" style="margin-top: 7px"--%>
+                                <%--oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_harga"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_harga"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                            </div>
+                        </div>
+                        <div class="box-header with-border"></div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
+                                    <div class="col-md-8">
+                                        <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
+                                        <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                                  cssStyle="margin-top: 7px; width: 100%"
+                                                  onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
+                                                  id="jenis_satuan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jenis"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="jumlah" type="number"
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
@@ -562,6 +604,7 @@
         var namaObat = "";
         var lembarperBox = "";
         var bijiPerLembar = "";
+        var idPabrik = "";
 
         if (obat != '') {
             if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
@@ -576,31 +619,82 @@
             if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
                 bijiPerLembar = obat.split('|')[3];
             }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                idPabrik = obat.split('|')[4];
+            }
+
+            var newLembar = '<p>&nbsp;&nbsp;</p>';
+            var newBiji = '<p>&nbsp;&nbsp;</p>';
 
             if (lembarperBox != lembar && bijiPerLembar != biji) {
-                $('#warning_fisik').show();
-                $('#msg_fisik').text("Terdapat perubahan bentuk fisik,"+ '<br>'+" Nama Obat: " + namaObat, +"Jumlah Asal" +
-                        " Lembar/Box : " + lembarperBox + ", menjadi : " + lembar + "" +
-                        " Jumlah Asal" +
-                        " Biji/Lembar : " + bijiPerLembar + ", menjadi : " + biji);
-                console.log("dua");
+                newLembar = '<p> Menjadi ' + '<span style="margin-left: 50px">' + lembar + '</span>' + '</p>';
+                newBiji = '<p>Menjadi ' + '<span style="margin-left: 50px">' + biji + '</span>' + '</p>';
+            } else {
                 if (lembarperBox != lembar) {
-                    $('#warning_fisik').show();
-                    $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: " + namaObat + "Jumlah Asal" +
-                            " Lembar/Box : " + lembarperBox + ", menjadi : " + lembar);
-                    console.log("lembar");
+                    newLembar = '<p> Menjadi ' + '<span style="margin-left: 50px">' + lembar + '</span>' + '</p>';
                 }
+
                 if (bijiPerLembar != biji) {
-                    $('#warning_fisik').show();
-                    $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: " + namaObat + "Jumlah Asal" +
-                            " Biji/lembar : " + bijiPerLembar + ", menjadi : " + biji);
-                    console.log("biji");
+                    newBiji = '<p>Menjadi ' + '<span style="margin-left: 50px">' + biji + '</span>' + '</p>';
                 }
             }
 
-            console.log(lembar);
-            console.log(biji);
+            var warning = '<div class="alert alert-warning alert-dismissible">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' +
+                    '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
+                    '<div class="row">' +
+                    '<div class="col-md-6">' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-12">' +
+                    '<p><b>Obat teridentifikasi berubah fisik..!</b></p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4">' +
+                    '<p>Kode Produksi</p>' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                    '<p>' + idPabrik + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4">' +
+                    '<p>Nama Obat</p>' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                    '<p>' + namaObat + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4">' +
+                    '<p>Lembar/Box</p>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    '<p>' + lembarperBox + '</p>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    newLembar +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4">' +
+                    '<p>BijiLembar</p>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    '<p>' + bijiPerLembar + '</p>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    newBiji +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            $('#warning_fisik').html(warning);
+
         }
+    }
+
 
 </script>
 
