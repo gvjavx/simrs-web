@@ -117,6 +117,11 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
                         </div>
+                        <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_fisik">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_fisik"></p>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -150,8 +155,8 @@
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
                                                   listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar"
-                                                  onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField();"
-                                                  listValue="namaObat"
+                                                  onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"
+                                                  listValue="idPabrik +'-'+ namaObat +'-'+'BL/BX:'+lembarPerBox+'-'+'BJ/LB:'+bijiPerLembar"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                         <p style="color: red; display: none;"
@@ -174,6 +179,18 @@
                                            id="war_po_jenis"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
                                            id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="jumlah" type="number"
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                                 <%--<div class="form-group">--%>
@@ -258,31 +275,30 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="jumlah" type="number"
+                                        <input class="form-control" id="lembar_perbox" type="number"
                                                style="margin-top: 7px"
-                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
+                                               oninput="var warn =$('#war_po_lembar_perbox').is(':visible'); if (warn){$('#cor_po_lembar_perbox').show().fadeOut(3000);$('#war_po_lembar_perbox').hide()};"
+                                        onchange="cekFisik()"/>
                                         <p style="color: red; display: none;"
-                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
+                                           id="war_po_lembar_perbox"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
-                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
+                                           id="cor_po_lembar_perbox"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<input class="form-control" id="lembar" type="number" style="margin-top: 7px"--%>
-                                <%--readonly="true"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Biji</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<input class="form-control" id="biji" type="number" style="margin-top: 7px"--%>
-                                <%--readonly="true"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jml Biji/Lembar</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="biji_perlembar" type="number"
+                                               style="margin-top: 7px" onchange="cekFisik()"
+                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_biji_perlembar"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
@@ -301,12 +317,22 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                    <div class="col-md-5 col-md-offset-4">
                                         <a type="button" class="btn btn-success" onclick="addToListPo()"><i
                                                 class="fa fa-plus"></i> Tambah</a>
                                         <a type="button" class="btn btn-danger" onclick="reset()"><i
                                                 class="fa fa-refresh"></i>
                                             Reset</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-md-12 ">
+                                        <ul class="pull-right">
+                                            <li>BL/BX = Jml Lembar/Box</li>
+                                            <li>BJ/LB = Jml Biji/Lembar</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -375,15 +401,6 @@
         var data = $('#tabel_po').tableToJSON();
         var stringData = JSON.stringify(data);
         var vendor = $('#nama_vendor').val();
-        var result = [];
-        $.each(data, function (i, item) {
-            if(item.harga){
-                result.push("harga",formatRupiah(harga));
-            }
-        })
-
-        console.log(result);
-        console.log(data);
         if (stringData != '[]' && vendor != '') {
             $('#confirm_dialog').dialog('open');
         } else {
@@ -392,7 +409,37 @@
         }
     }
 
-    function resetField() {
+    function resetField(select) {
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
+        var idx = select.selectedIndex;
+
+        if (idx > 0) {
+
+            var obat = select.options[idx].value;
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                lembarPerBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                bijiPerLembar = obat.split('|')[3];
+            }
+            $('#lembar_perbox').val(lembarPerBox);
+            $('#biji_perlembar').val(bijiPerLembar);
+
+            var warn1 = $('#war_po_lembar_perbox').is(':visible');
+            if (warn1) {
+                $('#cor_po_lembar_perbox').show().fadeOut(3000);
+                $('#war_po_lembar_perbox').hide()
+            }
+
+            var warn2 = $('#war_po_biji_perlembar').is(':visible');
+            if (warn2) {
+                $('#cor_po_biji_perlembar').show().fadeOut(3000);
+                $('#war_po_biji_perlembar').hide()
+            }
+
+        }
+        $('#jenis_satuan').val('').trigger('change');
         $('#jumlah, #harga').val('');
     }
 
@@ -404,15 +451,17 @@
         var jumlah = $('#jumlah').val();
         var harga = $('#harga').val();
         var data = $('#tabel_po').tableToJSON();
+        var lembarPerBox = $('#lembar_perbox').val();
+        var bijiPerLembar = $('#biji_perlembar').val();
 
         var idObat = "";
         var namaObat = "";
-        var qtyBox = "";
-        var qtyLembar = "";
+//        var qtyBox = "";
+//        var qtyLembar = "";
 
         var cek = false;
 
-        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '') {
+        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '') {
 
             if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
                 idObat = obat.split('|')[0];
@@ -420,12 +469,12 @@
             if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
                 namaObat = obat.split('|')[1];
             }
-            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
-                qtyBox = obat.split('|')[2];
-            }
-            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
-                qtyLembar = obat.split('|')[3];
-            }
+//            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+//                qtyBox = obat.split('|')[2];
+//            }
+//            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+//                qtyLembar = obat.split('|')[3];
+//            }
 
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
@@ -442,8 +491,8 @@
                         '<td>' + namaObat + '</td>' +
                         '<td align="center">' + jumlah + '</td>' +
                         '<td align="center">' + jenis + '</td>' +
-                        '<td align="center">' + qtyBox + '</td>' +
-                        '<td align="center">' + qtyLembar + '</td>' +
+                        '<td align="center">' + lembarPerBox + '</td>' +
+                        '<td align="center">' + bijiPerLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
@@ -467,6 +516,12 @@
             }
             if (harga == '') {
                 $('#war_po_harga').show();
+            }
+            if (lembarPerBox == '') {
+                $('#war_po_lembar_perbox').show();
+            }
+            if (bijiPerLembar == '') {
+                $('#war_po_biji_perlembar').show();
             }
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
@@ -496,6 +551,54 @@
                 }
             }
         });
+    }
+
+    function cekFisik() {
+
+        var obat = $('#nama_obat').val();
+        var lembar = $('#lembar_perbox').val();
+        var biji = $('#biji_perlembar').val();
+        var idObat = "";
+        var namaObat = "";
+        var lembarperBox = "";
+        var bijiPerLembar = "";
+
+        if (obat != '') {
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                idObat = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                namaObat = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                lembarperBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                bijiPerLembar = obat.split('|')[3];
+            }
+
+            if(lembarperBox != lembar && bijiPerLembar != biji){
+                $('#warning_fisik').show();
+                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat,+"Jumlah Asal" +
+                        " Lembar/Box : "+lembarperBox+", menjadi : "+lembar+"" +
+                        " Jumlah Asal" +
+                        " Biji/Lembar : "+bijiPerLembar+", menjadi : "+biji);
+            }
+
+            if(lembarperBox != lembar){
+                $('#warning_fisik').show();
+                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat+"Jumlah Asal" +
+                        " Lembar/Box : "+lembarperBox+", menjadi : "+lembar);
+            }
+            if(bijiPerLembar != biji){
+                $('#warning_fisik').show();
+                $('#msg_fisik').text("Terdapat perubahan bentuk fisik, Nama Obat: "+namaObat+"Jumlah Asal" +
+                        " Biji/lembar : "+bijiPerLembar+", menjadi : "+biji);
+            }
+        }
+
+        console.log(lembar);
+        console.log(biji);
     }
 
 </script>

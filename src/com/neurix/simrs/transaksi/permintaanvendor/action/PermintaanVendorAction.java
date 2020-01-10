@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,6 +46,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+
+    private String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Vendor getVendor() {
         return vendor;
@@ -331,10 +344,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     if("biji".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
                         obatDetail.setAverageHargaBiji(new BigDecimal(harga3));
                     }
-                    logger.info("[PermintaanVendorAction.savePermintaanPO] HARGA : "+harga3);
 
                     obatDetail.setQty(new BigInteger(obj.getString("Jumlah")));
                     obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("Jml Lembar/Box")));
+                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("Jml Biji/Lembar")));
+
                     obatDetailList.add(obatDetail);
                 }
 
@@ -559,6 +574,28 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         return "init_approve";
 
+    }
+    public String printPermintaanPO(){
+
+        String idPermintaan = getId();
+
+        reportParams.put("permintaanId", idPermintaan);
+        reportParams.put("logo", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY+CommonConstant.LOGO_NMU);
+        reportParams.put("idVendor","");
+        reportParams.put("namaVendor","");
+        reportParams.put("email","");
+        reportParams.put("noTelp","");
+        reportParams.put("alamat","");
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_po";
     }
 
     public CheckObatResponse checkFisikObat(String idObat, String idPabrik, String lembarPerBox, String bijiPerLembar){

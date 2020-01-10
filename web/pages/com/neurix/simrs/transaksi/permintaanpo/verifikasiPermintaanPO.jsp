@@ -11,7 +11,14 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
-
+    <script>
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
+    </script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -167,8 +174,8 @@
                                     <td align="center"><span id='qty<s:property value="idObat"/>'><s:property value="qty"/></span></td>
                                     <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
-                                    <td align="right"><s:property value="hargaPo"/></td>
-                                    <td align="center"><input value='<s:property value="idPabrik"/>' onchange="verify('<s:property value="idObat"/>', this.value, '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>')" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
+                                    <td align="right"><script> document.write("Rp. "+formatRupiah('<s:property value="hargaPo"/>'));</script></td>
+                                    <td align="center"><input value='<s:property value="idPabrik"/>' onchange="verify('<s:property value="idObat"/>', this.value, '<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>', '<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerBox"/>')" class="form-control" style="width: 150px" id='pabrik<s:property value="idObat"/>'></td>
                                     <td align="center">
                                     <s:if test='#row.flagDiterima == "Y"'>
                                             <span class="label label-success">Sesuai</span>
@@ -437,6 +444,34 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jml Lembar/Box</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="app_lembar_perbox"
+                                         onkeypress="var warn =$('#war_app_lembar_perbox').is(':visible'); if (warn){$('#cor_app_lembar_perbox').show().fadeOut(3000);$('#war_app_lembar_perbox').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_lembar_perbox"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_lembar_perbox"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jml Biji/lembar</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="app_biji_perlembar"
+                                         onkeypress="var warn =$('#war_app_biji_perlembar').is(':visible'); if (warn){$('#cor_app_biji_perlembar').show().fadeOut(3000);$('#war_app_biji_perlembar').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_biji_perlembar"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_biji_perlembar"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Qty Permintaan</label>
                         <div class="col-md-7">
                             <s:textfield type="number" min="1" cssClass="form-control"
@@ -540,7 +575,7 @@
         $('#modal-confirm').modal('hide');
     }
 
-    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp) {
+    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar) {
         var status = false;
         if (id != '' && value != '') {
             $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
@@ -551,6 +586,8 @@
                         dwr.engine.setAsync(false);
                         $('#status' + id).html("Sesuai").addClass("label label-success");
                         $('#pabrik' + id).attr('readonly', true).blur();
+                        $('#app_lembar_perbox').val(lembarPerBox);
+                        $('#app_biji_perlembar').val(bijiPerlembar);
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
                         $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\')').show();
@@ -579,6 +616,8 @@
 
     function saveApprove(id, idDetail, idPabrik){
         var qty = $('#app_qty_app').val();
+        var lembarPerBox = $('#app_lembar_perbox').val();
+        var bijiPerLembar = $('#app_biji_perlembar').val();
         $('#save_approve').hide();
         $('#load_approve').show();
         dwr.engine.setAsync(true);
