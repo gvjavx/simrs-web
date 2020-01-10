@@ -596,6 +596,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                     // jika lembar permintaan lebih besar dari pada jumlah lembar dalam stock maka jumlah permintaan
                     // dikurangin jumlah stock sehingga menghasilkan sisa lembar
+
                     BigInteger sisaLembar = transaksiObatDetail.getQtyApprove().subtract(obatEntity.getQtyLembar());
 
                     // cek apakah stock box lebih dari 0

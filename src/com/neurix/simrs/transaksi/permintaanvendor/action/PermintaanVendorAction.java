@@ -598,6 +598,31 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "print_po";
     }
 
+    public CheckObatResponse checkFisikObat(String idObat, String idPabrik, String lembarPerBox, String bijiPerLembar){
+        logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] START process >>>");
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdPabrik(idPabrik);
+        obat.setLembarPerBox(new BigInteger(lembarPerBox));
+        obat.setBijiPerLembar(new BigInteger(bijiPerLembar));
+        obat.setBranchId(CommonUtil.userBranchLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            checkObatResponse = obatBo.checkFisikObat(obat);
+        } catch (GeneralBOException e){
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] "+e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] END process <<<");
+        return checkObatResponse;
+    }
+
 
     @Override
     public String downloadPdf() {

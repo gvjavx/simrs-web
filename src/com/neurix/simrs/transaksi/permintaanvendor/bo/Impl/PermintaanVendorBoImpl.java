@@ -131,13 +131,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setIdPabrik(transaksiObatDetailEntity.getIdPabrik());
                                 transaksiObatDetail.setMerek(transaksiObatDetailEntity.getMrek());
 
-                                if ("Box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
+                                if ("box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBox());
                                 }
-                                if ("Lembar".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
+                                if ("lembar".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaLembar());
                                 }
-                                if ("Biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
+                                if ("biji".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
                                     transaksiObatDetail.setHargaPo(transaksiObatDetailEntity.getAverageHargaBiji());
                                 }
                                 transaksiObatDetails.add(transaksiObatDetail);
