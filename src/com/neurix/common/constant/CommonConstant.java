@@ -46,10 +46,10 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_DEFAULT_MAP ="/pages/upload/map/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY="C:\\xampp\\tomcat\\webapps\\";
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="C:\\tomcat-7-64x\\webapps";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\pc001\\Pictures";
+    //      public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
@@ -140,6 +140,7 @@ public class CommonConstant {
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
+    public final static String LOGO_NMU  = "/pages/images/logo-nmu-copy.png";
 
     public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
 

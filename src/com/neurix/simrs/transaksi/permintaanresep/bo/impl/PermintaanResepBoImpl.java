@@ -186,11 +186,13 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         if (detailList.size() > 0) {
 
-            for (TransaksiObatDetail detail : detailList) {
+            for (TransaksiObatDetail detailObat : detailList) {
+                TransaksiObatDetail detail = new TransaksiObatDetail();
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                detail.setIdObat(detail.getIdObat());
-                detail.setQty(detail.getQty());
-                detail.setKeterangan(detail.getKeterangan());
+                detail.setIdObat(detailObat.getIdObat());
+                detail.setQty(detailObat.getQty());
+                detail.setJenisSatuan(detailObat.getJenisSatuan());
+                detail.setKeterangan(detailObat.getKeterangan());
                 detail.setCreatedDate(bean.getCreatedDate());
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());
@@ -231,6 +233,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
         obatDetailEntity.setIdObat(bean.getIdObat());
         obatDetailEntity.setQty(bean.getQty());
+        obatDetailEntity.setJenisSatuan(bean.getJenisSatuan());
         obatDetailEntity.setFlag("Y");
         obatDetailEntity.setAction("C");
         obatDetailEntity.setCreatedDate(bean.getCreatedDate());
@@ -238,6 +241,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setLastUpdate(bean.getCreatedDate());
         obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
         obatDetailEntity.setKeterangan(bean.getKeterangan());
+
         try {
             transaksiObatDetailDao.addAndSave(obatDetailEntity);
         } catch (HibernateException e) {
@@ -272,7 +276,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     private String getNextTransaksiObatDetail() throws GeneralBOException {
         String id = "";
         try {
-            id = approvalTransaksiObatDao.getNextId();
+            id = transaksiObatDetailDao.getNextId();
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ", e);
             throw new GeneralBOException("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ", e);

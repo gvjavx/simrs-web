@@ -234,9 +234,10 @@
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>
                                             <button class="btn btn-warning"
                                                     onclick="showReture('<s:property value="idPermintaanObatPoli"/>',
-                                                        '<s:property value="stCreatedDate"/>',
-                                                        '<s:property value="idPelayanan"/>',
-                                                        '<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i>
+                                                            '<s:property value="stCreatedDate"/>',
+                                                            '<s:property value="idPelayanan"/>',
+                                                            '<s:property value="tujuanPelayanan"/>')"><i
+                                                    class="fa fa-refresh"></i>
                                             </button>
                                         </s:if>
                                     </td>
@@ -264,6 +265,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_request"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_bentuk">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_bentuk"></p>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
@@ -272,7 +277,7 @@
                                       name="getListObat_obat"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initObat.listOfObat" id="req_nama_obat"
-                                      listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBiji + '|' + bijiPerLembar"
+                                      listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"
                                       onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"
                                       listValue="namaObat"
                                       headerKey="" headerValue="[Select one]"
@@ -661,11 +666,18 @@
         var qtyBiji = 0;
         var lembarPerBox = 0;
         var bijiPerLembar = 0;
+        var idPabrik = "";
+        var berubahBentuk = false;
+        var isTransaksi = false;
+        var pesan = "";
 
         var cek = false;
 
         if (obat != '' && qty != '' && jenisSatuan != '') {
 
+            if (obat.split('|')[7] != 'null' && obat.split('|')[7] != '') {
+                idPabrik = obat.split('|')[7];
+            }
             if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
                 id = obat.split('|')[0];
             }
@@ -712,23 +724,58 @@
                     $('#warning_data_exits').show().fadeOut(5000);
                     $('#msg-req').text("Data obat sudah tersedia..!");
                 } else {
-                    $('#req_jenis_satuan').attr('disabled', true);
-                    var row = '<tr id=' + id + '>' +
-                            '<td>' + id + '</td>' +
-                            '<td>' + nama + '</td>' +
-                            '<td align="center">' + qty + '</td>' +
-                            '<td align="center">' + jenisSatuan + '</td>' +
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                            '</tr>';
-                    $('#body_request').append(row);
+
+                    ObatPoliAction.checkStockLamaByIdPabrikan(idPabrik, {
+                        callback: function (response) {
+                            if (response != null) {
+                                if ("error" == response.status) {
+                                    berubahBentuk = true;
+                                    pesan = response.message;
+                                }
+                            }
+                        }
+                    });
+
+                    if (berubahBentuk) {
+                        $('#warning_bentuk').show().fadeOut(5000);
+                        $('#msg_bentuk').text(pesan);
+                    } else {
+
+                        ObatPoliAction.checkTransaksiObat(id, {
+                            callback: function (response) {
+                                if (response != null) {
+                                    if ("error" == response.status) {
+                                        isTransaksi = true;
+                                        pesan = response.message;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (isTransaksi) {
+                            $('#warning_bentuk').show().fadeOut(5000);
+                            $('#msg_bentuk').text(pesan);
+                        } else {
+//                            $('#req_jenis_satuan').attr('disabled', true);
+                            var row = '<tr id=' + id + '>' +
+                                    '<td>' + id + '</td>' +
+                                    '<td>' + nama + '</td>' +
+                                    '<td align="center">' + qty + '</td>' +
+                                    '<td align="center">' + jenisSatuan + '</td>' +
+                                    '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                                    '</tr>';
+                            $('#body_request').append(row);
+                        }
+                    }
                 }
             } else {
                 $('#warning_request').show().fadeOut(5000);
                 $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
             }
-        } else {
-            if (tujuan == '') {
-                $('#war_req_pelayanan').show();
+        }
+        else {
+            if (jenisSatuan == '' || jenisSatuan == null) {
+                $('#war_req_jenis_satuan').show();
             }
             if (obat == '' || obat == null) {
                 $('#war_req_obat').show();
@@ -870,13 +917,13 @@
                         var qtyLembar = "";
                         var qtyBiji = "";
 
-                        if(item.qtyBox != null){
+                        if (item.qtyBox != null) {
                             qtyBox = item.qtyBox;
                         }
-                        if(item.qtyLembar != null){
+                        if (item.qtyLembar != null) {
                             qtyLembar = item.qtyLembar;
                         }
-                        if(item.qtyBiji != null){
+                        if (item.qtyBiji != null) {
                             qtyBiji = item.qtyBiji;
                         }
 
@@ -913,13 +960,13 @@
         if (qty != '' && parseInt(qty) > 0) {
             var stok = 0;
 
-            if("box" == jenisSatuan){
+            if ("box" == jenisSatuan) {
                 stok = qtyBox;
             }
-            if("lembar" == jenisSatuan){
+            if ("lembar" == jenisSatuan) {
                 stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
             }
-            if("biji" == jenisSatuan){
+            if ("biji" == jenisSatuan) {
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 

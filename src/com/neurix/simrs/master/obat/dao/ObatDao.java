@@ -41,6 +41,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
+            if (mapCriteria.get("id_pabrik") != null) {
+                criteria.add(Restrictions.eq("idPabrik", (String) mapCriteria.get("id_pabrik")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

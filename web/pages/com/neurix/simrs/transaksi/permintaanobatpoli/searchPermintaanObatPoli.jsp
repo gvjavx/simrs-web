@@ -280,6 +280,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_request"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_bentuk">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_bentuk"></p>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tujuan Pelayanan</label>
@@ -331,7 +335,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok </label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
                         <div class="col-md-2">
                             <label style="margin-top: 7px">Box</label>
                             <input class="form-control" readonly id="req_stok_box_sendiri">
@@ -676,7 +680,7 @@
             ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.idPabrik + "'>" + item.namaObat + "</option>";
                     });
                 }
             });
@@ -702,6 +706,10 @@
         var bijiPerLembar = 0;
         var idTujuan = "";
         var namaTujuan = "";
+        var berubahBentuk = false;
+        var pesan = "";
+        var isTransaksi = false;
+        var idPabrik = "";
 
         var cek = false;
 
@@ -728,7 +736,9 @@
             if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
                 bijiPerLembar = obat.split('|')[6];
             }
-
+            if (obat.split('|')[7] != 'null' && obat.split('|')[7] != '') {
+                idPabrik = obat.split('|')[7];
+            }
             if (tujuan.split('|')[0] != 'null' && tujuan.split('|')[0] != '') {
                 idTujuan = tujuan.split('|')[0];
             }
@@ -739,13 +749,13 @@
 
             var stok = 0;
 
-            if("box" == jenisSatuan){
+            if ("box" == jenisSatuan) {
                 stok = qtyBox;
             }
-            if("lembar" == jenisSatuan){
+            if ("lembar" == jenisSatuan) {
                 stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
             }
-            if("biji" == jenisSatuan){
+            if ("biji" == jenisSatuan) {
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
@@ -761,25 +771,62 @@
                     $('#warning_data_exits').show().fadeOut(5000);
                     $('#msg-req').text("Data obat sudah tersedia..!");
                 } else {
-                    $('#req_nama_pelayanan').attr('disabled', true);
-                    $('#req_jenis_satuan').attr('disabled', true);
-                    $('#req_tujuan').html(namaTujuan);
-                    $('#req_id_pelayanan').val(idTujuan);
 
-                    var row = '<tr id=' + id + '>' +
-                            '<td>' + id + '</td>' +
-                            '<td>' + nama + '</td>' +
-                            '<td align="center">' + qty + '</td>' +
-                            '<td align="center">' + jenisSatuan + '</td>' +
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
-                            '</tr>';
-                    $('#body_request').append(row);
+                    ObatPoliAction.checkStockLamaByIdPabrikan(idPabrik, {
+                        callback: function (response) {
+                            if (response != null) {
+                                if ("error" == response.status) {
+                                    berubahBentuk = true;
+                                    pesan = response.message;
+                                }
+                            }
+                        }
+                    });
+
+                    if (berubahBentuk) {
+                        $('#warning_bentuk').show().fadeOut(5000);
+                        $('#msg_bentuk').text(pesan);
+                    } else {
+
+                        ObatPoliAction.checkTransaksiObat(id, {
+                            callback: function (response) {
+                                if (response != null) {
+                                    if ("error" == response.status) {
+                                        isTransaksi = true;
+                                        pesan = response.message;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (isTransaksi) {
+                            $('#warning_bentuk').show().fadeOut(5000);
+                            $('#msg_bentuk').text(pesan);
+                        } else {
+                            $('#req_nama_pelayanan').attr('disabled', true);
+//                    $('#req_jenis_satuan').attr('disabled', true);
+                            $('#req_tujuan').html(namaTujuan);
+                            $('#req_id_pelayanan').val(idTujuan);
+
+                            var row = '<tr id=' + id + '>' +
+                                    '<td>' + id + '</td>' +
+                                    '<td>' + nama + '</td>' +
+                                    '<td align="center">' + qty + '</td>' +
+                                    '<td align="center">' + jenisSatuan + '</td>' +
+                                    '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                                    '</tr>';
+                            $('#body_request').append(row);
+                        }
+                    }
                 }
             } else {
                 $('#warning_request').show().fadeOut(5000);
                 $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
             }
         } else {
+            if (jenisSatuan == '') {
+                $('#war_req_jenis_satuan').show();
+            }
             if (tujuan == '') {
                 $('#war_req_pelayanan').show();
             }

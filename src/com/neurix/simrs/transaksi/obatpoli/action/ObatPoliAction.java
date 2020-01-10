@@ -284,17 +284,21 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
+
             try {
                 List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                 if (request != null && !"".equalsIgnoreCase(request)) {
                     JSONArray json = new JSONArray(request);
                     TransaksiObatDetail detail;
                     for (int i = 0; i < json.length(); i++) {
+
                         JSONObject obj = json.getJSONObject(i);
+
                         detail = new TransaksiObatDetail();
                         detail.setIdObat(obj.getString("ID"));
-                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
                         detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
+                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
+
                         transaksiObatDetails.add(detail);
                     }
                 }
@@ -515,7 +519,7 @@ public class ObatPoliAction extends BaseMasterAction {
     }
 
     public CheckObatResponse checkStockLamaByIdPabrikan(String idPabrik){
-
+        logger.info("[ObatPoliAction.checkStockLamaByIdPabrikan] START process <<<");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -523,15 +527,56 @@ public class ObatPoliAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
 
-        try {
-            checkObatResponse = obatPoliBo.checkObatStockLama(idPabrik, branchId);
-        } catch (HibernateException e){
-
+        if(!"".equalsIgnoreCase(idPabrik) && idPabrik != null){
+            try {
+                checkObatResponse = obatPoliBo.checkObatStockLama(idPabrik, branchId);
+            } catch (HibernateException e){
+                logger.error("[ObatPoliAction.checkStockLamaByIdPabrikan] Error when get poli obat ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+            logger.info("[ObatPoliAction.checkStockLamaByIdPabrikan] END process <<<");
+            return checkObatResponse;
+        }else{
+            logger.info("[ObatPoliAction.checkStockLamaByIdPabrikan] END process <<<");
+            return null;
         }
-
-        return checkObatResponse;
     }
 
+    public CheckObatResponse checkTransaksiObat(String idObat){
+        logger.info("[ObatPoliAction.checkTransaksiObat] START process <<<");
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        List<PermintaanObatPoli> listObatEntity = new ArrayList<>();
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdObat(idObat);
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+
+        if(!"".equalsIgnoreCase(idObat) && idObat != null){
+
+            try {
+                listObatEntity = obatPoliBo.getCekListEntityObatPoli(permintaanObatPoli);
+            } catch (HibernateException e){
+                logger.error("[ObatPoliAction.checkTransaksiObat] Error when get transaksi obat ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+            if(listObatEntity.size() > 0){
+                checkObatResponse.setStatus("error");
+                checkObatResponse.setMessage("Transaksi dengan ID obat tersebut sudah ada..!");
+            }else{
+                checkObatResponse.setStatus("success");
+                checkObatResponse.setMessage("Silahkan dilanjutkan..!");
+            }
+
+            logger.info("[ObatPoliAction.checkTransaksiObat] END process <<<");
+            return checkObatResponse;
+        }else{
+            logger.info("[ObatPoliAction.checkTransaksiObat] END process <<<");
+            return null;
+        }
+    }
 
     @Override
     public String downloadPdf() {

@@ -40,7 +40,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Permintaan PO
+            Permintaan Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -175,7 +175,7 @@
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <%--transaksiObatDetails--%>
-                                    <td><s:property value="approvalFlag"/></td>
+                                    <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>

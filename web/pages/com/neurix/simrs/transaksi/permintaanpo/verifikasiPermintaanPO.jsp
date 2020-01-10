@@ -35,7 +35,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Permintaan PO
+            Verifikasi Permintaan Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -432,7 +432,7 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-success alert-dismissible" id="warning_approve">
-                    <h4><i class="icon fa fa-ban"></i> Info!</h4>
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
                     ID pabrik berhasil di verifikasi...!
                 </div>
                 <div class="row">
