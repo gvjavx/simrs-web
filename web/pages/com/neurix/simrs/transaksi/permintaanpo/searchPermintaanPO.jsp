@@ -205,6 +205,9 @@
                                                 <button class="btn btn-success"><i class="fa fa-check"></i></button>
                                             </s:a>
                                         </s:else>
+                                        <s:url var="print_doc" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
+                                            <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                        </s:url>
                                     </td>
                                 </tr>
                             </s:iterator>

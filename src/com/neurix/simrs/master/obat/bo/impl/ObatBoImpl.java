@@ -485,14 +485,17 @@ public class ObatBoImpl implements ObatBo {
 
                 StringBuilder r = new StringBuilder();
                 r.append("Obat teridentifikasi berubah fisik");
-                r.append("\n");
+                r.append("<br>");
                 r.append("Kode produksi : "+obatEntity.getIdPabrik());
+                r.append("<br>");
                 r.append("Nama : "+obatEntity.getNamaObat());
+                r.append("<br>");
                 r.append("Merk : "+obatEntity.getMerk());
-                r.append("\n");
+                r.append("<br>");
                 r.append("Lembar/Box : "+obatEntity.getLembarPerBox());
+                r.append("<br>");
                 r.append("Biji/Lembar : "+obatEntity.getBijiPerLembar());
-                r.append("\n");
+                r.append("<br>");
                 r.append("Tgl diterima : "+obatEntity.getCreatedDate());
 
                 response.setMessage(String.valueOf(r));

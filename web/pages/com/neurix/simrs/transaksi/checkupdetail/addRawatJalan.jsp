@@ -2467,7 +2467,7 @@
     }
 
     function printResep(id) {
-        window.location.href = 'printResepPasien_checkupdetail.action?id=' + idDetailCheckup+'&idResep='+id;
+        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup+'&idResep='+id;
     }
 
     function detailResep(id) {

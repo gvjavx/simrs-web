@@ -2,7 +2,33 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="155"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataSet1" uuid="bf18294e-df6e-4a26-83f4-1735dd269112">
+		<field name="namaObat" class="java.lang.String"/>
+		<field name="qty" class="java.lang.String"/>
+		<field name="qtyApprove" class="java.lang.String"/>
+		<field name="jenisSatuan" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="reportParams.permintaanId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.idVendor" class="java.lang.String"/>
@@ -11,8 +37,9 @@
 	<parameter name="reportParams.noTelp" class="java.lang.String"/>
 	<parameter name="reportParams.alamat" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
+	<parameter name="reportParams.listNewObat" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
-		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, c.qty_approve, c.jenis_satuan FROM mt_simrs_approval_transaksi_obat a
+		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, c.qty_approve, c.jenis_satuan,  FROM mt_simrs_approval_transaksi_obat a
 INNER JOIN mt_simrs_permintaan_obat_vendor b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approval_obat
 INNER JOIN im_simrs_obat d ON c.id_obat = d.id_obat
@@ -61,6 +88,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>

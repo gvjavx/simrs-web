@@ -525,29 +525,38 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                             if (isPoli) {
 
                                 // updating qty obat poli after konfirmasi
+                                obatDetailEntity.setLastUpdate(bean.getLastUpdate());
+                                obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
                                 ObatPoli obatPoli = new ObatPoli();
-                                obatPoli.setIdObat(obatDetailEntity.getIdObat());
                                 obatPoli.setIdPelayanan(bean.getTujuanPelayanan());
                                 obatPoli.setBranchId(bean.getBranchId());
-                                MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
-                                if (obatPoliEntity != null) {
+                                updatePerhitunganStockPoli(obatDetailEntity, obatPoli);
 
-                                    BigInteger jmlh = obatPoliEntity.getQty().subtract(transaksiObatDetail.getQtyApprove());
-                                    obatPoliEntity.setAction("U");
-                                    obatPoliEntity.setQty(jmlh);
-                                    obatPoliEntity.setLastUpdate(bean.getLastUpdate());
-                                    obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                                    try {
-                                        obatPoliDao.updateAndSave(obatPoliEntity);
-                                    } catch (HibernateException e) {
-                                        logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-                                        throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
-                                    }
-                                }
+//                                ObatPoli obatPoli = new ObatPoli();
+//                                obatPoli.setIdObat(obatDetailEntity.getIdObat());
+//                                obatPoli.setIdPelayanan(bean.getTujuanPelayanan());
+//                                obatPoli.setBranchId(bean.getBranchId());
+//                                MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
+//
+//                                if (obatPoliEntity != null) {
+//
+//                                    obatPoliEntity.setLastUpdate(bean.getLastUpdate());
+//                                    obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                                    BigInteger jmlh = obatPoliEntity.getQty().subtract(transaksiObatDetail.getQtyApprove());
+//                                    obatPoliEntity.setAction("U");
+//                                    obatPoliEntity.setQty(jmlh);
+//
+//
+//                                    try {
+//                                        obatPoliDao.updateAndSave(obatPoliEntity);
+//                                    } catch (HibernateException e) {
+//                                        logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+//                                        throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+//                                    }
+//                                }
 
                             } else {
-
+                                // updating qty obat master after konfirmasi
                                 obatDetailEntity.setLastUpdate(bean.getLastUpdate());
                                 obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -704,6 +713,164 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+            }
+        }
+    }
+
+    private void updatePerhitunganStockPoli(ImtSimrsTransaksiObatDetailEntity transaksiObatDetail, ObatPoli bean) {
+
+        ObatPoli obatPoli = new ObatPoli();
+        obatPoli.setIdObat(transaksiObatDetail.getIdObat());
+        obatPoli.setIdPelayanan(bean.getIdPelayanan());
+        obatPoli.setBranchId(bean.getBranchId());
+
+        MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
+
+        if (obatPoliEntity != null) {
+
+            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getPrimaryKey().getIdObat());
+
+            if (obatEntity != null) {
+
+                //sodiq, 09-01-2019, antisipasi nilai qtybox, lembar, biji sama dengan null
+                BigInteger qtyBox = new BigInteger(String.valueOf(0));
+                BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+                BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
+                if (obatPoliEntity.getQtyBox() != null) {
+                    qtyBox = obatPoliEntity.getQtyBox();
+                }
+                if (obatPoliEntity.getQtyLembar() != null) {
+                    qtyLembar = obatPoliEntity.getQtyLembar();
+                }
+                if (obatPoliEntity.getQtyBox() != null) {
+                    qtyBiji = obatPoliEntity.getQtyBiji();
+                }
+
+                // BigInteger jmlh = obatEntity.getQty().subtract(transaksiObatDetail.getQtyApprove());
+                if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
+                    BigInteger jml = qtyBox.subtract(transaksiObatDetail.getQtyApprove());
+                    obatPoliEntity.setQtyBox(jml);
+                }
+                if ("lembar".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
+
+                    // jika lembar permintaan lebih kecil dari pada jumlah lembar dalam stock maka langsung mengurangi stock lembar
+                    if (obatPoliEntity.getQtyLembar().compareTo(transaksiObatDetail.getQtyApprove()) == 1) {
+                        BigInteger jml = qtyLembar.subtract(transaksiObatDetail.getQtyApprove());
+                        obatPoliEntity.setQtyLembar(jml);
+                    } else {
+
+                        // jika lembar permintaan lebih besar dari pada jumlah lembar dalam stock maka jumlah permintaan
+                        // dikurangin jumlah stock sehingga menghasilkan sisa lembar
+
+                        BigInteger sisaLembar = transaksiObatDetail.getQtyApprove().subtract(obatPoliEntity.getQtyLembar());
+
+                        // cek apakah stock box lebih dari 0
+                        if (obatPoliEntity.getQtyBox().compareTo(new BigInteger(String.valueOf(0))) == 1) {
+
+                            // jika jumlah lembar dalam box lebih besar dari sisa pengurangan permintaan lembar
+                            // maka qty box dikurangin 1
+                            if (obatEntity.getLembarPerBox().compareTo(sisaLembar) == 1) {
+                                obatPoliEntity.setQtyBox(obatPoliEntity.getQtyBox().subtract(new BigInteger(String.valueOf(1))));
+
+                                // sisa dari pengurangan pada box menjadi qty lembar
+                                BigInteger sisaLembarPadaBox = obatEntity.getLembarPerBox().subtract(sisaLembar);
+                                obatPoliEntity.setQtyLembar(sisaLembarPadaBox);
+                            } else {
+
+                                // konfersi dari satuan box ke lembar pada stock
+                                BigInteger boxToLembar = obatPoliEntity.getQtyBox().multiply(obatEntity.getLembarPerBox());
+
+                                // jumlah seluruh lembar pada stock dikurangi dengan sisaLembar
+                                BigInteger jmlDikuranginSisaLembar = boxToLembar.subtract(sisaLembar);
+
+                                // jika sisa stock sluruh lembar setelah pengurangan lebih besar dari jumlah lembar per box
+                                if (jmlDikuranginSisaLembar.compareTo(obatEntity.getLembarPerBox()) == 1) {
+                                    // jumlah hasil pengurangan dibagi dengan lembar perbox untuk mendapatkan
+                                    // jumlah box yang tersisa
+                                    BigInteger jmlBox = jmlDikuranginSisaLembar.divide(obatEntity.getLembarPerBox());
+
+                                    // sisa pembagian akan dimasukan pada qty lembar
+                                    BigInteger jmlLembarSisa = jmlDikuranginSisaLembar.mod(obatEntity.getLembarPerBox());
+
+                                    obatPoliEntity.setQtyBox(jmlBox);
+                                    obatPoliEntity.setQtyLembar(jmlLembarSisa);
+                                } else {
+                                    // jika sisa stock sluruh lembar setelah pengurangan lebih kecil dari jumlah lembar per box
+                                    // maka sisa pengurangan menjadi stock untuk lembar
+                                    // stock box menjadi kosong karna lebih kecil dari jumlah jumlah lembar per box
+                                    obatPoliEntity.setQtyBox(new BigInteger(String.valueOf(0)));
+                                    obatPoliEntity.setQtyBox(jmlDikuranginSisaLembar);
+                                }
+                            }
+                        }
+                    }
+                }
+                if ("biji".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
+
+                    // jika jumlah stock obat bijian lebih besar atau sama dari jumlah permintaan
+                    // maka hanya perlu mengurangi stock biji
+                    if (qtyBiji.compareTo(transaksiObatDetail.getQtyApprove()) == 1 || qtyBiji.compareTo(transaksiObatDetail.getQtyApprove()) == 0) {
+                        obatPoliEntity.setQtyBiji(qtyBiji.subtract(transaksiObatDetail.getQtyApprove()));
+                    } else {
+
+                        // jika jumlah stock obat bijian lebih besar dari jumlah permintaan
+                        // maka dilakukan pengurangan perlembarnya
+
+                        // pengurangan jumlah permintaan dengan jumlah stock untuk mendapatkan sisa biji obat
+                        BigInteger sisaBiji = transaksiObatDetail.getQtyApprove().subtract(qtyBiji);
+
+                        // konfersi dari lembar ke biji
+                        BigInteger lembarToBiji = obatPoliEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
+
+                        // jika permintaan lebih besar dari pada seluruh penjumlahan biji per lembar
+                        // maka dilakukan pengurangan mulai dari box
+                        if (transaksiObatDetail.getQtyApprove().compareTo(lembarToBiji) == 1) {
+
+
+                        } else {
+
+                            // jika
+                            if (obatEntity.getBijiPerLembar().compareTo(sisaBiji) == 1) {
+                                obatPoliEntity.setQtyLembar(obatPoliEntity.getQtyLembar().subtract(new BigInteger(String.valueOf(1))));
+
+                                BigInteger sisBijiPadaLembar = obatEntity.getBijiPerLembar().subtract(sisaBiji);
+                                obatPoliEntity.setQtyBiji(sisBijiPadaLembar);
+
+                            } else {
+
+
+                                BigInteger jmlDikurangiSisaBiji = lembarToBiji.subtract(sisaBiji);
+
+                                // jika sisa stock sluruh biji setelah pengurangan lebih besar dari jumlah biji per lembar
+                                if (jmlDikurangiSisaBiji.compareTo(obatEntity.getBijiPerLembar()) == 1) {
+                                    BigInteger jmlLembar = jmlDikurangiSisaBiji.divide(obatEntity.getBijiPerLembar());
+                                    BigInteger jmlBiji = jmlDikurangiSisaBiji.mod(obatEntity.getBijiPerLembar());
+
+                                    obatPoliEntity.setQtyLembar(jmlLembar);
+                                    obatPoliEntity.setQtyBiji(jmlBiji);
+                                } else {
+                                    // jika sisa stock sluruh biji setelah pengurangan lebih kecil dari jumlah biji per lembar
+                                    // maka sisa pengurangan menjadi stock untuk biji
+                                    // stock menjadi kosong karna lebih kecil dari jumlah biji per lembar
+                                    obatPoliEntity.setQtyLembar(new BigInteger(String.valueOf(0)));
+                                    obatPoliEntity.setQtyBiji(jmlDikurangiSisaBiji);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                obatPoliEntity.setAction("U");
+                obatPoliEntity.setLastUpdate(transaksiObatDetail.getLastUpdate());
+                obatPoliEntity.setLastUpdateWho(transaksiObatDetail.getLastUpdateWho());
+
+                try {
+                    obatPoliDao.updateAndSave(obatPoliEntity);
+                } catch (HibernateException e) {
+                    logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                    throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat. ", e);
+                }
             }
         }
     }

@@ -44,6 +44,15 @@ public class PermintaanVendor{
     private String approvalFlag;
 
     private Boolean enableApprove = false;
+    private String notFlagR;
+
+    public String getNotFlagR() {
+        return notFlagR;
+    }
+
+    public void setNotFlagR(String notFlagR) {
+        this.notFlagR = notFlagR;
+    }
 
     public Boolean getEnableApprove() {
         return enableApprove;

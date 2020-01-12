@@ -339,7 +339,7 @@
                         <tr>
                             <td>ID</td>
                             <td>Nama Obat</td>
-                            <td align="center">Reture(Qty)</td>
+                            <td align="center">Qty Reture</td>
                         </tr>
                         </thead>
                         <tbody id="body_reture">

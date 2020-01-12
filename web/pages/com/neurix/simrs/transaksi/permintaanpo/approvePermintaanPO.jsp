@@ -132,6 +132,9 @@
                                             <span class="label label-success">Setuju</span>
                                         </s:if>
                                         <s:if test='#row.flagDiterima == "N"'>
+                                            <span class="label label-warning">Dibuatkan obat baru</span>
+                                        </s:if>
+                                        <s:if test='#row.flagDiterima == "X"'>
                                             <span class="label label-danger">Tidak Setuju</span>
                                         </s:if></td>
                                 </tr>
@@ -182,7 +185,7 @@
                             <div class="form-group">
                                 <div class="col-md-offset-5">
                                     <a type="button" class="btn btn-success" onclick="confirm()"><i class="fa fa-arrow-right"></i> Approve</a>
-                                    <a type="button" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
+                                    <a href="initForm_permintaanpo.action" type="button" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
                                 </div>
                             </div>
                             <div class="form-group" style="display: none">
@@ -280,7 +283,7 @@
     $.subscribe('beforeProcessSave', function (event, data) {
         event.originalEvent.options.submit = true;
         $('#confirm_dialog').dialog('close');
-        $.publish('showDialog');
+        $.publish('showDialogLoading');
     });
 
     $.subscribe('successDialog', function (event, data) {

@@ -372,7 +372,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 ">
                                         <ul class="pull-right">
-                                            <li>BL/BX = Jml Lembar/Box</li>
+                                            <li>LB/BX = Jml Lembar/Box</li>
                                             <li>BJ/LB = Jml Biji/Lembar</li>
                                         </ul>
                                     </div>
@@ -658,39 +658,44 @@
                     '</div>' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     '<p>Nama Obat</p>' +
                     '</div>' +
-                    '<div class="col-md-8">' +
+                    '<div class="col-md-8" style="margin-top: -8px">' +
                     '<p>' + namaObat + '</p>' +
                     '</div>' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     '<p>Lembar/Box</p>' +
                     '</div>' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     '<p>' + lembarperBox + '</p>' +
                     '</div>' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     newLembar +
                     '</div>' +
                     '</div>' +
                     '<div class="form-group">' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     '<p>BijiLembar</p>' +
                     '</div>' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     '<p>' + bijiPerLembar + '</p>' +
                     '</div>' +
-                    '<div class="col-md-4">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
                     newBiji +
                     '</div>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
-            $('#warning_fisik').html(warning);
+
+            if(lembarperBox == lembar && bijiPerLembar == biji){
+                $('#warning_fisik').html('');
+            }else{
+                $('#warning_fisik').html(warning);
+            }
 
         }
     }

@@ -93,8 +93,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
                         transaksiObatDetail.setIdApprovalObat(permintaanVendor.getIdApprovalObat());
-                        transaksiObatDetail.setFlagDiterima("R");
-
+                        if("R".equalsIgnoreCase(bean.getNotFlagR())){
+                            transaksiObatDetail.setFlagDiterima("R");
+                        }
                         // transaksi obat detail
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
                         if (transaksiObatDetailEntities.size() > 0) {
@@ -205,9 +206,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
-//            if (bean.getFlagDiterima() != null && !"".equalsIgnoreCase(bean.getFlagDiterima())) {
-//                hsCriteria.put("flag_diterima_r", bean.getFlagDiterima());
-//            }
+            if (bean.getFlagDiterima() != null && !"".equalsIgnoreCase(bean.getFlagDiterima())) {
+                hsCriteria.put("flag_not_r", bean.getFlagDiterima());
+            }
 
             try {
                 obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
@@ -360,6 +361,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
             transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
             transaksiObatDetailEntity.setKeterangan(bean.getKeterangan());
+            transaksiObatDetailEntity.setLembarPerBox(bean.getLembarPerBox());
+            transaksiObatDetailEntity.setBijiPerLembar(bean.getBijiPerLembar());
 
             try {
                 transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
@@ -389,8 +392,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                 entityList.setFlagDiterima("N");
                 entityList.setIdPabrik(bean.getIdPabrik());
-                entityList.setMrek(bean.getMerek());
-                entityList.setKeterangan(bean.getKeterangan());
+                entityList.setLastUpdate(bean.getLastUpdate());
+                entityList.setLastUpdateWho(bean.getLastUpdateWho());
 
                 try {
                     transaksiObatDetailDao.updateAndSave(entityList);

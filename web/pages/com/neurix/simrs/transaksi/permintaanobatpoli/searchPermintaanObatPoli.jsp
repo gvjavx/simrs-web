@@ -239,19 +239,11 @@
                                     </s:else></td>
                                     <td align="center">
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null'>
-                                            <button class="btn btn-primary"
-                                                    onclick="confirm('<s:property value="idApprovalObat"/>','<s:property
-                                                            value="idPermintaanObatPoli"/>','<s:property
-                                                            value="createdDate"/>','<s:property
-                                                            value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i>
+                                            <button class="btn btn-primary" onclick="confirm('<s:property value="idApprovalObat"/>','<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i>
                                             </button>
                                         </s:if>
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y" && #row.retureFlag == null '>
-                                            <button class="btn btn-warning"
-                                                    onclick="showReture('<s:property value="idPermintaanObatPoli"/>','
-                                                        <s:property value="createdDate"/>','<s:property
-                                                            value="idPelayanan"/>','<s:property
-                                                            value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i>
+                                            <button class="btn btn-warning" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="idPelayanan"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-refresh"></i>
                                             </button>
                                         </s:if>
                                     </td>
@@ -471,8 +463,9 @@
                         <thead>
                         <td>ID</td>
                         <td>Nama Obat</td>
-                        <td align="center">Request</td>
-                        <td align="center">Approve</td>
+                        <td align="center">Qty Request</td>
+                        <td align="center">Qty Approve</td>
+                        <td align="center">Jenis Satuan</td>
                         </thead>
                         <tbody id="body_request_detail">
                         </tbody>
@@ -533,10 +526,12 @@
                         <thead>
                         <td>ID</td>
                         <td>Nama Obat</td>
-                        <td align="center">Stok Obat</td>
-                        <td align="center">Request</td>
-                        <td align="center">Approve</td>
-                        <td align="center">Reture</td>
+                        <td align="center">Qty Box</td>
+                        <td align="center">Qty Lembar</td>
+                        <td align="center">Qty Biji</td>
+                        <td align="center">Qty Request</td>
+                        <td align="center">Qty Approve</td>
+                        <td align="center">Qty Reture</td>
                         <td align="center">Action</td>
                         </thead>
                         <tbody id="body_reture_head">
@@ -552,6 +547,7 @@
                         <td>ID</td>
                         <td>Nama Obat</td>
                         <td align="center">Qty</td>
+                        <td align="center">Jenis Satuan</td>
                         <td align="center">Action</td>
                         </thead>
                         <tbody id="body_reture_detail">
@@ -912,6 +908,7 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qty + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
+                                "<td align='center'>" + item.jenisSatuan + "</td>" +
                                 "</tr>";
                     });
                 }
@@ -964,12 +961,29 @@
                 console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
+                        var qtyBox = "";
+                        var qtyLembar = "";
+                        var qtyBiji = "";
+
+                        if (item.qtyBox != null) {
+                            qtyBox = item.qtyBox;
+                        }
+                        if (item.qtyLembar != null) {
+                            qtyLembar = item.qtyLembar;
+                        }
+                        if (item.qtyBiji != null) {
+                            qtyBiji = item.qtyBiji;
+                        }
+
                         table += "<tr>" +
                                 "<td>" + '<span id=obat' + item.idObat + '>' + item.idObat + '</span>' + "</td>" +
                                 "<td>" + '<span id=nama_obat' + item.idObat + '>' + item.namaObat + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qty_poli' + item.idObat + '>' + item.qtyPoli + '</span>' + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
+                                "<td align='center'>" + '<span id=qtyBox' + item.idObat + '>' + qtyBox + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=qtyLembar' + item.idObat + '>' + qtyLembar + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=qtyBiji' + item.idObat + '>' + qtyBiji + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=qtyReq' + item.idObat + '>' + item.qty + '</span>' + "</td>" +
                                 "<td align='center'>" + '<span id=qty_approve' + item.idObat + '>' + item.qtyApprove + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=jenis_satuan' + item.idObat + '>' + item.jenisSatuan + '</span>' + "</td>" +
                                 "<td align='center'>" + '<input type="number" id=new_qty' + item.idObat + ' style="width: 80px" class="form-control">' + "</td>" +
                                 "<td align='center'>" + '<a type="button" id=btn' + item.idObat + ' onclick="addToListReture(\'' + item.idObat + '\')" class="btn btn-success"><i class="fa fa-plus"></i></a>' + "</td>" +
                                 "</tr>";
@@ -984,15 +998,34 @@
         var idObat = $('#obat' + id).text();
         var namaObat = $('#nama_obat' + id).text();
         var qty = $('#new_qty' + id).val();
-        var qtyPoli = $('#qty_poli' + id).text();
+        var qtyBox = $('#qtyBox' + id).text();
+        var qtyLembar = $('#qtyLembar' + id).text();
+        var qtyReq = $('#qtyReq' + id).text();
+        var qtyBiji = $('#qtyBiji' + id).text();
         var qtyApprove = $('#qty_approve' + id).text();
+        var jenisSatuan = $('#jenis_satuan' + id).text();
 
         if (qty != '' && parseInt(qty) > 0) {
-            if (parseInt(qty) <= parseInt(qtyPoli) && parseInt(qty) <= parseInt(qtyApprove)) {
+
+            var stok = 0;
+
+            if ("box" == jenisSatuan) {
+                stok = qtyBox;
+            }
+            if ("lembar" == jenisSatuan) {
+                stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+            }
+            if ("biji" == jenisSatuan) {
+                stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+            }
+
+
+            if (parseInt(qty) <= parseInt(stok) && parseInt(qty) <= parseInt(qtyApprove)) {
                 var row = '<tr id=' + id + '>' +
                         '<td>' + idObat + '</td>' +
                         '<td>' + namaObat + '</td>' +
                         '<td align="center">' + qty + '</td>' +
+                        '<td align="center">' + jenisSatuan + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
                 $('#body_reture_detail').append(row);

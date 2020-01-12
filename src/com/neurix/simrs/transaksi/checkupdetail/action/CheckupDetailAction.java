@@ -935,19 +935,27 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         String idResep = getIdResep();
         String id = getId();
+        String jk = "";
 
+        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
         reportParams.put("resepId", idResep);
-        reportParams.put("logo", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY+CommonConstant.LOGO_NMU);
-        reportParams.put("nik","");
-        reportParams.put("nama","");
-        reportParams.put("tglLahir","");
-        reportParams.put("jenisKelamin","");
-        reportParams.put("jenisPasien","");
-        reportParams.put("poli","");
-        reportParams.put("provinsi","");
-        reportParams.put("kabupaten","");
-        reportParams.put("kecamatan","");
-        reportParams.put("desa","");
+        reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        reportParams.put("nik",headerCheckup.getNoKtp());
+        reportParams.put("nama",headerCheckup.getNama());
+        reportParams.put("tglLahir",headerCheckup.getTempatLahir()+", "+headerCheckup.getStTglLahir().toString());
+        if("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
+            jk = "Laki-Laki";
+        }else{
+            jk = "Perempuan";
+        }
+        reportParams.put("jenisKelamin",jk);
+        reportParams.put("jenisPasien",jenisPriksaPasien.getKeterangan());
+        reportParams.put("poli",headerCheckup.getNamaPelayanan());
+        reportParams.put("provinsi",headerCheckup.getNamaProvinsi());
+        reportParams.put("kabupaten",headerCheckup.getNamaKota());
+        reportParams.put("kecamatan",headerCheckup.getNamaKecamatan());
+        reportParams.put("desa",headerCheckup.getNamaDesa());
 
 
         try {

@@ -12,6 +12,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -215,7 +216,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag){
+    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -227,6 +228,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setQty(new BigInteger(qty));
         transaksiObatDetail.setIdPabrik(idPabrik);
         transaksiObatDetail.setFlagDiterima(flag);
+        transaksiObatDetail.setLembarPerBox(lembarPerBox);
+        transaksiObatDetail.setBijiPerLembar(bijiPerLembar);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
@@ -519,6 +522,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         String id = getId();
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(id);
+        permintaanVendor.setNotFlagR("R");
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
@@ -577,24 +581,73 @@ public class PermintaanVendorAction extends BaseMasterAction {
     }
     public String printPermintaanPO(){
 
+        logger.info("[PermintaanVendorAction.printPermintaanPO] START process <<<");
+
         String idPermintaan = getId();
 
-        reportParams.put("permintaanId", idPermintaan);
-        reportParams.put("logo", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY+CommonConstant.LOGO_NMU);
-        reportParams.put("idVendor","");
-        reportParams.put("namaVendor","");
-        reportParams.put("email","");
-        reportParams.put("noTelp","");
-        reportParams.put("alamat","");
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaan);
 
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
+            permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh obat. " + e.getMessage());
         }
+        if (permintaanVendorList.size() > 0){
+            setPermintaanVendor(permintaanVendorList.get(0));
 
+            Vendor vendor = new Vendor();
+            vendor.setIdVendor(permintaanVendorList.get(0).getIdVendor());
+            List<Vendor> vendorList = new ArrayList<>();
+
+            try {
+                vendorList = vendorBoProxy.getByCriteria(vendor);
+            }catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh vendor. ", e);
+                addActionError("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh vendor. " + e.getMessage());
+            }
+
+            Vendor vendorResult =  new Vendor();
+            if (!vendorList.isEmpty()){
+                vendorResult = vendorList.get(0);
+            }
+
+            List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+            TransaksiObatDetail detail = new TransaksiObatDetail();
+            detail.setIdApprovalObat(permintaanVendorList.get(0).getIdApprovalObat());
+            detail.setFlagDiterima("R");
+
+            try {
+                obatDetailList = permintaanVendorBoProxy.getNewObatDetail(detail);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanVendorAction.printPermintaanPO] Error when searching permintan vendor by criteria,", e);
+            }
+
+            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(obatDetailList);
+
+            reportParams.put("permintaanId", idPermintaan);
+            reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+            reportParams.put("idVendor",vendorResult.getIdVendor());
+            reportParams.put("namaVendor",vendorResult.getNamaVendor());
+            reportParams.put("email",vendorResult.getEmail());
+            reportParams.put("noTelp",vendorResult.getNoTelp());
+            reportParams.put("alamat",vendorResult.getAlamat());
+            reportParams.put("listNewObat",itemData);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+
+            logger.info("[PermintaanVendorAction.printPermintaanPO] LOGO : "+CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        }
+        logger.info("[PermintaanVendorAction.printPermintaanPO] END process <<<");
         return "print_po";
     }
 
