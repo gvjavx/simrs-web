@@ -196,7 +196,7 @@
                                                 <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
                                             </s:url>
                                             <s:a href="%{print_doc}">
-                                                <button class="btn btn-success"><i class="fa fa-print"></i></button>
+                                                <button class="btn btn-info"><i class="fa fa-print"></i></button>
                                             </s:a>
                                             <s:url var="approve_po" namespace="/permintaanpo" action="initApproval_permintaanpo" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
@@ -205,9 +205,6 @@
                                                 <button class="btn btn-success"><i class="fa fa-check"></i></button>
                                             </s:a>
                                         </s:else>
-                                        <s:url var="print_doc" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                        </s:url>
                                     </td>
                                 </tr>
                             </s:iterator>

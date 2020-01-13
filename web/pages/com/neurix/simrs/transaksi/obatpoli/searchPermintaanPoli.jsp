@@ -621,8 +621,6 @@
         var data = $('#tabel_request').tableToJSON();
         var idPermintaan = $('#req_id_permintaan').val();
         var stringData  = JSON.stringify(data);
-        $('#save_req').hide();
-        $('#load_req').show();
         var cek = false;
         var app = "";
         $.each(data, function (i, item) {
@@ -635,6 +633,8 @@
             $('#msg_request').text("Silahkan klik tombol save untuk menyimpan qty Approve..!");
         }else{
             if(stringData != '[]'){
+                $('#save_req').hide();
+                $('#load_req').show();
                 dwr.engine.setAsync(true);
                 PermintaanObatPoliAction.saveKonfirmasiRequest(stringData, idPermintaan, false, { callback: function (response) {
                     if (response == "success") {

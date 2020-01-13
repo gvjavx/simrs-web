@@ -1025,8 +1025,129 @@
     </div>
 </div>
 
+<%--<div class="modal fade" id="modal-resep-head">--%>
+    <%--<div class="modal-dialog modal-flat">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header" style="background-color: #00a65a">--%>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span></button>--%>
+                <%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">--%>
+                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                    <%--Silahkan cek kembali data inputan!--%>
+                <%--</div>--%>
+                <%--<div class="row">--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                                      <%--name="getListJenisObat_jenisobat"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--list="#initJenis.listOfJenisObat" id="resep_jenis"--%>
+                                      <%--listKey="idJenisObat"--%>
+                                      <%--onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"--%>
+                                      <%--listValue="namaJenisObat"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_rep_jenis"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Obat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"--%>
+                                    <%--onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">--%>
+                                <%--<option value="">[select one]</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_rep_obat"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_rep_obat"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Jumlah</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}" style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_rep_qty"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_rep_qty"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Keterangan</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"--%>
+                                    <%--class="form-control" id="resep_keterangan" style="margin-top: 7px">--%>
+                                <%--<option value="">[Select One]</option>--%>
+                                <%--<option value="2 x 1 /Hari">2 x 1 /Hari</option>--%>
+                                <%--<option value="3 x 1 /Hari">3 x 1 /Hari</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_rep_ket"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_rep_ket"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<button class="btn btn-success pull-right" style="margin-top: 7px" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah</button>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div class="box-header with-border">--%>
+                <%--</div>--%>
+                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_data_exits">--%>
+                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                    <%--Data obat sudah tersedia..!--%>
+                <%--</div>--%>
+                <%--<div class="box-header with-border"><i class="fa fa-file-o"></i> Resep Obat--%>
+                <%--</div>--%>
+                <%--<div class="box">--%>
+                    <%--<table class="table table-striped table-bordered" id="tabel_rese_detail">--%>
+                        <%--<thead>--%>
+                        <%--<td>Jenis</td>--%>
+                        <%--<td>Obat</td>--%>
+                        <%--<td>Qty</td>--%>
+                        <%--<td>Keterangan</td>--%>
+                        <%--<td align="center" width="5%">Action</td>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body_detail">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i--%>
+                        <%--class="fa fa-arrow-right"></i> Save--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_head"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
 <div class="modal fade" id="modal-resep-head">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1036,36 +1157,64 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_resep"></p>
                 </div>
                 <div class="row">
+                    <%--<div class="form-group">--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                    <%--name="getListJenisObat_jenisobat"/>--%>
+                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                    <%--list="#initJenis.listOfJenisObat" id="resep_jenis"--%>
+                    <%--listKey="idJenisObat"--%>
+                    <%--onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"--%>
+                    <%--listValue="namaJenisObat"--%>
+                    <%--headerKey="" headerValue="[Select one]"--%>
+                    <%--cssClass="form-control select2"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="war_rep_jenis"><i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                         <div class="col-md-7">
-                            <s:action id="initJenis" namespace="/jenisobat"
-                                      name="getListJenisObat_jenisobat"/>
+                            <s:action id="initApotek" namespace="/checkup"
+                                      name="getComboApotek_checkup"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initJenis.listOfJenisObat" id="resep_jenis"
-                                      listKey="idJenisObat"
-                                      onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"
-                                      listValue="namaJenisObat"
+                                      list="#initApotek.listOfApotek" id="resep_apotek"
+                                      listKey="idPelayanan + '|' + namaPelayanan"
+                                      listValue="namaPelayanan"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_rep_jenis"><i class="fa fa-times"></i> required</p>
+                               id="war_rep_apotek"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>
+                               id="cor_rep_apotek"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="resep_nama_obat"
-                                    onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="resep_nama_obat">
                                 <option value="">[select one]</option>
                             </select>
+                            <%--<s:action id="initObat" namespace="/obat"--%>
+                            <%--name="getListObat_obat"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                            <%--list="#initObat.listOfObat" id="resep_nama_obat"--%>
+                            <%--listKey="idObat + '|' + namaObat + '|' + qty"--%>
+                            <%--onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)"--%>
+                            <%--listValue="namaObat"--%>
+                            <%--headerKey="" headerValue="[Select one]"--%>
+                            <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1075,9 +1224,46 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Box</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_box"
+                                   readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Lembar</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_lembar"
+                                   readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Biji</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_biji"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                      cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
+                                      id="resep_jenis_satuan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}" style="margin-top: 7px" value="1" class="form-control" type="number" min="1" id="resep_qty">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
+                                   style="margin-top: 7px" value="1" class="form-control" type="number" min="1"
+                                   id="resep_qty">
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1089,12 +1275,14 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"
-                                    class="form-control" id="resep_keterangan" style="margin-top: 7px">
-                                <option value="">[Select One]</option>
-                                <option value="2 x 1 /Hari">2 x 1 /Hari</option>
-                                <option value="3 x 1 /Hari">3 x 1 /Hari</option>
-                            </select>
+                            <%--<select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"--%>
+                            <%--class="form-control" id="resep_keterangan" style="margin-top: 7px">--%>
+                            <%--<option value="">[Select One]</option>--%>
+                            <%--<option value="2 x 1 /Hari">2 x 1 /Hari</option>--%>
+                            <%--<option value="3 x 1 /Hari">3 x 1 /Hari</option>--%>
+                            <%--</select>--%>
+                            <textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px"
+                                      oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1106,7 +1294,12 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">
-                            <button class="btn btn-success pull-right" style="margin-top: 7px" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah</button>
+                            <button class="btn btn-danger pull-right" style="margin-top: 7px" onclick="resetAll()"><i
+                                    class="fa fa-refresh"></i> Reset
+                            </button>
+                            <button class="btn btn-success pull-right" style="margin-top: 7px; margin-right: 4px"
+                                    onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1116,14 +1309,16 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     Data obat sudah tersedia..!
                 </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Resep Obat
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Resep Obat, tujuan <b><span
+                        id="desti_apotek"></span></b>
                 </div>
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
                         <thead>
-                        <td>Jenis</td>
+                        <td>ID</td>
                         <td>Obat</td>
-                        <td>Qty</td>
+                        <td align="center">Qty</td>
+                        <td align="center">Jenis Satuan</td>
                         <td>Keterangan</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
@@ -1136,9 +1331,10 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObat()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-arrow-right"></i> Buat Resep
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_head"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_resep_head"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1196,6 +1392,7 @@
     var idPoli          = $('#id_palayanan').val();
     var idRawatInap     = $('#id_rawat_inap').val();
     var idPasien        = $('#id_pasien').val();
+    var noCheckup       = $('#no_checkup').val();
 
     $(document).ready(function () {
         $('#rawat_inap').addClass('active');
@@ -2327,17 +2524,53 @@
         $('#'+id).remove();
     }
 
-    function saveResepObat(){
+    <%--function saveResepObat(){--%>
+
+        <%--var idDokter = $('#tin_id_dokter').val();--%>
+        <%--var data        = $('#tabel_rese_detail').tableToJSON();--%>
+        <%--var stringData  = JSON.stringify(data);--%>
+
+        <%--if(stringData != '[]'){--%>
+            <%--$('#save_resep_head').hide();--%>
+            <%--$('#load_resep_head').show();--%>
+            <%--dwr.engine.setAsync(true);--%>
+            <%--PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {--%>
+                <%--callback: function (response) {--%>
+                    <%--if (response == "success") {--%>
+                        <%--dwr.engine.setAsync(false);--%>
+                        <%--$('#info_dialog').dialog('open');--%>
+                        <%--$('#close_pos').val(9);--%>
+                        <%--$('#save_resep_head').show();--%>
+                        <%--$('#load_resep_head').hide();--%>
+                        <%--$('#modal-resep-head').modal('hide');--%>
+                        <%--listResepPasien();--%>
+                    <%--} else {--%>
+                        <%--$('#warning_resep_head').show().fadeOut(5000);--%>
+                        <%--$('#save_resep_head').show();--%>
+                        <%--$('#load_resep_head').hide();--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}else{--%>
+            <%--$('#warning_resep_head').show().fadeOut(5000);--%>
+        <%--}--%>
+    <%--}--%>
+
+    function saveResepObat() {
 
         var idDokter = $('#tin_id_dokter').val();
-        var data        = $('#tabel_rese_detail').tableToJSON();
-        var stringData  = JSON.stringify(data);
+        var data = $('#tabel_rese_detail').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var idPelayanan = $('#resep_apotek').val();
+        var apotek = $('#resep_apotek').val();
 
-        if(stringData != '[]'){
+        if (stringData != '[]') {
+            var idPelayanan = apotek.split('|')[0];
+            var namaPelayanan = apotek.split('|')[1];
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, {
+            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
@@ -2354,10 +2587,11 @@
                     }
                 }
             });
-        }else{
+        } else {
             $('#warning_resep_head').show().fadeOut(5000);
         }
     }
+
 
     function listResepPasien() {
 
@@ -2379,7 +2613,9 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;"> <img border="0" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;"> <img border="0" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            '<img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            "</td>" +
                             "</tr>"
                 });
             }
@@ -2507,6 +2743,10 @@
 
             })
         })
+    }
+
+    function printResep(id) {
+        window.location.href = 'printResepPasien_rawatinap.action?id=' + noCheckup+'&idResep='+id;
     }
 
 

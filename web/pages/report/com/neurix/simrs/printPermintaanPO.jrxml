@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="428"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -39,7 +39,7 @@
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.listNewObat" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
-		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, c.qty_approve, c.jenis_satuan,  FROM mt_simrs_approval_transaksi_obat a
+		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, c.qty_approve, c.jenis_satuan FROM mt_simrs_approval_transaksi_obat a
 INNER JOIN mt_simrs_permintaan_obat_vendor b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approval_obat
 INNER JOIN im_simrs_obat d ON c.id_obat = d.id_obat
@@ -86,10 +86,6 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 				</textElement>
 				<text><![CDATA[Purchase Order Obat]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
-				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
@@ -185,6 +181,10 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{reportParams.alamat} == null ? "" : $P{reportParams.alamat}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="6ae1a02f-9efd-4d0f-9309-1ed42c3899da"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>
@@ -325,6 +325,15 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 			</textField>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="126"/>
+	</lastPageFooter>
 	<summary>
 		<band height="114" splitType="Stretch">
 			<staticText>
@@ -333,7 +342,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 				<text><![CDATA[TTD]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="342" y="83" width="189" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
+				<reportElement x="342" y="94" width="189" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font isUnderline="true"/>

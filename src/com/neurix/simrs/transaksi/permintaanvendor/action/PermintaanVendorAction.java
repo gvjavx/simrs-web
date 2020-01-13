@@ -635,6 +635,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             reportParams.put("email",vendorResult.getEmail());
             reportParams.put("noTelp",vendorResult.getNoTelp());
             reportParams.put("alamat",vendorResult.getAlamat());
+            reportParams.put("petugas",CommonUtil.userLogin());
             reportParams.put("listNewObat",itemData);
 
             try {

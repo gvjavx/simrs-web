@@ -495,7 +495,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Qty Permintaan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Qty Request</label>
                         <div class="col-md-7">
                             <s:textfield type="number" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="app_qty" readonly="true"
@@ -659,24 +659,29 @@
     }
 
     function saveApprove(id, idDetail, idPabrik) {
+        var qtyReq = $('#app_qty').val();
         var qty = $('#app_qty_app').val();
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
-        $('#save_approve').hide();
-        $('#load_approve').show();
-        dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, function (response) {
-            if (response == "success") {
-                dwr.engine.setAsync(false);
-                $('#modal-approve').modal('hide');
-                $('#approve' + id).html("Setuju").addClass("label label-success");
-            } else {
-                $('#save_obat').show();
-                $('#load_obat').hide();
-                $('#warning_obat').show().fadeOut(5000);
-                $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-            }
-        })
+
+        if(parseInt(qty) <= parseInt(qtyReq)) {
+            $('#save_approve').hide();
+            $('#load_approve').show();
+            dwr.engine.setAsync(true);
+            PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#modal-approve').modal('hide');
+                    $('#approve' + id).html("Setuju").addClass("label label-success");
+                    $('#qtyApprove' + id).text(qty);
+                } else {
+                    $('#save_obat').show();
+                    $('#load_obat').hide();
+                    $('#warning_obat').show().fadeOut(5000);
+                    $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+                }
+            })
+        }
     }
 
     function saveNotApprove(id, idDetail, idPabrik) {

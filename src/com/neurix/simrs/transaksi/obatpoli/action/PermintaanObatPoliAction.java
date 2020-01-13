@@ -193,9 +193,29 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         String idPermintaan = getIdPermintaan();
 
-        reportParams.put("idPermintaan", idPermintaan);
-        reportParams.put("logo", "/simrs/pages/images/logo-nmu.png");
-        reportParams.put("keyCode", 123456789);
+        boolean isPoli = false;
+
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanObatPoliAction.search] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.search] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        if(!permintaanObatPoliList.isEmpty()){
+            PermintaanObatPoli entity = permintaanObatPoliList.get(0);
+            if(entity != null){
+
+                reportParams.put("permintaanId", idPermintaan);
+                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                reportParams.put("namaPelayanan", entity.getNamaTujuanPelayanan());
+                reportParams.put("dariPelayanan", entity.getNamaPelayanan());
+            }
+        }
 
         try {
             preDownload();

@@ -262,16 +262,16 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
-    .se-pre-con {
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;
-        background-size: 100px 100px;
-    }
+    <%--.se-pre-con {--%>
+        <%--position: fixed;--%>
+        <%--left: 0px;--%>
+        <%--top: 0px;--%>
+        <%--width: 100%;--%>
+        <%--height: 100%;--%>
+        <%--z-index: 9999;--%>
+        <%--background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;--%>
+        <%--background-size: 100px 100px;--%>
+    <%--}--%>
     /*.pulse-button {*/
 
         /*position: relative;*/
