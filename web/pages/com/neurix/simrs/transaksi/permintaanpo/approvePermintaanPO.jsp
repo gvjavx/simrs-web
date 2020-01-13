@@ -42,7 +42,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Approval Permintaan Purchase Order (PO)
+            Approval Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_po">

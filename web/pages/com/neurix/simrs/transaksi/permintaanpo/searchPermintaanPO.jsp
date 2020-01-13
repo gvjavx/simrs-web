@@ -40,7 +40,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Permintaan Purchase Order (PO)
+            Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -52,7 +52,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian PO</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -159,13 +159,13 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Permintaan PO</td>
+                                <td>ID PO</td>
                                 <td>Tanggal Permintaan</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
