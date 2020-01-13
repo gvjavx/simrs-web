@@ -82,7 +82,7 @@ public class ObatInapAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveObatInap(String idDetailCheckup, String idObat, BigInteger qty){
+    public String saveObatInap(String idDetailCheckup, String idObat, BigInteger qty, String jenisSatuan){
         logger.info("[ObatInapAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -113,12 +113,13 @@ public class ObatInapAction extends BaseMasterAction {
             obatInap.setIdDetailCheckup(idDetailCheckup);
             obatInap.setNamaObat(obatResult.getNamaObat());
             obatInap.setQty(qty);
-            obatInap.setHarga(obatResult.getHarga());
-            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
+//            obatInap.setHarga(obatResult.getHarga());
+//            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
             obatInap.setCreatedWho(userLogin);
             obatInap.setLastUpdate(updateTime);
             obatInap.setCreatedDate(updateTime);
             obatInap.setLastUpdateWho(userLogin);
+            obatInap.setJenisSatuan(jenisSatuan);
             obatInap.setAction("C");
             obatInap.setFlag("Y");
 

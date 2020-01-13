@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
@@ -80,6 +81,7 @@ public class ObatInapBoImpl implements ObatInapBo {
                 obatInapEntity.setCreatedWho(bean.getCreatedWho());
                 obatInapEntity.setLastUpdate(bean.getLastUpdate());
                 obatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                obatInapEntity.setJenisSatuan(bean.getJenisSatuan());
 
                 try {
                     obatInapDao.addAndSave(obatInapEntity);
@@ -212,9 +214,11 @@ public class ObatInapBoImpl implements ObatInapBo {
             obatInap.setCreatedWho(entity.getCreatedWho());
             obatInap.setLastUpdate(entity.getLastUpdate());
             obatInap.setLastUpdateWho(entity.getLastUpdateWho());
+            obatInap.setJenisSatuan(entity.getJenisSatuan());
 
             Obat obat = new Obat();
             obat.setIdObat(entity.getIdObat());
+            obat.setBranchId(CommonUtil.userBranchLogin());
             List<ImSimrsObatEntity> obatEntityList = getListObatEntity(obat);
 
             ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
@@ -223,22 +227,11 @@ public class ObatInapBoImpl implements ObatInapBo {
             }
 
             if (obatEntity != null){
-                obatInap.setStokMasterObat(obatEntity.getQty());
-
-//                JenisObat jenisObat = new JenisObat();
-//                jenisObat.setIdJenisObat(obatEntity.getIdJenisObat());
-//                List<ImSimrsJenisObatEntity> jenisObatEntityList = getListJenisObatEntity(jenisObat);
-//
-//                ImSimrsJenisObatEntity jenisObatEntity = new ImSimrsJenisObatEntity();
-//                if (!jenisObatEntityList.isEmpty()){
-//                    jenisObatEntity = jenisObatEntityList.get(0);
-//                }
-//
-//                if (jenisObatEntity != null){
-//                    obatInap.setIdJenisObat(jenisObatEntity.getIdJenisObat());
-//                    obatInap.setNamaJenisObat(jenisObatEntity.getNamaJenisObat());
-//                }
-
+                obatInap.setQtyBox(obatEntity.getQtyBox());
+                obatInap.setQtyLembar(obatEntity.getQtyLembar());
+                obatInap.setQtyBiji(obatEntity.getQtyBiji());
+                obatInap.setLembarPerBox(obatEntity.getLembarPerBox());
+                obatInap.setBijiPerLembar(obatEntity.getBijiPerLembar());
             }
 
             results.add(obatInap);
@@ -254,6 +247,9 @@ public class ObatInapBoImpl implements ObatInapBo {
         Map hsCriteria = new HashMap();
         if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
             hsCriteria.put("id_obat", bean.getIdObat());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            hsCriteria.put("branch_id", bean.getBranchId());
         }
 
         hsCriteria.put("flag","Y");

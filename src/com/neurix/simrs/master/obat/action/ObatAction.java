@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -214,7 +215,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public String saveObat(String namaObat,List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigInteger harga){
+    public String saveObat(String namaObat, List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -233,7 +234,9 @@ public class ObatAction extends BaseMasterAction {
             obat.setQtyLembar(lembar);
             obat.setBijiPerLembar(bijiLembar);
             obat.setQtyBiji(biji);
-            obat.setHarga(harga);
+            obat.setAverageHargaBox(hargaBox);
+            obat.setAverageHargaLembar(hargaLembar);
+            obat.setAverageHargaBiji(hargaBiji);
             obat.setCreatedDate(updateTime);
             obat.setCreatedWho(userLogin);
             obat.setLastUpdate(updateTime);
@@ -255,7 +258,7 @@ public class ObatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String editObat(String idObat, String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty, String flag){
+    public String editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -268,12 +271,17 @@ public class ObatAction extends BaseMasterAction {
             Obat obat = new Obat();
             obat.setIdObat(idObat);
             obat.setNamaObat(namaObat);
-            obat.setHarga(harga);
-            obat.setQty(qty);
+            obat.setQtyBox(box);
+            obat.setQtyLembar(lembar);
+            obat.setQtyBiji(biji);
+            obat.setLembarPerBox(lembarBox);
+            obat.setBijiPerLembar(bijiLembar);
+            obat.setAverageHargaBox(hargaBox);
+            obat.setAverageHargaLembar(hargaLembar);
+            obat.setAverageHargaBiji(hargaBiji);
             obat.setLastUpdate(updateTime);
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
-            obat.setFlag(flag);
             obat.setAction("U");
 
             obatBo.saveEdit(obat, jenisObat);

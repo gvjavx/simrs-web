@@ -406,11 +406,11 @@
         var bijiLembar  = $('#add_biji_lembar').val();
         var biji        = $('#add_biji').val();
         var hargaBox    = $('#add_harga_box').val();
-        var hargalembar = $('#add_harga_lembar').val();
+        var hargaLembar = $('#add_harga_lembar').val();
         var hargaBiji   = $('#add_harga_biji').val();
-        var flag        = $('#add_flag').val();
 
-        if (nama != '' && jenis != null && harga != '' && parseInt(biji) > 0 && box != ''
+
+        if (nama != '' && jenis != null && parseInt(biji) > 0 && box != ''
             && lembarBox != '' && lembar != '' && bijiLembar != '' && biji != '' && pabrik != ''
             && merek != '' && pabrik != '') {
 
@@ -419,7 +419,7 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, jenis, harga, biji, flag, function (response) {
+                ObatAction.editObat(id, nama, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
@@ -433,7 +433,7 @@
                 })
             } else {
                 dwr.engine.setAsync(true);
-                ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, harga, function (response) {
+                ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
@@ -523,7 +523,6 @@
         } else {
             alert('id obat kosong');
         }
-        console.log(data);
         return data;
     }
 

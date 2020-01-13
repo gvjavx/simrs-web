@@ -28,6 +28,62 @@ public class ObatInap extends BaseModel {
     private BigInteger qtyEdit;
 
     private BigInteger stokMasterObat;
+    private String jenisSatuan;
+
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+
+    private BigInteger lembarPerBox;
+    private BigInteger bijiPerLembar;
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
+    public BigInteger getLembarPerBox() {
+        return lembarPerBox;
+    }
+
+    public void setLembarPerBox(BigInteger lembarPerBox) {
+        this.lembarPerBox = lembarPerBox;
+    }
+
+    public BigInteger getBijiPerLembar() {
+        return bijiPerLembar;
+    }
+
+    public void setBijiPerLembar(BigInteger bijiPerLembar) {
+        this.bijiPerLembar = bijiPerLembar;
+    }
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
 
     public BigInteger getStokMasterObat() {
         return stokMasterObat;
