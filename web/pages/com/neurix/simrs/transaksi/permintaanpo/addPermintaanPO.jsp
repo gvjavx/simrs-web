@@ -483,6 +483,7 @@
         }
         $('#jenis_satuan').val('').trigger('change');
         $('#jumlah, #harga').val('');
+        $('#warning_fisik').html('');
     }
 
     function addToListPo() {

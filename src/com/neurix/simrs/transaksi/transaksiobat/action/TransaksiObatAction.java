@@ -263,10 +263,10 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         logger.info("[TransaksiObatAction.savePembayaran] END <<<<<<<");
-        return initForm();
+        return "search";
     }
 
-    public String saveAddObat(String idObat, String qty) {
+    public String saveAddObat(String idObat, String qty, String jenisSatuan) {
         logger.info("[TransaksiObatAction.savePembayaran] START >>>>>>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -302,6 +302,8 @@ public class TransaksiObatAction extends BaseMasterAction {
             transaksiObatDetail.setIdObat(obatData.getIdObat());
             transaksiObatDetail.setNamaObat(obatData.getNamaObat());
             transaksiObatDetail.setQty(bQty);
+            transaksiObatDetail.setQtyApprove(bQty);
+            transaksiObatDetail.setJenisSatuan(jenisSatuan);
             transaksiObatDetail.setHarga(obatData.getHarga());
             transaksiObatDetail.setTotalHarga(jml);
             transaksiObatDetail.setFlag("Y");

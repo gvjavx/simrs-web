@@ -100,7 +100,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "tod.created_date,\n" +
                 "tod.created_who,\n" +
                 "tod.last_update,\n" +
-                "tod.last_update_who\n" +
+                "tod.last_update_who,\n" +
+                "tod.jenis_satuan\n" +
                 "FROM mt_simrs_transaksi_obat_detail tod\n" +
                 "INNER JOIN \n" +
                 "(\n" +
@@ -144,6 +145,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetailEntity.setCreatedWho(obj[7].toString());
                 obatDetailEntity.setLastUpdate((Timestamp)obj[8]);
                 obatDetailEntity.setLastUpdateWho(obj[9].toString());
+                obatDetailEntity.setJenisSatuan(obj[10].toString());
                 obatDetailEntities.add(obatDetailEntity);
             }
         }
