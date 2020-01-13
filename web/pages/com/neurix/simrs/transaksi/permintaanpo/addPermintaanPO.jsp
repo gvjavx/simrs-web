@@ -98,7 +98,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Permintaan Purchase Order (PO)
+            Tambah Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -110,7 +110,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input PO</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_po">
@@ -382,7 +382,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped" id="tabel_po">

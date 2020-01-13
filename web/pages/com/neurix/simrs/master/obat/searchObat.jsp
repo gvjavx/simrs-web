@@ -48,14 +48,14 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/obat" action="search_obat.action" theme="simple" cssClass="form-horizontal">
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_obat" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="obat.idObat" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Kode Produksi Obat</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_pabrik" cssStyle="margin-top: 7px"
+                                                     name="obat.idPabrik" required="false"
+                                                     readonly="false" cssClass="form-control" placeholder="Ketik atau Scan Barcode"/>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Obat</label>
                                     <div class="col-sm-4">
