@@ -33,7 +33,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="211" splitType="Stretch">
+		<band height="203" splitType="Stretch">
 			<componentElement>
 				<reportElement x="388" y="0" width="167" height="20" uuid="67785d5f-b464-498b-ba36-7c91ce827318">
 					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[$P{reportParams.resepId}]]></propertyExpression>
@@ -65,6 +65,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
@@ -191,7 +192,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<reportElement x="125" y="88" width="189" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="125" y="108" width="189" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
@@ -233,7 +234,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<reportElement x="407" y="128" width="144" height="20" uuid="96568b58-5313-4b49-bb96-c47544da40dc"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.kecamatan} == null ? "" : $P{reportParams.kecamatan} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.kecamatan} == null ? "" : $P{reportParams.kecamatan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="407" y="148" width="144" height="20" uuid="4fb4f536-61c2-4b0f-a977-b141ee0ede12"/>

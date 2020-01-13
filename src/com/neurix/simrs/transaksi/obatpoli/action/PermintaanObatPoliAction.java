@@ -145,7 +145,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             try {
                 obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
             }catch (JSONException e){
-                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+                logger.error("[PermintaanResepAction.saveKonfirmasiRequest] Error when sabe resep obat", e);
             }
 
         } catch (GeneralBOException e) {
@@ -211,7 +211,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             if(entity != null){
 
                 reportParams.put("permintaanId", idPermintaan);
-                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
                 reportParams.put("namaPelayanan", entity.getNamaTujuanPelayanan());
                 reportParams.put("dariPelayanan", entity.getNamaPelayanan());
             }

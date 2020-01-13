@@ -454,7 +454,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.saveReture] END <<<<<<<<<<");
     }
 
-    private void updateSubstractStockObatPoli(ImtSimrsTransaksiObatDetailEntity bean, String idPoli, String branchId) throws GeneralBOException{
+    private void updateSubstractStockObatPoli(ImtSimrsTransaksiObatDetailEntity bean, String idPoli, String branchId) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] START >>>>>>>>>>");
 
         ObatPoli obatPoli = new ObatPoli();
@@ -468,31 +468,46 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
 
 
-        if (obatPoliEntity != null){
+        if (obatPoliEntity != null) {
 
-            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
-                obatPoliEntity.setQtyBox(obatPoliEntity.getQtyBox().subtract(bean.getQtyApprove()));
+            //sodiq, antisipasi jikalau nilai qty terdapat null
+            BigInteger qtyBox = new BigInteger(String.valueOf(0));
+            BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+            BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
+            if (obatPoliEntity.getQtyBox() != null) {
+                qtyBox = obatPoliEntity.getQtyBox();
+            }
+            if (obatPoliEntity.getQtyLembar() != null) {
+                qtyLembar = obatPoliEntity.getQtyLembar();
+            }
+            if (obatPoliEntity.getQtyBiji() != null) {
+                qtyBiji = obatPoliEntity.getQtyBiji();
             }
 
-            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
+            if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
+                obatPoliEntity.setQtyBox(qtyBox.subtract(bean.getQtyApprove()));
+            }
+
+            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
                 // jika stock lebih besar dari permintaan reture
-                if (obatPoliEntity.getQtyLembar().compareTo(bean.getQtyApprove()) == 1){
-                    obatPoliEntity.setQtyLembar(obatPoliEntity.getQtyLembar().subtract(bean.getQtyApprove()));
+                if (qtyLembar.compareTo(bean.getQtyApprove()) == 1) {
+                    obatPoliEntity.setQtyLembar(qtyLembar.subtract(bean.getQtyApprove()));
                 } else {
 
                     BigInteger lembarPermintaanToBox = bean.getQtyApprove().divide(obatEntity.getLembarPerBox());
 
-                    if (lembarPermintaanToBox.compareTo(new BigInteger(String.valueOf(1))) == 0){
-                        obatPoliEntity.setQtyBox(obatPoliEntity.getQtyBox().subtract(new BigInteger(String.valueOf(1))));
+                    if (lembarPermintaanToBox.compareTo(new BigInteger(String.valueOf(1))) == 0) {
+                        obatPoliEntity.setQtyBox(qtyBox.subtract(new BigInteger(String.valueOf(1))));
                         BigInteger sisaPerLembar = obatEntity.getLembarPerBox().subtract(bean.getQtyApprove());
                         obatPoliEntity.setQtyLembar(sisaPerLembar);
                     } else {
 
-                        BigInteger jmlLembarStock = (obatPoliEntity.getQtyBox().multiply(obatEntity.getLembarPerBox())).add(obatPoliEntity.getQtyLembar());
+                        BigInteger jmlLembarStock = (qtyBox.multiply(obatEntity.getLembarPerBox())).add(qtyLembar);
                         BigInteger jmlLembarPermintaan = bean.getQtyApprove();
                         BigInteger jmlStockPengurangan = jmlLembarStock.subtract(jmlLembarPermintaan);
 
-                        if (jmlStockPengurangan.compareTo(new BigInteger(String.valueOf(0))) == 1){
+                        if (jmlStockPengurangan.compareTo(new BigInteger(String.valueOf(0))) == 1) {
                             BigInteger lembarToBox = jmlStockPengurangan.divide(obatEntity.getLembarPerBox());
                             BigInteger sisaLembar = jmlStockPengurangan.mod(obatEntity.getLembarPerBox());
 
@@ -506,22 +521,22 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 }
             }
 
-            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())){
-                if (obatPoliEntity.getQtyBiji().compareTo(bean.getQtyApprove()) == 1){
-                    obatPoliEntity.setQtyBiji(obatPoliEntity.getQtyBiji().subtract(bean.getQtyApprove()));
+            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
+                if (qtyBiji.compareTo(bean.getQtyApprove()) == 1) {
+                    obatPoliEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
                 } else {
-                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1){
+                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1) {
                         obatPoliEntity.setQtyLembar(obatPoliEntity.getQtyLembar().subtract(new BigInteger(String.valueOf(1))));
-                        obatPoliEntity.setQtyBiji((obatPoliEntity.getQtyBiji().add(obatEntity.getBijiPerLembar())).subtract(bean.getQtyApprove()));
+                        obatPoliEntity.setQtyBiji((qtyBiji.add(obatEntity.getBijiPerLembar())).subtract(bean.getQtyApprove()));
                     } else {
                         BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
-                        BigInteger jmlAllStockBiji = (obatPoliEntity.getQtyBox().multiply(cons))
+                        BigInteger jmlAllStockBiji = (qtyBox.multiply(cons))
                                 .add(obatPoliEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
-                                .add(obatPoliEntity.getQtyBiji());
+                                .add(qtyBiji);
 
                         BigInteger sisaAllPengurangan = jmlAllStockBiji.subtract(bean.getQtyApprove());
 
-                        if (sisaAllPengurangan.compareTo(new BigInteger(String.valueOf(0))) == 1){
+                        if (sisaAllPengurangan.compareTo(new BigInteger(String.valueOf(0))) == 1) {
 
                             BigInteger bijiToBox = sisaAllPengurangan.divide(cons);
                             obatPoliEntity.setQtyBox(bijiToBox);
@@ -533,7 +548,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                             BigInteger modSisaBiji = sisaBiji.mod(obatEntity.getBijiPerLembar());
                             obatPoliEntity.setQtyBiji(modSisaBiji);
-
 
 
                         } else {
@@ -550,7 +564,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             try {
                 obatPoliDao.updateAndSave(obatPoliEntity);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
             }
@@ -558,28 +572,43 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
     }
 
-    private void updateAddStockGudang(ImtSimrsTransaksiObatDetailEntity bean) throws GeneralBOException{
+    private void updateAddStockGudang(ImtSimrsTransaksiObatDetailEntity bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockGudang] START >>>>>>>>>>");
 
         ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
 
-        if (obatEntity != null){
-            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
-                obatEntity.setQtyBox(bean.getQtyApprove().add(obatEntity.getQtyBox()));
+        //sodiq, antisipasi jikalau nilai qty terdapat null
+        BigInteger qtyBox = new BigInteger(String.valueOf(0));
+        BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+        BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
+        if (obatEntity.getQtyBox() != null) {
+            qtyBox = obatEntity.getQtyBox();
+        }
+        if (obatEntity.getQtyLembar() != null) {
+            qtyLembar = obatEntity.getQtyLembar();
+        }
+        if (obatEntity.getQtyBiji() != null) {
+            qtyBiji = obatEntity.getQtyBiji();
+        }
+
+        if (obatEntity != null) {
+            if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
+                obatEntity.setQtyBox(bean.getQtyApprove().add(qtyBox));
             }
-            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
-                if (bean.getQtyApprove().compareTo(obatEntity.getLembarPerBox()) == 1){
+            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
+                if (bean.getQtyApprove().compareTo(obatEntity.getLembarPerBox()) == 1) {
                     BigInteger lembarToBox = bean.getQtyApprove().divide(obatEntity.getLembarPerBox());
                     BigInteger sisaLembar = bean.getQtyApprove().mod(obatEntity.getLembarPerBox());
 
-                    obatEntity.setQtyBox(obatEntity.getQtyBox().add(lembarToBox));
-                    obatEntity.setQtyLembar(obatEntity.getQtyLembar().add(sisaLembar));
+                    obatEntity.setQtyBox(qtyBox.add(lembarToBox));
+                    obatEntity.setQtyLembar(qtyLembar.add(sisaLembar));
                 } else {
-                    obatEntity.setQtyLembar(obatEntity.getQtyLembar().add(bean.getQtyLembar()));
+                    obatEntity.setQtyLembar(qtyLembar.add(bean.getQtyLembar()));
                 }
             }
-            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())){
-                obatEntity.setQtyBiji(obatEntity.getQtyBiji().add(bean.getQtyApprove()));
+            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
+                obatEntity.setQtyBiji(qtyBiji.add(bean.getQtyApprove()));
             }
 
             obatEntity.setAction("U");
@@ -588,7 +617,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             try {
                 obatDao.updateAndSave(obatEntity);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.updateAddStockGudang] ERROR when update master obat. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudang] ERROR when update master obat. ", e);
             }
@@ -597,7 +626,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.updateAddStockGudang] END <<<<<<<<<<");
     }
 
-    private void updateAddStockPoli(ImtSimrsTransaksiObatDetailEntity bean, String idPoli, String branchId) throws GeneralBOException{
+    private void updateAddStockPoli(ImtSimrsTransaksiObatDetailEntity bean, String idPoli, String branchId) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockPoli] START >>>>>>>>>>");
 
         ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
@@ -610,25 +639,40 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         MtSimrsObatPoliEntity obatPoliEntity = getObaPolitById(obatPoli);
 
-        if (obatPoliEntity != null && obatEntity != null){
-            if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
-//                obatPoliEntity.setQtyBox(bean.getQtyBox().add(obatPoliEntity.getQtyBox()));
-                obatPoliEntity.setQtyBox(bean.getQtyApprove().add(obatPoliEntity.getQtyBox()));
+        if (obatPoliEntity != null && obatEntity != null) {
+
+            //sodiq, antisipasi jikalau nilai qty terdapat null
+            BigInteger qtyBox = new BigInteger(String.valueOf(0));
+            BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+            BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
+            if (obatPoliEntity.getQtyBox() != null) {
+                qtyBox = obatPoliEntity.getQtyBox();
             }
-            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
-                if (bean.getQtyApprove().compareTo(obatEntity.getLembarPerBox()) == 1){
+            if (obatPoliEntity.getQtyLembar() != null) {
+                qtyLembar = obatPoliEntity.getQtyLembar();
+            }
+            if (obatPoliEntity.getQtyBiji() != null) {
+                qtyBiji = obatPoliEntity.getQtyBiji();
+            }
+
+            if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
+                obatPoliEntity.setQtyBox(bean.getQtyApprove().add(qtyBox));
+            }
+            if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
+                if (bean.getQtyApprove().compareTo(obatEntity.getLembarPerBox()) == 1) {
 
                     BigInteger lembarToBox = bean.getQtyApprove().divide(obatEntity.getLembarPerBox());
                     BigInteger sisaLembar = bean.getQtyApprove().mod(obatEntity.getLembarPerBox());
 
-                    obatEntity.setQtyBox(obatPoliEntity.getQtyBox().add(lembarToBox));
-                    obatEntity.setQtyLembar(obatPoliEntity.getQtyLembar().add(sisaLembar));
+                    obatPoliEntity.setQtyBox(qtyBox.add(lembarToBox));
+                    obatPoliEntity.setQtyLembar(qtyLembar.add(sisaLembar));
                 } else {
-                    obatEntity.setQtyLembar(obatPoliEntity.getQtyLembar().add(bean.getQtyLembar()));
+                    obatPoliEntity.setQtyLembar(qtyLembar.add(bean.getQtyApprove()));
                 }
             }
-            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())){
-                obatEntity.setQtyBiji(obatPoliEntity.getQtyBiji().add(bean.getQtyApprove()));
+            if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
+                obatPoliEntity.setQtyBiji(qtyBiji.add(bean.getQtyApprove()));
             }
 
             obatPoliEntity.setAction("U");
@@ -637,7 +681,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             try {
                 obatPoliDao.updateAndSave(obatPoliEntity);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.updateAddStockPoli] ERROR when update master obat. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockPoli] ERROR when update master obat. ", e);
             }
@@ -752,7 +796,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             if (obatEntity.getQtyLembar() != null) {
                 qtyLembar = obatEntity.getQtyLembar();
             }
-            if (obatEntity.getQtyBox() != null) {
+            if (obatEntity.getQtyBiji() != null) {
                 qtyBiji = obatEntity.getQtyBiji();
             }
 
@@ -764,15 +808,15 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
 
                 // jika lembar permintaan lebih kecil dari pada jumlah lembar dalam stock maka langsung mengurangi stock lembar
-                if (obatEntity.getQtyLembar().compareTo(bean.getQtyApprove()) == 1 || obatEntity.getQtyLembar().compareTo(bean.getQtyApprove()) == 0) {
+                if (qtyLembar.compareTo(bean.getQtyApprove()) == 1 || qtyLembar.compareTo(bean.getQtyApprove()) == 0) {
                     BigInteger jml = qtyLembar.subtract(bean.getQtyApprove());
                     obatEntity.setQtyLembar(jml);
                 } else {
 
                     BigInteger jmlLembarStock = (obatEntity.getQtyBox().multiply(obatEntity.getLembarPerBox()))
-                            .add(obatEntity.getQtyLembar());
+                            .add(qtyLembar);
 
-                    if (jmlLembarStock.compareTo(bean.getQtyApprove()) == 1){
+                    if (jmlLembarStock.compareTo(bean.getQtyApprove()) == 1) {
                         BigInteger jmlLembarPengurangan = jmlLembarStock.subtract(bean.getQtyApprove());
 
                         BigInteger lembarToBox = jmlLembarPengurangan.divide(obatEntity.getLembarPerBox());
@@ -791,24 +835,24 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 // jika jumlah stock obat bijian lebih besar atau sama dari jumlah permintaan
                 // maka hanya perlu mengurangi stock biji
-                if (obatEntity.getQtyBiji().compareTo(bean.getQtyApprove()) == 1 || obatEntity.getQtyBiji().compareTo(bean.getQtyApprove()) == 0) {
-                    obatEntity.setQtyBiji(obatEntity.getQtyBiji().subtract(bean.getQtyApprove()));
+                if (qtyBiji.compareTo(bean.getQtyApprove()) == 1 || qtyBiji.compareTo(bean.getQtyApprove()) == 0) {
+                    obatEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
                 } else {
 
                     BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
                     BigInteger allStockBiji = (obatEntity.getQtyBox().multiply(cons))
-                            .add(obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
-                            .add(obatEntity.getQtyBiji());
+                            .add(qtyLembar.multiply(obatEntity.getBijiPerLembar()))
+                            .add(qtyBiji);
 
-                    if (allStockBiji.compareTo(bean.getQtyApprove()) == 1){
+                    if (allStockBiji.compareTo(bean.getQtyApprove()) == 1) {
 
                         BigInteger sisaPenguranganAllBiji = allStockBiji.subtract(bean.getQtyApprove());
 
-                        BigInteger bijiToLembar     = sisaPenguranganAllBiji.divide(obatEntity.getBijiPerLembar());
-                        BigInteger modBijiToLembar  = sisaPenguranganAllBiji.mod(obatEntity.getBijiPerLembar());
-                        BigInteger lembarToBox      = bijiToLembar.divide(obatEntity.getLembarPerBox());
-                        BigInteger modLembarToBox   = bijiToLembar.mod(obatEntity.getLembarPerBox());
+                        BigInteger bijiToLembar = sisaPenguranganAllBiji.divide(obatEntity.getBijiPerLembar());
+                        BigInteger modBijiToLembar = sisaPenguranganAllBiji.mod(obatEntity.getBijiPerLembar());
+                        BigInteger lembarToBox = bijiToLembar.divide(obatEntity.getLembarPerBox());
+                        BigInteger modLembarToBox = bijiToLembar.mod(obatEntity.getLembarPerBox());
 
                         obatEntity.setQtyBiji(modBijiToLembar);
                         obatEntity.setQtyLembar(modLembarToBox);
@@ -860,7 +904,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 if (obatPoliEntity.getQtyLembar() != null) {
                     qtyLembar = obatPoliEntity.getQtyLembar();
                 }
-                if (obatPoliEntity.getQtyBox() != null) {
+                if (obatPoliEntity.getQtyBiji() != null) {
                     qtyBiji = obatPoliEntity.getQtyBiji();
                 }
 
@@ -1148,7 +1192,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
                 List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityObatDetail(transaksiObatDetail);
-                if (obatDetailEntities.size() > 0){
+                if (obatDetailEntities.size() > 0) {
                     obatDetailEntity = obatDetailEntities.get(0);
 
                     // save add stock obat poli if diterima

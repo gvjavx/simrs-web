@@ -191,6 +191,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                 detail.setIdObat(detailObat.getIdObat());
                 detail.setQty(detailObat.getQty());
+                detail.setQtyApprove(detailObat.getQty());
                 detail.setJenisSatuan(detailObat.getJenisSatuan());
                 detail.setKeterangan(detailObat.getKeterangan());
                 detail.setCreatedDate(bean.getCreatedDate());
@@ -233,6 +234,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
         obatDetailEntity.setIdObat(bean.getIdObat());
         obatDetailEntity.setQty(bean.getQty());
+        obatDetailEntity.setQtyApprove(bean.getQtyApprove());
         obatDetailEntity.setJenisSatuan(bean.getJenisSatuan());
         obatDetailEntity.setFlag("Y");
         obatDetailEntity.setAction("C");

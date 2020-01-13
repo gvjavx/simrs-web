@@ -23,12 +23,6 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="dataSet1" uuid="bf18294e-df6e-4a26-83f4-1735dd269112">
-		<field name="namaObat" class="java.lang.String"/>
-		<field name="qty" class="java.lang.String"/>
-		<field name="qtyApprove" class="java.lang.String"/>
-		<field name="jenisSatuan" class="java.lang.String"/>
-	</subDataset>
 	<parameter name="reportParams.permintaanId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.namaPelayanan" class="java.lang.String"/>
