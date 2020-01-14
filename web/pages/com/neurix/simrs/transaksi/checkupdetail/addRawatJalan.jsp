@@ -1588,16 +1588,18 @@
             $('#modal-lab').modal('show');
         } else if (select == 5) {
 //            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
-            $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
+            $('#ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
             $('#nama_form').show();
             $('#nama_obat_form').hide();
             $('#ob_stok_box').val('');
             $('#ob_stok_lembar').val('');
             $('#ob_stok_biji').val('');
+            $('#ob_jenis_satuan').val('').trigger('change');
+            $('#ob_jenis_satuan').attr('disabled', false);
             $('#ob_qty').val('');
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-            $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
+            $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
             $('#modal-obat').modal('show');
         } else if (select == 7) {
             $('#resep_apotek').val('').trigger('change').attr('disabled', false);
@@ -2085,11 +2087,11 @@
         var qty = $('#ob_qty').val();
         var id = "";
         var nama = "";
-        var qtyBox = "";
-        var qtyLembar = "";
-        var qtyBiji = "";
-        var lembarPerBox = "";
-        var bijiPerLembar = "";
+        var qtyBox = 0;
+        var qtyLembar = 0;
+        var qtyBiji = 0;
+        var lembarPerBox = 0;
+        var bijiPerLembar = 0;
         var stok = 0;
 
         if (obat != '') {
@@ -2118,6 +2120,13 @@
 
         if (idInap != '') {
 
+            var idObat = $('#set_id_obat').val();
+            qtyBox = $('#ob_stok_box').val();
+            qtyLembar = $('#ob_stok_lembar').val();
+            qtyBiji = $('#ob_stok_biji').val();
+            lembarPerBox = $('#set_lembar_perbox').val();
+            bijiPerLembar = $('#set_biji_perlembar').val();
+
             if ("box" == jenisSatuan) {
                 stok = qtyBox;
             }
@@ -2128,16 +2137,13 @@
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
-
             if (parseInt(qty) <= parseInt(stok)) {
-
-                var idObat = $('#set_id_obat').val();
 
                 $('#save_obat').hide();
                 $('#load_obat').show();
 
                 dwr.engine.setAsync(true);
-                ObatInapAction.editObatInap(idInap, idDetailCheckup, idObat, qty, function (response) {
+                ObatInapAction.editObatInap(idInap, idDetailCheckup, idObat, qty, jenisSatuan, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         listObat();
@@ -2154,6 +2160,18 @@
             }
         } else {
             if (idDetailCheckup != '' && obat != '' && parseInt(qty) > 0 && jenisSatuan != '') {
+
+                if ("box" == jenisSatuan) {
+                    stok = qtyBox;
+                }
+                if ("lembar" == jenisSatuan) {
+                    stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+                }
+                if ("biji" == jenisSatuan) {
+                    stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+                }
+
+                console.log(obat);
 
                 if (parseInt(qty) <= parseInt(stok)) {
 
@@ -2225,7 +2243,7 @@
                             "<td>" + obat + "</td>" +
                             "<td align='center'>" + qty + "</td>" +
                             "<td>" + jenis + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',,\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2327,19 +2345,35 @@
         $('#lab_parameter').val(idParameter).trigger('change');
         $('#modal-lab').modal('show');
     }
-    function editObat(id, idobat, qty, stok, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
+    function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
+        var qtyBox1 = "";
+        var qtyLembar1 = "";
+        var qtyBiji1 = "";
+
+        if(qtyBox != 'null'){
+            qtyBox1 = qtyBox;
+        }
+
+        if(qtyLembar != 'null'){
+            qtyLembar1 = qtyLembar;
+        }
+
+        if(qtyBiji != 'null'){
+            qtyBiji1 = qtyBiji;
+        }
         $('#load_obat, #warning_obat, #war_ob_jenis_satuan, #war_obat, #war_qty_obat').hide();
         $('#jenis_form').hide();
         $('#nama_form').hide();
         $('#nama_obat_form').show();
         $('#nama_obat').val(namaObat);
         $('#ob_qty').val(qty);
-        $('#ob_stok_box').val(qtyBox);
-        $('#ob_stok_lembar').val(qtyLembar);
-        $('#ob_stok_biji').val(qtyBiji);
+        $('#ob_stok_box').val(qtyBox1);
+        $('#ob_stok_lembar').val(qtyLembar1);
+        $('#ob_stok_biji').val(qtyBiji1);
         $('#set_id_obat').val(idobat);
         $('#set_lembar_perbox').val(lembarPerBox);
         $('#set_biji_perlembar').val(bijiPerLembar);
+        $('#ob_jenis_satuan').val(jenis).trigger('change').attr('disabled', true);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
     }

@@ -162,7 +162,7 @@ public class ObatInapAction extends BaseMasterAction {
         }
     }
 
-    public String editObatInap(String idObatInap, String idDetailCheckup, String idObat, BigInteger qty){
+    public String editObatInap(String idObatInap, String idDetailCheckup, String idObat, BigInteger qty, String jenisSatuan){
         logger.info("[ObatInapAction.editObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -194,11 +194,12 @@ public class ObatInapAction extends BaseMasterAction {
             obatInap.setIdObatInap(idObatInap);
             obatInap.setNamaObat(obatResult.getNamaObat());
             obatInap.setQty(qty);
-            obatInap.setHarga(obatResult.getHarga());
-            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
+//            obatInap.setHarga(obatResult.getHarga());
+//            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
             obatInap.setLastUpdate(updateTime);
             obatInap.setLastUpdateWho(userLogin);
             obatInap.setAction("U");
+            obatInap.setJenisSatuan(jenisSatuan);
 
             ObatInapBo obatInapBo = (ObatInapBo) ctx.getBean("obatInapBoProxy");
             obatInapBo.saveEdit(obatInap);
