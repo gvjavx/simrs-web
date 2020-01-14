@@ -125,6 +125,8 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
             result.setUsername(data.getUsername());
             result.setPassword(data.getPassword());
             result.setKdAplikasi(data.getKdAplikasi());
+            result.setEklaimAddress(data.getEklaimAddress());
+            result.setKeyEklaim(data.getKeyEklaim());
         }
         return result;
     }

@@ -163,4 +163,5 @@
 
     <import resource="sshconfig/com/neurix/simrs/bpjs/vclaim/spring/BpjsBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/bpjs/aplicare/spring/AplicareBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/bpjs/eklaim/spring/EklaimBean.xml"/>
 </beans>

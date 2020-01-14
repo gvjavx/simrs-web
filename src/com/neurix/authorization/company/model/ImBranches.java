@@ -30,6 +30,24 @@ public class ImBranches implements Serializable {
     private String username;
     private String password;
     private String kdAplikasi;
+    private String eklaimAddress; //example : "http://192.168.1.1/"
+    private String keyEklaim;
+
+    public String getKeyEklaim() {
+        return keyEklaim;
+    }
+
+    public void setKeyEklaim(String keyEklaim) {
+        this.keyEklaim = keyEklaim;
+    }
+
+    public String getEklaimAddress() {
+        return eklaimAddress;
+    }
+
+    public void setEklaimAddress(String eklaimAddress) {
+        this.eklaimAddress = eklaimAddress;
+    }
 
     public String getMt() {
         return mt;

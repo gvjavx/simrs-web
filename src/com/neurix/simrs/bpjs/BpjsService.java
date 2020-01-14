@@ -124,4 +124,34 @@ public class BpjsService {
             return con.getResponseMessage();
         }
     }
+
+
+    public String ReqEklaim(String feature,JSONObject request,String method,String key) throws IOException {
+        URL obj = new URL(feature);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // optional default is GET
+        con.setRequestMethod(method);
+        con.setDoOutput( true );
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+        con.setRequestProperty("key", key);
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(request.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+            return "" + sb.toString();
+        } else {
+            return con.getResponseMessage();
+        }
+    }
 }

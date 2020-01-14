@@ -1,6 +1,8 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.hris.mobileapi.model.simrs.Poli;
+import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
+import com.neurix.simrs.bpjs.eklaim.bo.model.KlaimRequest;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.PoliResponse;
 import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
@@ -24,6 +26,19 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
     private Poli model;
     private List<Poli> listOfPoli = new ArrayList<>();
     private BpjsBo bpjsBoProxy;
+    private EklaimBo eklaimBoProxy;
+
+    public BpjsBo getBpjsBoProxy() {
+        return bpjsBoProxy;
+    }
+
+    public EklaimBo getEklaimBoProxy() {
+        return eklaimBoProxy;
+    }
+
+    public void setEklaimBoProxy(EklaimBo eklaimBoProxy) {
+        this.eklaimBoProxy = eklaimBoProxy;
+    }
 
     public void setBpjsBoProxy(BpjsBo bpjsBoProxy) {
         this.bpjsBoProxy = bpjsBoProxy;
@@ -35,7 +50,7 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
     }
 
     public HttpHeaders index() {
-        listPoli();
+        insertEklaim();
         //        getPoli("");
         //        sendSep();
         //        TindakanBpjs tindakanBpjs = new TindakanBpjs();
@@ -50,7 +65,6 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
         JSONObject myResponseCheck = new JSONObject(result);
         JSONObject response = myResponseCheck.getJSONObject("response");
         JSONArray arrResponse = response.getJSONArray("poli");
-
 
         int length = arrResponse.length();
         for (int i=0;i<length;i++){
@@ -143,6 +157,22 @@ public class TestBpjsController extends BpjsService implements ModelDriven<Objec
         }
         for (PoliResponse poliResponse : poliResponseList){
             logger.info(poliResponse.getNamaPoliBpjs());
+        }
+    }
+
+    public void insertEklaim(){
+        KlaimRequest request = new KlaimRequest();
+        request.setNoKartu("010101");
+        request.setNoSep("888888");
+        request.setNoRm("8989");
+        request.setNamaPasien("DAUSMEN");
+        request.setTglLahir("1996-10-01");
+        request.setGender("1");
+
+        try {
+            eklaimBoProxy.insertNewClaimEklaim(request,"RS01");
+        }catch (Exception e){
+            logger.error("[TestBpjsController.sendSep] Error : " + "[" + e + "]");
         }
     }
 
