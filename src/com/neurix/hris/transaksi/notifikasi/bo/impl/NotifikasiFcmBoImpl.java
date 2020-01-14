@@ -42,6 +42,7 @@ public class NotifikasiFcmBoImpl implements NotifikasiFcmBo {
             fcm.setUserId(bean.getUserId());
             fcm.setTokenFcm(bean.getTokenFcm());
             fcm.setTokenExpo(bean.getTokenExpo());
+            fcm.setOs(bean.getOs());
             fcm.setUserName(bean.getUserName());
             fcm.setCreatedWho(bean.getCreatedWho());
             fcm.setCreatedDate(updateTime);

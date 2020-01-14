@@ -80,6 +80,8 @@ public class LemburFormController implements ModelDriven<Object> {
 
     public HttpHeaders update() {
         logger.info("[LemburFormPegawaiController.update] start process PUT /pengajuanlembur/{id} <<<");
+        PengajuanLembur result = new PengajuanLembur();
+        result.setActionError("");
 
         List<Notifikasi> notif = new ArrayList<>();
         Lembur lembur = new Lembur();
@@ -110,11 +112,11 @@ public class LemburFormController implements ModelDriven<Object> {
         lembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 
         lembur.setOs(model.getOs());
-        lembur.setChannelId(model.getChannelId());
 
         try {
             notif = lemburBoProxy.saveAddLembur(lembur);
         } catch (GeneralBOException e) {
+            result.setActionError(e.getMessage());
             logger.error("[LemburFormPegawaiController.update] Error when add lembur,", e);
         }
 
@@ -124,9 +126,6 @@ public class LemburFormController implements ModelDriven<Object> {
 
         logger.info("[LemburFormPegawaiController.update] end process PUT /pengajuanlembur/{id} <<<");
         return new DefaultHttpHeaders("update").disableCaching();
-
-
-
     }
 
     public String status() {

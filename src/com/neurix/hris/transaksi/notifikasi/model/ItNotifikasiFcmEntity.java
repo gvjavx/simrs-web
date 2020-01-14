@@ -14,6 +14,16 @@ public class ItNotifikasiFcmEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
     private String tokenExpo;
+    private String os;
+
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
 
     public String getUserId() {
         return userId;

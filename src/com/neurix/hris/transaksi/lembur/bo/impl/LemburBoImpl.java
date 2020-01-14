@@ -685,7 +685,7 @@ public class LemburBoImpl implements LemburBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(atasanNip)){
-                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getChannelId(), bean.getOs());
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile,  bean.getOs());
                     break;
                 }
             }

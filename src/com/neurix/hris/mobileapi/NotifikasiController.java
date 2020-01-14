@@ -117,7 +117,6 @@ public class NotifikasiController implements ModelDriven<Object> {
                     pegawai.setTanggalSelesaiSt(obj[4].toString());
                 else
                     pegawai.setTanggalSelesaiSt("-");
-                pegawai.setUnit(obj[5].toString());
                 pegawai.setNotifId(obj[6].toString());
 
                 listOfNotification.add(pegawai);

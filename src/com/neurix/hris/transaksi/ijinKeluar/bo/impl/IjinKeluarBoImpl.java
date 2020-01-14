@@ -498,6 +498,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
             notifAtasan.setNote("Data dari user : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
             notifAtasan.setCreatedWho(bean.getNip());
             notifAtasan.setTo("atasan");
+            notifAtasan.setOs(bean.getOs());
 
             notifikasiList.add(notifAtasan);
         }

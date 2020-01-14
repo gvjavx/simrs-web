@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.cuti.bo.CutiBo;
 import com.neurix.hris.mobileapi.model.PengajuanCuti;
+import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.opensymphony.xwork2.ModelDriven;
@@ -125,6 +126,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
 
     public HttpHeaders update() {
         logger.info("[CutiFormPegawaiController.update] end process POST /pengajuancuti/{id} <<<");
+        PengajuanCuti result = new PengajuanCuti();
+        result.setActionError("");
 
         try {
 
@@ -152,11 +155,11 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setLastUpdateWho(model.getNamaPegawai());
             cutiPegawai.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
-            cutiPegawai.setChannelId(model.getChannelId());
             cutiPegawai.setOs(model.getOs());
 
             cutiPegawaiBoProxy.saveAdd(cutiPegawai);
         } catch (GeneralBOException e) {
+            result.setActionError(e.getMessage());
             Long logId = null;
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");

@@ -366,6 +366,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
             notifAtasan.setCreatedWho(bean.getNip());
             notifAtasan.setTo("atasan");
+            notifAtasan.setOs(bean.getOs());
 
             notifikasiList.add(notifAtasan);
         }
@@ -575,7 +576,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                                             if(entity.getUserId().equals(atasanNip)){
-                                                String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getChannelId(), bean.getOs());
+                                                String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getOs());
                                                 logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
                                                 break;
                                             }
@@ -583,7 +584,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                         if (cutiPegawaiPltList.size()!=0){
                                             for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                                                 if (entity.getUserId().equals(plt)) {
-                                                    String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, bean.getChannelId(), bean.getOs());
+                                                    String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, bean.getOs());
                                                     logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
                                                     break;
                                                 }

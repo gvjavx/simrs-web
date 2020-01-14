@@ -13,7 +13,7 @@ import java.util.Map;
  * Monday, 30/12/19 15:38
  */
 public class ExpoPushNotif {
-    public static String sendNotificationExpo(String expoToken, String title, String body, String channelId, String os) {
+    public static String sendNotificationExpo(String expoToken, String title, String body, String os) {
         String actionMessage = "done";
         List<String> somePushTokens = Arrays.asList(expoToken);
         List<String> ticketId = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ExpoPushNotif {
                         .title(title)
                         .sound("default")
                         .priority(Priority.HIGH)
-                        .channelId(channelId)
+                        .channelId("android-notif")
                         .body(body)
                         .build();
                 messages.add(message);
@@ -49,11 +49,6 @@ public class ExpoPushNotif {
                         .build();
                 messages.add(message);
             }
-
-
-
-
-
         }
         // The Expo push service accepts batches of messages, no more than 100 at a time.
         // If you know you're sending more than 100 messages,

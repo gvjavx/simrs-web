@@ -29,6 +29,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     private String id;
     private String tokenFcm;
     private String tokenExpo;
+    private String os;
     private String username;
     private String password;
 
@@ -142,6 +143,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         notifikasiFcm.setUserName(model.getUserName());
                         notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
                         notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
+                        notifikasiFcm.setOs(os == null ? "" : os);
                         notifikasiFcm.setLastUpdateWho(model.getUserName());
                         notifikasiFcm.setCreatedWho(model.getUserName());
                         try {
@@ -313,5 +315,13 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
 
     public void setTokenExpo(String tokenExpo) {
         this.tokenExpo = tokenExpo;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
     }
 }

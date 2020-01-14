@@ -38,6 +38,16 @@ public class PengajuanCuti implements Serializable {
     private String channelId;
     private String os;
 
+    private String actionError;
+
+    public String getActionError() {
+        return actionError;
+    }
+
+    public void setActionError(String actionError) {
+        this.actionError = actionError;
+    }
+
     public String getCutiPegawaiId() {
         return cutiPegawaiId;
     }
