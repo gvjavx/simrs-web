@@ -58,9 +58,21 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
             if (result.size() > 0){
                 check = false;
+            } else {
+                String SQL2 = "SELECT odb.id_transaksi_obat_detail, odb.id\n" +
+                        "FROM mt_simrs_transaksi_obat_detail od\n" +
+                        "INNER JOIN mt_simrs_transaksi_obat_detail_batch odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                        "WHERE od.id_approval_obat = :id2";
+
+                List<Object[]> result2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQL2)
+                        .setParameter("id2", idApprovalObat)
+                        .list();
+
+                if (result2.size() == 0){
+                    check = false;
+                }
             }
         }
-
         return check;
     }
 

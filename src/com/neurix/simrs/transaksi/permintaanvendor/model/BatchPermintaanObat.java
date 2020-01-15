@@ -13,6 +13,15 @@ public class BatchPermintaanObat {
     private String statusName;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String stLastUpdateWho;
+
+    public String getStLastUpdateWho() {
+        return stLastUpdateWho;
+    }
+
+    public void setStLastUpdateWho(String stLastUpdateWho) {
+        this.stLastUpdateWho = stLastUpdateWho;
+    }
 
     public Integer getNoBatch() {
         return noBatch;
