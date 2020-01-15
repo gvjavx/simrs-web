@@ -129,7 +129,7 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         BigInteger sum = new BigInteger(String.valueOf(0));
         if (list.size() > 0){
             for (Object[] obj : list){
-                sum = new BigInteger((String) obj[1]);
+                sum = new BigInteger(String.valueOf(obj[1]));
             }
         }
 
