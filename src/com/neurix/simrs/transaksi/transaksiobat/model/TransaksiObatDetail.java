@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 
 public class TransaksiObatDetail extends BaseModel {
 
@@ -50,6 +51,24 @@ public class TransaksiObatDetail extends BaseModel {
 
     private BigInteger sumQtyApprove;
     private String isFullOfQty;
+    private Integer noBatch;
+    private Date expDate;
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
+    public Date getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(Date expDate) {
+        this.expDate = expDate;
+    }
 
     public String getIsFullOfQty() {
         return isFullOfQty;
