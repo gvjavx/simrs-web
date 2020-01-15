@@ -497,7 +497,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                     BigInteger lembarPermintaanToBox = bean.getQtyApprove().divide(obatEntity.getLembarPerBox());
 
-                    if (lembarPermintaanToBox.compareTo(new BigInteger(String.valueOf(1))) == 0) {
+                    if (lembarPermintaanToBox.compareTo(new BigInteger(String.valueOf(1))) == 0 ) {
                         obatPoliEntity.setQtyBox(qtyBox.subtract(new BigInteger(String.valueOf(1))));
                         BigInteger sisaPerLembar = obatEntity.getLembarPerBox().subtract(bean.getQtyApprove());
                         obatPoliEntity.setQtyLembar(sisaPerLembar);
@@ -525,7 +525,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 if (qtyBiji.compareTo(bean.getQtyApprove()) == 1) {
                     obatPoliEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
                 } else {
-                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1) {
+                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1 && obatPoliEntity.getQtyLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {
                         obatPoliEntity.setQtyLembar(obatPoliEntity.getQtyLembar().subtract(new BigInteger(String.valueOf(1))));
                         obatPoliEntity.setQtyBiji((qtyBiji.add(obatEntity.getBijiPerLembar())).subtract(bean.getQtyApprove()));
                     } else {
@@ -542,11 +542,11 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                             obatPoliEntity.setQtyBox(bijiToBox);
 
                             BigInteger boxToBiji = bijiToBox.multiply(cons);
-                            BigInteger sisaBiji = sisaAllPengurangan.subtract(bijiToBox);
+                            BigInteger sisaBiji = sisaAllPengurangan.subtract(boxToBiji);
                             BigInteger sisaBijiToLembar = sisaBiji.divide(obatEntity.getBijiPerLembar());
-                            obatPoliEntity.setQtyBiji(sisaBijiToLembar);
 
                             BigInteger modSisaBiji = sisaBiji.mod(obatEntity.getBijiPerLembar());
+                            obatPoliEntity.setQtyLembar(sisaBijiToLembar);
                             obatPoliEntity.setQtyBiji(modSisaBiji);
 
 

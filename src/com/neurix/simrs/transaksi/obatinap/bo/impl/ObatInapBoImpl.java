@@ -576,7 +576,7 @@ public class ObatInapBoImpl implements ObatInapBo {
                 if (qtyBiji.compareTo(bean.getQtyApprove()) == 1) {
                     obatPoliEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
                 } else {
-                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1) {
+                    if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1 && obatPoliEntity.getQtyLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {
                         obatPoliEntity.setQtyLembar(qtyLembar.subtract(new BigInteger(String.valueOf(1))));
                         obatPoliEntity.setQtyBiji((qtyBiji.add(obatEntity.getBijiPerLembar())).subtract(bean.getQtyApprove()));
                     } else {
@@ -593,11 +593,11 @@ public class ObatInapBoImpl implements ObatInapBo {
                             obatPoliEntity.setQtyBox(bijiToBox);
 
                             BigInteger boxToBiji = bijiToBox.multiply(cons);
-                            BigInteger sisaBiji = sisaAllPengurangan.subtract(bijiToBox);
+                            BigInteger sisaBiji = sisaAllPengurangan.subtract(boxToBiji);
                             BigInteger sisaBijiToLembar = sisaBiji.divide(obatEntity.getBijiPerLembar());
-                            obatPoliEntity.setQtyBiji(sisaBijiToLembar);
 
                             BigInteger modSisaBiji = sisaBiji.mod(obatEntity.getBijiPerLembar());
+                            obatPoliEntity.setQtyLembar(sisaBijiToLembar);
                             obatPoliEntity.setQtyBiji(modSisaBiji);
 
 

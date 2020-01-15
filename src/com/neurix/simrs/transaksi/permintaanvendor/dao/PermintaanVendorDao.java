@@ -46,10 +46,11 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
         Boolean check = true;
         if (!"".equalsIgnoreCase(idApprovalObat)){
-            String SQL = "SELECT id_transaksi_obat_detail, id_obat \n" +
-                    "FROM mt_simrs_transaksi_obat_detail \n" +
-                    "WHERE flag_diterima is null\n" +
-                    "AND id_approval_obat = :id";
+            String SQL = "SELECT odb.id_transaksi_obat_detail, odb.id\n" +
+                    "FROM mt_simrs_transaksi_obat_detail od\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail_batch odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                    "WHERE odb.approve_flag is null\n" +
+                    "AND od.id_approval_obat = :id";
 
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idApprovalObat)

@@ -11,6 +11,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.ImSimrsTempObatGejalaEn
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
+import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -43,6 +44,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private TransaksiObatDetailDao transaksiObatDetailDao;
     private ObatDao obatDao;
     private TempObatGejalaDao tempObatGejalaDao;
+    private TransaksiObatDetailBatchDao transaksiObatDetailBatchDao;
 
 
     @Override
@@ -852,6 +854,23 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return check;
     }
 
+    private Integer getLastNoBatch(String idApproval) throws GeneralBOException{
+        logger.info("[PermintaanVendorBoImpl.getLastNoBatch] START >>>");
+
+        Integer noBatch = 0;
+
+        try {
+            noBatch = transaksiObatDetailBatchDao.getLastBatch(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getLastNoBatch] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getLastNoBatch] ERROR." + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getLastNoBatch] END <<<");
+        return noBatch;
+    }
+
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {
@@ -939,5 +958,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setTempObatGejalaDao(TempObatGejalaDao tempObatGejalaDao) {
         this.tempObatGejalaDao = tempObatGejalaDao;
+    }
+
+    public void setTransaksiObatDetailBatchDao(TransaksiObatDetailBatchDao transaksiObatDetailBatchDao) {
+        this.transaksiObatDetailBatchDao = transaksiObatDetailBatchDao;
     }
 }
