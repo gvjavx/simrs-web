@@ -677,6 +677,9 @@
         var qty = $('#app_qty_app').val();
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
+        var expired = $('#app_expired').val();
+        var noBatch = 0;
+
 
         if(parseInt(qty) <= parseInt(qtyReq)) {
             $('#save_approve').hide();

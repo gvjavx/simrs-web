@@ -176,7 +176,7 @@
                                     <td><s:property value="statusName"/></td>
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
-                                        <a onclick="updateBatch()" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                        <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -514,276 +514,276 @@
 
     $(document).ready(function () {
         $('#permintaan_po').addClass('active');
-        listNewObat(idApprovalObat);
+//        listNewObat(idApprovalObat);
     });
 
     function addBatch(){
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
     }
 
-    function updateBatch(){
+    function updateBatch(noBatch){
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N';
     }
 
 
-    function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga, idApp) {
+    <%--function showModal(idObat, pabrik, idDetail, namaObat, qty, satuan, harga, idApp) {--%>
 
-        $('#add_merek, #add_lembar_box, #add_biji_lembar').val('');
-        $('#add_jenis_obat').val('').trigger('change');
-        $('#add_pabrik').val(pabrik);
-        $('#add_nama_obat').val('');
-        $('#add_jenis_satuan').val(satuan).trigger('change');
-        var id = "";
-        $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_pabrik, #war_merek').hide();
-        $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border', '');
-        $('#add_qty_request, #add_qty_approve').val(qty);
-        $('#add_harga').val(harga);
-        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\',\'' + idApp + '\')').show();
-        $('#modal-obat').modal('show');
-        $('#modal-confirm').modal('hide');
-    }
+        <%--$('#add_merek, #add_lembar_box, #add_biji_lembar').val('');--%>
+        <%--$('#add_jenis_obat').val('').trigger('change');--%>
+        <%--$('#add_pabrik').val(pabrik);--%>
+        <%--$('#add_nama_obat').val('');--%>
+        <%--$('#add_jenis_satuan').val(satuan).trigger('change');--%>
+        <%--var id = "";--%>
+        <%--$('#load_obat, #war_nama, #war_jenis, #war_harga, #war_pabrik, #war_merek').hide();--%>
+        <%--$('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border', '');--%>
+        <%--$('#add_qty_request, #add_qty_approve').val(qty);--%>
+        <%--$('#add_harga').val(harga);--%>
+        <%--$('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\',\'' + idApp + '\')').show();--%>
+        <%--$('#modal-obat').modal('show');--%>
+        <%--$('#modal-confirm').modal('hide');--%>
+    <%--}--%>
 
-    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar) {
-        var status = false;
-        $('#warning_fisik').html('');
-        if (id != '' && value != '') {
-            $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
-            dwr.engine.setAsync(true);
-            PermintaanVendorAction.checkFisikObat(id, value, lembarPerBox, bijiPerlembar, {
-                callback: function (response) {
-                    console.log(response);
-                    if (response.status == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#status' + id).html("Sesuai").addClass("label label-success");
-                        $('#pabrik' + id).attr('readonly', true).blur();
-                        $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
-                        $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
-                        $('#app_qty').val(qty);
-                        $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
-                        $('#save_approve').show();
-                        $('#load_approve').hide();
-                        $('#modal-approve').modal('show');
-//                        $('#qtyDefault' + id).html(qty);
-//                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
-                    } else if (response.status == "new") {
-                        $('#pabrik' + id).attr('readonly', true).blur();
-                        $('#status' + id).html("Tidak Sesuai").addClass("label label-danger");
-                        <%--var url = '<s:url value="/pages/images/new-flat-plus.png"/>';--%>
-                        <%--$('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');--%>
-                        <%--$('#tombol' + id).show().attr('src', url);--%>
-                        <%--$('#hapus' + id).show();--%>
-                        $('#cancel_confirm').show();
-                        $('#load_confirm').hide();
-                        $('#modal-confirm').modal('show');
-                        $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
-                        $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' + id + '\', \'' + idDetail + '\')');
-                    } else if (response.status == "warning") {
-                        var warn = '<div class="alert alert-warning alert-dismissible">' +
-                                '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
-                                response.message +
-                                '</div>';
-                        $('#status' + id).html("Sesuai").addClass("label label-success");
-                        $('#pabrik' + id).attr('readonly', true).blur();
-                        $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
-                        $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
-                        $('#app_qty').val(qty);
-                        $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
-                        $('#save_approve').show();
-                        $('#warning_fisik').html(warn);
-                        $('#load_approve').hide();
-                        $('#modal-approve').modal('show');
-                    }
-                }
-            });
-        }
-    }
+    <%--function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar) {--%>
+        <%--var status = false;--%>
+        <%--$('#warning_fisik').html('');--%>
+        <%--if (id != '' && value != '') {--%>
+            <%--$('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');--%>
+            <%--dwr.engine.setAsync(true);--%>
+            <%--PermintaanVendorAction.checkFisikObat(id, value, lembarPerBox, bijiPerlembar, {--%>
+                <%--callback: function (response) {--%>
+                    <%--console.log(response);--%>
+                    <%--if (response.status == "success") {--%>
+                        <%--dwr.engine.setAsync(false);--%>
+                        <%--$('#status' + id).html("Sesuai").addClass("label label-success");--%>
+                        <%--$('#pabrik' + id).attr('readonly', true).blur();--%>
+                        <%--$('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);--%>
+                        <%--$('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);--%>
+                        <%--$('#app_qty').val(qty);--%>
+                        <%--$('#app_qty_app').val(qty);--%>
+                        <%--$('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();--%>
+                        <%--$('#save_approve').show();--%>
+                        <%--$('#load_approve').hide();--%>
+                        <%--$('#modal-approve').modal('show');--%>
+<%--//                        $('#qtyDefault' + id).html(qty);--%>
+<%--//                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');--%>
+                    <%--} else if (response.status == "new") {--%>
+                        <%--$('#pabrik' + id).attr('readonly', true).blur();--%>
+                        <%--$('#status' + id).html("Tidak Sesuai").addClass("label label-danger");--%>
+                        <%--&lt;%&ndash;var url = '<s:url value="/pages/images/new-flat-plus.png"/>';&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;$('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;$('#tombol' + id).show().attr('src', url);&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;$('#hapus' + id).show();&ndash;%&gt;--%>
+                        <%--$('#cancel_confirm').show();--%>
+                        <%--$('#load_confirm').hide();--%>
+                        <%--$('#modal-confirm').modal('show');--%>
+                        <%--$('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');--%>
+                        <%--$('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' + id + '\', \'' + idDetail + '\')');--%>
+                    <%--} else if (response.status == "warning") {--%>
+                        <%--var warn = '<div class="alert alert-warning alert-dismissible">' +--%>
+                                <%--'<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +--%>
+                                <%--response.message +--%>
+                                <%--'</div>';--%>
+                        <%--$('#status' + id).html("Sesuai").addClass("label label-success");--%>
+                        <%--$('#pabrik' + id).attr('readonly', true).blur();--%>
+                        <%--$('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);--%>
+                        <%--$('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);--%>
+                        <%--$('#app_qty').val(qty);--%>
+                        <%--$('#app_qty_app').val(qty);--%>
+                        <%--$('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();--%>
+                        <%--$('#save_approve').show();--%>
+                        <%--$('#warning_fisik').html(warn);--%>
+                        <%--$('#load_approve').hide();--%>
+                        <%--$('#modal-approve').modal('show');--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}--%>
+    <%--}--%>
 
-    function saveApprove(id, idDetail, idPabrik) {
-        var qtyReq = $('#app_qty').val();
-        var qty = $('#app_qty_app').val();
-        var lembarPerBox = $('#app_lembar_perbox').val();
-        var bijiPerLembar = $('#app_biji_perlembar').val();
+    <%--function saveApprove(id, idDetail, idPabrik) {--%>
+        <%--var qtyReq = $('#app_qty').val();--%>
+        <%--var qty = $('#app_qty_app').val();--%>
+        <%--var lembarPerBox = $('#app_lembar_perbox').val();--%>
+        <%--var bijiPerLembar = $('#app_biji_perlembar').val();--%>
 
-        if (parseInt(qty) <= parseInt(qtyReq)) {
-            $('#save_approve').hide();
-            $('#load_approve').show();
-            dwr.engine.setAsync(true);
-            PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    $('#modal-approve').modal('hide');
-                    $('#approve' + id).html("Setuju").addClass("label label-success");
-                    $('#qtyApprove' + id).text(qty);
-                } else {
-                    $('#save_obat').show();
-                    $('#load_obat').hide();
-                    $('#warning_obat').show().fadeOut(5000);
-                    $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                }
-            })
-        }
-    }
+        <%--if (parseInt(qty) <= parseInt(qtyReq)) {--%>
+            <%--$('#save_approve').hide();--%>
+            <%--$('#load_approve').show();--%>
+            <%--dwr.engine.setAsync(true);--%>
+            <%--PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, function (response) {--%>
+                <%--if (response == "success") {--%>
+                    <%--dwr.engine.setAsync(false);--%>
+                    <%--$('#modal-approve').modal('hide');--%>
+                    <%--$('#approve' + id).html("Setuju").addClass("label label-success");--%>
+                    <%--$('#qtyApprove' + id).text(qty);--%>
+                <%--} else {--%>
+                    <%--$('#save_obat').show();--%>
+                    <%--$('#load_obat').hide();--%>
+                    <%--$('#warning_obat').show().fadeOut(5000);--%>
+                    <%--$('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");--%>
+                <%--}--%>
+            <%--})--%>
+        <%--}--%>
+    <%--}--%>
 
-    function saveNotApprove(id, idDetail, idPabrik) {
-        $('#cancel_confirm').hide();
-        $('#load_confirm').show();
-        dwr.engine.setAsync(true);
-        PermintaanVendorAction.saveUpdateListObat(idDetail, 0, idPabrik, "X", function (response) {
-            if (response == "success") {
-                $('#cancel_confirm').show();
-                $('#load_confirm').hide();
-                dwr.engine.setAsync(true);
-                dwr.engine.setAsync(false);
-                $('#modal-confirm').modal('hide');
-                $('#approve' + id).html("Dibatalkan").addClass("label label-warning");
-            }
-        })
-    }
+    <%--function saveNotApprove(id, idDetail, idPabrik) {--%>
+        <%--$('#cancel_confirm').hide();--%>
+        <%--$('#load_confirm').show();--%>
+        <%--dwr.engine.setAsync(true);--%>
+        <%--PermintaanVendorAction.saveUpdateListObat(idDetail, 0, idPabrik, "X", function (response) {--%>
+            <%--if (response == "success") {--%>
+                <%--$('#cancel_confirm').show();--%>
+                <%--$('#load_confirm').hide();--%>
+                <%--dwr.engine.setAsync(true);--%>
+                <%--dwr.engine.setAsync(false);--%>
+                <%--$('#modal-confirm').modal('hide');--%>
+                <%--$('#approve' + id).html("Dibatalkan").addClass("label label-warning");--%>
+            <%--}--%>
+        <%--})--%>
+    <%--}--%>
 
-    function saveObat(id, idDetail, qty, satuan, idObat, idApp) {
+    <%--function saveObat(id, idDetail, qty, satuan, idObat, idApp) {--%>
 
-        var nama = $('#add_nama_obat').val();
-        var jenis = $('#add_jenis_obat').val();
-        var merek = $('#add_merek').val();
-        var pabrik = $('#add_pabrik').val();
-        var lembarBox = $('#add_lembar_box').val();
-        var bijiLembar = $('#add_biji_lembar').val();
-        var qtyApp = $('#add_qty_approve').val();
-        var harga = $('#add_harga').val();
-        var flag = $('#add_flag').val();
-        var jenisSatuan = $('#add_jenis_satuan').val();
+        <%--var nama = $('#add_nama_obat').val();--%>
+        <%--var jenis = $('#add_jenis_obat').val();--%>
+        <%--var merek = $('#add_merek').val();--%>
+        <%--var pabrik = $('#add_pabrik').val();--%>
+        <%--var lembarBox = $('#add_lembar_box').val();--%>
+        <%--var bijiLembar = $('#add_biji_lembar').val();--%>
+        <%--var qtyApp = $('#add_qty_approve').val();--%>
+        <%--var harga = $('#add_harga').val();--%>
+        <%--var flag = $('#add_flag').val();--%>
+        <%--var jenisSatuan = $('#add_jenis_satuan').val();--%>
 
-        if (nama != '' && jenis != null && harga != '' && lembarBox != '' && bijiLembar != '' && merek != '' && pabrik != '' && qtyApp != '') {
+        <%--if (nama != '' && jenis != null && harga != '' && lembarBox != '' && bijiLembar != '' && merek != '' && pabrik != '' && qtyApp != '') {--%>
 
-            $('#save_obat').hide();
-            $('#load_obat').show();
+            <%--$('#save_obat').hide();--%>
+            <%--$('#load_obat').show();--%>
 
-            if (id != '') {
-                dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, jenis, harga, biji, flag, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-obat').modal('hide');
-                        $('#body_po').append(row);
-                    } else {
-                        $('#save_obat').show();
-                        $('#load_obat').hide();
-                        $('#warning_obat').show().fadeOut(5000);
-                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                    }
-                })
-            } else {
-                dwr.engine.setAsync(true);
-                PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, idApp, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-obat').modal('hide');
-                        listNewObat(idApp);
-                        $('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");
-                    } else {
-                        $('#save_obat').show();
-                        $('#load_obat').hide();
-                        $('#warning_obat').show().fadeOut(5000);
-                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                    }
-                })
-            }
-        } else {
-            $('#warning_obat').show().fadeOut(5000);
-            $('#obat_error').text("Silahkan cek kembali data inputan..!");
+            <%--if (id != '') {--%>
+                <%--dwr.engine.setAsync(true);--%>
+                <%--ObatAction.editObat(id, nama, jenis, harga, biji, flag, function (response) {--%>
+                    <%--if (response == "success") {--%>
+                        <%--dwr.engine.setAsync(false);--%>
+                        <%--$('#modal-obat').modal('hide');--%>
+                        <%--$('#body_po').append(row);--%>
+                    <%--} else {--%>
+                        <%--$('#save_obat').show();--%>
+                        <%--$('#load_obat').hide();--%>
+                        <%--$('#warning_obat').show().fadeOut(5000);--%>
+                        <%--$('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");--%>
+                    <%--}--%>
+                <%--})--%>
+            <%--} else {--%>
+                <%--dwr.engine.setAsync(true);--%>
+                <%--PermintaanVendorAction.saveNewPabrik(idDetail, nama, jenis, merek, pabrik, lembarBox, bijiLembar, harga, qty, qtyApp, satuan, idApp, function (response) {--%>
+                    <%--if (response == "success") {--%>
+                        <%--dwr.engine.setAsync(false);--%>
+                        <%--$('#modal-obat').modal('hide');--%>
+                        <%--listNewObat(idApp);--%>
+                        <%--$('#approve' + idObat).html("Dibuatkan obat baru").addClass("label label-warning");--%>
+                    <%--} else {--%>
+                        <%--$('#save_obat').show();--%>
+                        <%--$('#load_obat').hide();--%>
+                        <%--$('#warning_obat').show().fadeOut(5000);--%>
+                        <%--$('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");--%>
+                    <%--}--%>
+                <%--})--%>
+            <%--}--%>
+        <%--} else {--%>
+            <%--$('#warning_obat').show().fadeOut(5000);--%>
+            <%--$('#obat_error').text("Silahkan cek kembali data inputan..!");--%>
 
-            if (nama == '') {
-                $('#war_nama').show();
-            }
-            if (jenis == '' || jenis == null) {
-                $('#war_jenis').show();
-            }
-            if (harga == '') {
-                $('#war_harga').show();
-            }
-            if (merek == '') {
-                $('#war_merek').show();
-            }
-            if (lembarBox == '') {
-                $('#war_lembar_box').show();
-            }
-            if (bijiLembar == '') {
-                $('#war_biji_lembar').show();
-            }
-            if (jenisSatuan == '' || jenisSatuan == null) {
-                $('#war_jenis').show();
-            }
-            if (pabrik == '') {
-                $('#war_pabrik').show();
-            }
-            if (qtyApp == '') {
-                $('#war_qty_approve').show();
-            }
-        }
-    }
+            <%--if (nama == '') {--%>
+                <%--$('#war_nama').show();--%>
+            <%--}--%>
+            <%--if (jenis == '' || jenis == null) {--%>
+                <%--$('#war_jenis').show();--%>
+            <%--}--%>
+            <%--if (harga == '') {--%>
+                <%--$('#war_harga').show();--%>
+            <%--}--%>
+            <%--if (merek == '') {--%>
+                <%--$('#war_merek').show();--%>
+            <%--}--%>
+            <%--if (lembarBox == '') {--%>
+                <%--$('#war_lembar_box').show();--%>
+            <%--}--%>
+            <%--if (bijiLembar == '') {--%>
+                <%--$('#war_biji_lembar').show();--%>
+            <%--}--%>
+            <%--if (jenisSatuan == '' || jenisSatuan == null) {--%>
+                <%--$('#war_jenis').show();--%>
+            <%--}--%>
+            <%--if (pabrik == '') {--%>
+                <%--$('#war_pabrik').show();--%>
+            <%--}--%>
+            <%--if (qtyApp == '') {--%>
+                <%--$('#war_qty_approve').show();--%>
+            <%--}--%>
+        <%--}--%>
+    <%--}--%>
 
-    function listNewObat(idApproval) {
-        var table = "";
-        PermintaanVendorAction.searchNewListObat(idApproval, function (response) {
-            if (response != null) {
-                $('#new_obat').show();
-                $.each(response, function (i, item) {
-                    table += "<tr>" +
-                            "<td>" + item.namaObat + "</td>" +
-                            "<td align='center'>" + item.qty + "</td>" +
-                            "<td align='center'>" + item.qtyApprove + "</td>" +
-                            "<td align='center'>" + item.jenisSatuan + "</td>" +
-                            "<td align='center'>" + item.lembarPerBox + "</td>" +
-                            "<td align='center'>" + item.bijiPerLembar + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
-                            "</tr>";
-                });
-                $('#body_new_pabrik').html(table);
-            }
-        });
-    }
+    <%--function listNewObat(idApproval) {--%>
+        <%--var table = "";--%>
+        <%--PermintaanVendorAction.searchNewListObat(idApproval, function (response) {--%>
+            <%--if (response != null) {--%>
+                <%--$('#new_obat').show();--%>
+                <%--$.each(response, function (i, item) {--%>
+                    <%--table += "<tr>" +--%>
+                            <%--"<td>" + item.namaObat + "</td>" +--%>
+                            <%--"<td align='center'>" + item.qty + "</td>" +--%>
+                            <%--"<td align='center'>" + item.qtyApprove + "</td>" +--%>
+                            <%--"<td align='center'>" + item.jenisSatuan + "</td>" +--%>
+                            <%--"<td align='center'>" + item.lembarPerBox + "</td>" +--%>
+                            <%--"<td align='center'>" + item.bijiPerLembar + "</td>" +--%>
+                            <%--"<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +--%>
+                            <%--"</tr>";--%>
+                <%--});--%>
+                <%--$('#body_new_pabrik').html(table);--%>
+            <%--}--%>
+        <%--});--%>
+    <%--}--%>
 
-    function cekFisik() {
-        var kode = "";
-        var nama = "";
-        var merek = "";
-        var konLembar = $('#kon_lembar').val();
-        var konBiji = $('#kon_biji').val();
-        var lembarPerBox = $('#app_lembar_perbox').val();
-        var bijiPerLembar = $('#app_biji_perlembar').val();
-        var lembarTo = "";
-        var bijiTo = "";
+    <%--function cekFisik() {--%>
+        <%--var kode = "";--%>
+        <%--var nama = "";--%>
+        <%--var merek = "";--%>
+        <%--var konLembar = $('#kon_lembar').val();--%>
+        <%--var konBiji = $('#kon_biji').val();--%>
+        <%--var lembarPerBox = $('#app_lembar_perbox').val();--%>
+        <%--var bijiPerLembar = $('#app_biji_perlembar').val();--%>
+        <%--var lembarTo = "";--%>
+        <%--var bijiTo = "";--%>
 
-        if (konLembar != lembarPerBox && konBiji != bijiPerLembar) {
-            lembarTo = "Menjadi " + lembarPerBox;
-            bijiTo = "Menjadi " + bijiPerLembar;
-        } else {
-            if (konLembar != lembarPerBox) {
-                lembarTo = "Menjadi " + lembarPerBox;
-            }
-            if (konBiji != bijiPerLembar) {
-                bijiTo = "Menjadi " + bijiPerLembar;
-            }
-        }
+        <%--if (konLembar != lembarPerBox && konBiji != bijiPerLembar) {--%>
+            <%--lembarTo = "Menjadi " + lembarPerBox;--%>
+            <%--bijiTo = "Menjadi " + bijiPerLembar;--%>
+        <%--} else {--%>
+            <%--if (konLembar != lembarPerBox) {--%>
+                <%--lembarTo = "Menjadi " + lembarPerBox;--%>
+            <%--}--%>
+            <%--if (konBiji != bijiPerLembar) {--%>
+                <%--bijiTo = "Menjadi " + bijiPerLembar;--%>
+            <%--}--%>
+        <%--}--%>
 
-        var warn = '<div class="alert alert-warning alert-dismissible">' +
-                '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
-                'Obat teridentifikasi berubah fisik..!' + '<br>' +
-                'Kode Produksi &nbsp;&nbsp;' + ': ' + kode + '<br>' +
-                'Nama Obat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + nama + '<br>' +
-                'Mrek   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + merek + '<br>' +
-                'Lembar/Box   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konLembar + ' ' + lembarTo + '<br>' +
-                'Biji/Lembar  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konBiji + ' ' + bijiTo + '<br>' +
-                '</div>';
+        <%--var warn = '<div class="alert alert-warning alert-dismissible">' +--%>
+                <%--'<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +--%>
+                <%--'Obat teridentifikasi berubah fisik..!' + '<br>' +--%>
+                <%--'Kode Produksi &nbsp;&nbsp;' + ': ' + kode + '<br>' +--%>
+                <%--'Nama Obat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + nama + '<br>' +--%>
+                <%--'Mrek   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + merek + '<br>' +--%>
+                <%--'Lembar/Box   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konLembar + ' ' + lembarTo + '<br>' +--%>
+                <%--'Biji/Lembar  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konBiji + ' ' + bijiTo + '<br>' +--%>
+                <%--'</div>';--%>
 
-        if (konBiji == bijiPerLembar && konLembar == lembarPerBox) {
-            $('#warning_fisik').html('');
-        } else {
-            $('#warning_fisik').html(warn);
-        }
-    }
+        <%--if (konBiji == bijiPerLembar && konLembar == lembarPerBox) {--%>
+            <%--$('#warning_fisik').html('');--%>
+        <%--} else {--%>
+            <%--$('#warning_fisik').html(warn);--%>
+        <%--}--%>
+    <%--}--%>
 
 </script>
 
