@@ -522,7 +522,7 @@
     }
 
     function updateBatch(noBatch){
-        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N';
+        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
     }
 
 

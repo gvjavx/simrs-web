@@ -685,14 +685,20 @@
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
         var expired = $('#app_expired').val();
-        var noBatch = 0;
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var valueBatch = url.searchParams.get("noBatch");
+        var noBatch = 1;
 
+        if(valueBatch != null){
+            noBatch = valueBatch;
+        }
 
         if(parseInt(qty) <= parseInt(qtyReq)) {
             $('#save_approve').hide();
             $('#load_approve').show();
             dwr.engine.setAsync(true);
-            PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, function (response) {
+            PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBatch, expired, function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
                     $('#modal-approve').modal('hide');
