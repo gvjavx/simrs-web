@@ -854,7 +854,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return check;
     }
 
-    private Integer getLastNoBatch(String idApproval) throws GeneralBOException{
+    @Override
+    public Integer getLastNoBatch(String idApproval) throws GeneralBOException{
         logger.info("[PermintaanVendorBoImpl.getLastNoBatch] START >>>");
 
         Integer noBatch = 0;

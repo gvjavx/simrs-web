@@ -151,15 +151,33 @@ public class PermintaanVendorAction extends BaseMasterAction {
             addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
         }
 
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfObatDetail");
 
+        Boolean isNew = true;
         if (permintaanVendorList.size() > 0){
-            setPermintaanVendor(permintaanVendorList.get(0));
-            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getListOfTransaksiObatDetail());
+
+            PermintaanVendor requestVendor = permintaanVendorList.get(0);
+
+            // get list batch permintaan
+            Integer noBatch = 0;
+            try {
+                noBatch = permintaanVendorBoProxy.getLastNoBatch(requestVendor.getIdApprovalObat());
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
+                addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
+            }
+
+            if (noBatch.compareTo(0) == 0){
+                isNew = false;
+            }
+
+            setPermintaanVendor(requestVendor);
+            session.setAttribute("listOfObatDetail", requestVendor.getListOfTransaksiObatDetail());
 
             Vendor vendor = new Vendor();
-            vendor.setIdVendor(permintaanVendorList.get(0).getIdVendor());
+            vendor.setIdVendor(requestVendor.getIdVendor());
             List<Vendor> vendorList = new ArrayList<>();
 
             try {
@@ -176,11 +194,14 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     setVendor(vendorResult);
                 }
             }
-
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
-        return "init_edit";
+        if (isNew){
+            return "list_batch";
+        } else {
+            return "init_edit";
+        }
     }
 
     public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan){
