@@ -53,6 +53,8 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         if (mapCriteria.get("order_by_no_batch") != null){
             criteria.addOrder(Order.desc("noBatch"));
             criteria.addOrder(Order.desc("createdDate"));
+        } else if(mapCriteria.get("order_last_created_date") != null){
+            criteria.addOrder(Order.desc("createdDate"));
         } else {
             criteria.addOrder(Order.asc("createdDate"));
         }

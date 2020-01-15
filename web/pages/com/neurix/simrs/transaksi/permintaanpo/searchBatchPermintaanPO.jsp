@@ -176,7 +176,7 @@
                                     <td><s:property value="statusName"/></td>
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
-                                        <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                        <a onclick="updateBatch()" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -521,8 +521,8 @@
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
     }
 
-    function updateBatch(noBatch){
-        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+    function updateBatch(){
+        window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N';
     }
 
 

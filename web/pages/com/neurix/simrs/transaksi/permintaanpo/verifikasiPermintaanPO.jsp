@@ -170,6 +170,7 @@
                                 <td align="center">Verify</td>
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
+                                <td align="center">No Batch</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -219,7 +220,7 @@
                                         <s:if test='#row.flagDiterima == "X"'>
                                             <span class="label label-danger">Tidak Setuju</span>
                                         </s:if>
-                                        <span id='approve<s:property value="idObat"/>'></span></td>
+                                    </td>
                                         <%--<td align="center"><span id='qtyDefault<s:property value="idObat"/>'></span><input--%>
                                         <%--value='<s:property value="qty"/>' type="number" class="form-control"--%>
                                         <%--style="width: 150px; display: none"--%>
@@ -232,6 +233,9 @@
                                         <%--id='hapus<s:property value="idObat"/>' class="hvr-grow"--%>
                                         <%--src="<s:url value="/pages/images/cnacel-flat.png"/>"--%>
                                         <%--style="cursor: pointer; height: 25px; width: 25px; display: none"></td>--%>
+                                    <td>
+                                        <s:property value="noBatch"/>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -633,7 +637,7 @@
         $('#modal-confirm').modal('hide');
     }
 
-    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar) {
+    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt) {
         var status = false;
         $('#warning_fisik').html('');
         if (id != '' && value != '') {
@@ -650,7 +654,7 @@
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
                         $('#save_approve').show();
                         $('#load_approve').hide();
                         $('#modal-approve').modal('show');
@@ -680,7 +684,7 @@
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\')').show();
+                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
                         $('#save_approve').show();
                         $('#warning_fisik').html(warn);
                         $('#load_approve').hide();
@@ -696,28 +700,21 @@
         var qty = $('#app_qty_app').val();
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
-        var expired = $('#app_expired').val();
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var valueBatch = url.searchParams.get("newBatch");
+        var expired = $('#app_expired').val();;
         var qtyApproveValue = $('#qtyApprove'+id).text();
-        var noBatch = 0;
         var qtyApprove = 0;
         var totalQtyApp= 0;
 
-        if(qtyApproveValue != ''){
+        if(qtyApproveValue != '') {
             qtyApprove = qtyApproveValue;
         }
 
-        if(valueBatch != null){
-            noBatch = valueBatch;
-        }
         if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != ''){
             if(parseInt(qty) <= parseInt(qtyReq)) {
                 $('#save_approve').hide();
                 $('#load_approve').show();
                 dwr.engine.setAsync(true);
-                PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBatch, expired, function (response) {
+                PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBt, expired, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-approve').modal('hide');

@@ -8,6 +8,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.vividsolutions.jts.geom.LineSegment;
 import org.json.JSONException;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -23,5 +24,5 @@ public interface PermintaanVendorBo {
     public Integer getLastNoBatch(String idApproval) throws GeneralBOException;
     public List<BatchPermintaanObat> getListBatchObatByIdApproval(String idApproval) throws GeneralBOException;
     public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch) throws GeneralBOException;
-    public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, String expDate) throws GeneralBOException;
+    public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, Date expDate) throws GeneralBOException;
 }
