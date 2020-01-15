@@ -84,16 +84,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanVendor.getIdApprovalObat());
                         if (approvalEntity != null) {
 
-                            if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
+                            if (permintaanVendor.getEnableApprove()) {
                                 permintaanVendor.setKeterangan("Telah Dikonfirmasi");
                             } else {
-                                permintaanVendor.setKeterangan("Menunggu Konfirmasi");
+                                permintaanVendor.setKeterangan("Prosess Verivikasi");
                             }
 
-                            permintaanVendor.setApprovalFlag(approvalEntity.getApprovalFlag());
-                            if ("Y".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
-                                permintaanVendor.setEnableApprove(false);
-                            }
+//                            permintaanVendor.setApprovalFlag(approvalEntity.getApprovalFlag());
+//                            if ("Y".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
+//                                permintaanVendor.setEnableApprove(false);
+//                            }
                         }
 
                         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();

@@ -183,7 +183,7 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='#row.enableApprove == false '>
+                                        <s:if test='#row.enableApprove == false'>
                                             <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
                                             </s:url>
