@@ -207,11 +207,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
             if (noBatch.compareTo(0) == 1){
                 isNew = false;
             }
-
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
             // if edit from list batch then sorted with table batch data to get qty approve and status
             if ("Y".equalsIgnoreCase(isBatch)){
+                isNew = true;
 
                 // if new add new batch
                 if ("Y".equalsIgnoreCase(newBatch)){
