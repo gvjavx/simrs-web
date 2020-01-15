@@ -164,6 +164,7 @@
                                 <td align="center">Verify</td>
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
+                                <td align="center">No Batch</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -225,6 +226,9 @@
                                         <%--id='hapus<s:property value="idObat"/>' class="hvr-grow"--%>
                                         <%--src="<s:url value="/pages/images/cnacel-flat.png"/>"--%>
                                         <%--style="cursor: pointer; height: 25px; width: 25px; display: none"></td>--%>
+                                    <td>
+                                        <s:property value="noBatch"/>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -688,7 +692,7 @@
         var url_string = window.location.href;
         var url = new URL(url_string);
         var valueBatch = url.searchParams.get("noBatch");
-        var noBatch = 1;
+        var noBatch = 0;
 
         if(valueBatch != null){
             noBatch = valueBatch;

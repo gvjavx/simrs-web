@@ -365,6 +365,47 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         if (bean.getNoBatch() != null && bean.getNoBatch().compareTo(0) == 1){
 
+            Boolean isNew = isNewBatchCheckByNoBatchAndExpDate(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
+
+            if (isNew){
+
+                MtSimrsTransaksiObatDetailBatchEntity obatDetailBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+                obatDetailBatchEntity.setId(new BigInteger(getNextIdBatchObat()));
+                obatDetailBatchEntity.setIdTransaksiObatDetail(bean.getIdTransaksiObatDetail());
+                obatDetailBatchEntity.setNoBatch(bean.getNoBatch());
+                obatDetailBatchEntity.setQtyApprove(bean.getQtyApprove());
+                obatDetailBatchEntity.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
+                obatDetailBatchEntity.setFlag("Y");
+                obatDetailBatchEntity.setAction("C");
+                obatDetailBatchEntity.setStatus(bean.getFlagDiterima());
+                obatDetailBatchEntity.setExpiredDate(bean.getExpDate());
+                obatDetailBatchEntity.setCreatedDate(bean.getLastUpdate());
+                obatDetailBatchEntity.setCreatedWho(bean.getLastUpdateWho());
+                obatDetailBatchEntity.setLastUpdate(bean.getLastUpdate());
+                obatDetailBatchEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    transaksiObatDetailBatchDao.addAndSave(obatDetailBatchEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when add obat detail batch. " + e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when add obat detail batch. " + e.getMessage());
+                }
+
+            } else {
+                MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
+                batchEntity.setQtyApprove(bean.getQtyApprove());
+                batchEntity.setAction("U");
+                batchEntity.setLastUpdate(bean.getLastUpdate());
+                batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    transaksiObatDetailBatchDao.updateAndSave(batchEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail batch. " + e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail batch. " + e.getMessage());
+                }
+            }
+
         } else {
 
             MtSimrsTransaksiObatDetailBatchEntity obatDetailBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
@@ -926,11 +967,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         List<TransaksiObatDetail> results = new ArrayList<>();
         for (TransaksiObatDetail obatDetail : obatDetails){
 
-            MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(obatDetail.getIdTransaksiObatDetail(), noBatch);
+            MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(obatDetail.getIdTransaksiObatDetail(), noBatch, null);
 
             // to enable or disable input box;
             obatDetail.setIsFullOfQty(compareQtyRequestToQtyBatch(obatDetail.getQty(), obatDetail.getIdTransaksiObatDetail()));
             obatDetail.setFlagDiterima(batchEntity.getStatus());
+            obatDetail.setNoBatch(noBatch);
 
             if (batchEntity != null){
                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());
@@ -967,12 +1009,17 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
 
 
-    private MtSimrsTransaksiObatDetailBatchEntity getEntityObatBatchByIdTransObat(String idTransaksiObatDetail, Integer noBatch){
+    private MtSimrsTransaksiObatDetailBatchEntity getEntityObatBatchByIdTransObat(String idTransaksiObatDetail, Integer noBatch, Date expDate){
         logger.info("[PermintaanVendorBoImpl.getEntityObatBatchByIdTransObat] START >>>");
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_transaksi_obat_detail", idTransaksiObatDetail);
         hsCriteria.put("no_batch", noBatch);
+        if (expDate != null){
+            hsCriteria.put("exp_date", expDate);
+        } else {
+            hsCriteria.put("order_last_created_date", "Y");
+        }
 
         List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = null;
         MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
@@ -993,13 +1040,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     @Override
-    public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, String expDate) throws GeneralBOException {
+    public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, Date expDate) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.isNewBatchCheckByNoBatchAndExpDate] START >>>");
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_trans_obat_detail", idTransObatDetail);
         hsCriteria.put("no_batch", noBatch);
-        hsCriteria.put("exp_date", Date.valueOf(expDate));
+        hsCriteria.put("exp_date", expDate);
 
         List<MtSimrsTransaksiObatDetailBatchEntity> obatDetailBatchEntities = new ArrayList<>();
         try {
