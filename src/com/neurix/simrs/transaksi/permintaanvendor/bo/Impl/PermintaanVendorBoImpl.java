@@ -931,6 +931,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             // to enable or disable input box;
             obatDetail.setIsFullOfQty(compareQtyRequestToQtyBatch(obatDetail.getQty(), obatDetail.getIdTransaksiObatDetail()));
             obatDetail.setFlagDiterima(batchEntity.getStatus());
+            obatDetail.setNoBatch(noBatch);
 
             if (batchEntity != null){
                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());

@@ -85,6 +85,12 @@
                                     <table><s:label name="vendor.alamat"></s:label></table>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><b>No. Batch</b></td>
+                                <td>
+                                    <table><s:label name="permintaanVendor.noBatch"></s:label></table>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div class="box-header with-border"></div>
@@ -179,20 +185,21 @@
                                     <td align="right">
                                         <script> document.write("Rp. " + formatRupiah('<s:property value="hargaPo"/>'));</script>
                                     </td>
-                                    <td align="center"><s:if test='#row.idPabrik != null && #row.idPabrik != "" '>
-                                        <span id='idPabrik<s:property value="idObat"/>'><s:property
-                                                value="idPabrik"/></span>
-                                    </s:if>
-                                        <s:else>
+                                    <td align="center">
+                                        <%--<s:if test='#row.idPabrik != null && #row.idPabrik != "" '>--%>
+                                        <%--<span id='idPabrik<s:property value="idObat"/>'><s:property--%>
+                                                <%--value="idPabrik"/></span>--%>
+                                    <%--</s:if>--%>
+                                        <%--<s:else>--%>
                                             <s:if test='#row.isFullOfQty == "Y"'>
-                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
+                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
                                                        style="width: 150px" disabled id='pabrik<s:property value="idObat"/>'>
                                             </s:if>
                                             <s:else>
-                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
+                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
                                                        style="width: 150px" id='pabrik<s:property value="idObat"/>'>
                                             </s:else>
-                                        </s:else>
+                                        <%--</s:else>--%>
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.flagDiterima == "Y"'>
@@ -463,6 +470,10 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_app"></p>
+                </div>
                 <div class="alert alert-success alert-dismissible" id="warning_approve">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     ID pabrik berhasil di verifikasi...!
@@ -534,7 +545,7 @@
                         <div class="col-md-7">
                             <s:textfield cssClass="form-control datepicker"
                                          cssStyle="margin-top: 7px" id="app_expired"
-                                         onkeypress="var warn =$('#war_app_expired').is(':visible'); if (warn){$('#cor_app_expired').show().fadeOut(3000);$('#war_app_expired').hide()}"></s:textfield>
+                                         onchange="var warn =$('#war_app_expired').is(':visible'); if (warn){$('#cor_app_expired').show().fadeOut(3000);$('#war_app_expired').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -630,11 +641,11 @@
             dwr.engine.setAsync(true);
             PermintaanVendorAction.checkFisikObat(id, value, lembarPerBox, bijiPerlembar, {
                 callback: function (response) {
-                    console.log(response);
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#status' + id).html("Sesuai").addClass("label label-success");
-                        $('#pabrik' + id).attr('readonly', true).blur();
+//                        $('#pabrik' + id).attr('readonly', true).blur();
+                        $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
@@ -646,7 +657,7 @@
 //                        $('#qtyDefault' + id).html(qty);
 //                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
                     } else if (response.status == "new") {
-                        $('#pabrik' + id).attr('readonly', true).blur();
+//                        $('#pabrik' + id).attr('readonly', true).blur();
                         $('#status' + id).html("Tidak Sesuai").addClass("label label-danger");
                         <%--var url = '<s:url value="/pages/images/new-flat-plus.png"/>';--%>
                         <%--$('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');--%>
@@ -663,7 +674,8 @@
                                         response.message +
                                     '</div>';
                         $('#status' + id).html("Sesuai").addClass("label label-success");
-                        $('#pabrik' + id).attr('readonly', true).blur();
+//                        $('#pabrik' + id).attr('readonly', true).blur();
+                        $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
@@ -679,7 +691,7 @@
         }
     }
 
-    function saveApprove(id, idDetail, idPabrik) {
+    function saveApprove(id, idDetail, idPabrik, noBt) {
         var qtyReq = $('#app_qty').val();
         var qty = $('#app_qty_app').val();
         var lembarPerBox = $('#app_lembar_perbox').val();
@@ -687,30 +699,62 @@
         var expired = $('#app_expired').val();
         var url_string = window.location.href;
         var url = new URL(url_string);
-        var valueBatch = url.searchParams.get("noBatch");
-        var noBatch = 1;
+        var valueBatch = url.searchParams.get("newBatch");
+        var qtyApproveValue = $('#qtyApprove'+id).text();
+        var noBatch = 0;
+        var qtyApprove = 0;
+        var totalQtyApp= 0;
+
+        if(qtyApproveValue != ''){
+            qtyApprove = qtyApproveValue;
+        }
 
         if(valueBatch != null){
             noBatch = valueBatch;
         }
-
-        if(parseInt(qty) <= parseInt(qtyReq)) {
-            $('#save_approve').hide();
-            $('#load_approve').show();
-            dwr.engine.setAsync(true);
-            PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBatch, expired, function (response) {
-                if (response == "success") {
-                    dwr.engine.setAsync(false);
-                    $('#modal-approve').modal('hide');
-                    $('#approve' + id).html("Setuju").addClass("label label-success");
-                    $('#qtyApprove' + id).text(qty);
-                } else {
-                    $('#save_obat').show();
-                    $('#load_obat').hide();
-                    $('#warning_obat').show().fadeOut(5000);
-                    $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                }
-            })
+        if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != ''){
+            if(parseInt(qty) <= parseInt(qtyReq)) {
+                $('#save_approve').hide();
+                $('#load_approve').show();
+                dwr.engine.setAsync(true);
+                PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBatch, expired, function (response) {
+                    if (response == "success") {
+                        dwr.engine.setAsync(false);
+                        $('#modal-approve').modal('hide');
+                        $('#approve' + id).html("Setuju").addClass("label label-success");
+                        totalQtyApp = parseInt(qtyApprove) + parseInt(qty);
+                        if(parseInt(totalQtyApp) == parseInt(qtyReq)){
+                            $('#pabrik' + id).attr('readonly', true).blur();
+                        }else{
+                            $('#pabrik' + id).val('');
+                        }
+                        $('#qtyApprove' + id).text(totalQtyApp);
+                    } else {
+                        $('#save_obat').show();
+                        $('#load_obat').hide();
+                        $('#warning_obat').show().fadeOut(5000);
+                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+                    }
+                })
+            }else{
+                $('#warning_app').show().fadeOut(5000);
+                $('#msg_app').text('Qty Approve tidak boleh melebihi qty request');
+            }
+        }else{
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text('Silahkan cek kembali data inputan..!');
+            if(expired == ''){
+                $('#war_app_expired').show();
+            }
+            if(qty == ''){
+                $('#war_app_qty_app').show();
+            }
+            if(lembarPerBox = ''){
+                $('#war_app_lembar_perbox').show();
+            }
+            if(bijiPerLembar = ''){
+                $('#war_app_biji_perlembar').show();
+            }
         }
     }
 

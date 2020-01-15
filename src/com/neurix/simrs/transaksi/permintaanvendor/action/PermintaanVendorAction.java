@@ -222,7 +222,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
 
                 try {
-                    transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), getNoBatch());
+                    transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch());
                 } catch (GeneralBOException e){
                     logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                     addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
