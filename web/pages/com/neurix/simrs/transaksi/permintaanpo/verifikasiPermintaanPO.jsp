@@ -522,6 +522,20 @@
                                id="cor_app_qty_app"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tgl Kadaluarsa</label>
+                        <div class="col-md-7">
+                            <s:textfield cssClass="form-control datepicker"
+                                         cssStyle="margin-top: 7px" id="app_expired"
+                                         onkeypress="var warn =$('#war_app_expired').is(':visible'); if (warn){$('#cor_app_expired').show().fadeOut(3000);$('#war_app_expired').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_app_expired"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_app_expired"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
