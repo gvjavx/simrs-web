@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -107,6 +108,8 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 batchPermintaanObat = new BatchPermintaanObat();
                 batchPermintaanObat.setNoBatch((Integer) obj[0]);
                 batchPermintaanObat.setIdApproval((String) obj[1]);
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format((Timestamp) obj[2]);
+                batchPermintaanObat.setStLastUpdateWho(formatDate);
                 batchPermintaanObat.setLastUpdate((Timestamp) obj[2]);
                 results.add(batchPermintaanObat);
             }
@@ -130,7 +133,7 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         BigInteger sum = new BigInteger(String.valueOf(0));
         if (list.size() > 0){
             for (Object[] obj : list){
-                sum = (BigInteger) obj[1];
+                sum = new BigInteger(String.valueOf(obj[1]));
             }
         }
 
