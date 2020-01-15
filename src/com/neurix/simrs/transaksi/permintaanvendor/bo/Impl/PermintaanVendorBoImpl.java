@@ -16,6 +16,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -887,6 +888,78 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.getLastNoBatch] END <<<");
         return batchList;
+    }
+
+    @Override
+    public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.getListTransByBatchSorted] START >>>");
+
+        List<TransaksiObatDetail> results = new ArrayList<>();
+        for (TransaksiObatDetail obatDetail : obatDetails){
+
+            MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(obatDetail.getIdTransaksiObatDetail(), noBatch);
+
+            // to enable or disable input box;
+            obatDetail.setIsFullOfQty(compareQtyRequestToQtyBatch(obatDetail.getQty(), obatDetail.getIdTransaksiObatDetail()));
+            obatDetail.setFlagDiterima(batchEntity.getStatus());
+
+            if (batchEntity != null){
+                obatDetail.setQtyApprove(batchEntity.getQtyApprove());
+            }
+            results.add(obatDetail);
+        }
+        logger.info("[PermintaanVendorBoImpl.getListTransByBatchSorted] END <<<");
+        return results;
+    }
+
+    private String compareQtyRequestToQtyBatch(BigInteger qty, String idTransObatDetail){
+        logger.info("[PermintaanVendorBoImpl.compareQtyRequestToQtyBatch] START >>>");
+        BigInteger sum = new BigInteger(String.valueOf(0));
+
+        try {
+            sum = transaksiObatDetailBatchDao.getSumQtyApproveOnBatch(idTransObatDetail);
+        } catch (HibernateException e){
+
+        }
+
+        String arg = "";
+        if (sum != null){
+            if (qty.compareTo(sum) == 1){
+                arg = "N";
+            } else {
+                arg = "Y";
+            }
+        }
+
+        logger.info("[PermintaanVendorBoImpl.compareQtyRequestToQtyBatch] END <<<");
+        return arg;
+    }
+
+
+
+    private MtSimrsTransaksiObatDetailBatchEntity getEntityObatBatchByIdTransObat(String idTransaksiObatDetail, Integer noBatch){
+        logger.info("[PermintaanVendorBoImpl.getEntityObatBatchByIdTransObat] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_transaksi_obat_detail", idTransaksiObatDetail);
+        hsCriteria.put("no_batch", noBatch);
+
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = null;
+        MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+
+        try {
+            batchEntities = transaksiObatDetailBatchDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getEntityObatBatchByIdTransObat] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getEntityObatBatchByIdTransObat] ERROR." + e.getMessage());
+        }
+
+        if (batchEntities.size() > 0 && batchEntities != null){
+            batchEntity = batchEntities.get(0);
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getEntityObatBatchByIdTransObat] END <<<");
+        return batchEntity;
     }
 
     // for get sequence id

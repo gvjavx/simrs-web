@@ -46,6 +46,8 @@ public class PermintaanVendor{
     private Boolean enableApprove = false;
     private String notFlagR;
 
+    private Integer noBatch;
+
     public String getNotFlagR() {
         return notFlagR;
     }
@@ -244,5 +246,13 @@ public class PermintaanVendor{
 
     public void setUrlDocPo(String urlDocPo) {
         this.urlDocPo = urlDocPo;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
     }
 }

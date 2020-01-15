@@ -35,6 +35,9 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             if (mapCriteria.get("id_transaksi_obat_detail")!=null) {
                 criteria.add(Restrictions.eq("idTransaksiObatDetail", (String) mapCriteria.get("id_transaksi_obat_detail")));
             }
+            if (mapCriteria.get("no_batch") != null){
+                criteria.add(Restrictions.eq("noBatch", (Integer) mapCriteria.get("no_batch")));
+            }
             if (mapCriteria.get("id")!=null) {
                 criteria.add(Restrictions.eq("id", (BigInteger) mapCriteria.get("id")));
             }
@@ -106,6 +109,28 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         }
 
         return results;
+    }
+
+    public BigInteger getSumQtyApproveOnBatch(String idTransObatDetail){
+        String SQL = "SELECT\n" +
+                "id_transaksi_obat_detail,\n" +
+                "SUM(qty_approve) as jml_qty\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch\n" +
+                "WHERE id_transaksi_obat_detail = :id\n" +
+                "GROUP BY id_transaksi_obat_detail";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idTransObatDetail)
+                .list();
+
+        BigInteger sum = new BigInteger(String.valueOf(0));
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                sum = (BigInteger) obj[1];
+            }
+        }
+
+        return sum;
     }
 
 

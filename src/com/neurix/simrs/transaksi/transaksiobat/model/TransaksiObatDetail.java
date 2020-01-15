@@ -48,6 +48,25 @@ public class TransaksiObatDetail extends BaseModel {
     private String merek;
     private String idPabrik;
 
+    private BigInteger sumQtyApprove;
+    private String isFullOfQty;
+
+    public String getIsFullOfQty() {
+        return isFullOfQty;
+    }
+
+    public void setIsFullOfQty(String isFullOfQty) {
+        this.isFullOfQty = isFullOfQty;
+    }
+
+    public BigInteger getSumQtyApprove() {
+        return sumQtyApprove;
+    }
+
+    public void setSumQtyApprove(BigInteger sumQtyApprove) {
+        this.sumQtyApprove = sumQtyApprove;
+    }
+
     public String getMerek() {
         return merek;
     }

@@ -50,6 +50,33 @@ public class PermintaanVendorAction extends BaseMasterAction {
     private String fileUploadContentType;
 
     private String id;
+    private String isBatch;
+    private Integer noBatch;
+    private String newBatch;
+
+    public String getNewBatch() {
+        return newBatch;
+    }
+
+    public void setNewBatch(String newBatch) {
+        this.newBatch = newBatch;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
+    public String getIsBatch() {
+        return isBatch;
+    }
+
+    public void setIsBatch(String isBatch) {
+        this.isBatch = isBatch;
+    }
 
     @Override
     public String getId() {
@@ -140,7 +167,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
     public String edit() {
         logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
 
+        // get parameters
         String id = getId();
+        String isBatch = getIsBatch();
+        String newBatch = getNewBatch();
+
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         permintaanVendor.setIdPermintaanVendor(id);
 
@@ -163,7 +194,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
             idApproval = requestVendor.getIdApprovalObat();
 
-            // get list batch permintaan
+            // get last number of batch
             Integer noBatch = 0;
             try {
                 noBatch = permintaanVendorBoProxy.getLastNoBatch(requestVendor.getIdApprovalObat());
@@ -172,12 +203,36 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
             }
 
-            if (noBatch.compareTo(0) == 0){
+            if (noBatch.compareTo(0) == 1){
                 isNew = false;
             }
 
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+            // if edit from list batch then sorted with table batch data to get qty approve and status
+            if ("Y".equalsIgnoreCase(isBatch)){
+
+                // if new add new batch
+                if ("Y".equalsIgnoreCase(newBatch)){
+                    noBatch = noBatch + 1;
+                    requestVendor.setNoBatch(noBatch);
+                } else {
+                    requestVendor.setNoBatch(getNoBatch());
+                }
+
+                try {
+                    transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), getNoBatch());
+                } catch (GeneralBOException e){
+                    logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
+                    addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
+                }
+
+            } else {
+                transaksiObatDetails.addAll(requestVendor.getListOfTransaksiObatDetail());
+            }
+
             setPermintaanVendor(requestVendor);
-            session.setAttribute("listOfObatDetail", requestVendor.getListOfTransaksiObatDetail());
+            session.setAttribute("listOfObatDetail", transaksiObatDetails);
 
             Vendor vendor = new Vendor();
             vendor.setIdVendor(requestVendor.getIdVendor());
@@ -201,9 +256,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
         if (isNew){
-            return initListBatch(idApproval);
-        } else {
             return "init_edit";
+        } else {
+            return initListBatch(idApproval, id);
         }
     }
 
@@ -701,7 +756,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String initListBatch(String idApproval){
+    public String initListBatch(String idApproval, String idPermintaanVendor){
         logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
 
         List<BatchPermintaanObat> batchList = new ArrayList<>();
@@ -712,6 +767,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
         }
 
+        setId(idPermintaanVendor);
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfBatch");

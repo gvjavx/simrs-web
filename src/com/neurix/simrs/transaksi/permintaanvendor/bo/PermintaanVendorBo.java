@@ -22,4 +22,5 @@ public interface PermintaanVendorBo {
     public List<TransaksiObatDetail> getNewObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
     public Integer getLastNoBatch(String idApproval) throws GeneralBOException;
     public List<BatchPermintaanObat> getListBatchObatByIdApproval(String idApproval) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch) throws GeneralBOException;
     }
