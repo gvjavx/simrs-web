@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             }
             if (mapCriteria.get("id")!=null) {
                 criteria.add(Restrictions.eq("id", (BigInteger) mapCriteria.get("id")));
+            }
+            if (mapCriteria.get("exp_date")!=null) {
+                criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
         }
 

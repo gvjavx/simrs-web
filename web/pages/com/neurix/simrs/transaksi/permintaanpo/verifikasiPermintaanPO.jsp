@@ -184,9 +184,16 @@
                                                 value="idPabrik"/></span>
                                     </s:if>
                                         <s:else>
-                                            <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
-                                                   style="width: 150px" id='pabrik<s:property value="idObat"/>'>
-                                        </s:else></td>
+                                            <s:if test='#row.isFullOfQty == "Y"'>
+                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
+                                                       style="width: 150px" disabled id='pabrik<s:property value="idObat"/>'>
+                                            </s:if>
+                                            <s:else>
+                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
+                                                       style="width: 150px" id='pabrik<s:property value="idObat"/>'>
+                                            </s:else>
+                                        </s:else>
+                                    </td>
                                     <td align="center">
                                         <s:if test='#row.flagDiterima == "Y"'>
                                             <span class="label label-success">Sesuai</span>

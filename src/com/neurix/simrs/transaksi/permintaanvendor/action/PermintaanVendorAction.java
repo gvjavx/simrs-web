@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -206,11 +207,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
             if (noBatch.compareTo(0) == 1){
                 isNew = false;
             }
-
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
             // if edit from list batch then sorted with table batch data to get qty approve and status
             if ("Y".equalsIgnoreCase(isBatch)){
+                isNew = true;
 
                 // if new add new batch
                 if ("Y".equalsIgnoreCase(newBatch)){
@@ -295,7 +296,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar){
+    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar, Integer noBatch, String expDate){
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -309,6 +310,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
         transaksiObatDetail.setFlagDiterima(flag);
         transaksiObatDetail.setLembarPerBox(lembarPerBox);
         transaksiObatDetail.setBijiPerLembar(bijiPerLembar);
+        transaksiObatDetail.setNoBatch(noBatch);
+        transaksiObatDetail.setExpDate(Date.valueOf(expDate));
+        transaksiObatDetail.setQtyApprove(new BigInteger(qty));
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
