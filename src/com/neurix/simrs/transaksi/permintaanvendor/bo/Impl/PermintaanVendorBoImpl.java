@@ -370,6 +370,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             MtSimrsTransaksiObatDetailBatchEntity obatDetailBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
             obatDetailBatchEntity.setId(new BigInteger(getNextIdBatchObat()));
             obatDetailBatchEntity.setIdTransaksiObatDetail(bean.getIdTransaksiObatDetail());
+            obatDetailBatchEntity.setNoBatch(1);
             obatDetailBatchEntity.setQtyApprove(bean.getQtyApprove());
             obatDetailBatchEntity.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
             obatDetailBatchEntity.setFlag("Y");
