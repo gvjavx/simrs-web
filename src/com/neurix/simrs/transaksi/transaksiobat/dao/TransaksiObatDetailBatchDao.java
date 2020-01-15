@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -8,6 +9,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +77,37 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
 
         return result;
     }
+
+    public List<BatchPermintaanObat> getListBatchByApprovalId(String idApproval){
+
+        String SQL = "SELECT\n" +
+                "no_batch,\n" +
+                "od.id_approval_obat,\n" +
+                "max(odb.last_update) as last_update\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "WHERE od.id_approval_obat = :idApproval\n" +
+                "GROUP BY no_batch, od.id_approval_obat";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idApproval", idApproval)
+                .list();
+
+        List<BatchPermintaanObat> results = new ArrayList<>();
+        BatchPermintaanObat batchPermintaanObat;
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                batchPermintaanObat = new BatchPermintaanObat();
+                batchPermintaanObat.setNoBatch((Integer) obj[0]);
+                batchPermintaanObat.setIdApproval((String) obj[1]);
+                batchPermintaanObat.setLastUpdate((Timestamp) obj[2]);
+                results.add(batchPermintaanObat);
+            }
+        }
+
+        return results;
+    }
+
 
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_batch')");

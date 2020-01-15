@@ -9,6 +9,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -155,10 +156,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfObatDetail");
 
+        String idApproval = "";
         Boolean isNew = true;
         if (permintaanVendorList.size() > 0){
 
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
+            idApproval = requestVendor.getIdApprovalObat();
 
             // get list batch permintaan
             Integer noBatch = 0;
@@ -198,7 +201,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
         if (isNew){
-            return "list_batch";
+            return initListBatch(idApproval);
         } else {
             return "init_edit";
         }
@@ -696,6 +699,26 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] END process <<<");
         return checkObatResponse;
+    }
+
+    public String initListBatch(String idApproval){
+        logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
+
+        List<BatchPermintaanObat> batchList = new ArrayList<>();
+        try {
+            batchList = permintaanVendorBoProxy.getListBatchObatByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
+            addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfBatch");
+        session.setAttribute("listOfBatch", batchList);
+
+        logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
+        return "list_batch";
     }
 
 

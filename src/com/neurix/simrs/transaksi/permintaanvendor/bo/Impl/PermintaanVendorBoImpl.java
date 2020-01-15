@@ -7,6 +7,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.ImSimrsTempObatGejalaEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
@@ -871,6 +872,22 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return noBatch;
     }
 
+    @Override
+    public List<BatchPermintaanObat> getListBatchObatByIdApproval(String idApproval) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.getLastNoBatch] START >>>");
+
+        List<BatchPermintaanObat> batchList = new ArrayList<>();
+
+        try{
+            batchList = transaksiObatDetailBatchDao.getListBatchByApprovalId(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR." + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getLastNoBatch] END <<<");
+        return batchList;
+    }
 
     // for get sequence id
 
