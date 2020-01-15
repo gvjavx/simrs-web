@@ -172,7 +172,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
             }
 
-            if (noBatch.compareTo(0) == 0){
+            if (noBatch.compareTo(0) == 1){
                 isNew = false;
             }
 
@@ -201,9 +201,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
         if (isNew){
-            return initListBatch(idApproval);
-        } else {
             return "init_edit";
+        } else {
+            return initListBatch(idApproval);
         }
     }
 

@@ -155,38 +155,17 @@
                         <table class="table table-bordered table-striped" id="tabel_po">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID</td>
-                                <td>Nama Obat</td>
-                                <td align="center">Qty Request</td>
-                                <td align="center">Qty Approve</td>
-                                <td align="center">Satuan Jenis</td>
-                                <td align="right">Harga</td>
-                                <td align="center">Verify</td>
-                                <td align="center">Status Obat</td>
-                                <td align="center">Status Approve</td>
+                                <td>No Batch</td>
+                                <td>Status</td>
+                                <td align="center">Status</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfObatDetail" var="row">
-                                <tr id='row<s:property value="idObat"/>'>
-                                    <td><s:property value="idObat"/></td>
-                                    <td><s:property value="namaObat"/></td>
-                                    <td align="center"><span id='qty<s:property value="idObat"/>'><s:property
-                                            value="qty"/></span></td>
-                                    <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property
-                                            value="qtyApprove"/></span></td>
-                                    <td align="center"><s:property value="jenisSatuan"/></td>
-                                    <td align="right">
-                                        <script> document.write("Rp. " + formatRupiah('<s:property value="hargaPo"/>'));</script>
-                                    </td>
-                                    <td align="center"><s:if test='#row.idPabrik != null && #row.idPabrik != "" '>
-                                        <span id='idPabrik<s:property value="idObat"/>'><s:property
-                                                value="idPabrik"/></span>
-                                    </s:if>
-                                        <s:else>
-                                            <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>')" class="form-control"
-                                                   style="width: 150px" id='pabrik<s:property value="idObat"/>'>
-                                        </s:else></td>
+                                <tr id='row<s:property value="noBatch"/>'>
+                                    <td><s:property value="noBatch"/></td>
+                                    <td><s:property value="statusName"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagDiterima == "Y"'>
                                             <span class="label label-success">Sesuai</span>
@@ -194,30 +173,7 @@
                                         <s:if test='#row.flagDiterima == "N"'>
                                             <span class="label label-danger">Tidak Sesuai</span>
                                         </s:if>
-                                        <span id='status<s:property value="idObat"/>'></span></td>
-                                    <td align="center">
-                                        <s:if test='#row.flagDiterima == "Y"'>
-                                            <span class="label label-success">Setuju</span>
-                                        </s:if>
-                                        <s:if test='#row.flagDiterima == "N"'>
-                                            <span class="label label-warning">Dibuatkan obat baru</span>
-                                        </s:if>
-                                        <s:if test='#row.flagDiterima == "X"'>
-                                            <span class="label label-danger">Tidak Setuju</span>
-                                        </s:if>
-                                        <span id='approve<s:property value="idObat"/>'></span></td>
-                                        <%--<td align="center"><span id='qtyDefault<s:property value="idObat"/>'></span><input--%>
-                                        <%--value='<s:property value="qty"/>' type="number" class="form-control"--%>
-                                        <%--style="width: 150px; display: none"--%>
-                                        <%--id='qtyApprove<s:property value="idObat"/>'></td>--%>
-                                        <%--<td align="center"><img border="0" id='tombol<s:property value="idObat"/>'--%>
-                                        <%--class="hvr-grow"--%>
-                                        <%--src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
-                                        <%--style="cursor: pointer; height: 25px; width: 25px; display: none">--%>
-                                        <%--<img border="0" onclick="delRowObat('<s:property value="idObat"/>')"--%>
-                                        <%--id='hapus<s:property value="idObat"/>' class="hvr-grow"--%>
-                                        <%--src="<s:url value="/pages/images/cnacel-flat.png"/>"--%>
-                                        <%--style="cursor: pointer; height: 25px; width: 25px; display: none"></td>--%>
+                                    <td align="center"></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -608,11 +564,11 @@
                         $('#modal-confirm').modal('show');
                         $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
                         $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' + id + '\', \'' + idDetail + '\')');
-                    } else if(response.status == "warning"){
-                        var warn =  '<div class="alert alert-warning alert-dismissible">'+
-                                    '<h4><i class="icon fa fa-ban"></i> Warning!</h4>'+
-                                        response.message +
-                                    '</div>';
+                    } else if (response.status == "warning") {
+                        var warn = '<div class="alert alert-warning alert-dismissible">' +
+                                '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
+                                response.message +
+                                '</div>';
                         $('#status' + id).html("Sesuai").addClass("label label-success");
                         $('#pabrik' + id).attr('readonly', true).blur();
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
@@ -636,7 +592,7 @@
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
 
-        if(parseInt(qty) <= parseInt(qtyReq)) {
+        if (parseInt(qty) <= parseInt(qtyReq)) {
             $('#save_approve').hide();
             $('#load_approve').show();
             dwr.engine.setAsync(true);
@@ -775,7 +731,7 @@
         });
     }
 
-    function cekFisik(){
+    function cekFisik() {
         var kode = "";
         var nama = "";
         var merek = "";
@@ -784,33 +740,33 @@
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
         var lembarTo = "";
-        var bijiTo ="";
+        var bijiTo = "";
 
-        if(konLembar != lembarPerBox && konBiji != bijiPerLembar){
-            lembarTo = "Menjadi "+lembarPerBox;
-            bijiTo = "Menjadi "+bijiPerLembar;
-        }else{
-            if(konLembar != lembarPerBox){
-                lembarTo = "Menjadi "+lembarPerBox;
+        if (konLembar != lembarPerBox && konBiji != bijiPerLembar) {
+            lembarTo = "Menjadi " + lembarPerBox;
+            bijiTo = "Menjadi " + bijiPerLembar;
+        } else {
+            if (konLembar != lembarPerBox) {
+                lembarTo = "Menjadi " + lembarPerBox;
             }
-            if(konBiji != bijiPerLembar){
-                bijiTo = "Menjadi "+bijiPerLembar;
+            if (konBiji != bijiPerLembar) {
+                bijiTo = "Menjadi " + bijiPerLembar;
             }
         }
 
-        var warn = '<div class="alert alert-warning alert-dismissible">'+
-                '<h4><i class="icon fa fa-ban"></i> Warning!</h4>'+
-                'Obat teridentifikasi berubah fisik..!'+'<br>'+
-                'Kode Produksi &nbsp;&nbsp;'+': '+kode+'<br>'+
-                'Nama Obat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+': '+nama+'<br>'+
-                'Mrek   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+': '+merek+'<br>'+
-                'Lembar/Box   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+': '+konLembar+' '+lembarTo+'<br>'+
-                'Biji/Lembar  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+': '+konBiji+' '+bijiTo+'<br>'+
+        var warn = '<div class="alert alert-warning alert-dismissible">' +
+                '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
+                'Obat teridentifikasi berubah fisik..!' + '<br>' +
+                'Kode Produksi &nbsp;&nbsp;' + ': ' + kode + '<br>' +
+                'Nama Obat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + nama + '<br>' +
+                'Mrek   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + merek + '<br>' +
+                'Lembar/Box   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konLembar + ' ' + lembarTo + '<br>' +
+                'Biji/Lembar  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ': ' + konBiji + ' ' + bijiTo + '<br>' +
                 '</div>';
 
-        if(konBiji == bijiPerLembar && konLembar == lembarPerBox){
+        if (konBiji == bijiPerLembar && konLembar == lembarPerBox) {
             $('#warning_fisik').html('');
-        }else{
+        } else {
             $('#warning_fisik').html(warn);
         }
     }

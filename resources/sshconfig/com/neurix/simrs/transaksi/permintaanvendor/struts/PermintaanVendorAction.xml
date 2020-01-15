@@ -77,6 +77,7 @@
             <result name="init_add">/pages/com/neurix/simrs/transaksi/permintaanpo/addPermintaanPO.jsp</result>
             <result name="init_edit">/pages/com/neurix/simrs/transaksi/permintaanpo/verifikasiPermintaanPO.jsp</result>
             <result name="init_approve">/pages/com/neurix/simrs/transaksi/permintaanpo/approvePermintaanPO.jsp</result>
+            <result name="list_batch">/pages/com/neurix/simrs/transaksi/permintaanpo/searchBatchPermintaanPO.jsp</result>
 
             <result name="print_po" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printPermintaanPO.jasper</param>
