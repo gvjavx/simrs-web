@@ -9,6 +9,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -151,15 +152,35 @@ public class PermintaanVendorAction extends BaseMasterAction {
             addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
         }
 
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfObatDetail");
 
+        String idApproval = "";
+        Boolean isNew = true;
         if (permintaanVendorList.size() > 0){
-            setPermintaanVendor(permintaanVendorList.get(0));
-            session.setAttribute("listOfObatDetail", permintaanVendorList.get(0).getListOfTransaksiObatDetail());
+
+            PermintaanVendor requestVendor = permintaanVendorList.get(0);
+            idApproval = requestVendor.getIdApprovalObat();
+
+            // get list batch permintaan
+            Integer noBatch = 0;
+            try {
+                noBatch = permintaanVendorBoProxy.getLastNoBatch(requestVendor.getIdApprovalObat());
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
+                addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
+            }
+
+            if (noBatch.compareTo(0) == 0){
+                isNew = false;
+            }
+
+            setPermintaanVendor(requestVendor);
+            session.setAttribute("listOfObatDetail", requestVendor.getListOfTransaksiObatDetail());
 
             Vendor vendor = new Vendor();
-            vendor.setIdVendor(permintaanVendorList.get(0).getIdVendor());
+            vendor.setIdVendor(requestVendor.getIdVendor());
             List<Vendor> vendorList = new ArrayList<>();
 
             try {
@@ -176,11 +197,14 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     setVendor(vendorResult);
                 }
             }
-
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
-        return "init_edit";
+        if (isNew){
+            return initListBatch(idApproval);
+        } else {
+            return "init_edit";
+        }
     }
 
     public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan){
@@ -675,6 +699,26 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] END process <<<");
         return checkObatResponse;
+    }
+
+    public String initListBatch(String idApproval){
+        logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
+
+        List<BatchPermintaanObat> batchList = new ArrayList<>();
+        try {
+            batchList = permintaanVendorBoProxy.getListBatchObatByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
+            addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfBatch");
+        session.setAttribute("listOfBatch", batchList);
+
+        logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
+        return "list_batch";
     }
 
 
