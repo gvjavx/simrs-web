@@ -393,7 +393,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             } else {
                 MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
-                batchEntity.setQtyApprove(bean.getQtyApprove());
+                batchEntity.setQtyApprove(batchEntity.getQtyApprove().add(bean.getQtyApprove()));
                 batchEntity.setAction("U");
                 batchEntity.setLastUpdate(bean.getLastUpdate());
                 batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -971,6 +971,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             // to enable or disable input box;
             obatDetail.setIsFullOfQty(compareQtyRequestToQtyBatch(obatDetail.getQty(), obatDetail.getIdTransaksiObatDetail()));
+            obatDetail.setSumQtyApprove(getSumQtyApproveOnBatchByIdTransDetail(obatDetail.getIdTransaksiObatDetail()));
             obatDetail.setFlagDiterima(batchEntity.getStatus());
             obatDetail.setNoBatch(noBatch);
 
@@ -1005,6 +1006,21 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.compareQtyRequestToQtyBatch] END <<<");
         return arg;
+    }
+
+    private BigInteger getSumQtyApproveOnBatchByIdTransDetail(String idTransaksiObatDetail){
+        logger.info("[PermintaanVendorBoImpl.getSumQtyApproveOnBatchByIdTransDetail] START >>>");
+        BigInteger sum = new BigInteger(String.valueOf(0));
+
+        try {
+            sum = transaksiObatDetailBatchDao.getSumQtyApproveOnBatch(idTransaksiObatDetail);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getSumQtyApproveOnBatchByIdTransDetail] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getSumQtyApproveOnBatchByIdTransDetail] ERROR." + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getSumQtyApproveOnBatchByIdTransDetail] END <<<");
+        return sum;
     }
 
 
