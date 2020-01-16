@@ -485,7 +485,6 @@
                 <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_approve">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                 </div>
-                <div class="box-header with-border"></div>
                 <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Permintaan Po
                 </div>
                 <div class="box">
@@ -545,6 +544,7 @@
     function approveBatch(noBatch){
         $('#modal-approve').modal('show');
         var table = [];
+        $('#body_approve').html('');
         $('#app'+noBatch).hide();
         $('#load'+noBatch).show();
         dwr.engine.setAsync(true);
