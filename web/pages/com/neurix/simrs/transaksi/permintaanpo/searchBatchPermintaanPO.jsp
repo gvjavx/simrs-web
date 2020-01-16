@@ -177,7 +177,8 @@
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
                                         <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                        <a onclick="approveBatch('')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                        <a id='app<s:property value="noBatch"/>' onclick="approveBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                        <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -471,41 +472,49 @@
     <%--</div>--%>
 <%--</div>--%>
 
-<%--<div class="modal fade" id="modal-confirm">--%>
-    <%--<div class="modal-dialog modal-flat">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Konfirmasi ID Pabrik baru--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div class="alert alert-danger alert-dismissible">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--ID pabrik tidak sesuai...!--%>
-                <%--</div>--%>
-                <%--<div class="alert alert-info alert-dismissible">--%>
-                    <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                    <%--<p>Tekan tombol <b>Tambah obat</b> untuk menambahkan obat tersebut.</p>--%>
-                    <%--<p>Tekan tombol <b>Cancel obat</b> untuk membatalkan obat tersebut.</p>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
-                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-arrow-right"></i> Tambah--%>
-                    <%--Obat--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-ban"></i> Cancel Obat--%>
-                <%--</button>--%>
-                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-danger" id="load_confirm"><i--%>
-                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<div class="modal fade" id="modal-approve">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Approve Permintaan PO dengan No Batch <span id="mod_batch"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_approve">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Permintaan Po
+                </div>
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_approve">
+                        <thead>
+                        <td>ID</td>
+                        <td>Nama Obat</td>
+                        <td align="center">Qty Request</td>
+                        <td align="center">Qty Total Approve</td>
+                        <td align="center">Jenis Satuan</td>
+                        <td align="right">Harga</td>
+                        </thead>
+                        <tbody id="body_approve">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_approve"><i class="fa fa-arrow-right"></i> Konfirmasi
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -518,12 +527,50 @@
 //        listNewObat(idApprovalObat);
     });
 
+    function formatRupiah(angka) {
+        var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+    }
+
     function addBatch(){
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
     }
 
     function updateBatch(noBatch){
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+    }
+
+    function approveBatch(noBatch){
+        $('#modal-approve').modal('show');
+        var table = [];
+        $('#app'+noBatch).hide();
+        $('#load'+noBatch).show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.initApproval(idpermintaanPo, "Y", "N", noBatch, {
+            callback: function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        table += "<tr>" +
+                                "<td>" + item.idObat + "</td>" +
+                                "<td>" + item.namaObat + "</td>" +
+                                "<td align='center'>" + item.qty + "</td>" +
+                                "<td align='center'>" + item.sumQtyApprove + "</td>" +
+                                "<td align='center'>" + item.jenisSatuan + "</td>" +
+                                "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
+                                "</tr>";
+                    });
+                    $('#app'+noBatch).show();
+                    $('#load'+noBatch).hide();
+                } else {
+                    $('#app'+noBatch).show();
+                    $('#load'+noBatch).hide();
+                }
+                $('#mod_batch').html(noBatch);
+                $('#body_approve').html(table);
+            }
+        });
     }
 
 

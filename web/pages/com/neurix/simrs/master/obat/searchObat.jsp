@@ -214,6 +214,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="obat_error"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_exits">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_exits"></p>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
@@ -420,7 +424,7 @@
             if (id != '') {
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
                         $('#info_dialog').dialog('open');
@@ -434,11 +438,17 @@
             } else {
                 dwr.engine.setAsync(true);
                 ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
-                    if (response == "success") {
+                    console.log(response);
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(1);
+                    }else if (response.status == "warning") {
+                        $('#save_obat').show();
+                        $('#load_obat').hide();
+                        $('#warning_exits').show().fadeOut(5000);
+                        $('#msg_exits').text("ID Pabrik dengan bentuk fisik tersebut sudah ada pada ID obat : "+response.message);
                     } else {
                         $('#save_obat').show();
                         $('#load_obat').hide();
