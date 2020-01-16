@@ -46,6 +46,12 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             if (mapCriteria.get("exp_date")!=null) {
                 criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
+            if (mapCriteria.get("approve_flag") != null){
+                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
+            }
+            if (mapCriteria.get("status") != null){
+                criteria.add(Restrictions.eq("status", (String) mapCriteria.get("status")));
+            }
         }
 
         // Order by

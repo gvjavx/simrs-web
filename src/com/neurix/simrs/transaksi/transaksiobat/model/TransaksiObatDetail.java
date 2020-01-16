@@ -53,6 +53,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String isFullOfQty;
     private Integer noBatch;
     private Date expDate;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Integer getNoBatch() {
         return noBatch;

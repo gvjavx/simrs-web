@@ -300,4 +300,33 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
         return listOfResults;
     }
+
+    public Obat getSumStockObatGudangById(String id){
+
+        String SQL = "SELECT \n" +
+                "id_obat, \n" +
+                "SUM(qty_box) as qty_box, \n" +
+                "SUM(qty_lembar) as qty_lembar,\n" +
+                "SUM(qty_biji) as qty_biji\n" +
+                "FROM im_simrs_obat \n" +
+                "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
+                "AND id_obat = :id\n" +
+                "GROUP BY id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        Obat obat = new Obat();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                obat.setIdObat(obj[0].toString());
+                obat.setQtyBox(new BigInteger(String.valueOf(obj[1])));
+                obat.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
+                obat.setQtyBiji(new BigInteger(String.valueOf(obj[3])));
+            }
+        }
+
+        return obat;
+    }
 }
