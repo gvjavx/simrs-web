@@ -181,7 +181,7 @@
                                     <td align="center"><span id='qty<s:property value="idObat"/>'><s:property
                                             value="qty"/></span></td>
                                     <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property
-                                            value="qtyApprove"/></span></td>
+                                            value="sumQtyApprove"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right">
                                         <script> document.write("Rp. " + formatRupiah('<s:property value="hargaPo"/>'));</script>

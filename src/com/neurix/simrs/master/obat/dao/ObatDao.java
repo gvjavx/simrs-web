@@ -50,7 +50,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
 
             if (mapCriteria.get("biji_per_lembar") != null){
-                criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("bijiPerLembar")));
+                criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("biji_per_lembar")));
             }
 
             if (mapCriteria.get("asc") != null){
