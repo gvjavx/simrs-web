@@ -29,6 +29,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         // Get Collection and sorting
         if (mapCriteria != null) {
+            if (mapCriteria.get("id_seq_obat") != null){
+                criteria.add(Restrictions.eq("idSeqObat", (String) mapCriteria.get("id_seq_obat")));
+            }
             if (mapCriteria.get("id_obat") != null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
@@ -51,6 +54,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             if (mapCriteria.get("biji_per_lembar") != null){
                 criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("biji_per_lembar")));
+            }
+            if (mapCriteria.get("exp_date") != null){
+                criteria.add(Restrictions.eq("expiredDate", (String) mapCriteria.get("exp_date")));
             }
 
             if (mapCriteria.get("asc") != null){
@@ -306,5 +312,34 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             listOfResults.add(obatEntity);
         }
         return listOfResults;
+    }
+
+    public Obat getSumStockObatGudangById(String id){
+
+        String SQL = "SELECT \n" +
+                "id_obat, \n" +
+                "SUM(qty_box) as qty_box, \n" +
+                "SUM(qty_lembar) as qty_lembar,\n" +
+                "SUM(qty_biji) as qty_biji\n" +
+                "FROM im_simrs_obat \n" +
+                "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
+                "AND id_obat = :id\n" +
+                "GROUP BY id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        Obat obat = new Obat();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                obat.setIdObat(obj[0].toString());
+                obat.setQtyBox(new BigInteger(String.valueOf(obj[1])));
+                obat.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
+                obat.setQtyBiji(new BigInteger(String.valueOf(obj[3])));
+            }
+        }
+
+        return obat;
     }
 }

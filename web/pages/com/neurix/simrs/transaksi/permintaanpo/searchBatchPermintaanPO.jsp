@@ -176,7 +176,8 @@
                                     <td><s:property value="statusName"/></td>
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
-                                        <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                        <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a onclick="approveBatch('')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
                                     </td>
                                 </tr>
                             </s:iterator>

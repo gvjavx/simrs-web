@@ -53,6 +53,24 @@ public class TransaksiObatDetail extends BaseModel {
     private String isFullOfQty;
     private Integer noBatch;
     private Date expDate;
+    private String status;
+    private String idSeqObat;
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Integer getNoBatch() {
         return noBatch;
