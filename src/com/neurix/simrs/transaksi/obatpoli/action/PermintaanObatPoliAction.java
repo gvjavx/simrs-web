@@ -4,6 +4,8 @@ import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
@@ -33,6 +35,7 @@ import java.util.List;
 public class PermintaanObatPoliAction extends BaseTransactionAction {
     private static transient Logger logger = Logger.getLogger(PermintaanObatPoliAction.class);
     private ObatPoliBo obatPoliBoProxy;
+    private ObatBo obatBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
     private ObatPoli obatPoli;
     private String idPermintaan;
@@ -250,15 +253,49 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         List<TransaksiObatDetail> obatDetails = new ArrayList<>();
 
         try {
-
+            obatDetails = obatPoliBoProxy.getListTransObatDetail(obatDetail);
         } catch (HibernateException e){
-
+            logger.error("[PermintaanObatPoliAction.search] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.search] ERROR when get data list obat, " + e.getMessage());
         }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfObatDetail");
+        session.setAttribute("listOfObatDetail", obatDetails);
 
         logger.info("[PermintaanObatPoliAction.initApprovePermintaan] END process <<<");
         return "init_approve";
     }
 
+    public List<Obat> getListObatEntity(String idObat, String idTransObatDetail){
+        logger.info("[PermintaanObatPoliAction.initApprovePermintaan] START process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdTransaksiDetail(idTransObatDetail);
+
+        try {
+            obatList = obatBoProxy.getByCriteria(obat);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        List<Obat> obatSorted = new ArrayList<>();
+
+        if (obatList.size() > 0){
+            try {
+                obatSorted = obatBoProxy.sortedListObat(obatList);
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, ", e);
+                addActionError("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
+            }
+        }
+
+        logger.info("[PermintaanObatPoliAction.initApprovePermintaan] END process <<<");
+        return obatList;
+    }
 
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
         this.obatPoliBoProxy = obatPoliBoProxy;
@@ -278,5 +315,9 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
     public void setObatPoli(ObatPoli obatPoli) {
         this.obatPoli = obatPoli;
+    }
+
+    public void setObatBoProxy(ObatBo obatBoProxy) {
+        this.obatBoProxy = obatBoProxy;
     }
 }

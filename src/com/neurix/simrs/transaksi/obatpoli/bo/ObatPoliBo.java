@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;

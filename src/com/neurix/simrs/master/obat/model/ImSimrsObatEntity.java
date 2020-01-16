@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 public class ImSimrsObatEntity implements Serializable{
 
+    private String idSeqObat;
     private String idObat;
     private String namaObat;
     private String idJenisObat;
@@ -32,7 +33,6 @@ public class ImSimrsObatEntity implements Serializable{
     private String merk;
 
     private BigDecimal hargaTerakhir;
-    private String idSeqObat;
     private Date expiredDate;
 
     public Date getExpiredDate() {

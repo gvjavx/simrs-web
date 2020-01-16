@@ -258,6 +258,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_obat", id);
         hsCriteria.put("flag", "Y");
+        hsCriteria.put("asc", "Y");
 
         try {
             obatEntities = obatDao.getByCriteria(hsCriteria);
@@ -586,6 +587,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                     obatDetail.setStatus("R");
                                 }
 
+                                obatDetail.setExpDate(batchEntity.getExpiredDate());
+
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -730,8 +733,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
             newObatEntity.setIdSeqObat(getIdNextSeqObat());
             newObatEntity.setIdObat(bean.getIdObat());
+            newObatEntity.setNamaObat(bean.getNamaObat());
+            newObatEntity.setIdPabrik(obatEntity.getIdPabrik());
+            newObatEntity.setExpiredDate(bean.getExpDate());
             newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
             newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
+            newObatEntity.setMerk(obatEntity.getMerk());
 
             if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
                 newObatEntity.setQtyBox(bean.getQtyApprove());

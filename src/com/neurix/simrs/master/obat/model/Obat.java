@@ -41,6 +41,15 @@ public class Obat extends BaseModel {
     private BigDecimal hargaTerakhir;
     private String idSeqObat;
     private Date expiredDate;
+    private String idTransaksiDetail;
+
+    public String getIdTransaksiDetail() {
+        return idTransaksiDetail;
+    }
+
+    public void setIdTransaksiDetail(String idTransaksiDetail) {
+        this.idTransaksiDetail = idTransaksiDetail;
+    }
 
     public Date getExpiredDate() {
         return expiredDate;

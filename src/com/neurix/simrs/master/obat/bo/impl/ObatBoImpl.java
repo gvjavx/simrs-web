@@ -12,6 +12,10 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -27,6 +31,11 @@ public class ObatBoImpl implements ObatBo {
     private ObatDao obatDao;
     private JenisObatDao jenisObatDao;
     private ObatGejalaDao obatGejalaDao;
+    private TransaksiObatDetailBatchDao batchDao;
+
+    public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
+        this.batchDao = batchDao;
+    }
 
     public void setJenisObatDao(JenisObatDao jenisObatDao) {
         this.jenisObatDao = jenisObatDao;
@@ -81,6 +90,8 @@ public class ObatBoImpl implements ObatBo {
                     obat.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
                     obat.setIdPabrik(obatEntity.getIdPabrik());
                     obat.setMerk(obatEntity.getMerk());
+
+                    obat.setIdTransaksiDetail(bean.getIdTransaksiDetail());
 
                     List<ImSimrsObatGejalaEntity> obatGejalaEntities = new ArrayList<>();
 
@@ -551,6 +562,61 @@ public class ObatBoImpl implements ObatBo {
 
         logger.info("[ObatPoliBoImpl.checkFisikObatByIdPabrik] END <<<<<<<<<<");
         return response;
+    }
+
+    @Override
+    public List<Obat> sortedListObat(List<Obat> obatList) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.sortedListObat] START >>>>>>>>>>");
+
+        List<Obat> obats = new ArrayList<>();
+        for (Obat obat : obatList){
+
+            TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+            obatBatch.setIdTransaksiObatDetail(obat.getIdTransaksiDetail());
+            obatBatch.setExpiredDate(obat.getExpiredDate());
+
+            List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatch(obatBatch);
+            if (batchEntities.size() > 0){
+                MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+                obatBatch.setQtyApprove(batchEntity.getQtyApprove());
+                obatBatch.setNoBatch(1);
+            }
+
+            obats.add(obat);
+        }
+
+        logger.info("[ObatPoliBoImpl.sortedListObat] END <<<<<<<<<<");
+        return obats;
+    }
+
+    private List<MtSimrsTransaksiObatDetailBatchEntity> getListEntityBatch(TransaksiObatBatch bean){
+        logger.info("[ObatPoliBoImpl.getListEntityBatch] START >>>>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdTransaksiObatDetail() != null){
+            hsCriteria.put("id_transaksi_obat_detail" , bean.getIdTransaksiObatDetail());
+        }
+
+        if (bean.getIdTransaksiObatDetail() != null){
+            hsCriteria.put("exp_date" , bean.getExpiredDate());
+        }
+
+        if (bean.getNoBatch() != null){
+            hsCriteria.put("no_batch" , bean.getNoBatch());
+        }
+
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+
+        try {
+            batchEntities = batchDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getIdNextObatGejala] ERROR, "+e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.getIdNextObatGejala] ERROR, "+e.getMessage());
+        }
+
+        logger.info("[ObatPoliBoImpl.getListEntityBatch] END <<<<<<<<<<");
+        return batchEntities;
     }
 
     private String getIdNextObatGejala() throws GeneralBOException{

@@ -5,6 +5,8 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -59,6 +61,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("exp_date") != null){
                 criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
+
 
 //            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
 //            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
