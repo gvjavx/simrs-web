@@ -72,22 +72,15 @@
         <property name="averageHargaBiji">
             <column name="average_harga_biji" sql-type="numeric" not-null="false"/>
         </property>
-
         <property name="merk">
             <column name="merk" sql-type="varchar" length="100" not-null="false"/>
         </property>
-
         <property name="idPabrik">
             <column name="id_pabrik" sql-type="varchar" length="100" not-null="false"/>
         </property>
-
         <property name="hargaTerakhir">
             <column name="harga_terakhir" sql-type="numeric" not-null="false"/>
         </property>
-        <property name="idSeqObat">
-            <column name="id_seq_obat" sql-type="varchar" length="30" not-null="true"/>
-        </property>
-
         <property name="expiredDate">
             <column name="expired_date" sql-type="date" not-null="false"/>
         </property>
