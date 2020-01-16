@@ -3,6 +3,7 @@ package com.neurix.simrs.master.obat.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class ImSimrsObatEntity implements Serializable{
@@ -31,6 +32,25 @@ public class ImSimrsObatEntity implements Serializable{
     private String merk;
 
     private BigDecimal hargaTerakhir;
+    private String idSeqObat;
+    private Date expiredDate;
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;

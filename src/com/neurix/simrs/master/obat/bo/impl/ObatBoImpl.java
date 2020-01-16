@@ -59,6 +59,7 @@ public class ObatBoImpl implements ObatBo {
                 for (ImSimrsObatEntity obatEntity : obatEntityList){
                     obat = new Obat();
                     obat.setIdObat(obatEntity.getIdObat());
+                    obat.setIdSeqObat(obatEntity.getIdSeqObat());
                     obat.setIdJenisObat(obatEntity.getIdJenisObat());
                     obat.setNamaObat(obatEntity.getNamaObat());
                     obat.setHarga(obatEntity.getHarga());
@@ -231,6 +232,9 @@ public class ObatBoImpl implements ObatBo {
         String userLogin = CommonUtil.userLogin();
 
         String id = getIdNextObat();
+        String idSeqObat = getIdNextSeqObat();
+
+        obatEntity.setIdSeqObat(idSeqObat);
         obatEntity.setIdObat("OBT"+id);
         obatEntity.setNamaObat(bean.getNamaObat());
         obatEntity.setHarga(bean.getHarga());
@@ -513,6 +517,42 @@ public class ObatBoImpl implements ObatBo {
         return response;
     }
 
+    @Override
+    public CheckObatResponse checkFisikObatByIdPabrik(Obat bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkFisikObatByIdPabrik] START >>>>>>>>>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        hsCriteria.put("branch_id", bean.getBranchId());
+        hsCriteria.put("lembar_per_box", bean.getLembarPerBox());
+        hsCriteria.put("biji_per_lembar", bean.getBijiPerLembar());
+        hsCriteria.put("flag", "Y");
+
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.checkFisikObat] error when check fisik obat"+ e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.checkFisikObatByIdPabrik] check fisik obat "+ e.getMessage());
+        }
+
+        if (obatEntities.size() > 0){
+            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+            response.setStatus("warning");
+            response.setMessage(obatEntity.getIdObat());
+        } else {
+            response.setStatus("success");
+            response.setMessage("Silahkan dilanjutkan");
+        }
+
+        logger.info("[ObatPoliBoImpl.checkFisikObatByIdPabrik] END <<<<<<<<<<");
+        return response;
+    }
+
     private String getIdNextObatGejala() throws GeneralBOException{
         String id = "";
 
@@ -534,6 +574,19 @@ public class ObatBoImpl implements ObatBo {
         } catch (HibernateException e){
             logger.error("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, "+e.getMessage());
             throw new GeneralBOException("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, "+e.getMessage());
+        }
+
+        return id;
+    }
+
+    private String getIdNextSeqObat() throws GeneralBOException{
+        String id = "";
+
+        try {
+            id = obatDao.getNextIdSeqObat();
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id seq obat, "+e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id seq obat, "+e.getMessage());
         }
 
         return id;

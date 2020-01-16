@@ -114,6 +114,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return sId;
     }
 
+    public String getNextIdSeqObat() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_obat_seq')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return sId;
+    }
+
     public List<Obat> getJenisObat(Obat bean) {
 
         String branchId = "%";

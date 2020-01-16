@@ -708,6 +708,7 @@
         if(qtyApproveValue != '') {
             qtyApprove = qtyApproveValue;
         }
+
         if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != ''){
             if(parseInt(qty) <= parseInt(qtyReq)) {
                 $('#save_approve').hide();
