@@ -727,7 +727,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         if (bean != null && "R".equalsIgnoreCase(bean.getStatus())){
 
-            ImSimrsObatEntity newObatEntity = getObatById(bean.getIdObat());
+            ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
             newObatEntity.setIdSeqObat(getIdNextSeqObat());
             newObatEntity.setIdObat(bean.getIdObat());
             newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
@@ -772,6 +772,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             newObatEntity.setCreatedWho(userLogin);
             newObatEntity.setLastUpdate(time);
             newObatEntity.setLastUpdateWho(userLogin);
+            newObatEntity.setBranchId(CommonUtil.userBranchLogin());
 
             try {
                 obatDao.addAndSave(newObatEntity);
@@ -781,7 +782,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
 
             // update all harga id obat tersebut
-            updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
+//            updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
 
         } else {
 
