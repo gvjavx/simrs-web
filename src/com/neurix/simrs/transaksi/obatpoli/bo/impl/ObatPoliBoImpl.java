@@ -1545,6 +1545,51 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return response;
     }
 
+    @Override
+    public List<TransaksiObatDetail> getListTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] START >>>>>>>>>>");
+
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+
+        List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityObatDetail(bean);
+        if (obatDetailEntities.size() > 0){
+            TransaksiObatDetail obatDetail;
+            for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities){
+                obatDetail = new TransaksiObatDetail();
+
+                obatDetail.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
+//                obatDetail.setNamaObat(obatEntity.getNamaObat());
+                obatDetail.setIdApprovalObat(obatDetailEntity.getIdApprovalObat());
+                obatDetail.setIdObat(obatDetailEntity.getIdObat());
+                obatDetail.setFlag(obatDetailEntity.getFlag());
+                obatDetail.setAction(obatDetailEntity.getAction());
+                obatDetail.setCreatedDate(obatDetailEntity.getCreatedDate());
+                obatDetail.setLastUpdate(obatDetailEntity.getLastUpdate());
+                obatDetail.setCreatedWho(obatDetailEntity.getCreatedWho());
+                obatDetail.setLastUpdateWho(obatDetailEntity.getLastUpdateWho());
+                obatDetail.setKeterangan(obatDetailEntity.getKeterangan());
+                obatDetail.setQtyApprove(obatDetailEntity.getQtyApprove());
+                obatDetail.setQtyBox(obatDetailEntity.getQtyBox());
+                obatDetail.setQtyLembar(obatDetailEntity.getQtyLembar());
+                obatDetail.setQtyBiji(obatDetailEntity.getQtyBiji());
+                obatDetail.setQty(obatDetailEntity.getQty());
+                obatDetail.setLembarPerBox(obatDetailEntity.getLembarPerBox());
+                obatDetail.setBijiPerLembar(obatDetailEntity.getBijiPerLembar());
+                obatDetail.setAverageHargaBox(obatDetailEntity.getAverageHargaBox());
+                obatDetail.setAverageHargaLembar(obatDetailEntity.getAverageHargaLembar());
+                obatDetail.setAverageHargaBiji(obatDetailEntity.getAverageHargaBiji());
+                obatDetail.setFlagDiterima(obatDetailEntity.getFlagDiterima());
+                obatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
+                obatDetail.setIdPabrik(obatDetailEntity.getIdPabrik());
+                obatDetail.setMerek(obatDetailEntity.getMrek());
+
+            }
+        }
+
+        logger.info("[ObatPoliBoImpl.checkObatStockLama] END <<<<<<<<<<");
+        return null;
+    }
+
     private String getNextPermintaanObatId() throws GeneralBOException {
         String id = "";
         try {

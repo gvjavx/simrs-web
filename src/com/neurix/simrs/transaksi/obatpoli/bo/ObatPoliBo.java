@@ -28,5 +28,5 @@ public interface ObatPoliBo {
 
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
     public List<PermintaanObatPoli> getCekListEntityObatPoli(PermintaanObatPoli bean) throws GeneralBOException;
-
+    public List<TransaksiObatDetail> getListTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
 }

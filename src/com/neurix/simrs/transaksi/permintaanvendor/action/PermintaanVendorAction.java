@@ -11,7 +11,9 @@ import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
@@ -573,6 +575,50 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.saveApprove] END <<<<<<<");
         return "init_approve";
+    }
+
+    public CheckObatResponse saveApproveBatch(String idPermintaanVendor, Integer noBatch){
+        logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
+
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
+        permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
+
+        List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
+        try {
+            permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. ", e);
+            addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. " + e.getMessage());
+        }
+
+        if (permintaanVendorList.size() > 0){
+            PermintaanVendor requestVendor = permintaanVendorList.get(0);
+
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+            try {
+                transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch);
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+                addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
+            }
+
+            List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+
+            try {
+                permintaanVendorBoProxy.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
+                addActionError(" Error when save data approve PO" + e.getMessage());
+            }
+
+        }
+
+        logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
+        return checkObatResponse;
     }
 
     public List<TransaksiObatDetail> searchNewListObat(String idApproval) {
