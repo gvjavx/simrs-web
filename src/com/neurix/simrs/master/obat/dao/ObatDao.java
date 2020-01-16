@@ -59,6 +59,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("expiredDate", (String) mapCriteria.get("exp_date")));
             }
 
+            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
+            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
+            criteria.add(Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0))));
+
             if (mapCriteria.get("asc") != null){
                 criteria.addOrder(Order.asc("createdDate"));
             } else if (mapCriteria.get("desc") != null){

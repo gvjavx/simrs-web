@@ -4,9 +4,11 @@ import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -34,6 +36,15 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
     private PermintaanObatPoli permintaanObatPoli;
     private ObatPoli obatPoli;
     private String idPermintaan;
+    private String idApproval;
+
+    public String getIdApproval() {
+        return idApproval;
+    }
+
+    public void setIdApproval(String idApproval) {
+        this.idApproval = idApproval;
+    }
 
     public String getIdPermintaan() {
         return idPermintaan;
@@ -226,6 +237,26 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         }
 
         return "print_permintaan_obat";
+    }
+
+    public String initApprovePermintaan(){
+        logger.info("[PermintaanObatPoliAction.initApprovePermintaan] START process >>>");
+
+        String id = getIdApproval();
+
+        TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+        obatDetail.setIdApprovalObat(id);
+
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+
+        try {
+
+        } catch (HibernateException e){
+
+        }
+
+        logger.info("[PermintaanObatPoliAction.initApprovePermintaan] END process <<<");
+        return "init_approve";
     }
 
 
