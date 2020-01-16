@@ -108,7 +108,7 @@
                                        buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_permintaanpo.action';
+                                                                                         window.location.reload(true);
                                                                                      }
                                                                             }"
                             >
@@ -177,7 +177,7 @@
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
                                         <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                        <a id='app<s:property value="noBatch"/>' onclick="approveBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                        <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
                                         <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                     </td>
                                 </tr>
@@ -473,7 +473,7 @@
 <%--</div>--%>
 
 <div class="modal fade" id="modal-approve">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat" style="width: 50%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -482,10 +482,10 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_approve">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_app"></p>
                 </div>
-                <div class="box-header with-border"></div>
                 <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Permintaan Po
                 </div>
                 <div class="box">
@@ -500,13 +500,15 @@
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
+                        <input id="app_no_batch" type="hidden">
                     </table>
+                    <p id="loading_data" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_approve"><i class="fa fa-arrow-right"></i> Konfirmasi
+                <button type="button" class="btn btn-success" id="save_approve" onclick="approveBatch()"><i class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -542,15 +544,19 @@
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
     }
 
-    function approveBatch(noBatch){
+    function confirmBatch(noBatch){
         $('#modal-approve').modal('show');
         var table = [];
+        $('#body_approve').html('');
+        $('#app_no_batch').val('');
         $('#app'+noBatch).hide();
         $('#load'+noBatch).show();
+        $('#loading_data').show();
         dwr.engine.setAsync(true);
         PermintaanVendorAction.initApproval(idpermintaanPo, "Y", "N", noBatch, {
             callback: function (response) {
                 if (response != null) {
+                    $('#app_no_batch').val(noBatch);
                     $.each(response, function (i, item) {
                         table += "<tr>" +
                                 "<td>" + item.idObat + "</td>" +
@@ -563,14 +569,38 @@
                     });
                     $('#app'+noBatch).show();
                     $('#load'+noBatch).hide();
+                    $('#loading_data').hide();
                 } else {
                     $('#app'+noBatch).show();
                     $('#load'+noBatch).hide();
+                    $('#loading_data').hide();
                 }
                 $('#mod_batch').html(noBatch);
                 $('#body_approve').html(table);
             }
         });
+    }
+
+    function approveBatch(){
+
+        var noBatch = $('#app_no_batch').val();
+        $('#save_approve').hide();
+        $('#load_approve').show();
+
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveApproveBatch(idpermintaanPo, noBatch, {
+            callback: function (response) {
+                if(response.status = "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
+                }else{
+                    $('#warning_app').show().fadeOut(5000);
+                    $('#msg_app').text(response.message);
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
+                }
+            }});
     }
 
 

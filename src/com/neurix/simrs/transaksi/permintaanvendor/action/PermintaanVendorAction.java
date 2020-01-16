@@ -586,10 +586,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
         permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
-            permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+            permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
         } catch (HibernateException e){
             logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. " + e.getMessage());
@@ -600,7 +602,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
-                transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch);
+                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch);
             } catch (GeneralBOException e){
                 logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
@@ -609,7 +611,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
 
             try {
-                permintaanVendorBoProxy.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+                permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
             } catch (GeneralBOException e){
                 logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
                 addActionError(" Error when save data approve PO" + e.getMessage());

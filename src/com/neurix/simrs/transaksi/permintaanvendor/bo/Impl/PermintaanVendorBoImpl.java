@@ -258,6 +258,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_obat", id);
         hsCriteria.put("flag", "Y");
+        hsCriteria.put("asc", "Y");
 
         try {
             obatEntities = obatDao.getByCriteria(hsCriteria);
@@ -586,6 +587,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                     obatDetail.setStatus("R");
                                 }
 
+                                obatDetail.setExpDate(batchEntity.getExpiredDate());
+
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -719,7 +722,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
         BigInteger allStockToBiji = (sumObat.getQtyBox().multiply(cons))
-                .add(sumObat.getQtyLembar().multiply(sumObat.getBijiPerLembar()))
+                .add(sumObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
                 .add(sumObat.getQtyBiji());
 
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
@@ -727,11 +730,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         if (bean != null && "R".equalsIgnoreCase(bean.getStatus())){
 
-            ImSimrsObatEntity newObatEntity = getObatById(bean.getIdObat());
+            ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
             newObatEntity.setIdSeqObat(getIdNextSeqObat());
             newObatEntity.setIdObat(bean.getIdObat());
+            newObatEntity.setNamaObat(bean.getNamaObat());
+            newObatEntity.setIdPabrik(obatEntity.getIdPabrik());
+            newObatEntity.setExpiredDate(bean.getExpDate());
             newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
             newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
+            newObatEntity.setMerk(obatEntity.getMerk());
 
             if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
                 newObatEntity.setQtyBox(bean.getQtyApprove());
@@ -772,6 +779,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             newObatEntity.setCreatedWho(userLogin);
             newObatEntity.setLastUpdate(time);
             newObatEntity.setLastUpdateWho(userLogin);
+            newObatEntity.setBranchId(CommonUtil.userBranchLogin());
 
             try {
                 obatDao.addAndSave(newObatEntity);

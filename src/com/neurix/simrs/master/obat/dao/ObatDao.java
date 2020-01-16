@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,14 +59,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("biji_per_lembar")));
             }
             if (mapCriteria.get("exp_date") != null){
-                criteria.add(Restrictions.eq("expiredDate", (String) mapCriteria.get("exp_date")));
+                criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
 
-//            Criterion qtyBox = Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0)));
-//            Criterion qtyLembar = Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0)));
-//            Criterion qtyBiji = Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0)));
-//
-//            LogicalExpression andExp = Restrictions.and(qtyBox, qtyLembar);
 
 //            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
 //            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
