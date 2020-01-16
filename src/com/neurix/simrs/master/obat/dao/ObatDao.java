@@ -29,6 +29,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         // Get Collection and sorting
         if (mapCriteria != null) {
+            if (mapCriteria.get("id_seq_obat") != null){
+                criteria.add(Restrictions.eq("idSeqObat", (String) mapCriteria.get("id_seq_obat")));
+            }
             if (mapCriteria.get("id_obat") != null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
@@ -51,6 +54,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             if (mapCriteria.get("biji_per_lembar") != null){
                 criteria.add(Restrictions.eq("bijiPerLembar", (BigInteger) mapCriteria.get("bijiPerLembar")));
+            }
+            if (mapCriteria.get("exp_date") != null){
+                criteria.add(Restrictions.eq("expiredDate", (String) mapCriteria.get("exp_date")));
             }
 
             if (mapCriteria.get("asc") != null){

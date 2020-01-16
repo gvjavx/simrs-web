@@ -7,10 +7,13 @@
     <class name="com.neurix.simrs.master.obat.model.ImSimrsObatEntity" dynamic-update="true"
            table="im_simrs_obat" select-before-update="true" schema="public">
 
-
-        <id name="idObat">
-            <column name="id_obat" sql-type="varchar" length="30" not-null="true" />
+        <id name="idSeqObat">
+            <column name="id_seq_obat" sql-type="varchar" length="30" not-null="true"/>
         </id>
+
+        <property name="idObat">
+            <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
         <property name="namaObat">
             <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
