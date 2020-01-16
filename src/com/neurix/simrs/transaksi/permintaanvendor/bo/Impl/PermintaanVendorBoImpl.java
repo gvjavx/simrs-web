@@ -719,7 +719,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
         BigInteger allStockToBiji = (sumObat.getQtyBox().multiply(cons))
-                .add(sumObat.getQtyLembar().multiply(sumObat.getBijiPerLembar()))
+                .add(sumObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
                 .add(sumObat.getQtyBiji());
 
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
