@@ -5,6 +5,8 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -59,9 +61,15 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("expiredDate", (String) mapCriteria.get("exp_date")));
             }
 
-            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
-            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
-            criteria.add(Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0))));
+//            Criterion qtyBox = Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0)));
+//            Criterion qtyLembar = Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0)));
+//            Criterion qtyBiji = Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0)));
+//
+//            LogicalExpression andExp = Restrictions.and(qtyBox, qtyLembar);
+
+//            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
+//            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
+//            criteria.add(Restrictions.ne("qtyBiji", new BigInteger(String.valueOf(0))));
 
             if (mapCriteria.get("asc") != null){
                 criteria.addOrder(Order.asc("createdDate"));

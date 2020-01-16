@@ -1557,8 +1557,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities){
                 obatDetail = new TransaksiObatDetail();
 
+                ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
+
                 obatDetail.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
-//                obatDetail.setNamaObat(obatEntity.getNamaObat());
+                obatDetail.setNamaObat(obatEntity.getNamaObat());
                 obatDetail.setIdApprovalObat(obatDetailEntity.getIdApprovalObat());
                 obatDetail.setIdObat(obatDetailEntity.getIdObat());
                 obatDetail.setFlag(obatDetailEntity.getFlag());
@@ -1582,12 +1584,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
                 obatDetail.setIdPabrik(obatDetailEntity.getIdPabrik());
                 obatDetail.setMerek(obatDetailEntity.getMrek());
-
+                obatDetails.add(obatDetail);
             }
         }
 
         logger.info("[ObatPoliBoImpl.checkObatStockLama] END <<<<<<<<<<");
-        return null;
+        return obatDetails;
     }
 
     private String getNextPermintaanObatId() throws GeneralBOException {
