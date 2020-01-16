@@ -9,7 +9,7 @@
 
 
         <id name="idObat">
-            <column name="id_obat" sql-type="varchar" length="10" not-null="true" />
+            <column name="id_obat" sql-type="varchar" length="30" not-null="true" />
         </id>
 
         <property name="namaObat">
@@ -80,6 +80,13 @@
 
         <property name="hargaTerakhir">
             <column name="harga_terakhir" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="idSeqObat">
+            <column name="id_seq_obat" sql-type="varchar" length="30" not-null="true"/>
+        </property>
+
+        <property name="expiredDate">
+            <column name="expired_date" sql-type="date" not-null="false"/>
         </property>
 
     </class>

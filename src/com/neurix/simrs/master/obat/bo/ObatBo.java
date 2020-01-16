@@ -18,4 +18,5 @@ public interface ObatBo{
 
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
     public CheckObatResponse checkFisikObat(Obat bean) throws GeneralBOException;
+    public CheckObatResponse checkFisikObatByIdPabrik(Obat bean) throws GeneralBOException;
 }
