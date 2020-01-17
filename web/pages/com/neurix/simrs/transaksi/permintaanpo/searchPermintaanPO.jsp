@@ -183,28 +183,35 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <s:if test='#row.enableApprove == false'>
-                                            <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{verify_po}">
-                                                <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                            </s:a>
-                                        </s:if>
-                                        <s:else>
-                                            <s:url var="print_doc" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{print_doc}">
-                                                <button class="btn btn-info"><i class="fa fa-print"></i></button>
-                                            </s:a>
-                                            <s:url var="approve_po" namespace="/permintaanpo" action="initApproval_permintaanpo" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{approve_po}">
-                                                <button class="btn btn-success"><i class="fa fa-check"></i></button>
-                                            </s:a>
-                                        </s:else>
+
+                                        <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                            <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                        </s:url>
+                                        <s:a href="%{verify_po}">
+                                            <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                        </s:a>
+                                        <%--<s:if test='#row.enableApprove == false'>--%>
+                                            <%--<s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">--%>
+                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{verify_po}">--%>
+                                                <%--<button class="btn btn-primary"><i class="fa fa-edit"></i></button>--%>
+                                            <%--</s:a>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<s:url var="print_doc" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
+                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{print_doc}">--%>
+                                                <%--<button class="btn btn-info"><i class="fa fa-print"></i></button>--%>
+                                            <%--</s:a>--%>
+                                            <%--<s:url var="approve_po" namespace="/permintaanpo" action="initApproval_permintaanpo" escapeAmp="false">--%>
+                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{approve_po}">--%>
+                                                <%--<button class="btn btn-success"><i class="fa fa-check"></i></button>--%>
+                                            <%--</s:a>--%>
+                                        <%--</s:else>--%>
                                     </td>
                                 </tr>
                             </s:iterator>

@@ -365,7 +365,14 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         if (bean.getNoBatch() != null && bean.getNoBatch().compareTo(0) == 1){
 
-            Boolean isNew = isNewBatchCheckByNoBatchAndExpDate(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
+
+            MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
+
+            Boolean isNew = true;
+            if (batchEntity.getId() != null){
+                isNew = false;
+            }
+//            Boolean isNew = isNewBatchCheckByNoBatchAndExpDate(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
 
             if (isNew){
 
@@ -392,7 +399,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 }
 
             } else {
-                MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
+//                MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
                 batchEntity.setQtyApprove(batchEntity.getQtyApprove().add(bean.getQtyApprove()));
                 batchEntity.setAction("U");
                 batchEntity.setLastUpdate(bean.getLastUpdate());
@@ -721,9 +728,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
-        BigInteger allStockToBiji = (sumObat.getQtyBox().multiply(cons))
-                .add(sumObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
-                .add(sumObat.getQtyBiji());
+        BigInteger allStockToBiji = new BigInteger(String.valueOf(0));
+        if (sumObat.getIdSeqObat() != null){
+            allStockToBiji = (sumObat.getQtyBox().multiply(cons))
+                    .add(sumObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
+                    .add(sumObat.getQtyBiji());
+        }
 
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
         BigDecimal ttlAvgHargaPermintaan = new BigDecimal(0);
@@ -740,22 +750,26 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
             newObatEntity.setMerk(obatEntity.getMerk());
 
+            BigInteger qtyBox = new BigInteger(String.valueOf(0));
+            BigInteger qtyLembar = new BigInteger(String.valueOf(0));
+            BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+
             if ("box".equalsIgnoreCase(bean.getJenisSatuan())){
-                newObatEntity.setQtyBox(bean.getQtyApprove());
+                qtyBox = bean.getQtyApprove();
 
                 ttlQtyPermintaan = bean.getQtyApprove().multiply(cons);
                 ttlAvgHargaPermintaan = (bean.getAverageHargaBox().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP))
                         .multiply(new BigDecimal(ttlQtyPermintaan));
             }
             if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())){
-                newObatEntity.setQtyLembar(bean.getQtyApprove());
+                qtyLembar = bean.getQtyApprove();
 
                 ttlQtyPermintaan = bean.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
                 ttlAvgHargaPermintaan = (bean.getAverageHargaLembar().divide(new BigDecimal(obatEntity.getBijiPerLembar()),2, RoundingMode.HALF_UP ))
                         .multiply(new BigDecimal(ttlQtyPermintaan));
             }
             if ("biji".equalsIgnoreCase(bean.getJenisSatuan())){
-                newObatEntity.setQtyBiji(bean.getQtyApprove());
+                qtyBiji = bean.getQtyApprove();
 
                 ttlQtyPermintaan = bean.getQtyApprove();
                 ttlAvgHargaPermintaan = bean.getAverageHargaBiji().multiply(new BigDecimal(ttlQtyPermintaan));
@@ -765,6 +779,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             BigInteger ttlQty = allStockToBiji.add(ttlQtyPermintaan);
             BigDecimal newAvgHargaBijian = ttlHargaBijian.divide(new BigDecimal(ttlQty), 2, RoundingMode.HALF_UP);
 
+
             if (obatEntity.getLembarPerBox().compareTo(new BigInteger(String.valueOf(0))) == 1){
                 newObatEntity.setAverageHargaBox(newAvgHargaBijian.multiply(new BigDecimal(cons)));
                 newObatEntity.setAverageHargaLembar(newAvgHargaBijian.multiply(new BigDecimal(obatEntity.getBijiPerLembar())));
@@ -772,6 +787,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             if (obatEntity.getBijiPerLembar().compareTo(new BigInteger(String.valueOf(0))) == 1){
                 newObatEntity.setAverageHargaBiji(newAvgHargaBijian);
             }
+
+
+            newObatEntity.setQtyBox(qtyBox);
+            newObatEntity.setQtyLembar(qtyLembar);
+            newObatEntity.setQtyBiji(qtyBiji);
 
             newObatEntity.setFlag("Y");
             newObatEntity.setAction("C");
@@ -1080,15 +1100,34 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR." + e.getMessage());
         }
 
+        for (BatchPermintaanObat permintaanObat : batchList){
+
+            Boolean allowApprove = false;
+
+            try {
+                allowApprove = transaksiObatDetailBatchDao.checkBatchApproveFlagByIdApproval(idApproval, permintaanObat.getNoBatch());
+            } catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR.", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR." + e.getMessage());
+            }
+
+            if (allowApprove){
+                permintaanObat.setIsApprove("Y");
+            } else {
+                permintaanObat.setIsApprove("N");
+            }
+        }
+
         logger.info("[PermintaanVendorBoImpl.getLastNoBatch] END <<<");
         return batchList;
     }
 
     @Override
-    public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch) throws GeneralBOException {
+    public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch, String isApproval) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getListTransByBatchSorted] START >>>");
 
         List<TransaksiObatDetail> results = new ArrayList<>();
+        List<TransaksiObatDetail> resultsNew = new ArrayList<>();
         for (TransaksiObatDetail obatDetail : obatDetails){
 
             MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(obatDetail.getIdTransaksiObatDetail(), noBatch, null);
@@ -1101,11 +1140,25 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             if (batchEntity != null){
                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());
+
+                // sorting for approval
+                if ("Y".equalsIgnoreCase(isApproval)){
+                    if (noBatch.equals(batchEntity.getNoBatch())){
+                        resultsNew.add(obatDetail);
+                    }
+                }
             }
+
+
             results.add(obatDetail);
         }
+
         logger.info("[PermintaanVendorBoImpl.getListTransByBatchSorted] END <<<");
-        return results;
+        if ("Y".equalsIgnoreCase(isApproval)){
+            return resultsNew;
+        } else {
+            return results;
+        }
     }
 
     private String compareQtyRequestToQtyBatch(BigInteger qty, String idTransObatDetail){

@@ -61,7 +61,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("exp_date") != null){
                 criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
-
+            if (mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
 
 //            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
 //            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
@@ -76,7 +78,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+
 
         List<ImSimrsObatEntity> results = criteria.list();
 
