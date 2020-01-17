@@ -432,25 +432,25 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
 
-//        if (transaksiObatDetailEntity != null) {
-//
-//            transaksiObatDetailEntity.setQtyApprove(bean.getQty());
-//            transaksiObatDetailEntity.setFlagDiterima(bean.getFlagDiterima());
-//            transaksiObatDetailEntity.setIdPabrik(bean.getIdPabrik());
-//            transaksiObatDetailEntity.setAction("U");
-//            transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
-//            transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//            transaksiObatDetailEntity.setKeterangan(bean.getKeterangan());
-//            transaksiObatDetailEntity.setLembarPerBox(bean.getLembarPerBox());
-//            transaksiObatDetailEntity.setBijiPerLembar(bean.getBijiPerLembar());
-//
-//            try {
-//                transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
-//            } catch (HibernateException e) {
-//                logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
-//                throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
-//            }
-//        }
+        if (transaksiObatDetailEntity != null) {
+
+            //transaksiObatDetailEntity.setQtyApprove(bean.getQty());
+            //transaksiObatDetailEntity.setFlagDiterima(bean.getFlagDiterima());
+            transaksiObatDetailEntity.setIdPabrik(bean.getIdPabrik());
+            transaksiObatDetailEntity.setAction("U");
+            //transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
+            //transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            transaksiObatDetailEntity.setKeterangan(bean.getKeterangan());
+            //transaksiObatDetailEntity.setLembarPerBox(bean.getLembarPerBox());
+            //transaksiObatDetailEntity.setBijiPerLembar(bean.getBijiPerLembar());
+
+            try {
+                transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
+            } catch (HibernateException e) {
+                logger.error("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] ERROR when update obat detail. " + e.getMessage());
+            }
+        }
         logger.info("[PermintaanVendorBoImpl.saveUpdateTransObatDetail] END <<<");
     }
 
@@ -734,7 +734,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             newObatEntity.setIdSeqObat(getIdNextSeqObat());
             newObatEntity.setIdObat(bean.getIdObat());
             newObatEntity.setNamaObat(bean.getNamaObat());
-            newObatEntity.setIdPabrik(obatEntity.getIdPabrik());
+            newObatEntity.setIdPabrik(bean.getIdPabrik());
             newObatEntity.setExpiredDate(bean.getExpDate());
             newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
             newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
