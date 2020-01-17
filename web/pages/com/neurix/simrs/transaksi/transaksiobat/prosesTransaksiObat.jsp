@@ -257,6 +257,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Obat</td>
                                 <td align="center">Qty</td>
+                                <td>Jenis Satuan</td>
                                 <td align="right">Harga Satuan</td>
                                 <td align="right">Harga Total</td>
                             </tr>
@@ -266,6 +267,7 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
+                                    <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
                                         <script>var val = <s:property value="harga"/>;
                                         if (val != null && val != '') {
@@ -300,6 +302,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Obat</td>
                                 <td align="center">Qty</td>
+                                <td>Jenis Satuan</td>
                                 <td align="right">Harga Satuan</td>
                                 <td align="right">Harga Total</td>
                             </tr>
@@ -309,6 +312,7 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
+                                    <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
                                         <script>var val = <s:property value="harga"/>;
                                         if (val != null && val != '') {
@@ -432,7 +436,7 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.reload(true);
+                                                                                         window.location.href = 'initForm_transaksi.action';
                                                                                      }
                                                                             }"
                                         >
@@ -512,7 +516,7 @@
                                       name="getListObatPoli_obatpoli"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initObatPoli.listOfObatPoli" id="ob_id_obat"
-                                      listKey="idObat + '|' + namaObat + '|' + qty"
+                                      listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar"
                                       listValue="namaObat"
                                       onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);"
                                       headerKey="" headerValue="[Select one]"
@@ -525,20 +529,45 @@
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group" id="nama_obat_form">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
-                        <div class="col-md-7">
-                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="nama_obat"></s:textfield>
-                        </div>
-                    </div>
+                    <%--<div class="form-group" id="nama_obat_form">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Obat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:textfield readonly="true" type="text" min="1" cssClass="form-control"--%>
+                                         <%--cssStyle="margin-top: 7px" id="nama_obat"></s:textfield>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-7">
+                        <div class="col-md-2">
                             <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
+                                         cssStyle="margin-top: 7px" id="ob_qtyBox"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="ob_qtyLembar"></s:textfield>
+                        </div>
+                        <div class="col-md-3">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="ob_qtyBiji"></s:textfield>
                         </div>
                     </div>
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                            <div class="col-md-7">
+                                <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                          cssStyle="margin-top: 7px; width: 100%"
+                                          onchange="var warn = $('#war_ob_jenis_satuan').is(':visible'); if (warn){$('#cor_ob_jenis_satuan').show().fadeOut(3000);$('#war_ob_jenis_satuan').hide()}"
+                                          id="ob_jenis_satuan"
+                                          headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2"/>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_ob_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_ob_jenis_satuan"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -575,12 +604,14 @@
 
     function showModal(select) {
         if (select == 5) {
-            $('#jenis_form').show();
-            $('#nama_form').show();
-            $('#nama_obat_form').hide();
-            $('#ob_stok').val('');
+//            $('#jenis_form').show();
+//            $('#nama_form').show();
+//            $('#nama_obat_form').hide();
+            $('#ob_id_obat').val('').trigger('change');
+            $('#ob_jenis_satuan').val('').trigger('change');
+            $('#ob_qtyBox, #ob_qtyLembar, #ob_qtyBiji').val('');
             $('#ob_qty').val('1');
-            $('#load_obat, #warning_obat, #war_obat, #war_qty_obat').hide();
+            $('#load_obat, #warning_obat, #war_obat, #war_qty_obat, #war_ob_jenis_satuan').hide();
             $('#modal-obat').modal('show');
         }
     }
@@ -608,22 +639,63 @@
 
     function saveObat() {
 
-        var idObat = $('#ob_id_obat').val();
+        var obat = $('#ob_id_obat').val();
         var qty = $('#ob_qty').val();
-        var stok = $('#ob_stok').val();
+        var jenisSatuan = $('#ob_jenis_satuan').val();
+        var id = "";
+        var nama = "";
+        var qtyBox = "";
+        var qtyLembar = "";
+        var qtyBiji = "";
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
 
-        if (idObat != '' && qty > 0) {
+        if (obat != '' && parseInt(qty) > 0) {
+
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                id = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                nama = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                qtyBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                qtyLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                qtyBiji = obat.split('|')[4];
+            }
+            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
+                lembarPerBox = obat.split('|')[5];
+            }
+            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
+                bijiPerLembar = obat.split('|')[6];
+            }
+
+            var stok = 0;
+
+            if ("box" == jenisSatuan) {
+                stok = qtyBox;
+            }
+            if ("lembar" == jenisSatuan) {
+                stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+            }
+            if ("biji" == jenisSatuan) {
+                stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+            }
 
             if (parseInt(qty) <= parseInt(stok)) {
 
-                var id = idObat.split('|')[0];
-                var nama = idObat.split('|')[1];
+//                var id = idObat.split('|')[0];
+//                var nama = idObat.split('|')[1];
 
                 $('#save_obat').hide();
                 $('#load_obat').show();
 
                 dwr.engine.setAsync(true);
-                TransaksiObatAction.saveAddObat(id, qty, function (response) {
+                TransaksiObatAction.saveAddObat(id, qty, jenisSatuan, function (response) {
                     if (response == "success") {
                         $('#modal-obat').modal('hide');
                         window.location.reload(true);
@@ -638,11 +710,14 @@
         } else {
             $('#warning_obat').show().fadeOut(5000);
             $('#obat_error').text("Silahkan cek kembali data inputan..!");
-            if (idObat == '') {
+            if (obat == '') {
                 $('#war_obat').show();
             }
             if (qty == '' || qty < 1) {
                 $('#war_qty_obat').show();
+            }
+            if (jenisSatuan == '' && jenisSatuan == null) {
+                $('#war_ob_jenis_satuan').show();
             }
         }
     }
@@ -655,14 +730,47 @@
     }
 
     function setStokObat(select) {
+        var idx = select.selectedIndex;
+        if (idx > 0) {
 
-        if (select != '' && select != null) {
-            var idx = select.selectedIndex;
-            var idObat = select.options[idx].value;
-            var id = idObat.split('|')[0];
-            var nama = idObat.split('|')[1];
-            var stokOb = idObat.split('|')[2];
-            $('#ob_stok').val(stokOb);
+            var id = "";
+            var nama = "";
+            var qtyBox = "";
+            var qtyLembar = "";
+            var qtyBiji = "";
+            var lembarPerBox = "";
+            var bijiPerLembar = "";
+
+            var obat = select.options[idx].value;
+
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                id = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                nama = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                qtyBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                qtyLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                qtyBiji = obat.split('|')[4];
+            }
+            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
+                lembarPerBox = obat.split('|')[5];
+            }
+            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
+                bijiPerLembar = obat.split('|')[6];
+            }
+
+            console.log(obat);
+
+            $('#ob_qtyBox').val(qtyBox);
+            $('#ob_qtyLembar').val(qtyLembar);
+            $('#ob_qtyBiji').val(qtyBiji);
+
         }
     }
 

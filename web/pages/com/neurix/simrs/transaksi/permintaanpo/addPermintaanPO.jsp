@@ -12,6 +12,22 @@
     </style>
     <script type='text/javascript'>
 
+        function formatRupiah2(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
         $(document).ready(function () {
 
             $('#permintaan_po').addClass('active');
@@ -49,7 +65,19 @@
             $("#imgInp").change(function () {
                 readURL(this);
             });
+
+            var nominal = document.getElementById('harga');
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value, 'Rp. ');
+            });
         });
+
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
 
     </script>
 
@@ -70,7 +98,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tambah Permintaan PO
+            Tambah Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -82,23 +110,37 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input PO</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_po">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
                         </div>
+                        <div id="warning_fisik"></div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Nama Vendor</label>
                                     <div class="col-md-8">
-                                        <s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"
-                                                  cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                  id="nama_vendor"
+                                        <s:action id="initVendor" namespace="/permintaanpo"
+                                                  name="getComboVendor_permintaanpo"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initVendor.listOfVendor" id="nama_vendor"
+                                                  name="headerCheckup.idPelayanan" listKey="idVendor"
+                                                  listValue="namaVendor"
+                                                  onchange="var warn =$('#war_po_vendor').is(':visible'); if (warn){$('#cor_po_vendor').show().fadeOut(3000);$('#war_po_vendor').hide()};"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_vendor"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_vendor"><i class="fa fa-check"></i> correct</p>
+                                        <%--<s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"--%>
+                                        <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
+                                        <%--id="nama_vendor"--%>
+                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                        <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -108,25 +150,52 @@
                                                   name="getListObat_obat"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                                   list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat + '|' + namaObat + '|' + qty"
-                                                  onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; resetField();"
-                                                  listValue="namaObat"
+                                                  listKey="idObat + '|' + namaObat + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"
+                                                  onchange="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this);"
+                                                  listValue="idPabrik +' | '+ namaObat +' | '+'LB/BX:'+lembarPerBox+' | '+'BJ/LB:'+bijiPerLembar"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_obat"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_obat"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Box</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="lembar_box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar();">
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--&lt;%&ndash;<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>&ndash;%&gt;--%>
+                                <%--<s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"--%>
+                                <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                <%--onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"--%>
+                                <%--id="jenis_satuan"--%>
+                                <%--headerKey="" headerValue="[Select one]"--%>
+                                <%--cssClass="form-control select2"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_jenis"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jumlah</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="jumlah" type="number"--%>
+                                <%--style="margin-top: 7px"--%>
+                                <%--oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_jumlah"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="lembar_box" type="number"--%>
+                                <%--style="margin-top: 7px" min="0" oninput="jmlLembar();">--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group" style="display: none">
                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
                                                resizable="false"
@@ -176,8 +245,10 @@
                                                          alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
-                                                   height="200" width="400" autoOpen="false" title="Confirmation Dialog">
+                                        <sj:dialog id="confirm_dialog" modal="true" resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false"
+                                                   title="Confirmation Dialog">
                                             <center><img border="0" style="height: 40px; width: 40px"
                                                          src="<s:url value="/pages/images/icon_warning.ico"/>"
                                                          name="icon_success">
@@ -185,10 +256,12 @@
                                             </center>
                                             <br>
                                             <div class="modal-footer">
-                                                <a type="button" class="btn btn-warning" style="color: white;" onclick="$('#confirm_dialog').dialog('close')">
+                                                <a type="button" class="btn btn-warning" style="color: white;"
+                                                   onclick="$('#confirm_dialog').dialog('close')">
                                                     <i class="fa fa-times"></i> No
                                                 </a>
-                                                <a type="button" class="btn btn-success" style="color: white;" onclick="savePermintaanPO()">
+                                                <a type="button" class="btn btn-success" style="color: white;"
+                                                   onclick="savePermintaanPO()">
                                                     <i class="fa fa-arrow-right"></i> Yes
                                                 </a>
                                             </div>
@@ -198,27 +271,85 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="lembar_perbox" type="number"
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_lembar_perbox').is(':visible'); if (warn){$('#cor_po_lembar_perbox').show().fadeOut(3000);$('#war_po_lembar_perbox').hide()};"
+                                               onchange="cekFisik()"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_lembar_perbox"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_lembar_perbox"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Jml Biji/Lembar</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="biji_lembar" type="number" style="margin-top: 7px" oninput="jmlBiji()"/>
+                                        <input class="form-control" id="biji_perlembar" type="number"
+                                               style="margin-top: 7px" onchange="cekFisik()"
+                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_biji_perlembar"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4" style="margin-top: 7px">Harga</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<input class="form-control" id="harga" style="margin-top: 7px"--%>
+                                <%--oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>--%>
+                                <%--<p style="color: red; display: none;"--%>
+                                <%--id="war_po_harga"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; display: none;"--%>
+                                <%--id="cor_po_harga"><i class="fa fa-check"></i> correct</p>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                            </div>
+                        </div>
+                        <div class="box-header with-border"></div>
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
+                                    <div class="col-md-8">
+                                        <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
+                                        <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                                  cssStyle="margin-top: 7px; width: 100%"
+                                                  onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
+                                                  id="jenis_satuan"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jenis"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Lembar</label>
+                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="lembar" type="number" style="margin-top: 7px" readonly="true"/>
+                                        <input class="form-control" id="jumlah" type="number"
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jml Biji</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="biji" type="number" style="margin-top: 7px" readonly="true"/>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="harga" type="number" style="margin-top: 7px"/>
+                                        <input class="form-control" id="harga" style="margin-top: 7px"
+                                               oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>
+                                        <p style="color: red; display: none;"
+                                           id="war_po_harga"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_po_harga"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
                             </div>
@@ -228,11 +359,22 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                    <div class="col-md-5 col-md-offset-4">
                                         <a type="button" class="btn btn-success" onclick="addToListPo()"><i
                                                 class="fa fa-plus"></i> Tambah</a>
-                                        <a type="button" class="btn btn-danger" onclick="reset()"><i class="fa fa-refresh"></i>
+                                        <a type="button" class="btn btn-danger" onclick="reset()"><i
+                                                class="fa fa-refresh"></i>
                                             Reset</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-md-12 ">
+                                        <ul class="pull-right">
+                                            <li>LB/BX = Jml Lembar/Box</li>
+                                            <li>BJ/LB = Jml Biji/Lembar</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +382,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped" id="tabel_po">
@@ -248,11 +390,10 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
                                 <td>Obat</td>
-                                <td>Box</td>
-                                <td>Lembar/Box</td>
-                                <td>Lembar</td>
-                                <td>Biji/Lembar</td>
-                                <td>Biji</td>
+                                <td align="center">Jumlah</td>
+                                <td align="center">Jenis Satuan</td>
+                                <td align="center">Jml Lembar/Box</td>
+                                <td align="center">Jml Biji/Lembar</td>
                                 <td align="right">Harga</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -279,7 +420,8 @@
                             <div class="col-md-4">
                                 <a type="button" class="btn btn-success" onclick="confirm()"><i
                                         class="fa fa-arrow-right"></i> Save</a>
-                                <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i class="fa fa-arrow-left"></i>
+                                <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
+                                        class="fa fa-arrow-left"></i>
                                     Back</a>
                             </div>
                         </div>
@@ -297,71 +439,86 @@
         window.location.reload(true);
     }
 
-    function jmlLembar(){
-        var box         = $('#box').val();
-        var lembarBox   = $('#lembar_box').val();
-
-        if(lembarBox != '' && parseInt(lembarBox) > 0 && box != '' && parseInt(box) > 0){
-            var lembarBox = parseInt(lembarBox) * parseInt(box);
-            $('#lembar').val(lembarBox);
-        }else{
-            $('#lembar').val('');
-        }
-    }
-
-    function jmlBiji(){
-
-        var lembar      = $('#lembar').val();
-        var bijiLembar  = $('#biji_lembar').val();
-
-        if (lembar != '' && parseInt(lembar) > 0 && bijiLembar != '' && parseInt(bijiLembar) > 0){
-            var jmlBiji = parseInt(lembar) * parseInt(bijiLembar);
-            $('#biji').val(jmlBiji);
-        }else{
-            $('#biji').val('');
-        }
-    }
-
-    function confirm(){
-        var data        = $('#tabel_po').tableToJSON();
-        var stringData  = JSON.stringify(data);
-        var vendor      = $('#nama_vendor').val();
-        if(stringData != '[]' && vendor != ''){
+    function confirm() {
+        var data = $('#tabel_po').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var vendor = $('#nama_vendor').val();
+        if (stringData != '[]' && vendor != '') {
             $('#confirm_dialog').dialog('open');
-        }else{
+        } else {
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
     }
 
-    function resetField(){
-        $('#box, #lembar_box, #lembar, #biji_lembar, #biji, #harga').val('');
+    function resetField(select) {
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
+        var idx = select.selectedIndex;
+
+        if (idx > 0) {
+
+            var obat = select.options[idx].value;
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                lembarPerBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                bijiPerLembar = obat.split('|')[3];
+            }
+            $('#lembar_perbox').val(lembarPerBox);
+            $('#biji_perlembar').val(bijiPerLembar);
+
+            var warn1 = $('#war_po_lembar_perbox').is(':visible');
+            if (warn1) {
+                $('#cor_po_lembar_perbox').show().fadeOut(3000);
+                $('#war_po_lembar_perbox').hide()
+            }
+
+            var warn2 = $('#war_po_biji_perlembar').is(':visible');
+            if (warn2) {
+                $('#cor_po_biji_perlembar').show().fadeOut(3000);
+                $('#war_po_biji_perlembar').hide()
+            }
+
+        }
+        $('#jenis_satuan').val('').trigger('change');
+        $('#jumlah, #harga').val('');
+        $('#warning_fisik').html('');
     }
 
     function addToListPo() {
 
         var vendor = $('#nama_vendor').val();
         var obat = $('#nama_obat').val();
-        var box = $('#box').val();
-        var lembarBox = $('#lembar_box').val();
-        var lembar = $('#lembar').val();
-        var bijiLembar = $('#biji_lembar').val();
-        var biji = $('#biji').val();
+        var jenis = $('#jenis_satuan').val();
+        var jumlah = $('#jumlah').val();
         var harga = $('#harga').val();
         var data = $('#tabel_po').tableToJSON();
+        var lembarPerBox = $('#lembar_perbox').val();
+        var bijiPerLembar = $('#biji_perlembar').val();
 
         var idObat = "";
         var namaObat = "";
-        var qtyObat = "";
+//        var qtyBox = "";
+//        var qtyLembar = "";
 
         var cek = false;
 
-        if (obat != '' && vendor != '') {
-            idObat = obat.split('|')[0];
-            namaObat = obat.split('|')[1];
-            qtyObat = obat.split('|')[2];
+        if (obat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '') {
 
-//            if (parseInt(qty) <= parseInt(stok)) {
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                idObat = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                namaObat = obat.split('|')[1];
+            }
+//            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+//                qtyBox = obat.split('|')[2];
+//            }
+//            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+//                qtyLembar = obat.split('|')[3];
+//            }
+
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
                     cek = true;
@@ -375,28 +532,39 @@
                 var row = '<tr id=' + idObat + '>' +
                         '<td>' + idObat + '</td>' +
                         '<td>' + namaObat + '</td>' +
-                        '<td>' + box + '</td>' +
-                        '<td>' + lembarBox + '</td>' +
-                        '<td>' + lembar + '</td>' +
-                        '<td>' + bijiLembar + '</td>' +
-                        '<td>' + biji + '</td>' +
+                        '<td align="center">' + jumlah + '</td>' +
+                        '<td align="center">' + jenis + '</td>' +
+                        '<td align="center">' + lembarPerBox + '</td>' +
+                        '<td align="center">' + bijiPerLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                         '</tr>';
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
+//                $('#jenis_satuan').attr('disabled', true);
             }
-//            } else {
-//                $('#warning_request').show().fadeOut(5000);
-//                $('#msg_request').text('Jumlah Request tidak boleh melebihi stok obat...!');
-//            }
         } else {
-            if (obat == '') {
-//                $('#war_req_obat').show();
+            if (obat == '' || obat == null) {
+                $('#war_po_obat').show();
             }
-            if (vendor == '') {
-//                $('#war_req_qty').show();
+            if (vendor == '' || vendor == null) {
+                $('#war_po_vendor').show();
+            }
+            if (jenis == '' || jenis == null) {
+                $('#war_po_jenis').show();
+            }
+            if (jumlah <= 0) {
+                $('#war_po_jumlah').show();
+            }
+            if (harga == '') {
+                $('#war_po_harga').show();
+            }
+            if (lembarPerBox == '') {
+                $('#war_po_lembar_perbox').show();
+            }
+            if (bijiPerLembar == '') {
+                $('#war_po_biji_perlembar').show();
             }
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
@@ -409,24 +577,130 @@
 
     function savePermintaanPO() {
         $('#confirm_dialog').dialog('close');
-        var data        = $('#tabel_po').tableToJSON();
-        var stringData  = JSON.stringify(data);
-        var vendor      = $('#nama_vendor').val();
+        var data = $('#tabel_po').tableToJSON();
+        var stringData = JSON.stringify(data);
+        var vendor = $('#nama_vendor').val();
         $('#waiting_dialog').dialog('open');
-            dwr.engine.setAsync(true);
-            PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#waiting_dialog').dialog('close');
-                        $('#info_dialog').dialog('open');
-                    } else {
-                        $('#warning_po').show().fadeOut(5000);
-                        $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
-                    }
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.savePermintaanPO(vendor, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#waiting_dialog').dialog('close');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#warning_po').show().fadeOut(5000);
+                    $('#msg_po').text('Terjadi kesalahan saat penyimpanan data...!');
                 }
-            });
+            }
+        });
     }
+
+    function cekFisik() {
+
+        var obat = $('#nama_obat').val();
+        var lembar = $('#lembar_perbox').val();
+        var biji = $('#biji_perlembar').val();
+        var idObat = "";
+        var namaObat = "";
+        var lembarperBox = "";
+        var bijiPerLembar = "";
+        var idPabrik = "";
+
+        if (obat != '') {
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                idObat = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                namaObat = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                lembarperBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                bijiPerLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                idPabrik = obat.split('|')[4];
+            }
+
+            var newLembar = '<p>&nbsp;&nbsp;</p>';
+            var newBiji = '<p>&nbsp;&nbsp;</p>';
+
+            if (lembarperBox != lembar && bijiPerLembar != biji) {
+                newLembar = '<p> Menjadi ' + '<span style="margin-left: 50px">' + lembar + '</span>' + '</p>';
+                newBiji = '<p>Menjadi ' + '<span style="margin-left: 50px">' + biji + '</span>' + '</p>';
+            } else {
+                if (lembarperBox != lembar) {
+                    newLembar = '<p> Menjadi ' + '<span style="margin-left: 50px">' + lembar + '</span>' + '</p>';
+                }
+
+                if (bijiPerLembar != biji) {
+                    newBiji = '<p>Menjadi ' + '<span style="margin-left: 50px">' + biji + '</span>' + '</p>';
+                }
+            }
+
+            var warning = '<div class="alert alert-warning alert-dismissible">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' +
+                    '<h4><i class="icon fa fa-ban"></i> Warning!</h4>' +
+                    '<div class="row">' +
+                    '<div class="col-md-6">' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-12">' +
+                    '<p><b>Obat teridentifikasi berubah fisik..!</b></p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4">' +
+                    '<p>Kode Produksi</p>' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                    '<p>' + idPabrik + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    '<p>Nama Obat</p>' +
+                    '</div>' +
+                    '<div class="col-md-8" style="margin-top: -8px">' +
+                    '<p>' + namaObat + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    '<p>Lembar/Box</p>' +
+                    '</div>' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    '<p>' + lembarperBox + '</p>' +
+                    '</div>' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    newLembar +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    '<p>BijiLembar</p>' +
+                    '</div>' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    '<p>' + bijiPerLembar + '</p>' +
+                    '</div>' +
+                    '<div class="col-md-4" style="margin-top: -8px">' +
+                    newBiji +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+
+            if(lembarperBox == lembar && bijiPerLembar == biji){
+                $('#warning_fisik').html('');
+            }else{
+                $('#warning_fisik').html(warning);
+            }
+
+        }
+    }
+
 
 </script>
 

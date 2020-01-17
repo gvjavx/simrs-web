@@ -40,14 +40,12 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         List<PermintaanResep> listOfResults = new ArrayList<>();
 
-        if (bean != null){
+        if (bean != null) {
 
             List<ImSimrsPermintaanResepEntity> resepEntities = getListEntityResep(bean);
-            if (!resepEntities.isEmpty() && resepEntities.size() > 0)
-            {
+            if (!resepEntities.isEmpty() && resepEntities.size() > 0) {
                 PermintaanResep permintaanResep;
-                for (ImSimrsPermintaanResepEntity resepEntity : resepEntities)
-                {
+                for (ImSimrsPermintaanResepEntity resepEntity : resepEntities) {
                     permintaanResep = new PermintaanResep();
                     permintaanResep.setIdPermintaanResep(resepEntity.getIdPermintaanResep());
                     permintaanResep.setIdPasien(resepEntity.getIdPasien());
@@ -63,8 +61,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                     permintaanResep.setIdDokter(resepEntity.getIdDokter());
 
                     ImSimrsPasienEntity pasienEntity = getDataPasienById(resepEntity.getIdPasien());
-                    if (pasienEntity != null)
-                    {
+                    if (pasienEntity != null) {
                         permintaanResep.setNamaPasien(pasienEntity.getNama());
                     }
 
@@ -77,60 +74,59 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         return listOfResults;
     }
 
-    private ImSimrsPasienEntity getDataPasienById(String id) throws GeneralBOException{
+    private ImSimrsPasienEntity getDataPasienById(String id) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.getDataPasienById] START >>>>>>>");
 
-        if (id != null && !"".equalsIgnoreCase(id))
-        {
+        if (id != null && !"".equalsIgnoreCase(id)) {
             List<ImSimrsPasienEntity> pasienEntityList = null;
             Map hsCriteria = new HashMap();
             hsCriteria.put("id_pasien", id);
             hsCriteria.put("flag", "Y");
             try {
                 pasienEntityList = pasienDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[PermintaanResepBoImpl.getDataPasienById] ERROR get list data pasien. ",e);
-                throw new GeneralBOException("[PermintaanResepBoImpl.getDataPasienById] ERROR get list data pasien. ",e);
+            } catch (HibernateException e) {
+                logger.error("[PermintaanResepBoImpl.getDataPasienById] ERROR get list data pasien. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.getDataPasienById] ERROR get list data pasien. ", e);
             }
 
             logger.info("[PermintaanResepBoImpl.getDataPasienById] END <<<<<<<");
-            if (!pasienEntityList.isEmpty() && pasienEntityList.size() > 0){
+            if (!pasienEntityList.isEmpty() && pasienEntityList.size() > 0) {
                 return pasienEntityList.get(0);
             }
         }
         return null;
     }
 
-    private List<ImSimrsPermintaanResepEntity> getListEntityResep(PermintaanResep bean) throws GeneralBOException{
+    private List<ImSimrsPermintaanResepEntity> getListEntityResep(PermintaanResep bean) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.getListEntityResep] START >>>>>>>");
 
         List<ImSimrsPermintaanResepEntity> permintaanResepEntityList = new ArrayList<>();
 
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
 
-            if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())){
+            if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())) {
                 hsCriteria.put("id_permintaan_resep", bean.getIdPermintaanResep());
             }
-            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 hsCriteria.put("id_pasien", bean.getIdPasien());
             }
-            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())){
+            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())) {
                 hsCriteria.put("id_approval_obat", bean.getIdApprovalObat());
             }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
 
             try {
                 permintaanResepEntityList = permintaanResepDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ",e);
-                throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ",e);
+            } catch (HibernateException e) {
+                logger.error("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ", e);
             }
         }
 
@@ -139,15 +135,14 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     }
 
 
-
     @Override
-    public void saveAdd(PermintaanResep bean, String resep) throws GeneralBOException, JSONException {
+    public void saveAdd(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.saveAdd] START >>>>>>>");
 
         String id = getNextApprovalObatId();
 
         ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
-        approvalEntity.setIdApprovalObat("INV"+id);
+        approvalEntity.setIdApprovalObat("INV" + id);
         approvalEntity.setIdPelayanan(bean.getIdPelayanan());
         approvalEntity.setFlag("Y");
         approvalEntity.setAction("C");
@@ -160,14 +155,14 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         try {
             approvalTransaksiObatDao.addAndSave(approvalEntity);
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ", e);
         }
 
         id = getNextPermintaanResepId();
         ImSimrsPermintaanResepEntity permintaanEntity = new ImSimrsPermintaanResepEntity();
-        permintaanEntity.setIdPermintaanResep("RSP"+id);
+        permintaanEntity.setIdPermintaanResep("RSP" + id);
         permintaanEntity.setIdDokter(bean.getIdDokter());
         permintaanEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
         permintaanEntity.setIdPasien(bean.getIdPasien());
@@ -184,30 +179,47 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ", e);
         }
 
-        if(resep != null && !"".equalsIgnoreCase(resep)){
-            JSONArray json = new JSONArray(resep);
-            for (int i=0; i < json.length(); i++){
-                TransaksiObatDetail detail = new TransaksiObatDetail();
-                JSONObject obj = json.getJSONObject(i);
+        if (detailList.size() > 0) {
 
+            for (TransaksiObatDetail detailObat : detailList) {
+                TransaksiObatDetail detail = new TransaksiObatDetail();
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                detail.setIdObat(obj.getString("ID"));
-                detail.setQty(new BigInteger(obj.getString("Qty")));
-                detail.setKeterangan(obj.getString("Keterangan"));
+                detail.setIdObat(detailObat.getIdObat());
+                detail.setQty(detailObat.getQty());
+                detail.setQtyApprove(detailObat.getQty());
+                detail.setJenisSatuan(detailObat.getJenisSatuan());
+                detail.setKeterangan(detailObat.getKeterangan());
                 detail.setCreatedDate(bean.getCreatedDate());
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());
                 detail.setLastUpdateWho(bean.getCreatedWho());
                 saveObatResep(detail);
-
-                logger.info("[PermintaanResepAction.saveTindakanRawat] JSON OBJECT : "+obj.getString("Obat"));
             }
         }
+//        if(resep != null && !"".equalsIgnoreCase(resep)){
+//            JSONArray json = new JSONArray(resep);
+//            for (int i=0; i < json.length(); i++){
+//                TransaksiObatDetail detail = new TransaksiObatDetail();
+//                JSONObject obj = json.getJSONObject(i);
+//
+//                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+//                detail.setIdObat(obj.getString("ID"));
+//                detail.setQty(new BigInteger(obj.getString("Qty")));
+//                detail.setKeterangan(obj.getString("Keterangan"));
+//                detail.setCreatedDate(bean.getCreatedDate());
+//                detail.setCreatedWho(bean.getCreatedWho());
+//                detail.setLastUpdate(bean.getCreatedDate());
+//                detail.setLastUpdateWho(bean.getCreatedWho());
+//                saveObatResep(detail);
+//
+//                logger.info("[PermintaanResepAction.saveTindakanRawat] JSON OBJECT : "+obj.getString("Obat"));
+//            }
+//        }
         logger.info("[PermintaanResepBoImpl.saveAdd] END <<<<<<<");
     }
 
@@ -218,10 +230,12 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
 
         String id = getNextTransaksiObatDetail();
-        obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
+        obatDetailEntity.setIdTransaksiObatDetail("ODT" + id);
         obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
         obatDetailEntity.setIdObat(bean.getIdObat());
         obatDetailEntity.setQty(bean.getQty());
+        obatDetailEntity.setQtyApprove(bean.getQtyApprove());
+        obatDetailEntity.setJenisSatuan(bean.getJenisSatuan());
         obatDetailEntity.setFlag("Y");
         obatDetailEntity.setAction("C");
         obatDetailEntity.setCreatedDate(bean.getCreatedDate());
@@ -229,44 +243,45 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setLastUpdate(bean.getCreatedDate());
         obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
         obatDetailEntity.setKeterangan(bean.getKeterangan());
+
         try {
             transaksiObatDetailDao.addAndSave(obatDetailEntity);
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ", e);
         }
         logger.info("[PermintaanResepBoImpl.saveObatResep] END <<<<<<<");
     }
 
-    private String getNextPermintaanResepId() throws GeneralBOException{
+    private String getNextPermintaanResepId() throws GeneralBOException {
         String id = "";
         try {
             id = permintaanResepDao.getNextId();
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.getNextPermintaanResepId] ERROR when get next id resep. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.getNextPermintaanResepId] ERROR when get next id resep. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.getNextPermintaanResepId] ERROR when get next id resep. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getNextPermintaanResepId] ERROR when get next id resep. ", e);
         }
         return id;
     }
 
-    private String getNextApprovalObatId() throws GeneralBOException{
+    private String getNextApprovalObatId() throws GeneralBOException {
         String id = "";
         try {
             id = approvalTransaksiObatDao.getNextId();
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.getNextApprovalObatId] ERROR when get next id approval obat. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.getNextApprovalObatId] ERROR when get next id approval obat. ",e);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.getNextApprovalObatId] ERROR when get next id approval obat. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getNextApprovalObatId] ERROR when get next id approval obat. ", e);
         }
         return id;
     }
 
-    private String getNextTransaksiObatDetail() throws GeneralBOException{
+    private String getNextTransaksiObatDetail() throws GeneralBOException {
         String id = "";
         try {
-            id = approvalTransaksiObatDao.getNextId();
-        } catch (HibernateException e){
-            logger.error("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ",e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ",e);
+            id = transaksiObatDetailDao.getNextId();
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getNextTransaksiObatDetail] ERROR when get next id transaksi obat detail. ", e);
         }
         return id;
     }

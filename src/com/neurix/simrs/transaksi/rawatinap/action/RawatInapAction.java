@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,27 @@ public class RawatInapAction extends BaseMasterAction {
     private RawatInapBo rawatInapBoProxy;
     private CheckupBo checkupBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+
+    private String id;
+    private String idResep;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdResep() {
+        return idResep;
+    }
+
+    public void setIdResep(String idResep) {
+        this.idResep = idResep;
+    }
 
     public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
         this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
@@ -230,5 +253,43 @@ public class RawatInapAction extends BaseMasterAction {
 
         logger.info("[RawatInapAction.getListJenisPeriksaPasien] end process <<<");
         return result;
+    }
+
+    public String printResepPasien(){
+
+        String idResep = getIdResep();
+        String id = getId();
+        String jk = "";
+
+        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+        reportParams.put("resepId", idResep);
+        reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        reportParams.put("nik",headerCheckup.getNoKtp());
+        reportParams.put("nama",headerCheckup.getNama());
+        reportParams.put("tglLahir",headerCheckup.getTempatLahir()+", "+headerCheckup.getStTglLahir().toString());
+        if("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
+            jk = "Laki-Laki";
+        }else{
+            jk = "Perempuan";
+        }
+        reportParams.put("jenisKelamin",jk);
+        reportParams.put("jenisPasien",jenisPriksaPasien.getKeterangan());
+        reportParams.put("poli",headerCheckup.getNamaPelayanan());
+        reportParams.put("provinsi",headerCheckup.getNamaProvinsi());
+        reportParams.put("kabupaten",headerCheckup.getNamaKota());
+        reportParams.put("kecamatan",headerCheckup.getNamaKecamatan());
+        reportParams.put("desa",headerCheckup.getNamaDesa());
+
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_resep";
     }
 }

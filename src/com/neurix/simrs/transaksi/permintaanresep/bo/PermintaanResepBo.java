@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface PermintaanResepBo {
     public List<PermintaanResep> getByCriteria(PermintaanResep bean) throws GeneralBOException;
-    public void saveAdd(PermintaanResep bean, String resep) throws GeneralBOException, JSONException;
+    public void saveAdd(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException;
     public void saveObatResep(TransaksiObatDetail bean) throws GeneralBOException;
 }

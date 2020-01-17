@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 
 public class TransaksiObatDetail extends BaseModel {
 
@@ -42,6 +43,90 @@ public class TransaksiObatDetail extends BaseModel {
     private String jenisSatuan;
 
     private BigDecimal hargaTerakhir;
+
+    private BigDecimal hargaPo;
+
+    private String merek;
+    private String idPabrik;
+
+    private BigInteger sumQtyApprove;
+    private String isFullOfQty;
+    private Integer noBatch;
+    private Date expDate;
+    private String status;
+    private String idSeqObat;
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
+    public Date getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(Date expDate) {
+        this.expDate = expDate;
+    }
+
+    public String getIsFullOfQty() {
+        return isFullOfQty;
+    }
+
+    public void setIsFullOfQty(String isFullOfQty) {
+        this.isFullOfQty = isFullOfQty;
+    }
+
+    public BigInteger getSumQtyApprove() {
+        return sumQtyApprove;
+    }
+
+    public void setSumQtyApprove(BigInteger sumQtyApprove) {
+        this.sumQtyApprove = sumQtyApprove;
+    }
+
+    public String getMerek() {
+        return merek;
+    }
+
+    public void setMerek(String merek) {
+        this.merek = merek;
+    }
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public BigDecimal getHargaPo() {
+        return hargaPo;
+    }
+
+    public void setHargaPo(BigDecimal hargaPo) {
+        this.hargaPo = hargaPo;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;

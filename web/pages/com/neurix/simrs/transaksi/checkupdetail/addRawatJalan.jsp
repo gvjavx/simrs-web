@@ -346,11 +346,11 @@
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Order Lab</h3>
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Lab
+                                onclick="showModal(4)"><i class="fa fa-plus"></i> Tambah Penunjang
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -371,11 +371,11 @@
                     <div class="box-header with-border" id="pos_obat">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Obat Penunjang</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(5)"><i class="fa fa-plus"></i> Order Obat
+                                onclick="showModal(5)"><i class="fa fa-plus"></i> Obat Penunjang
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -383,8 +383,8 @@
                                 <td>Tanggal</td>
                                 <td>ID Obat</td>
                                 <td>Obat</td>
-                                <%--<td>Jenis Obat</td>--%>
-                                <td>Qty</td>
+                                <td align="center">Qty</td>
+                                <td>Jenis Satuan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -811,7 +811,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Lab</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Penunjang Medis</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
@@ -891,7 +891,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Obat</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Obat Penunjang</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_obat">
@@ -899,32 +899,41 @@
                     <p id="obat_error"></p>
                 </div>
                 <div class="row">
-                    <div class="form-group" id="jenis_form">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
-                        <div class="col-md-7">
-                            <s:action id="initJenis" namespace="/jenisobat"
-                                      name="getListJenisObat_jenisobat"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
-                                      listKey="idJenisObat"
-                                      listValue="namaJenisObat"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group" id="jenis_form">--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                    <%--name="getListJenisObat_jenisobat"/>--%>
+                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                    <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
+                    <%--listKey="idJenisObat"--%>
+                    <%--listValue="namaJenisObat"--%>
+                    <%--headerKey="" headerValue="[Select one]"--%>
+                    <%--cssClass="form-control select2"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group" id="nama_form">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"
-                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
-                                <option value="">[select one]</option>
-                            </select>
+                            <s:action id="initObatPoli" namespace="/obatpoli"
+                                      name="getListObatPoli_obatpoli"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initObatPoli.listOfObatPoli" id="ob_id_obat"
+                                      listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar"
+                                      listValue="namaObat"
+                                      onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"--%>
+                            <%--onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">--%>
+                            <%--<option value="">[select one]</option>--%>
+                            <%--</select>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_obat"><i
@@ -942,15 +951,43 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-7">
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Box</label>
                             <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
+                                         id="ob_stok_box"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Lembar</label>
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         id="ob_stok_lembar"></s:textfield>
+                        </div>
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Biji</label>
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         id="ob_stok_biji"></s:textfield>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                      cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn = $('#war_ob_jenis_satuan').is(':visible'); if (warn){$('#cor_ob_jenis_satuan').show().fadeOut(3000);$('#war_ob_jenis_satuan').hide()}"
+                                      id="ob_jenis_satuan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_ob_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_ob_jenis_satuan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
-                            <s:textfield value="1" type="number" min="1" cssClass="form-control"
+                            <s:textfield type="number" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="ob_qty"
                                          onkeypress="var warn =$('#war_qty_obat').is(':visible'); if (warn){$('#cor_qty_obat').show().fadeOut(3000);$('#war_qty_obat').hide()}"></s:textfield>
                         </div>
@@ -964,6 +1001,8 @@
                 </div>
             </div>
             <input type="hidden" id="set_id_obat">
+            <input type="hidden" id="set_lembar_perbox">
+            <input type="hidden" id="set_biji_perlembar">
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1056,9 +1095,37 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-7">
-                            <input style="margin-top: 7px" class="form-control" type="number" min="1" id="resep_stok"
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Box</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_box"
                                    readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Lembar</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_lembar"
+                                   readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label style="margin-top: 7px">Biji</label>
+                            <input class="form-control" type="number" min="1" id="resep_stok_biji"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                      cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
+                                      id="resep_jenis_satuan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_rep_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1121,6 +1188,7 @@
                         <td>ID</td>
                         <td>Obat</td>
                         <td align="center">Qty</td>
+                        <td align="center">Jenis Satuan</td>
                         <td>Keterangan</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
@@ -1519,29 +1587,34 @@
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
             $('#modal-lab').modal('show');
         } else if (select == 5) {
-            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
-            $('#obat_jenis_obat, #ob_id_obat').val('').trigger('change');
+//            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
+            $('#ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
             $('#nama_form').show();
             $('#nama_obat_form').hide();
-            $('#ob_stok').val('');
-            $('#ob_qty').val('1');
+            $('#ob_stok_box').val('');
+            $('#ob_stok_lembar').val('');
+            $('#ob_stok_biji').val('');
+            $('#ob_jenis_satuan').val('').trigger('change');
+            $('#ob_jenis_satuan').attr('disabled', false);
+            $('#ob_qty').val('');
             $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-            $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
+            $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
             $('#modal-obat').modal('show');
         } else if (select == 7) {
             $('#resep_apotek').val('').trigger('change').attr('disabled', false);
             $('#resep_nama_obat').val('').trigger('change');
             $('#resep_keterangan').val('');
             $('#resep_qty').val('');
-            $('#resep_stok').val('');
+            $('#resep_jenis_satuan').val('').trigger('change');
+            $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
             $('#body_detail').html('');
             $('#desti_apotek').html('');
             $('#save_resep_head').show();
             $('#load_resep_head').hide();
             $('#desti_apotek').html('');
-            $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli(this)");
+            $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)");
             $('#body_detail').html('');
             $('#modal-resep-head').modal('show');
         } else if (select == 8) {
@@ -2006,23 +2079,71 @@
         $('#body_lab').html(table);
     }
 
-    function saveObat(id) {
+    function saveObat(idInap) {
 
-        var idJenis = $('#obat_jenis_obat').val();
-        var idObat = $('#ob_id_obat').val();
+//        var idJenis = $('#obat_jenis_obat').val();
+        var jenisSatuan = $('#ob_jenis_satuan').val();
+        var obat = $('#ob_id_obat').val();
         var qty = $('#ob_qty').val();
-        var stok = $('#ob_stok').val();
+        var id = "";
+        var nama = "";
+        var qtyBox = 0;
+        var qtyLembar = 0;
+        var qtyBiji = 0;
+        var lembarPerBox = 0;
+        var bijiPerLembar = 0;
+        var stok = 0;
 
-        if (id != '') {
+        if (obat != '') {
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                id = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                nama = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                qtyBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                qtyLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                qtyBiji = obat.split('|')[4];
+            }
+            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
+                lembarPerBox = obat.split('|')[5];
+            }
+            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
+                bijiPerLembar = obat.split('|')[6];
+            }
+        }
 
-            if (qty <= stok) {
-                var obat = $('#set_id_obat').val();
+        if (idInap != '') {
+
+            var idObat = $('#set_id_obat').val();
+            qtyBox = $('#ob_stok_box').val();
+            qtyLembar = $('#ob_stok_lembar').val();
+            qtyBiji = $('#ob_stok_biji').val();
+            lembarPerBox = $('#set_lembar_perbox').val();
+            bijiPerLembar = $('#set_biji_perlembar').val();
+
+            if ("box" == jenisSatuan) {
+                stok = qtyBox;
+            }
+            if ("lembar" == jenisSatuan) {
+                stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+            }
+            if ("biji" == jenisSatuan) {
+                stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+            }
+
+            if (parseInt(qty) <= parseInt(stok)) {
 
                 $('#save_obat').hide();
                 $('#load_obat').show();
 
                 dwr.engine.setAsync(true);
-                ObatInapAction.editObatInap(id, idDetailCheckup, obat, qty, function (response) {
+                ObatInapAction.editObatInap(idInap, idDetailCheckup, idObat, qty, jenisSatuan, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         listObat();
@@ -2038,14 +2159,27 @@
                 $('#obat_error').text("Jumlah obat tidak boleh melebihi stok..!");
             }
         } else {
-            if (idDetailCheckup != '' && idJenis != '' && idObat != '' && qty > 0) {
+            if (idDetailCheckup != '' && obat != '' && parseInt(qty) > 0 && jenisSatuan != '') {
 
-                if (qty <= stok) {
+                if ("box" == jenisSatuan) {
+                    stok = qtyBox;
+                }
+                if ("lembar" == jenisSatuan) {
+                    stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+                }
+                if ("biji" == jenisSatuan) {
+                    stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+                }
+
+                console.log(obat);
+
+                if (parseInt(qty) <= parseInt(stok)) {
+
                     $('#save_obat').hide();
                     $('#load_obat').show();
 
                     dwr.engine.setAsync(true);
-                    ObatInapAction.saveObatInap(idDetailCheckup, idObat, qty, function (response) {
+                    ObatInapAction.saveObatInap(idDetailCheckup, id, qty, jenisSatuan, function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listObat();
@@ -2063,10 +2197,10 @@
             } else {
                 $('#warning_obat').show().fadeOut(5000);
                 $('#obat_error').text("Silahkan cek kembali data inputan..!");
-                if (idJenis == '') {
-                    $('#war_jenis_obat').show();
+                if (jenisSatuan == '' || jenisSatuan == null) {
+                    $('#war_ob_jenis_satuan').show();
                 }
-                if (idObat == '') {
+                if (obat == '' || obat == null) {
                     $('#war_obat').show();
                 }
                 if (qty == '' || qty < 1) {
@@ -2099,17 +2233,17 @@
                     if (item.qty != null) {
                         qty = item.qty;
                     }
-                    if (item.namaJenisObat != null) {
-                        jenis = item.namaJenisObat;
+                    if (item.jenisSatuan != null) {
+                        jenis = item.jenisSatuan;
                     }
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + id + "</td>" +
                             "<td>" + obat + "</td>" +
-//                            "<td>" + jenis + "</td>" +
-                            "<td>" + qty + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + item.idObat + '\',\'' + item.qty + '\',\'' + item.stokMasterObat + '\',\'' + item.namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + qty + "</td>" +
+                            "<td>" + jenis + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2121,23 +2255,52 @@
     function setStokObat(select) {
 
         var idx = select.selectedIndex;
-        var idObat = select.options[idx].value;
-        var stok = "";
+        var id = "";
+        var nama = "";
+        var qtyBox = "";
+        var qtyLembar = "";
+        var qtyBiji = "";
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
 
-        if (idObat != '') {
-            ObatAction.getStokObat(idObat, function (response) {
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        if (item.idObat == idObat) {
-                            if (item.qty != null) {
-                                stok = item.qty;
-                            }
-                        }
-                    });
-                }
-            });
+//        if (idObat != '') {
+//            ObatAction.getStokObat(idObat, function (response) {
+//                if (response != null) {
+//                    $.each(response, function (i, item) {
+//                        if (item.idObat == idObat) {
+//                            if (item.qty != null) {
+//                                stok = item.qty;
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+//        }
+        if (idx > 0) {
+
+            var obat = select.options[idx].value;
+
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                id = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                nama = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                qtyBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                qtyLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                qtyBiji = obat.split('|')[4];
+            }
+
+            $('#ob_stok_box').val(qtyBox);
+            $('#ob_stok_lembar').val(qtyLembar);
+            $('#ob_stok_biji').val(qtyBiji);
+
         }
-        $('#ob_stok').val(stok);
     }
 
     function editDokter(id, idDokter) {
@@ -2182,15 +2345,35 @@
         $('#lab_parameter').val(idParameter).trigger('change');
         $('#modal-lab').modal('show');
     }
-    function editObat(id, idobat, qty, stok, namaObat) {
-        $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
+    function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
+        var qtyBox1 = "";
+        var qtyLembar1 = "";
+        var qtyBiji1 = "";
+
+        if(qtyBox != 'null'){
+            qtyBox1 = qtyBox;
+        }
+
+        if(qtyLembar != 'null'){
+            qtyLembar1 = qtyLembar;
+        }
+
+        if(qtyBiji != 'null'){
+            qtyBiji1 = qtyBiji;
+        }
+        $('#load_obat, #warning_obat, #war_ob_jenis_satuan, #war_obat, #war_qty_obat').hide();
         $('#jenis_form').hide();
         $('#nama_form').hide();
         $('#nama_obat_form').show();
         $('#nama_obat').val(namaObat);
         $('#ob_qty').val(qty);
-        $('#ob_stok').val(stok);
+        $('#ob_stok_box').val(qtyBox1);
+        $('#ob_stok_lembar').val(qtyLembar1);
+        $('#ob_stok_biji').val(qtyBiji1);
         $('#set_id_obat').val(idobat);
+        $('#set_lembar_perbox').val(lembarPerBox);
+        $('#set_biji_perlembar').val(bijiPerLembar);
+        $('#ob_jenis_satuan').val(jenis).trigger('change').attr('disabled', true);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
     }
@@ -2259,22 +2442,63 @@
     //    }
 
     function addObatToList() {
+
         var apotek = $('#resep_apotek').val();
         var obat = $('#resep_nama_obat').val();
         var ket = $('#resep_keterangan').val();
         var qty = $('#resep_qty').val();
-        var stok = $('#resep_stok').val();
+        var jenisSatuan = $('#resep_jenis_satuan').val();
+        var stokBox = $('#resep_stok_box').val();
+        var stokLembar = $('#resep_stok_lembar').val();
+        var stokBiji = $('#resep_stok_biji').val();
         var cek = false;
         var data = $('#tabel_rese_detail').tableToJSON();
+        var id = "";
+        var nama = "";
+        var qtyBox = 0;
+        var qtyLembar = 0;
+        var qtyBiji = 0;
+        var lembarPerBox = 0;
+        var bijiPerLembar = 0;
 
-        if (obat != '' && ket != '' && qty != '' && apotek != '') {
+        if (obat != '' && ket != '' && qty != '' && apotek != '' && jenisSatuan != '') {
 
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
 
-            var id = obat.split('|')[0];
-            var nama = obat.split('|')[1];
-            var stokApotek = obat.split('|')[2];
+            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+                id = obat.split('|')[0];
+            }
+            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+                nama = obat.split('|')[1];
+            }
+            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+                qtyBox = obat.split('|')[2];
+            }
+            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+                qtyLembar = obat.split('|')[3];
+            }
+            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+                qtyBiji = obat.split('|')[4];
+            }
+            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
+                lembarPerBox = obat.split('|')[5];
+            }
+            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
+                bijiPerLembar = obat.split('|')[6];
+            }
+
+            var stok = 0;
+
+            if ("box" == jenisSatuan) {
+                stok = qtyBox;
+            }
+            if ("lembar" == jenisSatuan) {
+                stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+            }
+            if ("biji" == jenisSatuan) {
+                stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+            }
 
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
@@ -2292,6 +2516,7 @@
                             '<td>' + id + '</td>' +
                             '<td>' + nama + '</td>' +
                             '<td align="center">' + qty + '</td>' +
+                            '<td align="center">' + jenisSatuan + '</td>' +
                             '<td>' + ket + '</td>' +
                             '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
@@ -2303,10 +2528,13 @@
             }
 
         } else {
-            if (apotek == '') {
+            if (jenisSatuan == '' || jenisSatuan == null) {
+                $('#war_rep_jenis_satuan').show();
+            }
+            if (apotek == '' || apotek == null) {
                 $('#war_rep_apotek').show();
             }
-            if (obat == '') {
+            if (obat == '' || obat == null) {
                 $('#war_rep_obat').show();
             }
             if (qty == '' || qty <= 0) {
@@ -2391,8 +2619,8 @@
         $('#body_resep').html(table);
     }
 
-    function printResep(id){
-        window.location.href = 'printResepPasien_checkupdetail.action?idResep='+id;
+    function printResep(id) {
+        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
     }
 
     function detailResep(id) {
@@ -2510,15 +2738,49 @@
 
     function setStokObatApotek(select) {
 
-        if(select != '' && select != null){
-            var idx = select.selectedIndex;
-            var idObat = select.options[idx].value;
-            var stok = 0;
-            var id = idObat.split('|')[0];
-            var nama = idObat.split('|')[1];
-            var stokApotek = idObat.split('|')[2];
+        var id = "";
+        var nama = "";
+        var qtyBox = "";
+        var qtyLembar = "";
+        var qtyBiji = "";
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
+        var idx = select.selectedIndex;
 
-            $('#resep_stok').val(stokApotek);
+        if (idx > 0) {
+            var idObat = select.options[idx].value;
+            if (idObat != null && idObat != '') {
+
+                if (idObat.split('|')[0] != 'null' && idObat.split('|')[0] != '') {
+                    id = idObat.split('|')[0];
+                }
+                if (idObat.split('|')[1] != 'null' && idObat.split('|')[1] != '') {
+                    nama = idObat.split('|')[1];
+                }
+                if (idObat.split('|')[2] != 'null' && idObat.split('|')[2] != '') {
+                    qtyBox = idObat.split('|')[2];
+                }
+                if (idObat.split('|')[3] != 'null' && idObat.split('|')[3] != '') {
+                    qtyLembar = idObat.split('|')[3];
+                }
+                if (idObat.split('|')[4] != 'null' && idObat.split('|')[4] != '') {
+                    qtyBiji = idObat.split('|')[4];
+                }
+                if (idObat.split('|')[5] != 'null' && idObat.split('|')[5] != '') {
+                    lembarPerBox = idObat.split('|')[5];
+                }
+                if (idObat.split('|')[6] != 'null' && idObat.split('|')[6] != '') {
+                    bijiPerLembar = idObat.split('|')[6];
+                }
+
+                $('#resep_stok_box').val(qtyBox);
+                $('#resep_stok_lembar').val(qtyLembar);
+                $('#resep_stok_biji').val(qtyBiji);
+
+                $('#resep_keterangan').val('');
+                $('#resep_qty').val('');
+                $('#resep_jenis_satuan').val('').trigger('change');
+            }
         }
     }
 
@@ -2549,10 +2811,10 @@
 
     function resetAll() {
         $('#resep_apotek').val('').trigger('change').attr('disabled', false);
-        $('#resep_nama_obat').val('').trigger('change');
+        $('#resep_nama_obat, #resep_jenis_satuan').val('').trigger('change');
         $('#resep_keterangan').val('');
         $('#resep_qty').val('');
-        $('#resep_stok').val('');
+        $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
         $('#body_detail').html('');
         $('#desti_apotek').html('');
     }
@@ -2568,7 +2830,7 @@
             ObatPoliAction.getSelectOptionObatByPoli(idPel, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qty + "'>" + item.namaObat + "</option>";
+                        option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "'>" + item.namaObat + "</option>";
                     });
                 }
             });

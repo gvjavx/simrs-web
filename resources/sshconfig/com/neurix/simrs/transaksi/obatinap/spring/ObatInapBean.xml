@@ -14,6 +14,7 @@
           p:obatInapDao-ref="obatInapDao"
           p:obatDao-ref="obatDao"
           p:jenisObatDao-ref="jenisObatDao"
+          p:obatPoliDao-ref="obatPoliDao"
     />
 
     <bean id="obatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

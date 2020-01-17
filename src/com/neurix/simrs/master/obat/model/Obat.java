@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -38,6 +39,25 @@ public class Obat extends BaseModel {
     private String janisSatuan;
 
     private BigDecimal hargaTerakhir;
+    private String idSeqObat;
+    private Date expiredDate;
+    private String idTransaksiDetail;
+
+    public String getIdTransaksiDetail() {
+        return idTransaksiDetail;
+    }
+
+    public void setIdTransaksiDetail(String idTransaksiDetail) {
+        this.idTransaksiDetail = idTransaksiDetail;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;
@@ -45,6 +65,14 @@ public class Obat extends BaseModel {
 
     public void setHargaTerakhir(BigDecimal hargaTerakhir) {
         this.hargaTerakhir = hargaTerakhir;
+    }
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
     }
 
     public String getJanisSatuan() {

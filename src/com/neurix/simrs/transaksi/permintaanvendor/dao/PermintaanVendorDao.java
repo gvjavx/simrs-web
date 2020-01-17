@@ -25,17 +25,55 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
     public List<MtSimrsPermintaanVendorEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsPermintaanVendorEntity.class);
-        if (mapCriteria.get("id_permintaan_vendor") != null)
+        if (mapCriteria.get("id_permintaan_vendor") != null){
             criteria.add(Restrictions.eq("idPermintaanVendor", mapCriteria.get("id_permintaan_vendor").toString()));
-        if (mapCriteria.get("id_approval_obat") != null)
+        }
+        if (mapCriteria.get("id_approval_obat") != null){
             criteria.add(Restrictions.eq("idApprovalObat", mapCriteria.get("id_approval_obat").toString()));
-        if (mapCriteria.get("branch_id") != null)
+        }
+        if (mapCriteria.get("branch_id") != null){
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
-        if (mapCriteria.get("flag") != null)
+        }
+        if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+        }
 
         List<MtSimrsPermintaanVendorEntity> list = criteria.list();
         return list;
+    }
+
+    public Boolean isAvailNotConfirm(String idApprovalObat){
+
+        Boolean check = true;
+        if (!"".equalsIgnoreCase(idApprovalObat)){
+            String SQL = "SELECT odb.id_transaksi_obat_detail, odb.id\n" +
+                    "FROM mt_simrs_transaksi_obat_detail od\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail_batch odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                    "WHERE odb.approve_flag is null\n" +
+                    "AND od.id_approval_obat = :id";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idApprovalObat)
+                    .list();
+
+            if (result.size() > 0){
+                check = false;
+            } else {
+                String SQL2 = "SELECT odb.id_transaksi_obat_detail, odb.id\n" +
+                        "FROM mt_simrs_transaksi_obat_detail od\n" +
+                        "INNER JOIN mt_simrs_transaksi_obat_detail_batch odb ON odb.id_transaksi_obat_detail = od.id_transaksi_obat_detail\n" +
+                        "WHERE od.id_approval_obat = :id2";
+
+                List<Object[]> result2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQL2)
+                        .setParameter("id2", idApprovalObat)
+                        .list();
+
+                if (result2.size() == 0){
+                    check = false;
+                }
+            }
+        }
+        return check;
     }
 
     public String getNextSeq(){

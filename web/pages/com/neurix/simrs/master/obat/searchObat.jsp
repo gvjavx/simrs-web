@@ -49,11 +49,11 @@
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/obat" action="search_obat.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
+                                    <label class="control-label col-sm-4">Kode Produksi Obat</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
-                                                     name="obat.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
+                                        <s:textfield id="id_pabrik" cssStyle="margin-top: 7px"
+                                                     name="obat.idPabrik" required="false"
+                                                     readonly="false" cssClass="form-control" placeholder="Ketik atau Scan Barcode"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -73,9 +73,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="obat.namaObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <s:action id="initObat" namespace="/obat"
+                                                  name="getListObat_obat"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initObat.listOfObat" id="nama_obat"
+                                                  listKey="idObat"
+                                                  listValue="namaObat"
+                                                  name="obat.idObat"
+                                                  headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control select2"/>
+                                        <%--<s:textfield id="nama_pasien" name="obat.namaObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -158,9 +167,11 @@
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Jenis Obat</td>
-                                <td>ID Pabrik</td>
-                                <td>Merk</td>
-                                <td>Stok</td>
+                                <td>Lembar/Box</td>
+                                <td>Biji/Lembar</td>
+                                <td>Stok Box</td>
+                                <td>Stok Lembar</td>
+                                <td>Stok Biji</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -170,11 +181,13 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property escape="false" value="jenisObat"/></td>
-                                    <td><s:property value="idPabrik"/></td>
-                                    <td><s:property value="merk"/></td>
-                                    <td><s:property value="qty"/></td>
+                                    <td><s:property value="lembarPerBox"/></td>
+                                    <td><s:property value="bijiPerLembar"/></td>
+                                    <td><s:property value="qtyBox"/></td>
+                                    <td><s:property value="qtyLembar"/></td>
+                                    <td><s:property value="qtyBiji"/></td>
                                     <td align="center">
-                                        <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>',<s:property value="harga"/>,'<s:property value="qty"/>','<s:property value="flag"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
+                                        <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -200,6 +213,10 @@
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_obat">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="obat_error"></p>
+                </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_exits">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_exits"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -309,17 +326,45 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Harga Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Harga/Box</label>
                         <div class="col-md-7">
                             <s:textfield type="number" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_harga"
-                                         onkeypress="var warn =$('#war_harga').is(':visible'); if (warn){$('#cor_harga').show().fadeOut(3000);$('#war_harga').hide()}"></s:textfield>
+                                         cssStyle="margin-top: 7px" id="add_harga_box"
+                                         onkeypress="var warn =$('#war_harga_box').is(':visible'); if (warn){$('#cor_harga_box').show().fadeOut(3000);$('#war_harga_box').hide()}"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_harga"><i class="fa fa-times"></i> required</p>
+                               id="war_harga_box"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_harga"><i class="fa fa-check"></i> correct</p>
+                               id="cor_harga_box"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga/Lembar</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_harga_lembar"
+                                         onkeypress="var warn =$('#war_harga_lembar').is(':visible'); if (warn){$('#cor_harga_lembar').show().fadeOut(3000);$('#war_harga_lembar').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_harga_lembar"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_harga_lembar"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga/Biji</label>
+                        <div class="col-md-7">
+                            <s:textfield type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_harga_biji"
+                                         onkeypress="var warn =$('#war_harga_biji').is(':visible'); if (warn){$('#cor_harga_biji').show().fadeOut(3000);$('#war_harga_biji').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_harga_biji"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_harga_biji"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -342,11 +387,11 @@
 
     function showModal(){
 
-        $('#add_nama_obat, #add_harga, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji').val('');
+        $('#add_nama_obat, #add_harga_box, #add_harga_lembar, #add_harga_biji, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji').val('');
         $('#add_jenis_obat').val('').trigger('change');
 
         var id = "";
-        $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_pabrik, #war_merek, #war_biji').hide();
+        $('#load_obat, #war_nama, #war_jenis, #war_pabrik, #war_merek, #war_biji, #war_harga_box, #war_harga_lembar, #war_harga_biji').hide();
         $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border','');
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
@@ -364,10 +409,12 @@
         var lembar      = $('#add_lembar').val();
         var bijiLembar  = $('#add_biji_lembar').val();
         var biji        = $('#add_biji').val();
-        var harga       = $('#add_harga').val();
-        var flag        = $('#add_flag').val();
+        var hargaBox    = $('#add_harga_box').val();
+        var hargaLembar = $('#add_harga_lembar').val();
+        var hargaBiji   = $('#add_harga_biji').val();
 
-        if (nama != '' && jenis != null && harga != '' && parseInt(biji) > 0 && box != ''
+
+        if (nama != '' && jenis != null && parseInt(biji) > 0 && box != ''
             && lembarBox != '' && lembar != '' && bijiLembar != '' && biji != '' && pabrik != ''
             && merek != '' && pabrik != '') {
 
@@ -376,8 +423,8 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, jenis, harga, biji, flag, function (response) {
-                    if (response == "success") {
+                ObatAction.editObat(id, nama, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
                         $('#info_dialog').dialog('open');
@@ -390,12 +437,18 @@
                 })
             } else {
                 dwr.engine.setAsync(true);
-                ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, harga, function (response) {
-                    if (response == "success") {
+                ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
+                    console.log(response);
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(1);
+                    }else if (response.status == "warning") {
+                        $('#save_obat').show();
+                        $('#load_obat').hide();
+                        $('#warning_exits').show().fadeOut(5000);
+                        $('#msg_exits').text("ID Pabrik dengan bentuk fisik tersebut sudah ada pada ID obat : "+response.message);
                     } else {
                         $('#save_obat').show();
                         $('#load_obat').hide();
@@ -414,8 +467,14 @@
             if (jenis == '' || jenis == null) {
                 $('#war_jenis').show();
             }
-            if (harga == '') {
-                $('#war_harga').show();
+            if (hargaBox == '') {
+                $('#war_harga_box').show();
+            }
+            if (hargaLembar == '') {
+                $('#war_harga_lembar').show();
+            }
+            if (hargaBiji == '') {
+                $('#war_harga_biji').show();
             }
             if (merek == '') {
                 $('#war_merek').show();
@@ -441,13 +500,22 @@
         }
     }
 
-    function editObat(id, nama, harga, stok, flag) {
+    function editObat(id, nama, flag, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, hargaBox, hargaLembar, hargaBiji, idPbarik, mrek) {
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#add_nama_obat').val(nama);
         $('#add_jenis_obat').val(listSelectObatEdit(id)).trigger('change');
-        $('#add_harga').val(harga);
-        $('#add_stok').val(stok);
+        $('#add_merek').val(mrek);
+        $('#add_pabrik').val(idPbarik);
+        $('#add_box').val(qtyBox);
+        $('#add_lembar_box').val(lembarPerBox);
+        $('#add_lembar').val(qtyLembar);
+        $('#add_biji_lembar').val(bijiPerBiji);
+        $('#add_biji').val(qtyBiji);
+        $('#add_harga_box').val(hargaBox);
+        $('#add_harga_lembar').val(hargaLembar);
+        $('#add_harga_biji').val(hargaBiji);
+//        $('#add_stok').val(stok);
         $('#add_flag').val(flag);
         $('#modal-obat').modal('show');
     }
@@ -465,7 +533,6 @@
         } else {
             alert('id obat kosong');
         }
-        console.log(data);
         return data;
     }
 
