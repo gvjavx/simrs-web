@@ -90,6 +90,7 @@ public class ObatBoImpl implements ObatBo {
                     obat.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
                     obat.setIdPabrik(obatEntity.getIdPabrik());
                     obat.setMerk(obatEntity.getMerk());
+                    obat.setExpiredDate(obatEntity.getExpiredDate());
 
                     obat.setIdTransaksiDetail(bean.getIdTransaksiDetail());
 
@@ -137,7 +138,6 @@ public class ObatBoImpl implements ObatBo {
         logger.info("[ObatBoImpl.getByCriteria] End <<<<<<<");
         return null;
     }
-
 
     public List<ImSimrsJenisObatEntity> getListEntityJenisObat(JenisObat bean) throws GeneralBOException {
         logger.info("[ObatBoImpl.getListEntityJenisObat] Start >>>>>>>");
@@ -571,16 +571,16 @@ public class ObatBoImpl implements ObatBo {
         List<Obat> obats = new ArrayList<>();
         for (Obat obat : obatList){
 
-            TransaksiObatBatch obatBatch = new TransaksiObatBatch();
-            obatBatch.setIdTransaksiObatDetail(obat.getIdTransaksiDetail());
-            obatBatch.setExpiredDate(obat.getExpiredDate());
+                TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+                obatBatch.setIdTransaksiObatDetail(obat.getIdTransaksiDetail());
+                obatBatch.setExpiredDate(obat.getExpiredDate());
 
-            List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatch(obatBatch);
-            if (batchEntities.size() > 0){
-                MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
-                obatBatch.setQtyApprove(batchEntity.getQtyApprove());
-                obatBatch.setNoBatch(1);
-            }
+                List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatch(obatBatch);
+                if (batchEntities.size() > 0){
+                    MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+                    obat.setQtyApprove(batchEntity.getQtyApprove());
+                    obat.setNoBatch(1);
+                }
 
             obats.add(obat);
         }
@@ -598,7 +598,7 @@ public class ObatBoImpl implements ObatBo {
             hsCriteria.put("id_transaksi_obat_detail" , bean.getIdTransaksiObatDetail());
         }
 
-        if (bean.getIdTransaksiObatDetail() != null){
+        if (bean.getExpiredDate() != null){
             hsCriteria.put("exp_date" , bean.getExpiredDate());
         }
 
