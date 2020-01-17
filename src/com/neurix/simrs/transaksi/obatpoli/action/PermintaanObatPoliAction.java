@@ -23,6 +23,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -275,8 +276,11 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         obat.setIdObat(idObat);
         obat.setIdTransaksiDetail(idTransObatDetail);
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
         try {
-            obatList = obatBoProxy.getByCriteria(obat);
+            obatList = obatBo.getByCriteria(obat);
         } catch (GeneralBOException e){
             logger.error("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, ", e);
             addActionError("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
@@ -286,7 +290,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         if (obatList.size() > 0){
             try {
-                obatSorted = obatBoProxy.sortedListObat(obatList);
+                obatSorted = obatBo.sortedListObat(obatList);
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, ", e);
                 addActionError("[PermintaanObatPoliAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
@@ -295,6 +299,60 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         logger.info("[PermintaanObatPoliAction.initApprovePermintaan] END process <<<");
         return obatList;
+    }
+
+    public String saveApproveRequest(String idObat, String request) throws JSONException{
+        logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String branchId = CommonUtil.userBranchLogin();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+
+            PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+//            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+//            obatPoli.setLastUpdate(updateTime);
+//            obatPoli.setLastUpdateWho(userLogin);
+//            obatPoli.setBranchId(branchId);
+//            obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+//            obatPoli.setBranchId(CommonUtil.userBranchLogin());
+
+            List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+            JSONArray json = new JSONArray(request);
+
+            TransaksiObatDetail transaksiObatDetail;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                if(!"".equalsIgnoreCase(obj.getString("Qty Approve"))){
+                    transaksiObatDetail = new TransaksiObatDetail();
+                    transaksiObatDetail.setIdObat(idObat);
+                    transaksiObatDetail.setExpDate(Date.valueOf(obj.getString("Expired Date")));
+                    transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
+                    transaksiObatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    transaksiObatDetails.add(transaksiObatDetail);
+                }
+            }
+//
+//            try {
+//                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
+//            }catch (JSONException e){
+//                logger.error("[PermintaanResepAction.saveKonfirmasiRequest] Error when sabe resep obat", e);
+//            }
+
+            logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] LIST DATA >> "+transaksiObatDetails);
+
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[PermintaanObatPoliAction.saveKonfirmasiRequest] ERROR when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            return e.getMessage();
+        }
+
+        logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] END process <<<");
+
+        return SUCCESS;
     }
 
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {

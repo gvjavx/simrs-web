@@ -809,7 +809,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             }
 
             // update all harga id obat tersebut
-            updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
+//            updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
 
         } else {
 

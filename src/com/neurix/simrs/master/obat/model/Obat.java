@@ -43,6 +43,25 @@ public class Obat extends BaseModel {
     private Date expiredDate;
     private String idTransaksiDetail;
 
+    private BigInteger qtyApprove;
+    private Integer noBatch;
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
     public String getIdTransaksiDetail() {
         return idTransaksiDetail;
     }

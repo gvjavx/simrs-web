@@ -603,6 +603,7 @@
             callback: function (response) {
                 if(response.status = "success"){
                     $('#info_dialog').dialog('open');
+                    $('#modal-approve').modal('hide');
                     $('#save_approve').show();
                     $('#load_approve').hide();
                 }else{
