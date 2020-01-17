@@ -358,8 +358,8 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         for (Object[] obj : results) {
 
             permintaanObatPoli = new PermintaanObatPoli();
-            permintaanObatPoli.setIdObat(obj[0].toString());
-            permintaanObatPoli.setNamaObat(obj[1].toString());
+            permintaanObatPoli.setIdObat( obj[0] == null ? "" : obj[0].toString());
+            permintaanObatPoli.setNamaObat( obj[1] == null ? "" : obj[1].toString());
 
             if(obj[2] != null){
                 permintaanObatPoli.setQty((BigInteger) obj[2]);
