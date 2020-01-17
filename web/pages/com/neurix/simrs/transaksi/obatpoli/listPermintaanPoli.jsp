@@ -35,7 +35,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Obat Poli
+            Daftar Permintaan Obat
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -46,129 +46,129 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Obat Inap</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <s:form id="obatPoliForm" method="post" namespace="/obatpoli"
-                                    action="search_obatpoli.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="obatPoli.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Obat Inap</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<s:form id="obatPoliForm" method="post" namespace="/obatpoli"--%>
+                                    <%--action="search_obatpoli.action" theme="simple" cssClass="form-horizontal">--%>
                                 <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Jenis Obat</label>--%>
+                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
                                     <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                                                  <%--name="getListJenisObat_jenisobat"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
-                                                  <%--listKey="idJenisObat"--%>
-                                                  <%--listValue="namaJenisObat"--%>
-                                                  <%--name="obatPoli.idJenisObat"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
+                                        <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
+                                                     <%--name="obatPoli.idObat" required="false"--%>
+                                                     <%--readonly="false" cssClass="form-control"/>--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="obatPoli.namaObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-8" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="obatPoliForm"
-                                                   id="search" name="search"
-                                                   onClickTopics="showDialogLoading"
-                                                   onCompleteTopics="closeDialogLoading">
-                                            <i class="fa fa-search"></i>
-                                            Search
-                                        </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </a>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary">Action</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i> Tambah
-                                                    Obat</a></li>
-                                                <li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Tambah
-                                                    & Request Obat</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="monitoringRequest_obatpoli.action"><i class="fa fa-tv"></i> Monitoring Request</a></li>
-                                            </ul>
-                                        </div>
-                                        <a type="button" class="btn btn-info" href="monitoringRequest_obatpoli.action">
-                                            <i class="fa fa-tv"></i> Monitoring Permintaan
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="form-group" style="display: none">
-                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
-                                               resizable="false"
-                                               closeOnEscape="false"
-                                               height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                               buttons="{
-                                                                                'OK':function() {
-                                                                                         $('#info_dialog').dialog('close');
-                                                                                         toContent();
-                                                                                     }
-                                                                            }"
-                                    >
-                                        <s:hidden id="close_pos"></s:hidden>
-                                        <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
-                                             name="icon_success">
-                                        Record has been saved successfully.
-                                    </sj:dialog>
+                                <%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<label class="control-label col-sm-4">Jenis Obat</label>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<div class="col-sm-4">&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<s:action id="initJenis" namespace="/jenisobat"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;name="getListJenisObat_jenisobat"/>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<s:select cssStyle="margin-top: 7px; width: 100%"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;list="#initJenis.listOfJenisObat" id="obat_jenis_obat"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;listKey="idJenisObat"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;listValue="namaJenisObat"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;name="obatPoli.idJenisObat"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;headerKey="" headerValue="[Select one]"&ndash;%&gt;--%>
+                                                  <%--&lt;%&ndash;cssClass="form-control select2"/>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Nama Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="nama_pasien" name="obatPoli.namaObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<br>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4"></label>--%>
+                                    <%--<div class="col-sm-8" style="margin-top: 7px">--%>
+                                        <%--<sj:submit type="button" cssClass="btn btn-success" formIds="obatPoliForm"--%>
+                                                   <%--id="search" name="search"--%>
+                                                   <%--onClickTopics="showDialogLoading"--%>
+                                                   <%--onCompleteTopics="closeDialogLoading">--%>
+                                            <%--<i class="fa fa-search"></i>--%>
+                                            <%--Search--%>
+                                        <%--</sj:submit>--%>
+                                        <%--<a type="button" class="btn btn-danger" href="initForm_rawatinap.action">--%>
+                                            <%--<i class="fa fa-refresh"></i> Reset--%>
+                                        <%--</a>--%>
+                                        <%--<div class="btn-group">--%>
+                                            <%--<button type="button" class="btn btn-primary">Action</button>--%>
+                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i> Tambah--%>
+                                                    <%--Obat</a></li>--%>
+                                                <%--<li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Tambah--%>
+                                                    <%--& Request Obat</a></li>--%>
+                                                <%--<li class="divider"></li>--%>
+                                                <%--<li><a href="monitoringRequest_obatpoli.action"><i class="fa fa-tv"></i> Monitoring Request</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
+                                        <%--<a type="button" class="btn btn-info" href="monitoringRequest_obatpoli.action">--%>
+                                            <%--<i class="fa fa-tv"></i> Monitoring Permintaan--%>
+                                        <%--</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group" style="display: none">--%>
+                                    <%--<sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"--%>
+                                               <%--resizable="false"--%>
+                                               <%--closeOnEscape="false"--%>
+                                               <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
+                                               <%--buttons="{--%>
+                                                                                <%--'OK':function() {--%>
+                                                                                         <%--$('#info_dialog').dialog('close');--%>
+                                                                                         <%--toContent();--%>
+                                                                                     <%--}--%>
+                                                                            <%--}"--%>
+                                    <%-->--%>
+                                        <%--<s:hidden id="close_pos"></s:hidden>--%>
+                                        <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
+                                             <%--name="icon_success">--%>
+                                        <%--Record has been saved successfully.--%>
+                                    <%--</sj:dialog>--%>
 
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-5"></label>
-                                    <div class="col-sm-5" style="display: none">
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-5"></label>--%>
+                                    <%--<div class="col-sm-5" style="display: none">--%>
 
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
-                                                   closeTopics="closeDialog" modal="true"
-                                                   resizable="false"
-                                                   height="250" width="600" autoOpen="false"
-                                                   title="Searching ...">
-                                            Please don't close this window, server is processing your request ...
-                                            <br>
-                                            <center>
-                                                <img border="0" style="width: 150px; height: 150px"
-                                                     src="<s:url value="/pages/images/spinner.gif"/>"
-                                                     name="image_indicator_write">
-                                            </center>
-                                        </sj:dialog>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
-                                                   resizable="false" cssStyle="text-align:left;"
-                                                   height="650" width="900" autoOpen="false" title="View Detail"
-                                        >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                                         alt="Loading..."/></center>
-                                        </sj:dialog>
-                                    </div>
-                                </div>
-                            </s:form>
-                        </div>
-                    </div>
+                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialogLoading"--%>
+                                                   <%--closeTopics="closeDialog" modal="true"--%>
+                                                   <%--resizable="false"--%>
+                                                   <%--height="250" width="600" autoOpen="false"--%>
+                                                   <%--title="Searching ...">--%>
+                                            <%--Please don't close this window, server is processing your request ...--%>
+                                            <%--<br>--%>
+                                            <%--<center>--%>
+                                                <%--<img border="0" style="width: 150px; height: 150px"--%>
+                                                     <%--src="<s:url value="/pages/images/spinner.gif"/>"--%>
+                                                     <%--name="image_indicator_write">--%>
+                                            <%--</center>--%>
+                                        <%--</sj:dialog>--%>
+                                        <%--<sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"--%>
+                                                   <%--resizable="false" cssStyle="text-align:left;"--%>
+                                                   <%--height="650" width="900" autoOpen="false" title="View Detail"--%>
+                                        <%-->--%>
+                                            <%--<center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"--%>
+                                                         <%--alt="Loading..."/></center>--%>
+                                        <%--</sj:dialog>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</s:form>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Poli</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Obat Poli</h3>
                     </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
@@ -176,7 +176,9 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
-                                <td>Stok</td>
+                                <td>Qty Request</td>
+                                <td>Qty Approve</td>
+                                <td>Jenis Satuan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -186,6 +188,8 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="qty"/></td>
+                                    <td><s:property value="qtyApprove"/></td>
+                                    <td><s:property value="jenisSatuan"/></td>
                                     <td align="center">
                                         <img border="0" class="hvr-grow" onclick="showRequestReture(1,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"
                                                  src="<s:url value="/pages/images/request.png"/>"

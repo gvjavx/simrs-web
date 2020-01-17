@@ -229,23 +229,30 @@
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:else></td></td>
                                     <td align="center">
-                                        <s:if test='#row.approvalFlag == null'>
-                                            <s:if test='#row.request == true'>
-                                                <button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
-                                            </s:if>
-                                            <s:else>
-                                                <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
-                                                <button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>
-                                            </s:else>
-                                        </s:if>
-                                        <s:elseif test='#row.approvalFlag == "Y" '>
-                                            <s:url var="print_permintaan" namespace="/permintaangudang" action="printPermintaanObat_permintaangudang" escapeAmp="false">
-                                                <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{print_permintaan}" cssClass="btn btn-info">
-                                                <i class="fa fa-print"></i>
-                                            </s:a>
-                                        </s:elseif>
+                                        <%--<s:if test='#row.approvalFlag == null'>--%>
+                                            <%--<s:if test='#row.request == true'>--%>
+                                                <%--<button class="btn btn btn-primary" onclick="showRequest('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>--%>
+                                                <%--<button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>--%>
+                                            <%--</s:else>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:elseif test='#row.approvalFlag == "Y" '>--%>
+                                            <%--<s:url var="print_permintaan" namespace="/permintaangudang" action="printPermintaanObat_permintaangudang" escapeAmp="false">--%>
+                                                <%--<s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{print_permintaan}" cssClass="btn btn-info">--%>
+                                                <%--<i class="fa fa-print"></i>--%>
+                                            <%--</s:a>--%>
+                                        <%--</s:elseif>--%>
+
+                                                <s:url var="init_permintaan" namespace="/permintaangudang" action="initApprovePermintaan_permintaangudang" escapeAmp="false">
+                                                <s:param name="idApproval"><s:property value="idApprovalObat"/></s:param>
+                                                </s:url>
+                                                <s:a href="%{init_permintaan}" cssClass="btn btn-primary">
+                                                <i class="fa fa-edit"></i>
+                                                </s:a>
                                     </td>
                                 </tr>
                             </s:iterator>
