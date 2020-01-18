@@ -234,6 +234,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 transaksiObatDetails.addAll(requestVendor.getListOfTransaksiObatDetail());
             }
 
+            setId(id);
             setPermintaanVendor(requestVendor);
             session.setAttribute("listOfObatDetail", transaksiObatDetails);
 

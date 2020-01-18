@@ -46,6 +46,16 @@ public class Obat extends BaseModel {
     private BigInteger qtyApprove;
     private Integer noBatch;
 
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
+
     public BigInteger getQtyApprove() {
         return qtyApprove;
     }

@@ -282,7 +282,7 @@ public class ObatInapBoImpl implements ObatInapBo {
                 obatInap.setQtyLembar(obatPoliEntity.getQtyLembar());
                 obatInap.setQtyBiji(obatPoliEntity.getQtyBiji());
 
-                ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getPrimaryKey().getIdObat());
+                ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
                 if (obatEntity != null) {
                     obatInap.setLembarPerBox(obatEntity.getLembarPerBox());
                     obatInap.setBijiPerLembar(obatEntity.getBijiPerLembar());

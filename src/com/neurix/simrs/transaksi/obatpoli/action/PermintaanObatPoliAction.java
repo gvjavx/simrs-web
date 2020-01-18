@@ -335,6 +335,8 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                     transaksiObatDetails.add(transaksiObatDetail);
                 }
             }
+
+//            Boolean isPoli = false;
 //
 //            try {
 //                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);

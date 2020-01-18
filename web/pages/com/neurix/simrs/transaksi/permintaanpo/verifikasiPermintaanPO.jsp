@@ -272,8 +272,9 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:url var="selesai" namespace="/permintaanpo" action="initForm_permintaanpo"
-                                   escapeAmp="false">
+
+                            <s:url var="selesai" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                <s:param name="id"><s:property value="id"/></s:param>
                             </s:url>
                             <s:a href="%{selesai}">
                                 <button class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>
