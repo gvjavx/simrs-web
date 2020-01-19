@@ -250,9 +250,12 @@
                                                 <s:url var="init_permintaan" namespace="/permintaangudang" action="initApprovePermintaan_permintaangudang" escapeAmp="false">
                                                 <s:param name="idApproval"><s:property value="idApprovalObat"/></s:param>
                                                 </s:url>
-                                                <s:a href="%{init_permintaan}" cssClass="btn btn-primary">
-                                                <i class="fa fa-edit"></i>
-                                                </s:a>
+                                                <%--<s:a href="%{init_permintaan}" cssClass="btn btn-primary">--%>
+                                                <%--<i class="fa fa-edit"></i>--%>
+                                                <%--</s:a>--%>
+                                            <s:a href="%{init_permintaan}">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/ubah_flat.png"/>" style="width: 30px; height: 30px">
+                                            </s:a>
                                     </td>
                                 </tr>
                             </s:iterator>

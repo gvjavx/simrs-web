@@ -255,10 +255,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Obat</td>
+                                <td>Nama Obat</td>
                                 <td align="center">Qty</td>
-                                <td align="right">Harga Satuan</td>
-                                <td align="right">Harga Total</td>
+                                <td>Jenis Satuan</td>
+                                <td align="right">Harga Satuan (Rp.)</td>
+                                <td align="right">Harga Total (Rp.)</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -266,13 +267,14 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
+                                    <td><s:property value="jenisSatuan"/></td>
                                     <td align="right"><script>var val = <s:property value="harga"/>;
                                     if (val != null && val != '') {
-                                        document.write("Rp. " + formatRupiah(val) + ",-")
+                                        document.write(formatRupiah(val))
                                     }</script></td>
                                     <td align="right"> <script>var val = <s:property value="totalHarga"/>;
                                     if (val != null && val != '') {
-                                        document.write("Rp. " + formatRupiah(val) + ",-")
+                                        document.write(formatRupiah(val))
                                     }</script></td>
                                 </tr>
                             </s:iterator>
@@ -367,12 +369,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <button type="button" class="btn btn-success" onclick="confirm()"><i
-                                                class="fa fa-arrow-right"></i> Bayar
-                                        </button>
                                         <a href="initForm_transaksi.action" type="button" class="btn btn-warning"><i
                                                 class="fa fa-arrow-left"></i> Back
                                         </a>
+                                        <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                                class="fa fa-arrow-right"></i> Bayar
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="form-group">

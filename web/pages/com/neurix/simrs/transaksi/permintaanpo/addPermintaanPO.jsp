@@ -12,7 +12,7 @@
     </style>
     <script type='text/javascript'>
 
-        function formatRupiah2(angka, prefix) {
+        function formatRupiah2(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
                     split = number_string.split(','),
                     sisa = split[0].length % 3,
@@ -25,7 +25,14 @@
             }
 
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            return rupiah;
+        }
+
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
         }
 
         $(document).ready(function () {
@@ -68,16 +75,9 @@
 
             var nominal = document.getElementById('harga');
             nominal.addEventListener('keyup', function (e) {
-                nominal.value = formatRupiah2(this.value, 'Rp. ');
+                nominal.value = formatRupiah2(this.value);
             });
         });
-
-        function formatRupiah(angka) {
-            var reverse = angka.toString().split('').reverse().join(''),
-                    ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
-        }
 
     </script>
 
@@ -344,8 +344,13 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Harga</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="harga" style="margin-top: 7px"
-                                               oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon" style="margin-top: 7px">
+                                                Rp.
+                                            </div>
+                                            <input class="form-control" id="harga"
+                                                   oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>
+                                        </div>
                                         <p style="color: red; display: none;"
                                            id="war_po_harga"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -394,7 +399,7 @@
                                 <td align="center">Jenis Satuan</td>
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
-                                <td align="right">Harga</td>
+                                <td align="right">Harga (Rp.)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -418,11 +423,11 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <a type="button" class="btn btn-success" onclick="confirm()"><i
-                                        class="fa fa-arrow-right"></i> Save</a>
                                 <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
                                         class="fa fa-arrow-left"></i>
                                     Back</a>
+                                <a type="button" class="btn btn-success" onclick="confirm()"><i
+                                        class="fa fa-arrow-right"></i> Save</a>
                             </div>
                         </div>
                     </div>

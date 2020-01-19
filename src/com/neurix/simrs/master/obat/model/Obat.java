@@ -46,6 +46,8 @@ public class Obat extends BaseModel {
     private BigInteger qtyApprove;
     private Integer noBatch;
 
+    private String k;
+
     public BigInteger getQtyApprove() {
         return qtyApprove;
     }

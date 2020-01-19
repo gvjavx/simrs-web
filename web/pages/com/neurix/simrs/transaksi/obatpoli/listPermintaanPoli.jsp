@@ -237,7 +237,7 @@
                         </tr>
                     </table>
                     <div class="box">
-                        <table class="table table-striped table-bordered" id="tabel_approve">
+                        <table class="table table-bordered" id="tabel_approve">
                             <thead>
                             <td>Expired Date</td>
                             <td align="center">Qty Box</td>
@@ -421,6 +421,13 @@
         $('#btn'+idObat).hide();
         $('#load'+idObat).show();
         var table = "";
+        var d1 = new Date();
+        var d2 = new Date("2020/01/18")  // some date
+        var diff = Math.abs(d1-d2);
+        console.log(diff)
+        console.log("perbaikan");
+        console.log(d1);
+
         dwr.engine.setAsync(true);
         PermintaanObatPoliAction.getListObatEntity(idObat, idTransaksi, {callback: function (response) {
             if(response != null){
@@ -430,9 +437,13 @@
                 $.each(response, function (i, item) {
                     var dateFormat = "";
                     if(item.expiredDate != null){
-                        dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+                        dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(item.expiredDate));
                     }
-                    table += '<tr>' +
+                    var warna= "";
+                    if (item.qtyBox == 0){
+                        warna = 'orange';
+                    }
+                    table += '<tr bgColor='+warna+'>' +
                             '<td>'+dateFormat+'</td>'+
                             '<td align="center">'+item.qtyBox+'</td>'+
                             '<td align="center">'+item.qtyLembar+'</td>'+

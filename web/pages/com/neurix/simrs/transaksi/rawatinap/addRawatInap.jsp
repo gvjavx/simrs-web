@@ -334,7 +334,7 @@
                     <div class="box-header with-border" id="pos_obat">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Obat Penunjang</h3>
+                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
@@ -360,7 +360,7 @@
                     <div class="box-header with-border" id="pos_ruangan">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Ruangan</h3>
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
                     </div>
                     <div class="box-body">
                         <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(6)"><i class="fa fa-plus"></i> Order Obat</button>--%>
@@ -382,7 +382,7 @@
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Resep Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-medkit"></i> Order Resep Obat</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep</button>
@@ -1887,16 +1887,16 @@
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarif + ",-" + "</td>" +
+                            "<td align='right'>" + tarif +"</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarifTotal + ",-" + "</td>" +
+                            "<td align='right'>" + tarifTotal + "</td>" +
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>";
 
                 });
                 table = table + "<tr>" +
                         "<td colspan='6'>Total</td>" +
-                        "<td align='right'>" + "Rp. " + formatRupiah(trfTtl) + ",-" + "</td>" +
+                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
             }

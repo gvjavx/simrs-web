@@ -166,8 +166,8 @@
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
                                 <td align="center">Satuan Jenis</td>
-                                <td align="right">Harga</td>
-                                <td align="center">Verify</td>
+                                <td align="right">Harga (Rp.)</td>
+                                <td align="center">ID Pabrikan</td>
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
                                 <td align="center">No Batch</td>
@@ -184,7 +184,7 @@
                                             value="sumQtyApprove"/></span></td>
                                     <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right">
-                                        <script> document.write("Rp. " + formatRupiah('<s:property value="hargaPo"/>'));</script>
+                                        <script> document.write(formatRupiah('<s:property value="hargaPo"/>'));</script>
                                     </td>
                                     <td align="center">
                                         <%--<s:if test='#row.idPabrik != null && #row.idPabrik != "" '>--%>

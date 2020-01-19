@@ -475,9 +475,34 @@ public class TransaksiObatAction extends BaseMasterAction {
             result = jenisPriksaPasienList.get(0);
         }
 
-        logger.info("[PeriksaLabAction.getListJenisPeriksaPasien] end process <<<");
+        logger.info("[TransaksiObatAction.getListJenisPeriksaPasien] end process <<<");
         return result;
     }
+
+    public List<Obat> getListObatEntity(String idObat, String idPabrik){
+        logger.info("[TransaksiObatAction.initApprovePermintaan] START process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdPabrik(idPabrik);
+        obat.setFlag("Y");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getEntityObatByCriteria(obat);
+        } catch (GeneralBOException e){
+            logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
+            addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
+        return obatList;
+
+    }
+
 
 
     @Override
