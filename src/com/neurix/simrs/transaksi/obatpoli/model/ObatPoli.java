@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -27,6 +28,25 @@ public class ObatPoli {
     private BigInteger qtyBiji;
     private BigInteger lembarPerBox;
     private BigInteger bijiPerLembar;
+
+    private String idPabrik;
+    private Date expiredDate;
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
 
     public BigInteger getQtyBox() {
         return qtyBox;

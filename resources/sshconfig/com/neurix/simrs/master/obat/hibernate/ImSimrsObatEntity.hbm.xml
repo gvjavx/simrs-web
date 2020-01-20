@@ -84,6 +84,9 @@
         <property name="expiredDate">
             <column name="expired_date" sql-type="date" not-null="false"/>
         </property>
+        <property name="idBarang">
+            <column name="id_barang" sql-type="varchar" length="30" not-null="false"/>
+        </property>
 
     </class>
 </hibernate-mapping>

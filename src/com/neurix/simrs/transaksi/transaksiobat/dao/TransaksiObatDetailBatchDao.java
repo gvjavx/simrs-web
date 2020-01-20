@@ -148,6 +148,27 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         return sum;
     }
 
+    public Boolean checkBatchApproveFlagByIdApproval(String idApproval, Integer noBatch){
+
+        String SQL = "SELECT odb.id, odb.status, odb.approve_flag\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "WHERE odb.approve_flag is null\n" +
+                "AND no_batch = :noBatch\n" +
+                "AND od.id_approval_obat = :id";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idApproval)
+                .setParameter("noBatch", noBatch)
+                .list();
+
+        if (list.size() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_batch')");

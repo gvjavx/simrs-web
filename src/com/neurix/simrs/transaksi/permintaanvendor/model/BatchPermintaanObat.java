@@ -15,6 +15,10 @@ public class BatchPermintaanObat {
     private String lastUpdateWho;
     private String stLastUpdateWho;
 
+    private String isApprove;
+
+
+
     public String getStLastUpdateWho() {
         return stLastUpdateWho;
     }
@@ -77,5 +81,13 @@ public class BatchPermintaanObat {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIsApprove() {
+        return isApprove;
+    }
+
+    public void setIsApprove(String isApprove) {
+        this.isApprove = isApprove;
     }
 }

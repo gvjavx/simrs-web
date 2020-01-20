@@ -224,7 +224,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
 
                 try {
-                    transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch());
+                    transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch(), "N");
                 } catch (GeneralBOException e){
                     logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                     addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
@@ -234,6 +234,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 transaksiObatDetails.addAll(requestVendor.getListOfTransaksiObatDetail());
             }
 
+            setId(id);
             setPermintaanVendor(requestVendor);
             session.setAttribute("listOfObatDetail", transaksiObatDetails);
 
@@ -601,7 +602,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
-                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch);
+                transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "N");
             } catch (GeneralBOException e){
                 logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
@@ -707,7 +708,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
 
                 try {
-                    transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch());
+                    transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch(), "Y");
                 } catch (GeneralBOException e){
                     logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                     addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());

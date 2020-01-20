@@ -51,7 +51,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 ObatPoli obatPoli;
                 for (MtSimrsObatPoliEntity obatPoliEntity : obatPoliEntities) {
                     obatPoli = new ObatPoli();
-                    obatPoli.setIdObat(obatPoliEntity.getPrimaryKey().getIdObat());
+                    obatPoli.setIdObat(obatPoliEntity.getIdObat());
                     obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
                     obatPoli.setFlag(obatPoliEntity.getFlag());
                     obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
@@ -63,8 +63,11 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
                     obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
                     obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
+                    obatPoli.setBranchId(obatPoliEntity.getBranchId());
+                    obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
+                    obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
 
-                    ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getPrimaryKey().getIdObat());
+                    ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
 
                     if (obatEntity != null) {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
@@ -325,7 +328,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     // save to table obat poli
                     MtSimrsObatPoliEntity newObatPoli = new MtSimrsObatPoliEntity();
                     ObatPoliPk obatPoliPk = new ObatPoliPk();
-                    obatPoliPk.setIdObat(obatListDetail.getIdObat());
+                    obatPoliPk.setIdBarang(obatListDetail.getIdBarang());
                     obatPoliPk.setIdPelayanan(bean.getIdPelayanan());
                     newObatPoli.setBranchId(bean.getBranchId());
                     newObatPoli.setPrimaryKey(obatPoliPk);
@@ -889,7 +892,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         if (obatPoliEntity != null) {
 
-            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getPrimaryKey().getIdObat());
+            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
 
             if (obatEntity != null) {
 
@@ -1319,6 +1322,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             hsCriteria.put("branch_id", bean.getBranchId());
         }
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        }
+
         hsCriteria.put("flag", "Y");
 
         try {
@@ -1592,6 +1599,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return obatDetails;
     }
 
+    @Override
+    public void saveVerifikasiObat(Obat obat) throws GeneralBOException {
+
+    }
     private String getNextPermintaanObatId() throws GeneralBOException {
         String id = "";
         try {

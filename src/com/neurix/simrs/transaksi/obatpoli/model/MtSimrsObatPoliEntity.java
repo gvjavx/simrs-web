@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -23,6 +24,34 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private BigInteger qtyBox;
     private BigInteger qtyLembar;
     private BigInteger qtyBiji;
+    private String idObat;
+
+    private String idPabrik;
+    private Date expiredDate;
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
 
     public BigInteger getQtyBox() {
         return qtyBox;

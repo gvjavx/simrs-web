@@ -11,6 +11,8 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
+import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -40,7 +42,12 @@ public class TransaksiObatAction extends BaseMasterAction {
     private CheckupBo checkupBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+    private ObatPoliBo obatPoliBoProxy;
     private String id;
+
+    public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
+        this.obatPoliBoProxy = obatPoliBoProxy;
+    }
 
     public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
         this.checkupBoProxy = checkupBoProxy;
@@ -218,19 +225,19 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
         // hitung total bayar
-        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
-
-        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-        setTransaksiObatDetail(transaksiObatDetail);
-
-        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
-
-        if (jml != null && !jml.equals(0)) {
-            transaksiObatDetail.setTotalBayar(jml);
-        } else {
-            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-        }
+//        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+//        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+//
+//        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+//        setTransaksiObatDetail(transaksiObatDetail);
+//
+//        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
+//
+//        if (jml != null && !jml.equals(0)) {
+//            transaksiObatDetail.setTotalBayar(jml);
+//        } else {
+//            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+//        }
 
         setTransaksiObatDetail(transaksiObatDetail);
         session.removeAttribute("listOfResultResep");
@@ -479,27 +486,28 @@ public class TransaksiObatAction extends BaseMasterAction {
         return result;
     }
 
-    public List<Obat> getListObatEntity(String idObat, String idPabrik){
+    public List<ObatPoli> listObatPoliEntity(String idObat, String idPabrik){
         logger.info("[TransaksiObatAction.initApprovePermintaan] START process >>>");
-        List<Obat> obatList = new ArrayList<>();
+        List<ObatPoli> obatPoliList = new ArrayList<>();
 
-        Obat obat = new Obat();
-        obat.setIdObat(idObat);
-        obat.setIdPabrik(idPabrik);
-        obat.setFlag("Y");
+        ObatPoli obatPoli = new ObatPoli();
+        obatPoli.setIdObat(idObat);
+        obatPoli.setIdPabrik(idPabrik);
+        obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatPoli.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-            obatList = obatBo.getEntityObatByCriteria(obat);
+            obatPoliList = obatPoliBo.getObatPoliByCriteria(obatPoli);
         } catch (GeneralBOException e){
             logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
             addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
         }
 
         logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
-        return obatList;
+        return obatPoliList;
 
     }
 

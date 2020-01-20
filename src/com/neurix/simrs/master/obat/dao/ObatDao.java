@@ -61,7 +61,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("exp_date") != null){
                 criteria.add(Restrictions.eq("expiredDate", (Date) mapCriteria.get("exp_date")));
             }
-
+            if (mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
 
 //            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
 //            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));
@@ -76,7 +78,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+
 
         List<ImSimrsObatEntity> results = criteria.list();
 
@@ -351,5 +353,51 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
 
         return obat;
+    }
+
+    public Obat getLastIdSeqObat( String idObat ){
+
+        String SQL = "SELECT id_seq_obat, created_date\n" +
+                "FROM im_simrs_obat\n" +
+                "WHERE id_obat = :id\n" +
+                "GROUP BY id_seq_obat\n" +
+                "ORDER BY created_date desc\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idObat)
+                .list();
+
+        Obat obat = new Obat();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                obat.setIdSeqObat((String) obj[0]);
+                obat.setCreatedDate((Timestamp) obj[1]);
+            }
+        }
+
+        return obat;
+    }
+
+    public List<String> getListIdObatGroupByBranchId(String branchId){
+
+        String SQL = "SELECT id_obat, id_pabrik\n" +
+                "FROM im_simrs_obat \n" +
+                "WHERE branch_id = :id\n" +
+                "AND flag = 'Y'\n" +
+                "GROUP BY id_obat, id_pabrik";
+
+        List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", branchId)
+                .list();
+
+        List<String> list = new ArrayList<>();
+        if (resuts.size() > 0){
+            for (Object[] obj : resuts){
+                list.add(obj[0].toString());
+            }
+        }
+
+        return list;
     }
 }

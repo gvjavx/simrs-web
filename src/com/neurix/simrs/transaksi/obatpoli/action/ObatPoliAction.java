@@ -527,6 +527,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
 
+        idPabrik = "";
         if(!"".equalsIgnoreCase(idPabrik) && idPabrik != null){
             try {
                 checkObatResponse = obatPoliBo.checkObatStockLama(idPabrik, branchId);

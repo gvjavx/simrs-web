@@ -42,7 +42,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Batch Permintaan Purchase Order (PO)
+            Batch Purchase Order (PO)
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -92,7 +92,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch Permintaan PO</h3>
+                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch</h3>
                             </div>
                             <div class="col-md-6">
                                 <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
@@ -164,7 +164,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Batch</td>
-                                <td>Status</td>
+                                <%--<td>Status</td>--%>
                                 <td>Last Update</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -172,14 +172,29 @@
                             <tbody>
                             <s:iterator value="#session.listOfBatch" var="row">
                                 <tr id='row<s:property value="noBatch"/>'>
-                                    <td><s:property value="noBatch"/></td>
-                                    <td><s:property value="statusName"/></td>
+                                    <td align="center" width="8%">
+                                        <span style="background-color: #00a65a;padding: 5px; color: #ffffff">
+                                            <s:property value="noBatch"/>
+                                        </span>
+                                    </td>
+                                    <%--<td><s:property value="statusName"/></td>--%>
                                     <td><s:property value="stLastUpdateWho"/></td>
                                     <td align="center">
-                                        <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                        <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                        <%--<a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>--%>
+                                        <%--<a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>--%>
+
+                                        <s:if test='#row.isApprove == "Y"'>
+                                            <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                        </s:if>
+                                            <s:else>
+                                                <span class="label label-success">Telah di Approve</span>
+                                            </s:else>
+
                                         <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                     </td>
+                                    <%--<td><s:property value="isApprove"/></td>--%>
+
                                 </tr>
                             </s:iterator>
                             </tbody>

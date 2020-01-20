@@ -55,6 +55,15 @@ public class TransaksiObatDetail extends BaseModel {
     private Date expDate;
     private String status;
     private String idSeqObat;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     public String getIdSeqObat() {
         return idSeqObat;

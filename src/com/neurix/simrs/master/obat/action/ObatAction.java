@@ -344,7 +344,7 @@ public class ObatAction extends BaseMasterAction {
         obat.setFlag("Y");
 
         try {
-            obatList = obatBoProxy.getByCriteria(obat);
+            obatList = obatBoProxy.getListObatGroup(obat);
         }catch (GeneralBOException e){
             logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
         }

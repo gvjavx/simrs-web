@@ -233,6 +233,32 @@ public class ObatBoImpl implements ObatBo {
         return obatEntityList;
     }
 
+    private List<ImSimrsObatEntity> getListObatEntity(Obat bean){
+        logger.info("[ObatBoImpl.getListEntityObat] Start >>>>>>>");
+
+        List<ImSimrsObatEntity> simrsObatEntityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdSeqObat() != null && !"".equalsIgnoreCase(bean.getIdSeqObat())){
+            hsCriteria.put("id_seq_obat", bean.getIdSeqObat());
+        }
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            hsCriteria.put("id_obat", bean.getIdObat());
+        }
+
+        hsCriteria.put("flag","Y");
+
+        try {
+            simrsObatEntityList = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListObatEntity] error when get data obat by get by criteria "+ e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.getListEntityObat] End <<<<<<<");
+        return simrsObatEntityList;
+    }
+
 
     @Override
     public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException {
@@ -680,6 +706,72 @@ public class ObatBoImpl implements ObatBo {
         return batchEntities;
     }
 
+    @Override
+    public List<Obat> getListObatGroup(Obat bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getListObatGroup] START >>>>>>>>>>");
+
+        List<Obat> obatList = new ArrayList<>();
+
+        List<String> listIdObat = new ArrayList<>();
+        try {
+            listIdObat = obatDao.getListIdObatGroupByBranchId(bean.getBranchId());
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+        }
+
+        Obat obat;
+        for (String idObat : listIdObat){
+            obat = new Obat();
+
+            try {
+                obat = obatDao.getLastIdSeqObat(idObat);
+            } catch (HibernateException e){
+                logger.error("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+                throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+            }
+
+            if (obat != null){
+                obat.setIdObat(idObat);
+                List<ImSimrsObatEntity> obatEntities = getListObatEntity(obat);
+
+                if (obatEntities.size() > 0){
+                    ImSimrsObatEntity obatEntity = obatEntities.get(0);
+
+                    obat.setIdSeqObat(obatEntity.getIdSeqObat());
+                    obat.setIdPabrik(obatEntity.getIdPabrik());
+                    obat.setNamaObat(obatEntity.getNamaObat());
+                    obat.setIdBarang(obatEntity.getIdBarang());
+                    obat.setLembarPerBox(obatEntity.getLembarPerBox());
+                    obat.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                    obat.setAverageHargaBox(obatEntity.getAverageHargaBox());
+                    obat.setAverageHargaLembar(obatEntity.getAverageHargaLembar());
+                    obat.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
+                    obat.setBranchId(obatEntity.getBranchId());
+
+                    Obat sumObat = new Obat();
+                    try {
+                        sumObat = obatDao.getSumStockObatGudangById(idObat);
+                    } catch (HibernateException e){
+                        logger.error("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, "+e.getMessage());
+                    }
+
+                    if (sumObat != null){
+                        obat.setQtyBox(sumObat.getQtyBox());
+                        obat.setQtyLembar(sumObat.getQtyLembar());
+                        obat.setQtyBiji(sumObat.getQtyBiji());
+                    }
+                }
+            }
+
+            obatList.add(obat);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListObatGroup] END <<<<<<<<<<");
+        return obatList;
+    }
+
     private String getIdNextObatGejala() throws GeneralBOException{
         String id = "";
 
@@ -718,5 +810,6 @@ public class ObatBoImpl implements ObatBo {
 
         return id;
     }
+
 
 }

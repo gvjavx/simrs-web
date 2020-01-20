@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.obatpoli.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -30,4 +31,6 @@ public interface ObatPoliBo {
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
     public List<PermintaanObatPoli> getCekListEntityObatPoli(PermintaanObatPoli bean) throws GeneralBOException;
     public List<TransaksiObatDetail> getListTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
+
+    public void saveVerifikasiObat(Obat obat) throws GeneralBOException;
 }

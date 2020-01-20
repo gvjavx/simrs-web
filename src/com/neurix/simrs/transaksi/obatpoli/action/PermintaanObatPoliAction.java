@@ -335,6 +335,8 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                     transaksiObatDetails.add(transaksiObatDetail);
                 }
             }
+
+//            Boolean isPoli = false;
 //
 //            try {
 //                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
@@ -353,6 +355,30 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] END process <<<");
 
         return SUCCESS;
+    }
+
+    public List<Obat> listObatEntity(String idObat, String idPabrik){
+        logger.info("[PermintaanObatPoliAction.listObatEntity] START process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdPabrik(idPabrik);
+        obat.setFlag("Y");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getEntityObatByCriteria(obat);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        logger.info("[PermintaanObatPoliAction.listObatEntity] END process <<<");
+        return obatList;
+
     }
 
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {

@@ -76,8 +76,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
 
                     // harga*qty
-                    BigInteger total = obatEntity.getHarga().multiply(transaksiObatDetail.getQty());
-                    transaksiObatDetail.setTotalHarga(total);
+//                    BigInteger total = obatEntity.getHarga().multiply(transaksiObatDetail.getQty());
+//                    transaksiObatDetail.setTotalHarga(total);
                 }
 
                 PermintaanResep permintaanResep = new PermintaanResep();

@@ -281,7 +281,7 @@
                                             document.write(formatRupiah(val))
                                         }</script>
                                     </td>
-                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"></td>
+                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>')"></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -643,7 +643,7 @@
                     </tr>
                 </table>
                 <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_approve">
+                    <table class="table table-bordered" id="tabel_approve">
                         <thead>
                         <td>Expired Date</td>
                         <td align="center">Qty Box</td>
@@ -662,7 +662,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_app"><i
+                <button type="button" class="btn btn-success" id="save_app" onclick="saveApprove()"><i
                         class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_app"><i
@@ -847,14 +847,81 @@
         }
     }
 
-    function confirmObat(idPabrik, idObat, namaObat, qtyReq){
+    function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan){
         $('#app_id').text(idObat);
         $('#app_nama').text(namaObat);
         $('#app_req').text(qtyReq);
         $('#modal-approve').modal('show');
-        TransaksiObatAction.getListObatEntity(idObat, idPabrik, function (response) {
-            console.log(response);
-        })
+        var table = [];
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+
+        TransaksiObatAction.listObatPoliEntity(idObat, idPabrik, function (response) {
+           if(response != null){
+
+               $.each(response, function (i, item) {
+                   var qtyBox = "";
+                   var qtyLembar = "";
+                   var qtyBiji = "";
+
+                   var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+
+                   var dateExpired = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
+
+                   const date1 = new Date(today);
+                   const date2 = new Date(dateExpired);
+                   const diffTime = Math.abs(date2 - date1);
+                   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                   console.log(diffDays);
+
+                   if(item.qtyBox != null){
+                       qtyBox = item.qtyBox;
+                   }
+                   if(item.qtyLembar != null){
+                       qtyLembar = item.qtyLembar;
+                   }
+                   if(item.qtyBiji != null){
+                       qtyBiji = item.qtyBiji;
+                   }
+
+                   var warna = "";
+
+                   if(diffDays < 30){
+                       warna = "orange";
+                   }
+
+                   table +='<tr bgcolor='+warna+'>' +
+                   '<td>'+dateFormat+'</td>' +
+                   '<td align="center">'+qtyBox+'</td>' +
+                   '<td align="center">'+qtyLembar+'</td>' +
+                   '<td align="center">'+qtyBiji+'</td>' +
+                   '<td><input id=newQty'+dateFormat+' type="number" class="form-control"></td>' +
+                   '<td>'+jenisSatuan+'</td>' +
+                   '<td><button></button></td>' +
+                   '</tr>';
+               });
+
+               $('#body_approve').html(table);
+           }
+        });
+    }
+
+    function saveApprove(){
+        var data = $('#tabel_approve').tableToJSON();
+        var stringData  = JSON.stringify(data);
+        var result = [];
+        $.each(data, function (i, item) {
+            var id = data[i]["Expired Date"];
+            var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
+            var qty = $('#newQty'+id).val();
+            result.push({'Expired Date': id, 'qty': qty});
+        });
+        console.log(data);
+        console.log(result);
     }
 
 </script>
