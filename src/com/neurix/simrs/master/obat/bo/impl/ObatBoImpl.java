@@ -16,6 +16,7 @@ import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -613,6 +614,67 @@ public class ObatBoImpl implements ObatBo {
 
         logger.info("[ObatPoliBoImpl.sortedListObat] END <<<<<<<<<<");
         return obats;
+    }
+
+    @Override
+    public List<Obat> getEntityObatByCriteria(Obat bean) throws GeneralBOException {
+
+        List<Obat> result = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
+            hsCriteria.put("id_obat", bean.getIdObat());
+        }
+        if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())) {
+            hsCriteria.put("nama_obat", bean.getNamaObat());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            hsCriteria.put("branch_id", bean.getBranchId());
+        }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            hsCriteria.put("flag", bean.getFlag());
+        }
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        }
+
+        List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
+
+        try {
+            obatEntityList = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getByCriteria] error when get data obat by get by criteria "+ e.getMessage());
+        }
+
+        if(obatEntityList.size() > 0){
+
+            Obat obat;
+            for (ImSimrsObatEntity entity: obatEntityList){
+                obat = new Obat();
+                obat.setIdSeqObat(entity.getIdSeqObat());
+                obat.setIdObat(entity.getIdObat());
+                obat.setNamaObat(entity.getNamaObat());
+                obat.setBranchId(entity.getBranchId());
+                obat.setMerk(entity.getMerk());
+                obat.setIdPabrik(entity.getIdPabrik());
+                obat.setQtyBox(entity.getQtyBox());
+                obat.setQtyLembar(entity.getQtyLembar());
+                obat.setQtyBiji(entity.getQtyBiji());
+                obat.setLembarPerBox(entity.getLembarPerBox());
+                obat.setBijiPerLembar(entity.getBijiPerLembar());
+                obat.setAverageHargaBox(entity.getAverageHargaBox());
+                obat.setAverageHargaLembar(entity.getAverageHargaLembar());
+                obat.setAverageHargaBiji(entity.getAverageHargaBiji());
+                obat.setHargaTerakhir(entity.getHargaTerakhir());
+                obat.setExpiredDate(entity.getExpiredDate());
+                obat.setIdBarang(entity.getIdBarang());
+                result.add(obat);
+            }
+
+        }
+
+        return result;
     }
 
     private List<MtSimrsTransaksiObatDetailBatchEntity> getListEntityBatch(TransaksiObatBatch bean){

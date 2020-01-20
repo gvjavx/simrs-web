@@ -25,6 +25,8 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private BigInteger qtyLembar;
     private BigInteger qtyBiji;
     private String idObat;
+
+    private String idPabrik;
     private Date expiredDate;
     private String idBarang;
 
@@ -34,6 +36,14 @@ public class MtSimrsObatPoliEntity implements Serializable {
 
     public void setIdBarang(String idBarang) {
         this.idBarang = idBarang;
+    }
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
     }
 
     public String getIdObat() {

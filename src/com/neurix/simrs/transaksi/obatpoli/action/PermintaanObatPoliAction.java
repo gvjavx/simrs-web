@@ -358,6 +358,29 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return SUCCESS;
     }
 
+    public List<Obat> listObatEntity(String idObat, String idPabrik) {
+        logger.info("[PermintaanObatPoliAction.listObatEntity] START process >>>");
+        List<Obat> obatList = new ArrayList<>();
+
+        Obat obat = new Obat();
+        obat.setIdObat(idObat);
+        obat.setIdPabrik(idPabrik);
+        obat.setFlag("Y");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        try {
+            obatList = obatBo.getEntityObatByCriteria(obat);
+        } catch (GeneralBOException e) {
+            logger.error("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        logger.info("[PermintaanObatPoliAction.listObatEntity] END process <<<");
+        return obatList;
+    }
+
     public String saveVerifikasiObatPoli(String idObat, String idTrans, String request) throws JSONException{
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
 
@@ -382,7 +405,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                     obat.setExpiredDate(Date.valueOf(obj.getString("Expired Date")));
                     obat.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                     obat.setJenisSatuan(obj.getString("Jenis Satuan"));
-                    obat.setIdBarang(obj.getString("Id Barang"));
+                    obat.setIdBarang(obj.getString("ID Barang"));
                     obat.setCreatedDate(updateTime);
                     obat.setCreatedWho(userLogin);
                     obat.setLastUpdate(updateTime);

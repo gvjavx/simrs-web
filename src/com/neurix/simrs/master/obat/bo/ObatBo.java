@@ -21,5 +21,6 @@ public interface ObatBo{
     public CheckObatResponse checkFisikObatByIdPabrik(Obat bean) throws GeneralBOException;
     public List<Obat> sortedListObat(List<Obat> obatList) throws GeneralBOException;
 
+    public List<Obat> getEntityObatByCriteria(Obat bean) throws GeneralBOException;
     public List<Obat> getListObatGroup(Obat bean) throws GeneralBOException;
 }

@@ -50,7 +50,10 @@
             <column name="qty_biji" sql-type="bigint" not-null="false" />
         </property>
         <property name="idObat">
-            <column name="id_obat" sql-type="varchar" length="30"/>
+            <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="expiredDate">
+            <column name="expired_date" sql-type="date" not-null="false" />
         </property>
 
     </class>

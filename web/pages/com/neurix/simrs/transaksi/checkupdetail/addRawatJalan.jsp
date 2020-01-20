@@ -214,7 +214,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">Tinggi</label>
+                                    <label>Tinggi</label>
                                     <div class="input-group date">
                                         <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
                                                      cssClass="form-control" type="number"/>
@@ -226,7 +226,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">Berat</label>
+                                    <label>Berat</label>
                                     <div class="input-group date">
                                         <s:textfield id="berat" name="headerDetailCheckup.berat"
                                                      cssClass="form-control" type="number"/>
@@ -236,62 +236,84 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>&nbsp</label>
+                                    <div>
+                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i
+                                                class="fa fa-check"></i>
+                                            Save
+                                        </button>
+                                        <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                                                id="load_penunjang">
+                                            <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <br>
-                            <button id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i
-                                    class="fa fa-check"></i>
-                                Save
-                            </button>
-                            <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                                    id="load_penunjang">
-                                <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                            </button>
-                        </div>
+                        <%--<div class="form-group">--%>
+                            <%--<br>--%>
+
+                        <%--</div>--%>
                     </div>
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Alergi
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Alergi</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_alergi">
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Alergi
+                                </button>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Alergi</td>
+                                        <td align="center" width="20%">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_alergi">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                        onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                </button>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>ID Dokter</td>
+                                        <td>Nama</td>
+                                        <%--<td>Spesialis</td>--%>
+                                        <td align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_dokter">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
                     </div>
 
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>ID Dokter</td>
-                                <td>Nama</td>
-                                <%--<td>Spesialis</td>--%>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_dokter">
+                    <%--<div class="box-header with-border"></div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%----%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
 
-                            </tbody>
-                        </table>
-                    </div>
+                    <%--</div>--%>
                     <div class="box-header with-border" id="pos_nosa">
                     </div>
                     <div class="box-header with-border">
@@ -371,7 +393,7 @@
                     <div class="box-header with-border" id="pos_obat">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Obat Penunjang</h3>
+                        <h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
@@ -397,7 +419,7 @@
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Resep Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-medkit"></i> Order Resep Obat</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
@@ -1828,16 +1850,16 @@
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
                             "<td>" + item.idPerawat + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarif + ",-" + "</td>" +
+                            "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
-                            "<td align='right'>" + "Rp. " + tarifTotal + ",-" + "</td>" +
+                            "<td align='right'>" + tarifTotal + "</td>" +
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
                             "</tr>";
 
                 });
                 table = table + "<tr>" +
                         "<td colspan='6'>Total</td>" +
-                        "<td align='right'>" + "Rp. " + formatRupiah(trfTtl) + ",-" + "</td>" +
+                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
             }

@@ -27,7 +27,7 @@
             }
         }
 
-        function formatRupiah2(angka, prefix) {
+        function formatRupiah2(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
                     split = number_string.split(','),
                     sisa = split[0].length % 3,
@@ -40,21 +40,21 @@
             }
 
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            return rupiah;
         }
 
         $(document).ready(function () {
 
             $('#transaksi_obat').addClass('active');
             var total = $('#total_bayar').val();
-            $('#show_nominal').val("Rp. " + formatRupiah(total));
+            $('#show_nominal').val(formatRupiah(total));
 
             var nominal = document.getElementById('nominal_dibayar');
             nominal.addEventListener('keyup', function (e) {
-                nominal.value = formatRupiah2(this.value, 'Rp. ');
+                nominal.value = formatRupiah2(this.value);
 
-                var bayar = nominal.value.replace('Rp. ', '');
-                var valBayar = bayar.replace(/[.]/g, '');
+//                var bayar = nominal.value.replace('Rp. ', '');
+                var valBayar = nominal.value.replace(/[.]/g, '');
                 $('#total_dibayar').val(valBayar);
 
                 var a = parseInt(total);
@@ -63,7 +63,7 @@
                 if (b >= a) {
                     var kembalian = valBayar - total;
                     $('#kembalian').val("" + kembalian);
-                    $('#nominal_kembalian').val('Rp. ' + formatRupiah(kembalian));
+                    $('#nominal_kembalian').val(formatRupiah(kembalian));
                 } else {
                     $('#kembalian').val('');
                     $('#nominal_kembalian').val('');
@@ -255,11 +255,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Obat</td>
+                                <td>Nama Obat</td>
                                 <td align="center">Qty</td>
                                 <td>Jenis Satuan</td>
-                                <td align="right">Harga Satuan</td>
-                                <td align="right">Harga Total</td>
+                                <td align="right">Harga Satuan (Rp.)</td>
+                                <td align="right">Harga Total (Rp.)</td>
+                                <td align="center">Scan ID Pabrik</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -271,15 +272,16 @@
                                     <td align="right">
                                         <script>var val = <s:property value="harga"/>;
                                         if (val != null && val != '') {
-                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                            document.write(formatRupiah(val))
                                         }</script>
                                     </td>
                                     <td align="right">
                                         <script>var val = <s:property value="totalHarga"/>;
                                         if (val != null && val != '') {
-                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                            document.write(formatRupiah(val))
                                         }</script>
                                     </td>
+                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>')"></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -300,11 +302,11 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Obat</td>
+                                <td>Nama Obat</td>
                                 <td align="center">Qty</td>
                                 <td>Jenis Satuan</td>
-                                <td align="right">Harga Satuan</td>
-                                <td align="right">Harga Total</td>
+                                <td align="right">Harga Satuan (Rp.)</td>
+                                <td align="right">Harga Total (Rp.)</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -316,13 +318,13 @@
                                     <td align="right">
                                         <script>var val = <s:property value="harga"/>;
                                         if (val != null && val != '') {
-                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                            document.write(formatRupiah(val))
                                         }</script>
                                     </td>
                                     <td align="right">
                                         <script>var val = <s:property value="totalHarga"/>;
                                         if (val != null && val != '') {
-                                            document.write("Rp. " + formatRupiah(val) + ",-")
+                                            document.write(formatRupiah(val))
                                         }</script>
                                     </td>
                                 </tr>
@@ -344,8 +346,13 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Total</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="show_nominal" cssStyle="margin-top: 7px"
-                                                     cssClass="form-control" readOnly="true"/>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <s:textfield id="show_nominal"
+                                                         cssClass="form-control" readOnly="true"/>
+                                        </div>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>
                                         <s:hidden name="transaksiObatDetail.totalBayar" id="total_bayar"/>
                                     </div>
@@ -353,19 +360,28 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Total yang dibayar</label>
                                     <div class="col-sm-4">
+                                        <div class="input-group date" style="margin-top: 7px" >
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <input class="form-control"id="nominal_dibayar">
+                                        </div>
                                             <%--<s:textfield id="nominal_dibayar" cssStyle="margin-top: 7px"--%>
                                             <%--required="false"--%>
                                             <%--readonly="false" cssClass="form-control" onkeypress="showChanges()"/>--%>
-                                        <input class="form-control" style="margin-top: 7px" id="nominal_dibayar">
                                     </div>
                                     <s:hidden name="transaksiObatDetail.nominal" id="total_dibayar"></s:hidden>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kembalian</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nominal_kembalian" cssStyle="margin-top: 7px"
-                                                     required="false"
-                                                     readonly="false" cssClass="form-control" readOnly="true"/>
+                                        <div class="input-group date" style="margin-top: 7px" >
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <s:textfield id="nominal_kembalian" required="false"
+                                                         readonly="false" cssClass="form-control" readOnly="true"/>
+                                        </div>
                                     </div>
                                     <s:hidden name="transaksiObatDetail.kembalian" id="kembalian"></s:hidden>
                                 </div>
@@ -374,12 +390,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <button type="button" class="btn btn-success" onclick="confirm()"><i
-                                                class="fa fa-arrow-right"></i> Bayar
-                                        </button>
                                         <a href="initForm_transaksi.action" type="button" class="btn btn-warning"><i
                                                 class="fa fa-arrow-left"></i> Back
                                         </a>
+                                        <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                                class="fa fa-arrow-right"></i> Bayar
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -599,6 +615,65 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-approve">
+    <div class="modal-dialog modal-flat" style="width: 55%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Konfirmasi Qty Approve Obat</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_app">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_app"></p>
+                </div>
+                <table class="table table-striped">
+                    <tr>
+                        <td width="25%">ID Obat</td>
+                        <td><span id="app_id"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Obat</td>
+                        <td><span id="app_nama"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Qty Request</td>
+                        <td><span id="app_req"></span></td>
+                    </tr>
+                </table>
+                <div class="box">
+                    <table class="table table-bordered" id="tabel_approve">
+                        <thead>
+                        <td>Expired Date</td>
+                        <td align="center">Qty Box</td>
+                        <td align="center">Qty Lembar</td>
+                        <td align="center">Qty Biji</td>
+                        <td align="center">Qty Approve</td>
+                        <td>Jenis Satuan</td>
+                        <td>Action</td>
+                        </thead>
+                        <tbody id="body_approve">
+                        </tbody>
+                    </table>
+                    <p id="loading_data" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_app" onclick="saveApprove()"><i
+                        class="fa fa-arrow-right"></i> Konfirmasi
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_app"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script type='text/javascript'>
 
@@ -765,13 +840,88 @@
                 bijiPerLembar = obat.split('|')[6];
             }
 
-            console.log(obat);
-
             $('#ob_qtyBox').val(qtyBox);
             $('#ob_qtyLembar').val(qtyLembar);
             $('#ob_qtyBiji').val(qtyBiji);
 
         }
+    }
+
+    function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan){
+        $('#app_id').text(idObat);
+        $('#app_nama').text(namaObat);
+        $('#app_req').text(qtyReq);
+        $('#modal-approve').modal('show');
+        var table = [];
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;
+
+        TransaksiObatAction.listObatPoliEntity(idObat, idPabrik, function (response) {
+           if(response != null){
+
+               $.each(response, function (i, item) {
+                   var qtyBox = "";
+                   var qtyLembar = "";
+                   var qtyBiji = "";
+
+                   var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+
+                   var dateExpired = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
+
+                   const date1 = new Date(today);
+                   const date2 = new Date(dateExpired);
+                   const diffTime = Math.abs(date2 - date1);
+                   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                   console.log(diffDays);
+
+                   if(item.qtyBox != null){
+                       qtyBox = item.qtyBox;
+                   }
+                   if(item.qtyLembar != null){
+                       qtyLembar = item.qtyLembar;
+                   }
+                   if(item.qtyBiji != null){
+                       qtyBiji = item.qtyBiji;
+                   }
+
+                   var warna = "";
+
+                   if(diffDays < 30){
+                       warna = "orange";
+                   }
+
+                   table +='<tr bgcolor='+warna+'>' +
+                   '<td>'+dateFormat+'</td>' +
+                   '<td align="center">'+qtyBox+'</td>' +
+                   '<td align="center">'+qtyLembar+'</td>' +
+                   '<td align="center">'+qtyBiji+'</td>' +
+                   '<td><input id=newQty'+dateFormat+' type="number" class="form-control"></td>' +
+                   '<td>'+jenisSatuan+'</td>' +
+                   '<td><button></button></td>' +
+                   '</tr>';
+               });
+
+               $('#body_approve').html(table);
+           }
+        });
+    }
+
+    function saveApprove(){
+        var data = $('#tabel_approve').tableToJSON();
+        var stringData  = JSON.stringify(data);
+        var result = [];
+        $.each(data, function (i, item) {
+            var id = data[i]["Expired Date"];
+            var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
+            var qty = $('#newQty'+id).val();
+            result.push({'Expired Date': id, 'qty': qty});
+        });
+        console.log(data);
+        console.log(result);
     }
 
 </script>

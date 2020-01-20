@@ -65,6 +65,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
                     obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
                     obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
+                    obatPoli.setBranchId(obatPoliEntity.getBranchId());
+                    obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
+                    obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
 
                     ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
 
@@ -1365,6 +1368,10 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())) {
             hsCriteria.put("id_barang", bean.getIdBarang());
         }
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        }
+
         hsCriteria.put("flag", "Y");
 
         try {
@@ -1678,6 +1685,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 batchEntity.setLastUpdateWho(obat.getLastUpdateWho());
                 batchEntity.setCreatedDate(obat.getCreatedDate());
                 batchEntity.setCreatedWho(obat.getCreatedWho());
+                batchEntity.setExpiredDate(obat.getExpiredDate());
 
                 try {
                     batchDao.addAndSave(batchEntity);
@@ -1716,7 +1724,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.saveVerifikasiObat] END <<<<<<<<<<");
         return batchEntities;
     }
-
     private String getNextPermintaanObatId() throws GeneralBOException {
         String id = "";
         try {
