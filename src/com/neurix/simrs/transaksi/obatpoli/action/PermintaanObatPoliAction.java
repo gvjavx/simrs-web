@@ -301,7 +301,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return obatList;
     }
 
-    public String saveApproveRequest(String idObat, String request) throws JSONException{
+    public String saveApproveRequest(String idApprovalObat, String request) throws JSONException{
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -312,7 +312,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
-            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+            obatPoli.setIdApprovalObat(idApprovalObat);
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setBranchId(branchId);
@@ -324,15 +324,13 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             JSONArray json = new JSONArray(request);
 
             TransaksiObatDetail transaksiObatDetail;
+
             for (int i = 0; i < json.length(); i++) {
                 JSONObject obj = json.getJSONObject(i);
                 if(!"".equalsIgnoreCase(obj.getString("Qty Approve"))){
                     transaksiObatDetail = new TransaksiObatDetail();
-                    transaksiObatDetail.setIdObat(idObat);
-                    transaksiObatDetail.setIdTransaksiObatDetail(obj.getString("Id Transaksi"));
-                    transaksiObatDetail.setExpDate(Date.valueOf(obj.getString("Expired Date")));
-                    transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
-                    transaksiObatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    transaksiObatDetail.setIdObat("ID Obat");
+                    transaksiObatDetail.setIdTransaksiObatDetail(obj.getString("ID Transkasi"));
                     transaksiObatDetails.add(transaksiObatDetail);
                 }
             }
