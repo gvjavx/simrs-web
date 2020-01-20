@@ -296,6 +296,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
                         detail = new TransaksiObatDetail();
                         detail.setIdObat(obj.getString("ID"));
+                        detail.setIdTransaksiObatDetail(obj.getString("Id Transaksi"));
                         detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                         detail.setJenisSatuan(obj.getString("Jenis Satuan"));
 

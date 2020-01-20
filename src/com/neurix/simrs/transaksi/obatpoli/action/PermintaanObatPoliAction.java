@@ -312,12 +312,12 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
-//            obatPoli.setIdPermintaanObatPoli(idPermintaan);
-//            obatPoli.setLastUpdate(updateTime);
-//            obatPoli.setLastUpdateWho(userLogin);
-//            obatPoli.setBranchId(branchId);
-//            obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
-//            obatPoli.setBranchId(CommonUtil.userBranchLogin());
+            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+            obatPoli.setLastUpdate(updateTime);
+            obatPoli.setLastUpdateWho(userLogin);
+            obatPoli.setBranchId(branchId);
+            obatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+            obatPoli.setBranchId(CommonUtil.userBranchLogin());
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
@@ -329,6 +329,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 if(!"".equalsIgnoreCase(obj.getString("Qty Approve"))){
                     transaksiObatDetail = new TransaksiObatDetail();
                     transaksiObatDetail.setIdObat(idObat);
+                    transaksiObatDetail.setIdTransaksiObatDetail(obj.getString("Id Transaksi"));
                     transaksiObatDetail.setExpDate(Date.valueOf(obj.getString("Expired Date")));
                     transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                     transaksiObatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
@@ -336,13 +337,13 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 }
             }
 
-//            Boolean isPoli = false;
-//
-//            try {
-//                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
-//            }catch (JSONException e){
-//                logger.error("[PermintaanResepAction.saveKonfirmasiRequest] Error when sabe resep obat", e);
-//            }
+            Boolean isPoli = false;
+
+            try {
+                obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
+            }catch (JSONException e){
+                logger.error("[PermintaanResepAction.saveKonfirmasiRequest] Error when sabe resep obat", e);
+            }
 
             logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] LIST DATA >> "+transaksiObatDetails);
 
@@ -354,6 +355,57 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] END process <<<");
 
+        return SUCCESS;
+    }
+
+    public String saveVerifikasiObatPoli(String idObat, String idTrans, String request) throws JSONException{
+        logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] START process >>>");
+
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String branchId = CommonUtil.userBranchLogin();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+            List<Obat> obats = new ArrayList<>();
+
+            JSONArray json = new JSONArray(request);
+
+            Obat obat;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                if(!"".equalsIgnoreCase(obj.getString("Qty Approve"))){
+                    obat = new Obat();
+                    obat.setIdObat(idObat);
+                    obat.setIdTransaksiDetail(idTrans);
+                    obat.setExpiredDate(Date.valueOf(obj.getString("Expired Date")));
+                    obat.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
+                    obat.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    obat.setIdBarang(obj.getString("Id Obat"));
+                    obat.setCreatedDate(updateTime);
+                    obat.setCreatedWho(userLogin);
+                    obat.setLastUpdate(updateTime);
+                    obat.setLastUpdateWho(userLogin);
+                    obats.add(obat);
+                }
+            }
+
+            Boolean isPoli = false;
+
+            try {
+                obatPoliBo.saveVerifikasiObat(obats);
+            }catch (GeneralBOException e){
+                logger.error("[PermintaanResepAction.saveKonfirmasiRequest] Error when sabe resep obat", e);
+            }
+
+        } catch (JSONException e) {
+            Long logId = null;
+            logger.error("[PermintaanObatPoliAction.saveKonfirmasiRequest] ERROR when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            return e.getMessage();
+        }
+
+        logger.info("[PermintaanObatPoliAction.saveKonfirmasiRequest] END process <<<");
         return SUCCESS;
     }
 
