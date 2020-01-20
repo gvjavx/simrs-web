@@ -382,7 +382,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                     obat.setExpiredDate(Date.valueOf(obj.getString("Expired Date")));
                     obat.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                     obat.setJenisSatuan(obj.getString("Jenis Satuan"));
-                    obat.setIdBarang(obj.getString("Id Obat"));
+                    obat.setIdBarang(obj.getString("Id Barang"));
                     obat.setCreatedDate(updateTime);
                     obat.setCreatedWho(userLogin);
                     obat.setLastUpdate(updateTime);
