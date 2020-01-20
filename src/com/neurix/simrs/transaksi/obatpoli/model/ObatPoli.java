@@ -27,6 +27,15 @@ public class ObatPoli {
     private BigInteger qtyBiji;
     private BigInteger lembarPerBox;
     private BigInteger bijiPerLembar;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     public BigInteger getQtyBox() {
         return qtyBox;

@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -576,6 +577,35 @@ public class ObatPoliAction extends BaseMasterAction {
             return checkObatResponse;
         }else{
             logger.info("[ObatPoliAction.checkTransaksiObat] END process <<<");
+            return null;
+        }
+    }
+
+    public List<TransaksiObatDetail> listDetailOldPermintaan(String idPermintaan, boolean isPoli, String idTujuan, String flag) {
+        logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        permintaanObatPoli.setTujuanPelayanan(idTujuan);
+        permintaanObatPoli.setFlag(flag);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+
+        if (!"".equalsIgnoreCase(idPermintaan)) {
+            try {
+                permintaanObatPoliList = obatPoliBo.getDetailLitsPermintaan(permintaanObatPoli, isPoli);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatPoliAction.listDetailPermintaan] Error when search data detail permintaan ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when search data detail permintaan, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
+            return transaksiObatDetails;
+
+        } else {
             return null;
         }
     }

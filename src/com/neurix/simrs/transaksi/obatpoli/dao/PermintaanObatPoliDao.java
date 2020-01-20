@@ -1,8 +1,10 @@
 package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -395,6 +397,12 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             listOfResults.add(permintaanObatPoli);
         }
         return listOfResults;
+    }
+
+    public List<TransaksiObatDetail> getListOldPermintaan(String idPermintaan){
+        List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
+
+        return transaksiObatDetailList;
     }
 
 
