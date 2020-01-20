@@ -23,6 +23,15 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private Date expiredDate;
     private String flag;
     private String action;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     public String getFlag() {
         return flag;

@@ -668,6 +668,7 @@ public class ObatBoImpl implements ObatBo {
                 obat.setAverageHargaBiji(entity.getAverageHargaBiji());
                 obat.setHargaTerakhir(entity.getHargaTerakhir());
                 obat.setExpiredDate(entity.getExpiredDate());
+                obat.setIdBarang(entity.getIdBarang());
                 result.add(obat);
             }
 

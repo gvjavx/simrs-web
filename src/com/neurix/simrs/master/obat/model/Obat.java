@@ -36,7 +36,6 @@ public class Obat extends BaseModel {
     private BigDecimal averageHargaBiji;
     private String idPabrik;
     private String merk;
-    private String janisSatuan;
 
     private BigDecimal hargaTerakhir;
     private String idSeqObat;
@@ -47,6 +46,7 @@ public class Obat extends BaseModel {
     private Integer noBatch;
 
     private String idBarang;
+    private String jenisSatuan;
 
     public String getIdBarang() {
         return idBarang;
@@ -104,12 +104,12 @@ public class Obat extends BaseModel {
         this.idSeqObat = idSeqObat;
     }
 
-    public String getJanisSatuan() {
-        return janisSatuan;
+    public String getJenisSatuan() {
+        return jenisSatuan;
     }
 
-    public void setJanisSatuan(String janisSatuan) {
-        this.janisSatuan = janisSatuan;
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
     }
 
     public List<Obat> getLabelJenisObat() {

@@ -133,7 +133,7 @@
                                        buttons="{
                         'OK':function() {
                         $('#info_dialog').dialog('close');
-                        toContent();
+
                         }
                         }"
                             >
@@ -181,8 +181,8 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
-                                <td>Qty Request</td>
-                                <td>Qty Approve</td>
+                                <td align="center">Qty Request</td>
+                                <td align="center">Qty Approve</td>
                                 <td>Jenis Satuan</td>
                                 <td>Scan ID Pabrik</td>
                             </tr>
@@ -192,12 +192,15 @@
                                 <tr>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td><s:property value="qtyApprove"/></td>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
                                     <td><s:property value="jenisSatuan"/></td>
-                                    <td>
-                                        <input class="form-control" id=pabrik'<s:property value="idObat"/>'
-                                               onchange="confirmObat('<s:property value="idObat"/>', this.value, '<s:property value="namaObat"/>', '<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')" style="width: 170px">
+                                    <td width="20%">
+                                        <div class="col-md-8">
+                                            <input class="form-control" id='pabrik<s:property value="idObat"/>'
+                                                   onchange="confirmObat('<s:property value="idObat"/>', this.value, '<s:property value="namaObat"/>', '<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')" style="width: 170px">
+                                        </div>
+                                       <div class="col-md-4"><span id='status<s:property value="idObat"/>'></span></div>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -285,6 +288,8 @@
 <script type='text/javascript'>
 
     function confirmObat(idObat, idPabrik, nama, qtyReq, satuan, idTransaksi) {
+        $('#load_app').hide();
+        $('#save_app').show();
         $('#body_approve').html('');
         $('#app_id').text(idObat);
         $('#app_nama').text(nama);
@@ -302,7 +307,7 @@
 
         PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
             if (response != null) {
-
+                console.log(response);
                 $.each(response, function (i, item) {
                     var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
 
@@ -345,7 +350,7 @@
                             '<td align="center">' + qtyLembar + '</td>' +
                             '<td align="center">' + qtyBiji + '</td>' +
                             '<td>' + '<input id=newQty' + dateFormat + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
-                            '<td>' + satuan + '</td>' +
+                            '<td>' + satuan +'<input id=idBarang'+dateFormat+' type="hidden" value='+item.idBarang+'>'+'</td>' +
                             '</tr>';
 
                     lembarPerBox = item.lembarPerBox;
@@ -373,7 +378,8 @@
             var id = data[i]["Expired Date"];
             var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
             var qty = $('#newQty' + id).val();
-            result.push({'Expired Date': id, 'qty': qty, 'Jenis Satuan': jenisSatuan});
+            var idBarang = $('#idBarang'+id).val();
+            result.push({'Expired Date': id, 'Qty Approve': qty, 'Jenis Satuan': jenisSatuan, 'ID Barang' : idBarang});
         });
 
         $.each(data, function (i, item) {
@@ -416,6 +422,7 @@
         }
 
         var stringData = JSON.stringify(result);
+        console.log(result);
 
         if (qtyApp > 0) {
 
@@ -424,17 +431,21 @@
                 dwr.engine.setAsync(true);
                 $('#load_app').show();
                 $('#save_app').hide();
-                PermintaanObatPoliAction.saveApproveRequest(idObat, stringData, function (response) {
+                PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {callback: function (response) {
                     if (response == "success") {
                         $('#load_app').hide();
                         $('#save_app').show();
+                        $('#modal-approve').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#qtyApp'+idObat).text(qtyApp);
+                        $('#status'+idObat).html('<label class="label label-success">success</label>');
                     } else {
                         $('#load_app').hide();
                         $('#save_app').show();
                         $('#warning_app').show().fadeOut(5000);
                         $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
                     }
-                });
+                }});
                 console.log('success');
             } else {
                 $('#warning_app').show().fadeOut(5000);
