@@ -438,17 +438,20 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             int i = 0;
             for (TransaksiObatDetail obatDetail : obatDetails) {
                 if (obatDetail.getQtyApprove().compareTo(new BigInteger(String.valueOf(0))) == 1){
+
+                    TransaksiObatDetail oldObatDetail = new TransaksiObatDetail();
+
                     if (transaksiObatDetails.size() == 0){
                         obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                         transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
-
-                    } else if (!transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
-                        obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                    } else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                        obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i-1).getIdTransaksiObatDetail());
                         transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
                     } else {
-                        obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i-1).getIdTransaksiObatDetail());
+                        obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                        transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
                     }
                     i++;
@@ -460,8 +463,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 for (TransaksiObatDetail obatDetail : transaksiObatDetails){
                     ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
 
-                    id = getNextTransaksiObatDetail();
-                    obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
+//                    id = getNextTransaksiObatDetail();
+//                    obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
+                    obatDetailEntity.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                     obatDetailEntity.setIdObat(obatDetail.getIdObat());
                     obatDetailEntity.setQty(obatDetail.getQtyApprove());
@@ -493,8 +497,20 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     batchEntity.setIdBarang(obatDetail.getIdBarang());
                     batchEntity.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     batchEntity.setQtyApprove(obatDetail.getQtyApprove());
-                    batchEntity.setNoBatch(1);
+                    batchEntity.setJenisSatuan(obatDetail.getJenisSatuan());
                     batchEntity.setExpiredDate(obatDetail.getExpDate());
+
+                    Obat obat = new Obat();
+                    obat.setIdBarang(obatDetail.getIdBarang());
+                    List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
+                    if (obatEntities.size() > 0){
+                        batchEntity.setExpiredDate(obatEntities.get(0).getExpiredDate());
+                    }
+
+                    batchEntity.setNoBatch(1);
+                    batchEntity.setStatus("Y");
+                    batchEntity.setFlag("Y");
+                    batchEntity.setAction("C");
                     batchEntity.setCreatedDate(bean.getCreatedDate());
                     batchEntity.setCreatedWho(bean.getCreatedWho());
                     batchEntity.setLastUpdate(bean.getCreatedDate());
@@ -543,7 +559,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         }
 
 
-        if (obatPoliEntity.getIdBarang() != null && obatEntity.getIdBarang() != null) {
+        if (obatPoliEntity.getPrimaryKey() != null && obatEntity.getIdBarang() != null) {
 
             //sodiq, antisipasi jikalau nilai qty terdapat null
             BigInteger qtyBox = new BigInteger(String.valueOf(0));
@@ -729,7 +745,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         ObatPoli obatPoli = new ObatPoli();
         obatPoli.setIdPelayanan(idPoli);
         obatPoli.setIdBarang(bean.getIdBarang());
-        obatPoli.setIdObat(bean.getIdObat());
+//        obatPoli.setIdObat(bean.getIdObat());
         obatPoli.setBranchId(branchId);
         obatPoli.setFlag("Y");
 
@@ -741,7 +757,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             obatPoliEntity = obatPoliEntities.get(0);
         }
 
-        if (obatPoliEntity.getIdBarang() != null && obatEntity.getIdBarang() != null) {
+        if (obatPoliEntity.getPrimaryKey() != null && obatEntity.getIdBarang() != null) {
 
             //sodiq, antisipasi jikalau nilai qty terdapat null
             BigInteger qtyBox = new BigInteger(String.valueOf(0));

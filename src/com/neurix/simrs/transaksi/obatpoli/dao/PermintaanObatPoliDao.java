@@ -495,7 +495,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 obatDetail.setQty((BigInteger) obj[3]);
                 obatDetail.setQtyApprove((BigInteger) obj[4]);
                 obatDetail.setJenisSatuan(obj[5].toString());
-                obatDetail.setIdObat(obj[6].toString());
+                obatDetail.setIdObat(obj[7].toString());
                 obatDetails.add(obatDetail);
             }
         }

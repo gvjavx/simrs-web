@@ -28,15 +28,7 @@ public class MtSimrsObatPoliEntity implements Serializable {
 
     private String idPabrik;
     private Date expiredDate;
-    private String idBarang;
 
-    public String getIdBarang() {
-        return idBarang;
-    }
-
-    public void setIdBarang(String idBarang) {
-        this.idBarang = idBarang;
-    }
 
     public String getIdPabrik() {
         return idPabrik;
