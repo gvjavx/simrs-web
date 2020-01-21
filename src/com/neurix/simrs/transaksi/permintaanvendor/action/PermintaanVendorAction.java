@@ -14,6 +14,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
@@ -872,6 +873,24 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
         return "list_batch";
+    }
+
+    public List<TransaksiObatDetail> getListDetailObatApproved(String idPermintaanVendor, Integer noBatch){
+        logger.info("[PermintaanVendorAction.getListDetailObatApproved] START >>>>>>>");
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            obatDetailList = permintaanVendorBo.getListApprovedBatch(idPermintaanVendor, noBatch);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.getListDetailObatApproved] ERROR. ", e);
+            addActionError("[PermintaanVendorAction.getListDetailObatApproved] ERROR. " + e.getMessage());
+        }
+        logger.info("[PermintaanVendorAction.getListDetailObatApproved] END <<<<<<<");
+        return obatDetailList;
     }
 
 

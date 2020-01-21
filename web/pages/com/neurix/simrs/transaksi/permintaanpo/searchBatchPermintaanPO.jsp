@@ -187,10 +187,10 @@
                                             <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                             <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
                                         </s:if>
-                                            <s:else>
-                                                <span class="label label-success">Telah di Approve</span>
-                                            </s:else>
-
+                                        <s:else>
+                                            <span class="label label-success">Telah di Approve</span>
+                                            <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-info"><i class="fa fa-print"></i> List Print Barcode</a>
+                                        </s:else>
                                         <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                     </td>
                                     <%--<td><s:property value="isApprove"/></td>--%>

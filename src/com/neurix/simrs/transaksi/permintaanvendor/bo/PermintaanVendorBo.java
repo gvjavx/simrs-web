@@ -25,4 +25,5 @@ public interface PermintaanVendorBo {
     public List<BatchPermintaanObat> getListBatchObatByIdApproval(String idApproval) throws GeneralBOException;
     public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch, String isApprove) throws GeneralBOException;
     public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, Date expDate) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListApprovedBatch(String idPermintaanObat, Integer noBatch) throws GeneralBOException;
 }
