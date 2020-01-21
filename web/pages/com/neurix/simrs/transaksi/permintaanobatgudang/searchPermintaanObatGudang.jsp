@@ -403,7 +403,7 @@
 </div>
 
 <div class="modal fade" id="modal-request-detail">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat" style="width: 50%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -440,9 +440,9 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_request_detail">
                         <thead>
-                        <td>ID</td>
+                        <td>ID Obat</td>
                         <td>Nama Obat</td>
-                        <td align="center">Qty Request</td>
+                        <td align="center">Expired Date</td>
                         <td align="center">Qty Approve</td>
                         <td align="center">Jenis Satuan</td>
                         </thead>
@@ -827,23 +827,28 @@
     }
 
     function confirm(idApp, idPermin, tanggal, tujuan) {
+        $('#save_req_detail').show();
+        $('#load_req_detail').hide();
         $('#judul_req').html('Konfirmasi request diterima');
         $('#req_id_permintaan').val(idPermin);
         $('#req_tanggal').val(tanggal);
         $('#req_id_approve').val(idApp);
         $('#modal-request-detail').modal('show');
         var table = "";
-        PermintaanObatPoliAction.listDetailPermintaan(idPermin, false, tujuan, "Y", {
+        PermintaanObatPoliAction.listDetailObatRequest(idPermin, {
             callback: function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
+                        var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
                         table += "<tr>" +
-                                "<td>" + item.idObat + "</td>" +
-                                "<td>" + item.namaObat + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
-                                "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td align='center'>" + item.jenisSatuan + "</td>" +
-                                "</tr>";
+                                "<td>" + item.idObat +
+                        '<input type="hidden" id=id_barang' + i + ' value=' + item.idBarang + '>' +
+                        '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
+                        "<td>" + item.namaObat + "</td>" +
+                        "<td align='center'>" + expired + "</td>" +
+                        "<td align='center'>" + item.qtyApprove + "</td>" +
+                        "<td align='center'>" + item.jenisSatuan + "</td>" +
+                        "</tr>";
                     });
                 }
             }
@@ -853,10 +858,20 @@
 
     function saveConfirm() {
         var data = $('#tabel_request_detail').tableToJSON();
-        var stringData = JSON.stringify(data);
         var idApp = $('#req_id_approve').val();
         var idPermin = $('#req_id_permintaan').val();
+        var result = [];
 
+        $.each(data, function (i, item) {
+            var idBarang = $('#id_barang'+i).val();
+            var idObat = data[i]["ID Obat"];
+            var idTransaksi = $('#id_transaksi'+i).val();
+            var jenisSatuan = data[i]["Jenis Satuan"];
+            var qtyApp = data[i]["Qty Approve"];
+            result.push({'ID Barang':idBarang, 'ID Obat':idObat, 'ID Transkasi':idTransaksi, 'Jenis Satuan':jenisSatuan, 'Qty Approve':qtyApp});
+        });
+        console.log(result);
+        var stringData = JSON.stringify(result);
         if (stringData != '[]') {
 
             $('#save_req_detail').hide();

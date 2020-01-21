@@ -33,7 +33,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Daftar Permintaan Obat
+            Verifikasi Permintaan Obat
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -44,85 +44,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <%--<div class="box-header with-border">--%>
-                    <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Obat Inap</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<s:form id="obatPoliForm" method="post" namespace="/obatpoli"--%>
-                    <%--action="search_obatpoli.action" theme="simple" cssClass="form-horizontal">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                    <%--<div class="col-sm-4">--%>
-                    <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
-                    <%--name="obatPoli.idObat" required="false"--%>
-                    <%--readonly="false" cssClass="form-control"/>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--&lt;%&ndash;<div class="form-group">&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<label class="control-label col-sm-4">Jenis Obat</label>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<div class="col-sm-4">&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<s:action id="initJenis" namespace="/jenisobat"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;name="getListJenisObat_jenisobat"/>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<s:select cssStyle="margin-top: 7px; width: 100%"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;list="#initJenis.listOfJenisObat" id="obat_jenis_obat"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;listKey="idJenisObat"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;listValue="namaJenisObat"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;name="obatPoli.idJenisObat"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;headerKey="" headerValue="[Select one]"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;cssClass="form-control select2"/>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="control-label col-sm-4">Nama Obat</label>--%>
-                    <%--<div class="col-sm-4">--%>
-                    <%--<s:textfield id="nama_pasien" name="obatPoli.namaObat"--%>
-                    <%--required="false" readonly="false"--%>
-                    <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<br>--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="control-label col-sm-4"></label>--%>
-                    <%--<div class="col-sm-8" style="margin-top: 7px">--%>
-                    <%--<sj:submit type="button" cssClass="btn btn-success" formIds="obatPoliForm"--%>
-                    <%--id="search" name="search"--%>
-                    <%--onClickTopics="showDialogLoading"--%>
-                    <%--onCompleteTopics="closeDialogLoading">--%>
-                    <%--<i class="fa fa-search"></i>--%>
-                    <%--Search--%>
-                    <%--</sj:submit>--%>
-                    <%--<a type="button" class="btn btn-danger" href="initForm_rawatinap.action">--%>
-                    <%--<i class="fa fa-refresh"></i> Reset--%>
-                    <%--</a>--%>
-                    <%--<div class="btn-group">--%>
-                    <%--<button type="button" class="btn btn-primary">Action</button>--%>
-                    <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
-                    <%--data-toggle="dropdown" style="height: 34px">--%>
-                    <%--<span class="caret"></span>--%>
-                    <%--<span class="sr-only">Toggle Dropdown</span>--%>
-                    <%--</button>--%>
-                    <%--<ul class="dropdown-menu" role="menu">--%>
-                    <%--<li onclick="showModal(1)"><a href="#"><i class="fa fa-plus"></i> Tambah--%>
-                    <%--Obat</a></li>--%>
-                    <%--<li onclick="showModal(2)"><a href="#"><i class="fa fa-plus"></i> Tambah--%>
-                    <%--& Request Obat</a></li>--%>
-                    <%--<li class="divider"></li>--%>
-                    <%--<li><a href="monitoringRequest_obatpoli.action"><i class="fa fa-tv"></i> Monitoring Request</a></li>--%>
-                    <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<a type="button" class="btn btn-info" href="monitoringRequest_obatpoli.action">--%>
-                    <%--<i class="fa fa-tv"></i> Monitoring Permintaan--%>
-                    <%--</a>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--</s:form>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Obat Poli</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Verifikasi Permintaan Obat Poli</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group" style="display: none">
@@ -175,8 +99,25 @@
                                     </label>
                                 </div>
                             </sj:dialog>
+                            <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
+                                       height="200" width="400" autoOpen="false" title="Confirmation Dialog">
+                                <center><img border="0" style="height: 40px; width: 40px"
+                                             src="<s:url value="/pages/images/icon_warning.ico"/>"
+                                             name="icon_success">
+                                    Do you want to save this record?
+                                </center>
+                                <br>
+                                <div class="modal-footer">
+                                    <a type="button" class="btn btn-warning"
+                                            onclick="$('#confirm_dialog').dialog('close')"><i
+                                            class="fa fa-times"></i> No
+                                    </a>
+                                    <a type="button" class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
+                                        Yes</a>
+                                </div>
+                            </sj:dialog>
                         </div>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_request">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
@@ -190,7 +131,10 @@
                             <tbody>
                             <s:iterator value="#session.listOfObatDetail" status="listOfObatDetail">
                                 <tr>
-                                    <td><s:property value="idObat"/></td>
+                                    <td>
+                                        <s:property value="idObat"/>
+                                        <input type="hidden" id='idTrans<s:property value="idObat"/>' value='<s:property value="idTransaksiObatDetail"/>'>
+                                    </td>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
                                     <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
@@ -213,7 +157,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <button class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</button>
-                                    <button class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</button>
+                                    <button class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i> Save</button>
                                 </div>
                             </div>
                         </div></div>
@@ -307,10 +251,11 @@
 
         PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
             if (response != null) {
-                console.log(response);
+                var no = 1;
                 $.each(response, function (i, item) {
                     var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
 
+                    var seq = no++;
                     const date1 = new Date(today);
                     const date2 = new Date(dateExp);
                     const diffTime = Math.abs(date2 - date1);
@@ -336,7 +281,7 @@
                     var color = "";
 
                     if (diffDays < 10) {
-                        warna = 'red';
+                        warna = '#dd4b39';
                         color = 'white';
 
                     } else if (diffDays < 30) {
@@ -349,8 +294,8 @@
                             '<td align="center">' + qtyBox + '</td>' +
                             '<td align="center">' + qtyLembar + '</td>' +
                             '<td align="center">' + qtyBiji + '</td>' +
-                            '<td>' + '<input id=newQty' + dateFormat + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
-                            '<td>' + satuan +'<input id=idBarang'+dateFormat+' type="hidden" value='+item.idBarang+'>'+'</td>' +
+                            '<td>' + '<input id=newQty' + seq + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
+                            '<td>' + satuan +'<input id=idBarang'+seq+' type="hidden" value='+item.idBarang+'>'+'</td>' +
                             '</tr>';
 
                     lembarPerBox = item.lembarPerBox;
@@ -374,20 +319,24 @@
 
         var result = [];
 
+        var no = 1;
         $.each(data, function (i, item) {
+            var seq = no++;
             var id = data[i]["Expired Date"];
             var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
-            var qty = $('#newQty' + id).val();
-            var idBarang = $('#idBarang'+id).val();
+            var qty = $('#newQty' + seq).val();
+            var idBarang = $('#idBarang'+seq).val();
             result.push({'Expired Date': id, 'Qty Approve': qty, 'Jenis Satuan': jenisSatuan, 'ID Barang' : idBarang});
         });
 
+        var no = 1;
         $.each(data, function (i, item) {
+            var seq = no++;
             var id = data[i]["Expired Date"];
             var box = data[i]["Qty Box"];
             var lembar = data[i]["Qty Lembar"];
             var biji = data[i]["Qty Biji"];
-            var qty = $('#newQty' + id).val();
+            var qty = $('#newQty' + seq).val();
 
             if (qty == "") {
                 qty = 0;
@@ -422,7 +371,6 @@
         }
 
         var stringData = JSON.stringify(result);
-        console.log(result);
 
         if (qtyApp > 0) {
 
@@ -446,7 +394,6 @@
                         $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
                     }
                 }});
-                console.log('success');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -455,6 +402,33 @@
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Qty Approve tidak boleh kosong..!");
         }
+    }
+
+    function confirm(){
+        $('#confirm_dialog').dialog('open');
+
+    }
+
+    function saveRequestApprove(){
+        var data = $('#tabel_request').tableToJSON();
+        var result = [];
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var idApp = url.searchParams.get("idApproval");
+
+        $.each(data, function (i, item) {
+           var id = data[i]["ID Obat"];
+           var idTransaksi = $('#idTrans'+id).val();
+           var qty = data[i]["Qty Approve"];
+            result.push({'ID Obat': id, 'ID Transkasi' : idTransaksi, 'Qty Approve':qty});
+        });
+        var stringData = JSON.stringify(result);
+        PermintaanObatPoliAction.saveApproveRequest(idApp, stringData, {callback: function (response) {
+            if(response == "success"){
+                $('#info_dialog').dialog('open');
+            }
+        }
+        });
     }
 
 </script>

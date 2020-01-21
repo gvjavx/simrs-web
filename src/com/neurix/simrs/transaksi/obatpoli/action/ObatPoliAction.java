@@ -303,8 +303,9 @@ public class ObatPoliAction extends BaseMasterAction {
                         JSONObject obj = json.getJSONObject(i);
 
                         detail = new TransaksiObatDetail();
-                        detail.setIdObat(obj.getString("ID"));
-                        detail.setIdTransaksiObatDetail(obj.getString("Id Transaksi"));
+                        detail.setIdBarang(obj.getString("ID Barang"));
+                        detail.setIdObat(obj.getString("ID Obat"));
+                        detail.setIdTransaksiObatDetail(obj.getString("ID Transkasi"));
                         detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                         detail.setJenisSatuan(obj.getString("Jenis Satuan"));
 
