@@ -382,6 +382,13 @@ apply the skin class to the body tag so the changes take effect.
             dateFormat:'yy-mm-dd'
         });
 
+        $(".datepicker2").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy'
+        });
+
         $("#tgl_from, #tgl_to").datepicker({
             autoclose: true,
             dateFormat:'dd-mm-yy'
@@ -404,6 +411,7 @@ apply the skin class to the body tag so the changes take effect.
         $('.select2').select2({});
         //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
+        $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
         //Money Euro
         $('[data-mask]').inputmask()
     });

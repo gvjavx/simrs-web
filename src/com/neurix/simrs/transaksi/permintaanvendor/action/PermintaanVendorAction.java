@@ -181,7 +181,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
             permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.edit] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
         }
@@ -192,7 +192,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         String idApproval = "";
         Boolean isNew = true;
-        if (permintaanVendorList.size() > 0){
+        if (permintaanVendorList.size() > 0) {
 
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
             idApproval = requestVendor.getIdApprovalObat();
@@ -201,22 +201,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
             Integer noBatch = 0;
             try {
                 noBatch = permintaanVendorBoProxy.getLastNoBatch(requestVendor.getIdApprovalObat());
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
             }
 
-            if (noBatch.compareTo(0) == 1){
+            if (noBatch.compareTo(0) == 1) {
                 isNew = false;
             }
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
             // if edit from list batch then sorted with table batch data to get qty approve and status
-            if ("Y".equalsIgnoreCase(isBatch)){
+            if ("Y".equalsIgnoreCase(isBatch)) {
                 isNew = true;
 
                 // if new add new batch
-                if ("Y".equalsIgnoreCase(newBatch)){
+                if ("Y".equalsIgnoreCase(newBatch)) {
                     noBatch = noBatch + 1;
                     requestVendor.setNoBatch(noBatch);
                 } else {
@@ -225,7 +225,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                 try {
                     transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch(), "N");
-                } catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                     addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
                 }
@@ -244,29 +244,29 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             try {
                 vendorList = vendorBoProxy.getByCriteria(vendor);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.edit] ERROR error when get searh vendor. ", e);
                 addActionError("[PermintaanVendorAction.edit] ERROR error when get searh vendor. " + e.getMessage());
             }
 
-            Vendor vendorResult =  new Vendor();
-            if (!vendorList.isEmpty()){
+            Vendor vendorResult = new Vendor();
+            if (!vendorList.isEmpty()) {
                 vendorResult = vendorList.get(0);
-                if(vendorResult != null){
+                if (vendorResult != null) {
                     setVendor(vendorResult);
                 }
             }
         }
 
         logger.info("[PermintaanVendorAction.edit] END <<<<<<<");
-        if (isNew){
+        if (isNew) {
             return "init_edit";
         } else {
             return initListBatch(idApproval, id);
         }
     }
 
-    public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan){
+    public CheckObatResponse checkIdPabrikan(String idObat, String idPabrikScan) {
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -282,12 +282,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<Obat> obats = new ArrayList<>();
         try {
             obats = obatBo.getByCriteria(obat);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.checkIdPabrikan] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.checkIdPabrikan] ERROR error when get searh obat. " + e.getMessage());
         }
 
-        if (obats.size() > 0){
+        if (obats.size() > 0) {
             checkObatResponse.setStatus("success");
             checkObatResponse.setMessage("Obat Terverivikasi");
         } else {
@@ -299,7 +299,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar, Integer noBatch, String expDate){
+    public String saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar, Integer noBatch, String expDate) {
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -323,7 +323,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         try {
             permintaanVendorBo.saveUpdateTransObatDetail(transaksiObatDetail);
             msg = SUCCESS;
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ", e);
             msg = ERROR;
         }
@@ -412,7 +412,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         TransaksiObatDetail obatDetail;
 
         try {
-            if(po != null && !"".equalsIgnoreCase(po)){
+            if (po != null && !"".equalsIgnoreCase(po)) {
                 JSONArray json = new JSONArray(po);
                 for (int i = 0; i < json.length(); i++) {
                     obatDetail = new TransaksiObatDetail();
@@ -423,13 +423,13 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     String harga2 = harga1.replace(".", "");
 
                     obatDetail.setIdObat(obj.getString("ID"));
-                    if("box".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                    if ("box".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
                         obatDetail.setAverageHargaBox(new BigDecimal(harga2));
                     }
-                    if("lembar".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                    if ("lembar".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
                         obatDetail.setAverageHargaLembar(new BigDecimal(harga2));
                     }
-                    if("biji".equalsIgnoreCase(obj.getString("Jenis Satuan"))){
+                    if ("biji".equalsIgnoreCase(obj.getString("Jenis Satuan"))) {
                         obatDetail.setAverageHargaBiji(new BigDecimal(harga2));
                     }
 
@@ -486,14 +486,14 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String getComboVendor(){
+    public String getComboVendor() {
 
         List<Vendor> listVendor = new ArrayList<>();
         Vendor vendor = new Vendor();
 
         try {
             listVendor = vendorBoProxy.getByCriteria(vendor);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.getComboVendor] Error when get data for combo list of vendor", e);
             addActionError(" Error when get data for combo list of vendor" + e.getMessage());
         }
@@ -554,7 +554,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
     }
 
-    public String saveApprove(){
+    public String saveApprove() {
         logger.info("[PermintaanVendorAction.saveApprove] START >>>>>>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -568,7 +568,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         try {
             permintaanVendorBoProxy.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PermintaanVendorAction.saveApprove] Error when save data approve PO", e);
             addActionError(" Error when save data approve PO" + e.getMessage());
         }
@@ -577,7 +577,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "init_approve";
     }
 
-    public CheckObatResponse saveApproveBatch(String idPermintaanVendor, Integer noBatch){
+    public CheckObatResponse saveApproveBatch(String idPermintaanVendor, Integer noBatch) {
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -592,18 +592,18 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
             permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when get searh obat. " + e.getMessage());
         }
 
-        if (permintaanVendorList.size() > 0){
+        if (permintaanVendorList.size() > 0) {
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
 
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
             try {
                 transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), noBatch, "N");
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
             }
@@ -612,7 +612,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             try {
                 permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
@@ -665,7 +665,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
             permintaanVendorList = permintaanVendorBo.getByCriteria(permintaanVendor);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.edit] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
         }
@@ -676,7 +676,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         String idApproval = "";
         Boolean isNew = true;
-        if (permintaanVendorList.size() > 0){
+        if (permintaanVendorList.size() > 0) {
 
             PermintaanVendor requestVendor = permintaanVendorList.get(0);
             idApproval = requestVendor.getIdApprovalObat();
@@ -685,22 +685,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
             Integer noBatch = 0;
             try {
                 noBatch = permintaanVendorBo.getLastNoBatch(requestVendor.getIdApprovalObat());
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                 addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
             }
 
-            if (noBatch.compareTo(0) == 1){
+            if (noBatch.compareTo(0) == 1) {
                 isNew = false;
             }
             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
 
             // if edit from list batch then sorted with table batch data to get qty approve and status
-            if ("Y".equalsIgnoreCase(isBatch)){
+            if ("Y".equalsIgnoreCase(isBatch)) {
                 isNew = true;
 
                 // if new add new batch
-                if ("Y".equalsIgnoreCase(newBatch)){
+                if ("Y".equalsIgnoreCase(newBatch)) {
                     noBatch = noBatch + 1;
                     requestVendor.setNoBatch(noBatch);
                 } else {
@@ -709,7 +709,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                 try {
                     transaksiObatDetails = permintaanVendorBo.getListTransByBatchSorted(requestVendor.getListOfTransaksiObatDetail(), requestVendor.getNoBatch(), "Y");
-                } catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
                     addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
                 }
@@ -727,15 +727,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             try {
                 vendorList = vendorBo.getByCriteria(vendor);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.edit] ERROR error when get searh vendor. ", e);
                 addActionError("[PermintaanVendorAction.edit] ERROR error when get searh vendor. " + e.getMessage());
             }
 
-            Vendor vendorResult =  new Vendor();
-            if (!vendorList.isEmpty()){
+            Vendor vendorResult = new Vendor();
+            if (!vendorList.isEmpty()) {
                 vendorResult = vendorList.get(0);
-                if(vendorResult != null){
+                if (vendorResult != null) {
                     setVendor(vendorResult);
                 }
             }
@@ -755,7 +755,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
     }
 
-    public String printPermintaanPO(){
+    public String printPermintaanPO() {
 
         logger.info("[PermintaanVendorAction.printPermintaanPO] START process <<<");
 
@@ -767,11 +767,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
         try {
             permintaanVendorList = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh obat. ", e);
             addActionError("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh obat. " + e.getMessage());
         }
-        if (permintaanVendorList.size() > 0){
+        if (permintaanVendorList.size() > 0) {
             setPermintaanVendor(permintaanVendorList.get(0));
 
             Vendor vendor = new Vendor();
@@ -780,13 +780,13 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             try {
                 vendorList = vendorBoProxy.getByCriteria(vendor);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh vendor. ", e);
                 addActionError("[PermintaanVendorAction.printPermintaanPO] ERROR error when get searh vendor. " + e.getMessage());
             }
 
-            Vendor vendorResult =  new Vendor();
-            if (!vendorList.isEmpty()){
+            Vendor vendorResult = new Vendor();
+            if (!vendorList.isEmpty()) {
                 vendorResult = vendorList.get(0);
             }
 
@@ -805,14 +805,14 @@ public class PermintaanVendorAction extends BaseMasterAction {
             JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(obatDetailList);
 
             reportParams.put("permintaanId", idPermintaan);
-            reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-            reportParams.put("idVendor",vendorResult.getIdVendor());
-            reportParams.put("namaVendor",vendorResult.getNamaVendor());
-            reportParams.put("email",vendorResult.getEmail());
-            reportParams.put("noTelp",vendorResult.getNoTelp());
-            reportParams.put("alamat",vendorResult.getAlamat());
-            reportParams.put("petugas",CommonUtil.userLogin());
-            reportParams.put("listNewObat",itemData);
+            reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
+            reportParams.put("idVendor", vendorResult.getIdVendor());
+            reportParams.put("namaVendor", vendorResult.getNamaVendor());
+            reportParams.put("email", vendorResult.getEmail());
+            reportParams.put("noTelp", vendorResult.getNoTelp());
+            reportParams.put("alamat", vendorResult.getAlamat());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("listNewObat", itemData);
 
             try {
                 preDownload();
@@ -822,13 +822,13 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 return "search";
             }
 
-            logger.info("[PermintaanVendorAction.printPermintaanPO] LOGO : "+CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+            logger.info("[PermintaanVendorAction.printPermintaanPO] LOGO : " + CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
         }
         logger.info("[PermintaanVendorAction.printPermintaanPO] END process <<<");
         return "print_po";
     }
 
-    public CheckObatResponse checkFisikObat(String idObat, String idPabrik, String lembarPerBox, String bijiPerLembar){
+    public CheckObatResponse checkFisikObat(String idObat, String idPabrik, String lembarPerBox, String bijiPerLembar) {
         logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] START process >>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
 
@@ -844,22 +844,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         try {
             checkObatResponse = obatBo.checkFisikObat(obat);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             checkObatResponse.setStatus("error");
-            checkObatResponse.setMessage("[ERROR] "+e.getMessage());
+            checkObatResponse.setMessage("[ERROR] " + e.getMessage());
         }
 
         logger.info("[PermintaanVendorAction.checkFisikObatByIdPabrik] END process <<<");
         return checkObatResponse;
     }
 
-    public String initListBatch(String idApproval, String idPermintaanVendor){
+    public String initListBatch(String idApproval, String idPermintaanVendor) {
         logger.info("[PermintaanVendorAction.edit] START >>>>>>>");
 
         List<BatchPermintaanObat> batchList = new ArrayList<>();
         try {
             batchList = permintaanVendorBoProxy.getListBatchObatByIdApproval(idApproval);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PermintaanVendorAction.edit] ERROR. ", e);
             addActionError("[PermintaanVendorAction.edit] ERROR. " + e.getMessage());
         }
@@ -874,6 +874,28 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return "list_batch";
     }
 
+    public String printBarcodeBarang() {
+
+        logger.info("[PermintaanVendorAction.printBarcodeBarang] START process <<<");
+
+        String idPermintaan = getId();
+
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaan);
+
+        reportParams.put("idbarang", "1234567890PA");
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printBarcodeBarang] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[PermintaanVendorAction.printBarcodeBarang] END process <<<");
+        return "print_barcode_barang";
+    }
 
     @Override
     public String downloadPdf() {

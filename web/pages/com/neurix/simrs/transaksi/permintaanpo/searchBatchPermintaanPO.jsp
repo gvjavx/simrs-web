@@ -190,7 +190,7 @@
                                             <s:else>
                                                 <span class="label label-success">Telah di Approve</span>
                                             </s:else>
-
+                                            <a href="printBarcodeBarang_permintaanpo.action" class="btn btn-warning"> TES PRINT</a>
                                         <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                     </td>
                                     <%--<td><s:property value="isApprove"/></td>--%>
