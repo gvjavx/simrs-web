@@ -35,6 +35,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("id_seq_obat") != null){
                 criteria.add(Restrictions.eq("idSeqObat", (String) mapCriteria.get("id_seq_obat")));
             }
+            if (mapCriteria.get("id_barang") != null){
+                criteria.add(Restrictions.eq("idBarang", mapCriteria.get("id_barang")));
+            }
             if (mapCriteria.get("id_obat") != null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
             }
@@ -64,6 +67,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+
+
 
 //            criteria.add(Restrictions.ne("qtyBox", new BigInteger(String.valueOf(0))));
 //            criteria.add(Restrictions.ne("qtyLembar", new BigInteger(String.valueOf(0))));

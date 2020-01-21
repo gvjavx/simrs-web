@@ -527,6 +527,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     batchEntity.setApproveFlag("Y");
                     batchEntity.setFlag("Y");
                     batchEntity.setAction("C");
+                    batchEntity.setApproveFlag("Y");
                     batchEntity.setCreatedDate(bean.getCreatedDate());
                     batchEntity.setCreatedWho(bean.getCreatedWho());
                     batchEntity.setLastUpdate(bean.getCreatedDate());
@@ -943,6 +944,17 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                         newTrans.setLastUpdateWho(bean.getLastUpdateWho());
 
                                         updateSubstractStockGudang(newTrans);
+
+                                        batchEntity.setApproveFlag("Y");
+                                        batchEntity.setFlag("N");
+                                        batchEntity.setLastUpdate(bean.getLastUpdate());
+                                        batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                        try {
+                                            batchDao.updateAndSave(batchEntity);
+                                        } catch (HibernateException e){
+                                            logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update obat Detail batch. ", e);
+                                            throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update obat Detai batch. ", e);
+                                        }
                                     }
                                 }
                             }
@@ -964,6 +976,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         }
         if (bean.getIdObat() != null) {
             hsCriteria.put("id_obat", bean.getIdObat());
+        }
+        if (bean.getBranchId() != null) {
+            hsCriteria.put("branch_id", bean.getBranchId());
         }
         hsCriteria.put("flag", "Y");
 
@@ -1319,7 +1334,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                             TransaksiObatDetail obatDetail = new TransaksiObatDetail();
                                             obatDetail.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
                                             obatDetail.setIdBarang(batchEntity.getIdBarang());
-                                            obatDetail.setIdBarang(obatDetailEntity.getIdObat());
+                                            obatDetail.setIdObat(obatDetailEntity.getIdObat());
                                             obatDetail.setQtyApprove(batchEntity.getQtyApprove());
                                             obatDetail.setJenisSatuan(batchEntity.getJenisSatuan());
                                             obatDetail.setExpDate(batchEntity.getExpiredDate());
