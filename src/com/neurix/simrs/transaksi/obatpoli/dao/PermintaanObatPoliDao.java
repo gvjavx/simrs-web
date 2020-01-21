@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -399,12 +400,68 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         return listOfResults;
     }
 
+    public List<PermintaanObatPoli> getListObatDetailRequest(PermintaanObatPoli bean) {
+
+        String idPermintaan = "%";
+        String idPelayanan  = "%";
+        String branchId = "%";
+
+        if(bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())){
+            idPermintaan = bean.getIdPermintaanObatPoli();
+        }
+        if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+            idPelayanan = bean.getIdPelayanan();
+        }
+        if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        List<PermintaanObatPoli> result = new ArrayList<>();
+        String SQL = "SELECT a.id_permintaan_obat_poli,  b.id_obat, d.nama_obat, c.expired_date, c.qty_approve, c.id_barang, c.jenis_satuan, b.id_transaksi_obat_detail FROM mt_simrs_permintaan_obat_poli a \n" +
+                "INNER JOIN (SELECT id_approval_obat, id_obat, id_transaksi_obat_detail FROM mt_simrs_transaksi_obat_detail) b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN (SELECT expired_date, id_transaksi_obat_detail, qty_approve, id_barang, status, approve_flag, jenis_satuan FROM mt_simrs_transaksi_obat_detail_batch) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON b.id_obat = d.id_obat\n" +
+                "WHERE a.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
+                "AND a.id_pelayanan LIKE :idPelayanan\n" +
+                "AND a.branch_id LIKE :branchId\n" +
+                "AND c.status = 'Y'\n" +
+                "AND c.approve_flag = 'Y'\n" +
+                "ORDER BY c.expired_date ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPermintaanObatPoli", idPermintaan)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("branchId", branchId)
+                .list();
+
+        PermintaanObatPoli permintaanObatPoli;
+        for (Object[] obj : results) {
+
+            permintaanObatPoli = new PermintaanObatPoli();
+            permintaanObatPoli.setIdPermintaanObatPoli( obj[0] == null ? "" : obj[0].toString());
+            permintaanObatPoli.setIdObat(obj[1] == null ? "" : obj[1].toString());
+            permintaanObatPoli.setNamaObat(obj[2] == null ? "" : obj[2].toString());
+            if(obj[3] != null){
+                permintaanObatPoli.setExpiredDate((Date) obj[3]);
+            }
+            if(obj[4] != null){
+                permintaanObatPoli.setQtyApprove((BigInteger) obj[4]);
+            }
+            permintaanObatPoli.setIdBarang(obj[5] == null ? "" : obj[5].toString());
+            permintaanObatPoli.setJenisSatuan(obj[6] == null ? "": obj[6].toString());
+            permintaanObatPoli.setIdTransaksiObatDetail(obj[7] == null ? "": obj[7].toString());
+
+            result.add(permintaanObatPoli);
+        }
+
+        return result;
+    }
+
     public List<TransaksiObatDetail> getListOldPermintaan(String idPermintaan){
         List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
 
         return transaksiObatDetailList;
     }
-
 
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_permintaan_detail_poli')");

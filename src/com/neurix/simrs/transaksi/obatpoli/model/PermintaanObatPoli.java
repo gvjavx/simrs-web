@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -52,6 +53,34 @@ public class PermintaanObatPoli{
     private BigInteger lembarPerBox;
     private BigInteger bijiPerLembar;
     private String jenisSatuan;
+
+    private Date expiredDate;
+    private String idBarang;
+    private String idTransaksiObatDetail;
+
+    public String getIdTransaksiObatDetail() {
+        return idTransaksiObatDetail;
+    }
+
+    public void setIdTransaksiObatDetail(String idTransaksiObatDetail) {
+        this.idTransaksiObatDetail = idTransaksiObatDetail;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     public String getJenisSatuan() {
         return jenisSatuan;

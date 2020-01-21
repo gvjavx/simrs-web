@@ -430,6 +430,34 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return SUCCESS;
     }
 
+    public List<PermintaanObatPoli> listDetailObatRequest(String idPermintaan) {
+
+        logger.info("[PermintaanObatPoliAction.listDetailObatRequest] START process >>>");
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        if (!"".equalsIgnoreCase(idPermintaan)) {
+            try {
+                permintaanObatPoliList = obatPoliBo.getListObatDetailRequest(permintaanObatPoli);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatPoliAction.listDetailObatRequest] Error when search data detail permintaan ," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when search data detail permintaan, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[PermintaanObatPoliAction.listDetailObatRequest] END process >>>");
+            return permintaanObatPoliList;
+
+        } else {
+            return null;
+        }
+    }
+
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
         this.obatPoliBoProxy = obatPoliBoProxy;
     }
