@@ -460,23 +460,25 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
 
     public List<TransaksiObatDetail> getListOldPermintaan(String idPermintaan){
 
-        String SQL = "SELECT \n" +
+        String SQL = "SELECT\n" +
                 "tb.id_transaksi_obat_detail,\n" +
                 "tb.id_barang,\n" +
                 "ob.nama_obat,\n" +
                 "od.qty,\n" +
                 "tb.qty_approve,\n" +
                 "tb.jenis_satuan,\n" +
-                "op.id_permintaan_obat_poli\n" +
+                "op.id_permintaan_obat_poli,\n" +
+                "od.id_obat\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch tb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = tb.id_transaksi_obat_detail\n" +
-                "INNER JOIN im_simrs_obat ob ON ob.id_obat = od.id_obat\n" +
+                "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) ob ON ob.id_obat = od.id_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_obat_poli op ON op.id_approval_obat = od.id_approval_obat\n" +
                 "WHERE tb.status = 'Y'\n" +
                 "AND op.id_permintaan_obat_poli = :id\n" +
                 "AND tb.id_barang is not null\n" +
                 "AND tb.qty_approve > 0\n" +
-                "OR tb.qty_approve != null";
+                "OR tb.qty_approve != null\n" +
+                "ORDER BY od.id_obat ASC\n";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idPermintaan)
@@ -493,10 +495,10 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 obatDetail.setQty((BigInteger) obj[3]);
                 obatDetail.setQtyApprove((BigInteger) obj[4]);
                 obatDetail.setJenisSatuan(obj[5].toString());
+                obatDetail.setIdObat(obj[6].toString());
                 obatDetails.add(obatDetail);
             }
         }
-
         return obatDetails;
     }
 
