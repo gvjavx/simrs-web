@@ -329,7 +329,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 JSONObject obj = json.getJSONObject(i);
                 if(!"".equalsIgnoreCase(obj.getString("Qty Approve"))){
                     transaksiObatDetail = new TransaksiObatDetail();
-                    transaksiObatDetail.setIdObat("ID Obat");
+                    transaksiObatDetail.setIdObat(obj.getString("ID Obat"));
                     transaksiObatDetail.setIdTransaksiObatDetail(obj.getString("ID Transkasi"));
                     transaksiObatDetails.add(transaksiObatDetail);
                 }
