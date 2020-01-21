@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -400,9 +401,45 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
     }
 
     public List<TransaksiObatDetail> getListOldPermintaan(String idPermintaan){
-        List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
 
-        return transaksiObatDetailList;
+        String SQL = "SELECT \n" +
+                "tb.id_transaksi_obat_detail,\n" +
+                "tb.id_barang,\n" +
+                "ob.nama_obat,\n" +
+                "od.qty,\n" +
+                "tb.qty_approve,\n" +
+                "tb.jenis_satuan,\n" +
+                "op.id_permintaan_obat_poli\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch tb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = tb.id_transaksi_obat_detail\n" +
+                "INNER JOIN im_simrs_obat ob ON ob.id_obat = od.id_obat\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_poli op ON op.id_approval_obat = od.id_approval_obat\n" +
+                "WHERE tb.status = 'Y'\n" +
+                "AND op.id_permintaan_obat_poli = :id\n" +
+                "AND tb.id_barang is not null\n" +
+                "AND tb.qty_approve > 0\n" +
+                "OR tb.qty_approve != null";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idPermintaan)
+                .list();
+
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+        if (results.size() > 0){
+            TransaksiObatDetail obatDetail;
+            for (Object[] obj : results){
+                obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdTransaksiObatDetail(obj[0].toString());
+                obatDetail.setIdBarang(obj[1].toString());
+                obatDetail.setNamaObat(obj[2].toString());
+                obatDetail.setQty((BigInteger) obj[3]);
+                obatDetail.setQtyApprove((BigInteger) obj[4]);
+                obatDetail.setJenisSatuan(obj[5].toString());
+                obatDetails.add(obatDetail);
+            }
+        }
+
+        return obatDetails;
     }
 
 

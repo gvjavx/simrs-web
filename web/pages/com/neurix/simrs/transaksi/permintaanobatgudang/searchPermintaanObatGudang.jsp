@@ -507,13 +507,13 @@
                         <td>ID</td>
                         <td>Nama Obat</td>
                         <td align="center">Qty Box</td>
-                        <td align="center">Qty Lembar</td>
-                        <td align="center">Qty Biji</td>
-                        <td align="center">Qty Request</td>
+                        <%--<td align="center">Qty Lembar</td>--%>
+                        <%--<td align="center">Qty Biji</td>--%>
+                        <%--<td align="center">Qty Request</td>--%>
                         <td align="center">Qty Approve</td>
                         <td align="center">Jenis Satuan</td>
                         <td align="center">Qty Reture</td>
-                        <td align="center">Action</td>
+                        <%--<td align="center">Action</td>--%>
                         </thead>
                         <tbody id="body_reture_head">
                         </tbody>
@@ -908,7 +908,7 @@
         $('#ret_tanggal').val(tanggal);
         $('#modal-reture-detail').modal('show');
         var table = "";
-        PermintaanObatPoliAction.listDetailPermintaan(idPermin, true, idPelayanan, "N", {
+        PermintaanObatPoliAction.listDetailOldPermintaan(idPermin, {
             callback: function (response) {
                 console.log(response);
                 if (response != null) {
@@ -928,16 +928,12 @@
                         }
 
                         table += "<tr>" +
-                                "<td>" + '<span id=obat' + item.idObat + '>' + item.idObat + '</span>' + "</td>" +
-                                "<td>" + '<span id=nama_obat' + item.idObat + '>' + item.namaObat + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qtyBox' + item.idObat + '>' + qtyBox + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qtyLembar' + item.idObat + '>' + qtyLembar + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qtyBiji' + item.idObat + '>' + qtyBiji + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qtyReq' + item.idObat + '>' + item.qty + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qty_approve' + item.idObat + '>' + item.qtyApprove + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=jenis_satuan' + item.idObat + '>' + item.jenisSatuan + '</span>' + "</td>" +
-                                "<td align='center'>" + '<input type="number" id=new_qty' + item.idObat + ' style="width: 80px" class="form-control">' + "</td>" +
-                                "<td align='center'>" + '<a type="button" id=btn' + item.idObat + ' onclick="addToListReture(\'' + item.idObat + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" class="btn btn-success"><i class="fa fa-plus"></i></a>' + "</td>" +
+                                "<td>" + '<span id=obat' + item.idBarang + '>' + item.idBarang + '</span>' + "</td>" +
+                                "<td>" + '<span id=nama_obat' + item.idBarang + '>' + item.namaObat + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=qty_approve' + item.idBarang + '>' + item.qtyApprove + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=jenis_satuan' + item.idBarang + '>' + item.jenisSatuan + '</span>' + "</td>" +
+                                "<td align='center'>" + '<input type="number" id=new_qty' + item.idBarang + ' style="width: 80px" class="form-control">' + "</td>" +
+//                                "<td align='center'>" + '<a type="button" id=btn' + item.idBarang + ' onclick="addToListReture(\'' + item.idBarang + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" class="btn btn-success"><i class="fa fa-plus"></i></a>' + "</td>" +
                                 "</tr>";
                     });
                 }

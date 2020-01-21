@@ -18,7 +18,7 @@ public interface ObatPoliBo {
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException;
     public List<PermintaanObatPoli> getSearchPermintaanObatPoli(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
     public void saveRequest(PermintaanObatPoli bean, List<TransaksiObatDetail> obatDetailList) throws GeneralBOException;
-    public void saveReture(PermintaanObatPoli bean, List<PermintaanObatPoli> permintaanObatPoliList) throws GeneralBOException, JSONException;
+    public void saveReture(PermintaanObatPoli bean, List<TransaksiObatDetail> transaksiObatDetails) throws GeneralBOException, JSONException;
 
     public void saveApproveRequest(PermintaanObatPoli bean, List<TransaksiObatDetail> transList, boolean isPoli) throws GeneralBOException, JSONException;
     public void saveApproveReture(PermintaanObatPoli bean, boolean isPoli) throws GeneralBOException;
@@ -33,4 +33,5 @@ public interface ObatPoliBo {
     public List<TransaksiObatDetail> getListTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
 
     public void saveVerifikasiObat(List<Obat> obatList) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListObatTelahDiterima(String idPermintaan) throws GeneralBOException;
 }

@@ -218,12 +218,17 @@ public class ObatPoliAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+
+            String tujuanPelayanan = "";
+            if ("GDG".equalsIgnoreCase(idPelayanan)){
+                tujuanPelayanan = idTujuan+"_"+userArea;
+            } else {
+                tujuanPelayanan = idTujuan;
+            }
+
             obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setBranchId(userArea);
-            obatPoli.setTujuanPelayanan(idTujuan);
-
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-
+            obatPoli.setTujuanPelayanan(tujuanPelayanan);
             obatPoli.setCreatedWho(userLogin);
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setCreatedDate(updateTime);
@@ -231,28 +236,30 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setAction("C");
             obatPoli.setFlag("Y");
 
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
-            List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+            List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
             if (reture != null && !"".equalsIgnoreCase(reture)) {
                 JSONArray json = new JSONArray(reture);
 
-                PermintaanObatPoli permintaanObatPoli;
+                TransaksiObatDetail obatDetail;
                 for (int i = 0; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
 
-                    permintaanObatPoli = new PermintaanObatPoli();
-                    permintaanObatPoli.setIdObat(obj.getString("ID"));
-                    permintaanObatPoli.setIdPelayanan(idPelayanan);
-                    permintaanObatPoli.setBranchId(userArea);
-                    permintaanObatPoli.setJenisSatuan(obj.getString("Jenis Satuan"));
-                    permintaanObatPoli.setQty(new BigInteger(obj.getString("Qty")));
-                    permintaanObatPoliList.add(permintaanObatPoli);
+                    obatDetail = new TransaksiObatDetail();
+                    obatDetail.setIdBarang(obj.getString("ID"));
+                    obatDetail.setIdObat(obj.getString("Id Obat"));
+                    obatDetail.setIdPelayanan(idPelayanan);
+                    obatDetail.setBranchId(userArea);
+                    obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    obatDetail.setQtyApprove(new BigInteger(obj.getString("Qty")));
+                    obatDetailList.add(obatDetail);
                 }
             }
 
             try {
-                obatPoliBo.saveReture(obatPoli, permintaanObatPoliList);
+                obatPoliBo.saveReture(obatPoli, obatDetailList);
             } catch (JSONException e) {
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
@@ -581,13 +588,8 @@ public class ObatPoliAction extends BaseMasterAction {
         }
     }
 
-    public List<TransaksiObatDetail> listDetailOldPermintaan(String idPermintaan, boolean isPoli, String idTujuan, String flag) {
+    public List<TransaksiObatDetail> listDetailOldPermintaan(String idPermintaan) {
         logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
-        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
-        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
-        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
-        permintaanObatPoli.setTujuanPelayanan(idTujuan);
-        permintaanObatPoli.setFlag(flag);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
@@ -596,7 +598,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
         if (!"".equalsIgnoreCase(idPermintaan)) {
             try {
-                permintaanObatPoliList = obatPoliBo.getDetailLitsPermintaan(permintaanObatPoli, isPoli);
+                transaksiObatDetails = obatPoliBo.getListObatTelahDiterima(idPermintaan);
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanObatPoliAction.listDetailPermintaan] Error when search data detail permintaan ," + "Found problem when saving add data, please inform to your admin.", e);
                 addActionError("Error Found problem when search data detail permintaan, please inform to your admin.\n" + e.getMessage());
