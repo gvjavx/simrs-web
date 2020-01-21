@@ -16,10 +16,7 @@ import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEn
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
-import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
-import com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransPembelianObatDao;
-import com.neurix.simrs.transaksi.transaksiobat.dao.RiwayatTransaksiObatDao;
-import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
+import com.neurix.simrs.transaksi.transaksiobat.dao.*;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -46,6 +43,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private RiwayatTransPembelianObatDao riwayatTransPembelianObatDao;
     private ObatPoliDao obatPoliDao;
     private VendorDao vendorDao;
+    private TransaksiObatDetailBatchDao batchDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -609,6 +607,46 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return null;
     }
 
+    @Override
+    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.saveVerifikasiObat] START >>>>>>>>>>");
+
+        if (batchEntities.size() > 0){
+            for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
+
+                List<MtSimrsTransaksiObatDetailBatchEntity> newBatchEntities = new ArrayList<>();
+                MtSimrsTransaksiObatDetailBatchEntity newBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+
+                if (newBatchEntities.size() > 0){
+                    newBatchEntity = newBatchEntities.get(0);
+                }
+
+                if (newBatchEntity.getId() != null){
+                    String seqBatch = batchDao.getNextId();
+
+                    batchEntity.setId(new BigInteger(seqBatch));
+                    batchEntity.setStatus("Y");
+
+                    try {
+                        batchDao.addAndSave(batchEntity);
+                    } catch (HibernateException e){
+                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when insert data batch. ", e);
+                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when insert data batch. ", e);
+                    }
+                } else {
+                    try {
+                        batchDao.addAndSave(batchEntity);
+                    } catch (HibernateException e){
+                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
+                    }
+                }
+            }
+        }
+
+        logger.info("[TransaksiObatBoImpl.saveVerifikasiObat] END <<<<<<<<<<");
+    }
+
     private String getNextApprovalObatId() throws GeneralBOException {
         String id = "";
         try {
@@ -886,5 +924,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setVendorDao(VendorDao vendorDao) {
         this.vendorDao = vendorDao;
+    }
+
+    public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
+        this.batchDao = batchDao;
     }
 }

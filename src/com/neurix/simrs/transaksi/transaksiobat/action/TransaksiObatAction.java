@@ -16,11 +16,17 @@ import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -508,10 +514,56 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
         return obatPoliList;
-
     }
 
+    public CheckObatResponse saveVerifikasiResep(String jsonString, String idTransaksi) throws JSONException{
+        logger.info("[TransaksiObatAction.saveVerifikasiResep] START process >>>");
 
+        CheckObatResponse response = new CheckObatResponse();
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String userLogin = CommonUtil.userLogin();
+
+        MtSimrsTransaksiObatDetailBatchEntity batchEntity;
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+        if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
+            JSONArray json = new JSONArray(jsonString);
+            for (int i = 0; i < json.length(); i++) {
+                batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
+                JSONObject obj = json.getJSONObject(i);
+                batchEntity.setIdTransaksiObatDetail(idTransaksi);
+                batchEntity.setIdBarang(obj.getString("ID"));
+                batchEntity.setQtyApprove(new BigInteger(obj.getString("Qty")));
+                batchEntity.setJenisSatuan(obj.getString("Jenis Satuan"));
+                batchEntity.setFlag("Y");
+                batchEntity.setAction("C");
+                batchEntity.setLastUpdate(time);
+                batchEntity.setLastUpdateWho(userLogin);
+                batchEntity.setCreatedDate(time);
+                batchEntity.setCreatedWho(userLogin);
+                batchEntities.add(batchEntity);
+            }
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+
+        try {
+            transaksiObatBo.saveVerifikasiObat(batchEntities);
+
+            response.setStatus(SUCCESS);
+            response.setMessage("SUCCESS");
+        } catch (GeneralBOException e){
+            response.setStatus(ERROR);
+            response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
+
+            logger.error("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, ", e);
+            addActionError("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
+        return response;
+    }
 
     @Override
     public String downloadPdf() {

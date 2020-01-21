@@ -589,8 +589,17 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     if (batchEntities.size() > 0){
                         for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
 
+                            String idBarang = "";
                             if ("Y".equalsIgnoreCase(batchEntity.getStatus())){
 
+                                java.util.Date now = new java.util.Date();
+                                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+
+                                String seq = getIdNextSeqObat();
+                                idBarang = f.format(now)+seq;
+
+                                obatDetail.setIdSeqObat(seq);
+                                obatDetail.setIdBarang(idBarang);
                                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());
                                 obatDetail.setExpDate(batchEntity.getExpiredDate());
 
@@ -598,6 +607,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 updateAddStockGudang(obatDetail);
                             }
 
+                            if (!"".equalsIgnoreCase(idBarang)) {
+                                batchEntity.setIdBarang(idBarang);
+                            }
                             batchEntity.setApproveFlag("Y");
                             batchEntity.setAction("U");
                             batchEntity.setLastUpdate(bean.getLastUpdate());
@@ -721,15 +733,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
         BigDecimal ttlAvgHargaPermintaan = new BigDecimal(0);
 
-        java.util.Date now = new java.util.Date();
-        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-        f.format(now);
-
-        String seq = getIdNextSeqObat();
+//        java.util.Date now = new java.util.Date();
+//        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+//        f.format(now);
+//
+//        String seq = getIdNextSeqObat();
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
-        newObatEntity.setIdSeqObat(seq);
-        newObatEntity.setIdBarang(f.format(now)+seq);
+        newObatEntity.setIdSeqObat(bean.getIdSeqObat());
+        newObatEntity.setIdBarang(bean.getIdBarang());
         newObatEntity.setIdObat(bean.getIdObat());
         newObatEntity.setNamaObat(bean.getNamaObat());
         newObatEntity.setIdPabrik(bean.getIdPabrik());
