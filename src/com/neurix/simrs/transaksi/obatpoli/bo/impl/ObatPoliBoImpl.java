@@ -650,7 +650,17 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     private void updateAddStockGudang(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockGudang] START >>>>>>>>>>");
 
-        ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
+
+        Obat obat = new Obat();
+        obat.setIdBarang(bean.getIdBarang());
+        obat.setIdObat(bean.getIdObat());
+        obat.setBranchId(bean.getBranchId());
+
+        ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+        List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
+        if (obatEntities.size() > 0){
+            obatEntity = obatEntities.get(0);
+        }
 
         //sodiq, antisipasi jikalau nilai qty terdapat null
         BigInteger qtyBox = new BigInteger(String.valueOf(0));
@@ -667,7 +677,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             qtyBiji = obatEntity.getQtyBiji();
         }
 
-        if (obatEntity != null) {
+        if (obatEntity.getIdBarang() != null) {
             if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
                 obatEntity.setQtyBox(bean.getQtyApprove().add(qtyBox));
             }
@@ -1265,7 +1275,43 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                 // updating qty obat poli after konfirmasi
 //                                updateAddStockPoli(obatDetailEntity, bean.getTujuanPelayanan(), bean.getBranchId());
                             } else {
-//                                updateAddStockGudang(obatDetailEntity);
+
+                                TransaksiObatBatch batch = new TransaksiObatBatch();
+                                batch.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
+
+                                List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchByCriteria(batch);
+                                if (batchEntities.size() > 0){
+                                    for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
+
+                                        if (batchEntity.getQtyApprove().compareTo(new BigInteger(String.valueOf(0))) == 1){
+                                            TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                                            obatDetail.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
+                                            obatDetail.setIdBarang(batchEntity.getIdBarang());
+                                            obatDetail.setIdBarang(obatDetailEntity.getIdObat());
+                                            obatDetail.setQtyApprove(batchEntity.getQtyApprove());
+                                            obatDetail.setExpDate(batchEntity.getExpiredDate());
+                                            obatDetail.setBranchId(bean.getBranchId());
+                                            obatDetail.setLastUpdate(bean.getLastUpdate());
+                                            obatDetail.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                            // update add stock gudang
+                                            updateAddStockGudang(obatDetail);
+                                        }
+
+                                        batchEntity.setApproveFlag("Y");
+                                        batchEntity.setFlag("N");
+                                        batchEntity.setAction("U");
+                                        batchEntity.setLastUpdate(bean.getLastUpdate());
+                                        batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                        try {
+                                            batchDao.updateAndSave(batchEntity);
+                                        } catch (HibernateException e){
+                                            logger.error("[ObatPoliBoImpl.saveApproveReture] ERROR when update batch obat Detail. ", e);
+                                            throw new GeneralBOException("[ObatPoliBoImpl.saveApproveReture] ERROR when update batch obat Detail. ", e);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

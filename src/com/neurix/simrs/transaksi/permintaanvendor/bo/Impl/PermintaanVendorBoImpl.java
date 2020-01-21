@@ -589,8 +589,17 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     if (batchEntities.size() > 0){
                         for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
 
+                            String idBarang = "";
                             if ("Y".equalsIgnoreCase(batchEntity.getStatus())){
 
+                                java.util.Date now = new java.util.Date();
+                                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+
+                                String seq = getIdNextSeqObat();
+                                idBarang = f.format(now)+seq;
+
+                                obatDetail.setIdSeqObat(seq);
+                                obatDetail.setIdBarang(idBarang);
                                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());
                                 obatDetail.setExpDate(batchEntity.getExpiredDate());
 
@@ -598,6 +607,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 updateAddStockGudang(obatDetail);
                             }
 
+                            if (!"".equalsIgnoreCase(idBarang)) {
+                                batchEntity.setIdBarang(idBarang);
+                            }
                             batchEntity.setApproveFlag("Y");
                             batchEntity.setAction("U");
                             batchEntity.setLastUpdate(bean.getLastUpdate());
@@ -721,15 +733,15 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
         BigDecimal ttlAvgHargaPermintaan = new BigDecimal(0);
 
-        java.util.Date now = new java.util.Date();
-        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-        f.format(now);
-
-        String seq = getIdNextSeqObat();
+//        java.util.Date now = new java.util.Date();
+//        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+//        f.format(now);
+//
+//        String seq = getIdNextSeqObat();
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
-        newObatEntity.setIdSeqObat(seq);
-        newObatEntity.setIdBarang(f.format(now)+seq);
+        newObatEntity.setIdSeqObat(bean.getIdSeqObat());
+        newObatEntity.setIdBarang(bean.getIdBarang());
         newObatEntity.setIdObat(bean.getIdObat());
         newObatEntity.setNamaObat(bean.getNamaObat());
         newObatEntity.setIdPabrik(bean.getIdPabrik());
@@ -1250,6 +1262,70 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.isNewBatchCheckByNoBatchAndExpDate] END <<<");
         return isNew;
+    }
+
+    @Override
+    public List<TransaksiObatDetail> getListApprovedBatch(String idPermintaanObat, Integer noBatch) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.getListApprovedBatch] START >>>");
+
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaanObat);
+
+        List<MtSimrsPermintaanVendorEntity> permintaanVendorEntities = getListEntityVendor(permintaanVendor);
+        MtSimrsPermintaanVendorEntity permintaanEntity = new MtSimrsPermintaanVendorEntity();
+        if (permintaanVendorEntities.size() > 0){
+            permintaanEntity = permintaanVendorEntities.get(0);
+        }
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (permintaanEntity.getIdApprovalObat() != null){
+
+            TransaksiObatDetail trans = new TransaksiObatDetail();
+            trans.setIdApprovalObat(permintaanEntity.getIdApprovalObat());
+
+            List<ImtSimrsTransaksiObatDetailEntity> detailEntities = getListEntityTransObatDetail(trans);
+
+            if (detailEntities.size() > 0){
+                for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : detailEntities){
+
+                    TransaksiObatBatch batch = new TransaksiObatBatch();
+                    batch.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
+                    batch.setNoBatch(noBatch);
+
+                    List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(batch);
+
+                    if (batchEntities.size() > 0){
+                        for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
+                            if ("Y".equalsIgnoreCase(batchEntity.getApproveFlag()) && !"".equalsIgnoreCase(batchEntity.getIdBarang())  && batchEntity.getIdBarang() != null){
+                                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                                obatDetail.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
+                                obatDetail.setIdObat(obatDetailEntity.getIdObat());
+                                obatDetail.setQtyApprove(batchEntity.getQtyApprove());
+                                obatDetail.setJenisSatuan(batchEntity.getJenisSatuan());
+                                obatDetail.setIdBarang(batchEntity.getIdBarang());
+                                obatDetail.setLastUpdateWho(batchEntity.getLastUpdateWho());
+                                obatDetail.setLastUpdate(batchEntity.getLastUpdate());
+
+                                Obat obat = new Obat();
+                                obat.setIdBarang(batchEntity.getIdBarang());
+                                obat.setIdObat(obatDetailEntity.getIdObat());
+
+                                List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
+                                if (obatEntities.size() > 0){
+                                    ImSimrsObatEntity obatEntity = obatEntities.get(0);
+                                    obatDetail.setNamaObat(obatEntity.getNamaObat());
+                                }
+                                obatDetailList.add(obatDetail);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getListApprovedBatch] END <<<");
+        return obatDetailList;
     }
 
     // for get sequence id

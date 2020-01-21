@@ -14,6 +14,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
@@ -878,12 +879,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.printBarcodeBarang] START process <<<");
 
-        String idPermintaan = getId();
+        String idBarang = getId();
 
-        PermintaanVendor permintaanVendor = new PermintaanVendor();
-        permintaanVendor.setIdPermintaanVendor(idPermintaan);
-
-        reportParams.put("idbarang", "1234567890PA");
+        reportParams.put("idBarang", idBarang);
 
         try {
             preDownload();
@@ -895,6 +893,24 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.printBarcodeBarang] END process <<<");
         return "print_barcode_barang";
+    }
+
+    public List<TransaksiObatDetail> getListDetailObatApproved(String idPermintaanVendor, Integer noBatch){
+        logger.info("[PermintaanVendorAction.getListDetailObatApproved] START >>>>>>>");
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            obatDetailList = permintaanVendorBo.getListApprovedBatch(idPermintaanVendor, noBatch);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.getListDetailObatApproved] ERROR. ", e);
+            addActionError("[PermintaanVendorAction.getListDetailObatApproved] ERROR. " + e.getMessage());
+        }
+        logger.info("[PermintaanVendorAction.getListDetailObatApproved] END <<<<<<<");
+        return obatDetailList;
     }
 
     @Override
