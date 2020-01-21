@@ -403,7 +403,7 @@
 </div>
 
 <div class="modal fade" id="modal-request-detail">
-    <div class="modal-dialog modal-flat" style="width: 50%">
+    <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -440,6 +440,7 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_request_detail">
                         <thead>
+                        <td>ID Barang</td>
                         <td>ID Obat</td>
                         <td>Nama Obat</td>
                         <td align="center">Expired Date</td>
@@ -504,37 +505,32 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_reture_head">
                         <thead>
-                        <td>ID</td>
+                        <td>ID Barang</td>
                         <td>Nama Obat</td>
-                        <td align="center">Qty Box</td>
-                        <%--<td align="center">Qty Lembar</td>--%>
-                        <%--<td align="center">Qty Biji</td>--%>
-                        <%--<td align="center">Qty Request</td>--%>
                         <td align="center">Qty Approve</td>
                         <td align="center">Jenis Satuan</td>
                         <td align="center">Qty Reture</td>
-                        <%--<td align="center">Action</td>--%>
                         </thead>
                         <tbody id="body_reture_head">
                         </tbody>
                     </table>
                 </div>
-                <div class="box-header with-border"></div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Reture Obat
-                </div>
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_reture_detail">
-                        <thead>
-                        <td>ID</td>
-                        <td>Nama Obat</td>
-                        <td align="center">Qty</td>
-                        <td align="center">Jenis Satuan</td>
-                        <td align="center">Action</td>
-                        </thead>
-                        <tbody id="body_reture_detail">
-                        </tbody>
-                    </table>
-                </div>
+                <%--<div class="box-header with-border"></div>--%>
+                <%--<div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Reture Obat--%>
+                <%--</div>--%>
+                <%--<div class="box">--%>
+                    <%--<table class="table table-striped table-bordered" id="tabel_reture_detail">--%>
+                        <%--<thead>--%>
+                        <%--<td>ID</td>--%>
+                        <%--<td>Nama Obat</td>--%>
+                        <%--<td align="center">Qty</td>--%>
+                        <%--<td align="center">Jenis Satuan</td>--%>
+                        <%--<td align="center">Action</td>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body_reture_detail">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -833,7 +829,7 @@
         $('#req_id_permintaan').val(idPermin);
         $('#req_tanggal').val(tanggal);
         $('#req_id_approve').val(idApp);
-        $('#modal-request-detail').modal('show');
+        $('#modal-request-detail').modal({show:true, backdrop:'static'});
         var table = "";
         PermintaanObatPoliAction.listDetailObatRequest(idPermin, {
             callback: function (response) {
@@ -841,8 +837,8 @@
                     $.each(response, function (i, item) {
                         var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
                         table += "<tr>" +
+                                "<td>" + item.idBarang + "</td>"+
                                 "<td>" + item.idObat +
-                        '<input type="hidden" id=id_barang' + i + ' value=' + item.idBarang + '>' +
                         '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
                         "<td>" + item.namaObat + "</td>" +
                         "<td align='center'>" + expired + "</td>" +
@@ -863,14 +859,14 @@
         var result = [];
 
         $.each(data, function (i, item) {
-            var idBarang = $('#id_barang'+i).val();
+            var idBarang = data[i]["ID Barang"];
             var idObat = data[i]["ID Obat"];
             var idTransaksi = $('#id_transaksi'+i).val();
             var jenisSatuan = data[i]["Jenis Satuan"];
             var qtyApp = data[i]["Qty Approve"];
             result.push({'ID Barang':idBarang, 'ID Obat':idObat, 'ID Transkasi':idTransaksi, 'Jenis Satuan':jenisSatuan, 'Qty Approve':qtyApp});
         });
-        console.log(result);
+
         var stringData = JSON.stringify(result);
         if (stringData != '[]') {
 
@@ -921,11 +917,12 @@
     function showReture(idPermin, tanggal, idPelayanan) {
         $('#ret_id_permintaan').val(idPermin);
         $('#ret_tanggal').val(tanggal);
-        $('#modal-reture-detail').modal('show');
+        $('#modal-reture-detail').modal({show:true, backdrop : 'static'});
+        $('#save_req_detail').show();
+        $('#load_ret_detail').hide();
         var table = "";
-        PermintaanObatPoliAction.listDetailOldPermintaan(idPermin, {
+        ObatPoliAction.listDetailOldPermintaan(idPermin, {
             callback: function (response) {
-                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         var qtyBox = "";
@@ -943,12 +940,12 @@
                         }
 
                         table += "<tr>" +
-                                "<td>" + '<span id=obat' + item.idBarang + '>' + item.idBarang + '</span>' + "</td>" +
-                                "<td>" + '<span id=nama_obat' + item.idBarang + '>' + item.namaObat + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=qty_approve' + item.idBarang + '>' + item.qtyApprove + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=jenis_satuan' + item.idBarang + '>' + item.jenisSatuan + '</span>' + "</td>" +
-                                "<td align='center'>" + '<input type="number" id=new_qty' + item.idBarang + ' style="width: 80px" class="form-control">' + "</td>" +
-//                                "<td align='center'>" + '<a type="button" id=btn' + item.idBarang + ' onclick="addToListReture(\'' + item.idBarang + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" class="btn btn-success"><i class="fa fa-plus"></i></a>' + "</td>" +
+                                "<td>" + '<span id=id_barang' + i + '>' + item.idBarang + '</span>' +
+                                '<input type="hidden" id=id_obat'+ i +' value='+item.idObat+'>'+ "</td>" +
+                                "<td>" + '<span id=nama_obat' + i + '>' + item.namaObat + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=qty_approve' + i + '>' + item.qtyApprove + '</span>' + "</td>" +
+                                "<td align='center'>" + '<span id=jenis_satuan' + i + '>' + item.jenisSatuan + '</span>' + "</td>" +
+                                "<td align='center'>" + '<input type="number" id=new_qty' + i + ' style="width: 80px" class="form-control">' + "</td>" +
                                 "</tr>";
                     });
                 }
@@ -1003,10 +1000,17 @@
     }
 
     function saveAddReture() {
-        var data = $('#tabel_reture_detail').tableToJSON();
-        var stringData = JSON.stringify(data);
-        console.log(data);
+        var data = $('#tabel_reture_head').tableToJSON();
+        var result = [];
+        $.each(data, function (i, item) {
+            var idBarang = data[i]["ID Barang"];
+           var idObat = $('#id_obat'+i).val();
+           var qtyReture = $('#new_qty'+i).val();
+            var jenisSatuan = data[i]["Jenis Satuan"];
+            result.push({'ID Barang': idBarang, 'ID Obat':idObat, 'Qty Reture':qtyReture, 'Jenis Satuan':jenisSatuan});
+        });
 
+        var stringData = JSON.stringify(result);
         if (stringData != '[]') {
 
             $('#save_req_detail').hide();

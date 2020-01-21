@@ -461,6 +461,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
 
                     id = getNextTransaksiObatDetail();
+                    obatDetailEntity.setIdTransaksiObatDetail("ODT"+id);
                     obatDetailEntity.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                     obatDetailEntity.setIdObat(obatDetail.getIdObat());
                     obatDetailEntity.setQty(obatDetail.getQtyApprove());
@@ -1831,7 +1832,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         }
 
         logger.info("[ObatPoliBoImpl.getListObatTelahDiterima] END <<<<<<<<<<");
-        return null;
+        return obatDetails;
     }
 
     // list method seq
