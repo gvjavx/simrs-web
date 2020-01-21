@@ -253,7 +253,7 @@
 </div>
 
 <div class="modal fade" id="modal-request-obat">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -354,11 +354,12 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">
+
+                            <button class="btn btn-success pull-right" style="margin-top: 7px; margin-left: 4px"
+                                    onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
+                            </button>
                             <button class="btn btn-danger pull-right" style="margin-top: 7px" onclick="resetAll()"><i
                                     class="fa fa-refresh"></i> Reset
-                            </button>
-                            <button class="btn btn-success pull-right" style="margin-top: 7px; margin-right: 4px"
-                                    onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                             </button>
                         </div>
                     </div>
@@ -369,7 +370,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg-req"></p>
                 </div>
-                <div class="box-header with-border"><i class="fa fa-file-o"></i> Request Obat, Tujuan <b><span
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Request Obat <b><span
                         id="req_tujuan"></span></b>
                 </div>
                 <div class="box">
@@ -562,7 +563,7 @@
         $('#req_stok_apotek').val('');
         $('#req_qty').val('');
         $('#body_request').html('');
-        $('#modal-request-obat').modal('show');
+        $('#modal-request-obat').modal({show:true, backdrop:'static'});
     }
 
     function setStokObatPoli(select) {
@@ -923,6 +924,7 @@
         var table = "";
         ObatPoliAction.listDetailOldPermintaan(idPermin, {
             callback: function (response) {
+                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         var qtyBox = "";

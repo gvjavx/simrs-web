@@ -165,17 +165,17 @@ public class TransaksiObatAction extends BaseMasterAction {
                         resep.setProvinsi(headerCheckup.getNamaProvinsi());
                         resep.setIdPelayanan(headerCheckup.getIdPelayanan());
                         resep.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        if(headerCheckup.getJenisKelamin()!= null){
-                            if("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
+                        if (headerCheckup.getJenisKelamin() != null) {
+                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
                                 jk = "Perempuan";
-                            }else{
+                            } else {
                                 jk = "laki-Laki";
                             }
                         }
                         resep.setJenisKelamin(jk);
                         resep.setTempatLahir(headerCheckup.getTempatLahir());
                         resep.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        resep.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        resep.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + headerCheckup.getTglLahir().toString());
                         resep.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         resep.setNik(headerCheckup.getNoKtp());
                         resep.setUrlKtp(headerCheckup.getUrlKtp());
@@ -194,7 +194,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                         try {
                             transaksiObatBoProxy.updateAntrianResep(permintaanResep);
-                        }catch (GeneralBOException e){
+                        } catch (GeneralBOException e) {
                             logger.error("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. ", e);
                             addActionError("[TransaksiObatAction.searchResep] ERROR error update status antrian resep. " + e.getMessage());
                         }
@@ -417,7 +417,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         try {
             transaksiObatBo.saveAntrianResep(permintaanResep);
-        }catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[TransaksiObatAction.saveAntrianResep] ERROR error when get searh obat. ", e);
             addActionError("[TransaksiObatAction.saveAntrianResep] ERROR error when get searh obat. " + e.getMessage());
         }
@@ -426,7 +426,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    private HeaderCheckup getHeaderCheckup(String noCheckup){
+    private HeaderCheckup getHeaderCheckup(String noCheckup) {
         logger.info("[PeriksaLabAction.getHeaderCheckup] start process >>>");
 
         HeaderCheckup headerCheckup = new HeaderCheckup();
@@ -435,12 +435,12 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         try {
             headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PeriksaLabAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
         }
 
         HeaderCheckup result = new HeaderCheckup();
-        if (!headerCheckupList.isEmpty()){
+        if (!headerCheckupList.isEmpty()) {
             result = headerCheckupList.get(0);
         }
 
@@ -448,7 +448,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return result;
     }
 
-    private HeaderDetailCheckup getDetailCheckup(String idDetailCheckup){
+    private HeaderDetailCheckup getDetailCheckup(String idDetailCheckup) {
         logger.info("[PeriksaLabAction.getDetailCheckup] start process >>>");
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
@@ -457,12 +457,12 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
         try {
             detailCheckupList = checkupDetailBoProxy.getByCriteria(detailCheckup);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PeriksaLabAction.getDetailCheckup] Error When Get Header Checkup Data", e);
         }
 
         HeaderDetailCheckup result = new HeaderDetailCheckup();
-        if (!detailCheckupList.isEmpty()){
+        if (!detailCheckupList.isEmpty()) {
             result = detailCheckupList.get(0);
         }
 
@@ -470,7 +470,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return result;
     }
 
-    private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa){
+    private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa) {
         logger.info("[PeriksaLabAction.getListJenisPeriksaPasien] start process >>>");
 
         JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
@@ -479,12 +479,12 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
         try {
             jenisPriksaPasienList = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(jenisPriksaPasien);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PeriksaLabAction.getListJenisPeriksaPasien] Error When Get Jenis Pasien Data", e);
         }
 
         JenisPriksaPasien result = new JenisPriksaPasien();
-        if (!jenisPriksaPasienList.isEmpty()){
+        if (!jenisPriksaPasienList.isEmpty()) {
             result = jenisPriksaPasienList.get(0);
         }
 
@@ -492,7 +492,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return result;
     }
 
-    public List<ObatPoli> listObatPoliEntity(String idObat, String idPabrik){
+    public List<ObatPoli> listObatPoliEntity(String idObat, String idPabrik) {
         logger.info("[TransaksiObatAction.initApprovePermintaan] START process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
@@ -507,7 +507,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         try {
             obatPoliList = obatPoliBo.getObatPoliByCriteria(obatPoli);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
             addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
         }
@@ -516,7 +516,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return obatPoliList;
     }
 
-    public CheckObatResponse saveVerifikasiResep(String jsonString, String idTransaksi) throws JSONException{
+    public CheckObatResponse saveVerifikasiResep(String idTransaksi, String jsonString) throws JSONException {
         logger.info("[TransaksiObatAction.saveVerifikasiResep] START process >>>");
 
         CheckObatResponse response = new CheckObatResponse();
@@ -531,17 +531,20 @@ public class TransaksiObatAction extends BaseMasterAction {
             for (int i = 0; i < json.length(); i++) {
                 batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
                 JSONObject obj = json.getJSONObject(i);
-                batchEntity.setIdTransaksiObatDetail(idTransaksi);
-                batchEntity.setIdBarang(obj.getString("ID"));
-                batchEntity.setQtyApprove(new BigInteger(obj.getString("Qty")));
-                batchEntity.setJenisSatuan(obj.getString("Jenis Satuan"));
-                batchEntity.setFlag("Y");
-                batchEntity.setAction("C");
-                batchEntity.setLastUpdate(time);
-                batchEntity.setLastUpdateWho(userLogin);
-                batchEntity.setCreatedDate(time);
-                batchEntity.setCreatedWho(userLogin);
-                batchEntities.add(batchEntity);
+
+                if (!"".equalsIgnoreCase(obj.getString("Qty Approve"))) {
+                    batchEntity.setIdTransaksiObatDetail(idTransaksi);
+                    batchEntity.setIdBarang(obj.getString("ID Barang"));
+                    batchEntity.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
+                    batchEntity.setJenisSatuan(obj.getString("Jenis Satuan"));
+                    batchEntity.setFlag("Y");
+                    batchEntity.setAction("C");
+                    batchEntity.setLastUpdate(time);
+                    batchEntity.setLastUpdateWho(userLogin);
+                    batchEntity.setCreatedDate(time);
+                    batchEntity.setCreatedWho(userLogin);
+                    batchEntities.add(batchEntity);
+                }
             }
         }
 
@@ -553,7 +556,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             response.setStatus(SUCCESS);
             response.setMessage("SUCCESS");
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             response.setStatus(ERROR);
             response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
 

@@ -404,14 +404,10 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
     public List<PermintaanObatPoli> getListObatDetailRequest(PermintaanObatPoli bean) {
 
         String idPermintaan = "%";
-        String idPelayanan  = "%";
         String branchId = "%";
 
         if(bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())){
             idPermintaan = bean.getIdPermintaanObatPoli();
-        }
-        if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
-            idPelayanan = bean.getIdPelayanan();
         }
         if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
             branchId = bean.getBranchId();
@@ -423,7 +419,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 "INNER JOIN (SELECT expired_date, id_transaksi_obat_detail, qty_approve, id_barang, status, approve_flag, jenis_satuan FROM mt_simrs_transaksi_obat_detail_batch) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                 "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON b.id_obat = d.id_obat\n" +
                 "WHERE a.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                "AND a.id_pelayanan LIKE :idPelayanan\n" +
                 "AND a.branch_id LIKE :branchId\n" +
                 "AND c.status = 'Y'\n" +
                 "AND c.approve_flag = 'Y'\n" +
@@ -431,7 +426,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idPermintaanObatPoli", idPermintaan)
-                .setParameter("idPelayanan", idPelayanan)
                 .setParameter("branchId", branchId)
                 .list();
 

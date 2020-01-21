@@ -106,7 +106,6 @@
                                        buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_permintaanpo.action';
                                                                                      }
                                                                             }"
                             >
@@ -546,9 +545,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tgl Kadaluarsa</label>
+                        <label class="col-md-3" style="margin-top: 7px">Expired Date</label>
                         <div class="col-md-7">
-                            <s:textfield cssClass="form-control datepicker"
+                            <s:textfield cssClass="form-control datepicker2 datemask2"
                                          cssStyle="margin-top: 7px" id="app_expired"
                                          onchange="var warn =$('#war_app_expired').is(':visible'); if (warn){$('#cor_app_expired').show().fadeOut(3000);$('#war_app_expired').hide()}"></s:textfield>
                         </div>
@@ -697,11 +696,14 @@
     }
 
     function saveApprove(id, idDetail, idPabrik, noBt) {
+
         var qtyReq = $('#app_qty').val();
         var qty = $('#app_qty_app').val();
         var lembarPerBox = $('#app_lembar_perbox').val();
         var bijiPerLembar = $('#app_biji_perlembar').val();
-        var expired = $('#app_expired').val();;
+        var expiredValue = $('#app_expired').val();
+        var expired = expiredValue.split("-").reverse().join("-");
+
         var qtyApproveValue = $('#qtyApprove'+id).text();
         var qtyApprove = 0;
         var totalQtyApp= 0;
@@ -727,6 +729,7 @@
                             $('#pabrik' + id).val('');
                         }
                         $('#qtyApprove' + id).text(totalQtyApp);
+                        $('#info_dialog').dialog('open');
                     } else {
                         $('#save_obat').show();
                         $('#load_obat').hide();

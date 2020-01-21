@@ -400,7 +400,7 @@
 </div>
 
 <div class="modal fade" id="modal-reture">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -431,13 +431,13 @@
                 <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Reture Obat
                 </div>
                 <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_reture">
+                    <table class="table table-striped table-bordered" id="tabel_request_detail">
                         <thead>
-                        <tr>
-                            <td >ID</td>
-                            <td >Nama Obat</td>
-                            <td align="center">Qty Reture</td>
-                        </tr>
+                        <td>ID Barang</td>
+                        <td>Nama Obat</td>
+                        <td align="center">Expired Date</td>
+                        <td align="center">Qty Approve</td>
+                        <td align="center">Jenis Satuan</td>
                         </thead>
                         <tbody id="body_reture">
                         </tbody>
@@ -538,19 +538,34 @@
         $('#judul_ret').html("Konfirmasi Reture Obat");
         var table = "";
         var data = [];
-        PermintaanObatPoliAction.listDetailPermintaan(id, false, tujuan, "Y", {
-            callback: function (response) {
-                if(response != null){
-                    $.each(response, function (i, item) {
-                        table += "<tr>" +
-                                "<td>" + item.idObat + "</td>" +
-                                "<td>" + item.namaObat + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
-                                "</tr>";
-                    });
-                }
+//        PermintaanObatPoliAction.listDetailPermintaan(id, false, tujuan, "Y", {
+//            callback: function (response) {
+//                if(response != null){
+//                    $.each(response, function (i, item) {
+//                        table += "<tr>" +
+//                                "<td>" + item.idObat + "</td>" +
+//                                "<td>" + item.namaObat + "</td>" +
+//                                "<td align='center'>" + item.qty + "</td>" +
+//                                "</tr>";
+//                    });
+//                }
+//            }
+//        });
+        PermintaanObatPoliAction.listDetailObatRequest(id, {callback:function(response){
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+                    table += "<tr>" +
+                            "<td>" + item.idBarang + "</td>"+
+                            '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + expired + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td align='center'>" + item.jenisSatuan + "</td>" +
+                            "</tr>";
+                });
             }
-        });
+        }});
 
         $('#body_reture').html(table);
     }

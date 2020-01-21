@@ -281,7 +281,7 @@
                                             document.write(formatRupiah(val))
                                         }</script>
                                     </td>
-                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>')"></td>
+                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')"></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -616,7 +616,7 @@
 </div>
 
 <div class="modal fade" id="modal-approve">
-    <div class="modal-dialog modal-flat" style="width: 55%">
+    <div class="modal-dialog modal-flat" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -651,7 +651,6 @@
                         <td align="center">Qty Biji</td>
                         <td align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
-                        <td>Action</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
@@ -662,7 +661,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_app" onclick="saveApprove()"><i
+                <button type="button" class="btn btn-success" id="save_app"><i
                         class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_app"><i
@@ -847,7 +846,8 @@
         }
     }
 
-    function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan){
+    function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi){
+
         $('#app_id').text(idObat);
         $('#app_nama').text(namaObat);
         $('#app_req').text(qtyReq);
@@ -876,8 +876,6 @@
                    const diffTime = Math.abs(date2 - date1);
                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                   console.log(diffDays);
-
                    if(item.qtyBox != null){
                        qtyBox = item.qtyBox;
                    }
@@ -889,39 +887,79 @@
                    }
 
                    var warna = "";
+                   var color = "";
 
-                   if(diffDays < 30){
-                       warna = "orange";
+                   if (diffDays < 10) {
+                       warna = '#dd4b39';
+                       color = 'white';
+
+                   } else if (diffDays < 30) {
+                       warna = '#eea236';
+                       color = 'white';
                    }
 
-                   table +='<tr bgcolor='+warna+'>' +
+                   table +='<tr bgcolor='+warna+' style="color: ' + color + '">' +
                    '<td>'+dateFormat+'</td>' +
                    '<td align="center">'+qtyBox+'</td>' +
                    '<td align="center">'+qtyLembar+'</td>' +
                    '<td align="center">'+qtyBiji+'</td>' +
-                   '<td><input id=newQty'+dateFormat+' type="number" class="form-control"></td>' +
+                   '<td><input id=newQty'+i+' type="number" class="form-control"></td>' +
                    '<td>'+jenisSatuan+'</td>' +
-                   '<td><button></button></td>' +
                    '</tr>';
                });
-
+               $('#save_app').attr('onclick', 'saveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + jenisSatuan + '\')');
                $('#body_approve').html(table);
            }
         });
     }
 
-    function saveApprove(){
+    function saveApprove(idObat, qtyReq, idTransaksi, satuan){
         var data = $('#tabel_approve').tableToJSON();
-        var stringData  = JSON.stringify(data);
         var result = [];
+        var qtyApp = 0;
+        var qtyBox = 0;
+        var qtyLembar = 0;
+        var qtyBiji = 0;
+
+        $.each(data, function (i, item) {
+            var expired = data[i]["Expired Date"];
+            var expDate = expired.split("-").reverse().join("-");
+            var qty = $('#newQty'+i).val();
+            result.push({'Expired Date': expDate, 'Qty Approve': qty});
+        });
+
         $.each(data, function (i, item) {
             var id = data[i]["Expired Date"];
-            var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
-            var qty = $('#newQty'+id).val();
-            result.push({'Expired Date': id, 'qty': qty});
+            var box = data[i]["Qty Box"];
+            var lembar = data[i]["Qty Lembar"];
+            var biji = data[i]["Qty Biji"];
+            var qty = $('#newQty' + i).val();
+
+            if (qty == "") {
+                qty = 0;
+            }
+            if (box == "") {
+                box = 0;
+            }
+            if (lembar == "") {
+                lembar = 0;
+            }
+            if (biji == "") {
+                biji = 0;
+            }
+
+            qtyBox = parseInt(qtyBox) + parseInt(box);
+            qtyLembar = parseInt(qtyLembar) + parseInt(lembar);
+            qtyBiji = parseInt(qtyBiji) + parseInt(biji);
+            qtyApp = parseInt(qtyApp) + parseInt(qty);
+
         });
-        console.log(data);
         console.log(result);
+        console.log(idTransaksi);
+        var stringData  = JSON.stringify(data);
+//        TransaksiObatAction.saveVerifikasiResep(idObat, idPabrik, {callback:function (response) {
+//
+//        }});
     }
 
 </script>

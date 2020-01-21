@@ -437,7 +437,6 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
         permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
         permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
-        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");

@@ -49,6 +49,10 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Verifikasi Permintaan Obat Poli</h3>
                     </div>
                     <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_save">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_save"></p>
+                        </div>
                         <div class="form-group" style="display: none">
                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
                                        resizable="false"
@@ -89,9 +93,12 @@
                                        resizable="false"
                                        height="250" width="600" autoOpen="false" title="Error Dialog"
                                        buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                                'OK':function() { $('#error_dialog').dialog('close');
+                                                                                toContent();}
+
                                                                             }"
                             >
+                                <s:hidden id="ref"></s:hidden>
                                 <div class="alert alert-danger alert-dismissible">
                                     <label class="control-label" align="left">
                                         <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
@@ -108,11 +115,11 @@
                                 </center>
                                 <br>
                                 <div class="modal-footer">
-                                    <a type="button" class="btn btn-warning"
+                                    <a style="color: white" type="button" class="btn btn-warning"
                                             onclick="$('#confirm_dialog').dialog('close')"><i
                                             class="fa fa-times"></i> No
                                     </a>
-                                    <a type="button" class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
+                                    <a style="color: white" type="button" class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
                                         Yes</a>
                                 </div>
                             </sj:dialog>
@@ -157,7 +164,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <button class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</button>
-                                    <button class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i> Save</button>
+                                    <button class="btn btn-success" onclick="confirm()"><i class="fa fa-arrow-right"></i> Save</button>
                                 </div>
                             </div>
                         </div></div>
@@ -285,7 +292,7 @@
                         color = 'white';
 
                     } else if (diffDays < 30) {
-                        warna = 'orange';
+                        warna = '#eea236';
                         color = 'white';
                     }
 
@@ -405,7 +412,24 @@
     }
 
     function confirm(){
-        $('#confirm_dialog').dialog('open');
+        var data = $('#tabel_request').tableToJSON();
+        var qtyApp = 0;
+        $.each(data, function (i, item) {
+            var id = data[i]["ID Obat"];
+            var idTransaksi = $('#idTrans'+id).val();
+            var qty = data[i]["Qty Approve"];
+            if(qty == ""){
+                qty = 0;
+            }
+            qtyApp = parseInt(qtyApp) + parseInt(qty);
+        });
+        console.log(qtyApp);
+        if(qtyApp > 0){
+            $('#confirm_dialog').dialog('open');
+        }else{
+            $('#warning_save').show().fadeOut(5000);
+            $('#msg_save').text("Silahkan konfirmasi terlebih dahulu untuk qty Approvenya...!");
+        }
 
     }
 
@@ -426,9 +450,19 @@
         PermintaanObatPoliAction.saveApproveRequest(idApp, stringData, {callback: function (response) {
             if(response == "success"){
                 $('#info_dialog').dialog('open');
+                $('#ref').val(1);
+                $('#confirm_dialog').dialog('close');
+            }else{
             }
         }
         });
+    }
+
+    function toConten(){
+        var ref = $('#ref').val();
+        if(ref == 1){
+            window.location.href = 'initForm_permintaangudang.action';
+        }
     }
 
 </script>
