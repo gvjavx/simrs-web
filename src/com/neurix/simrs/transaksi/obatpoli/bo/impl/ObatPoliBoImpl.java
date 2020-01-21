@@ -511,6 +511,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     batchEntity.setStatus("Y");
                     batchEntity.setFlag("Y");
                     batchEntity.setAction("C");
+                    batchEntity.setApproveFlag("Y");
                     batchEntity.setCreatedDate(bean.getCreatedDate());
                     batchEntity.setCreatedWho(bean.getCreatedWho());
                     batchEntity.setLastUpdate(bean.getCreatedDate());
