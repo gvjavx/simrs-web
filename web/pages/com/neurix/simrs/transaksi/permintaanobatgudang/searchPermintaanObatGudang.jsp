@@ -232,13 +232,17 @@
                                             </button>
                                         </s:if>
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>
-                                            <button class="btn btn-warning"
-                                                    onclick="showReture('<s:property value="idPermintaanObatPoli"/>',
-                                                            '<s:property value="stCreatedDate"/>',
-                                                            '<s:property value="idPelayanan"/>',
-                                                            '<s:property value="tujuanPelayanan"/>')"><i
-                                                    class="fa fa-refresh"></i>
-                                            </button>
+                                            <s:if test='#row.retureFlag == "Y"'>
+                                            </s:if>
+                                            <s:else>
+                                                <button class="btn btn-warning"
+                                                        onclick="showReture('<s:property value="idPermintaanObatPoli"/>',
+                                                                '<s:property value="stCreatedDate"/>',
+                                                                '<s:property value="idPelayanan"/>',
+                                                                '<s:property value="tujuanPelayanan"/>')"><i
+                                                        class="fa fa-refresh"></i>
+                                                </button>
+                                            </s:else>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -1003,6 +1007,7 @@
 
     function saveAddReture() {
         var data = $('#tabel_reture_head').tableToJSON();
+        var idPermintaan = $('#ret_id_permintaan').val();
         var result = [];
         $.each(data, function (i, item) {
             var idBarang = data[i]["ID Barang"];
@@ -1011,7 +1016,6 @@
             var jenisSatuan = data[i]["Jenis Satuan"];
             result.push({'ID Barang': idBarang, 'ID Obat':idObat, 'Qty Reture':qtyReture, 'Jenis Satuan':jenisSatuan});
         });
-
         var stringData = JSON.stringify(result);
         if (stringData != '[]') {
 
@@ -1019,7 +1023,7 @@
             $('#load_ret_detail').show();
 
             dwr.engine.setAsync(true);
-            ObatPoliAction.saveAddReture(stringData, "GDG", {
+            ObatPoliAction.saveAddReture(stringData, "GDG", idPermintaan, {
                 callback: function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);

@@ -208,7 +208,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveAddReture(String reture, String idTujuan) throws JSONException {
+    public String saveAddReture(String reture, String idTujuan, String idPermintaan) throws JSONException {
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
 
@@ -235,6 +235,7 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("C");
             obatPoli.setFlag("Y");
+            obatPoli.setIdPermintaanObatPoli(idPermintaan);
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");

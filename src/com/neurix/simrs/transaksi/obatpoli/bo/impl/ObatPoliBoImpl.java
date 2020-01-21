@@ -388,6 +388,21 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             logger.error("[ObatPoliBoImpl.saveReture] WARNING data telah ada pada transaksi untuk transaksi reture. ");
             throw new GeneralBOException("[ObatPoliBoImpl.saveReture] WARNING data telah ada pada transaksi untuk transaksi reture. ");
         } else {
+
+            MtSimrsPermintaanObatPoliEntity entity = permintaanObatPoliDao.getById("idPermintaanObatPoli", bean.getIdPermintaanObatPoli());
+
+            if(entity != null){
+
+                entity.setRetureFlag("Y");
+
+                try {
+                    permintaanObatPoliDao.updateAndSave(entity);
+                }catch (HibernateException e){
+                    logger.error("[ObatPoliBoImpl.saveReture] ERROR when insert into approval transaksi. ", e);
+                    throw new GeneralBOException("[ObatPoliBoImpl.saveReture] ERROR when insert into approval transaksi. ", e);
+                }
+            }
+
             // save to table approve
             ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
             String id = getNextApprovalObatId();
@@ -1306,6 +1321,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                             obatDetail.setIdBarang(batchEntity.getIdBarang());
                                             obatDetail.setIdBarang(obatDetailEntity.getIdObat());
                                             obatDetail.setQtyApprove(batchEntity.getQtyApprove());
+                                            obatDetail.setJenisSatuan(batchEntity.getJenisSatuan());
                                             obatDetail.setExpDate(batchEntity.getExpiredDate());
                                             obatDetail.setBranchId(bean.getBranchId());
                                             obatDetail.setLastUpdate(bean.getLastUpdate());

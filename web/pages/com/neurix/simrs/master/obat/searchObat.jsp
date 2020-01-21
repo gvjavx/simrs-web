@@ -164,7 +164,8 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Obat</td>
+                                <td>ID Barang</td>
+                                <td>Expired Date</td>
                                 <td>Nama Obat</td>
                                 <td>Jenis Obat</td>
                                 <td>Lembar/Box</td>
@@ -178,7 +179,8 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
-                                    <td><s:property value="idObat"/></td>
+                                    <td><s:property value="idBarang"/></td>
+                                    <td><script>var tgl = '<s:property value="expiredDate"/>'; var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);</script></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property escape="false" value="jenisObat"/></td>
                                     <td><s:property value="lembarPerBox"/></td>

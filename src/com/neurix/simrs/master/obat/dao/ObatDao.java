@@ -238,6 +238,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "ob.average_harga_lembar,\n" +
                 "ob.average_harga_biji,\n" +
                 "ob.expired_date\n" +
+                "ob.id_barang\n" +
                 "FROM im_simrs_obat ob \n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -288,6 +289,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             obatEntity.setAverageHargaLembar(obj[19] == null ? null : (BigDecimal) obj[19]);
             obatEntity.setAverageHargaBiji(obj[20] == null ? null : (BigDecimal) obj[20]);
             obatEntity.setExpiredDate(obj[21] == null ? null : (Date) obj[21]);
+            obatEntity.setIdBarang(obj[22] == null ? null : (String) obj[22]);
 
             listOfResults.add(obatEntity);
         }
