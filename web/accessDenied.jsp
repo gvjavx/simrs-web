@@ -27,7 +27,7 @@
 </div>
 
 <div id="footer" class="text-center">
-    Hak Cipta 2019, PT. Rumah Sakit Nusantara
+    Hak Cipta 2019, PT. Nusantara Medika Utama
 </div>
 </body>
 

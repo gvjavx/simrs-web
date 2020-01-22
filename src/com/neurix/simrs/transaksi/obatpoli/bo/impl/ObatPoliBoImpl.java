@@ -1972,6 +1972,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 if (obatEntities.size() > 0){
                     for (ImSimrsObatEntity obatEntity : obatEntities){
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
+                        obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
+                        obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
                     }
                 }
 

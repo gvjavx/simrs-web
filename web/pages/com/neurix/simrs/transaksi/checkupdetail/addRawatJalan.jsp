@@ -2522,6 +2522,11 @@
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
+            console.log(jenisSatuan);
+            console.log(obat);
+            console.log(stok);
+            console.log(lembarPerBox);
+            console.log(bijiPerLembar);
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
@@ -2642,7 +2647,9 @@
     }
 
     function printResep(id) {
-        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
+
+        window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
+//        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
     }
 
     function detailResep(id) {

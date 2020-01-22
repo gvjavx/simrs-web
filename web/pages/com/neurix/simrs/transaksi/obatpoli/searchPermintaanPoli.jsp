@@ -53,26 +53,36 @@
                             <s:form id="permintaanForm" method="post" namespace="/permintaangudang" action="search_permintaangudang.action"
                                     theme="simple" cssClass="form-horizontal">
 
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Jenis Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initJenis" namespace="/jenisobat"--%>
+                                                  <%--name="getListJenisObat_jenisobat"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
+                                                  <%--listKey="idJenisObat"--%>
+                                                  <%--listValue="namaJenisObat"--%>
+                                                  <%--name="permintaanObatPoli.idJenisObat"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
+                                                     <%--name="permintaanObatPoli.idObat" required="false"--%>
+                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Jenis Obat</label>
+                                    <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initJenis" namespace="/jenisobat"
-                                                  name="getListJenisObat_jenisobat"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
-                                                  listKey="idJenisObat"
-                                                  listValue="namaJenisObat"
-                                                  name="permintaanObatPoli.idJenisObat"
-                                                  headerKey="" headerValue="[Select one]"
+                                        <s:select list="#{'003':'Reture'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="tipePermintaan" name="permintaanObatPoli.tipePermintaan"
+                                                  headerKey="002" headerValue="Request"
                                                   cssClass="form-control select2"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="permintaanObatPoli.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -88,17 +98,6 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Permintaan</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'003':'Reture'}"
-                                                  cssStyle="margin-top: 7px"
-                                                  id="tipePermintaan" name="permintaanObatPoli.tipePermintaan"
-                                                  headerKey="002" headerValue="Request"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
-
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
@@ -239,7 +238,8 @@
                                                 <%--</s:a>--%>
                                                 <s:a href="%{init_permintaan}">
                                                     <img class="hvr-grow" src="<s:url value="/pages/images/ubah_flat.png"/>" style="width: 30px; height: 30px">
-                                                </s:a>                                            </s:if>
+                                                </s:a>
+                                            </s:if>
                                             <s:else>
                                                 <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
                                                 <button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>
@@ -249,7 +249,7 @@
                                             <s:url var="print_permintaan" namespace="/permintaangudang" action="printPermintaanObat_permintaangudang" escapeAmp="false">
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
                                             </s:url>
-                                            <s:a href="%{print_permintaan}" cssClass="btn btn-info">
+                                            <s:a target="__blank" href="%{print_permintaan}" cssClass="btn btn-info">
                                                 <i class="fa fa-print"></i>
                                             </s:a>
                                         </s:elseif>
