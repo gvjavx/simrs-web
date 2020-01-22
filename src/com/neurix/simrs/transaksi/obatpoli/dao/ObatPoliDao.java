@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
@@ -9,6 +10,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -137,4 +139,58 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
         return obatPoliList;
     }
+
+    public List<String> getIdObatGroup(String idPelayanan, String branchId){
+
+        String SQL = "SELECT id_obat, id_pelayanan\n" +
+                "FROM mt_simrs_obat_poli\n" +
+                "WHERE id_pelayanan = :idPelayanan \n" +
+                "AND branch_id = :branchId \n" +
+                "GROUP BY id_obat, id_pelayanan";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<String> stringList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                stringList.add(obj[0].toString());
+            }
+        }
+        return stringList;
+    }
+
+    public ObatPoli getSumStockObatPoliById(String id, String idPelayanan){
+
+        String SQL = "SELECT \n" +
+                "id_obat, \n" +
+                "SUM(qty_box) as qty_box, \n" +
+                "SUM(qty_lembar) as qty_lembar,\n" +
+                "SUM(qty_biji) as qty_biji\n" +
+                "FROM mt_simrs_obat_poli \n" +
+                "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
+                "AND id_obat = :id\n" +
+                "AND id_pelayanan = :idPoli\n" +
+                "GROUP BY id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("idPoli", idPelayanan)
+                .list();
+
+        ObatPoli obatPoli = new ObatPoli();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                obatPoli.setIdObat(obj[0].toString());
+                obatPoli.setQtyBox(new BigInteger(String.valueOf(obj[1])));
+                obatPoli.setQtyLembar(new BigInteger(String.valueOf(obj[2])));
+                obatPoli.setQtyBiji(new BigInteger(String.valueOf(obj[3])));
+            }
+        }
+
+        return obatPoli;
+    }
+
 }
