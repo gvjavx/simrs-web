@@ -2642,7 +2642,9 @@
     }
 
     function printResep(id) {
-        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
+
+        window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
+//        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
     }
 
     function detailResep(id) {

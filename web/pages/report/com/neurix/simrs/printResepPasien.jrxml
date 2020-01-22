@@ -18,7 +18,7 @@
 	<queryString>
 		<![CDATA[SELECT a.id_permintaan_resep, a.id_pasien, a.id_detail_checkup, b.id_obat, b.jenis_satuan, c.nama_obat, b.qty, b.keterangan FROM mt_simrs_permintaan_resep a
 INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
-INNER JOIN im_simrs_obat c ON b.id_obat = c.id_obat
+INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) c ON b.id_obat = c.id_obat
 WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 	</queryString>
 	<field name="id_permintaan_resep" class="java.lang.String"/>

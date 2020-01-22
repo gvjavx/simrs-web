@@ -227,7 +227,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
                 reportParams.put("permintaanId", idPermintaan);
                 reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
-                reportParams.put("namaPelayanan", entity.getNamaTujuanPelayanan());
+                reportParams.put("namaPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
                 reportParams.put("dariPelayanan", entity.getNamaPelayanan());
             }
         }

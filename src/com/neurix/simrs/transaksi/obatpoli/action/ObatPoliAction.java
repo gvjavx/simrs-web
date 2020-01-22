@@ -22,6 +22,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,9 +36,18 @@ public class ObatPoliAction extends BaseMasterAction {
     private ObatPoli obatPoli;
     private ObatPoliBo obatPoliBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
+    private String idPermintaan;
 
     private List<ObatPoli> listOfObatPoli = new ArrayList<>();
     private List<ObatPoli> listOfTujuanPelayanan = new ArrayList<>();
+
+    public String getIdPermintaan() {
+        return idPermintaan;
+    }
+
+    public void setIdPermintaan(String idPermintaan) {
+        this.idPermintaan = idPermintaan;
+    }
 
     public List<ObatPoli> getListOfTujuanPelayanan() {
         return listOfTujuanPelayanan;
@@ -613,6 +623,45 @@ public class ObatPoliAction extends BaseMasterAction {
         } else {
             return null;
         }
+    }
+
+    public String printReturePermintaanObat() {
+
+        String idPermintaan = getIdPermintaan();
+
+        boolean isPoli = false;
+
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanObatPoliAction.printReturePermintaanObat] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.printReturePermintaanObat] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        if(!permintaanObatPoliList.isEmpty()){
+            PermintaanObatPoli entity = permintaanObatPoliList.get(0);
+            if(entity != null){
+
+                reportParams.put("permintaanId", idPermintaan);
+                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                reportParams.put("namaPelayanan", entity.getNamaPelayanan());
+                reportParams.put("dariPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
+            }
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[PermintaanObatPoliAction.printReturePermintaanObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_reture_permintaan_obat";
     }
 
     @Override

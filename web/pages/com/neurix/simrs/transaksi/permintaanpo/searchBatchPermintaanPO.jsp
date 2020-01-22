@@ -165,7 +165,7 @@
                                                 <%--<button class="btn btn-warning pull-right"><i class="fa fa-arrow-left"></i> Back</button>--%>
                                             <%--</s:a>--%>
                                             <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
-                                            <a class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                            <a href="initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                         </div>
                                     </div>
                                 </div>

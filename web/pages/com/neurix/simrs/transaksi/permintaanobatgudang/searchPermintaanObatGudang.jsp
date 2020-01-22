@@ -24,6 +24,7 @@
             document.obatGudangForm.submit();
         }
 
+
     </script>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
@@ -75,22 +76,22 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
-                                                     name="permintaanObatPoli.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="nama_obat" name="permintaanObatPoli.namaObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="id_obat" cssStyle="margin-top: 7px"--%>
+                                                     <%--name="permintaanObatPoli.idObat" required="false"--%>
+                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Nama Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="nama_obat" name="permintaanObatPoli.namaObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
@@ -223,16 +224,17 @@
                                     </s:else></td>
                                     <td align="center">
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null'>
-                                            <button class="btn btn-primary"
-                                                    onclick="confirm('<s:property value="idApprovalObat"/>',
-                                                            '<s:property value="idPermintaanObatPoli"/>',
-                                                            '<s:property value="stCreatedDate"/>',
-                                                            '<s:property value="tujuanPelayanan"/>')">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
+                                                <button class="btn btn-primary"
+                                                        onclick="confirm('<s:property value="idApprovalObat"/>',
+                                                                '<s:property value="idPermintaanObatPoli"/>',
+                                                                '<s:property value="stCreatedDate"/>',
+                                                                '<s:property value="tujuanPelayanan"/>')">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
                                         </s:if>
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == "Y"'>
                                             <s:if test='#row.retureFlag == "Y"'>
+                                                <label class="label label-warning">Telah Direture</label>
                                             </s:if>
                                             <s:else>
                                                 <button class="btn btn-warning"
@@ -243,6 +245,14 @@
                                                         class="fa fa-refresh"></i>
                                                 </button>
                                             </s:else>
+                                        </s:if>
+                                        <s:if test='#row.request == false'>
+                                            <s:url var="print_permintaan" namespace="/obatgudang" action="printPermintaanObat_obatgudang" escapeAmp="false">
+                                                <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
+                                            </s:url>
+                                            <s:a target="__blank" href="%{print_permintaan}" cssClass="btn btn-info">
+                                                <i class="fa fa-print"></i>
+                                            </s:a>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -557,7 +567,20 @@
 <script type='text/javascript'>
 
     function toContent() {
-        window.location.reload(true);
+        var pos = $('#close_pos').val();
+        if(pos == 1){
+            $('#tipePermintaan').val('003').trigger('change');
+            $('#flag').val('Y').trigger('change');
+            document.obatGudangForm.action = 'searchPermintaanObatGudang_obatgudang.action';
+            document.obatGudangForm.submit();
+        }else if(pos == 2){
+            $('#tipePermintaan').val('002').trigger('change');
+            $('#flag').val('Y').trigger('change');
+            document.obatGudangForm.action = 'searchPermintaanObatGudang_obatgudang.action';
+            document.obatGudangForm.submit();
+        }else{
+            window.location.reload(true);
+        }
     }
 
     function showModal() {
@@ -814,8 +837,10 @@
                         $('#info_dialog').dialog('open');
                         $('#save_request').show();
                         $('#load_request').hide();
+                        $('#close_pos').val(2);
                     } else {
                         $('#warning_request').show().fadeOut(5000);
+                        $('#msg_request').text('Terjadi kesalahan saat menyimpan data ke database...!');
                         $('#save_request').show();
                         $('#load_request').hide();
                     }
@@ -824,6 +849,7 @@
 
         } else {
             $('#warning_request').show().fadeOut(5000);
+            $('#msg_request').text('Silahkan buat daftar list obat terlebih dahulu..!');
         }
     }
 
@@ -889,6 +915,7 @@
                         $('#load_req_detail').hide();
                     } else {
                         $('#warning_reture').show().fadeOut(5000);
+                        $('#msg_reture_detail').text("Terjadi kesalahan pada saat simpan ke database..!");
                         $('#save_reture').show();
                         $('#load_reture').hide();
                     }
@@ -897,6 +924,7 @@
 
         } else {
             $('#warning_reture').show().fadeOut(5000);
+            $('#msg_reture_detail').text("Silahkan cek kembali data inputan berikut..!");
         }
     }
 
@@ -1031,6 +1059,7 @@
                         $('#info_dialog').dialog('open');
                         $('#save_req_detail').show();
                         $('#load_ret_detail').hide();
+                        $('#close_pos').val(1);
                     } else {
                         $('#warning_reture_detail').show().fadeOut(5000);
                         $('#msg_reture_detail').text('Terjadi kesalahan saat menyimpan data...!');
