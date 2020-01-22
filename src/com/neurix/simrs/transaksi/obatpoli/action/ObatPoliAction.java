@@ -453,12 +453,12 @@ public class ObatPoliAction extends BaseMasterAction {
         logger.info("[ObatPoliAction.getListObatPoli] start process >>>");
 
         List<ObatPoli> obatPoliList = new ArrayList<>();
-        ObatPoli obatPoli = new ObatPoli();
-        obatPoli.setBranchId(CommonUtil.userBranchLogin());
-        obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+//        ObatPoli obatPoli = new ObatPoli();
+//        obatPoli.setBranchId(CommonUtil.userBranchLogin());
+//        obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
 
         try {
-            obatPoliList = obatPoliBoProxy.getObatPoliByCriteria(obatPoli);
+            obatPoliList = obatPoliBoProxy.getListObatPoliGroup(CommonUtil.userPelayananIdLogin(), CommonUtil.userBranchLogin());
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getListObatPoli] Error when get poli obat ," + "Found problem when saving add data, please inform to your admin.", e);
         }
@@ -501,15 +501,15 @@ public class ObatPoliAction extends BaseMasterAction {
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
         String branchId = CommonUtil.userBranchLogin();
-        ObatPoli obatpoli = new ObatPoli();
-        obatpoli.setIdPelayanan(idPelayanan);
-        obatpoli.setBranchId(branchId);
+//        ObatPoli obatpoli = new ObatPoli();
+//        obatpoli.setIdPelayanan(idPelayanan);
+//        obatpoli.setBranchId(branchId);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-            obatPoliList = obatPoliBo.getObatPoliByCriteria(obatpoli);
+            obatPoliList = obatPoliBo.getListObatPoliGroup(idPelayanan, branchId);
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getStokObat] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());

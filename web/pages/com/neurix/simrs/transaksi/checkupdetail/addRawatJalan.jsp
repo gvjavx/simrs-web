@@ -2522,6 +2522,11 @@
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
+            console.log(jenisSatuan);
+            console.log(obat);
+            console.log(stok);
+            console.log(lembarPerBox);
+            console.log(bijiPerLembar);
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
                     if (item.ID == id) {

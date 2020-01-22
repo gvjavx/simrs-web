@@ -1930,6 +1930,75 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return obatDetails;
     }
 
+    @Override
+    public List<ObatPoli> getListObatPoliGroup(String idPelayanan, String branchId) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getListObatPoliGroup] START >>>>>>>>>>");
+
+        List<String> listIdObat = new ArrayList<>();
+        try {
+            listIdObat = obatPoliDao.getIdObatGroup(idPelayanan, branchId);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+        }
+
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+        if (listIdObat.size() > 0){
+            ObatPoli obatPoli;
+            for (String idObat : listIdObat){
+                obatPoli = new ObatPoli();
+                obatPoli.setIdObat(idObat);
+
+                Obat obat = new Obat();
+                try {
+                    obat = obatDao.getLastIdSeqObat(idObat);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+                }
+
+                List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_seq_obat", obat.getIdSeqObat());
+
+                try {
+                    obatEntities = obatDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
+                }
+
+                if (obatEntities.size() > 0){
+                    for (ImSimrsObatEntity obatEntity : obatEntities){
+                        obatPoli.setNamaObat(obatEntity.getNamaObat());
+                        obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
+                        obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                    }
+                }
+
+                ObatPoli sumObatPoli = new ObatPoli();
+                try {
+                    sumObatPoli = obatPoliDao.getSumStockObatPoliById(idObat, idPelayanan);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by sum criteria. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by sum criteria. ", e);
+                }
+
+                if (sumObatPoli.getIdObat() != null){
+                    obatPoli.setQtyBox(sumObatPoli.getQtyBox());
+                    obatPoli.setQtyLembar(sumObatPoli.getQtyLembar());
+                    obatPoli.setQtyBiji(sumObatPoli.getQtyBiji());
+                }
+
+                obatPoliList.add(obatPoli);
+            }
+        }
+
+        logger.info("[ObatPoliBoImpl.getListObatPoliGroup] END <<<<<<<<<<");
+        return obatPoliList;
+    }
+
     // list method seq
 
     private String getNextPermintaanObatId() throws GeneralBOException {

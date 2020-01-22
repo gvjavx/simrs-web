@@ -35,4 +35,6 @@ public interface ObatPoliBo {
     public void saveVerifikasiObat(List<Obat> obatList) throws GeneralBOException;
     public List<TransaksiObatDetail> getListObatTelahDiterima(String idPermintaan) throws GeneralBOException;
     public List<PermintaanObatPoli> getListObatDetailRequest(PermintaanObatPoli bean) throws GeneralBOException;
+
+    public List<ObatPoli> getListObatPoliGroup(String idPelayanan, String branchId) throws GeneralBOException;
 }
