@@ -228,8 +228,8 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-        session = ServletActionContext.getRequest().getSession();
-        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
+//        session = ServletActionContext.getRequest().getSession();
+//        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
         // hitung total bayar
 //        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
@@ -245,6 +245,26 @@ public class TransaksiObatAction extends BaseMasterAction {
 //        } else {
 //            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
 //        }
+
+        PermintaanResep permintaanResep = new PermintaanResep();
+        permintaanResep.setIdPermintaanResep(id);
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        try {
+            permintaanResepList = permintaanResepBoProxy.getByCriteria(permintaanResep);
+        }catch (GeneralBOException e){
+            logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        PermintaanResep resep = new PermintaanResep();
+        if(!permintaanResepList.isEmpty()){
+            resep = permintaanResepList.get(0);
+            if(resep != null){
+                transaksiObatDetail.setIdApprovalObat(resep.getIdApprovalObat());
+            }
+        }
 
         setTransaksiObatDetail(transaksiObatDetail);
         session.removeAttribute("listOfResultResep");

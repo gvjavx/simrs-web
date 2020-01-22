@@ -627,8 +627,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                 if (newBatchEntity.getId() != null){
 
+                    newBatchEntity.setAction("U");
+                    newBatchEntity.setLastUpdate(batchEntity.getLastUpdate());
+                    newBatchEntity.setLastUpdateWho(batchEntity.getLastUpdateWho());
+
                     try {
-                        batchDao.updateAndSave(batchEntity);
+                        batchDao.updateAndSave(newBatchEntity);
                     } catch (HibernateException e){
                         logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when insert data batch. ", e);
                         throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when insert data batch. ", e);

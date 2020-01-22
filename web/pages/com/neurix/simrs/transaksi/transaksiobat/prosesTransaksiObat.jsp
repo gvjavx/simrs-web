@@ -665,8 +665,8 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="row">
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 30 hari</div>
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 10 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 30 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 10 hari</div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1031,15 +1031,6 @@
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Qty Approve tidak boleh kosong..!");
         }
-        console.log(result);
-        console.log(idTransaksi);
-        console.log(lembarPerBox);
-        console.log(bijiPerLembar);
-
-        var stringData  = JSON.stringify(data);
-//        TransaksiObatAction.saveVerifikasiResep(idObat, idPabrik, {callback:function (response) {
-//
-//        }});
     }
 
 </script>

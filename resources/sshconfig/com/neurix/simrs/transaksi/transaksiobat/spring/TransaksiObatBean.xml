@@ -7,6 +7,7 @@
 
     <bean id="transaksiObatAction" class="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"
           p:transaksiObatBoProxy-ref="transaksiObatBo"
+          p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
     />
 
     <bean id="transaksiObatBo" class="com.neurix.simrs.transaksi.transaksiobat.bo.impl.TransaksiObatBoImpl"
