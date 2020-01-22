@@ -210,7 +210,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped" id="tabel_list_obat">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
@@ -250,7 +250,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
-                        <a onclick="saveApproveResep()" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</a>
+                        <a onclick="confirm()" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</a>
                         <div class="form-group">
                             <s:form id="pembayaranForm" method="post" namespace="/transaksi"
                                     action="pembayaran_transaksi.action"
@@ -275,14 +275,7 @@
                                                         onclick="$('#confirm_dialog').dialog('close')"><i
                                                         class="fa fa-times"></i> No
                                                 </button>
-                                                <sj:submit targets="crud" type="button" cssClass="btn btn-success"
-                                                           formIds="pembayaranForm" id="save" name="save"
-                                                           onBeforeTopics="beforeProcessSave"
-                                                           onCompleteTopics="closeDialog,successDialog"
-                                                           onSuccessTopics="successDialog" onErrorTopics="errorDialog">
-                                                    <i class="fa fa-arrow-right"></i>
-                                                    yes
-                                                </sj:submit>
+                                                <button class="btn btn-success" onclick="saveApproveResep()"><i class="fa fa-arrow-right"></i> Yes</button>
                                             </div>
                                         </sj:dialog>
 
@@ -586,9 +579,27 @@
         }
     }
 
-    function saveApproveResep(){
-        console.log(id_approve);
+    function confirm(){
+        var data = $('#tabel_list_obat').tableToJSON();
+        $('#confirm_dialog').dialog('open');
     }
+
+    function saveApproveResep(){
+
+        $('#confirm_dialog').dialog('close');
+        $('#waiting_dialog').dialog('open');
+        dwr.engine.setAsync(true);
+        TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
+            callback: function (response) {
+                if (response.status == "success") {
+                    $('#info_dialog').dialog('open');
+                    $('#waiting_dialog').dialog('close');
+                }
+            }
+        });
+    }
+
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
