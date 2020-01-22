@@ -68,6 +68,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatPoli.setBranchId(obatPoliEntity.getBranchId());
                     obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
                     obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
+                    obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
 
                     ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
 
@@ -295,7 +296,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetailEntity.setCreatedWho(bean.getCreatedWho());
                 obatDetailEntity.setLastUpdate(bean.getCreatedDate());
                 obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
-                obatDetailEntity.setKeterangan("Permintaan Obat");
+                obatDetailEntity.setKeterangan("Request Obat");
 
                 try {
                     obatDetailDao.addAndSave(obatDetailEntity);

@@ -242,7 +242,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "ob.average_harga_box,\n" +
                 "ob.average_harga_lembar,\n" +
                 "ob.average_harga_biji,\n" +
-                "ob.expired_date\n" +
+                "ob.expired_date,\n" +
                 "ob.id_barang\n" +
                 "FROM im_simrs_obat ob \n" +
                 "INNER JOIN (\n" +
@@ -257,7 +257,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "\tAND ob.branch_id LIKE :branchId\n" +
                 "\tAND ob.id_pabrik LIKE :idPabrik\n" +
                 "\tGROUP BY ob.id_obat\n" +
-                ") og ON og.id_obat = ob.id_obat";
+                ") og ON og.id_obat = ob.id_obat ORDER BY ob.expired_date ASC";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idObat", idObat)

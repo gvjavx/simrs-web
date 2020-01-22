@@ -92,6 +92,7 @@ public class ObatBoImpl implements ObatBo {
                     obat.setIdPabrik(obatEntity.getIdPabrik());
                     obat.setMerk(obatEntity.getMerk());
                     obat.setExpiredDate(obatEntity.getExpiredDate());
+                    obat.setIdBarang(obatEntity.getIdBarang());
 
                     obat.setIdTransaksiDetail(bean.getIdTransaksiDetail());
 

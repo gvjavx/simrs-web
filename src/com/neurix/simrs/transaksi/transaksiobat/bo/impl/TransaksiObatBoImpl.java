@@ -614,7 +614,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         if (batchEntities.size() > 0){
             for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
 
-                List<MtSimrsTransaksiObatDetailBatchEntity> newBatchEntities = new ArrayList<>();
+                TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+                obatBatch.setIdBarang(batchEntity.getIdBarang());
+                obatBatch.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
+
+                List<MtSimrsTransaksiObatDetailBatchEntity> newBatchEntities = getListEntityBatchByCriteria(obatBatch);
                 MtSimrsTransaksiObatDetailBatchEntity newBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
 
                 if (newBatchEntities.size() > 0){
@@ -622,18 +626,21 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 }
 
                 if (newBatchEntity.getId() != null){
-                    String seqBatch = batchDao.getNextId();
-
-                    batchEntity.setId(new BigInteger(seqBatch));
-                    batchEntity.setStatus("Y");
 
                     try {
-                        batchDao.addAndSave(batchEntity);
+                        batchDao.updateAndSave(batchEntity);
                     } catch (HibernateException e){
                         logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when insert data batch. ", e);
                         throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when insert data batch. ", e);
                     }
+
                 } else {
+
+                    String seqBatch = batchDao.getNextId();
+                    batchEntity.setId(new BigInteger(seqBatch));
+                    batchEntity.setStatus("Y");
+                    batchEntity.setNoBatch(1);
+
                     try {
                         batchDao.addAndSave(batchEntity);
                     } catch (HibernateException e){
@@ -883,6 +890,32 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         logger.info("[TransaksiObatBoImpl.getListEntityResep] END <<<<<<<");
         return detailEntityList;
+    }
+
+    private List<MtSimrsTransaksiObatDetailBatchEntity> getListEntityBatchByCriteria(TransaksiObatBatch bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.saveVerifikasiObat] START >>>>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdBarang() != null) {
+            hsCriteria.put("id_barang", bean.getIdBarang());
+        }
+
+        if (bean.getIdTransaksiObatDetail() != null) {
+            hsCriteria.put("id_transaksi_obat_detail", bean.getIdTransaksiObatDetail());
+        }
+
+
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+        try {
+            batchEntities = batchDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListEntityBatchByCriteria] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityBatchByCriteria] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.saveVerifikasiObat] END <<<<<<<<<<");
+        return batchEntities;
     }
 
 

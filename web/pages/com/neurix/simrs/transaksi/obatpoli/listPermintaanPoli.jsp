@@ -61,11 +61,11 @@
                                        buttons="{
                         'OK':function() {
                         $('#info_dialog').dialog('close');
-
+                        toContent();
                         }
                         }"
                             >
-                                <s:hidden id="close_pos"></s:hidden>
+                                <s:hidden id="ref"></s:hidden>
                                 <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                      name="icon_success">
                                 Record has been saved successfully.
@@ -94,11 +94,10 @@
                                        height="250" width="600" autoOpen="false" title="Error Dialog"
                                        buttons="{
                                                                                 'OK':function() { $('#error_dialog').dialog('close');
-                                                                                toContent();}
+                                                                      }
 
                                                                             }"
                             >
-                                <s:hidden id="ref"></s:hidden>
                                 <div class="alert alert-danger alert-dismissible">
                                     <label class="control-label" align="left">
                                         <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
@@ -219,6 +218,11 @@
                             src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang
                         mengambil data...</p>
                 </div>
+                <div class="box-header with-border"></div>
+                <div class="row">
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 30 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 10 hari</div>
+                </div>
             </div>
             <input type="hidden" id="set_id_obat">
             <div class="modal-footer" style="background-color: #cacaca">
@@ -239,13 +243,17 @@
 <script type='text/javascript'>
 
     function confirmObat(idObat, idPabrik, nama, qtyReq, satuan, idTransaksi) {
+
         $('#load_app').hide();
         $('#save_app').show();
         $('#body_approve').html('');
         $('#app_id').text(idObat);
         $('#app_nama').text(nama);
         $('#app_req').text(qtyReq);
-        $('#modal-approve').modal('show');
+
+        if(idPabrik != ""){
+            $('#modal-approve').modal({show:true, backdrop:'static'});
+        }
 
         var table = [];
         var lembarPerBox = "";
@@ -258,11 +266,9 @@
 
         PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
             if (response != null) {
-                var no = 1;
                 $.each(response, function (i, item) {
                     var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
 
-                    var seq = no++;
                     const date1 = new Date(today);
                     const date2 = new Date(dateExp);
                     const diffTime = Math.abs(date2 - date1);
@@ -282,7 +288,7 @@
                         qtyBiji = item.qtyBiji;
                     }
 
-                    var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(item.expiredDate));
+                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
 
                     var warna = "";
                     var color = "";
@@ -301,8 +307,8 @@
                             '<td align="center">' + qtyBox + '</td>' +
                             '<td align="center">' + qtyLembar + '</td>' +
                             '<td align="center">' + qtyBiji + '</td>' +
-                            '<td>' + '<input id=newQty' + seq + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
-                            '<td>' + satuan +'<input id=idBarang'+seq+' type="hidden" value='+item.idBarang+'>'+'</td>' +
+                            '<td>' + '<input id=newQty' + i + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
+                            '<td>' + satuan +'<input id=idBarang'+ i +' type="hidden" value='+item.idBarang+'>'+'</td>' +
                             '</tr>';
 
                     lembarPerBox = item.lembarPerBox;
@@ -326,24 +332,20 @@
 
         var result = [];
 
-        var no = 1;
         $.each(data, function (i, item) {
-            var seq = no++;
-            var id = data[i]["Expired Date"];
-            var expired = $.datepicker.formatDate('yy-mm-dd', new Date(id));
-            var qty = $('#newQty' + seq).val();
-            var idBarang = $('#idBarang'+seq).val();
-            result.push({'Expired Date': id, 'Qty Approve': qty, 'Jenis Satuan': jenisSatuan, 'ID Barang' : idBarang});
+            var expDate = data[i]["Expired Date"];
+            var expired = expDate.split("-").reverse().join("-");
+            var qty = $('#newQty' + i).val();
+            var idBarang = $('#idBarang'+i).val();
+            result.push({'Expired Date': expired, 'Qty Approve': qty, 'Jenis Satuan': jenisSatuan, 'ID Barang' : idBarang});
         });
 
-        var no = 1;
         $.each(data, function (i, item) {
-            var seq = no++;
             var id = data[i]["Expired Date"];
             var box = data[i]["Qty Box"];
             var lembar = data[i]["Qty Lembar"];
             var biji = data[i]["Qty Biji"];
-            var qty = $('#newQty' + seq).val();
+            var qty = $('#newQty' + i).val();
 
             if (qty == "") {
                 qty = 0;
@@ -434,6 +436,7 @@
     }
 
     function saveRequestApprove(){
+        $('#confirm_dialog').dialog('close');
         var data = $('#tabel_request').tableToJSON();
         var result = [];
         var url_string = window.location.href;
@@ -446,19 +449,23 @@
            var qty = data[i]["Qty Approve"];
             result.push({'ID Obat': id, 'ID Transkasi' : idTransaksi, 'Qty Approve':qty});
         });
+
         var stringData = JSON.stringify(result);
+        $('#waiting_dialog').dialog('open');
+        dwr.engine.setAsync(true);
         PermintaanObatPoliAction.saveApproveRequest(idApp, stringData, {callback: function (response) {
             if(response == "success"){
-                $('#info_dialog').dialog('open');
                 $('#ref').val(1);
+                $('#info_dialog').dialog('open');
                 $('#confirm_dialog').dialog('close');
+                $('#waiting_dialog').dialog('close');
             }else{
             }
         }
         });
     }
 
-    function toConten(){
+    function toContent(){
         var ref = $('#ref').val();
         if(ref == 1){
             window.location.href = 'initForm_permintaangudang.action';

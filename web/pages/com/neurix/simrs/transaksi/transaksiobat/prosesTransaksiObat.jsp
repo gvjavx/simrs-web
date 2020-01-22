@@ -260,7 +260,7 @@
                                 <td>Jenis Satuan</td>
                                 <td align="right">Harga Satuan (Rp.)</td>
                                 <td align="right">Harga Total (Rp.)</td>
-                                <td align="center">Scan ID Pabrik</td>
+                                <td>Scan ID Pabrik</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -270,18 +270,23 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
-                                        <script>var val = <s:property value="harga"/>;
-                                        if (val != null && val != '') {
-                                            document.write(formatRupiah(val))
-                                        }</script>
+                                        <%--<script>var val = <s:property value="harga"/>;--%>
+                                        <%--if (val != null && val != '') {--%>
+                                            <%--document.write(formatRupiah(val))--%>
+                                        <%--}</script>--%>
                                     </td>
                                     <td align="right">
-                                        <script>var val = <s:property value="totalHarga"/>;
-                                        if (val != null && val != '') {
-                                            document.write(formatRupiah(val))
-                                        }</script>
+                                        <%--<script>var val = <s:property value="totalHarga"/>;--%>
+                                        <%--if (val != null && val != '') {--%>
+                                            <%--document.write(formatRupiah(val))--%>
+                                        <%--}</script>--%>
                                     </td>
-                                    <td align="center"><input type="text" class="form-control" style="width: 150px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')"></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <span id='status<s:property value="idObat"/>'></span>
+                                            <input type="text" class="form-control" style="width: 200px" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                        </div>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -316,16 +321,16 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
-                                        <script>var val = <s:property value="harga"/>;
-                                        if (val != null && val != '') {
-                                            document.write(formatRupiah(val))
-                                        }</script>
+                                        <%--<script>var val = <s:property value="harga"/>;--%>
+                                        <%--if (val != null && val != '') {--%>
+                                            <%--document.write(formatRupiah(val))--%>
+                                        <%--}</script>--%>
                                     </td>
                                     <td align="right">
-                                        <script>var val = <s:property value="totalHarga"/>;
-                                        if (val != null && val != '') {
-                                            document.write(formatRupiah(val))
-                                        }</script>
+                                        <%--<script>var val = <s:property value="totalHarga"/>;--%>
+                                        <%--if (val != null && val != '') {--%>
+                                            <%--document.write(formatRupiah(val))--%>
+                                        <%--}</script>--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -452,10 +457,11 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.href = 'initForm_transaksi.action';
+                                                                                         toContent();
                                                                                      }
                                                                             }"
                                         >
+                                            <s:hidden id="ref"></s:hidden>
                                             <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                                  name="icon_success">
                                             Record has been saved successfully.
@@ -649,13 +655,18 @@
                         <td align="center">Qty Box</td>
                         <td align="center">Qty Lembar</td>
                         <td align="center">Qty Biji</td>
-                        <td align="center">Qty Approve</td>
+                        <td align="center" width="2px">Qty Approve</td>
                         <td>Jenis Satuan</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
                     </table>
                     <p id="loading_data" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="row">
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 30 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 10 hari</div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -675,6 +686,13 @@
 
 
 <script type='text/javascript'>
+
+    function toContent(){
+        var ref = $('#ref').val();
+        if(ref == 1){
+            window.location.href = 'initForm_transaksi.action';
+        }
+    }
 
     function showModal(select) {
         if (select == 5) {
@@ -848,16 +866,24 @@
 
     function confirmObat(idPabrik, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi){
 
+        $('#load_app').hide();
+        $('#save_app').show();
+        $('#body_approve').html('');
         $('#app_id').text(idObat);
         $('#app_nama').text(namaObat);
         $('#app_req').text(qtyReq);
-        $('#modal-approve').modal('show');
+        if(idPabrik != ""){
+            $('#modal-approve').modal({show:true, backdrop:'static'});
+        }
         var table = [];
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         today = mm + '/' + dd + '/' + yyyy;
+        var lembarPerBox = "";
+        var bijiPerLembar = "";
+
 
         TransaksiObatAction.listObatPoliEntity(idObat, idPabrik, function (response) {
            if(response != null){
@@ -899,21 +925,24 @@
                    }
 
                    table +='<tr bgcolor='+warna+' style="color: ' + color + '">' +
-                   '<td>'+dateFormat+'</td>' +
+                   '<td>'+dateFormat+'<input type="hidden" id=id_barang'+i+' value='+item.idBarang+'>'+'</td>' +
                    '<td align="center">'+qtyBox+'</td>' +
                    '<td align="center">'+qtyLembar+'</td>' +
                    '<td align="center">'+qtyBiji+'</td>' +
                    '<td><input id=newQty'+i+' type="number" class="form-control"></td>' +
                    '<td>'+jenisSatuan+'</td>' +
                    '</tr>';
+
+                   lembarPerBox = item.lembarPerBox;
+                   bijiPerLembar = item.bijiPerLembar;
                });
-               $('#save_app').attr('onclick', 'saveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + jenisSatuan + '\')');
+               $('#save_app').attr('onclick', 'saveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\')');
                $('#body_approve').html(table);
            }
         });
     }
 
-    function saveApprove(idObat, qtyReq, idTransaksi, satuan){
+    function saveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan){
         var data = $('#tabel_approve').tableToJSON();
         var result = [];
         var qtyApp = 0;
@@ -925,7 +954,10 @@
             var expired = data[i]["Expired Date"];
             var expDate = expired.split("-").reverse().join("-");
             var qty = $('#newQty'+i).val();
-            result.push({'Expired Date': expDate, 'Qty Approve': qty});
+            var idBarang = $('#id_barang'+i).val();
+            var jenisSatuan = data[i]["Jenis Satuan"];
+
+            result.push({'Expired Date': expDate, 'Qty Approve': qty, 'ID Barang':idBarang, 'Jenis Satuan':jenisSatuan});
         });
 
         $.each(data, function (i, item) {
@@ -954,8 +986,56 @@
             qtyApp = parseInt(qtyApp) + parseInt(qty);
 
         });
+
+        var stok = 0;
+
+        if ("box" == jenisSatuan) {
+            stok = qtyBox;
+        }
+        if ("lembar" == jenisSatuan) {
+            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+        }
+        if ("biji" == jenisSatuan) {
+            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+        }
+
+        var stringData = JSON.stringify(result);
+
+        if (qtyApp > 0) {
+
+            if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
+
+                dwr.engine.setAsync(true);
+                $('#load_app').show();
+                $('#save_app').hide();
+                TransaksiObatAction.saveVerifikasiResep(idTransaksi, stringData, {callback: function (response) {
+                    if (response.status == "success") {
+                        $('#load_app').hide();
+                        $('#save_app').show();
+                        $('#modal-approve').modal('hide');
+                        $('#info_dialog').dialog('open');
+//                        $('#qtyApp'+idObat).text(qtyApp);
+                        $('#status'+idObat).html('<label class="label label-success">success</label>');
+                    } else {
+                        $('#load_app').hide();
+                        $('#save_app').show();
+                        $('#warning_app').show().fadeOut(5000);
+                        $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
+                    }
+                }});
+            } else {
+                $('#warning_app').show().fadeOut(5000);
+                $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
+            }
+        } else {
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text("Qty Approve tidak boleh kosong..!");
+        }
         console.log(result);
         console.log(idTransaksi);
+        console.log(lembarPerBox);
+        console.log(bijiPerLembar);
+
         var stringData  = JSON.stringify(data);
 //        TransaksiObatAction.saveVerifikasiResep(idObat, idPabrik, {callback:function (response) {
 //

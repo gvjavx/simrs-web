@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Id Obat</label>
+                                    <label class="control-label col-sm-4">ID Obat</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="permintaanObatPoli.idObat" required="false"

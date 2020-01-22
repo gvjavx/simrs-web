@@ -29,7 +29,6 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private String idPabrik;
     private Date expiredDate;
 
-
     public String getIdPabrik() {
         return idPabrik;
     }

@@ -32,6 +32,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -499,21 +500,26 @@ public class TransaksiObatAction extends BaseMasterAction {
         ObatPoli obatPoli = new ObatPoli();
         obatPoli.setIdObat(idObat);
         obatPoli.setIdPabrik(idPabrik);
+        obatPoli.setBranchId(CommonUtil.userBranchLogin());
         obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatPoli.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
-        try {
-            obatPoliList = obatPoliBo.getObatPoliByCriteria(obatPoli);
-        } catch (GeneralBOException e) {
-            logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
-            addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
-        }
+        if (idObat != null && !"".equalsIgnoreCase(idObat) && idPabrik != null && !"".equalsIgnoreCase(idPabrik)) {
+            try {
+                obatPoliList = obatPoliBo.getObatPoliByCriteria(obatPoli);
+            } catch (GeneralBOException e) {
+                logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
+                addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
+            }
 
-        logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
-        return obatPoliList;
+            logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
+            return obatPoliList;
+        } else {
+            return null;
+        }
     }
 
     public CheckObatResponse saveVerifikasiResep(String idTransaksi, String jsonString) throws JSONException {
@@ -535,6 +541,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                 if (!"".equalsIgnoreCase(obj.getString("Qty Approve"))) {
                     batchEntity.setIdTransaksiObatDetail(idTransaksi);
                     batchEntity.setIdBarang(obj.getString("ID Barang"));
+                    batchEntity.setExpiredDate(Date.valueOf(obj.getString("Expired Date")));
                     batchEntity.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                     batchEntity.setJenisSatuan(obj.getString("Jenis Satuan"));
                     batchEntity.setFlag("Y");

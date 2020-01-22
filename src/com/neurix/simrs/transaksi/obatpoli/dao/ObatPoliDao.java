@@ -37,12 +37,11 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         if (mapCriteria.get("id_obat") != null) {
             criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat")));
         }
-
         if (mapCriteria.get("branch_id") != null) {
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id")));
         }
-        if (mapCriteria.get("id_obat") != null) {
-            criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat")));
+        if (mapCriteria.get("id_pabrik") != null) {
+            criteria.add(Restrictions.eq("idPabrik", mapCriteria.get("id_pabrik")));
         }
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

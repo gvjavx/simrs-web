@@ -368,15 +368,19 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
-        try {
-            obatList = obatBo.getEntityObatByCriteria(obat);
-        } catch (GeneralBOException e) {
-            logger.error("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, ", e);
-            addActionError("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, " + e.getMessage());
-        }
+        if(idObat != null && !"".equalsIgnoreCase(idObat) && idPabrik != null && !"".equalsIgnoreCase(idPabrik)){
+            try {
+                obatList = obatBo.getEntityObatByCriteria(obat);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, ", e);
+                addActionError("[PermintaanObatPoliAction.listObatEntity] ERROR when get data list obat, " + e.getMessage());
+            }
 
-        logger.info("[PermintaanObatPoliAction.listObatEntity] END process <<<");
-        return obatList;
+            logger.info("[PermintaanObatPoliAction.listObatEntity] END process <<<");
+            return obatList;
+        }else{
+            return null;
+        }
     }
 
     public String saveVerifikasiObatPoli(String idObat, String idTrans, String request) throws JSONException{

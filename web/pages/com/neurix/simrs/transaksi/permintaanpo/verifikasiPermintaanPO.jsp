@@ -166,7 +166,7 @@
                                 <td align="center">Qty Approve</td>
                                 <td align="center">Satuan Jenis</td>
                                 <td align="right">Harga (Rp.)</td>
-                                <td align="center">ID Pabrikan</td>
+                                <td align="center">Scan ID Pabrikan</td>
                                 <td align="center">Status Obat</td>
                                 <td align="center">Status Approve</td>
                                 <td align="center">No Batch</td>
