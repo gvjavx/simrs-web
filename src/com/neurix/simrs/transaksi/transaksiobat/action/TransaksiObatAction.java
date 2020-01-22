@@ -595,6 +595,37 @@ public class TransaksiObatAction extends BaseMasterAction {
         return response;
     }
 
+    public CheckObatResponse saveApproveResepObatPoli(String idApproval){
+        logger.info("[TransaksiObatAction.saveVerifikasiResep] START process >>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+
+        TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+        obatDetail.setIdApprovalObat(idApproval);
+        obatDetail.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatDetail.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            transaksiObatBo.saveApproveResepPoli(obatDetail);
+
+            response.setStatus(SUCCESS);
+            response.setMessage("SUCCESS");
+        } catch (GeneralBOException e){
+
+            response.setStatus(ERROR);
+            response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
+
+            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
+            addActionError("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, " + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
+        return response;
+    }
+
     @Override
     public String downloadPdf() {
         return null;

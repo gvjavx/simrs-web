@@ -21,4 +21,5 @@ public interface TransaksiObatBo {
     public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException;
     public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException;
     public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException;
+    public void saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException;
 }
