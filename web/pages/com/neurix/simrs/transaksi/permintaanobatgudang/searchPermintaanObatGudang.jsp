@@ -140,7 +140,7 @@
                                                     Obat</a></li>
                                             </ul>
                                         </div>
-                                        <a type="button" class="btn btn-danger" href="initForm_obatpoli.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_obatgudang.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -247,10 +247,10 @@
                                             </s:else>
                                         </s:if>
                                         <s:if test='#row.request == false'>
-                                            <s:url var="print_permintaan" namespace="/obatgudang" action="printPermintaanObat_obatgudang" escapeAmp="false">
+                                            <s:url var="print_permintaan" namespace="/obatgudang" action="printReturePermintaanObat_obatgudang" escapeAmp="false">
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
                                             </s:url>
-                                            <s:a target="__blank" href="%{print_permintaan}" cssClass="btn btn-info">
+                                            <s:a target="__blank" href="%{print_permintaan}" cssClass="btn btn-primary">
                                                 <i class="fa fa-print"></i>
                                             </s:a>
                                         </s:if>

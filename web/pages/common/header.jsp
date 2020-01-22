@@ -44,7 +44,7 @@ apply the skin class to the body tag so the changes take effect.
 
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<%--<![endif]-->--%>
 
 
 <%--<!--<script type='text/javascript' src='<s:url value="/pages/mozilla/dmenu.js"/>'></script>-->--%>
@@ -374,11 +374,15 @@ apply the skin class to the body tag so the changes take effect.
         $('#myTable').DataTable();
         $("#tanggal_lahir").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
         });
 
         $(".datepicker").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
         });
 
