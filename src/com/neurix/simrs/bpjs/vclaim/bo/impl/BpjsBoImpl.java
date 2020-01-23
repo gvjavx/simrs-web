@@ -699,52 +699,107 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     JSONObject peserta = response.getJSONObject("peserta");
 
                     JSONObject cob = peserta.getJSONObject("cob");
-                    finalResult.setNmAsuransi(cob.getString("nmAsuransi"));
-                    finalResult.setNoAsuransi(cob.getString("noAsuransi"));
-                    finalResult.setTglTAT(cob.getString("tglTAT"));
-                    finalResult.setTglTMT(cob.getString("tglTMT"));
+                    if (!cob.isNull("nmAsuransi")){
+                        finalResult.setNmAsuransi(cob.getString("nmAsuransi"));
+                    }
+                    if (!cob.isNull("noAsuransi")){
+                        finalResult.setNoAsuransi(cob.getString("noAsuransi"));
+                    }
+                    if (!cob.isNull("tglTAT")){
+                        finalResult.setTglTAT(cob.getString("tglTAT"));
+                    }
+                    if (!cob.isNull("tglTMT")){
+                        finalResult.setTglTMT(cob.getString("tglTMT"));
+                    }
 
                     JSONObject hakKelas = peserta.getJSONObject("hakKelas");
-                    finalResult.setKeteranganKelas(hakKelas.getString("keterangan"));
-                    finalResult.setKodeKelas(hakKelas.getString("kode"));
+                    if (!hakKelas.isNull("kode")){
+                        finalResult.setKeteranganKelas(hakKelas.getString("keterangan"));
+                    }
+                    if (!hakKelas.isNull("keterangan")){
+                        finalResult.setKodeKelas(hakKelas.getString("kode"));
+                    }
 
                     JSONObject informasi = peserta.getJSONObject("informasi");
-                    finalResult.setDinsos(informasi.getString("dinsos"));
-                    finalResult.setNoSKTM(informasi.getString("noSKTM"));
-                    finalResult.setProlanisPRB(informasi.getString("prolanisPRB"));
+                    if (!informasi.isNull("dinsos")){
+                        finalResult.setDinsos(informasi.getString("dinsos"));
+                    }
+                    if (!informasi.isNull("noSKTM")){
+                        finalResult.setNoSKTM(informasi.getString("noSKTM"));
+                    }
+                    if (!informasi.isNull("prolanisPRB")){
+                        finalResult.setProlanisPRB(informasi.getString("prolanisPRB"));
+                    }
 
                     JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
-                    finalResult.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
-                    finalResult.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                    if (!jenisPeserta.isNull("keterangan")){
+                        finalResult.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                    }
+                    if (!jenisPeserta.isNull("kode")){
+                        finalResult.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                    }
 
                     JSONObject mr = peserta.getJSONObject("mr");
-                    finalResult.setNoMr(mr.getString("noMR"));
-                    finalResult.setNoTelp(mr.getString("noTelepon"));
+                    if (!mr.isNull("noMR")){
+                        finalResult.setNoMr(mr.getString("noMR"));
+                    }
+                    if (!mr.isNull("noTelepon")){
+                        finalResult.setNoTelp(mr.getString("noTelepon"));
+                    }
 
-                    finalResult.setNama(peserta.getString("nama"));
-                    finalResult.setNik(peserta.getString("nik"));
-                    finalResult.setNoKartu(peserta.getString("noKartu"));
-                    finalResult.setPisa(peserta.getString("pisa"));
+                    if (!peserta.isNull("nama")){
+                        finalResult.setNama(peserta.getString("nama"));
+                    }
+                    if (!peserta.isNull("nik")){
+                        finalResult.setNik(peserta.getString("nik"));
+                    }
+                    if (!peserta.isNull("noKartu")){
+                        finalResult.setNoKartu(peserta.getString("noKartu"));
+                    }
+                    if (!peserta.isNull("pisa")){
+                        finalResult.setPisa(peserta.getString("pisa"));
+                    }
 
                     JSONObject provUmum = peserta.getJSONObject("provUmum");
-                    finalResult.setKodeProvider(provUmum.getString("kdProvider"));
-                    finalResult.setNamaProvider(provUmum.getString("nmProvider"));
+                    if (!provUmum.isNull("kdProvider")){
+                        finalResult.setKodeProvider(provUmum.getString("kdProvider"));
+                    }
+                    if (!provUmum.isNull("kdProvider")){
+                        finalResult.setNamaProvider(provUmum.getString("nmProvider"));
+                    }
 
-                    finalResult.setSex(peserta.getString("sex"));
+                    if (!peserta.isNull("sex")){
+                        finalResult.setSex(peserta.getString("sex"));
+                    }
 
                     JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
-                    finalResult.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
-                    finalResult.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                    if (!statusPeserta.isNull("keterangan")){
+                        finalResult.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                    }
+                    if (!statusPeserta.isNull("kode")){
+                        finalResult.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                    }
 
-                    finalResult.setStTglCetakKartu(peserta.getString("tglCetakKartu"));
-                    finalResult.setStTglLahir(peserta.getString("tglLahir"));
-                    finalResult.setStTglTAT(peserta.getString("tglTAT"));
-                    finalResult.setStTglTMT(peserta.getString("tglTMT"));
+                    if (!peserta.isNull("tglCetakKartu")){
+                        finalResult.setStTglCetakKartu(peserta.getString("tglCetakKartu"));
+                    }
+                    if (!peserta.isNull("tglLahir")){
+                        finalResult.setStTglLahir(peserta.getString("tglLahir"));
+                    }
+                    if (!peserta.isNull("tglTAT")){
+                        finalResult.setStTglTAT(peserta.getString("tglTAT"));
+                    }
+                    if (!peserta.isNull("tglTMT")){
+                        finalResult.setStTglTMT(peserta.getString("tglTMT"));
+                    }
 
                     JSONObject umur = peserta.getJSONObject("umur");
-                    finalResult.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
-                    finalResult.setUmurSekarang(umur.getString("umurSekarang"));
-
+                    if (!umur.isNull("umurSaatPelayanan")){
+                        finalResult.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                    }
+                    if (!umur.isNull("umurSekarang")){
+                        finalResult.setUmurSekarang(umur.getString("umurSekarang"));
+                    }
                 }
             } catch (Exception e) {
                 logger.error("[BPJSBoImpl.GetPesertaBpjsByAPIBpjs] Error when get data");
@@ -781,51 +836,107 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     JSONObject peserta = response.getJSONObject("peserta");
 
                     JSONObject cob = peserta.getJSONObject("cob");
-                    finalResult.setNmAsuransi(cob.getString("nmAsuransi"));
-                    finalResult.setNoAsuransi(cob.getString("noAsuransi"));
-                    finalResult.setTglTAT(cob.getString("tglTAT"));
-                    finalResult.setTglTMT(cob.getString("tglTMT"));
+                    if (!cob.isNull("nmAsuransi")){
+                        finalResult.setNmAsuransi(cob.getString("nmAsuransi"));
+                    }
+                    if (!cob.isNull("noAsuransi")){
+                        finalResult.setNoAsuransi(cob.getString("noAsuransi"));
+                    }
+                    if (!cob.isNull("tglTAT")){
+                        finalResult.setTglTAT(cob.getString("tglTAT"));
+                    }
+                    if (!cob.isNull("tglTMT")){
+                        finalResult.setTglTMT(cob.getString("tglTMT"));
+                    }
 
                     JSONObject hakKelas = peserta.getJSONObject("hakKelas");
-                    finalResult.setKeteranganKelas(hakKelas.getString("keterangan"));
-                    finalResult.setKodeKelas(hakKelas.getString("kode"));
+                    if (!hakKelas.isNull("kode")){
+                        finalResult.setKeteranganKelas(hakKelas.getString("keterangan"));
+                    }
+                    if (!hakKelas.isNull("keterangan")){
+                        finalResult.setKodeKelas(hakKelas.getString("kode"));
+                    }
 
                     JSONObject informasi = peserta.getJSONObject("informasi");
-                    finalResult.setDinsos(informasi.getString("dinsos"));
-                    finalResult.setNoSKTM(informasi.getString("noSKTM"));
-                    finalResult.setProlanisPRB(informasi.getString("prolanisPRB"));
+                    if (!informasi.isNull("dinsos")){
+                        finalResult.setDinsos(informasi.getString("dinsos"));
+                    }
+                    if (!informasi.isNull("noSKTM")){
+                        finalResult.setNoSKTM(informasi.getString("noSKTM"));
+                    }
+                    if (!informasi.isNull("prolanisPRB")){
+                        finalResult.setProlanisPRB(informasi.getString("prolanisPRB"));
+                    }
 
                     JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
-                    finalResult.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
-                    finalResult.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                    if (!jenisPeserta.isNull("keterangan")){
+                        finalResult.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                    }
+                    if (!jenisPeserta.isNull("kode")){
+                        finalResult.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                    }
 
                     JSONObject mr = peserta.getJSONObject("mr");
-                    finalResult.setNoMr(mr.getString("noMR"));
-                    finalResult.setNoTelp(mr.getString("noTelepon"));
+                    if (!mr.isNull("noMR")){
+                        finalResult.setNoMr(mr.getString("noMR"));
+                    }
+                    if (!mr.isNull("noTelepon")){
+                        finalResult.setNoTelp(mr.getString("noTelepon"));
+                    }
 
-                    finalResult.setNama(peserta.getString("nama"));
-                    finalResult.setNik(peserta.getString("nik"));
-                    finalResult.setNoKartu(peserta.getString("noKartu"));
-                    finalResult.setPisa(peserta.getString("pisa"));
+                    if (!peserta.isNull("nama")){
+                        finalResult.setNama(peserta.getString("nama"));
+                    }
+                    if (!peserta.isNull("nik")){
+                        finalResult.setNik(peserta.getString("nik"));
+                    }
+                    if (!peserta.isNull("noKartu")){
+                        finalResult.setNoKartu(peserta.getString("noKartu"));
+                    }
+                    if (!peserta.isNull("pisa")){
+                        finalResult.setPisa(peserta.getString("pisa"));
+                    }
 
                     JSONObject provUmum = peserta.getJSONObject("provUmum");
-                    finalResult.setKodeProvider(provUmum.getString("kdProvider"));
-                    finalResult.setNamaProvider(provUmum.getString("nmProvider"));
+                    if (!provUmum.isNull("kdProvider")){
+                        finalResult.setKodeProvider(provUmum.getString("kdProvider"));
+                    }
+                    if (!provUmum.isNull("kdProvider")){
+                        finalResult.setNamaProvider(provUmum.getString("nmProvider"));
+                    }
 
-                    finalResult.setSex(peserta.getString("sex"));
+                    if (!peserta.isNull("sex")){
+                        finalResult.setSex(peserta.getString("sex"));
+                    }
 
                     JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
-                    finalResult.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
-                    finalResult.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                    if (!statusPeserta.isNull("keterangan")){
+                        finalResult.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                    }
+                    if (!statusPeserta.isNull("kode")){
+                        finalResult.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                    }
 
-                    finalResult.setStTglCetakKartu(peserta.getString("tglCetakKartu"));
-                    finalResult.setStTglLahir(peserta.getString("tglLahir"));
-                    finalResult.setStTglTAT(peserta.getString("tglTAT"));
-                    finalResult.setStTglTMT(peserta.getString("tglTMT"));
+                    if (!peserta.isNull("tglCetakKartu")){
+                        finalResult.setStTglCetakKartu(peserta.getString("tglCetakKartu"));
+                    }
+                    if (!peserta.isNull("tglLahir")){
+                        finalResult.setStTglLahir(peserta.getString("tglLahir"));
+                    }
+                    if (!peserta.isNull("tglTAT")){
+                        finalResult.setStTglTAT(peserta.getString("tglTAT"));
+                    }
+                    if (!peserta.isNull("tglTMT")){
+                        finalResult.setStTglTMT(peserta.getString("tglTMT"));
+                    }
 
                     JSONObject umur = peserta.getJSONObject("umur");
-                    finalResult.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
-                    finalResult.setUmurSekarang(umur.getString("umurSekarang"));
+                    if (!umur.isNull("umurSaatPelayanan")){
+                        finalResult.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                    }
+                    if (!umur.isNull("umurSekarang")){
+                        finalResult.setUmurSekarang(umur.getString("umurSekarang"));
+                    }
 
                 }
             } catch (Exception e) {
@@ -942,9 +1053,15 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     sepResponse.setTglLahir(peserta.getString("tglLahir"));
 
                     JSONObject informasi = response.getJSONObject("informasi");
-                    sepResponse.setDinsos(informasi.getString("Dinsos"));
-                    sepResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
-                    sepResponse.setNoSktm(informasi.getString("noSKTM"));
+                    if (!informasi.isNull("Dinsos")){
+                        sepResponse.setDinsos(informasi.getString("Dinsos"));
+                    }
+                    if (!informasi.isNull("prolanisPRB")){
+                        sepResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                    }
+                    if (!informasi.isNull("noSKTM")){
+                        sepResponse.setNoSktm(informasi.getString("noSKTM"));
+                    }
 
                     sepResponse.setPoli(informasi.getString("poli"));
                     sepResponse.setPoliEksekutif(informasi.getString("poliEksekutif"));
@@ -1122,27 +1239,63 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     logger.error("[BPJSBoImpl.GetSepBpjsByAPIBpjs] : " + response.getString("message"));
                 } else {
                     JSONObject response = myResponseCheck.getJSONObject("response");
-                    finalResult.setCatatan(response.getString("catatan"));
-                    finalResult.setDiagnosa(response.getString("diagnosa"));
-                    finalResult.setJnsPelayanan(response.getString("jnsPelayanan"));
-                    finalResult.setKelasRawat(response.getString("kelasRawat"));
-                    finalResult.setNoSep(response.getString("noSep"));
-                    finalResult.setNoRujukan(response.getString("noRujukan"));
-                    finalResult.setPenjamin(response.getString("penjamin"));
+                    if (!response.isNull("catatan")){
+                        finalResult.setCatatan(response.getString("catatan"));
+                    }
+                    if (!response.isNull("diagnosa")){
+                        finalResult.setDiagnosa(response.getString("diagnosa"));
+                    }
+                    if (!response.isNull("jnsPelayanan")){
+                        finalResult.setJnsPelayanan(response.getString("jnsPelayanan"));
+                    }
+                    if (!response.isNull("kelasRawat")){
+                        finalResult.setKelasRawat(response.getString("kelasRawat"));
+                    }
+                    if (!response.isNull("noSep")){
+                        finalResult.setNoSep(response.getString("noSep"));
+                    }
+                    if (!response.isNull("noRujukan")){
+                        finalResult.setNoRujukan(response.getString("noRujukan"));
+                    }
+                    if (!response.isNull("penjamin")){
+                        finalResult.setPenjamin(response.getString("penjamin"));
+                    }
 
                     JSONObject peserta = response.getJSONObject("peserta");
-                    finalResult.setAsuransi(peserta.getString("asuransi"));
-                    finalResult.setHakKelas(peserta.getString("hakKelas"));
-                    finalResult.setJnsPeserta(peserta.getString("jnsPeserta"));
-                    finalResult.setKelamin(peserta.getString("kelamin"));
-                    finalResult.setNama(peserta.getString("nama"));
-                    finalResult.setNoKartu(peserta.getString("noKartu"));
-                    finalResult.setNoMr(peserta.getString("noMr"));
-                    finalResult.setTglLahir(peserta.getString("tglLahir"));
+                    if (!peserta.isNull("asuransi")){
+                        finalResult.setAsuransi(peserta.getString("asuransi"));
+                    }
+                    if (!peserta.isNull("hakKelas")){
+                        finalResult.setHakKelas(peserta.getString("hakKelas"));
+                    }
+                    if (!peserta.isNull("jnsPeserta")){
+                        finalResult.setJnsPeserta(peserta.getString("jnsPeserta"));
+                    }
+                    if (!peserta.isNull("kelamin")){
+                        finalResult.setKelamin(peserta.getString("kelamin"));
+                    }
+                    if (!peserta.isNull("nama")){
+                        finalResult.setNama(peserta.getString("nama"));
+                    }
+                    if (!peserta.isNull("noKartu")){
+                        finalResult.setNoKartu(peserta.getString("noKartu"));
+                    }
+                    if (!peserta.isNull("noMr")){
+                        finalResult.setNoMr(peserta.getString("noMr"));
+                    }
+                    if (!peserta.isNull("tglLahir")){
+                        finalResult.setTglLahir(peserta.getString("tglLahir"));
+                    }
 
-                    finalResult.setPenjamin(response.getString("poli"));
-                    finalResult.setPenjamin(response.getString("poliEksekutif"));
-                    finalResult.setPenjamin(response.getString("tglSep"));
+                    if (!response.isNull("poli")){
+                        finalResult.setPenjamin(response.getString("poli"));
+                    }
+                    if (!response.isNull("poliEksekutif")){
+                        finalResult.setPenjamin(response.getString("poliEksekutif"));
+                    }
+                    if (!response.isNull("tglSep")){
+                        finalResult.setPenjamin(response.getString("tglSep"));
+                    }
                 }
             } catch (Exception e) {
                 logger.error("[BPJSBoImpl.GetSepBpjsByAPIBpjs] Error when get data");
@@ -1438,76 +1591,153 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                         logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] : " + response.getString("message"));
                     } else {
                         JSONObject response = myResponseCheck.getJSONObject("response");
-                            JSONObject rujukan = response.getJSONObject("rujukan");
+                        JSONObject rujukan = response.getJSONObject("rujukan");
 
-                                JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
-                                    rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
-                                    rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                        JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
+                        if (!diagnosa.isNull("kode")){
+                            rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                        }
+                        if (!diagnosa.isNull("nama")){
+                            rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                        }
 
-                                rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
-                                rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+                        if (!rujukan.isNull("keluhan")){
+                            rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
+                        }
+                        if (!rujukan.isNull("noKunjungan")){
+                            rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+                        }
 
-                                JSONObject pelayanan = rujukan.getJSONObject("pelayanan");
-                                    rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
-                                    rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                        JSONObject pelayanan = rujukan.getJSONObject("pelayanan");
+                        if (!pelayanan.isNull("kode")){
+                            rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                        }
+                        if (!pelayanan.isNull("nama")){
+                            rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                        }
 
-                                JSONObject peserta = rujukan.getJSONObject("peserta");
-                                    JSONObject cob = peserta.getJSONObject("cob");
-                                        rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
-                                        rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
-                                        rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
-                                        rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                        JSONObject peserta = rujukan.getJSONObject("peserta");
+                        JSONObject cob = peserta.getJSONObject("cob");
+                        if (!cob.isNull("nmAsuransi")){
+                            rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                        }
+                        if (!cob.isNull("noAsuransi")){
+                            rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                        }
+                        if (!cob.isNull("tglTAT")){
+                            rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                        }
+                        if (!cob.isNull("tglTMT")){
+                            rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                        }
 
-                                JSONObject hakKelas = peserta.getJSONObject("hakKelas");
-                                    rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
-                                    rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                        JSONObject hakKelas = peserta.getJSONObject("hakKelas");
+                        if (!hakKelas.isNull("keterangan")){
+                            rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                        }
+                        if (!hakKelas.isNull("kode")){
+                            rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                        }
 
-                                JSONObject informasi = peserta.getJSONObject("informasi");
-                                    rujukanResponse.setDinsos(informasi.getString("dinsos"));
-                                    rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
-                                    rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                        JSONObject informasi = peserta.getJSONObject("informasi");
+                        if (!informasi.isNull("dinsos")){
+                            rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                        }
+                        if (!informasi.isNull("noSKTM")){
+                            rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                        }
+                        if (!informasi.isNull("prolanisPRB")){
+                            rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                        }
 
-                                JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
-                                    rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
-                                    rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
 
-                                JSONObject mr = peserta.getJSONObject("mr");
-                                    rujukanResponse.setNoMr(mr.getString("noMR"));
-                                    rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                        JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
+                        if (!jenisPeserta.isNull("keterangan")){
+                            rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                        }
+                        if (!jenisPeserta.isNull("kode")){
+                            rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                        }
 
-                                rujukanResponse.setNama(peserta.getString("nama"));
-                                rujukanResponse.setNik(peserta.getString("nik"));
-                                rujukanResponse.setNoKartu(peserta.getString("noKartu"));
-                                rujukanResponse.setPisa(peserta.getString("pisa"));
+                        JSONObject mr = peserta.getJSONObject("mr");
+                        if (!mr.isNull("noMR")){
+                            rujukanResponse.setNoMr(mr.getString("noMR"));
+                        }
+                        if (!mr.isNull("noTelepon")){
+                            rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                        }
 
-                                JSONObject provUmum = peserta.getJSONObject("provUmum");
-                                    rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
-                                    rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                        if (!peserta.isNull("nama")){
+                            rujukanResponse.setNama(peserta.getString("nama"));
+                        }
+                        if (!peserta.isNull("nik")){
+                            rujukanResponse.setNik(peserta.getString("nik"));
+                        }
+                        if (!peserta.isNull("noKartu")){
+                            rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                        }
+                        if (!peserta.isNull("pisa")){
+                            rujukanResponse.setPisa(peserta.getString("pisa"));
+                        }
 
-                                rujukanResponse.setSex(peserta.getString("sex"));
+                        JSONObject provUmum = peserta.getJSONObject("provUmum");
+                        if (!provUmum.isNull("kdProvider")){
+                            rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                        }
+                        if (!provUmum.isNull("nmProvider")){
+                            rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                        }
 
-                                JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
-                                    rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
-                                    rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                        if (!peserta.isNull("sex")){
+                            rujukanResponse.setSex(peserta.getString("sex"));
+                        }
 
-                                rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
-                                rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
-                                rujukanResponse.setTglTat(peserta.getString("tglTAT"));
-                                rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                        JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
+                        if (!statusPeserta.isNull("keterangan")){
+                            rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                        }
+                        if (!statusPeserta.isNull("kode")){
+                            rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                        }
 
-                                JSONObject umur = peserta.getJSONObject("umur");
-                                    rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
-                                    rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                        if (!peserta.isNull("tglCetakKartu")){
+                            rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                        }
+                        if (!peserta.isNull("tglLahir")){
+                            rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                        }
+                        if (!peserta.isNull("tglTAT")){
+                            rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                        }
+                        if (!peserta.isNull("tglTMT")){
+                            rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                        }
 
-                            JSONObject poliRujukan = rujukan.getJSONObject("poliRujukan");
-                                rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
-                                rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                        JSONObject umur = peserta.getJSONObject("umur");
+                        if (!umur.isNull("umurSekarang")){
+                            rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                        }
+                        if (!umur.isNull("umurSaatPelayanan")){
+                            rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                        }
 
-                            JSONObject provPerujuk = rujukan.getJSONObject("provPerujuk");
-                                rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
-                                rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                        JSONObject poliRujukan = rujukan.getJSONObject("poliRujukan");
+                        if (!poliRujukan.isNull("kode")){
+                            rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                        }
+                        if (!poliRujukan.isNull("nama")){
+                            rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                        }
 
-                            rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
+                        JSONObject provPerujuk = rujukan.getJSONObject("provPerujuk");
+                        if (!provPerujuk.isNull("kode")){
+                            rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                        }
+                        if (!provPerujuk.isNull("nama")){
+                            rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                        }
+
+                        rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
                     }
                 } catch (IOException | JSONException |GeneralSecurityException e) {
                     e.printStackTrace();
@@ -1557,71 +1787,148 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                         JSONObject rujukan = response.getJSONObject("rujukan");
 
                         JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
-                        rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
-                        rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                        if (!diagnosa.isNull("kode")){
+                            rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                        }
+                        if (!diagnosa.isNull("nama")){
+                            rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                        }
 
-                        rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
-                        rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+                        if (!rujukan.isNull("keluhan")){
+                            rujukanResponse.setKeluhan(rujukan.getString("keluhan"));
+                        }
+                        if (!rujukan.isNull("noKunjungan")){
+                            rujukanResponse.setNoKunjungan(rujukan.getString("noKunjungan"));
+                        }
 
                         JSONObject pelayanan = rujukan.getJSONObject("pelayanan");
-                        rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
-                        rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                        if (!pelayanan.isNull("kode")){
+                            rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                        }
+                        if (!pelayanan.isNull("nama")){
+                            rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                        }
 
                         JSONObject peserta = rujukan.getJSONObject("peserta");
                         JSONObject cob = peserta.getJSONObject("cob");
-                        rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
-                        rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
-                        rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
-                        rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                        if (!cob.isNull("nmAsuransi")){
+                            rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                        }
+                        if (!cob.isNull("noAsuransi")){
+                            rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                        }
+                        if (!cob.isNull("tglTAT")){
+                            rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                        }
+                        if (!cob.isNull("tglTMT")){
+                            rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                        }
 
                         JSONObject hakKelas = peserta.getJSONObject("hakKelas");
-                        rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
-                        rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                        if (!hakKelas.isNull("keterangan")){
+                            rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                        }
+                        if (!hakKelas.isNull("kode")){
+                            rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                        }
 
                         JSONObject informasi = peserta.getJSONObject("informasi");
-                        rujukanResponse.setDinsos(informasi.getString("dinsos"));
-                        rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
-                        rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                        if (!informasi.isNull("dinsos")){
+                            rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                        }
+                        if (!informasi.isNull("noSKTM")){
+                            rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                        }
+                        if (!informasi.isNull("prolanisPRB")){
+                            rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                        }
+
 
                         JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
-                        rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
-                        rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                        if (!jenisPeserta.isNull("keterangan")){
+                            rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                        }
+                        if (!jenisPeserta.isNull("kode")){
+                            rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                        }
 
                         JSONObject mr = peserta.getJSONObject("mr");
-                        rujukanResponse.setNoMr(mr.getString("noMR"));
-                        rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                        if (!mr.isNull("noMR")){
+                            rujukanResponse.setNoMr(mr.getString("noMR"));
+                        }
+                        if (!mr.isNull("noTelepon")){
+                            rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                        }
 
-                        rujukanResponse.setNama(peserta.getString("nama"));
-                        rujukanResponse.setNik(peserta.getString("nik"));
-                        rujukanResponse.setNoKartu(peserta.getString("noKartu"));
-                        rujukanResponse.setPisa(peserta.getString("pisa"));
+                        if (!peserta.isNull("nama")){
+                            rujukanResponse.setNama(peserta.getString("nama"));
+                        }
+                        if (!peserta.isNull("nik")){
+                            rujukanResponse.setNik(peserta.getString("nik"));
+                        }
+                        if (!peserta.isNull("noKartu")){
+                            rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                        }
+                        if (!peserta.isNull("pisa")){
+                            rujukanResponse.setPisa(peserta.getString("pisa"));
+                        }
 
                         JSONObject provUmum = peserta.getJSONObject("provUmum");
-                        rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
-                        rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                        if (!provUmum.isNull("kdProvider")){
+                            rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                        }
+                        if (!provUmum.isNull("nmProvider")){
+                            rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                        }
 
-                        rujukanResponse.setSex(peserta.getString("sex"));
+                        if (!peserta.isNull("sex")){
+                            rujukanResponse.setSex(peserta.getString("sex"));
+                        }
 
                         JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
-                        rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
-                        rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                        if (!statusPeserta.isNull("keterangan")){
+                            rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                        }
+                        if (!statusPeserta.isNull("kode")){
+                            rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                        }
 
-                        rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
-                        rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
-                        rujukanResponse.setTglTat(peserta.getString("tglTAT"));
-                        rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                        if (!peserta.isNull("tglCetakKartu")){
+                            rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                        }
+                        if (!peserta.isNull("tglLahir")){
+                            rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                        }
+                        if (!peserta.isNull("tglTAT")){
+                            rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                        }
+                        if (!peserta.isNull("tglTMT")){
+                            rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                        }
 
                         JSONObject umur = peserta.getJSONObject("umur");
-                        rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
-                        rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                        if (!umur.isNull("umurSekarang")){
+                            rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                        }
+                        if (!umur.isNull("umurSaatPelayanan")){
+                            rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                        }
 
                         JSONObject poliRujukan = rujukan.getJSONObject("poliRujukan");
-                        rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
-                        rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                        if (!poliRujukan.isNull("kode")){
+                            rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                        }
+                        if (!poliRujukan.isNull("nama")){
+                            rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                        }
 
                         JSONObject provPerujuk = rujukan.getJSONObject("provPerujuk");
-                        rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
-                        rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                        if (!provPerujuk.isNull("kode")){
+                            rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                        }
+                        if (!provPerujuk.isNull("nama")){
+                            rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                        }
 
                         rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
                     }
@@ -1677,73 +1984,152 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                             JSONObject obj = rujukan.getJSONObject(i);
                             RujukanResponse rujukanResponse = new RujukanResponse();
                             JSONObject diagnosa = obj.getJSONObject("diagnosa");
-                            rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
-                            rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                            if (!diagnosa.isNull("kode")){
+                                rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                            }
+                            if (!diagnosa.isNull("nama")){
+                                rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                            }
 
-                            rujukanResponse.setKeluhan(obj.getString("keluhan"));
-                            rujukanResponse.setNoKunjungan(obj.getString("noKunjungan"));
+                            if (!obj.isNull("keluhan")){
+                                rujukanResponse.setKeluhan(obj.getString("keluhan"));
+                            }
+                            if (!obj.isNull("noKunjungan")){
+                                rujukanResponse.setNoKunjungan(obj.getString("noKunjungan"));
+                            }
 
                             JSONObject pelayanan = obj.getJSONObject("pelayanan");
-                            rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
-                            rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                            if (!pelayanan.isNull("kode")){
+                                rujukanResponse.setKodePelayanan(pelayanan.getString("kode"));
+                            }
+                            if (!pelayanan.isNull("nama")){
+                                rujukanResponse.setNamaPelayanan(pelayanan.getString("nama"));
+                            }
 
                             JSONObject peserta = obj.getJSONObject("peserta");
                             JSONObject cob = peserta.getJSONObject("cob");
-                            rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
-                            rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
-                            rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
-                            rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                            if (!cob.isNull("nmAsuransi")){
+                                rujukanResponse.setNmAsuransiCob(cob.getString("nmAsuransi"));
+                            }
+                            if (!cob.isNull("noAsuransi")){
+                                rujukanResponse.setNoAsuransiCob(cob.getString("noAsuransi"));
+                            }
+                            if (!cob.isNull("tglTAT")){
+                                rujukanResponse.setTglTatCob(cob.getString("tglTAT"));
+                            }
+                            if (!cob.isNull("tglTMT")){
+                                rujukanResponse.setTglTmtCob(cob.getString("tglTMT"));
+                            }
 
                             JSONObject hakKelas = peserta.getJSONObject("hakKelas");
-                            rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
-                            rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                            if (!hakKelas.isNull("keterangan")){
+                                rujukanResponse.setKeteranganHakKelas(hakKelas.getString("keterangan"));
+                            }
+                            if (!hakKelas.isNull("kode")){
+                                rujukanResponse.setKodeHakKelas(hakKelas.getString("kode"));
+                            }
 
                             JSONObject informasi = peserta.getJSONObject("informasi");
-                            rujukanResponse.setDinsos(informasi.getString("dinsos"));
-                            rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
-                            rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                            if (!informasi.isNull("dinsos")){
+                                rujukanResponse.setDinsos(informasi.getString("dinsos"));
+                            }
+                            if (!informasi.isNull("noSKTM")){
+                                rujukanResponse.setNoSktm(informasi.getString("noSKTM"));
+                            }
+                            if (!informasi.isNull("prolanisPRB")){
+                                rujukanResponse.setProlanisPrb(informasi.getString("prolanisPRB"));
+                            }
+
 
                             JSONObject jenisPeserta = peserta.getJSONObject("jenisPeserta");
-                            rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
-                            rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                            if (!jenisPeserta.isNull("keterangan")){
+                                rujukanResponse.setKeteranganJenisPeserta(jenisPeserta.getString("keterangan"));
+                            }
+                            if (!jenisPeserta.isNull("kode")){
+                                rujukanResponse.setKodeJenisPeserta(jenisPeserta.getString("kode"));
+                            }
 
                             JSONObject mr = peserta.getJSONObject("mr");
-                            rujukanResponse.setNoMr(mr.getString("noMR"));
-                            rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                            if (!mr.isNull("noMR")){
+                                rujukanResponse.setNoMr(mr.getString("noMR"));
+                            }
+                            if (!mr.isNull("noTelepon")){
+                                rujukanResponse.setNoTelp(mr.getString("noTelepon"));
+                            }
 
-                            rujukanResponse.setNama(peserta.getString("nama"));
-                            rujukanResponse.setNik(peserta.getString("nik"));
-                            rujukanResponse.setNoKartu(peserta.getString("noKartu"));
-                            rujukanResponse.setPisa(peserta.getString("pisa"));
+                            if (!peserta.isNull("nama")){
+                                rujukanResponse.setNama(peserta.getString("nama"));
+                            }
+                            if (!peserta.isNull("nik")){
+                                rujukanResponse.setNik(peserta.getString("nik"));
+                            }
+                            if (!peserta.isNull("noKartu")){
+                                rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                            }
+                            if (!peserta.isNull("pisa")){
+                                rujukanResponse.setPisa(peserta.getString("pisa"));
+                            }
 
                             JSONObject provUmum = peserta.getJSONObject("provUmum");
-                            rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
-                            rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                            if (!provUmum.isNull("kdProvider")){
+                                rujukanResponse.setKdProviderProvUmum(provUmum.getString("kdProvider"));
+                            }
+                            if (!provUmum.isNull("nmProvider")){
+                                rujukanResponse.setNmProviderProvUmum(provUmum.getString("nmProvider"));
+                            }
 
-                            rujukanResponse.setSex(peserta.getString("sex"));
+                            if (!peserta.isNull("sex")){
+                                rujukanResponse.setSex(peserta.getString("sex"));
+                            }
 
                             JSONObject statusPeserta = peserta.getJSONObject("statusPeserta");
-                            rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
-                            rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                            if (!statusPeserta.isNull("keterangan")){
+                                rujukanResponse.setKeteranganStatusPeserta(statusPeserta.getString("keterangan"));
+                            }
+                            if (!statusPeserta.isNull("kode")){
+                                rujukanResponse.setKodeStatusPeserta(statusPeserta.getString("kode"));
+                            }
 
-                            rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
-                            rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
-                            rujukanResponse.setTglTat(peserta.getString("tglTAT"));
-                            rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                            if (!peserta.isNull("tglCetakKartu")){
+                                rujukanResponse.setTglCetakKartu(peserta.getString("tglCetakKartu"));
+                            }
+                            if (!peserta.isNull("tglLahir")){
+                                rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                            }
+                            if (!peserta.isNull("tglTAT")){
+                                rujukanResponse.setTglTat(peserta.getString("tglTAT"));
+                            }
+                            if (!peserta.isNull("tglTMT")){
+                                rujukanResponse.setTglTmt(peserta.getString("tglTMT"));
+                            }
 
                             JSONObject umur = peserta.getJSONObject("umur");
-                            rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
-                            rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                            if (!umur.isNull("umurSekarang")){
+                                rujukanResponse.setUmurSekarang(umur.getString("umurSekarang"));
+                            }
+                            if (!umur.isNull("umurSaatPelayanan")){
+                                rujukanResponse.setUmurSaatPelayanan(umur.getString("umurSaatPelayanan"));
+                            }
 
                             JSONObject poliRujukan = obj.getJSONObject("poliRujukan");
-                            rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
-                            rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                            if (!poliRujukan.isNull("kode")){
+                                rujukanResponse.setKodePoliRujukan(poliRujukan.getString("kode"));
+                            }
+                            if (!poliRujukan.isNull("nama")){
+                                rujukanResponse.setNamaPoliRujukan(poliRujukan.getString("nama"));
+                            }
 
                             JSONObject provPerujuk = obj.getJSONObject("provPerujuk");
-                            rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
-                            rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                            if (!provPerujuk.isNull("kode")){
+                                rujukanResponse.setKodeProvPerujuk(provPerujuk.getString("kode"));
+                            }
+                            if (!provPerujuk.isNull("nama")){
+                                rujukanResponse.setNamaProvPerujuk(provPerujuk.getString("nama"));
+                            }
 
-                            rujukanResponse.setTglKunjungan(obj.getString("tglKunjungan"));
+                            if (!obj.isNull("tglKunjungan")){
+                                rujukanResponse.setTglKunjungan(obj.getString("tglKunjungan"));
+                            }
 
                             rujukanResponseList.add(rujukanResponse);
                         }
@@ -1806,33 +2192,69 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     JSONObject response = myResponseCheck.getJSONObject("response");
                     JSONObject rujukan = response.getJSONObject("rujukan");
                     JSONObject AsalRujukan = rujukan.getJSONObject("AsalRujukan");
-                    rujukanResponse.setKodeAsalRujukan(AsalRujukan.getString("kode"));
-                    rujukanResponse.setNamaAsalRujukan(AsalRujukan.getString("nama"));
+                    if (!AsalRujukan.isNull("kode")){
+                        rujukanResponse.setKodeAsalRujukan(AsalRujukan.getString("kode"));
+                    }
+                    if (!AsalRujukan.isNull("nama")){
+                        rujukanResponse.setNamaAsalRujukan(AsalRujukan.getString("nama"));
+                    }
 
                     JSONObject diagnosa = rujukan.getJSONObject("diagnosa");
-                    rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
-                    rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                    if (!diagnosa.isNull("kode")){
+                        rujukanResponse.setKodeDiagnosa(diagnosa.getString("kode"));
+                    }
+                    if (!diagnosa.isNull("nama")){
+                        rujukanResponse.setNamaDiagnosa(diagnosa.getString("nama"));
+                    }
 
                     JSONObject peserta = rujukan.getJSONObject("peserta");
-                    rujukanResponse.setAsuransi(peserta.getString("asuransi"));
-                    rujukanResponse.setKodeHakKelas(peserta.getString("hakKelas"));
-                    rujukanResponse.setKodeJenisPeserta(peserta.getString("jnsPeserta"));
-                    rujukanResponse.setSex(peserta.getString("kelamin"));
-                    rujukanResponse.setNama(peserta.getString("nama"));
-                    rujukanResponse.setNoKartu(peserta.getString("noKartu"));
-                    rujukanResponse.setNoMr(peserta.getString("noMr"));
-                    rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                    if (!peserta.isNull("asuransi")){
+                        rujukanResponse.setAsuransi(peserta.getString("asuransi"));
+                    }
+                    if (!peserta.isNull("hakKelas")){
+                        rujukanResponse.setKodeHakKelas(peserta.getString("hakKelas"));
+                    }
+                    if (!peserta.isNull("jnsPeserta")){
+                        rujukanResponse.setKodeJenisPeserta(peserta.getString("jnsPeserta"));
+                    }
+                    if (!peserta.isNull("kelamin")){
+                        rujukanResponse.setSex(peserta.getString("kelamin"));
+                    }
+                    if (!peserta.isNull("nama")){
+                        rujukanResponse.setNama(peserta.getString("nama"));
+                    }
+                    if (!peserta.isNull("noKartu")){
+                        rujukanResponse.setNoKartu(peserta.getString("noKartu"));
+                    }
+                    if (!peserta.isNull("noMr")){
+                        rujukanResponse.setNoMr(peserta.getString("noMr"));
+                    }
+                    if (!peserta.isNull("tglLahir")){
+                        rujukanResponse.setTglLahir(peserta.getString("tglLahir"));
+                    }
 
                     JSONObject poliTujuan = rujukan.getJSONObject("poliTujuan");
-                    rujukanResponse.setKodePoliRujukan(poliTujuan.getString("kode"));
-                    rujukanResponse.setNamaPoliRujukan(poliTujuan.getString("nama"));
+                    if (!poliTujuan.isNull("kode")){
+                        rujukanResponse.setKodePoliRujukan(poliTujuan.getString("kode"));
+                    }
+                    if (!poliTujuan.isNull("nama")){
+                        rujukanResponse.setNamaPoliRujukan(poliTujuan.getString("nama"));
+                    }
 
-                    rujukanResponse.setTglRujukan(rujukan.getString("tglRujukan"));
-                    rujukanResponse.setNoRujukan(rujukan.getString("noRujukan"));
+                    if (!rujukan.isNull("tglRujukan")){
+                        rujukanResponse.setTglRujukan(rujukan.getString("tglRujukan"));
+                    }
+                    if (!rujukan.isNull("noRujukan")){
+                        rujukanResponse.setNoRujukan(rujukan.getString("noRujukan"));
+                    }
 
                     JSONObject tujuanRujukan = rujukan.getJSONObject("tujuanRujukan");
-                    rujukanResponse.setKodeTujuanRujukan(tujuanRujukan.getString("kode"));
-                    rujukanResponse.setNamaTujuanRujukan(tujuanRujukan.getString("nama"));
+                    if (!tujuanRujukan.isNull("kode")){
+                        rujukanResponse.setKodeTujuanRujukan(tujuanRujukan.getString("kode"));
+                    }
+                    if (!tujuanRujukan.isNull("nama")){
+                        rujukanResponse.setNamaTujuanRujukan(tujuanRujukan.getString("nama"));
+                    }
                 }
 
             } catch (IOException | JSONException | GeneralSecurityException e) {
@@ -2275,7 +2697,10 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                         }
                         lpkResponse.setTindakanResponseList(tindakanResponses);
 
-                        lpkResponse.setRencanaTl(obj.getString("rencanaTL"));
+                        if (!obj.isNull("rencanaTL")){
+                            lpkResponse.setRencanaTl(obj.getString("rencanaTL"));
+                        }
+
                         lpkResponse.setTglKeluar(obj.getString("tglKeluar"));
                         lpkResponse.setTglMasuk(obj.getString("tglMasuk"));
 

@@ -1,4 +1,4 @@
-package com.neurix.simrs.bpjs.eklaim.bo.model;
+package com.neurix.simrs.bpjs.eklaim.model;
 
 import java.util.List;
 

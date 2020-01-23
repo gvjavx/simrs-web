@@ -22,10 +22,31 @@ public class PasienAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(PasienAction.class);
 
     private Pasien pasien;
+    private String userId;
     private PasienBo pasienBoProxy;
     private List<Pasien> listOfpasien = new ArrayList<>();
 
     private String tipe;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PasienAction.logger = logger;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
 
     public List<Pasien> getListOfpasien() {
         return listOfpasien;
@@ -442,8 +463,6 @@ public class PasienAction extends BaseMasterAction {
         logger.info("[PasienAction.getListComboSelectPasien] end process <<<");
         return SUCCESS;
     }
-
-
 
     public String getTipe() {
         return tipe;

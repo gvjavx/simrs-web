@@ -139,6 +139,8 @@
                                         </sj:submit>
                                         <a type="button" class="btn btn-primary" href="add_checkup.action"><i
                                                 class="fa fa-plus"></i> Tambah Rawat Pasien</a>
+                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
+                                                class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -430,10 +432,14 @@
             $('#det_desa').html(desa);
             $('#det_riwayat').html(table);
             $('#modal-detail-pasien').modal('show');
-
         }, 100)
     }
-
+    $('#btnFingerPrint').on('click',function() {
+        var idPasien = "";
+        var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien);
+        console.log(url);
+        window.location.href = 'finspot:FingerspotVer;'+url;
+    });
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

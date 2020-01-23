@@ -70,7 +70,9 @@
         <property name="password">
             <column name="password" sql-type="varchar" length="30"/>
         </property>
-
+        <property name="fingerData">
+            <column name="finger_data" sql-type="text"/>
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

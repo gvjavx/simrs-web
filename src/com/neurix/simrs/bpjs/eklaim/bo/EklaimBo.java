@@ -1,7 +1,7 @@
 package com.neurix.simrs.bpjs.eklaim.bo;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.bpjs.eklaim.bo.model.*;
+import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.TindakanResponse;
 

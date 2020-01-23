@@ -1,45 +1,45 @@
-package com.neurix.simrs.bpjs.eklaim.bo.model;
+package com.neurix.simrs.bpjs.eklaim.model;
 
 import java.util.List;
 
 public class DataPerKlaimResponse {
     private String kodeRs;
     private String kelasRs;
-    private String kelasRawat;
+    private Integer kelasRawat;
     private String kodeTarif;
-    private String jenisRawat;
+    private Integer jenisRawat;
     private String tglMasuk;
     private String tglPulang;
     private String tglLahir;
     private String beratLahir;
-    private String gender;
-    private String dischargeStatus;
+    private Integer gender;
+    private Integer dischargeStatus;
     private String diagnosa;
     private String procedure;
-    private String adlSubAcute;
-    private String adlChronic;
+    private Integer adlSubAcute;
+    private Integer adlChronic;
 
-    private String tarifRsProsedurNonBedah;
-    private String tarifRsProsedurBedah;
-    private String tarifRsKonsultasi;
-    private String tarifRsTenagaAhli;
-    private String tarifRsKeperawatan;
-    private String tarifRsPenunjang;
-    private String tarifRsRadiologi;
-    private String tarifRsLaboratorium;
-    private String tarifRsPelayananDarah;
-    private String tarifRsRehabilitasi;
-    private String tarifRsKamar;
-    private String tarifRsRawatIntensif;
-    private String tarifRsObat;
-    private String tarifRsObatKronis;
-    private String tarifRsObatKemotrapis;
-    private String tarifRsAlkes;
-    private String tarifRsBmhp;
-    private String tarifRsSewaAlat;
+    private Integer tarifRsProsedurNonBedah;
+    private Integer tarifRsProsedurBedah;
+    private Integer tarifRsKonsultasi;
+    private Integer tarifRsTenagaAhli;
+    private Integer tarifRsKeperawatan;
+    private Integer tarifRsPenunjang;
+    private Integer tarifRsRadiologi;
+    private Integer tarifRsLaboratorium;
+    private Integer tarifRsPelayananDarah;
+    private Integer tarifRsRehabilitasi;
+    private Integer tarifRsKamar;
+    private Integer tarifRsRawatIntensif;
+    private Integer tarifRsObat;
+    private Integer tarifRsObatKronis;
+    private Integer tarifRsObatKemotrapis;
+    private Integer tarifRsAlkes;
+    private Integer tarifRsBmhp;
+    private Integer tarifRsSewaAlat;
 
     private String los;
-    private String icuIndicator;
+    private Integer icuIndicator;
     private String icuLos;
     private String ventilatorHour;
     private String upgradeClassInd;
@@ -49,7 +49,7 @@ public class DataPerKlaimResponse {
     private String addPaymentAmt;
     private String namaPasien;
     private String nomorRm;
-    private String umurTahun;
+    private Integer umurTahun;
     private String umurHari;
     private String tarifPoliEks;
     private String namaDokter;
@@ -77,6 +77,7 @@ public class DataPerKlaimResponse {
     private String bpjsKlaimStatusCd;
     private String bpjsKlaimStatusNm;
 
+
     public String getKodeRs() {
         return kodeRs;
     }
@@ -93,11 +94,11 @@ public class DataPerKlaimResponse {
         this.kelasRs = kelasRs;
     }
 
-    public String getKelasRawat() {
+    public Integer getKelasRawat() {
         return kelasRawat;
     }
 
-    public void setKelasRawat(String kelasRawat) {
+    public void setKelasRawat(Integer kelasRawat) {
         this.kelasRawat = kelasRawat;
     }
 
@@ -109,11 +110,11 @@ public class DataPerKlaimResponse {
         this.kodeTarif = kodeTarif;
     }
 
-    public String getJenisRawat() {
+    public Integer getJenisRawat() {
         return jenisRawat;
     }
 
-    public void setJenisRawat(String jenisRawat) {
+    public void setJenisRawat(Integer jenisRawat) {
         this.jenisRawat = jenisRawat;
     }
 
@@ -149,19 +150,19 @@ public class DataPerKlaimResponse {
         this.beratLahir = beratLahir;
     }
 
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public String getDischargeStatus() {
+    public Integer getDischargeStatus() {
         return dischargeStatus;
     }
 
-    public void setDischargeStatus(String dischargeStatus) {
+    public void setDischargeStatus(Integer dischargeStatus) {
         this.dischargeStatus = dischargeStatus;
     }
 
@@ -181,163 +182,163 @@ public class DataPerKlaimResponse {
         this.procedure = procedure;
     }
 
-    public String getAdlSubAcute() {
+    public Integer getAdlSubAcute() {
         return adlSubAcute;
     }
 
-    public void setAdlSubAcute(String adlSubAcute) {
+    public void setAdlSubAcute(Integer adlSubAcute) {
         this.adlSubAcute = adlSubAcute;
     }
 
-    public String getAdlChronic() {
+    public Integer getAdlChronic() {
         return adlChronic;
     }
 
-    public void setAdlChronic(String adlChronic) {
+    public void setAdlChronic(Integer adlChronic) {
         this.adlChronic = adlChronic;
     }
 
-    public String getTarifRsProsedurNonBedah() {
+    public Integer getTarifRsProsedurNonBedah() {
         return tarifRsProsedurNonBedah;
     }
 
-    public void setTarifRsProsedurNonBedah(String tarifRsProsedurNonBedah) {
+    public void setTarifRsProsedurNonBedah(Integer tarifRsProsedurNonBedah) {
         this.tarifRsProsedurNonBedah = tarifRsProsedurNonBedah;
     }
 
-    public String getTarifRsProsedurBedah() {
+    public Integer getTarifRsProsedurBedah() {
         return tarifRsProsedurBedah;
     }
 
-    public void setTarifRsProsedurBedah(String tarifRsProsedurBedah) {
+    public void setTarifRsProsedurBedah(Integer tarifRsProsedurBedah) {
         this.tarifRsProsedurBedah = tarifRsProsedurBedah;
     }
 
-    public String getTarifRsKonsultasi() {
+    public Integer getTarifRsKonsultasi() {
         return tarifRsKonsultasi;
     }
 
-    public void setTarifRsKonsultasi(String tarifRsKonsultasi) {
+    public void setTarifRsKonsultasi(Integer tarifRsKonsultasi) {
         this.tarifRsKonsultasi = tarifRsKonsultasi;
     }
 
-    public String getTarifRsTenagaAhli() {
+    public Integer getTarifRsTenagaAhli() {
         return tarifRsTenagaAhli;
     }
 
-    public void setTarifRsTenagaAhli(String tarifRsTenagaAhli) {
+    public void setTarifRsTenagaAhli(Integer tarifRsTenagaAhli) {
         this.tarifRsTenagaAhli = tarifRsTenagaAhli;
     }
 
-    public String getTarifRsKeperawatan() {
+    public Integer getTarifRsKeperawatan() {
         return tarifRsKeperawatan;
     }
 
-    public void setTarifRsKeperawatan(String tarifRsKeperawatan) {
+    public void setTarifRsKeperawatan(Integer tarifRsKeperawatan) {
         this.tarifRsKeperawatan = tarifRsKeperawatan;
     }
 
-    public String getTarifRsPenunjang() {
+    public Integer getTarifRsPenunjang() {
         return tarifRsPenunjang;
     }
 
-    public void setTarifRsPenunjang(String tarifRsPenunjang) {
+    public void setTarifRsPenunjang(Integer tarifRsPenunjang) {
         this.tarifRsPenunjang = tarifRsPenunjang;
     }
 
-    public String getTarifRsRadiologi() {
+    public Integer getTarifRsRadiologi() {
         return tarifRsRadiologi;
     }
 
-    public void setTarifRsRadiologi(String tarifRsRadiologi) {
+    public void setTarifRsRadiologi(Integer tarifRsRadiologi) {
         this.tarifRsRadiologi = tarifRsRadiologi;
     }
 
-    public String getTarifRsLaboratorium() {
+    public Integer getTarifRsLaboratorium() {
         return tarifRsLaboratorium;
     }
 
-    public void setTarifRsLaboratorium(String tarifRsLaboratorium) {
+    public void setTarifRsLaboratorium(Integer tarifRsLaboratorium) {
         this.tarifRsLaboratorium = tarifRsLaboratorium;
     }
 
-    public String getTarifRsPelayananDarah() {
+    public Integer getTarifRsPelayananDarah() {
         return tarifRsPelayananDarah;
     }
 
-    public void setTarifRsPelayananDarah(String tarifRsPelayananDarah) {
+    public void setTarifRsPelayananDarah(Integer tarifRsPelayananDarah) {
         this.tarifRsPelayananDarah = tarifRsPelayananDarah;
     }
 
-    public String getTarifRsRehabilitasi() {
+    public Integer getTarifRsRehabilitasi() {
         return tarifRsRehabilitasi;
     }
 
-    public void setTarifRsRehabilitasi(String tarifRsRehabilitasi) {
+    public void setTarifRsRehabilitasi(Integer tarifRsRehabilitasi) {
         this.tarifRsRehabilitasi = tarifRsRehabilitasi;
     }
 
-    public String getTarifRsKamar() {
+    public Integer getTarifRsKamar() {
         return tarifRsKamar;
     }
 
-    public void setTarifRsKamar(String tarifRsKamar) {
+    public void setTarifRsKamar(Integer tarifRsKamar) {
         this.tarifRsKamar = tarifRsKamar;
     }
 
-    public String getTarifRsRawatIntensif() {
+    public Integer getTarifRsRawatIntensif() {
         return tarifRsRawatIntensif;
     }
 
-    public void setTarifRsRawatIntensif(String tarifRsRawatIntensif) {
+    public void setTarifRsRawatIntensif(Integer tarifRsRawatIntensif) {
         this.tarifRsRawatIntensif = tarifRsRawatIntensif;
     }
 
-    public String getTarifRsObat() {
+    public Integer getTarifRsObat() {
         return tarifRsObat;
     }
 
-    public void setTarifRsObat(String tarifRsObat) {
+    public void setTarifRsObat(Integer tarifRsObat) {
         this.tarifRsObat = tarifRsObat;
     }
 
-    public String getTarifRsObatKronis() {
+    public Integer getTarifRsObatKronis() {
         return tarifRsObatKronis;
     }
 
-    public void setTarifRsObatKronis(String tarifRsObatKronis) {
+    public void setTarifRsObatKronis(Integer tarifRsObatKronis) {
         this.tarifRsObatKronis = tarifRsObatKronis;
     }
 
-    public String getTarifRsObatKemotrapis() {
+    public Integer getTarifRsObatKemotrapis() {
         return tarifRsObatKemotrapis;
     }
 
-    public void setTarifRsObatKemotrapis(String tarifRsObatKemotrapis) {
+    public void setTarifRsObatKemotrapis(Integer tarifRsObatKemotrapis) {
         this.tarifRsObatKemotrapis = tarifRsObatKemotrapis;
     }
 
-    public String getTarifRsAlkes() {
+    public Integer getTarifRsAlkes() {
         return tarifRsAlkes;
     }
 
-    public void setTarifRsAlkes(String tarifRsAlkes) {
+    public void setTarifRsAlkes(Integer tarifRsAlkes) {
         this.tarifRsAlkes = tarifRsAlkes;
     }
 
-    public String getTarifRsBmhp() {
+    public Integer getTarifRsBmhp() {
         return tarifRsBmhp;
     }
 
-    public void setTarifRsBmhp(String tarifRsBmhp) {
+    public void setTarifRsBmhp(Integer tarifRsBmhp) {
         this.tarifRsBmhp = tarifRsBmhp;
     }
 
-    public String getTarifRsSewaAlat() {
+    public Integer getTarifRsSewaAlat() {
         return tarifRsSewaAlat;
     }
 
-    public void setTarifRsSewaAlat(String tarifRsSewaAlat) {
+    public void setTarifRsSewaAlat(Integer tarifRsSewaAlat) {
         this.tarifRsSewaAlat = tarifRsSewaAlat;
     }
 
@@ -349,11 +350,11 @@ public class DataPerKlaimResponse {
         this.los = los;
     }
 
-    public String getIcuIndicator() {
+    public Integer getIcuIndicator() {
         return icuIndicator;
     }
 
-    public void setIcuIndicator(String icuIndicator) {
+    public void setIcuIndicator(Integer icuIndicator) {
         this.icuIndicator = icuIndicator;
     }
 
@@ -429,11 +430,11 @@ public class DataPerKlaimResponse {
         this.nomorRm = nomorRm;
     }
 
-    public String getUmurTahun() {
+    public Integer getUmurTahun() {
         return umurTahun;
     }
 
-    public void setUmurTahun(String umurTahun) {
+    public void setUmurTahun(Integer umurTahun) {
         this.umurTahun = umurTahun;
     }
 

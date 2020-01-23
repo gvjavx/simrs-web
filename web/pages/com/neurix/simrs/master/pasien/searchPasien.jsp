@@ -54,8 +54,6 @@ To change this template use File | Settings | File Templates.
             <small>e-HEALTH</small>
         </h1>
     </section>
-
-
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -178,12 +176,10 @@ To change this template use File | Settings | File Templates.
                                                         <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                     </sj:dialog>
 
-                                                    <s:set name="listOfRekruitmen" value="#session.listOfResult" scope="request" />
-                                                    <display:table name="listOfRekruitmen" class=" tableRekruitmen table table-condensed table-striped table-hover"
+                                                    <s:set name="listOfPasien" value="#session.listOfResult" scope="request" />
+                                                    <display:table name="listOfPasien" class="tablePasien table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
-                                                        <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
-<%--                                                            <s:if test="#attr.row.flagYes">--%>
                                                                 <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
@@ -191,9 +187,7 @@ To change this template use File | Settings | File Templates.
                                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                                                 </sj:a>
-<%--                                                            </s:if>--%>
                                                         </display:column>
-
                                                         <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                             <s:url var="urlViewDelete" namespace="/pasien" action="delete_pasien" escapeAmp="false">
                                                                 <s:param name="id"><s:property value="#attr.row.idPasien" /></s:param>
@@ -202,9 +196,7 @@ To change this template use File | Settings | File Templates.
                                                             <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
                                                                 <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                                             </sj:a>
-
                                                         </display:column>
-
                                                         <display:column property="idPasien" sortable="true" title="Pasien ID"  />
                                                         <display:column property="nama" sortable="true" title="Nama"  />
                                                         <display:column property="jenisKelamin" sortable="true" title="Gender"  />
@@ -219,7 +211,6 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="noTelp" sortable="true" title="No. Telp" />
                                                         <display:column property="flag" sortable="true" title="flag" />
 
-
                                                         <display:column media="html" title="User" style="text-align:center;font-size:9">
                                                             <s:if test="#attr.row.password == null">
                                                                 <s:url var="urlViewDelete" namespace="/pasien" action="view_pasien" escapeAmp="false">
@@ -228,7 +219,6 @@ To change this template use File | Settings | File Templates.
                                                                 </s:url>
                                                                 <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
                                                                     <i class="fa fa-plus"></i> Create User
-                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
                                                                 </sj:a>
                                                             </s:if>
                                                             <s:else>
@@ -238,7 +228,6 @@ To change this template use File | Settings | File Templates.
                                                                 </s:url>
                                                                 <sj:a cssClass="btn btn-primary" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
                                                                    <i class="fa fa-edit"></i> Edit Password
-                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
                                                                 </sj:a>
                                                             </s:else>
                                                         </display:column>
@@ -250,7 +239,11 @@ To change this template use File | Settings | File Templates.
                                                                 <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_printer_new">
                                                             </s:a>
                                                         </display:column>
-
+                                                        <display:column media="html" title="Finger Print">
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.idPasien}"/>" class="item-register-finger">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon-register-finger">
+                                                            </a>
+                                                        </display:column>
                                                     </display:table>
                                                 </td>
                                             </tr>
@@ -281,23 +274,18 @@ To change this template use File | Settings | File Templates.
 
 <%@ include file="/pages/common/footer.jsp" %>
 
-
 <%@ include file="/pages/common/lastScript.jsp" %>
 
 </body>
 </html>
 <script>
-    window.listPosisi = function(branch, divisi){
-        var branch = document.getElementById("branchId").value;
-        var divisi = document.getElementById("departmentId").value;
-        $('#positionId').empty();
-        PositionAction.searchPosition2(branch, divisi, function(listdata){
-            $.each(listdata, function (i, item) {
-                $('#positionId').append($("<option></option>")
-                        .attr("value",item.positionId)
-                        .text(item.positionName));
-            });
-        });
-    }
+    $('.tablePasien').on('click', '.item-register-finger', function() {
+        var idPasien = $(this).attr('data');
+        var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
+        console.log(url);
+        var href ='finspot:FingerspotReg;'+url;
+        console.log(href);
+        window.location.href =href ;
+    });
 </script>
 

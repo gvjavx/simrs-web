@@ -128,6 +128,7 @@ public class CommonConstant {
     public final static String HGU = "HGU";
     public final static String URL_IMG = "/simrs/images";
 
+    //BPJS
     public final static String APP_NAME = "simrs";
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest/";
@@ -135,6 +136,10 @@ public class CommonConstant {
     public final static String BPJS_SERVICE_PCARE = "/pcare-rest-v3.0";
     public final static String EKLAIM_SERVICE = "/E-Klaim/ws.php";
     public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
+
+    //FINGER
+    public final static String timeLimitReg="15";
+    public final static String timeLimitVer="10";
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.jpg";

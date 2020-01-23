@@ -1,0 +1,1 @@
+1;SecurityKey;15;http://localhost:8080/simrs/prosesRegisterFinger.action;08PBD59F8682C4AAB348BYXMK520J01750;

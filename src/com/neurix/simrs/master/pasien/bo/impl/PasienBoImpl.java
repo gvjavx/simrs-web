@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -399,6 +400,25 @@ public class PasienBoImpl implements PasienBo {
 
         logger.info("[PasienBoImpl.isUserPasienById] End <<<<<<<");
         return isFound;
+    }
+
+    @Override
+    public void saveEditFinger(String userId, String regTemp, String sn, String vStamp) {
+        logger.info("[PasienBoImpl.saveEditFinger] Start >>>>>>>");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien",userId);
+        pasienEntity.setFingerData(regTemp);
+        pasienEntity.setLastUpdate(updateTime);
+
+        try {
+            pasienDao.updateAndSave(pasienEntity);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.saveEditFinger] Error when search pasien by criteria "+e.getMessage());
+            throw new GeneralBOException("[PasienBoImpl.saveEditFinger] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        logger.info("[PasienBoImpl.saveEditFinger] End <<<<<<<");
     }
 
     @Override

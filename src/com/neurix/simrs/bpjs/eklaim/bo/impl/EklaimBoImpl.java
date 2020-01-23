@@ -1,13 +1,12 @@
 package com.neurix.simrs.bpjs.eklaim.bo.impl;
 
-import com.google.gson.Gson;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
-import com.neurix.simrs.bpjs.eklaim.bo.model.*;
+import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.TindakanResponse;
 import org.apache.log4j.Logger;
@@ -16,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -728,112 +726,264 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     JSONObject response = myResponseCheck.getJSONObject("response");
 
                     JSONObject data = response.getJSONObject("data");
-                    finalResponse.setKodeRs(data.getString("kode_rs"));
-                    finalResponse.setKelasRs(data.getString("kelas_rs"));
-                    finalResponse.setKelasRawat(data.getString("kelas_rawat"));
-                    finalResponse.setKodeTarif(data.getString("kode_tarif"));
-                    finalResponse.setJenisRawat(data.getString("jenis_rawat"));
-                    finalResponse.setTglMasuk(data.getString("tgl_masuk"));
-                    finalResponse.setTglPulang(data.getString("tgl_pulang"));
-                    finalResponse.setTglLahir(data.getString("tgl_lahir"));
-                    finalResponse.setBeratLahir(data.getString("berat_lahir"));
-                    finalResponse.setGender(data.getString("gender"));
-                    finalResponse.setDischargeStatus(data.getString("discharge_status"));
-                    finalResponse.setDiagnosa(data.getString("diagnosa"));
-                    finalResponse.setProcedure(data.getString("procedure"));
-                    finalResponse.setAdlSubAcute(data.getString("adl_sub_acute"));
-                    finalResponse.setAdlChronic(data.getString("adl_chronic"));
+                    if (!data.isNull("kode_rs")){
+                        finalResponse.setKodeRs(data.getString("kode_rs"));
+                    }
+                    if (!data.isNull("kelas_rs")){
+                        finalResponse.setKelasRs(data.getString("kelas_rs"));
+                    }
+                    if (!data.isNull("kelas_rawat")){
+                        finalResponse.setKelasRawat(data.getInt("kelas_rawat"));
+                    }
+                    if (!data.isNull("kode_tarif")){
+                        finalResponse.setKodeTarif(data.getString("kode_tarif"));
+                    }
+                    if (!data.isNull("jenis_rawat")){
+                        finalResponse.setJenisRawat(data.getInt("jenis_rawat"));
+                    }
+                    if (!data.isNull("tgl_masuk")){
+                        finalResponse.setTglMasuk(data.getString("tgl_masuk"));
+                    }
+                    if (!data.isNull("tgl_pulang")){
+                        finalResponse.setTglPulang(data.getString("tgl_pulang"));
+                    }
+                    if (!data.isNull("tgl_lahir")){
+                        finalResponse.setTglLahir(data.getString("tgl_lahir"));
+                    }
+                    if (!data.isNull("berat_lahir")){
+                        finalResponse.setBeratLahir(data.getString("berat_lahir"));
+                    }
+                    if (!data.isNull("gender")){
+                        finalResponse.setGender(data.getInt("gender"));
+                    }
+                    if (!data.isNull("discharge_status")){
+                        finalResponse.setDischargeStatus(data.getInt("discharge_status"));
+                    }
+                    if (!data.isNull("diagnosa")){
+                        finalResponse.setDiagnosa(data.getString("diagnosa"));
+                    }
+                    if (!data.isNull("procedure")){
+                        finalResponse.setProcedure(data.getString("procedure"));
+                    }
+                    if (!data.isNull("adl_sub_acute")){
+                        finalResponse.setAdlSubAcute(data.getInt("adl_sub_acute"));
+                    }
+                    if (!data.isNull("adl_chronic")){
+                        finalResponse.setAdlChronic(data.getInt("adl_chronic"));
+                    }
 
-                    JSONObject tarifRs = response.getJSONObject("tarif_rs");
-                    finalResponse.setTarifRsProsedurNonBedah(tarifRs.getString("prosedur_non_bedah"));
-                    finalResponse.setTarifRsProsedurBedah(tarifRs.getString("prosedur_bedah"));
-                    finalResponse.setTarifRsKonsultasi(tarifRs.getString("konsultasi"));
-                    finalResponse.setTarifRsTenagaAhli(tarifRs.getString("tenaga_ahli"));
-                    finalResponse.setTarifRsKeperawatan(tarifRs.getString("keperawatan"));
-                    finalResponse.setTarifRsPenunjang(tarifRs.getString("penunjang"));
-                    finalResponse.setTarifRsRadiologi(tarifRs.getString("radiologi"));
-                    finalResponse.setTarifRsLaboratorium(tarifRs.getString("laboratorium"));
-                    finalResponse.setTarifRsPelayananDarah(tarifRs.getString("pelayanan_darah"));
-                    finalResponse.setTarifRsRehabilitasi(tarifRs.getString("rehabilitasi"));
-                    finalResponse.setTarifRsKamar(tarifRs.getString("kamar"));
-                    finalResponse.setTarifRsRawatIntensif(tarifRs.getString("rawat_intensif"));
-                    finalResponse.setTarifRsObat(tarifRs.getString("obat"));
-                    finalResponse.setTarifRsObatKronis(tarifRs.getString("obat_kronis"));
-                    finalResponse.setTarifRsObatKemotrapis(tarifRs.getString("obat_kemoterapi"));
-                    finalResponse.setTarifRsAlkes(tarifRs.getString("alkes"));
-                    finalResponse.setTarifRsBmhp(tarifRs.getString("bmhp"));
-                    finalResponse.setTarifRsSewaAlat(tarifRs.getString("sewa_alat"));
+                    JSONObject tarifRs = data.getJSONObject("tarif_rs");
+                    if (!tarifRs.isNull("prosedur_non_bedah")){
+                        finalResponse.setTarifRsProsedurNonBedah(tarifRs.getInt("prosedur_non_bedah"));
+                    }
+                    if (!tarifRs.isNull("prosedur_bedah")){
+                        finalResponse.setTarifRsProsedurBedah(tarifRs.getInt("prosedur_bedah"));
+                    }
+                    if (!tarifRs.isNull("konsultasi")){
+                        finalResponse.setTarifRsKonsultasi(tarifRs.getInt("konsultasi"));
+                    }
+                    if (!tarifRs.isNull("tenaga_ahli")){
+                        finalResponse.setTarifRsTenagaAhli(tarifRs.getInt("tenaga_ahli"));
+                    }
+                    if (!tarifRs.isNull("keperawatan")){
+                        finalResponse.setTarifRsKeperawatan(tarifRs.getInt("keperawatan"));
+                    }
+                    if (!tarifRs.isNull("penunjang")){
+                        finalResponse.setTarifRsPenunjang(tarifRs.getInt("penunjang"));
+                    }
+                    if (!tarifRs.isNull("radiologi")){
+                        finalResponse.setTarifRsRadiologi(tarifRs.getInt("radiologi"));
+                    }
+                    if (!tarifRs.isNull("laboratorium")){
+                        finalResponse.setTarifRsLaboratorium(tarifRs.getInt("laboratorium"));
+                    }
+                    if (!tarifRs.isNull("pelayanan_darah")){
+                        finalResponse.setTarifRsPelayananDarah(tarifRs.getInt("pelayanan_darah"));
+                    }
+                    if (!tarifRs.isNull("rehabilitasi")){
+                        finalResponse.setTarifRsRehabilitasi(tarifRs.getInt("rehabilitasi"));
+                    }
+                    if (!tarifRs.isNull("kamar")){
+                        finalResponse.setTarifRsKamar(tarifRs.getInt("kamar"));
+                    }
+                    if (!tarifRs.isNull("rawat_intensif")){
+                        finalResponse.setTarifRsRawatIntensif(tarifRs.getInt("rawat_intensif"));
+                    }
+                    if (!tarifRs.isNull("obat")){
+                        finalResponse.setTarifRsObat(tarifRs.getInt("obat"));
+                    }
+                    if (!tarifRs.isNull("obat_kronis")){
+                        finalResponse.setTarifRsObatKronis(tarifRs.getInt("obat_kronis"));
+                    }
+                    if (!tarifRs.isNull("obat_kemoterapi")){
+                        finalResponse.setTarifRsObatKemotrapis(tarifRs.getInt("obat_kemoterapi"));
+                    }
+                    if (!tarifRs.isNull("alkes")){
+                        finalResponse.setTarifRsAlkes(tarifRs.getInt("alkes"));
+                    }
+                    if (!tarifRs.isNull("bmhp")){
+                        finalResponse.setTarifRsBmhp(tarifRs.getInt("bmhp"));
+                    }
+                    if (!tarifRs.isNull("sewa_alat")){
+                        finalResponse.setTarifRsSewaAlat(tarifRs.getInt("sewa_alat"));
+                    }
 
-                    finalResponse.setLos(data.getString("los"));
-                    finalResponse.setIcuIndicator(data.getString("icu_indikator"));
-                    finalResponse.setIcuLos(data.getString("icu_los"));
-                    finalResponse.setVentilatorHour(data.getString("ventilator_hour"));
-                    finalResponse.setUpgradeClassInd(data.getString("upgrade_class_ind"));
-                    finalResponse.setUpgradeClassClass(data.getString("upgrade_class_class"));
-                    finalResponse.setUpgradeClassLos(data.getString("upgrade_class_los"));
-                    finalResponse.setAddPaymenPct(data.getString("add_payment_pct"));
-                    finalResponse.setAddPaymentAmt(data.getString("add_payment_amt"));
-                    finalResponse.setNamaPasien(data.getString("nama_pasien"));
-                    finalResponse.setNomorRm(data.getString("nomor_rm"));
-                    finalResponse.setUmurTahun(data.getString("umur_tahun"));
-                    finalResponse.setUmurHari(data.getString("umur_hari"));
-                    finalResponse.setTarifPoliEks(data.getString("tarif_poli_eks"));
-                    finalResponse.setNamaDokter(data.getString("nama_dokter"));
-                    finalResponse.setNomorSep(data.getString("nomor_sep"));
-                    finalResponse.setNomorKartu(data.getString("nomor_kartu"));
-                    finalResponse.setPayorId(data.getString("payor_id"));
-                    finalResponse.setPayorNm(data.getString("payor_nm"));
-                    finalResponse.setCoderNm(data.getString("coder_nm"));
-                    finalResponse.setCoderNik(data.getString("coder_nik"));
-                    finalResponse.setPatientId(data.getString("patient_id"));
-                    finalResponse.setAdmissionId(data.getString("admission_id"));
-                    finalResponse.setHospitalAdmissionId(data.getString("hospital_admission_id"));
-                    finalResponse.setGroupingCount(data.getString("grouping_count"));
+                    if (!data.isNull("los")){
+                        finalResponse.setLos(data.getString("los"));
+                    }
+                    if (!data.isNull("icu_indikator")){
+                        finalResponse.setIcuIndicator(data.getInt("icu_indikator"));
+                    }
+                    if (!data.isNull("icu_los")){
+                        finalResponse.setIcuLos(data.getString("icu_los"));
+                    }
+                    if (!data.isNull("ventilator_hour")){
+                        finalResponse.setVentilatorHour(data.getString("ventilator_hour"));
+                    }
+                    if (!data.isNull("upgrade_class_ind")){
+                        finalResponse.setUpgradeClassInd(data.getString("upgrade_class_ind"));
+                    }
+                    if (!data.isNull("upgrade_class_class")){
+                        finalResponse.setUpgradeClassClass(data.getString("upgrade_class_class"));
+                    }
+                    if (!data.isNull("upgrade_class_los")){
+                        finalResponse.setUpgradeClassLos(data.getString("upgrade_class_los"));
+                    }
+                    if (!data.isNull("add_payment_pct")){
+                        finalResponse.setAddPaymenPct(data.getString("add_payment_pct"));
+                    }
+                    if (!data.isNull("add_payment_amt")){
+                        finalResponse.setAddPaymentAmt(data.getString("add_payment_amt"));
+                    }
+                    if (!data.isNull("nama_pasien")){
+                        finalResponse.setNamaPasien(data.getString("nama_pasien"));
+                    }
+                    if (!data.isNull("nomor_rm")){
+                        finalResponse.setNomorRm(data.getString("nomor_rm"));
+                    }
+                    if (!data.isNull("umur_tahun")){
+                        finalResponse.setUmurTahun(data.getInt("umur_tahun"));
+                    }
+                    if (!data.isNull("umur_hari")){
+                        finalResponse.setUmurHari(data.getString("umur_hari"));
+                    }
+                    if (!data.isNull("tarif_poli_eks")){
+                        finalResponse.setTarifPoliEks(data.getString("tarif_poli_eks"));
+                    }
+                    if (!data.isNull("nama_dokter")){
+                        finalResponse.setNamaDokter(data.getString("nama_dokter"));
+                    }
+                    if (!data.isNull("nomor_sep")){
+                        finalResponse.setNomorSep(data.getString("nomor_sep"));
+                    }
+                    if (!data.isNull("nomor_kartu")){
+                        finalResponse.setNomorKartu(data.getString("nomor_kartu"));
+                    }
+                    if (!data.isNull("payor_id")){
+                        finalResponse.setPayorId(data.getString("payor_id"));
+                    }
+                    if (!data.isNull("payor_nm")){
+                        finalResponse.setPayorNm(data.getString("payor_nm"));
+                    }
+                    if (!data.isNull("coder_nik")){
+                        finalResponse.setCoderNik(data.getString("coder_nik"));
+                    }
+                    if (!data.isNull("coder_nm")){
+                        finalResponse.setCoderNm(data.getString("coder_nm"));
+                    }
+                    if (!data.isNull("patient_id")){
+                        finalResponse.setPatientId(data.getString("patient_id"));
+                    }
+                    if (!data.isNull("admission_id")){
+                        finalResponse.setAdmissionId(data.getString("admission_id"));
+                    }
+                    if (!data.isNull("hospital_admission_id")){
+                        finalResponse.setHospitalAdmissionId(data.getString("hospital_admission_id"));
+                    }
+                    if (!data.isNull("grouping_count")){
+                        finalResponse.setGroupingCount(data.getString("grouping_count"));
+                    }
 
-                    JSONObject grouper = response.getJSONObject("grouper");
+                    JSONObject grouper = data.getJSONObject("grouper");
                     JSONObject responseGrouper = grouper.getJSONObject("response");
                     JSONObject cbg = responseGrouper.getJSONObject("cbg");
-                    finalResponse.setCbgCode(cbg.getString("code"));
-                    finalResponse.setCbgDescription(cbg.getString("description"));
-                    finalResponse.setCbgTarif(cbg.getString("tariff"));
+                    if (!cbg.isNull("code")){
+                        finalResponse.setCbgCode(cbg.getString("code"));
+                    }
+                    if (!cbg.isNull("description")){
+                        finalResponse.setCbgDescription(cbg.getString("description"));
+                    }
+                    if (!cbg.isNull("tariff")){
+                        finalResponse.setCbgTarif(cbg.getString("tariff"));
+                    }
 
                     List<Grouping2SpesialCmgResponse> grouping2SpesialCmgResponseList = new ArrayList<>();
-                    JSONArray listSpecialCmg = responseGrouper.getJSONArray("special_cmg");
+                    /*JSONArray listSpecialCmg = responseGrouper.getJSONArray("special_cmg");
                     int lengthSpecialCmg = listSpecialCmg.length();
                     for (int i=0;i<lengthSpecialCmg;i++) {
                         JSONObject obj= listSpecialCmg.getJSONObject(i);
                         Grouping2SpesialCmgResponse dataSpecialCmg = new Grouping2SpesialCmgResponse();
-                        dataSpecialCmg.setCode(obj.getString("code"));
-                        dataSpecialCmg.setDescription(obj.getString("description"));
-                        dataSpecialCmg.setTarif(obj.getString("tariff"));
-                        dataSpecialCmg.setType(obj.getString("type"));
+                        if (!obj.isNull("code")){
+                            dataSpecialCmg.setCode(obj.getString("code"));
+                        }
+                        if (!obj.isNull("description")){
+                            dataSpecialCmg.setDescription(obj.getString("description"));
+                        }
+                        if (!obj.isNull("tariff")){
+                            dataSpecialCmg.setTarif(obj.getString("tariff"));
+                        }
+                        if (!obj.isNull("type")){
+                            dataSpecialCmg.setType(obj.getString("type"));
+                        }
                         grouping2SpesialCmgResponseList.add(dataSpecialCmg);
-                    }
+                    }*/
                     finalResponse.setGrouping2SpesialCmgResponseList(grouping2SpesialCmgResponseList);
 
                     finalResponse.setInaCbgVersion(responseGrouper.getString("inacbg_version"));
 
                     List<Grouping1TarifAltResponse> grouping1TarifAltResponseList = new ArrayList<>();
-                    JSONArray listTarifAlt = responseGrouper.getJSONArray("grouper");
+                    /*JSONArray listTarifAlt = responseGrouper.getJSONArray("grouper");
                     int lengthTarifAlt = listTarifAlt.length();
                     for (int i=0;i<lengthTarifAlt;i++) {
                         JSONObject obj= listTarifAlt.getJSONObject(i);
                         Grouping1TarifAltResponse dataTarifAlt = new Grouping1TarifAltResponse();
-                        dataTarifAlt.setKelas(obj.getString("kelas"));
-                        dataTarifAlt.setTarifInacbg(obj.getString("tarif_inacbg"));
-                        dataTarifAlt.setTarifSp(obj.getString("tarif_sp"));
-                        dataTarifAlt.setTarifSr(obj.getString("tarif_sr"));
+                        if (!obj.isNull("kelas")){
+                            dataTarifAlt.setKelas(obj.getString("kelas"));
+                        }
+                        if (!obj.isNull("tarif_inacbg")){
+                            dataTarifAlt.setTarifInacbg(obj.getString("tarif_inacbg"));
+                        }
+                        if (!obj.isNull("tarif_sp")){
+                            dataTarifAlt.setTarifSp(obj.getString("tarif_sp"));
+                        }
+                        if (!obj.isNull("tarif_sr")){
+                            dataTarifAlt.setTarifSr(obj.getString("tarif_sr"));
+                        }
                         grouping1TarifAltResponseList.add(dataTarifAlt);
-                    }
+                    }*/
                     finalResponse.setGrouping1TarifAltResponseList(grouping1TarifAltResponseList);
 
-                    finalResponse.setKemenkesDcStatusCd(data.getString("kemenkes_dc_status_cd"));
-                    finalResponse.setKemenkesDcSentDttm(data.getString("kemenkes_dc_sent_dttm"));
-                    finalResponse.setBpjsDcStatusCd(data.getString("bpjs_dc_status_cd"));
-                    finalResponse.setBpjsDcSentDttm(data.getString("bpjs_dc_sent_dttm"));
-                    finalResponse.setKlaimStatusCd(data.getString("klaim_status_cd"));
-                    finalResponse.setBpjsKlaimStatusCd(data.getString("bpjs_klaim_status_cd"));
-                    finalResponse.setBpjsKlaimStatusNm(data.getString("bpjs_klaim_status_nm"));
+                    if (!data.isNull("kemenkes_dc_status_cd")){
+                        finalResponse.setKemenkesDcStatusCd(data.getString("kemenkes_dc_status_cd"));
+                    }
+                    if (!data.isNull("kemenkes_dc_sent_dttm")){
+                        finalResponse.setKemenkesDcSentDttm(data.getString("kemenkes_dc_sent_dttm"));
+                    }
+                    if (!data.isNull("bpjs_dc_status_cd")){
+                        finalResponse.setBpjsDcStatusCd(data.getString("bpjs_dc_status_cd"));
+                    }
+                    if (!data.isNull("bpjs_dc_sent_dttm")){
+                        finalResponse.setBpjsDcSentDttm(data.getString("bpjs_dc_sent_dttm"));
+                    }
+                    if (!data.isNull("klaim_status_cd")){
+                        finalResponse.setKlaimStatusCd(data.getString("klaim_status_cd"));
+                    }
+                    if (!data.isNull("bpjs_klaim_status_cd")){
+                        finalResponse.setBpjsKlaimStatusCd(data.getString("bpjs_klaim_status_cd"));
+                    }
+                    if (!data.isNull("bpjs_klaim_status_nm")){
+                        finalResponse.setBpjsKlaimStatusNm(data.getString("bpjs_klaim_status_nm"));
+                    }
 
                     logger.info("[EklaimBoImpl.detailPerKlaimEklaim] : "+metaData.getString("message"));
                 }else{

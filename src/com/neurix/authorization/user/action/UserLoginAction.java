@@ -3,6 +3,8 @@ package com.neurix.authorization.user.action;
 import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -37,7 +39,54 @@ public class UserLoginAction extends ActionSupport {
     private boolean flagSignUp = false;
     private String userPhotoUrl;
     private UserBo userBoProxy;
+    private PasienBo pasienBoProxy;
     private boolean redirectSession;
+    private String userId;
+    private String RegTemp;
+    private String VerPas;
+
+    public String getVerPas() {
+        return VerPas;
+    }
+
+    public void setVerPas(String verPas) {
+        VerPas = verPas;
+    }
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
+
+    public void setPasienBoProxy(PasienBo pasienBoProxy) {
+        this.pasienBoProxy = pasienBoProxy;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        UserLoginAction.logger = logger;
+    }
+
+    public UserBo getUserBoProxy() {
+        return userBoProxy;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getRegTemp() {
+        return RegTemp;
+    }
+
+    public void setRegTemp(String regTemp) {
+        RegTemp = regTemp;
+    }
 
     public boolean isRedirectSession() {
         return redirectSession;
@@ -371,6 +420,48 @@ public class UserLoginAction extends ActionSupport {
 
         return "success";
     }
+    public String registerFinger(){
+        logger.info("[BpjsController.registerFinger] start process >>>");
+        String result;
+        result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+"http://localhost:8080/simrs/mobileapi/bpjs?data=finger-register-proses"+";08PB-D59F-8682-C4AA-B348-BYXMK520J01750;";
+        logger.info("[BpjsController.registerFinger] end process <<<");
+        return "finger";
+    }
+    public void prosesRegisterFinger(){
+        logger.info("[BpjsController.registerFingerProses] start process >>>");
+        logger.info(RegTemp);
+        String[] data = RegTemp.split(";");
+        String vStamp=data[0];
+        String sn=data[1];
+        String userId=data[2];
+        String regTemp=data[3];
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        pasienBo.saveEditFinger(userId,regTemp,sn,vStamp);
+        logger.info("[BpjsController.registerFingerProses] end process <<<");
+    }
+
+    public String loginFinger(){
+        logger.info("[BpjsController.loginFinger] start process >>>");
+        String result;
+        result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+"http://localhost:8080/simrs/mobileapi/bpjs?data=finger-register-proses"+";08PB-D59F-8682-C4AA-B348-BYXMK520J01750;";
+        logger.info("[BpjsController.loginFinger] end process <<<");
+        return "finger";
+    }
+    public void prosesLoginFinger(){
+        logger.info("[BpjsController.prosesLoginFinger] start process >>>");
+        logger.info(VerPas);
+        String[] data = VerPas.split(";");
+        String vStamp=data[0];
+        String sn=data[1];
+        String userId=data[2];
+        String regTemp=data[3];
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        pasienBo.saveEditFinger(userId,regTemp,sn,vStamp);
+        logger.info("[BpjsController.prosesLoginFinger] end process <<<");
+    }
 }
 

@@ -1,4 +1,4 @@
-package com.neurix.simrs.bpjs.eklaim.bo.model;
+package com.neurix.simrs.bpjs.eklaim.model;
 
 public class KlaimDetailRequest {
     private String nomorSep;

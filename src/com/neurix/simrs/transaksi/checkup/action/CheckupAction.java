@@ -58,7 +58,7 @@ public class CheckupAction extends BaseMasterAction {
 
     private HeaderCheckup headerCheckup;
     private String id;
-
+    private String userId;
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
@@ -66,6 +66,14 @@ public class CheckupAction extends BaseMasterAction {
     private File fileUploadDoc;
     private String fileUploadFileNameDoc;
     private String fileUploadContentTypeDoc;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public List<Pelayanan> getListOfApotek() {
         return listOfApotek;
@@ -756,5 +764,14 @@ public class CheckupAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.getListRekamMedic] end process <<<");
         return alertPasienList;
+    }
+
+    public String loginFinger(){
+        logger.info("[CheckupAction.loginFinger] start process >>>");
+        String result="";
+
+
+        logger.info("[CheckupAction.loginFinger] end process <<<");
+        return result;
     }
 }

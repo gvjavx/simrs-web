@@ -24,4 +24,6 @@ public interface PasienBo extends GeneralBo {
     public void saveEditPassword(Pasien bean) throws GeneralBOException;
     public void saveCreateUserPasien(Pasien bean) throws GeneralBOException;
     public Boolean isUserPasienById(String userId, String password) throws GeneralBOException;
+
+    void saveEditFinger(String userId, String regTemp, String sn, String vStamp);
 }
