@@ -128,7 +128,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         }
         logger.info("[DokterBoImpl.getByIdPelayanan] End <<<<<<<<");
         return results;
-    }
+    }cha
 
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
