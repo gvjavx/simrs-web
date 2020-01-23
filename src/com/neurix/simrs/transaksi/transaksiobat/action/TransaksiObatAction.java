@@ -603,10 +603,15 @@ public class TransaksiObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String userLogin = CommonUtil.userLogin();
+
         TransaksiObatDetail obatDetail = new TransaksiObatDetail();
         obatDetail.setIdApprovalObat(idApproval);
         obatDetail.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatDetail.setBranchId(CommonUtil.userBranchLogin());
+        obatDetail.setLastUpdate(time);
+        obatDetail.setLastUpdateWho(userLogin);
 
         try {
             transaksiObatBo.saveApproveResepPoli(obatDetail);

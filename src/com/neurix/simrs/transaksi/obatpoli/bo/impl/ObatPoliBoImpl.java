@@ -461,15 +461,15 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                         obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                         transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
-                    }else if(transaksiObatDetails.size() == 1){
-                        if(transaksiObatDetails.get(0).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                    } else if (transaksiObatDetails.size() == 1){
+                        if (transaksiObatDetails.get(0).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
                             transaksiBatch.add(obatDetail);
-                        }else{
+                        } else {
                             obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                             transaksiObatDetails.add(obatDetail);
                             transaksiBatch.add(obatDetail);
                         }
-                    }else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                    } else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
                         obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i-1).getIdTransaksiObatDetail());
                         transaksiBatch.add(obatDetail);
                     } else {
