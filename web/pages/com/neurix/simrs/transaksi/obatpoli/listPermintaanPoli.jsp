@@ -256,6 +256,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -341,13 +362,13 @@
                     bijiPerLembar = item.bijiPerLembar;
                 });
 
-                $('#save_app').attr('onclick', 'saveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
+                $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
                 $('#body_approve').html(table);
             }
         });
     }
 
-    function saveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan) {
+    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan) {
 
         var data = $('#tabel_approve').tableToJSON();
         var total = "";
@@ -415,27 +436,8 @@
         if (qtyApp > 0) {
 
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
-
-                dwr.engine.setAsync(true);
-                $('#load_app').show();
-                $('#save_app').hide();
-                PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {
-                    callback: function (response) {
-                        if (response == "success") {
-                            $('#load_app').hide();
-                            $('#save_app').show();
-                            $('#modal-approve').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#qtyApp' + idObat).text(qtyApp);
-                            $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                        } else {
-                            $('#load_app').hide();
-                            $('#save_app').show();
-                            $('#warning_app').show().fadeOut(5000);
-                            $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
-                        }
-                    }
-                });
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\''+qtyApp+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -444,6 +446,30 @@
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Qty Approve tidak boleh kosong..!");
         }
+    }
+
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp){
+        $('#modal-confirm-dialog').modal('hide');
+        dwr.engine.setAsync(true);
+        $('#load_app').show();
+        $('#save_app').hide();
+        PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    $('#load_app').hide();
+                    $('#save_app').show();
+                    $('#modal-approve').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#qtyApp' + idObat).text(qtyApp);
+                    $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                } else {
+                    $('#load_app').hide();
+                    $('#save_app').show();
+                    $('#warning_app').show().fadeOut(5000);
+                    $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
+                }
+            }
+        });
     }
 
     function cekIdBarang(id, valueIdBarang) {

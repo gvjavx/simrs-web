@@ -164,12 +164,9 @@
                                 <td>Nama Obat</td>
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
-                                <td align="center">Satuan Jenis</td>
-                                <td align="right">Harga (Rp.)</td>
-                                <td align="center">Scan ID Pabrikan</td>
-                                <td align="center">Status Obat</td>
-                                <td align="center">Status Approve</td>
-                                <td align="center">No Batch</td>
+                                <td align="center">Harga (Rp.)</td>
+                                <td width="21%" align="center">Scan ID Pabrikan</td>
+                                <td>Satuan Jenis</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -181,45 +178,51 @@
                                             value="qty"/></span></td>
                                     <td align="center"><span id='qtyApprove<s:property value="idObat"/>'><s:property
                                             value="sumQtyApprove"/></span></td>
-                                    <td align="center"><s:property value="jenisSatuan"/></td>
                                     <td align="right">
                                         <script> document.write(formatRupiah('<s:property value="hargaPo"/>'));</script>
                                     </td>
-                                    <td align="center">
+                                    <td>
                                         <%--<s:if test='#row.idPabrik != null && #row.idPabrik != "" '>--%>
                                         <%--<span id='idPabrik<s:property value="idObat"/>'><s:property--%>
                                                 <%--value="idPabrik"/></span>--%>
                                     <%--</s:if>--%>
                                         <%--<s:else>--%>
                                             <s:if test='#row.isFullOfQty == "Y"'>
+
                                                 <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
-                                                       style="width: 150px" disabled id='pabrik<s:property value="idObat"/>'>
+                                                       disabled id='pabrik<s:property value="idObat"/>'>
                                             </s:if>
                                             <s:else>
+                                            <div class="input-group">
                                                 <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
-                                                       style="width: 150px" id='pabrik<s:property value="idObat"/>'>
+                                                       id='pabrik<s:property value="idObat"/>'>
+                        <div class="input-group-addon">
+                            <span id='status<s:property value="idObat"/>'></span>
+                        </div>
+                    </div>
                                             </s:else>
                                         <%--</s:else>--%>
                                     </td>
-                                    <td align="center">
-                                        <s:if test='#row.flagDiterima == "Y"'>
-                                            <span class="label label-success">Sesuai</span>
-                                        </s:if>
-                                        <s:if test='#row.flagDiterima == "N"'>
-                                            <span class="label label-danger">Tidak Sesuai</span>
-                                        </s:if>
-                                        <span id='status<s:property value="idObat"/>'></span></td>
-                                    <td align="center">
-                                        <s:if test='#row.flagDiterima == "Y"'>
-                                            <span class="label label-success">Setuju</span>
-                                        </s:if>
-                                        <s:if test='#row.flagDiterima == "N"'>
-                                            <span class="label label-warning">Dibuatkan obat baru</span>
-                                        </s:if>
-                                        <s:if test='#row.flagDiterima == "X"'>
-                                            <span class="label label-danger">Tidak Setuju</span>
-                                        </s:if>
-                                    </td>
+                                    <td><s:property value="jenisSatuan"/></td>
+                                    <%--<td align="center">--%>
+                                        <%--<s:if test='#row.flagDiterima == "Y"'>--%>
+                                            <%--<span class="label label-success">Sesuai</span>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:if test='#row.flagDiterima == "N"'>--%>
+                                            <%--<span class="label label-danger">Tidak Sesuai</span>--%>
+                                        <%--</s:if>--%>
+                                        <%--<span id='status<s:property value="idObat"/>'></span></td>--%>
+                                    <%--<td align="center">--%>
+                                        <%--<s:if test='#row.flagDiterima == "Y"'>--%>
+                                            <%--<span class="label label-success">Setuju</span>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:if test='#row.flagDiterima == "N"'>--%>
+                                            <%--<span class="label label-warning">Dibuatkan obat baru</span>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:if test='#row.flagDiterima == "X"'>--%>
+                                            <%--<span class="label label-danger">Tidak Setuju</span>--%>
+                                        <%--</s:if>--%>
+                                    <%--</td>--%>
                                         <%--<td align="center"><span id='qtyDefault<s:property value="idObat"/>'></span><input--%>
                                         <%--value='<s:property value="qty"/>' type="number" class="form-control"--%>
                                         <%--style="width: 150px; display: none"--%>
@@ -232,9 +235,9 @@
                                         <%--id='hapus<s:property value="idObat"/>' class="hvr-grow"--%>
                                         <%--src="<s:url value="/pages/images/cnacel-flat.png"/>"--%>
                                         <%--style="cursor: pointer; height: 25px; width: 25px; display: none"></td>--%>
-                                    <td>
-                                        <s:property value="noBatch"/>
-                                    </td>
+                                    <%--<td>--%>
+                                        <%--<s:property value="noBatch"/>--%>
+                                    <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -610,8 +613,33 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+            </h4>
+        </div>
+        <div class="modal-body">
+            <h4>Do you want save this record?</h4>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+            </button>
+            <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+        </div>
+    </div>
+</div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    function tes() {
+        $('#modal-confirm-dialog').modal('show');
+    }
 
     var idApprovalObat = $('#id_approval').val();
 
@@ -641,14 +669,13 @@
         var status = false;
         $('#warning_fisik').html('');
         if (id != '' && value != '') {
-            $('#status' + id).html('<img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px;">');
+            $('#status' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             dwr.engine.setAsync(true);
             PermintaanVendorAction.checkFisikObat(id, value, lembarPerBox, bijiPerlembar, {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
-                        $('#status' + id).html("Sesuai").addClass("label label-success");
-//                        $('#pabrik' + id).attr('readonly', true).blur();
+                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                         $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
@@ -658,15 +685,8 @@
                         $('#save_approve').show();
                         $('#load_approve').hide();
                         $('#modal-approve').modal('show');
-//                        $('#qtyDefault' + id).html(qty);
-//                        $('#tombol' + id).show().attr('onclick', 'editQty(\'' + id + '\')');
                     } else if (response.status == "new") {
-//                        $('#pabrik' + id).attr('readonly', true).blur();
-                        $('#status' + id).html("Tidak Sesuai").addClass("label label-danger");
-                        <%--var url = '<s:url value="/pages/images/new-flat-plus.png"/>';--%>
-                        <%--$('#tombol' + id).attr('onclick', 'showModal(\'' + id + '\')');--%>
-                        <%--$('#tombol' + id).show().attr('src', url);--%>
-                        <%--$('#hapus' + id).show();--%>
+                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                         $('#cancel_confirm').show();
                         $('#load_confirm').hide();
                         $('#modal-confirm').modal('show');
@@ -677,8 +697,7 @@
                                     '<h4><i class="icon fa fa-ban"></i> Warning!</h4>'+
                                         response.message +
                                     '</div>';
-                        $('#status' + id).html("Sesuai").addClass("label label-success");
-//                        $('#pabrik' + id).attr('readonly', true).blur();
+                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                         $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
@@ -692,6 +711,8 @@
                     }
                 }
             });
+        }else{
+            $('#status' + id).html('');
         }
     }
 
