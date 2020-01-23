@@ -461,9 +461,16 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                         obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                         transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
-                    } else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                    }else if(transaksiObatDetails.size() == 1){
+                        if(transaksiObatDetails.get(0).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                            transaksiBatch.add(obatDetail);
+                        }else{
+                            obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                            transaksiObatDetails.add(obatDetail);
+                            transaksiBatch.add(obatDetail);
+                        }
+                    }else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
                         obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i-1).getIdTransaksiObatDetail());
-                        transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
                     } else {
                         obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
@@ -1886,6 +1893,32 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         }
         logger.info("[ObatPoliBoImpl.getListObatDetailRequest] END >>>>>>>>>>");
         return permintaanObatPoliList;
+    }
+
+    @Override
+    public void updateDiterimaFlagBatch(TransaksiObatBatch bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.updateDiterimaFlagBatch] START >>>>>>>>>>");
+        MtSimrsTransaksiObatDetailBatchEntity entity = new MtSimrsTransaksiObatDetailBatchEntity();
+
+        try {
+            entity = batchDao.getById("id", bean.getId());
+        }catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when search by id batch. ", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when search by id batch. ", e);
+        }
+
+        if(entity != null){
+
+            entity.setDiterimaFlag(bean.getDiterimaFlag());
+
+            try {
+                batchDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                logger.error("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when update flag diterima batch. ", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when update flag diterima batch. ", e);
+            }
+        }
+        logger.info("[ObatPoliBoImpl.updateDiterimaFlagBatch] END >>>>>>>>>>");
     }
 
     private List<MtSimrsTransaksiObatDetailBatchEntity> getListEntityBatchByCriteria(TransaksiObatBatch bean) throws GeneralBOException {
