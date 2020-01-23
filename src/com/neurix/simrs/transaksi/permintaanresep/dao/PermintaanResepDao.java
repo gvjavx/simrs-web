@@ -35,6 +35,9 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         if (mapCriteria.get("id_detail_checkup") != null){
             criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
         }
+        if (mapCriteria.get("branch_id") != null){
+            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+        }
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
