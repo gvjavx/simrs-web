@@ -760,7 +760,6 @@
                             $('#warning_bentuk').show().fadeOut(5000);
                             $('#msg_bentuk').text(pesan);
                         } else {
-//                            $('#req_jenis_satuan').attr('disabled', true);
                             var row = '<tr id=' + id + '>' +
                                     '<td>' + id + '</td>' +
                                     '<td>' + nama + '</td>' +

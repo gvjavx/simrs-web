@@ -144,6 +144,9 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
+                                        <a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">
+                                            <i class="fa fa-plus"></i> Beli Obat
+                                        </a>
                                         <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>

@@ -338,6 +338,9 @@
                     } else if (diffDays < 30) {
                         warna = '#eea236';
                         color = 'white';
+                    }else {
+                        warna = '#fff';
+                        color = '#333';
                     }
 
                     table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +

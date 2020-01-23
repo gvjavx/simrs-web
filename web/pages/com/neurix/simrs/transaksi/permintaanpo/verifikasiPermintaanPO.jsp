@@ -681,7 +681,7 @@
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
+                        $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
                         $('#save_approve').show();
                         $('#load_approve').hide();
                         $('#modal-approve').modal('show');
@@ -703,7 +703,7 @@
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
                         $('#app_qty_app').val(qty);
-                        $('#save_approve').attr('onclick', 'saveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
+                        $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
                         $('#save_approve').show();
                         $('#warning_fisik').html(warn);
                         $('#load_approve').hide();
@@ -716,7 +716,7 @@
         }
     }
 
-    function saveApprove(id, idDetail, idPabrik, noBt) {
+    function confirmSaveApprove(id, idDetail, idPabrik, noBt) {
 
         var qtyReq = $('#app_qty').val();
         var qty = $('#app_qty_app').val();
@@ -735,29 +735,8 @@
 
         if(qty != '' && lembarPerBox != '' && bijiPerLembar != '' && expired != ''){
             if(parseInt(qty) <= parseInt(qtyReq)) {
-                $('#save_approve').hide();
-                $('#load_approve').show();
-                dwr.engine.setAsync(true);
-                PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBt, expired, function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-approve').modal('hide');
-                        $('#approve' + id).html("Setuju").addClass("label label-success");
-                        totalQtyApp = parseInt(qtyApprove) + parseInt(qty);
-                        if(parseInt(totalQtyApp) == parseInt(qtyReq)){
-                            $('#pabrik' + id).attr('readonly', true).blur();
-                        }else{
-                            $('#pabrik' + id).val('');
-                        }
-                        $('#qtyApprove' + id).text(totalQtyApp);
-                        $('#info_dialog').dialog('open');
-                    } else {
-                        $('#save_obat').show();
-                        $('#load_obat').hide();
-                        $('#warning_obat').show().fadeOut(5000);
-                        $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
-                    }
-                })
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveApprove(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + idPabrik + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + noBt + '\',\'' + expired + '\',\'' + totalQtyApp + '\',\'' + qtyReq + '\',\'' + qtyApprove + '\')');
             }else{
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text('Qty Approve tidak boleh melebihi qty request');
@@ -778,6 +757,33 @@
                 $('#war_app_biji_perlembar').show();
             }
         }
+    }
+
+    function saveApprove(id, idDetail, qty, idPabrik, lembarPerBox, bijiPerLembar, noBt, expired, totalQtyApp, qtyReq, qtyApprove){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_approve').hide();
+        $('#load_approve').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveUpdateListObat(idDetail, qty, idPabrik, "Y", lembarPerBox, bijiPerLembar, noBt, expired, function (response) {
+            if (response == "success") {
+                dwr.engine.setAsync(false);
+                $('#modal-approve').modal('hide');
+                $('#approve' + id).html("Setuju").addClass("label label-success");
+                totalQtyApp = parseInt(qtyApprove) + parseInt(qty);
+                if(parseInt(totalQtyApp) == parseInt(qtyReq)){
+                    $('#pabrik' + id).attr('readonly', true).blur();
+                }else{
+                    $('#pabrik' + id).val('');
+                }
+                $('#qtyApprove' + id).text(totalQtyApp);
+                $('#info_dialog').dialog('open');
+            } else {
+                $('#save_obat').show();
+                $('#load_obat').hide();
+                $('#warning_obat').show().fadeOut(5000);
+                $('#obat_error').text("Terjadi kesalahan ketika proses simpan ke database..!");
+            }
+        })
     }
 
     function saveNotApprove(id, idDetail, idPabrik) {

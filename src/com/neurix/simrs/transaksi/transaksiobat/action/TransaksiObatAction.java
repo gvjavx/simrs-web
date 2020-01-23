@@ -228,23 +228,23 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-//        session = ServletActionContext.getRequest().getSession();
-//        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
+        session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
-        // hitung total bayar
-//        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-//        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
-//
-//        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-//        setTransaksiObatDetail(transaksiObatDetail);
-//
-//        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
-//
-//        if (jml != null && !jml.equals(0)) {
-//            transaksiObatDetail.setTotalBayar(jml);
-//        } else {
-//            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-//        }
+//         hitung total bayar
+        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+
+        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+        setTransaksiObatDetail(transaksiObatDetail);
+
+        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
+
+        if (jml != null && !jml.equals(0)) {
+            transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+        }
 
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdPermintaanResep(id);
@@ -534,7 +534,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                 logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
                 addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
             }
-
             logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
             return obatPoliList;
         } else {
@@ -629,6 +628,14 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
         return response;
+    }
+
+    public String pembelianObat(){
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        setTransaksiObatDetail(transaksiObatDetail);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        return "init_pembelian_obat";
     }
 
     @Override
