@@ -129,7 +129,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo{
         }
         logger.info("[DokterBoImpl.getByIdPelayanan] End <<<<<<<<");
         return results;
-    }cha
+    }
 
     @Override
     public boolean editKuota(String idDokter, String kuota) throws GeneralBOException {
