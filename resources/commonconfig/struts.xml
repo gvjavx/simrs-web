@@ -174,11 +174,14 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/ordergizi/struts/OrderGiziAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/TransaksiObatAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanresep/struts/PermintaanResepAction.xml"/>
-    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanGudangAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/StokObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PenerimaanObatPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanObatGudangAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/IgdAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/ResepPoliAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanVendorAction.xml"/>
 
 </struts>

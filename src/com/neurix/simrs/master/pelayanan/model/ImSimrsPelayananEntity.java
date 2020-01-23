@@ -15,6 +15,24 @@ public class ImSimrsPelayananEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isPoli;
+    private String isEksekutif;
+
+    public String getIsPoli() {
+        return isPoli;
+    }
+
+    public void setIsPoli(String isPoli) {
+        this.isPoli = isPoli;
+    }
+
+    public String getIsEksekutif() {
+        return isEksekutif;
+    }
+
+    public void setIsEksekutif(String isEksekutif) {
+        this.isEksekutif = isEksekutif;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

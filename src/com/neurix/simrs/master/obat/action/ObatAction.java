@@ -5,6 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -120,11 +122,13 @@ public class ObatAction extends BaseMasterAction {
 
     @Override
     public String initForm(){
+        logger.info("[ObatAction.initForm] START >>>>>>>");
 
-        Obat obat = new Obat();
-        obat.setFlag("Y");
-        setObat(obat);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
 
+        setObat(new Obat());
+        logger.info("[ObatAction.initForm] END <<<<<<<");
         return "search";
     }
 
@@ -212,42 +216,59 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public String saveObat(String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty){
+    public CheckObatResponse saveObat(String namaObat, List <String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
         logger.info("[ObatAction.saveObatInap] start process >>>");
+
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        String userArea = CommonUtil.userBranchLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        Obat obat = new Obat();
+        obat.setNamaObat(namaObat);
+        obat.setMerk(merek);
+        obat.setIdPabrik(pabrik);
+        obat.setQtyBox(box);
+        obat.setLembarPerBox(lembarBox);
+        obat.setQtyLembar(lembar);
+        obat.setBijiPerLembar(bijiLembar);
+        obat.setQtyBiji(biji);
+        obat.setAverageHargaBox(hargaBox);
+        obat.setAverageHargaLembar(hargaLembar);
+        obat.setAverageHargaBiji(hargaBiji);
+        obat.setCreatedDate(updateTime);
+        obat.setCreatedWho(userLogin);
+        obat.setLastUpdate(updateTime);
+        obat.setLastUpdateWho(userLogin);
+        obat.setBranchId(userArea);
+        obat.setFlag("Y");
+        obat.setAction("C");
+
         try {
-            String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
+        }catch (GeneralBOException e){
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] "+e.getMessage());
+        }
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
-
-            Obat obat = new Obat();
-            obat.setNamaObat(namaObat);
-            obat.setHarga(harga);
-            obat.setQty(qty);
-            obat.setCreatedDate(updateTime);
-            obat.setCreatedWho(userLogin);
-            obat.setLastUpdate(updateTime);
-            obat.setLastUpdateWho(userLogin);
-            obat.setBranchId(userArea);
-            obat.setFlag("Y");
-            obat.setAction("C");
-
-            obatBo.saveAdd(obat, jenisObat);
-
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+        if("success".equalsIgnoreCase(checkObatResponse.getStatus())){
+            try {
+                obatBo.saveAdd(obat, jenisObat);
+            }catch (GeneralBOException e) {
+                checkObatResponse.setStatus("error");
+                logger.error("[ObatInapAction.saveObatInap] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
+                checkObatResponse.setMessage("[ERROR] "+e.getMessage());
+            }
         }
 
         logger.info("[ObatAction.saveObatInap] end process >>>");
-        return SUCCESS;
+
+        return checkObatResponse;
     }
 
-    public String editObat(String idObat, String namaObat, List<String> jenisObat, BigInteger harga, BigInteger qty, String flag){
+    public String editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji){
         logger.info("[ObatAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -260,12 +281,17 @@ public class ObatAction extends BaseMasterAction {
             Obat obat = new Obat();
             obat.setIdObat(idObat);
             obat.setNamaObat(namaObat);
-            obat.setHarga(harga);
-            obat.setQty(qty);
+            obat.setQtyBox(box);
+            obat.setQtyLembar(lembar);
+            obat.setQtyBiji(biji);
+            obat.setLembarPerBox(lembarBox);
+            obat.setBijiPerLembar(bijiLembar);
+            obat.setAverageHargaBox(hargaBox);
+            obat.setAverageHargaLembar(hargaLembar);
+            obat.setAverageHargaBiji(hargaBiji);
             obat.setLastUpdate(updateTime);
             obat.setLastUpdateWho(userLogin);
             obat.setBranchId(userArea);
-            obat.setFlag(flag);
             obat.setAction("U");
 
             obatBo.saveEdit(obat, jenisObat);
@@ -318,7 +344,7 @@ public class ObatAction extends BaseMasterAction {
         obat.setFlag("Y");
 
         try {
-            obatList = obatBoProxy.getByCriteria(obat);
+            obatList = obatBoProxy.getListObatGroup(obat);
         }catch (GeneralBOException e){
             logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
         }

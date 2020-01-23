@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 public class ObatPoliPk implements Serializable {
 
-    private String idObat;
+    private String idBarang;
     private String idPelayanan;
 
-    public String getIdObat() {
-        return idObat;
+    public String getIdBarang() {
+        return idBarang;
     }
 
-    public void setIdObat(String idObat) {
-        this.idObat = idObat;
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
     }
 
     public String getIdPelayanan() {

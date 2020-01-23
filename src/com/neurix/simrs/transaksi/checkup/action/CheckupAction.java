@@ -11,7 +11,10 @@ import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
+import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.apache.commons.io.FileUtils;
@@ -19,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -50,6 +54,7 @@ public class CheckupAction extends BaseMasterAction {
 
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
+    private List<Pelayanan> listOfApotek = new ArrayList<>();
 
     private HeaderCheckup headerCheckup;
     private String id;
@@ -57,6 +62,28 @@ public class CheckupAction extends BaseMasterAction {
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
+
+    private File fileUploadDoc;
+    private String fileUploadDocFileName;
+    private String fileUploadDocContentType;
+
+    public List<Pelayanan> getListOfApotek() {
+        return listOfApotek;
+    }
+
+    public void setListOfApotek(List<Pelayanan> listOfApotek) {
+        this.listOfApotek = listOfApotek;
+    }
+
+    public File getFileUploadDoc() {
+        return fileUploadDoc;
+    }
+
+    public void setFileUploadDoc(File fileUploadDoc) {
+        this.fileUploadDoc = fileUploadDoc;
+    }
+
+
 
     public File getFileUpload() {
         return fileUpload;
@@ -90,6 +117,21 @@ public class CheckupAction extends BaseMasterAction {
         this.checkupDetailBoProxy = checkupDetailBoProxy;
     }
 
+    public String getFileUploadDocFileName() {
+        return fileUploadDocFileName;
+    }
+
+    public void setFileUploadDocFileName(String fileUploadDocFileName) {
+        this.fileUploadDocFileName = fileUploadDocFileName;
+    }
+
+    public String getFileUploadDocContentType() {
+        return fileUploadDocContentType;
+    }
+
+    public void setFileUploadDocContentType(String fileUploadDocContentType) {
+        this.fileUploadDocContentType = fileUploadDocContentType;
+    }
 
     @Override
     public String getId() {
@@ -360,13 +402,40 @@ public class CheckupAction extends BaseMasterAction {
                             FileUtils.copyFile(this.fileUpload, fileToCreate);
                             logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
                             checkup.setUrlKtp(fileName);
-                            checkupBoProxy.saveAdd(checkup);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
                     }
                 }
             }
+
+            if (this.fileUploadDoc != null) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
+                    if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
+
+                        // file name
+                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadDocFileName;
+
+                        // deklarasi path file
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
+                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+
+                        // persiapan pemindahan file
+                        File fileToCreate = new File(filePath, fileName);
+
+                        try {
+                            // pemindahan file
+                            FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
+                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+                            checkup.setUrlDocRujuk(fileName);
+                        } catch (IOException e) {
+                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            checkupBoProxy.saveAdd(checkup);
 
         }catch (GeneralBOException e) {
             Long logId = null;
@@ -410,6 +479,20 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfPelayanan.addAll(pelayananList);
+        return "init_add";
+    }
+
+    public String getComboApotek(){
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = pelayananBoProxy.getListApotek();
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfApotek.addAll(pelayananList);
         return "init_add";
     }
 
@@ -535,6 +618,130 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveEdit] end process >>>");
         return "search";
 
+    }
+
+    public AlertPasien initAlertPasien(String idPasien){
+        logger.info("[CheckupAction.getAlertPasien] start process >>>");
+
+        AlertPasien alertPasien = new AlertPasien();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            alertPasien = checkupBo.getAlertPasien(idPasien,"");
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.initAlertPasien] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getAlertPasien] end process <<<");
+        return alertPasien;
+    }
+
+    public String savePenunjangPasien(String tinggi, String beratBadan, String noCheckup){
+        logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+        headerCheckup.setTinggi(tinggi);
+        headerCheckup.setBerat(beratBadan);
+        headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            checkupBo.updatePenunjang(headerCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.savePenunjangPasien] ERROR "+e.getMessage());
+            return e.getMessage();
+        }
+
+        logger.info("[CheckupAction.savePenunjangPasien] end process <<<");
+        return "success";
+    }
+
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup){
+        logger.info("[CheckupAction.getListAlergi] start process >>>");
+
+        List<ItSImrsCheckupAlergiEntity> listAlergi = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            listAlergi = checkupBo.getListAlergi(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListAlergi] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListAlergi] end process <<<");
+        return listAlergi;
+    }
+
+    public String saveAddAlergi(String alergi, String noCheckup){
+        logger.info("[CheckupAction.saveAddAlergi] start process >>>");
+
+        CheckupAlergi checkupAlergi = new CheckupAlergi();
+        checkupAlergi.setNoCheckup(noCheckup);
+        checkupAlergi.setAlergi(alergi);
+        checkupAlergi.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        checkupAlergi.setLastUpdateWho(CommonUtil.userLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            checkupBo.saveAddAlergi(checkupAlergi);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.saveAddAlergi] ERROR "+e.getMessage());
+            return e.getMessage();
+        }
+
+        logger.info("[CheckupAction.saveAddAlergi] end process <<<");
+        return "success";
+    }
+
+    public String saveEditAlergi(String alergi, String idAlergi){
+        logger.info("[CheckupAction.saveEditAlergi] start process >>>");
+
+        CheckupAlergi checkupAlergi = new CheckupAlergi();
+        checkupAlergi.setIdAlergi(idAlergi);
+        checkupAlergi.setAlergi(alergi);
+        checkupAlergi.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        checkupAlergi.setLastUpdateWho(CommonUtil.userLogin());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            checkupBo.saveEditAlergi(checkupAlergi);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.saveEditAlergi] ERROR "+e.getMessage());
+            return e.getMessage();
+        }
+
+        logger.info("[CheckupAction.saveEditAlergi] end process <<<");
+        return "success";
+    }
+
+    public List<AlertPasien> listRekamMedic(String idPasien){
+        logger.info("[CheckupAction.getListRekamMedic] start process >>>");
+
+        List<AlertPasien> alertPasienList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            alertPasienList = checkupBo.listOfRekamMedic(idPasien);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListRekamMedic] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListRekamMedic] end process <<<");
+        return alertPasienList;
     }
 
 }

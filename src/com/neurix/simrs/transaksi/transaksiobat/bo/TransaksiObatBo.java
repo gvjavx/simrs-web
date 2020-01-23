@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.transaksiobat.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 
 import java.util.List;
@@ -14,4 +16,10 @@ public interface TransaksiObatBo {
 
     public List<TransaksiObatDetail> getByCriteria(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveEditDetail(TransaksiObatDetail bean) throws GeneralBOException;
+
+    public List<PermintaanResep> getListResepPasien(PermintaanResep bean) throws GeneralBOException;
+    public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException;
+    public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException;
+    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException;
+    public void saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException;
 }

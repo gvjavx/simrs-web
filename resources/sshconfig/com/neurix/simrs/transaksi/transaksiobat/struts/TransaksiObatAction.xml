@@ -74,6 +74,7 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/transaksiobat/searchTransaksiObat.jsp</result>
+            <result name="init_bayar">/pages/com/neurix/simrs/transaksi/transaksiobat/prosesTransaksiObat.jsp</result>
 
         </action>
 

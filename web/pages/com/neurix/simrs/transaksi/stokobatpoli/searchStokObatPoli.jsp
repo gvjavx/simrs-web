@@ -26,6 +26,7 @@
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="se-pre-con"></div>
 
 <%@ include file="/pages/common/headerNav.jsp" %>
 
@@ -54,20 +55,28 @@
                         <div class="form-group">
                             <s:form id="stokForm" method="post" namespace="/stokobat"
                                     action="searchStok_stokobat.action" theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Obat</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="obatPoli.idObat" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
+                                                     <%--name="obatPoli.idObat" required="false"--%>
+                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="obatPoli.namaObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <%--<s:textfield id="nama_pasien" name="obatPoli.namaObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                            <s:action id="initComboObatPoli" namespace="/stokobat"
+                                                      name="getListObatPoli_stokobat"/>
+                                            <s:select cssStyle="border-radius: 4px; width: 100%"
+                                                      list="#initComboObatPoli.listOfObatPoli" id="nama_obat"
+                                                      name="obatPoli.idObat" listKey="idObat"
+                                                      listValue="namaObat"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <br>
@@ -81,7 +90,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <button class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Obat</button>
+                                        <%--<button class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Obat</button>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -115,11 +124,15 @@
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
                                                    title="Searching ...">
-                                            Please don't close this window, server is processing your request ...
+                                            Please don't close this window, server is processing your request. . .
                                             <br>
                                             <center>
-                                                <img border="0" style="width: 150px; height: 150px"
-                                                     src="<s:url value="/pages/images/spinner.gif"/>"
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
@@ -143,28 +156,27 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Obat</td>
+                                <td>ID Barang</td>
                                 <td>Nama Obat</td>
-                                <td>Stok</td>
-                                <td>Status</td>
-                                <td align="center">Action</td>
+                                <td>Expired Date</td>
+                                <td align="center">Qty Box</td>
+                                <td align="center">Qty Lembar</td>
+                                <td align="center">Qty Biji</td>
+                                <td align="center">Jml Lembar/Box</td>
+                                <td align="center">Jml Biji/Lembar</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfRawatInap">
                                 <tr>
-                                    <td><s:property value="idObat"/></td>
+                                    <td><s:property value="idBarang"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td><s:property value="qty"/></td>
-                                    <td align="center">
-                                        <img border="0" class="hvr-grow" onclick="showRequestReture(1,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"
-                                                 src="<s:url value="/pages/images/request.png"/>"
-                                                 style="cursor: pointer; height: 25px; width: 25px;">
-                                        <img border="0" class="hvr-grow" onclick="showRequestReture(2,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>')"
-                                             src="<s:url value="/pages/images/return.ico"/>"
-                                             style="cursor: pointer; height: 25px; width: 25px;">
-                                    </td>
+                                    <td><script>var tgl = '<s:property value="expiredDate"/>'; var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);</script></td>
+                                    <td align="center"><s:property value="qtyBox"/></td>
+                                    <td align="center"><s:property value="qtyLembar"/></td>
+                                    <td align="center"><s:property value="qtyBiji"/></td>
+                                    <td align="center"><s:property value="lembarPerBox"/></td>
+                                    <td align="center"><s:property value="bijiPerLembar"/></td>
                                 </tr>
                             </s:iterator>
                             </tbody>

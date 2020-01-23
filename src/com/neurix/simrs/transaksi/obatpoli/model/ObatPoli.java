@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -19,6 +20,90 @@ public class ObatPoli {
     private String lastUpdateWho;
 
     private String branchId;
+
+    private String namaPelayanan;
+
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+    private BigInteger lembarPerBox;
+    private BigInteger bijiPerLembar;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
+
+    private String idPabrik;
+    private Date expiredDate;
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
+    public BigInteger getLembarPerBox() {
+        return lembarPerBox;
+    }
+
+    public void setLembarPerBox(BigInteger lembarPerBox) {
+        this.lembarPerBox = lembarPerBox;
+    }
+
+    public BigInteger getBijiPerLembar() {
+        return bijiPerLembar;
+    }
+
+    public void setBijiPerLembar(BigInteger bijiPerLembar) {
+        this.bijiPerLembar = bijiPerLembar;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
 
     public String getBranchId() {
         return branchId;

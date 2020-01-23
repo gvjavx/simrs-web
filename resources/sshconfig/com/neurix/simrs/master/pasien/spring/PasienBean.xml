@@ -15,6 +15,7 @@
 
     <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
          p:pasienDao-ref="pasienDao"
+         p:provinsiDao-ref="provinsiDao"
     />
 
     <bean id="pasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

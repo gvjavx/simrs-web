@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 
-<TITLE>e-HEALTH</TITLE>
+<TITLE>GO-HEALTH NMU</TITLE>
 <link rel="shortcut icon" href="<s:url value="/pages/images/logo-nmu.webp"/>"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
@@ -31,6 +31,7 @@ apply the skin class to the body tag so the changes take effect.
 <%--<link rel="stylesheet" href="/pages/dist/css/skins/skin-blue.min.css">--%>
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/skins/skin-blue.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/dataTables.bootstrap.min.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/plugins/pace/pace.min.css"/>">
 <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />--%>
 
 <%--<link rel="stylesheet" href="<s:url value="/pages/css/style-form.css"/>">--%>
@@ -43,7 +44,7 @@ apply the skin class to the body tag so the changes take effect.
 
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<%--<![endif]-->--%>
 
 
 <%--<!--<script type='text/javascript' src='<s:url value="/pages/mozilla/dmenu.js"/>'></script>-->--%>
@@ -84,6 +85,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.date.extensions.js"/>"></script>
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
 <script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
+<script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
@@ -246,33 +248,174 @@ apply the skin class to the body tag so the changes take effect.
             opacity: 0;
         }
     }
+
+    .spin {
+        -webkit-animation: rotation 1s infinite linear;
+    }
+
+    @-webkit-keyframes rotation {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+        to {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+
+    <%--.se-pre-con {--%>
+        <%--position: fixed;--%>
+        <%--left: 0px;--%>
+        <%--top: 0px;--%>
+        <%--width: 100%;--%>
+        <%--height: 100%;--%>
+        <%--z-index: 9999;--%>
+        <%--background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;--%>
+        <%--background-size: 100px 100px;--%>
+    <%--}--%>
+    /*.pulse-button {*/
+
+        /*position: relative;*/
+        /*width: 100px;*/
+        /*height: 100px;*/
+        /*border: none;*/
+        /*box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);*/
+        /*border-radius: 50%;*/
+        /*background-color: #e84c3d;*/
+        /*background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/173024/jonathanlarradet_copy.png");*/
+        /*background-size:cover;*/
+        /*background-repeat: no-repeat;*/
+        /*cursor: pointer;*/
+        /*-webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
+        /*-moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
+        /*-ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
+        /*animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
+    /*}*/
+    /*.pulse-button:hover*/
+    /*{*/
+        /*-webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;*/
+    /*}*/
+
+    /*@-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
+    /*@-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
+    /*@-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
+    /*@keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
+
+    @-webkit-keyframes sploosh {
+        0% {
+            box-shadow: 0 0 0 0px rgba(71, 225, 141, .7);
+            background: rgba(71, 225, 141, .7);
+        }
+        80% {
+            background: rgba(66, 166, 223, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 120px rgba(66, 166, 223, 0);
+        }
+    }
+
+    @-webkit-keyframes pulse {
+        0% {
+            -webkit-transform: scale(1);
+        }
+        3.3% {
+            -webkit-transform: scale(1.1);
+        }
+        16.5% {
+            -webkit-transform: scale(1);
+        }
+        33% {
+            -webkit-transform: scale(1.1);
+        }
+        100% {
+            -webkit-transform: scale(1);
+        }
+    }
+
+    .relative {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+    }
+
+    .pull {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 0;
+
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+
+        -webkit-animation: sploosh 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        -webkit-animation-iteration-count: infinite;
+    }
+
+    .pull:nth-child(2) {
+        -webkit-animation-delay: .33s;
+        -webkit-animation-duration: 2.2s;
+    }
+
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script>
+
+    $(window).load(function() {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");
+    });
+
     $( document ).ready(function() {
-        $('#popoverData').popover();
+//        $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
         $('#myTable').DataTable();
         $("#tanggal_lahir").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
         });
 
         $(".datepicker").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
+        });
+
+        $(".datepicker2").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy'
         });
 
         $("#tgl_from, #tgl_to").datepicker({
             autoclose: true,
             dateFormat:'dd-mm-yy'
         });
+
+//        cekSession();
+
     });
+
+    <%--function cekSession(){--%>
+        <%--var persons = '<%= session.getAttribute("user_name") %>';--%>
+        <%--setInterval(function (){--%>
+<%--//            if(null == persons){--%>
+<%--//                logout();--%>
+<%--//            }--%>
+        <%--},1000);--%>
+    <%--}--%>
 
     $(function () {
         $('.select2').select2({});
         //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
+        $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
         //Money Euro
         $('[data-mask]').inputmask()
     });

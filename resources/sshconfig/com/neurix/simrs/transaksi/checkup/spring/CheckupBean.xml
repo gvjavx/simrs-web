@@ -17,6 +17,8 @@
           p:checkupDetailDao-ref="checkupDetailDao"
           p:provinsiDao-ref="provinsiDao"
           p:dokterTeamDao-ref="dokterTeamDao"
+          p:checkupAlergiDao-ref="checkupAlergiDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -41,5 +43,7 @@
     </bean>
 
     <bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="checkupAlergiDao" class="com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

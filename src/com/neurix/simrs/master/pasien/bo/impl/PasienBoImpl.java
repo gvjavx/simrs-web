@@ -1,7 +1,11 @@
 package com.neurix.simrs.master.pasien.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.common.util.CommonUtil;
+
+import com.neurix.hris.master.belajar.model.Belajar;
+import com.neurix.hris.master.cuti.model.ImCutiEntity;
+import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
@@ -23,6 +27,12 @@ public class PasienBoImpl implements PasienBo {
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(PasienBoImpl.class);
 
     private PasienDao pasienDao;
+    private ProvinsiDao provinsiDao;
+
+    public void setProvinsiDao(ProvinsiDao provinsiDao) {
+        this.provinsiDao = provinsiDao;
+    }
+
     private Date date;
 
     @Override
@@ -109,13 +119,31 @@ public class PasienBoImpl implements PasienBo {
             pasien.setAgama(data.getAgama());
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
-            pasien.setUrlKtp(data.getUrlKtp());
+            pasien.setUrlKtp(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());
             pasien.setCreatedDate(data.getCreatedDate());
             pasien.setCreatedWho(data.getCreatedWho());
             pasien.setLastUpdate(data.getLastUpdate());
             pasien.setLastUpdateWho(data.getLastUpdateWho());
+            pasien.setEmail(data.getEmail());
+            pasien.setPassword(data.getPassword());
+
+            if (pasien.getDesaId() != null){
+                List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
+                if (!objs.isEmpty()){
+                    for (Object[] obj : objs){
+                        pasien.setDesa(obj[0].toString());
+                        pasien.setKecamatan(obj[1].toString());
+                        pasien.setKota(obj[2].toString());
+                        pasien.setProvinsi(obj[3].toString());
+                        pasien.setKecamatanId(obj[4].toString());
+                        pasien.setKotaId(obj[5].toString());
+                        pasien.setProvinsiId(obj[6].toString());
+                    }
+                }
+            }
+
             list.add(pasien);
         }
 
@@ -379,6 +407,50 @@ public class PasienBoImpl implements PasienBo {
 
         logger.info("[PasienBoImpl.isUserPasienById] End <<<<<<<");
         return isFound;
+    }
+
+    @Override
+    public void saveEditPassword(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveEditPassword] Start >>>>>>>");
+
+        List<ImSimrsPasienEntity> pasienEntities = getEntityByCriteria(bean);
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0)
+        {
+            ImSimrsPasienEntity pasienEntity = pasienEntities.get(0);
+            pasienEntity.setPassword(bean.getPassword());
+            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pasienEntity.setLastUpdate(bean.getLastUpdate());
+            try {
+                pasienDao.updateAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.isUserPasienById] Error when update pasien. "+e.getMessage());
+                throw new GeneralBOException("[PasienBoImpl.isUserPasienById] Error when update pasien. "+e.getMessage());
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveEditPassword] End <<<<<<<");
+    }
+
+    @Override
+    public void saveCreateUserPasien(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.saveCreateUserPasien] Start >>>>>>>");
+
+        List<ImSimrsPasienEntity> pasienEntities = getEntityByCriteria(bean);
+        if (!pasienEntities.isEmpty() && pasienEntities.size() > 0)
+        {
+            ImSimrsPasienEntity pasienEntity = pasienEntities.get(0);
+            pasienEntity.setPassword("123");
+            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            pasienEntity.setLastUpdate(bean.getLastUpdate());
+            try {
+                pasienDao.updateAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.saveCreateUserPasien] Error when update pasien. "+e.getMessage());
+                throw new GeneralBOException("[PasienBoImpl.saveCreateUserPasien] Error when update pasien. "+e.getMessage());
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveCreateUserPasien] End <<<<<<<");
     }
 
     public String getIdPasien(){

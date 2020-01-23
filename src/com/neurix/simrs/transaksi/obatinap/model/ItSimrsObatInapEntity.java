@@ -19,6 +19,15 @@ public class ItSimrsObatInapEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String jenisSatuan;
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;

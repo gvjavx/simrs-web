@@ -19,6 +19,15 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String notPoli;
+
+    public String getNotPoli() {
+        return notPoli;
+    }
+
+    public void setNotPoli(String notPoli) {
+        this.notPoli = notPoli;
+    }
 
     public String getIdDokter() {
         return idDokter;

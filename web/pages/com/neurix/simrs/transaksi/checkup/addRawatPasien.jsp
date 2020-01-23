@@ -39,7 +39,7 @@
 
             if (idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
-                    && profesi != '' && agama != ''
+                    && agama != ''
                     && poli != '' && dokter != '' && penjamin != ''
                     && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && imgInp != '') {
 
@@ -142,11 +142,13 @@
         }
 
 
+
+
     </script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
-
+<div class="se-pre-con"></div>
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -181,6 +183,20 @@
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                                 <%--<button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Pasien Baru</button>--%>
                             </div>
+                            <div id="alert-pasien" style="display: none;" class="alert alert-warning alert-dismissible">
+                                <button type="button" class="close" onclick="closeAlert()" aria-hidden="true">×</button>
+                                <div id="nama-pasien"></div>
+                                <div id="tgl-periksa"></div>
+                                <hr>
+                                <table style="color: #fff;">
+                                    <tr>
+                                        <td><strong>Alergi</strong></td><td><strong>&nbsp;:&nbsp;</strong></td><td><div id="alergi"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Diagnosa Terakhir</strong></td><td><strong>&nbsp;:&nbsp;</strong></td><td><div id="diagnosa"></div></td>
+                                    </tr>
+                                </table>
+                            </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -202,16 +218,9 @@
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
-
-                                                    <%--<s:action id="initSelectPasien" namespace="/pasien"--%>
-                                                              <%--name="getListComboSelectPasien_pasien"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--list="#initSelectPasien.listOfpasien" id="id_pasien"--%>
-                                                              <%--name="headerCheckup.idPasien" listKey="idPasien+,+nama"--%>
-                                                              <%--listValue="idPasien" onchange="$(this).css('border','')"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-
+                                                <%--<button class="btn btn-success" onclick="alertPasien()" style="cursor: pointer">--%>
+                                                    <%--alert--%>
+                                                <%--</button>--%>
                                             </div>
 
                                             <script type="application/javascript">
@@ -230,7 +239,14 @@
                                                         });
 
                                                         $.each(data, function (i, item) {
-                                                            var labelItem = item.noKtp+" "+item.noBpjs+" "+item.nama;
+                                                            console.log(data);
+                                                            var labelItem = "";
+
+                                                            if(item.noBpjs != '' && item.noBpjs != null){
+                                                               labelItem = item.noKtp+"-"+item.noBpjs+"-"+item.nama;
+                                                            }else{
+                                                                labelItem = item.noKtp+"-"+item.nama;
+                                                            }
                                                             mapped[labelItem] = {
                                                                 id: item.idPasien,
                                                                 nama:item.nama,
@@ -242,9 +258,18 @@
                                                                 suku:item.suku,
                                                                 profesi:item.profesi,
                                                                 notelp:item.noTelp,
-                                                                urlktp:item.urlKtp,
+//                                                                urlktp:item.urlKtp,
                                                                 sex:item.jenisKelamin,
-                                                                agama:item.agama
+                                                                agama:item.agama,
+                                                                noBpjs:item.noBpjs,
+                                                                idProv:item.provinsiId,
+                                                                idKota:item.kotaId,
+                                                                idKec:item.kecamatanId,
+                                                                idDesa:item.desaId,
+                                                                prov:item.provinsi,
+                                                                kota:item.kota,
+                                                                kec:item.kecamatan,
+                                                                desa:item.desa
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -253,6 +278,10 @@
                                                     },
                                                     updater: function (item) {
                                                         var selectedObj = mapped[item];
+
+                                                        alertPasien(selectedObj.id);
+
+                                                        $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
                                                         $('#jenis_kelamin').val(selectedObj.sex);
@@ -261,8 +290,17 @@
                                                         $('#agama').val(selectedObj.agama);
                                                         $('#profesi').val(selectedObj.profesi);
                                                         $('#jalan').val(selectedObj.alamat);
-                                                        $('#suku').val(selectedObj.urlktp);
-                                                        $('#url').val(selectedObj.suku);
+                                                        $('#suku').val(selectedObj.suku);
+//                                                        $('#imgInp').val(selectedObj.urlktp);
+//                                                        $('#img-upload').attr('src', selectedObj.urlktp);
+                                                        $('#provinsi').val(selectedObj.prov);
+                                                        $('#kabupaten').val(selectedObj.kota);
+                                                        $('#kecamatan').val(selectedObj.kec);
+                                                        $('#desa').val(selectedObj.desa);
+                                                        $('#provinsi11').val(selectedObj.idProv);
+                                                        $('#kabupaten11').val(selectedObj.idKota);
+                                                        $('#kecamatan11').val(selectedObj.idKec);
+                                                        $('#desa11').val(selectedObj.idDesa);
                                                         return selectedObj.id;
                                                     }
                                                 });
@@ -510,15 +548,29 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Foto Surat Rujuk</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group" style="margin-top: 7px" id="img_url">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            <%--<input type="file" id="imgInp" accept=".jpg" name="fileUploadKtpPasien" onchange="$('#img_file').css('border','')">--%>
+                                                            Browse… <s:file id="url_do" accept=".jpg" name="fileUploadDoc" onchange="$('#img_file').css('border','')"></s:file>
+                                                        </span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">
+                                <%--<div class="row">--%>
+                                    <%--<div class="col-md-6">--%>
+                                        <div class="form-group" style="display: inline;">
+                                            <%--<div class="col-sm-10 col-md-offset-4" style="margin-top: 7px">--%>
                                                 <button type="button" class="btn btn-success" onclick="confirm()"><i
                                                         class="fa fa-arrow-right"></i> Save
                                                 </button>
@@ -528,9 +580,12 @@
                                                 <a type="button" class="btn btn-warning" href="initForm_checkup.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                <a type="button" id="btn-rm" style="display:none;" class="btn btn-primary" onclick="initRekamMedic()">
+                                                    <i class="fa fa-search"></i> View Rekam Medic
+                                                </a>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 </div>
                                 <div style="display: none">
                                     <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
@@ -564,8 +619,12 @@
                                         Please don't close this window, server is processing your request ...
                                         <br>
                                         <center>
-                                            <img border="0" style="width: 150px; height: 150px"
-                                                 src="<s:url value="/pages/images/spinner.gif"/>"
+                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                 name="image_indicator_write">
+                                            <br>
+                                            <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                  name="image_indicator_write">
                                         </center>
                                     </sj:dialog>
@@ -575,6 +634,7 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
+                                                                                         window.location.href = 'initForm_checkup.action';
                                                                                      }
                                                                             }"
                                     >
@@ -605,6 +665,36 @@
         </div>
     </section>
     <!-- /.content -->
+</div>
+
+<div class="modal fade" id="modal-rekam-medic">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
+                        <thead>
+                        <td>No RM</td>
+                        <td>Nama Pasien</td>
+                        <td>Diagnosa Terakhir</td>
+                        <td>Tanggal Keluar</td>
+                        </thead>
+                        <tbody id="body-rekam-medic">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -664,6 +754,67 @@
         $('#dokter').html(option);
     }
 
+    function alertPasien(noPasien) {
+
+        var namapasien  = "";
+        var diagnosa    = "";
+        var tglperiksa  = "";
+        var alergi      = "";
+
+//        alert(noPasien);
+        CheckupAction.initAlertPasien(noPasien, function(response){
+            if(response != null && response.namaPasien != null){
+
+                namapasien  = "<h4><i class=\"fa fa-user\"></i> "+ response.namaPasien +"</h4>";
+                diagnosa    = response.diagnosa;
+                tglperiksa  = "Pemeriksaan terakhir pasien pada : <strong>"+ response.stTgl +"</strong>";
+
+                if (response.listOfAlergi != null){
+                    $.each(response.listOfAlergi, function (i, item) {
+                        if(alergi != ""){
+                            alergi = alergi + ", "+ item
+                        }  else {
+                            alergi = item
+                        }
+                    });
+                }
+
+                $("#tgl-periksa").html(tglperiksa);
+                $("#nama-pasien").html(namapasien);
+                $("#alergi").html(alergi);
+                $("#diagnosa").html(diagnosa);
+                $("#alert-pasien").removeAttr("style");
+                $("#btn-rm").removeAttr("style");
+            } else {
+                closeAlert();
+            }
+        });
+    }
+
+    function initRekamMedic() {
+        var idPasien    = $("#id_pasien").val();
+        var table       = "";
+
+        CheckupAction.listRekamMedic(idPasien, function(response){
+            $.each(response, function (i, item) {
+                table += "<tr>" +
+                    "<td>"+item.noCheckup+"</td>" +
+                    "<td>"+item.namaPasien+"</td>" +
+                    "<td>"+item.diagnosa+"</td>" +
+                    "<td>"+item.stTgl+"</td>" +
+                    "</tr>";
+            });
+
+            $("#modal-rekam-medic").modal('show');
+            $("#body-rekam-medic").html(table);
+        });
+    }
+
+    function closeAlert() {
+        $("#alert-pasien").attr("style","display:none");
+        $("#btn-rm").attr("style","display:none");
+    }
+
     var functions, mapped;
     $('#provinsi').typeahead({
         minLength: 1,
@@ -693,6 +844,8 @@
             return namaAlat;
         }
     });
+
+
 </script>
 <script type='text/javascript'>
     var functions, mapped;

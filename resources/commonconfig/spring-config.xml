@@ -140,6 +140,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanresep/spring/PermintaanResepBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanresep/spring/PermintaanResepBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/obatpoli/spring/ObatPoliBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/vendor/spring/VendorBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/PelayananBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/jenisperiksapasien/spring/JenisPeriksaPasienBean.xml"/>
@@ -166,5 +167,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanresep/spring/PermintaanResepBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/obatpoli/spring/ObatPoliBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/transaksiobat/spring/TransaksiObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/spring/PermintaanVendorBean.xml"/>
 
 </beans>

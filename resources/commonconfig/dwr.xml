@@ -297,6 +297,8 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.HeaderCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckupAlergi"/>
 
       <!--Team Dokter -->
       <create creator="new">
@@ -370,6 +372,15 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
 
+      <!--Permintaan Obat-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.obatpoli.action.PermintaanObatPoliAction"/>
+      </create>
+
+      <!--Permintaan Vendor-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"/>
+      </create>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
@@ -387,6 +398,10 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.ObatPoli"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.AlertPasien"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse"/>
 
   </allow>
 

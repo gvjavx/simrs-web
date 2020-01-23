@@ -2,7 +2,9 @@ package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 
 public class TransaksiObatDetail extends BaseModel {
 
@@ -26,6 +28,155 @@ public class TransaksiObatDetail extends BaseModel {
     private BigInteger totalDibayar;
     private BigInteger nominal;
     private BigInteger kembalian;
+
+    private BigInteger qtyApprove;
+
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+    private BigInteger lembarPerBox;
+    private BigInteger bijiPerLembar;
+    private BigDecimal averageHargaBox;
+    private BigDecimal averageHargaLembar;
+    private BigDecimal averageHargaBiji;
+    private String flagDiterima;
+    private String jenisSatuan;
+
+    private BigDecimal hargaTerakhir;
+
+    private BigDecimal hargaPo;
+
+    private String merek;
+    private String idPabrik;
+
+    private BigInteger sumQtyApprove;
+    private String isFullOfQty;
+    private Integer noBatch;
+    private Date expDate;
+    private String status;
+    private String idSeqObat;
+    private String idBarang;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
+    public Date getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(Date expDate) {
+        this.expDate = expDate;
+    }
+
+    public String getIsFullOfQty() {
+        return isFullOfQty;
+    }
+
+    public void setIsFullOfQty(String isFullOfQty) {
+        this.isFullOfQty = isFullOfQty;
+    }
+
+    public BigInteger getSumQtyApprove() {
+        return sumQtyApprove;
+    }
+
+    public void setSumQtyApprove(BigInteger sumQtyApprove) {
+        this.sumQtyApprove = sumQtyApprove;
+    }
+
+    public String getMerek() {
+        return merek;
+    }
+
+    public void setMerek(String merek) {
+        this.merek = merek;
+    }
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public BigDecimal getHargaPo() {
+        return hargaPo;
+    }
+
+    public void setHargaPo(BigDecimal hargaPo) {
+        this.hargaPo = hargaPo;
+    }
+
+    public BigDecimal getHargaTerakhir() {
+        return hargaTerakhir;
+    }
+
+    public void setHargaTerakhir(BigDecimal hargaTerakhir) {
+        this.hargaTerakhir = hargaTerakhir;
+    }
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
+
+    public String getFlagDiterima() {
+        return flagDiterima;
+    }
+
+    public void setFlagDiterima(String flagDiterima) {
+        this.flagDiterima = flagDiterima;
+    }
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
 
     public BigInteger getNominal() {
         return nominal;
@@ -153,5 +304,69 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setTotalHarga(BigInteger totalHarga) {
         this.totalHarga = totalHarga;
+    }
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
+    public BigInteger getLembarPerBox() {
+        return lembarPerBox;
+    }
+
+    public void setLembarPerBox(BigInteger lembarPerBox) {
+        this.lembarPerBox = lembarPerBox;
+    }
+
+    public BigInteger getBijiPerLembar() {
+        return bijiPerLembar;
+    }
+
+    public void setBijiPerLembar(BigInteger bijiPerLembar) {
+        this.bijiPerLembar = bijiPerLembar;
+    }
+
+    public BigDecimal getAverageHargaBox() {
+        return averageHargaBox;
+    }
+
+    public void setAverageHargaBox(BigDecimal averageHargaBox) {
+        this.averageHargaBox = averageHargaBox;
+    }
+
+    public BigDecimal getAverageHargaLembar() {
+        return averageHargaLembar;
+    }
+
+    public void setAverageHargaLembar(BigDecimal averageHargaLembar) {
+        this.averageHargaLembar = averageHargaLembar;
+    }
+
+    public BigDecimal getAverageHargaBiji() {
+        return averageHargaBiji;
+    }
+
+    public void setAverageHargaBiji(BigDecimal averageHargaBiji) {
+        this.averageHargaBiji = averageHargaBiji;
     }
 }
