@@ -10,6 +10,9 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
@@ -23,6 +26,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,6 +50,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private ObatPoliDao obatPoliDao;
     private VendorDao vendorDao;
     private TransaksiObatDetailBatchDao batchDao;
+    private HargaObatDao hargaObatDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -70,14 +75,39 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setLastUpdateWho(obatDetailEntity.getLastUpdateWho());
                 transaksiObatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
 
+
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
+
+                    BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
+
                     transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
 
+                    HargaObat hargaObat = new HargaObat();
+                    hargaObat.setIdObat(obatDetailEntity.getIdObat());
+                    List<MtSimrsHargaObatEntity> hargaObatEntities = getListEntityHargaObat(hargaObat);
+                    if (hargaObatEntities.size() > 0){
+                        MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
+
+                        if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())){
+                            transaksiObatDetail.setHarga(hargaObatEntity.getHargaJual().multiply(new BigDecimal(cons)).toBigInteger());
+                        }
+                        if ("lembar".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())){
+
+                            BigInteger bHarga = hargaObatEntity.getHargaJual().toBigInteger();
+                            BigInteger nHarga = obatEntity.getBijiPerLembar().multiply(bHarga);
+                            transaksiObatDetail.setHarga(nHarga);
+                        }
+                        if ("biji".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())){
+                            transaksiObatDetail.setHarga(hargaObatEntity.getHargaJual().toBigInteger());
+                        }
+
+                    }
+
                     // harga*qty
-//                    BigInteger total = obatEntity.getHarga().multiply(transaksiObatDetail.getQty());
-//                    transaksiObatDetail.setTotalHarga(total);
+                    BigInteger total = transaksiObatDetail.getHarga().multiply(transaksiObatDetail.getQty());
+                    transaksiObatDetail.setTotalHarga(total);
                 }
 
                 PermintaanResep permintaanResep = new PermintaanResep();
@@ -1190,6 +1220,30 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return resepEntities;
     }
 
+    private List<MtSimrsHargaObatEntity> getListEntityHargaObat(HargaObat bean) throws GeneralBOException{
+        logger.info("[ObatPoliBoImpl.getListEntityHargaObat] START >>>>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdObat() != null){
+            hsCriteria.put("id_obat", bean.getIdObat());
+        }
+        if (bean.getFlag() != null){
+            hsCriteria.put("flag", bean.getFlag());
+        }
+
+        List<MtSimrsHargaObatEntity> hargaObatEntities = new ArrayList<>();
+
+        try {
+            hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListEntityHargaObat] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityHargaObat] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListEntityHargaObat] END <<<<<<<<<<");
+        return hargaObatEntities;
+    }
+
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
         this.approvalTransaksiObatDao = approvalTransaksiObatDao;
     }
@@ -1232,5 +1286,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
         this.batchDao = batchDao;
+    }
+
+    public void setHargaObatDao(HargaObatDao hargaObatDao) {
+        this.hargaObatDao = hargaObatDao;
     }
 }
