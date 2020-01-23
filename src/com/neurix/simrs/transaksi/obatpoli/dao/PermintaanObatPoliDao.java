@@ -414,9 +414,9 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         }
 
         List<PermintaanObatPoli> result = new ArrayList<>();
-        String SQL = "SELECT a.id_permintaan_obat_poli,  b.id_obat, d.nama_obat, c.expired_date, c.qty_approve, c.id_barang, c.jenis_satuan, b.id_transaksi_obat_detail FROM mt_simrs_permintaan_obat_poli a \n" +
+        String SQL = "SELECT a.id_permintaan_obat_poli,  b.id_obat, d.nama_obat, c.expired_date, c.qty_approve, c.id_barang, c.jenis_satuan, b.id_transaksi_obat_detail, c.id FROM mt_simrs_permintaan_obat_poli a \n" +
                 "INNER JOIN (SELECT id_approval_obat, id_obat, id_transaksi_obat_detail FROM mt_simrs_transaksi_obat_detail) b ON a.id_approval_obat = b.id_approval_obat\n" +
-                "INNER JOIN (SELECT expired_date, id_transaksi_obat_detail, qty_approve, id_barang, status, approve_flag, jenis_satuan FROM mt_simrs_transaksi_obat_detail_batch) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                "INNER JOIN (SELECT expired_date, id_transaksi_obat_detail, qty_approve, id_barang, status, approve_flag, jenis_satuan, id FROM mt_simrs_transaksi_obat_detail_batch) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                 "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON b.id_obat = d.id_obat\n" +
                 "WHERE a.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
                 "AND a.branch_id LIKE :branchId\n" +
@@ -445,6 +445,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             permintaanObatPoli.setIdBarang(obj[5] == null ? "" : obj[5].toString());
             permintaanObatPoli.setJenisSatuan(obj[6] == null ? "": obj[6].toString());
             permintaanObatPoli.setIdTransaksiObatDetail(obj[7] == null ? "": obj[7].toString());
+            permintaanObatPoli.setIdBatch(obj[8] == null ? "": obj[8].toString());
 
             result.add(permintaanObatPoli);
         }

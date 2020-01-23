@@ -1895,6 +1895,32 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return permintaanObatPoliList;
     }
 
+    @Override
+    public void updateDiterimaFlagBatch(TransaksiObatBatch bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.updateDiterimaFlagBatch] START >>>>>>>>>>");
+        MtSimrsTransaksiObatDetailBatchEntity entity = new MtSimrsTransaksiObatDetailBatchEntity();
+
+        try {
+            entity = batchDao.getById("id", bean.getId());
+        }catch (HibernateException e){
+            logger.error("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when search by id batch. ", e);
+            throw new GeneralBOException("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when search by id batch. ", e);
+        }
+
+        if(entity != null){
+
+            entity.setDiterimaFlag(bean.getDiterimaFlag());
+
+            try {
+                batchDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                logger.error("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when update flag diterima batch. ", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.updateDiterimaFlagBatch] ERROR when update flag diterima batch. ", e);
+            }
+        }
+        logger.info("[ObatPoliBoImpl.updateDiterimaFlagBatch] END >>>>>>>>>>");
+    }
+
     private List<MtSimrsTransaksiObatDetailBatchEntity> getListEntityBatchByCriteria(TransaksiObatBatch bean) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.saveVerifikasiObat] START >>>>>>>>>>");
 

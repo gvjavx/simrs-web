@@ -24,6 +24,15 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private String flag;
     private String action;
     private String idBarang;
+    private String diterimaFlag;
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
 
     public String getIdBarang() {
         return idBarang;

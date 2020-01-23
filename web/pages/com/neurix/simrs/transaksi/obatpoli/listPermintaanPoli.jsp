@@ -115,10 +115,11 @@
                                 <br>
                                 <div class="modal-footer">
                                     <a style="color: white" type="button" class="btn btn-warning"
-                                            onclick="$('#confirm_dialog').dialog('close')"><i
+                                       onclick="$('#confirm_dialog').dialog('close')"><i
                                             class="fa fa-times"></i> No
                                     </a>
-                                    <a style="color: white" type="button" class="btn btn-success" onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
+                                    <a style="color: white" type="button" class="btn btn-success"
+                                       onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
                                         Yes</a>
                                 </div>
                             </sj:dialog>
@@ -131,7 +132,7 @@
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
                                 <td>Jenis Satuan</td>
-                                <td>Scan ID Pabrik</td>
+                                <td align="center">Scan ID Pabrik</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -139,34 +140,48 @@
                                 <tr>
                                     <td>
                                         <s:property value="idObat"/>
-                                        <input type="hidden" id='idTrans<s:property value="idObat"/>' value='<s:property value="idTransaksiObatDetail"/>'>
+                                        <input type="hidden" id='idTrans<s:property value="idObat"/>'
+                                               value='<s:property value="idTransaksiObatDetail"/>'>
                                     </td>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
-                                    <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
+                                    <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property
+                                            value="qtyApprove"/></span></td>
                                     <td><s:property value="jenisSatuan"/></td>
-                                    <td width="20%">
-                                        <div class="col-md-8">
+                                    <td width="21%">
+                                            <%--<div class="col-md-8">--%>
+                                            <%--<input class="form-control" id='pabrik<s:property value="idObat"/>'--%>
+                                            <%--onchange="confirmObat('<s:property value="idObat"/>', this.value, '<s:property value="namaObat"/>', '<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')" style="width: 170px">--%>
+                                            <%--</div>--%>
+                                            <%--<div class="col-md-4"><span id='status<s:property value="idObat"/>'></span></div>--%>
+                                        <div class="input-group">
                                             <input class="form-control" id='pabrik<s:property value="idObat"/>'
-                                                   onchange="confirmObat('<s:property value="idObat"/>', this.value, '<s:property value="namaObat"/>', '<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')" style="width: 170px">
+                                                   onchange="confirmObat('<s:property value="idObat"/>', this.value,
+                                                            '<s:property value="namaObat"/>', '<s:property value="qty"/>',
+                                                            '<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                            <div class="input-group-addon">
+                                                <span id='status<s:property value="idObat"/>'></span>
+                                            </div>
                                         </div>
-                                       <div class="col-md-4"><span id='status<s:property value="idObat"/>'></span></div>
                                     </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
                         </table>
                     </div>
-                        <div class="box-header with-border"></div>
-                        <div class="box-body">
+                    <div class="box-header with-border"></div>
+                    <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <button class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</button>
-                                    <button class="btn btn-success" onclick="confirm()"><i class="fa fa-arrow-right"></i> Save</button>
+                                    <button class="btn btn-success" onclick="confirm()"><i
+                                            class="fa fa-arrow-right"></i> Save
+                                    </button>
                                 </div>
                             </div>
-                        </div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -174,7 +189,7 @@
 </div>
 
 <div class="modal fade" id="modal-approve">
-    <div class="modal-dialog modal-flat" style="width: 55%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,11 +219,13 @@
                 <div class="box">
                     <table class="table table-bordered" id="tabel_approve">
                         <thead>
+                        <td>ID Barang</td>
                         <td>Expired Date</td>
-                        <td align="center">Qty Box</td>
-                        <td align="center">Qty Lembar</td>
-                        <td align="center">Qty Biji</td>
-                        <td width="20%">Qty Approve</td>
+                        <td align="center">Qty BX</td>
+                        <td align="center">Qty LB</td>
+                        <td align="center">Qty BJ</td>
+                        <td width="25%" align="center">Scan ID Barang</td>
+                        <td width="12%" align="center">Qty AP</td>
                         <td>Jenis Satuan</td>
                         </thead>
                         <tbody id="body_approve">
@@ -220,8 +237,8 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="row">
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 30 hari</div>
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 10 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 30 hari</div>
+                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 10 hari</div>
                 </div>
             </div>
             <input type="hidden" id="set_id_obat">
@@ -251,8 +268,8 @@
         $('#app_nama').text(nama);
         $('#app_req').text(qtyReq);
 
-        if(idPabrik != ""){
-            $('#modal-approve').modal({show:true, backdrop:'static'});
+        if (idPabrik != "") {
+            $('#modal-approve').modal({show: true, backdrop: 'static'});
         }
 
         var table = [];
@@ -303,12 +320,21 @@
                     }
 
                     table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
+                            '<td>' + '<span id=id_barang' + i + '>' + item.idBarang + '</span>' + '</td>' +
                             '<td>' + dateFormat + '</td>' +
                             '<td align="center">' + qtyBox + '</td>' +
                             '<td align="center">' + qtyLembar + '</td>' +
                             '<td align="center">' + qtyBiji + '</td>' +
-                            '<td>' + '<input id=newQty' + i + ' type="number" class="form-control" style="widht:50px">' + '</td>' +
-                            '<td>' + satuan +'<input id=idBarang'+ i +' type="hidden" value='+item.idBarang+'>'+'</td>' +
+                            '<td>' +
+                            '<div class="input-group">' +
+                            '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
+                            '<div class="input-group-addon">' +
+                            '<span id=loading' + i + '></span> ' +
+                            '</div>' +
+                            '</div>' +
+                            '</td>' +
+                            '<td>' + '<input type="number" style="display: none" class="form-control" id=newQty' + i + '>' + '</td>' +
+                            '<td>' + satuan + '</td>' +
                             '</tr>';
 
                     lembarPerBox = item.lembarPerBox;
@@ -336,15 +362,20 @@
             var expDate = data[i]["Expired Date"];
             var expired = expDate.split("-").reverse().join("-");
             var qty = $('#newQty' + i).val();
-            var idBarang = $('#idBarang'+i).val();
-            result.push({'Expired Date': expired, 'Qty Approve': qty, 'Jenis Satuan': jenisSatuan, 'ID Barang' : idBarang});
+            var idBarang = data[i]["ID Barang"];
+            result.push({
+                'Expired Date': expired,
+                'Qty Approve': qty,
+                'Jenis Satuan': jenisSatuan,
+                'ID Barang': idBarang
+            });
         });
 
         $.each(data, function (i, item) {
             var id = data[i]["Expired Date"];
-            var box = data[i]["Qty Box"];
-            var lembar = data[i]["Qty Lembar"];
-            var biji = data[i]["Qty Biji"];
+            var box = data[i]["Qty BX"];
+            var lembar = data[i]["Qty LB"];
+            var biji = data[i]["Qty BJ"];
             var qty = $('#newQty' + i).val();
 
             if (qty == "") {
@@ -388,21 +419,23 @@
                 dwr.engine.setAsync(true);
                 $('#load_app').show();
                 $('#save_app').hide();
-                PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {callback: function (response) {
-                    if (response == "success") {
-                        $('#load_app').hide();
-                        $('#save_app').show();
-                        $('#modal-approve').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#qtyApp'+idObat).text(qtyApp);
-                        $('#status'+idObat).html('<label class="label label-success">success</label>');
-                    } else {
-                        $('#load_app').hide();
-                        $('#save_app').show();
-                        $('#warning_app').show().fadeOut(5000);
-                        $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
+                PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {
+                    callback: function (response) {
+                        if (response == "success") {
+                            $('#load_app').hide();
+                            $('#save_app').show();
+                            $('#modal-approve').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#qtyApp' + idObat).text(qtyApp);
+                            $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                        } else {
+                            $('#load_app').hide();
+                            $('#save_app').show();
+                            $('#warning_app').show().fadeOut(5000);
+                            $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
+                        }
                     }
-                }});
+                });
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -413,29 +446,50 @@
         }
     }
 
-    function confirm(){
+    function cekIdBarang(id, valueIdBarang) {
+        var idBarang = $('#id_barang' + id).text();
+        if (valueIdBarang != '') {
+            $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
+                if (idBarang == valueIdBarang) {
+                    $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#newQty' + id).show().focus();
+                } else {
+                    $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#newQty' + id).hide();
+                    $('#newQty' + id).val('');
+                }
+            }, 700);
+        } else {
+            $('#loading' + id).html('');
+            $('#newQty' + id).val('');
+            $('#newQty' + id).hide();
+        }
+    }
+
+    function confirm() {
         var data = $('#tabel_request').tableToJSON();
         var qtyApp = 0;
         $.each(data, function (i, item) {
             var id = data[i]["ID Obat"];
-            var idTransaksi = $('#idTrans'+id).val();
+            var idTransaksi = $('#idTrans' + id).val();
             var qty = data[i]["Qty Approve"];
-            if(qty == ""){
+            if (qty == "") {
                 qty = 0;
             }
             qtyApp = parseInt(qtyApp) + parseInt(qty);
         });
-        console.log(qtyApp);
-        if(qtyApp > 0){
+
+        if (qtyApp > 0) {
             $('#confirm_dialog').dialog('open');
-        }else{
+        } else {
             $('#warning_save').show().fadeOut(5000);
             $('#msg_save').text("Silahkan konfirmasi terlebih dahulu untuk qty Approvenya...!");
         }
 
     }
 
-    function saveRequestApprove(){
+    function saveRequestApprove() {
         $('#confirm_dialog').dialog('close');
         var data = $('#tabel_request').tableToJSON();
         var result = [];
@@ -444,30 +498,31 @@
         var idApp = url.searchParams.get("idApproval");
 
         $.each(data, function (i, item) {
-           var id = data[i]["ID Obat"];
-           var idTransaksi = $('#idTrans'+id).val();
-           var qty = data[i]["Qty Approve"];
-            result.push({'ID Obat': id, 'ID Transkasi' : idTransaksi, 'Qty Approve':qty});
+            var id = data[i]["ID Obat"];
+            var idTransaksi = $('#idTrans' + id).val();
+            var qty = data[i]["Qty Approve"];
+            result.push({'ID Obat': id, 'ID Transkasi': idTransaksi, 'Qty Approve': qty});
         });
 
         var stringData = JSON.stringify(result);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PermintaanObatPoliAction.saveApproveRequest(idApp, stringData, {callback: function (response) {
-            if(response == "success"){
-                $('#ref').val(1);
-                $('#info_dialog').dialog('open');
-                $('#confirm_dialog').dialog('close');
-                $('#waiting_dialog').dialog('close');
-            }else{
+        PermintaanObatPoliAction.saveApproveRequest(idApp, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    $('#ref').val(1);
+                    $('#info_dialog').dialog('open');
+                    $('#confirm_dialog').dialog('close');
+                    $('#waiting_dialog').dialog('close');
+                } else {
+                }
             }
-        }
         });
     }
 
-    function toContent(){
+    function toContent() {
         var ref = $('#ref').val();
-        if(ref == 1){
+        if (ref == 1) {
             window.location.href = 'initForm_permintaangudang.action';
         }
     }

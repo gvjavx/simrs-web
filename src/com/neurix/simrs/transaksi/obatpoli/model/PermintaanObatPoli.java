@@ -57,6 +57,15 @@ public class PermintaanObatPoli{
     private Date expiredDate;
     private String idBarang;
     private String idTransaksiObatDetail;
+    private String idBatch;
+
+    public String getIdBatch() {
+        return idBatch;
+    }
+
+    public void setIdBatch(String idBatch) {
+        this.idBatch = idBatch;
+    }
 
     public String getIdTransaksiObatDetail() {
         return idTransaksiObatDetail;

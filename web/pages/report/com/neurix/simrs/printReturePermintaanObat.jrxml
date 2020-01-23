@@ -76,7 +76,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reture Permintaan Obat]]></text>
+				<text><![CDATA[Retur Permintaan Obat]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
@@ -95,12 +95,12 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			<staticText>
 				<reportElement x="0" y="88" width="37" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[To]]></text>
+				<text><![CDATA[Untuk]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="69" width="37" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[From]]></text>
+				<text><![CDATA[Dari]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="120" width="161" height="20" uuid="aa5e43ce-e967-4928-9a53-c8cab1710c00"/>

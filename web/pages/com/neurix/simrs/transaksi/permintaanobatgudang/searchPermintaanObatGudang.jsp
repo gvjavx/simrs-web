@@ -418,7 +418,7 @@
 </div>
 
 <div class="modal fade" id="modal-request-detail">
-    <div class="modal-dialog modal-flat" style="width: 60%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -434,16 +434,17 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tanggal Request</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="req_tanggal"
+                        <label class="col-md-2" style="margin-top: 10px">ID Permintaan</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="req_id_permintaan"
                                    style="margin-top: 7px">
                         </div>
+                        <div class="col-md-6"></div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="req_id_permintaan"
+                        <label class="col-md-2" style="margin-top: 10px">Tanggal Request</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="req_tanggal"
                                    style="margin-top: 7px">
                         </div>
                     </div>
@@ -456,11 +457,11 @@
                     <table class="table table-striped table-bordered" id="tabel_request_detail">
                         <thead>
                         <td>ID Barang</td>
-                        <td>ID Obat</td>
                         <td>Nama Obat</td>
                         <td align="center">Expired Date</td>
                         <td align="center">Qty Approve</td>
                         <td align="center">Jenis Satuan</td>
+                        <td align="center" width="25%">Scan ID Barang</td>
                         </thead>
                         <tbody id="body_request_detail">
                         </tbody>
@@ -484,7 +485,7 @@
 
 
 <div class="modal fade" id="modal-reture-detail">
-    <div class="modal-dialog modal-flat" style="width: 60%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -499,16 +500,14 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tanggal Request</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="ret_tanggal"
+                        <label class="col-md-2" style="margin-top: 7px">ID Permintaan</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="ret_id_permintaan"
                                    style="margin-top: 7px">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="ret_id_permintaan"
+                        <label class="col-md-2" style="margin-top: 7px">Tanggal Request</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="ret_tanggal"
                                    style="margin-top: 7px">
                         </div>
                     </div>
@@ -523,8 +522,10 @@
                         <td>ID Barang</td>
                         <td>Nama Obat</td>
                         <td align="center">Qty Approve</td>
-                        <td align="center">Jenis Satuan</td>
-                        <td align="center">Qty Reture</td>
+                        <td width="25%" align="center">Scan ID Barang</td>
+                        <td width="12%" align="center">Qty Reture</td>
+                        <td>Jenis Satuan</td>
+
                         </thead>
                         <tbody id="body_reture_head">
                         </tbody>
@@ -868,14 +869,22 @@
                     $.each(response, function (i, item) {
                         var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
                         table += "<tr>" +
-                                "<td>" + item.idBarang + "</td>"+
-                                "<td>" + item.idObat +
-                        '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
-                        "<td>" + item.namaObat + "</td>" +
-                        "<td align='center'>" + expired + "</td>" +
-                        "<td align='center'>" + item.qtyApprove + "</td>" +
-                        "<td align='center'>" + item.jenisSatuan + "</td>" +
-                        "</tr>";
+                                "<td>" + '<span id=id_barang'+i+'>'+item.idBarang +'</span>'+
+                                '<input type="hidden" id=id_obat' + i + ' value=' + item.idObat + '>'+
+                                '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
+                                "<td>" + item.namaObat + "</td>" +
+                                "<td align='center'>" + expired + "</td>" +
+                                "<td align='center'>" + item.qtyApprove + "</td>" +
+                                "<td align='center'>" + item.jenisSatuan + "</td>" +
+                                "<td align='center'>" +
+                                '<div class="input-group">'+
+                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value)" id=cek_id_barang'+i+'>' +
+                                '<div class="input-group-addon">'+
+                                '<span id=loading'+i+'></span> '+
+                                '</div>'+
+                                '</div>'+
+                                "</td>" +
+                                "</tr>";
                     });
                 }
             }
@@ -891,7 +900,7 @@
 
         $.each(data, function (i, item) {
             var idBarang = data[i]["ID Barang"];
-            var idObat = data[i]["ID Obat"];
+            var idObat = $('#id_obat'+i).val();
             var idTransaksi = $('#id_transaksi'+i).val();
             var jenisSatuan = data[i]["Jenis Satuan"];
             var qtyApp = data[i]["Qty Approve"];
@@ -925,6 +934,57 @@
         } else {
             $('#warning_reture').show().fadeOut(5000);
             $('#msg_reture_detail').text("Silahkan cek kembali data inputan berikut..!");
+        }
+    }
+
+    function cekIdBarang(id, valueIdBarang, idBatch){
+        var idBarang = $('#id_barang'+id).text();
+        var flag = "";
+        var load = "";
+        if(valueIdBarang != ''){
+            $('#loading'+id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
+
+                if(idBarang == valueIdBarang){
+                    flag = "Y";
+                    load = '<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">';
+                }else{
+                    flag = "N";
+                    load = '<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">';
+                }
+
+                ObatPoliAction.updateDiterimaFlagBatch(idBatch, flag, {callback: function (response) {
+                    if(response == "success"){
+                        $('#loading'+id).html(load);
+                    }else{
+                        $('#loading'+id).html('<img src="<s:url value="/pages/images/icon_warning.ico"/>" style="height: 20px; width: 20px;">');
+                    }
+                }});
+
+            },100);
+        }else{
+            $('#loading' + id).html('');
+        }
+    }
+
+    function cekIdBarangReture(id, valueIdBarang) {
+        var idBarang = $('#id_barang' + id).text();
+        if (valueIdBarang != '') {
+            $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
+                if (idBarang == valueIdBarang) {
+                    $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#new_qty' + id).show().focus();
+                } else {
+                    $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#new_qty' + id).hide();
+                    $('#new_qty' + id).val('');
+                }
+            }, 700);
+        } else {
+            $('#loading' + id).html('');
+            $('#new_qty' + id).val('');
+            $('#new_qty' + id).hide();
         }
     }
 
@@ -978,8 +1038,16 @@
                                 '<input type="hidden" id=id_obat'+ i +' value='+item.idObat+'>'+ "</td>" +
                                 "<td>" + '<span id=nama_obat' + i + '>' + item.namaObat + '</span>' + "</td>" +
                                 "<td align='center'>" + '<span id=qty_approve' + i + '>' + item.qtyApprove + '</span>' + "</td>" +
-                                "<td align='center'>" + '<span id=jenis_satuan' + i + '>' + item.jenisSatuan + '</span>' + "</td>" +
-                                "<td align='center'>" + '<input type="number" id=new_qty' + i + ' style="width: 80px" class="form-control">' + "</td>" +
+                                '<td>' +
+                                '<div class="input-group">' +
+                                '<input class="form-control" onchange="cekIdBarangReture(\'' + i + '\',this.value)">' +
+                                '<div class="input-group-addon">' +
+                                '<span id=loading' + i + '></span> ' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + '<input type="number" style="display: none" class="form-control" id=new_qty' + i + '>' + '</td>' +
+                                "<td>" + '<span id=jenis_satuan' + i + '>' + item.jenisSatuan + '</span>' + "</td>" +
                                 "</tr>";
                     });
                 }

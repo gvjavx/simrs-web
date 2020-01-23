@@ -242,7 +242,7 @@
                                             </s:if>
                                             <s:else>
                                                 <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
-                                                <button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>
+                                                <%--<button class="btn btn btn-primary" onclick="printReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-print"></i></button>--%>
                                             </s:else>
                                         </s:if>
                                         <s:elseif test='#row.approvalFlag == "Y" '>
@@ -400,7 +400,7 @@
 </div>
 
 <div class="modal fade" id="modal-reture">
-    <div class="modal-dialog modal-flat" style="width: 60%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -415,15 +415,13 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tanggal Reture</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" readonly="true" id="ret_tanggal" style="margin-top: 7px">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Permintaan</label>
-                        <div class="col-md-7">
+                        <label class="col-md-2" style="margin-top: 7px">ID Permintaan</label>
+                        <div class="col-md-4">
                             <input type="text" class="form-control" readonly="true" id="ret_id_permintaan" style="margin-top: 7px">
+                        </div>
+                        <label class="col-md-2" style="margin-top: 7px">Tanggal Reture</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="ret_tanggal" style="margin-top: 7px">
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -602,7 +603,7 @@ public class ObatPoliAction extends BaseMasterAction {
     }
 
     public List<TransaksiObatDetail> listDetailOldPermintaan(String idPermintaan) {
-        logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
+        logger.info("[PermintaanObatPoliAction.listDetailPermintaan] START process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
@@ -617,7 +618,7 @@ public class ObatPoliAction extends BaseMasterAction {
                 addActionError("Error Found problem when search data detail permintaan, please inform to your admin.\n" + e.getMessage());
             }
 
-            logger.info("[PermintaanObatPoliAction.listDetailPermintaan] start process >>>");
+            logger.info("[PermintaanObatPoliAction.listDetailPermintaan] END process >>>");
             return transaksiObatDetails;
 
         } else {
@@ -656,12 +657,39 @@ public class ObatPoliAction extends BaseMasterAction {
         try {
             preDownload();
         } catch (SQLException e) {
-            logger.error("[PermintaanObatPoliAction.printReturePermintaanObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            logger.error("[ObatPoliAction.printReturePermintaanObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
             return "search";
         }
 
         return "print_reture_permintaan_obat";
+    }
+
+    public String  updateDiterimaFlagBatch(BigInteger idBatch, String flag){
+
+        logger.info("[ObatPoliAction.updateDiterimaFlagBatch] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        if (!"".equalsIgnoreCase(idBatch.toString()) && !"".equalsIgnoreCase(flag)) {
+
+            try {
+                TransaksiObatBatch batch = new TransaksiObatBatch();
+                batch.setId(idBatch);
+                batch.setDiterimaFlag(flag);
+                obatPoliBo.updateDiterimaFlagBatch(batch);
+            } catch (GeneralBOException e) {
+                logger.error("[ObatPoliAction.updateDiterimaFlagBatch] Error when search data detail permintaan batch," + "Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error Found problem when search data detail permintaan, please inform to your admin.\n" + e.getMessage());
+            }
+
+            logger.info("[ObatPoliAction.updateDiterimaFlagBatch] END process >>>");
+            return SUCCESS;
+
+        } else {
+            return null;
+        }
     }
 
     @Override
