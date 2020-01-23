@@ -84,9 +84,20 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.cronproccess] skiping token");
             } else if ("/mobileapi/testbpjs".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.testbpjs] skiping token");
+
             } else if ("/mobileapi/loginpasien".equalsIgnoreCase(namespace)){
                 logger.info("[ExceptionHandlerInterceptor.loginpasien] skiping token");
-            } else {
+
+            } else if ("/mobileapi/pelayanan".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }else if ("/mobileapi/branch".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }else if ("/mobileapi/registrasi".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/antrian".equalsIgnoreCase(namespace)) {
+            logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }
+            else {
 
                 String token = request.getHeader("tokenId");
                 if (token != null) {

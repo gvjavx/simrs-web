@@ -11,4 +11,5 @@ import java.util.List;
 public interface DokterBo {
     public List<Dokter> getByCriteria(Dokter bean) throws GeneralBOException;
     public List<Dokter> getByIdPelayanan(String idPelayanan, String branchId) throws GeneralBOException;
+    public boolean editKuota(String idDokter, String kuota) throws GeneralBOException;
 }

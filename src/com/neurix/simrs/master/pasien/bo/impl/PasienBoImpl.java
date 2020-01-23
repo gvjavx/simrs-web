@@ -1,8 +1,8 @@
 package com.neurix.simrs.master.pasien.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.hris.master.belajar.model.Belajar;
-import com.neurix.hris.master.cuti.model.ImCutiEntity;
+import com.neurix.common.util.CommonUtil;
+
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
@@ -99,6 +99,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
 
+
             String strDate = formatter.format(data.getTglLahir());
             pasien.setTglLahir(strDate);
 
@@ -145,11 +146,13 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setNoKtp(pasien.getNoKtp());
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
+
             pasienEntity.setNoTelp(pasien.getNoTelp());
             pasienEntity.setTglLahir(date);
             BigInteger bigInteger = new BigInteger(pasien.getDesaId());
             pasienEntity.setDesaId(bigInteger);
             pasienEntity.setJalan(pasien.getAlamat());
+
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
             pasienEntity.setProfesi(pasien.getProfesi());
@@ -206,6 +209,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setTglLahir(date);
                 BigInteger bigInteger = new BigInteger(pasien.getDesaId());
                 pasienEntity.setDesaId(bigInteger);
+
                 pasienEntity.setJalan(pasien.getJalan());
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());

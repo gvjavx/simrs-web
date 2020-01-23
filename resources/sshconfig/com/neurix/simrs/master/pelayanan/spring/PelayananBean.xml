@@ -9,6 +9,14 @@
 
     <bean id="pelayananBo" class="com.neurix.simrs.master.pelayanan.bo.impl.PelayananBoImpl"
           p:pelayananDao-ref="pelayananDao"
+          p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
+    />
+
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
+          p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
     />
 
     <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -33,6 +41,9 @@
     </bean>
 
     <bean id="pelayananDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="pelayananSpesialisDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananSpesialisDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

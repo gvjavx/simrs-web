@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.antrianonline.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
@@ -8,6 +9,8 @@ import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,12 +100,19 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
             antianOnlineEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
             antianOnlineEntity.setIdDokter(bean.getIdDokter());
             antianOnlineEntity.setIdPelayanan(bean.getIdPelayanan());
+            antianOnlineEntity.setTglCheckup(CommonUtil.convertStringToDate(bean.getTglCheckup()));
+            antianOnlineEntity.setJamAwal(bean.getJamAwal());
+            antianOnlineEntity.setJamAkhir(bean.getJamAkhir());
             antianOnlineEntity.setAction("C");
             antianOnlineEntity.setFlag("Y");
-            antianOnlineEntity.setCreatedDate(bean.getCreatedDate());
-            antianOnlineEntity.setLastUpdate(bean.getLastUpdate());
-            antianOnlineEntity.setCreatedWho(bean.getCreatedWho());
-            antianOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            antianOnlineEntity.setBranchId(bean.getBranchId());
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            antianOnlineEntity.setCreatedDate(timestamp);
+            antianOnlineEntity.setLastUpdate(timestamp);
+            antianOnlineEntity.setCreatedWho(bean.getNoCheckupOnline());
+            antianOnlineEntity.setLastUpdateWho(bean.getNoCheckupOnline());
 
             try {
                 antrianOnlineDao.addAndSave(antianOnlineEntity);
@@ -125,4 +135,20 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
         return id;
     }
 
+    @Override
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId) {
+        logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] Start >>>>>>>");
+
+        List<AntianOnline> result = new ArrayList<>();
+        try {
+            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir, branchId);
+        } catch (HibernateException e) {
+            logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria "+e.getMessage());
+            throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Error get antrian by criteria");
+        }
+
+        logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] End >>>>>>>");
+
+        return result;
+    }
 }

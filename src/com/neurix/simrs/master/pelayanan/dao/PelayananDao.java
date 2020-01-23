@@ -30,4 +30,5 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         List<ImSimrsPelayananEntity> result = criteria.list();
         return result;
     }
+
 }

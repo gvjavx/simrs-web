@@ -5,18 +5,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"
-          p:jenisObatBoProxy-ref="jenisObatBoProxy"/>
-
-    <bean id="jenisObatBo" class="com.neurix.simrs.master.jenisobat.bo.impl.JenisObatBoImpl"
-          p:jenisObatDao-ref="jenisObatDao"/>
 
     <bean id="registrasiOnlineBo" class="com.neurix.simrs.transaksi.antrianonline.bo.impl.RegistrasiOnlineBoImpl"
-          p:registrasiOnlineDao-ref="registrasiOnlineDao"/>
+          p:registrasiOnlineDao-ref="registrasiOnlineDao"
+          p:pasienDao-ref="pasienDao"
+    />
 
+    <bean id="registrasiOnlineController" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController"
+          p:registrasiOnlineBoProxy-ref="registrasiOnlineBoProxy"
+    />
 
-    <bean id="jenisObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="jenisObatBo">
+    <bean id="registrasiOnlineBoProxy"
+          class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="registrasiOnlineBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -35,10 +36,13 @@
         </property>
     </bean>
 
-    <bean id="jenisObatDao" class="com.neurix.simrs.master.jenisobat.dao.JenisObatDao"
-          p:sessionFactory-ref="sessionFactory" />
+    <bean id="userDao" class="com.neurix.authorization.user.dao.UserDao"
+          p:sessionFactory-ref="sessionFactory"/>
 
     <bean id="registrasiOnlineDao" class="com.neurix.simrs.transaksi.antrianonline.dao.RegistrasiOnlineDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="pasienDao" class="com.neurix.simrs.master.pasien.dao.PasienDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

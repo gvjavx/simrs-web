@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.antrianonline.bo;
 
+import com.neurix.authorization.user.model.ImUsers;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
@@ -12,5 +14,9 @@ import java.util.List;
  */
 public interface RegistrasiOnlineBo {
     public List<RegistrasiOnline> getByCriteria(RegistrasiOnline bean)throws GeneralBOException;
-    public void saveAdd(RegistrasiOnline bean)throws GeneralBOException;
+    public RegistrasiOnline saveAdd(RegistrasiOnline bean)throws GeneralBOException;
+    public RegistrasiOnline saveEdit(RegistrasiOnline bean)throws GeneralBOException;
+
+    Long saveErrorMessage(String message, String s);
+
 }

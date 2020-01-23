@@ -1,6 +1,14 @@
 package com.neurix.simrs.transaksi.antrianonline.bo.impl;
 
+import com.neurix.authorization.company.model.ImAreasBranchesUsers;
+import com.neurix.authorization.company.model.ImAreasBranchesUsersPK;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.model.*;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.dao.RegistrasiOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsRegistrasiOnlineEntity;
@@ -9,6 +17,7 @@ import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +30,11 @@ import java.util.Map;
 public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
     protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
     private RegistrasiOnlineDao registrasiOnlineDao;
+    private PasienDao pasienDao;
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
+    }
 
     public void setRegistrasiOnlineDao(RegistrasiOnlineDao registrasiOnlineDao) {
         this.registrasiOnlineDao = registrasiOnlineDao;
@@ -140,22 +154,27 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
     }
 
     @Override
-    public void saveAdd(RegistrasiOnline bean) throws GeneralBOException {
+    public RegistrasiOnline saveAdd(RegistrasiOnline bean) throws GeneralBOException {
+        logger.info("[RegistrasiOnlineBoImpl.saveAdd] Start <<<<<<<");
+
+        RegistrasiOnline result = new RegistrasiOnline();
+
         if (bean != null) {
 
-            String id = "";
-            id = getNextCheckupOnlineId();
+            String idCheckupOnline = "";
+            idCheckupOnline = getNextCheckupOnlineId();
 
             ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
-            registrasiOnlineEntity.setNoCheckupOnline("CKO" + id);
+
+            registrasiOnlineEntity.setNoCheckupOnline("CKO" + idCheckupOnline);
             registrasiOnlineEntity.setNama(bean.getNama());
+            registrasiOnlineEntity.setIdPasien(bean.getIdPasien());
             registrasiOnlineEntity.setJenisKelamin(bean.getJenisKelamin());
             registrasiOnlineEntity.setProfesi(bean.getProfesi());
             registrasiOnlineEntity.setNoTelp(bean.getNoTelp());
             registrasiOnlineEntity.setSuku(bean.getSuku());
             registrasiOnlineEntity.setTempatLahir(bean.getTempatLahir());
             registrasiOnlineEntity.setTglLahir(bean.getTglLahir());
-            registrasiOnlineEntity.setIdPasien(bean.getIdPasien());
             registrasiOnlineEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
             registrasiOnlineEntity.setBranchId(bean.getBranchId());
             registrasiOnlineEntity.setJalan(bean.getJalan());
@@ -163,12 +182,15 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             registrasiOnlineEntity.setNoKtp(bean.getNoKtp());
             registrasiOnlineEntity.setUrlKtp(bean.getUrlKtp());
             registrasiOnlineEntity.setAgama(bean.getAgama());
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             registrasiOnlineEntity.setAction("C");
             registrasiOnlineEntity.setFlag("Y");
-            registrasiOnlineEntity.setCreatedDate(bean.getCreatedDate());
-            registrasiOnlineEntity.setCreatedWho(bean.getCreatedWho());
-            registrasiOnlineEntity.setLastUpdate(bean.getLastUpdate());
-            registrasiOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            registrasiOnlineEntity.setCreatedDate(timestamp);
+            registrasiOnlineEntity.setCreatedWho(bean.getNama());
+            registrasiOnlineEntity.setLastUpdate(timestamp);
+            registrasiOnlineEntity.setLastUpdateWho(bean.getNama());
+            registrasiOnlineEntity.setValid(bean.getValid());
 
             try{
                 registrasiOnlineDao.addAndSave(registrasiOnlineEntity);
@@ -176,7 +198,111 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
                 logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online" + e.getMessage());
                 throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online");
             }
+
+            result.setNoCheckupOnline(registrasiOnlineEntity.getNoCheckupOnline());
+            result.setNama(registrasiOnlineEntity.getNama());
+            result.setNoKtp(registrasiOnlineEntity.getNoKtp());
+            result.setIdPasien(registrasiOnlineEntity.getIdPasien());
+            result.setJenisKelamin(registrasiOnlineEntity.getJenisKelamin());
+            result.setProfesi(registrasiOnlineEntity.getProfesi());
+            result.setNoTelp(registrasiOnlineEntity.getNoTelp());
+            result.setSuku(registrasiOnlineEntity.getSuku());
+            result.setTempatLahir(registrasiOnlineEntity.getSuku());
+            result.setIdJenisPeriksaPasien(registrasiOnlineEntity.getIdJenisPeriksaPasien());
+            result.setBranchId(registrasiOnlineEntity.getBranchId());
+            result.setJalan(registrasiOnlineEntity.getJalan());
+            result.setDesaId(registrasiOnlineEntity.getDesaId());
+            result.setAgama(registrasiOnlineEntity.getAgama());
+            result.setAction(registrasiOnlineEntity.getAction());
+            result.setFlag(registrasiOnlineEntity.getFlag());
+            result.setValid(registrasiOnlineEntity.getValid());
+            result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
+            result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
+            result.setCreatedDate(registrasiOnlineEntity.getCreatedDate());
+            result.setCreatedWho(registrasiOnlineEntity.getCreatedWho());
+            result.setLastUpdate(registrasiOnlineEntity.getLastUpdate());
+            result.setLastUpdateWho(registrasiOnlineEntity.getLastUpdateWho());
+
+
         }
+
+
+        logger.info("[RegistrasiOnlineBoImpl.saveAdd] End <<<<<<<");
+        return result;
+    }
+
+    @Override
+    public RegistrasiOnline saveEdit(RegistrasiOnline bean) throws GeneralBOException {
+        logger.info("[RegistrasiOnlineBoImpl.saveEdit] Start <<<<<<<");
+
+        RegistrasiOnline result = new RegistrasiOnline();
+
+        if (bean != null) {
+
+
+            ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
+
+            registrasiOnlineEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
+            registrasiOnlineEntity.setNama(bean.getNama());
+            registrasiOnlineEntity.setIdPasien(bean.getIdPasien());
+            registrasiOnlineEntity.setJenisKelamin(bean.getJenisKelamin());
+            registrasiOnlineEntity.setProfesi(bean.getProfesi());
+            registrasiOnlineEntity.setNoTelp(bean.getNoTelp());
+            registrasiOnlineEntity.setSuku(bean.getSuku());
+            registrasiOnlineEntity.setTempatLahir(bean.getTempatLahir());
+            registrasiOnlineEntity.setTglLahir(bean.getTglLahir());
+            registrasiOnlineEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+            registrasiOnlineEntity.setBranchId(bean.getBranchId());
+            registrasiOnlineEntity.setJalan(bean.getJalan());
+            registrasiOnlineEntity.setDesaId(bean.getDesaId());
+            registrasiOnlineEntity.setNoKtp(bean.getNoKtp());
+            registrasiOnlineEntity.setUrlKtp(bean.getUrlKtp());
+            registrasiOnlineEntity.setAgama(bean.getAgama());
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            registrasiOnlineEntity.setAction("C");
+            registrasiOnlineEntity.setFlag("Y");
+            registrasiOnlineEntity.setCreatedDate(timestamp);
+            registrasiOnlineEntity.setCreatedWho(bean.getNama());
+            registrasiOnlineEntity.setLastUpdate(timestamp);
+            registrasiOnlineEntity.setLastUpdateWho(bean.getNama());
+            registrasiOnlineEntity.setValid(bean.getValid());
+
+            try{
+                registrasiOnlineDao.updateAndSave(registrasiOnlineEntity);
+            } catch (HibernateException e) {
+                logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online" + e.getMessage());
+                throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data registrasi online");
+            }
+
+            result.setNoCheckupOnline(registrasiOnlineEntity.getNoCheckupOnline());
+            result.setNama(registrasiOnlineEntity.getNama());
+            result.setNoKtp(registrasiOnlineEntity.getNoKtp());
+            result.setIdPasien(registrasiOnlineEntity.getIdPasien());
+            result.setJenisKelamin(registrasiOnlineEntity.getJenisKelamin());
+            result.setProfesi(registrasiOnlineEntity.getProfesi());
+            result.setNoTelp(registrasiOnlineEntity.getNoTelp());
+            result.setSuku(registrasiOnlineEntity.getSuku());
+            result.setTempatLahir(registrasiOnlineEntity.getSuku());
+            result.setIdJenisPeriksaPasien(registrasiOnlineEntity.getIdJenisPeriksaPasien());
+            result.setBranchId(registrasiOnlineEntity.getBranchId());
+            result.setJalan(registrasiOnlineEntity.getJalan());
+            result.setDesaId(registrasiOnlineEntity.getDesaId());
+            result.setAgama(registrasiOnlineEntity.getAgama());
+            result.setAction(registrasiOnlineEntity.getAction());
+            result.setFlag(registrasiOnlineEntity.getFlag());
+            result.setValid(registrasiOnlineEntity.getValid());
+            result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
+            result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
+        }
+
+        logger.info("[RegistrasiOnlineBoImpl.saveEdit] End <<<<<<<");
+        return result;
+    }
+
+    @Override
+    public Long saveErrorMessage(String message, String s) {
+        return null;
     }
 
     private String getNextCheckupOnlineId() {
@@ -190,4 +316,5 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
 
         return id;
     }
+
 }

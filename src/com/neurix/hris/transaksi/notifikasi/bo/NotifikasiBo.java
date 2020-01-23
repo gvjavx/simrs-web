@@ -27,19 +27,19 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     public List<Notifikasi> getComboNotifikasiWithCriteria(String query) throws GeneralBOException;
 
-    void SendNotifPlt(String nip, String id, String tipeNotifName, String note, String createdWho, String pengganti);
+    void SendNotifPlt(String nip, String id, String tipeNotifName, String note, String createdWho, String pengganti, String os);
 
-    void SendNotifKeKabag(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
+    void SendNotifKeKabag(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os);
 
-    void SendNotifKeKabid(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
+    void SendNotifKeKabid(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho, String os);
 
     void sendNotif(Notifikasi notifikasi);
 
-    void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
+    void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho,String os);
 
     List<PersonilPosition> daftarAtasanLangsung(String nip);
 
-    void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho);
+    void SendNotifSelf(String nip, String id, String tipeNotifName, String note, String createdWho, String os);
 
 //    void SendNotifKeAllAtasan(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho);
 

@@ -91,10 +91,42 @@
             <filter-chain pattern="/mobileapi/payrol/*" filters="none"/>
             <filter-chain pattern="/mobileapi/historycuti" filters="none"/>
 
+            <filter-chain pattern="/mobileapi/registrasi" filters="none" />
+            <filter-chain pattern="/mobileapi/registrasi/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/registrasi/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/antrian" filters="none" />
+            <filter-chain pattern="/mobileapi/antrian/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/antrian/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/pelayanan" filters="none" />
+            <filter-chain pattern="/mobileapi/pelayanan/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/pelayanan/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/provinsi" filters="none" />
+            <filter-chain pattern="/mobileapi/provinsi/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/provinsi/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/kota" filters="none" />
+            <filter-chain pattern="/mobileapi/kota/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/kota/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/kecamatan" filters="none" />
+            <filter-chain pattern="/mobileapi/kecamatan/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/kecamatan/*/**" filters="none"/>
+            <filter-chain pattern="/mobileapi/desa" filters="none" />
+            <filter-chain pattern="/mobileapi/desa/*" filters="none"/>
+            <filter-chain pattern="/mobileapi/desa/*/**" filters="none"/>
+
             <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/pengajuanlembur" filters="none" />
+            <filter-chain pattern="/mobileapi/pengajuanlembur/*" filters="none" />
+            <filter-chain pattern="/mobileapi/pengajuanlembur/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/dokter" filters="none" />
+            <filter-chain pattern="/mobileapi/dokter/*" filters="none" />
+            <filter-chain pattern="/mobileapi/dokter/*/**" filters="none" />
+
+
 
             <filter-chain pattern="/**/*"
                           filters="

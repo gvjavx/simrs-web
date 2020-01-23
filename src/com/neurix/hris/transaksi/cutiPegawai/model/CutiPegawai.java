@@ -83,6 +83,9 @@ public class CutiPegawai extends BaseModel {
     private Date tanggalAktif;
     private String stTanggalAktif;
 
+    private String channelId;
+    private String os;
+
     public String getStrTanggalDari() {
         return strTanggalDari;
     }
@@ -601,5 +604,21 @@ public class CutiPegawai extends BaseModel {
 
     public void setUnitId(String unitId) {
         this.unitId = unitId;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
     }
 }

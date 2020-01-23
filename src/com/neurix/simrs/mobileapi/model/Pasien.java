@@ -1,4 +1,4 @@
-package com.neurix.simrs.mobileapi.pasien.model;
+package com.neurix.simrs.mobileapi.model;
 
 
 import java.io.Serializable;
@@ -41,6 +41,16 @@ public class Pasien implements Serializable, Comparable<Pasien> {
 
     private String password;
     private String email;
+
+    private String actionError;
+
+    public String getActionError() {
+        return actionError;
+    }
+
+    public void setActionError(String actionError) {
+        this.actionError = actionError;
+    }
 
     public String getEmail() {
         return email;

@@ -9,6 +9,9 @@
     <bean id="notifikasiFcmBo" class="com.neurix.hris.transaksi.notifikasi.bo.impl.NotifikasiFcmBoImpl"
           p:notifikasiFcmDao-ref="notifikasiFcmDao" />
 
+    <bean id="pasienController" class="com.neurix.simrs.mobileapi.PasienController"
+          p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
+
     <bean id="notifikasiFcmBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="notifikasiFcmBo">
         <property name="interceptorNames">
