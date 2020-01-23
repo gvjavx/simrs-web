@@ -451,33 +451,37 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             List<TransaksiObatDetail> transaksiBatch = new ArrayList<>();
 
             // pilah jika sama
-            int i = 0;
+            int n = 0;
             for (TransaksiObatDetail obatDetail : obatDetails) {
                 if (obatDetail.getQtyApprove().compareTo(new BigInteger(String.valueOf(0))) == 1){
 
-                    TransaksiObatDetail oldObatDetail = new TransaksiObatDetail();
-
                     if (transaksiObatDetails.size() == 0){
+                        n++;
                         obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                         transaksiObatDetails.add(obatDetail);
                         transaksiBatch.add(obatDetail);
                     } else if (transaksiObatDetails.size() == 1){
                         if (transaksiObatDetails.get(0).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                            obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(0).getIdTransaksiObatDetail());
                             transaksiBatch.add(obatDetail);
                         } else {
+                            n++;
                             obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
                             transaksiObatDetails.add(obatDetail);
                             transaksiBatch.add(obatDetail);
                         }
-                    } else if (transaksiObatDetails.get(i-1).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
-                        obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i-1).getIdTransaksiObatDetail());
-                        transaksiBatch.add(obatDetail);
                     } else {
-                        obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
-                        transaksiObatDetails.add(obatDetail);
-                        transaksiBatch.add(obatDetail);
+                        int i = n - 1;
+                        if (transaksiObatDetails.get(i).getIdObat().equalsIgnoreCase(obatDetail.getIdObat())){
+                            obatDetail.setIdTransaksiObatDetail(transaksiObatDetails.get(i).getIdTransaksiObatDetail());
+                            transaksiBatch.add(obatDetail);
+                        } else {
+                            n++;
+                            obatDetail.setIdTransaksiObatDetail("ODT"+getNextTransaksiObatDetail());
+                            transaksiObatDetails.add(obatDetail);
+                            transaksiBatch.add(obatDetail);
+                        }
                     }
-                    i++;
                 }
             }
 
@@ -1466,16 +1470,20 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     if (batchEntities.size() > 0) {
                         for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities) {
 
-                            detail.setIdBarang(batchEntity.getIdBarang());
-                            detail.setQtyApprove(batchEntity.getQtyApprove());
-                            detail.setJenisSatuan(batchEntity.getJenisSatuan());
-                            detail.setExpDate(batchEntity.getExpiredDate());
-                            detail.setCreatedWho(bean.getLastUpdateWho());
-                            detail.setCreatedDate(bean.getLastUpdate());
-                            detail.setLastUpdate(bean.getLastUpdate());
-                            detail.setLastUpdateWho(bean.getLastUpdateWho());
+                            if ("Y".equalsIgnoreCase(batchEntity.getDiterimaFlag())){
+                                detail.setIdBarang(batchEntity.getIdBarang());
+                                detail.setQtyApprove(batchEntity.getQtyApprove());
+                                detail.setJenisSatuan(batchEntity.getJenisSatuan());
+                                detail.setExpDate(batchEntity.getExpiredDate());
+                                detail.setCreatedWho(bean.getLastUpdateWho());
+                                detail.setCreatedDate(bean.getLastUpdate());
+                                detail.setLastUpdate(bean.getLastUpdate());
+                                detail.setLastUpdateWho(bean.getLastUpdateWho());
 
-                            updateAddStockPoli(detail, bean.getIdPelayanan(), bean.getBranchId());
+                                updateAddStockPoli(detail, bean.getIdPelayanan(), bean.getBranchId());
+                            } else {
+                                batchEntity.setApproveFlag("N");
+                            }
 
                             batchEntity.setFlag("N");
                             batchEntity.setAction("U");
