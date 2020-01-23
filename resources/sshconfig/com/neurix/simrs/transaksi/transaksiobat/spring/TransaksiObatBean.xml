@@ -22,6 +22,7 @@
           p:obatPoliDao-ref="obatPoliDao"
           p:vendorDao-ref="vendorDao"
           p:batchDao-ref="transaksiObatDetailBatchDao"
+          p:hargaObatDao-ref="hargaObatDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -56,6 +57,8 @@
     <bean id="transaksiObatDetailDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="transaksiObatDetailBatchDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="hargaObatDao" class="com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

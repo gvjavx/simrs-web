@@ -1,9 +1,10 @@
-package com.neurix.simrs.transaksi.hargaobat.dao;
+package com.neurix.simrs.transaksi.hargaobat.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class MtSimrsHargaObat {
+public class MtSimrsHargaObatEntity implements Serializable {
 
     private String idObat;
     private String namaObat;

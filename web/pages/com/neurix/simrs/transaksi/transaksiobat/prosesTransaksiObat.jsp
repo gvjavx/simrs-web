@@ -270,16 +270,16 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
-                                        <%--<script>var val = <s:property value="harga"/>;--%>
-                                        <%--if (val != null && val != '') {--%>
-                                            <%--document.write(formatRupiah(val))--%>
-                                        <%--}</script>--%>
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script>
                                     </td>
                                     <td align="right">
-                                        <%--<script>var val = <s:property value="totalHarga"/>;--%>
-                                        <%--if (val != null && val != '') {--%>
-                                            <%--document.write(formatRupiah(val))--%>
-                                        <%--}</script>--%>
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script>
                                     </td>
                                     <td>
                                         <div class="input-group">
@@ -321,16 +321,16 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td ><s:property value="jenisSatuan"/></td>
                                     <td align="right">
-                                        <%--<script>var val = <s:property value="harga"/>;--%>
-                                        <%--if (val != null && val != '') {--%>
-                                            <%--document.write(formatRupiah(val))--%>
-                                        <%--}</script>--%>
+                                        <script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script>
                                     </td>
                                     <td align="right">
-                                        <%--<script>var val = <s:property value="totalHarga"/>;--%>
-                                        <%--if (val != null && val != '') {--%>
-                                            <%--document.write(formatRupiah(val))--%>
-                                        <%--}</script>--%>
+                                        <script>var val = <s:property value="totalHarga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -355,7 +355,7 @@
                                             <div class="input-group-addon">
                                                 Rp.
                                             </div>
-                                            <s:textfield id="show_nominal"
+                                            <s:textfield id="show_nominal" name="transaksiObatDetail.totalBayar"
                                                          cssClass="form-control" readOnly="true"/>
                                         </div>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>

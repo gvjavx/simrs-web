@@ -4,28 +4,31 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity" dynamic-update="true"
-           table="it_simrs_diagnosa_rawat" select-before-update="true" schema="public">
+    <class name="com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity" dynamic-update="true"
+           table="mt_simrs_harga_obat" select-before-update="true" schema="public">
 
 
-        <id name="idDiagnosaRawat">
-            <column name="id_diagnosa_rawat" sql-type="varchar" length="10" not-null="true" />
+        <id name="idObat">
+            <column name="id_obat" sql-type="varchar" length="30" not-null="true" />
         </id>
 
-        <property name="idDiagnosa">
-            <column name="id_diagnosa" sql-type="varchar" length="30" not-null="false"/>
+        <property name="namaObat">
+            <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
         </property>
-        <property name="idDetailCheckup">
-            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
+        <property name="hargaBeli">
+            <column name="harga_beli" sql-type="numeric" not-null="false"/>
         </property>
-        <property name="keteranganDiagnosa">
-            <column name="keterangan_diagnosa" sql-type="varchar" length="1000" not-null="false"/>
+        <property name="hargaJual">
+            <column name="harga_jual" sql-type="numeric" not-null="false"/>
         </property>
-        <property name="jenisDiagnosa">
-            <column name="jenis_diagnosa" sql-type="varchar" length="10" not-null="false"/>
+        <property name="hargaRata">
+            <column name="harga_rata_rata" sql-type="numeric" not-null="false"/>
         </property>
-        <property name="tipe">
-            <column name="tipe" sql-type="varchar" length="30" not-null="false"/>
+        <property name="diskon">
+            <column name="diskon" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="hargaNet">
+            <column name="harga_net" sql-type="numeric" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
@@ -44,6 +47,9 @@
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="satuan">
+            <column name="satuan" sql-type="varchar" length="30" not-null="false"/>
         </property>
 
 

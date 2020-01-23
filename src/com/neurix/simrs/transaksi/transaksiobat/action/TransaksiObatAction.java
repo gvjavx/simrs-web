@@ -228,23 +228,23 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-//        session = ServletActionContext.getRequest().getSession();
-//        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
+        session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
         // hitung total bayar
-//        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-//        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
-//
-//        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-//        setTransaksiObatDetail(transaksiObatDetail);
-//
-//        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
-//
-//        if (jml != null && !jml.equals(0)) {
-//            transaksiObatDetail.setTotalBayar(jml);
-//        } else {
-//            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-//        }
+        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+
+        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+        setTransaksiObatDetail(transaksiObatDetail);
+
+        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
+
+        if (jml != null && !jml.equals(0)) {
+            transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+        }
 
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdPermintaanResep(id);
