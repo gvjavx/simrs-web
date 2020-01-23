@@ -104,7 +104,7 @@ public class LemburController implements ModelDriven<Object> {
                 model.setTanggalAwal(obj[4].toString());
                 model.setTanggalAkhir(obj[5].toString());
                 model.setJamLemburAwal(obj[6].toString());
-                model.setLamaJamLembur((BigDecimal) obj[7]);
+                model.setLamaJamLembur(obj[7].toString());
                 model.setUnit(obj[8].toString());
                 model.setKeterangan(obj[9].toString());
                 model.setJamLemburAkhir(obj[10].toString());
@@ -145,7 +145,7 @@ public class LemburController implements ModelDriven<Object> {
 
             editLembur.setTanggalAwalSetuju(CommonUtil.convertToDate(tangAwl));
             editLembur.setTanggalAkhirSetuju(CommonUtil.convertToDate(tangAkh));
-            editLembur.setLamaJam(model.getLamaJamLembur().doubleValue());
+            editLembur.setLamaJam(Double.valueOf(model.getLamaJamLembur()));
             editLembur.setLastUpdateWho(model.getNamaPegawai());
             editLembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             editLembur.setAction("U");
@@ -201,7 +201,7 @@ public class LemburController implements ModelDriven<Object> {
                 model.setTanggalAkhir(obj[4].toString());
                 model.setJamLemburAwal(obj[5].toString());
                 model.setJamLemburAkhir(obj[6].toString());
-                model.setLamaJamLembur((BigDecimal) obj[7]);
+                model.setLamaJamLembur(obj[7].toString());
                 model.setUnit(obj[8].toString());
 
                 listOfLembur.add(model);
@@ -231,13 +231,15 @@ public class LemburController implements ModelDriven<Object> {
             throw new GeneralBOException(e);
         }
 
+        Lembur result = new Lembur();
+
         if(!lemburs.equals("")){
-            model = new Lembur();
-            model.setMessage(lemburs);
+            result.setMessage(lemburs);
         } else {
-            model = new Lembur();
-            model.setMessage("Permohonan siap diajukan");
+            result.setMessage("Permohonan siap diajukan");
         }
+
+        listOfLembur.add(result);
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/tanggal");
         return "success";
     }
@@ -271,7 +273,10 @@ public class LemburController implements ModelDriven<Object> {
             }
         }
 
-        model.setJumlah(jumlahHari);
+        Lembur result = new Lembur();
+        result.setJumlah(String.valueOf(jumlahHari));
+        listOfLembur.add(result);
+
         logger.info("[LemburController.offwork] start proccess GET /lembur/{id}/offwork");
         return "success";
     }
@@ -353,7 +358,7 @@ public class LemburController implements ModelDriven<Object> {
             hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         sHasil = hasil.toString();
-        model.setLamaJamLembur(new BigDecimal(sHasil));
+        model.setLamaJamLembur(sHasil);
         logger.info("[LemburController.offwork] start proccess GET /lembur/{id}/offwork");
         return "success";
     }
@@ -381,7 +386,7 @@ public class LemburController implements ModelDriven<Object> {
     }
     @Override
     public Object getModel() {
-        return listOfLembur.size() == 0 ? model : listOfLembur;
+        return listOfLembur != null ? listOfLembur: model;
     }
 
     public String getIdLembur() {

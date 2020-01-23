@@ -1,6 +1,8 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.mobileapi.model.AntrianMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.opensymphony.xwork2.ModelDriven;
@@ -10,6 +12,7 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author gondok
@@ -18,8 +21,8 @@ import java.util.Collection;
 public class AntrianOnlineController implements ModelDriven<Object> {
 
     private static final transient Logger logger = Logger.getLogger(AntrianOnlineController.class);
-    private AntianOnline model = new AntianOnline();
-    private Collection<AntianOnline> listOfAntrianOnline = new ArrayList<>();
+    private AntrianMobile model = new AntrianMobile();
+    private Collection<AntrianMobile> listOfAntrianOnline = new ArrayList<>();
     private AntrianOnlineBo antrianOnlineBoProxy;
 
     private String idAntrianOnline;
@@ -33,11 +36,15 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String tglCheckup;
     private String action;
 
-    public Collection<AntianOnline> getListOfAntrianOnline() {
+    public void setModel(AntrianMobile model) {
+        this.model = model;
+    }
+
+    public Collection<AntrianMobile> getListOfAntrianOnline() {
         return listOfAntrianOnline;
     }
 
-    public void setListOfAntrianOnline(Collection<AntianOnline> listOfAntrianOnline) {
+    public void setListOfAntrianOnline(Collection<AntrianMobile> listOfAntrianOnline) {
         this.listOfAntrianOnline = listOfAntrianOnline;
     }
 
@@ -125,10 +132,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         return logger;
     }
 
-    public void setModel(AntianOnline model) {
-        this.model = model;
-    }
-
     public AntrianOnlineBo getAntrianOnlineBoProxy() {
         return antrianOnlineBoProxy;
     }
@@ -162,12 +165,33 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             }
         }
 
+        List<AntianOnline> result = new ArrayList<>();
         if (action.equalsIgnoreCase("show")) {
             try {
-                listOfAntrianOnline = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir);
+                result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
             } catch (GeneralBOException e) {
 
             }
+
+            for (AntianOnline item : result) {
+                AntrianMobile antrian = new AntrianMobile();
+                antrian.setIdAntrianOnline(item.getIdAntrianOnline());
+                antrian.setJumlahAntrian(item.getJumlahAntrian());
+                antrian.setBranchId(item.getBranchId());
+                antrian.setBranchName(item.getBranchName());
+                antrian.setIdDokter(item.getIdDokter());
+                antrian.setNamaDokter(item.getNamaDokter());
+                antrian.setIdPelayanan(item.getIdPelayanan());
+                antrian.setNamaPelayanan(item.getNamaPelayanan());
+                antrian.setNama(item.getNama());
+                antrian.setJamAwal(item.getJamAwal());
+                antrian.setJamAkhir(item.getJamAkhir());
+                antrian.setNoAntrian(item.getNoAntrian());
+                antrian.setNoCheckupOnline(item.getNoCheckupOnline());
+
+                listOfAntrianOnline.add(antrian);
+            }
+
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");

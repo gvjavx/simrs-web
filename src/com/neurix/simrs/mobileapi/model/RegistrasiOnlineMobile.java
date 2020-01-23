@@ -1,22 +1,19 @@
-package com.neurix.simrs.transaksi.antrianonline.model;
+package com.neurix.simrs.mobileapi.model;
 
-import com.neurix.common.model.BaseModel;
 
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.sql.Date;
-import java.sql.Timestamp;
 
-public class RegistrasiOnline extends BaseModel implements Serializable {
-
+/**
+ * @author gondok
+ * Tuesday, 21/01/20 12:41
+ */
+public class RegistrasiOnlineMobile  {
     private String noCheckupOnline;
     private String idPasien;
     private String nama;
     private String jenisKelamin;
     private String noKtp;
     private String tempatLahir;
-    private Date tglLahir;
-    private BigInteger desaId;
+    private String desaId;
     private String jalan;
     private String suku;
     private String agama;
@@ -27,49 +24,8 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
     private String urlKtp;
     private String stTglLahir;
     private String stDesaId;
-    private Date tglCheckup;
     private String stTglCheckup;
     private String valid;
-
-    public String getStTglCheckup() {
-        return stTglCheckup;
-    }
-
-    public void setStTglCheckup(String stTglCheckup) {
-        this.stTglCheckup = stTglCheckup;
-    }
-
-    public Date getTglCheckup() {
-        return tglCheckup;
-    }
-
-    public void setTglCheckup(Date tglCheckup) {
-        this.tglCheckup = tglCheckup;
-    }
-
-    public String getStTglLahir() {
-        return stTglLahir;
-    }
-
-    public void setStTglLahir(String stTglLahir) {
-        this.stTglLahir = stTglLahir;
-    }
-
-    public String getStDesaId() {
-        return stDesaId;
-    }
-
-    public void setStDesaId(String stDesaId) {
-        this.stDesaId = stDesaId;
-    }
-
-    public String getValid() {
-        return valid;
-    }
-
-    public void setValid(String valid) {
-        this.valid = valid;
-    }
 
     public String getNoCheckupOnline() {
         return noCheckupOnline;
@@ -119,19 +75,11 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
         this.tempatLahir = tempatLahir;
     }
 
-    public Date getTglLahir() {
-        return tglLahir;
-    }
-
-    public void setTglLahir(Date tglLahir) {
-        this.tglLahir = tglLahir;
-    }
-
-    public BigInteger getDesaId() {
+    public String getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(BigInteger desaId) {
+    public void setDesaId(String desaId) {
         this.desaId = desaId;
     }
 
@@ -199,63 +147,35 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
         this.urlKtp = urlKtp;
     }
 
-    @Override
-    public String getFlag() {
-        return flag;
+    public String getStTglLahir() {
+        return stTglLahir;
     }
 
-    @Override
-    public void setFlag(String flag) {
-        this.flag = flag;
+    public void setStTglLahir(String stTglLahir) {
+        this.stTglLahir = stTglLahir;
     }
 
-    @Override
-    public String getAction() {
-        return action;
+    public String getStDesaId() {
+        return stDesaId;
     }
 
-    @Override
-    public void setAction(String action) {
-        this.action = action;
+    public void setStDesaId(String stDesaId) {
+        this.stDesaId = stDesaId;
     }
 
-    @Override
-    public Timestamp getCreatedDate() {
-        return createdDate;
+    public String getStTglCheckup() {
+        return stTglCheckup;
     }
 
-    @Override
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
+    public void setStTglCheckup(String stTglCheckup) {
+        this.stTglCheckup = stTglCheckup;
     }
 
-    @Override
-    public String getCreatedWho() {
-        return createdWho;
+    public String getValid() {
+        return valid;
     }
 
-    @Override
-    public void setCreatedWho(String createdWho) {
-        this.createdWho = createdWho;
-    }
-
-    @Override
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    @Override
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    @Override
-    public String getLastUpdateWho() {
-        return lastUpdateWho;
-    }
-
-    @Override
-    public void setLastUpdateWho(String lastUpdateWho) {
-        this.lastUpdateWho = lastUpdateWho;
+    public void setValid(String valid) {
+        this.valid = valid;
     }
 }

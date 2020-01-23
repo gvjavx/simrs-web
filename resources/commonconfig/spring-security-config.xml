@@ -122,6 +122,11 @@
             <filter-chain pattern="/mobileapi/pengajuanlembur/*" filters="none" />
             <filter-chain pattern="/mobileapi/pengajuanlembur/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/dokter" filters="none" />
+            <filter-chain pattern="/mobileapi/dokter/*" filters="none" />
+            <filter-chain pattern="/mobileapi/dokter/*/**" filters="none" />
+
+
 
             <filter-chain pattern="/**/*"
                           filters="

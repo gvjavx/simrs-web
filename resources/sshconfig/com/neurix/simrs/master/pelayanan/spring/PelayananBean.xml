@@ -15,6 +15,7 @@
     <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
           p:pelayananBoProxy-ref="pelayananBoProxy"
           p:dokterBoProxy-ref="dokterBoProxy"
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
     />
 

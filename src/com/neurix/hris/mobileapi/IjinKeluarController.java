@@ -118,7 +118,11 @@ public class IjinKeluarController implements ModelDriven<Object> {
             ijinKeluar.setAction("U");
             ijinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.saveApprove(ijinKeluar);
+           List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveApprove(ijinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

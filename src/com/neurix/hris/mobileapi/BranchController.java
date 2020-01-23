@@ -57,6 +57,7 @@ public class BranchController implements ModelDriven<Object> {
                 branches.add(model);
             }
         }
+        listOfBranch = branches;
         logger.info("[BranchController.index] end process POST /branch <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }

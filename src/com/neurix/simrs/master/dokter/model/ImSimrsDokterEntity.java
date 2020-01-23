@@ -15,6 +15,15 @@ public class ImSimrsDokterEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kuota;
+
+    public String getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(String kuota) {
+        this.kuota = kuota;
+    }
 
     public String getIdDokter() {
         return idDokter;

@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,13 +59,14 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         return sId;
     }
 
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup, String jamAwal, String jamAkhir) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId) {
         String searchPelayanan = "";
         String searchNoCheckupOnline = "";
         String searchDokter = "";
         String searchTglCheckup = "";
         String searchJamAwal = "";
         String searchJamAkhir = "";
+        String searchBranchId = "";
 
         if (idPelayanan!=null){
             if(!idPelayanan.equalsIgnoreCase("")){
@@ -85,9 +87,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         }
 
         if (tglCheckup != null) {
-            if (!tglCheckup.equalsIgnoreCase("")) {
-                searchTglCheckup = " and a.tgl_checkup = '" + tglCheckup + "' ";
-            }
+            searchTglCheckup = " and a.tgl_checkup = '" + tglCheckup + "' ";
         }
 
         if (jamAwal != null) {
@@ -101,17 +101,23 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 searchJamAkhir = " and a.jam_akhir = '" + jamAkhir + "' ";
             }
         }
+        if (branchId != null ) {
+            if (!branchId.equalsIgnoreCase("")) {
+                searchBranchId = " and a.branch_id = '" + branchId + "' ";
+            }
+        }
 
 
         List<AntianOnline> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<>();
-        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update \n" +
+        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update, a.branch_id, e.branch_name \n" +
                 "FROM it_simrs_antian_online a \n" +
                 "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
                 "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
+                "INNER JOIN im_branches e ON a.branch_id = e.branch_id \n " +
                 "WHERE a.flag = 'Y' \n" +
-                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir +
+                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir + searchBranchId +
                 "ORDER BY b.last_update";
 
         results = this.sessionFactory.getCurrentSession()
@@ -131,6 +137,9 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             result.setTglCheckup(CommonUtil.convertDateToString((Date) row[7]));
             result.setJamAwal((String) row[8]);
             result.setJamAkhir((String) row[9]);
+            result.setLastUpdate((Timestamp) row[10]);
+            result.setBranchId((String) row[11]);
+            result.setBranchName((String) row[12]);
             result.setNoAntrian(Integer.toString(counter));
             result.setJumlahAntrian(String.valueOf(results.size()));
             counter++;

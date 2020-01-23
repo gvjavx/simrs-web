@@ -689,7 +689,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                 if (entity.getUserId().equals(personilPosition.getNip())) {
-                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, os);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
                     break;
                 }
             }
@@ -744,7 +744,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), os);
+                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
                 break;
             }
         }
@@ -797,7 +797,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
             if(entity.getUserId().equals(nip)){
-               ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), os);
+               ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
                 break;
             }
         }
@@ -852,7 +852,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                 for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                     if(entity.getUserId().equals(personilPosition.getNip())){
-                        ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, os);
+                        ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
                         break;
                     }
                 }
@@ -910,7 +910,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
             for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                 if(entity.getUserId().equals(personilPosition.getNip())){
-                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, os);
+                    ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
                     break;
                 }
             }

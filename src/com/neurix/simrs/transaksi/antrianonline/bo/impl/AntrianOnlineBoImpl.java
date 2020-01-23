@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,6 +105,7 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
             antianOnlineEntity.setJamAkhir(bean.getJamAkhir());
             antianOnlineEntity.setAction("C");
             antianOnlineEntity.setFlag("Y");
+            antianOnlineEntity.setBranchId(bean.getBranchId());
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -134,12 +136,12 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
     }
 
     @Override
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, String tglCheckup, String jamAwal, String jamAkhir) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId) {
         logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] Start >>>>>>>");
 
         List<AntianOnline> result = new ArrayList<>();
         try {
-            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir);
+            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir, branchId);
         } catch (HibernateException e) {
             logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria "+e.getMessage());
             throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Error get antrian by criteria");

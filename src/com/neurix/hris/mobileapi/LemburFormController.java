@@ -64,6 +64,14 @@ public class LemburFormController implements ModelDriven<Object> {
         this.model = model;
     }
 
+    public String getStatusApprove() {
+        return statusApprove;
+    }
+
+    public void setStatusApprove(String statusApprove) {
+        this.statusApprove = statusApprove;
+    }
+
     @Override
     public Object getModel() {
         return (listOfLemburPegawai != null ? listOfLemburPegawai: model);

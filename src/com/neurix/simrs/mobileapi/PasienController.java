@@ -27,6 +27,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
     private String password;
     private String tokenExpo;
     private String id;
+    private String os;
 
     public HttpHeaders create(){
         logger.info("[PasienController.create] start process POST /loginpasien >>>");
@@ -123,6 +124,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                 notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
                 notifikasiFcm.setLastUpdateWho(model.getNama());
                 notifikasiFcm.setCreatedWho(model.getNama());
+                notifikasiFcm.setOs(os);
                 try {
                     notifikasiFcmBoProxy.saveAdd(notifikasiFcm);
                 } catch (GeneralBOException e) {
@@ -138,7 +140,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
             }
         } else {
             logger.info("User ID and Password not found.");
-            throw new GeneralBOException("User ID and Password not found.");
+            model.setActionError("User ID and Password not found");
         }
 
         logger.info("[PasienController.create] end process POST /loginpasien <<<");
@@ -191,5 +193,11 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
         this.pasienBoProxy = pasienBoProxy;
     }
 
+    public String getOs() {
+        return os;
+    }
 
+    public void setOs(String os) {
+        this.os = os;
+    }
 }

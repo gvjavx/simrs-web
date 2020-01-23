@@ -26,6 +26,24 @@ public class AntianOnline extends BaseModel implements Serializable {
     private String jamAkhir;
     private String tglCheckup;
     private String branchId;
+    private String branchName;
+    private String kuota;
+
+    public String getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(String kuota) {
+        this.kuota = kuota;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getJumlahAntrian() {
         return jumlahAntrian;

@@ -4,6 +4,7 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.mobileapi.model.RegistrasiOnlineMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import com.opensymphony.xwork2.ModelDriven;
@@ -32,9 +33,9 @@ import java.util.Random;
  */
 public class RegistrasiOnlineController extends ValidationAwareSupport implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(RegistrasiOnlineController.class);
-    private RegistrasiOnline model = new RegistrasiOnline();
+    private RegistrasiOnlineMobile model = new RegistrasiOnlineMobile();
     private RegistrasiOnlineBo registrasiOnlineBoProxy;
-    private Collection<RegistrasiOnline> listOfRegistrasiOnline = new ArrayList<RegistrasiOnline>();
+    private Collection<RegistrasiOnlineMobile> listOfRegistrasiOnline;
 
     private String userId;
     private String noCheckupOnline;
@@ -60,6 +61,15 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
     private String lastUpdate;
     private String lastUpdateWho;
     private String valid;
+    private String tglCheckup;
+
+    public String getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(String tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
 
     private File fileUploadKtp;
 
@@ -80,7 +90,7 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
         return (listOfRegistrasiOnline != null ? listOfRegistrasiOnline : model);
     }
 
-    public void setModel(RegistrasiOnline model) {
+    public void setModel(RegistrasiOnlineMobile model) {
         this.model = model;
     }
 
@@ -88,11 +98,11 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
         return registrasiOnlineBoProxy;
     }
 
-    public Collection<RegistrasiOnline> getListOfRegistrasiOnline() {
+    public Collection<RegistrasiOnlineMobile> getListOfRegistrasiOnline() {
         return listOfRegistrasiOnline;
     }
 
-    public void setListOfRegistrasiOnline(Collection<RegistrasiOnline> listOfRegistrasiOnline) {
+    public void setListOfRegistrasiOnline(Collection<RegistrasiOnlineMobile> listOfRegistrasiOnline) {
         this.listOfRegistrasiOnline = listOfRegistrasiOnline;
     }
 
@@ -314,36 +324,19 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setNoTelp(noTelp);
             registrasiOnline.setJalan(jalan);
             registrasiOnline.setValid("N");
+            registrasiOnline.setStTglLahir(tglLahir);
+            registrasiOnline.setStTglCheckup(tglCheckup);
+            registrasiOnline.setUrlKtp(urlKtp);
+
+            Date tempTglCheckup = CommonUtil.convertStringToDate(tglCheckup);
+            registrasiOnline.setTglCheckup(tempTglCheckup);
 
             Date tempDate = Date.valueOf(tglLahir);
             registrasiOnline.setTglLahir(tempDate);
 
-
-            registrasiOnline.setStTglLahir(tglLahir);
-
-            String ktpPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN;
-
-            if (fileUploadKtp != null) {
-                if (fileUploadKtp.length() > 0 && fileUploadKtp.length() <= 15728640) {
-                    Random random = new Random(System.currentTimeMillis());
-                    Integer randomName = ((1 + random.nextInt(2)) * 1000000 + random.nextInt(1000000));
-                    String fileNameKtp = "KTP_" + randomName + "_" + noKtp + CommonConstant.IMAGE_TYPE;
-                    File fileCreate = new File(ktpPath, fileNameKtp);
-                    try {
-                        FileUtils.copyFile(fileUploadKtp, fileCreate);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    registrasiOnline.setUrlKtp(fileNameKtp);
-                }
-            } else {
-                registrasiOnline.setUrlKtp("");
-            }
-
+            RegistrasiOnline result = new RegistrasiOnline();
             try {
-                model = registrasiOnlineBoProxy.saveAdd(registrasiOnline);
-
+                result = registrasiOnlineBoProxy.saveAdd(registrasiOnline);
 
             } catch (GeneralBOException e) {
                 Long logId = null;
@@ -354,15 +347,14 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
                 }
             }
 
-            model.setAction("registrasi");
-            listOfRegistrasiOnline.add(model);
+
+            model.setNama(result.getNama());
+            model.setNoCheckupOnline(result.getNoCheckupOnline());
+            model.setNoKtp(result.getNoKtp());
         }
 
-        if (action.equalsIgnoreCase("validasi")) {
-            //TODO action ketika validasi akun
-        }
 
         logger.info("[RegistrasiOnlineController.create] end process POST / <<<");
-        return new DefaultHttpHeaders("index").disableCaching();
+        return new DefaultHttpHeaders("create").disableCaching();
     }
 }

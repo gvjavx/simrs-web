@@ -162,42 +162,13 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
         if (bean != null) {
 
             String idCheckupOnline = "";
-            String idPasien = "";
             idCheckupOnline = getNextCheckupOnlineId();
 
             ItSimrsRegistrasiOnlineEntity registrasiOnlineEntity = new ItSimrsRegistrasiOnlineEntity();
-            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
-
-            if (bean.getIdPasien().isEmpty() || bean.getIdPasien() != null) {
-                idPasien = pasienDao.getNextIdPasien();
-
-                pasienEntity.setIdPasien(idPasien);
-                pasienEntity.setNama(bean.getNama());
-                pasienEntity.setJenisKelamin(bean.getJenisKelamin());
-                pasienEntity.setProfesi(bean.getProfesi());
-                pasienEntity.setNoTelp(bean.getNoTelp());
-                pasienEntity.setSuku(bean.getSuku());
-                pasienEntity.setTempatLahir(bean.getTempatLahir());
-                pasienEntity.setTglLahir(bean.getTglLahir());
-                pasienEntity.setJalan(bean.getJalan());
-                pasienEntity.setDesaId(bean.getDesaId());
-                pasienEntity.setNoKtp(bean.getNoKtp());
-                pasienEntity.setUrlKtp(bean.getUrlKtp());
-                pasienEntity.setAgama(bean.getAgama());
-
-                try {
-                    pasienDao.addAndSave(pasienEntity);
-                } catch (HibernateException e) {
-                    logger.error("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving data pasien" + e.getMessage());
-                    throw new GeneralBOException("[RegistrasiOnlineBoImpl.saveAdd] Error When Saving pasien");
-                }
-            } else {
-                idPasien = bean.getIdPasien();
-            }
 
             registrasiOnlineEntity.setNoCheckupOnline("CKO" + idCheckupOnline);
             registrasiOnlineEntity.setNama(bean.getNama());
-            registrasiOnlineEntity.setIdPasien(idPasien);
+            registrasiOnlineEntity.setIdPasien(bean.getIdPasien());
             registrasiOnlineEntity.setJenisKelamin(bean.getJenisKelamin());
             registrasiOnlineEntity.setProfesi(bean.getProfesi());
             registrasiOnlineEntity.setNoTelp(bean.getNoTelp());

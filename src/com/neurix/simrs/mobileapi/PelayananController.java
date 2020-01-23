@@ -9,6 +9,8 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.mobileapi.model.PelayananMobile;
+import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
+import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -26,6 +28,7 @@ public class PelayananController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(PelayananController.class);
     private PelayananMobile model = new PelayananMobile();
     private PelayananBo pelayananBoProxy;
+    private AntrianOnlineBo antrianOnlineBoProxy;
     private DokterBo dokterBoProxy;
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
     private Collection<PelayananMobile> listOfPelayanan = new ArrayList<>();
@@ -38,6 +41,14 @@ public class PelayananController implements ModelDriven<Object> {
     private String action;
     private String nip;
     private String channelId;
+
+    public AntrianOnlineBo getAntrianOnlineBoProxy() {
+        return antrianOnlineBoProxy;
+    }
+
+    public void setAntrianOnlineBoProxy(AntrianOnlineBo antrianOnlineBoProxy) {
+        this.antrianOnlineBoProxy = antrianOnlineBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -155,6 +166,7 @@ public class PelayananController implements ModelDriven<Object> {
 
         List<Pelayanan> listPelayanan = new ArrayList<>();
         List<Dokter> listDokter = new ArrayList<>();
+        List<AntianOnline> listAntianOnline = new ArrayList<>();
         List<JadwalPelayananDTO> listJadwalPelayananDTO = new ArrayList<>();
 
         if (action.equalsIgnoreCase("show")) {
@@ -183,6 +195,20 @@ public class PelayananController implements ModelDriven<Object> {
                 result.setJamAkhir(item.getJamAkhir());
                 result.setJamAwal(item.getJamAwal());
                 result.setStTanggal(item.getTanggal().toString());
+                result.setBranchId(item.getBranchId());
+                result.setBranchName(item.getBranchName());
+                result.setKuota(item.getKuota());
+
+                try {
+                    listAntianOnline = antrianOnlineBoProxy.getAntrianByCriteria(item.getIdPelayanan(), item.getIdDokter(), "", CommonUtil.convertStringToDate(tglCheckup), item.getJamAwal(), item.getJamAkhir(), branchId);
+                } catch (GeneralBOException e) {
+                    logger.error("Pelayanan.create] Error when get jumlah antrian",e);
+                    e.printStackTrace();
+                }
+
+                if (listAntianOnline.size() > 0) {
+                    result.setJumlahAntrian(listAntianOnline.get(0).getJumlahAntrian());
+                } else result.setJumlahAntrian("0");
 
                 listOfPelayanan.add(result);
 

@@ -372,6 +372,7 @@ public class LemburBoImpl implements LemburBo {
                     returnLembur.setStTanggalAwal(df.format(lemburEntity.getTanggalAwal()));
                     returnLembur.setStTanggalAkhir(df.format(lemburEntity.getTanggalAkhir()));
                     returnLembur.setLamaJam(lemburEntity.getLamaJam());
+                    returnLembur.setApprovalFlag(lemburEntity.getApprovalFlag());
 
                     List<AbsensiPegawaiEntity> absensiPegawaiList = new ArrayList<>();
                     if (lemburEntity.getTanggalAwalSetuju()!=null){
@@ -788,6 +789,7 @@ public class LemburBoImpl implements LemburBo {
             notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
             notifAtasan.setCreatedWho(bean.getNip());
             notifAtasan.setTo("kabag");
+            notifAtasan.setOs(bean.getOs());
 
             notifikasiList.add(notifAtasan);
         }

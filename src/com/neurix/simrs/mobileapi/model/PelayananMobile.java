@@ -19,6 +19,42 @@ public class PelayananMobile implements Serializable {
     private String jamAwal;
     private String jamAkhir;
     private String stTanggal;
+    private String branchId;
+    private String branchName;
+    private String jumlahAntrian;
+    private String kuota;
+
+    public String getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(String kuota) {
+        this.kuota = kuota;
+    }
+
+    public String getJumlahAntrian() {
+        return jumlahAntrian;
+    }
+
+    public void setJumlahAntrian(String jumlahAntrian) {
+        this.jumlahAntrian = jumlahAntrian;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getIdPelayananApi() {
         return idPelayananApi;
