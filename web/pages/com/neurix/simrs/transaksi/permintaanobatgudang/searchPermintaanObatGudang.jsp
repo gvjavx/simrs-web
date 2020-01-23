@@ -460,8 +460,9 @@
                         <td>Nama Obat</td>
                         <td align="center">Expired Date</td>
                         <td align="center">Qty Approve</td>
-                        <td align="center">Jenis Satuan</td>
                         <td align="center" width="25%">Scan ID Barang</td>
+                        <td >Jenis Satuan</td>
+
                         </thead>
                         <tbody id="body_request_detail">
                         </tbody>
@@ -865,6 +866,7 @@
         var table = "";
         PermintaanObatPoliAction.listDetailObatRequest(idPermin, {
             callback: function (response) {
+                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
@@ -875,15 +877,15 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + expired + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td align='center'>" + item.jenisSatuan + "</td>" +
                                 "<td align='center'>" +
                                 '<div class="input-group">'+
-                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value)" id=cek_id_barang'+i+'>' +
+                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value,\''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
                                 '<div class="input-group-addon">'+
                                 '<span id=loading'+i+'></span> '+
                                 '</div>'+
                                 '</div>'+
                                 "</td>" +
+                                "<td>" + item.jenisSatuan + "</td>" +
                                 "</tr>";
                     });
                 }

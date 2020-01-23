@@ -434,8 +434,9 @@
                         <td>ID Barang</td>
                         <td>Nama Obat</td>
                         <td align="center">Expired Date</td>
-                        <td align="center">Qty Approve</td>
-                        <td align="center">Jenis Satuan</td>
+                        <td align="center">Qty Reture</td>
+                        <td width="25%" align="center">Scan ID Barang</td>
+                        <td>Jenis Satuan</td>
                         </thead>
                         <tbody id="body_reture">
                         </tbody>
@@ -554,12 +555,21 @@
                 $.each(response, function (i, item) {
                     var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
                     table += "<tr>" +
-                            "<td>" + item.idBarang + "</td>"+
+                            "<td>" +'<span id=id_barang'+i+'>'+ item.idBarang + "</td>"+
                             '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
                             "<td>" + item.namaObat + "</td>" +
                             "<td align='center'>" + expired + "</td>" +
                             "<td align='center'>" + item.qtyApprove + "</td>" +
-                            "<td align='center'>" + item.jenisSatuan + "</td>" +
+                            "<td align='center'>" +
+                            '<div class="input-group">'+
+                            '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value, \''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
+                            '<div class="input-group-addon">'+
+                            '<span id=loading'+i+'></span> '+
+                            '</div>'+
+                            '</div>'+
+                            "</td>" +
+                            "<td >" + item.jenisSatuan + "</td>" +
+
                             "</tr>";
                 });
             }
@@ -568,32 +578,39 @@
         $('#body_reture').html(table);
     }
 
-    <%--function editQty(id){--%>
-        <%--if($('#img'+id).attr('src') == '/simrs/pages/images/edit-flat-new.png'){--%>
-            <%--var url = '<s:url value="/pages/images/save_flat.png"/>';--%>
-            <%--$('#img'+id).attr('src',url);--%>
-            <%--$('#qtyApp'+id).hide();--%>
-            <%--$('#newQty'+id).show();--%>
-        <%--}else{--%>
-            <%--var url = '<s:url value="/pages/images/edit-flat-new.png"/>';--%>
-            <%--var gudang = $('#qtyGud'+id).text();--%>
-            <%--var approve = $('#newQty'+id).val();--%>
+    function cekIdBarang(id, valueIdBarang, idBatch){
+        var idBarang = $('#id_barang'+id).text();
+        var flag = "";
+        var load = "";
+        if(valueIdBarang != ''){
+            $('#loading'+id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
 
-            <%--if(approve != ''){--%>
-                <%--if(parseInt(approve) <= parseInt(gudang)){--%>
-                    <%--$('#img'+id).attr('src',url);--%>
-                    <%--$('#qtyApp'+id).html($('#newQty'+id).val()).show();--%>
-                    <%--$('#newQty'+id).hide();--%>
-                <%--}else{--%>
-                    <%--$('#warning_request').show().fadeOut(5000);--%>
-                    <%--$('#msg_request').text("Qty Approve tidak boleh melebihi qty gudang");--%>
-                <%--}--%>
-            <%--}else{--%>
-                <%--$('#warning_request').show().fadeOut(5000);--%>
-                <%--$('#msg_request').text("Silahkan cek kembali data inputan");--%>
-            <%--}--%>
-        <%--}--%>
-    <%--}--%>
+                if(idBarang == valueIdBarang){
+                    flag = "Y";
+                    load = '<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">';
+                }else{
+                    flag = "N";
+                    load = '<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">';
+                }
+                if(idBatch != ''){
+                    ObatPoliAction.updateDiterimaFlagBatch(idBatch, flag, {callback: function (response) {
+                        if(response == "success"){
+                            $('#loading'+id).html(load);
+                        }else{
+                            $('#loading'+id).html('<img src="<s:url value="/pages/images/icon_warning.ico"/>" style="height: 20px; width: 20px;">');
+                        }
+                    }});
+                }else{
+                    $('#loading'+id).html('<img src="<s:url value="/pages/images/icon_warning.ico"/>" style="height: 20px; width: 20px;">');
+                }
+
+            },100);
+        }else{
+            $('#loading' + id).html('');
+        }
+    }
+
 
     function editQty(id, lembar, biji) {
         if ($('#img' + id).attr('src') == '/simrs/pages/images/edit-flat-new.png') {
