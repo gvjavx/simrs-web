@@ -43,9 +43,11 @@ public class ApprovalTransaksiObatDao extends GenericDao<ImtSimrsApprovalTransak
             if (mapCriteria.get("qty")!=null) {
                 criteria.add(Restrictions.eq("qty", mapCriteria.get("qty")));
             }
-        }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
+        }
 
         // Order by
         criteria.addOrder(Order.asc("idApprovalObat"));

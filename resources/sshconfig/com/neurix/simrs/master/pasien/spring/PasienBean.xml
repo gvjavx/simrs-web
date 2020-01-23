@@ -10,6 +10,8 @@
 
     <bean id="pasienBo" class="com.neurix.simrs.master.pasien.bo.impl.PasienBoImpl"
          p:pasienDao-ref="pasienDao"
+          p:fingerDataDao-ref="fingerDataDao"
+         p:provinsiDao-ref="provinsiDao"
     />
 
     <bean id="pasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -38,5 +40,6 @@
 
     <bean id="pasienDao" class="com.neurix.simrs.master.pasien.dao.PasienDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="fingerDataDao" class="com.neurix.simrs.master.pasien.dao.FingerDataDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>

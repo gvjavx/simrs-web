@@ -19,6 +19,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.persistence.Id;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,7 +79,26 @@ public class PermintaanResepAction extends BaseMasterAction{
             PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
 
             try {
-                permintaanResepBo.saveAdd(permintaanResep, resep);
+                List<TransaksiObatDetail> detailList = new ArrayList<>();
+
+                if(resep != null && !"".equalsIgnoreCase(resep)){
+                    TransaksiObatDetail detail;
+                    JSONArray json = new JSONArray(resep);
+                    for (int i=0; i < json.length(); i++){
+
+                        JSONObject obj = json.getJSONObject(i);
+                        detail = new TransaksiObatDetail();
+
+                        detail.setIdObat(obj.getString("ID"));
+                        detail.setQty(new BigInteger(obj.getString("Qty")));
+                        detail.setKeterangan(obj.getString("Keterangan"));
+                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                        detailList.add(detail);
+                    }
+                }
+
+                permintaanResepBo.saveAdd(permintaanResep, detailList);
+
             }catch (JSONException e){
                 logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }

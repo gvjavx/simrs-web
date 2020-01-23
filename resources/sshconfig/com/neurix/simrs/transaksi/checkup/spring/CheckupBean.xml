@@ -19,6 +19,7 @@
           p:dokterTeamDao-ref="dokterTeamDao"
           p:checkupAlergiDao-ref="checkupAlergiDao"
           p:branchDao-ref="branchDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

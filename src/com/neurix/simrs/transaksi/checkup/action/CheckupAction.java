@@ -64,8 +64,8 @@ public class CheckupAction extends BaseMasterAction {
     private String fileUploadContentType;
 
     private File fileUploadDoc;
-    private String fileUploadFileNameDoc;
-    private String fileUploadContentTypeDoc;
+    private String fileUploadDocFileName;
+    private String fileUploadDocContentType;
 
     public String getUserId() {
         return userId;
@@ -91,21 +91,7 @@ public class CheckupAction extends BaseMasterAction {
         this.fileUploadDoc = fileUploadDoc;
     }
 
-    public String getFileUploadFileNameDoc() {
-        return fileUploadFileNameDoc;
-    }
 
-    public void setFileUploadFileNameDoc(String fileUploadFileNameDoc) {
-        this.fileUploadFileNameDoc = fileUploadFileNameDoc;
-    }
-
-    public String getFileUploadContentTypeDoc() {
-        return fileUploadContentTypeDoc;
-    }
-
-    public void setFileUploadContentTypeDoc(String fileUploadContentTypeDoc) {
-        this.fileUploadContentTypeDoc = fileUploadContentTypeDoc;
-    }
 
     public File getFileUpload() {
         return fileUpload;
@@ -139,6 +125,21 @@ public class CheckupAction extends BaseMasterAction {
         this.checkupDetailBoProxy = checkupDetailBoProxy;
     }
 
+    public String getFileUploadDocFileName() {
+        return fileUploadDocFileName;
+    }
+
+    public void setFileUploadDocFileName(String fileUploadDocFileName) {
+        this.fileUploadDocFileName = fileUploadDocFileName;
+    }
+
+    public String getFileUploadDocContentType() {
+        return fileUploadDocContentType;
+    }
+
+    public void setFileUploadDocContentType(String fileUploadDocContentType) {
+        this.fileUploadDocContentType = fileUploadDocContentType;
+    }
 
     @Override
     public String getId() {
@@ -417,11 +418,11 @@ public class CheckupAction extends BaseMasterAction {
             }
 
             if (this.fileUploadDoc != null) {
-                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentTypeDoc)) {
+                if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
 
                         // file name
-                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadFileNameDoc;
+                        fileName = "SURAT_RUJUK_"+checkup.getNoKtp()+"_"+this.fileUploadDocFileName;
 
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;

@@ -75,6 +75,13 @@
 
             <result name="search">/pages/com/neurix/simrs/transaksi/permintaanobatgudang/searchPermintaanObatGudang.jsp</result>
 
+            <result name="print_reture_permintaan_obat" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printReturePermintaanObat.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

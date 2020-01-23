@@ -209,7 +209,6 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="jalan" sortable="true" title="Jalan" />
                                                         <display:column property="agama" sortable="true" title="Agama" />
                                                         <display:column property="noTelp" sortable="true" title="No. Telp" />
-                                                        <display:column property="flag" sortable="true" title="flag" />
 
                                                         <display:column media="html" title="User" style="text-align:center;font-size:9">
                                                             <s:if test="#attr.row.password == null">
@@ -239,9 +238,9 @@ To change this template use File | Settings | File Templates.
                                                                 <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_printer_new">
                                                             </s:a>
                                                         </display:column>
-                                                        <display:column media="html" title="Finger Print">
+                                                        <display:column media="html" title="Add Finger">
                                                             <a href="javascript:;" data="<s:property value="%{#attr.row.idPasien}"/>" class="item-register-finger">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon-register-finger">
+                                                                <img border="0" src="<s:url value="/pages/images/finger.png"/>" name="icon-register-finger">
                                                             </a>
                                                         </display:column>
                                                     </display:table>

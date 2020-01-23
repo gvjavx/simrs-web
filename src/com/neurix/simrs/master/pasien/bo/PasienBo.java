@@ -3,6 +3,7 @@ package com.neurix.simrs.master.pasien.bo;
 import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.belajar.model.Belajar;
+import com.neurix.simrs.master.pasien.model.FingerData;
 import com.neurix.simrs.master.pasien.model.Pasien;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface PasienBo extends GeneralBo {
     public Boolean isUserPasienById(String userId, String password) throws GeneralBOException;
 
     void saveEditFinger(String userId, String regTemp, String sn, String vStamp);
+
+    List<FingerData> getListFingerPrint(String pasienId) throws GeneralBOException;
 }

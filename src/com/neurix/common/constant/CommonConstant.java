@@ -17,38 +17,40 @@ public class CommonConstant {
 //    public final static String DELETE_BTN = "/pages/images/trash.gif\" border=\"none\" cursor:hand;\" >";
 //    public final static String PRINT_BTN = "/pages/images/printer.gif\" border=\"none\" cursor:hand;\" >";
 
-    public final static String EDIT_BTN  = "/pages/images/icon_edit.ico\" border=\"none\" cursor:hand;\" >";
+    public final static String EDIT_BTN = "/pages/images/icon_edit.ico\" border=\"none\" cursor:hand;\" >";
     public final static String VIEW_BTN = "/pages/images/icon_lup.ico\" border=\"none\" cursor:hand;\" >";
     public final static String DELETE_BTN = "/pages/images/icon_trash.ico\" border=\"none\" cursor:hand;\" >";
     public final static String PRINT_BTN = "/pages/images/icon_printer.ico\" border=\"none\" cursor:hand;\" >";
 
-    public final static String EDIT="edit";
-    public final static String VIEW="view";
-    public final static String DELETE="delete";
-    public final static String PRINT="print";
+    public final static String EDIT = "edit";
+    public final static String VIEW = "view";
+    public final static String DELETE = "delete";
+    public final static String PRINT = "print";
 
-    public final static String ID="id";
-    public final static String DEFAULT_PASSWORD="123456";
+    public final static String ID = "id";
+    public final static String DEFAULT_PASSWORD = "123456";
 
-//    public final static String RESOURCE_PATH_USER_PHOTO="/pages/images/";
-    public final static String RESOURCE_PATH_USER_PHOTO="/pages/upload/image/profile/";
-    public final static String RESOURCE_PATH_UNKNOWN_PHOTO="unknown-person.png";
-    public final static String RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI="unknown-person.png";
-    public final static String RESOURCE_PATH_SPPD_FILE="/pages/upload/file/sppd/";
-    public final static String RESOURCE_PATH_REKRUITMEN_FILE="/pages/upload/file/rekruitmen/";
-    public final static String RESOURCE_PATH_MUTASI_FILE="/pages/upload/file/mutasi/";
+    //    public final static String RESOURCE_PATH_USER_PHOTO="/pages/images/";
+    public final static String RESOURCE_PATH_USER_PHOTO = "/pages/upload/image/profile/";
+    public final static String RESOURCE_PATH_UNKNOWN_PHOTO = "unknown-person.png";
+    public final static String RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI = "unknown-person.png";
+    public final static String RESOURCE_PATH_SPPD_FILE = "/pages/upload/file/sppd/";
+    public final static String RESOURCE_PATH_REKRUITMEN_FILE = "/pages/upload/file/rekruitmen/";
+    public final static String RESOURCE_PATH_MUTASI_FILE = "/pages/upload/file/mutasi/";
 
-    public final static String RESOURCE_PATH_KTP_PASIEN="/upload/ktp_pasien/";
-    public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN="/upload/surat_rujuk/";
+    public final static String RESOURCE_PATH_KTP_PASIEN = "/upload/ktp_pasien/";
+    public final static String RESOURCE_PATH_DOC_RUJUK_PASIEN = "/upload/surat_rujuk/";
+    public final static String RESOURCE_PATH_DOC_PO = "/upload/surat_po/";
 
-    public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK="/pages/upload/";
-    public final static String RESOURCE_PATH_USER_UPLOAD="/pages/upload/image/profile/";
-    public final static String RESOURCE_PATH_DEFAULT_MAP ="/pages/upload/map/";
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY="C:\\xampp\\tomcat\\webapps\\";
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="C:\\tomcat-7-64x\\webapps";
+    public final static String RESOURCE_PATH_USER_UPLOAD_PAYMENT_BANK = "/pages/upload/";
+    public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
+    public final static String RESOURCE_PATH_DEFAULT_MAP = "/pages/upload/map/";
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY = "C:\\xampp\\tomcat\\webapps\\";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\pc001\\Pictures";
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
+    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
@@ -56,17 +58,17 @@ public class CommonConstant {
 
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY="/usr/share/tomcat7-webapps";
 
-    public final static String RESOURCE_PATH_DEFAULT_PHOTO_UPLOAD ="no-image-upload.jpg";
-    public final static String RESOURCE_PATH_DEFAULT_KTP ="petani/ktp-default.jpg";
+    public final static String RESOURCE_PATH_DEFAULT_PHOTO_UPLOAD = "no-image-upload.jpg";
+    public final static String RESOURCE_PATH_DEFAULT_KTP = "petani/ktp-default.jpg";
 
 
-    public final static String LOGOUT_URL="/j_spring_security_logout";
+    public final static String LOGOUT_URL = "/j_spring_security_logout";
     public final static String SESSION_URL = "/admin/usersessionlog/initForm_usersessionlog.action";
     public final static String NOTIFICATION_URL = "/notificationlahan/initForm_notificationlahan.action";
 
-    public final static String EXCEL="xls";
+    public final static String EXCEL = "xls";
 
-    public final static String PRENUMBER_INVOICE_REKAP="199515"; //airnav - nomor abjad, yang lebih dari satu digit di jumlah
+    public final static String PRENUMBER_INVOICE_REKAP = "199515"; //airnav - nomor abjad, yang lebih dari satu digit di jumlah
 
     public final static String INPROGRESS_ICON = "/pages/images/icon_payment.ico\" border=\"none\" cursor:hand;\" >";
     public final static String SUCCESS_ICON = "/pages/images/icon_success.ico\" border=\"none\" cursor:hand;\" >";
@@ -93,13 +95,13 @@ public class CommonConstant {
     public final static String USER_INPROGRESS_ICON = "/pages/images/User_progress.png\" border=\"none\" cursor:hand;\" >";
     public final static String USER_RESET_ICON = "/pages/images/icon_reset.png\" border=\"none\" cursor:hand;\" >";
 
-    public final static String RESOURCE_PATH_USER_UPLOAD_PETANI="/pages/upload/petani/";
-    public final static String RESOURCE_PATH_USER_UPLOAD_DOC="/pages/upload/doc/";
-    public final static String RESOURCE_PATH_USER_UPLOAD_PDF="/pages/upload/doc/pdf/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_PETANI = "/pages/upload/petani/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_PDF = "/pages/upload/doc/pdf/";
 
-//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
+    //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
     public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
-//    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+    //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
     public final static String URL_IMAGE_LOGO_REPORT_BACKGROUND_PRAPRINT = "C:\\project\\e-farming\\web\\pages\\images\\pre-print.png";
@@ -140,13 +142,15 @@ public class CommonConstant {
     //FINGER
     public final static String timeLimitReg="15";
     public final static String timeLimitVer="10";
+    public final static String verAddress="http://localhost:8080/simrs/prosesLoginFinger.action";
+    public final static String regAddress="http://localhost:8080/simrs/prosesRegisterFinger.action";
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
-    public final static String LOGO_RS02 = "/pages/images/RS02.jpg";
+    public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
+    public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
 
     public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
-
 
 
 }

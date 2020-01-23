@@ -37,15 +37,6 @@ public class ImSimrsPasienEntity implements Serializable{
 
     private String email;
     private String password;
-    private String fingerData;
-
-    public String getFingerData() {
-        return fingerData;
-    }
-
-    public void setFingerData(String fingerData) {
-        this.fingerData = fingerData;
-    }
 
     public String getEmail() {
         return email;

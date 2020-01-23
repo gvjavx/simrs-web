@@ -14,6 +14,7 @@
            $("#user_name_head").html(item.username);
            $("#user_branch").html(item.branchName);
            $("#user_area").html(item.areaName);
+           $("#logo_branch").html('<img src="'+item.logoBranch+'" alt="Logo RS" style="height: 35px; width: 110px; margin-top: 8px">');
         });
     }
 
@@ -336,10 +337,10 @@
     <!-- Logo -->
     <a href="/simrs" class="logo" style="background-color: #3bb387 !important; text-decoration: none;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>e-H</b></span>
+        <span class="logo-mini"><b>NMU</b></span>
         <!-- logo for regular state and mobile devices -->
         <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;">--%>
-        <span class="logo-lg" style="margin-left: -40px"> <b>e-HEALTH</b></span>
+        <span class="logo-lg" > <b>GO-HEALTH NMU</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -348,6 +349,8 @@
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
+        <span id="logo_branch"></span>
+        <%--<img src="<s:url value="/pages/images/RS03.png"/> " alt="Logo RS" style="height: 35px; width: 110px; margin-top: 8px">--%>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">

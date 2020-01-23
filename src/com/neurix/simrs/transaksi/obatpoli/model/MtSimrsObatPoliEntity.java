@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -19,6 +20,62 @@ public class MtSimrsObatPoliEntity implements Serializable {
     private String lastUpdateWho;
 
     private String branchId;
+
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+    private String idObat;
+
+    private String idPabrik;
+    private Date expiredDate;
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
 
     public String getBranchId() {
         return branchId;
@@ -91,4 +148,6 @@ public class MtSimrsObatPoliEntity implements Serializable {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
+
 }
