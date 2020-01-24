@@ -356,8 +356,7 @@
                                             <div class="input-group-addon">
                                                 Rp.
                                             </div>
-                                            <s:textfield id="show_nominal" name="transaksiObatDetail.totalBayar"
-                                                         cssClass="form-control" readOnly="true"/>
+                                            <s:textfield id="show_nominal" cssClass="form-control" readOnly="true"/>
                                         </div>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>
                                         <s:hidden name="transaksiObatDetail.totalBayar" id="total_bayar"/>

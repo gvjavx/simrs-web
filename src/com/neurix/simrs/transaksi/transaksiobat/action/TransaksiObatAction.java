@@ -281,6 +281,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<TransaksiObatDetail> obatResepList = (List) session.getAttribute("listOfResultResep");
         List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
+        String idPoli = CommonUtil.userPelayananIdLogin();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
 
@@ -288,6 +289,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         transaksiObatDetail.setLastUpdate(time);
         transaksiObatDetail.setLastUpdateWho(userLogin);
         transaksiObatDetail.setBranchId(CommonUtil.userBranchLogin());
+        transaksiObatDetail.setIdPelayanan(idPoli);
 
         try {
             transaksiObatBoProxy.saveAdd(transaksiObatDetail, obatResepList, pembelianObatList);
@@ -399,6 +401,11 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<PermintaanResep> listResep = new ArrayList();
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+
+        if ("4".equalsIgnoreCase(permintaanResep.getStatus())){
+            permintaanResep.setFlag("N");
+            permintaanResep.setStatus("");
+        }
 
         try {
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
@@ -636,6 +643,17 @@ public class TransaksiObatAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         return "init_pembelian_obat";
+    }
+
+    public String printStrukTransaksiObat(){
+        logger.info("[TransaksiObatAction.printStrukTransaksiObat] START process >>>");
+
+        String id = getId();
+
+
+
+        logger.info("[TransaksiObatAction.printStrukTransaksiObat] END process <<<");
+        return "print_struk";
     }
 
     @Override

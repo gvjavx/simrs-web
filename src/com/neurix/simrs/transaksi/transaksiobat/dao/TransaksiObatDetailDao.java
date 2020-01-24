@@ -162,7 +162,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idDetil       = "%";
         String nama           = "%";
         String status         = "%";
-
+        String flag         = "Y";
 
         if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
             isUmum = bean.getIsUmum();
@@ -185,12 +185,15 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
             status = bean.getStatus();
         }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
 
         String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
-                "WHERE a.flag = 'Y' \n" +
+                "WHERE a.flag = :flag \n" +
                 "AND a.branch_id LIKE :branchId\n" +
                 "AND a.is_umum LIKE :isUmum\n" +
                 "AND a.id_permintaan_resep LIKE :idResep\n" +
@@ -208,9 +211,19 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 .setParameter("idDetail", idDetil)
                 .setParameter("nama", nama)
                 .setParameter("status", status)
+                .setParameter("flag", flag)
                 .list();
 
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        String statusName = "";
+        if ("1".equalsIgnoreCase(status)){
+            statusName = "Antrian";
+        } else if ("3".equalsIgnoreCase(status)){
+            statusName = "Proses";
+        } else if ("N".equalsIgnoreCase(flag)){
+            statusName = "Selesai";
+        }
 
         if (results.size() > 0)
         {
@@ -221,7 +234,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setIdPermintaanResep(obj[0].toString());
                 permintaanResep.setIdDetailCheckup(obj[1].toString());
                 permintaanResep.setNamaPasien(obj[2].toString());
-                permintaanResep.setStatus(obj[3].toString());
+                permintaanResep.setStatus(statusName);
+                permintaanResep.setFlag(flag);
                 permintaanResepList.add(permintaanResep);
             }
         }

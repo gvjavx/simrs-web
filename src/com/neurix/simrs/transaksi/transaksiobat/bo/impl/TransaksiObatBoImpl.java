@@ -154,23 +154,42 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         // kurangi stock obat
                         obatDetailEntity.setLastUpdate(bean.getLastUpdate());
                         obatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                        updateSubstractStockObatApotek(obatDetailEntity, CommonUtil.userPelayananIdLogin(), CommonUtil.userBranchLogin());
 
-//                        ImSimrsObatEntity obatEntity = getObatById(resep.getIdObat());
-//                        if (obatEntity != null){
-//
-//                            obatEntity.setQty(obatEntity.getQty().subtract(resep.getQty()));
-//                            obatEntity.setAction("U");
-//                            obatEntity.setLastUpdate(bean.getLastUpdate());
-//                            obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                            try {
-//
-//                            } catch (HibernateException e)
-//                            {
-//                                logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. ",e);
-//                                throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when save pembayaran. "+ e.getMessage());
-//                            }
-//                        }
+                        TransaksiObatBatch batch = new TransaksiObatBatch();
+                        batch.setIdTransaksiObatDetail(resep.getIdTransaksiObatDetail());
+                        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchByCriteria(batch);
+                        if (batchEntities.size() > 0){
+
+                            for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
+
+                                if ("Y".equalsIgnoreCase(batchEntity.getStatus())){
+                                    TransaksiObatDetail newTrans = new TransaksiObatDetail();
+                                    newTrans.setIdTransaksiObatDetail(resep.getIdTransaksiObatDetail());
+                                    newTrans.setQtyApprove(batchEntity.getQtyApprove());
+                                    newTrans.setIdBarang(batchEntity.getIdBarang());
+                                    newTrans.setJenisSatuan(batchEntity.getJenisSatuan());
+
+                                    updateSubstractStockObatApotek(newTrans,bean.getIdPelayanan(),bean.getBranchId());
+
+                                    batchEntity.setApproveFlag("Y");
+                                    batchEntity.setDiterimaFlag("Y");
+                                } else {
+                                    batchEntity.setApproveFlag("N");
+                                    batchEntity.setDiterimaFlag("N");
+                                }
+
+                                batchEntity.setAction("U");
+                                batchEntity.setLastUpdate(bean.getLastUpdate());
+                                batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                try {
+                                    batchDao.updateAndSave(batchEntity);
+                                } catch (HibernateException e){
+                                    logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when update obat batch. ", e);
+                                    throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when update obat batch. " + e.getMessage());
+                                }
+                            }
+                        }
                     }
 
                     PermintaanResep permintaanResep = new PermintaanResep();
@@ -341,7 +360,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         for (ImtSimrsRiwayatTransaksiObatEntity obatEntity : beans) {
             id = getNextRiwayatTransaksiId();
-            obatEntity.setIdRiwayatTransaksiObat("ODT" + id);
+            obatEntity.setIdRiwayatTransaksiObat("RTO" + id);
             obatEntity.setNoTransaksiPembelian(pembelianObat.getNoPembelianObat());
 
             try {
