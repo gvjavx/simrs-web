@@ -11,6 +11,7 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -332,7 +333,77 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-add-finger">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-search"></i> Tambah Pasien dengan Finger</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                </div>
+                <s:form id="formFinger" theme="simple" cssClass="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" style="margin-top: 5px" for="fin_id">No. BPJS</label>
+                                <div class="col-sm-6">
+                                    <s:hidden id="fin_id_pas" name="fin_id_pas" cssClass="form-control"/>
+                                    <s:textfield id="fin_id" name="fin_id" cssClass="form-control"/>
+                                </div>
+                                <script type='text/javascript'>
+                                    var functions, mapped;
+                                    $('#fin_id').typeahead({
+                                        minLength: 1,
+                                        source: function (query, process) {
+                                            functions = [];
+                                            mapped = {};
 
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            PasienAction.listPasienWithId(query,function (listdata) {
+                                                data = listdata;
+                                            });
+
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.noBpjs+" "+item.nama;
+                                                mapped[labelItem] = {id: item.noBpjs,nama:item.nama, label: labelItem,idPasien:item.idPasien};
+                                                functions.push(labelItem);
+                                            });
+                                            process(functions);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            $('#fin_id_pas').val(selectedObj.idPasien);
+                                            $('#fin_nm_pas').val(selectedObj.nama);
+                                            return selectedObj.id;
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" style="margin-top: 5px" for="fin_id">Nama Pasien</label>
+                                <div class="col-sm-6">
+                                    <s:textfield id="fin_nm_pas" name="fin_nm_pas" cssClass="form-control" readonly="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <button type="button" id="btnSearchFingerPrint" class="btn btn-success pull-right"><i class="fa fa-arrow-right"></i> Scan Finger</button>
+                    </div>
+                </s:form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type='text/javascript'>
     function detail_pasien(idCheckup) {
         var table = "";
@@ -439,10 +510,16 @@
         }, 100)
     }
     $('#btnFingerPrint').on('click',function() {
-        var idPasien = "0002";
-        var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien);
-        console.log(url);
-        window.location.href = 'finspot:FingerspotVer;'+url;
+        $('#modal-add-finger').modal('show');
+    });
+    $('#btnSearchFingerPrint').on('click',function() {
+        var idPasien = $('#fin_id_pas').val();
+        if (idPasien==""){
+            alert("nomor BPJS masih kosong");
+        } else{
+            var url=btoa('http://localhost:8080/simrs/loginFinger.action?userId='+idPasien);
+            window.location.href = 'finspot:FingerspotVer;'+url;
+        }
     });
 </script>
 

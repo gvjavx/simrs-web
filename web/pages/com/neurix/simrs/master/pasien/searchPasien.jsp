@@ -239,7 +239,7 @@ To change this template use File | Settings | File Templates.
                                                             </s:a>
                                                         </display:column>
                                                         <display:column media="html" title="Add Finger">
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.idPasien}"/>" class="item-register-finger">
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.idPasien}" />" class="item-register-finger">
                                                                 <img border="0" src="<s:url value="/pages/images/finger.png"/>" name="icon-register-finger">
                                                             </a>
                                                         </display:column>
@@ -283,8 +283,72 @@ To change this template use File | Settings | File Templates.
         var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
         console.log(url);
         var href ='finspot:FingerspotReg;'+url;
-        console.log(href);
         window.location.href =href ;
     });
+
+    /*function user_register(user_id, user_name) {
+        regStats = 0;
+        regCt = -1;
+        try
+        {
+            timer_register.stop();
+        }
+        catch(err)
+        {
+            console.log('Registration timer has been init');
+        }
+        var limit = 4;
+        var ct = 1;
+        var timeout = 5000;
+
+        timer_register = $.timer(timeout, function() {
+            console.log("'"+user_name+"' registration checking...");
+            user_checkregister(user_id,$("#user_finger_"+user_id).html());
+            if (ct>=limit || regStats==1)
+            {
+                timer_register.stop();
+                console.log("'"+user_name+"' registration checking end");
+                if (ct>=limit && regStats==0)
+                {
+                    alert("'"+user_name+"' registration fail!");
+                }
+                if (regStats==1)
+                {
+                    $("#user_finger_"+user_id).html(regCt);
+                    alert("'"+user_name+"' registration success!");
+                    load('http://localhost:8080/simrs/');
+                }
+            }
+            ct++;
+        });
+    }
+
+    function user_checkregister(user_id, current) {
+        $.ajax({
+            url			:	"user.php?action=checkreg&user_id="+user_id+"&current="+current,
+            type		:	"GET",
+            success		:	function(data)
+            {
+                try
+                {
+                    var res = jQuery.parseJSON(data);
+                    if (res.result)
+                    {
+                        regStats = 1;
+                        $.each(res, function(key, value){
+                            if (key=='current')
+                            {
+                                regCt = value;
+                            }
+                        });
+                    }
+                }
+                catch(err)
+                {
+                    alert(err.message);
+                }
+            }
+        });
+    }*/
 </script>
 

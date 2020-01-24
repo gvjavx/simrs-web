@@ -66,7 +66,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
     public List<ImSimrsPasienEntity> getListPasienByTmpBpjs(String tmp){
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
-        criteria.add(Restrictions.ilike("noBpjs", tmp));
+        criteria.add(Restrictions.ilike("noBpjs", "%"+tmp+"%"));
         criteria.add(Restrictions.eq("flag", "Y"));
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();

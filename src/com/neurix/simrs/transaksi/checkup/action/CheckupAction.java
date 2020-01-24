@@ -8,8 +8,11 @@ import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.mobileapi.pasien.model.Pasien;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
@@ -43,15 +46,20 @@ public class CheckupAction extends BaseMasterAction {
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private DokterBo dokterBoProxy;
+    private PasienBo pasienBoProxy;
 
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
+    public void setPasienBoProxy(PasienBo pasienBoProxy) {
+        this.pasienBoProxy = pasienBoProxy;
+    }
     public DokterBo getDokterBoProxy() {
         return dokterBoProxy;
     }
-
     public void setDokterBoProxy(DokterBo dokterBoProxy) {
         this.dokterBoProxy = dokterBoProxy;
     }
-
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
     private List<Pelayanan> listOfApotek = new ArrayList<>();
@@ -59,6 +67,7 @@ public class CheckupAction extends BaseMasterAction {
     private HeaderCheckup headerCheckup;
     private String id;
     private String userId;
+    private String idPasien;
     private File fileUpload;
     private String fileUploadFileName;
     private String fileUploadContentType;
@@ -67,76 +76,63 @@ public class CheckupAction extends BaseMasterAction {
     private String fileUploadDocFileName;
     private String fileUploadDocContentType;
 
+    public String getIdPasien() {
+        return idPasien;
+    }
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
     public List<Pelayanan> getListOfApotek() {
         return listOfApotek;
     }
-
     public void setListOfApotek(List<Pelayanan> listOfApotek) {
         this.listOfApotek = listOfApotek;
     }
-
     public File getFileUploadDoc() {
         return fileUploadDoc;
     }
-
     public void setFileUploadDoc(File fileUploadDoc) {
         this.fileUploadDoc = fileUploadDoc;
     }
-
-
-
     public File getFileUpload() {
         return fileUpload;
     }
-
     public void setFileUpload(File fileUpload) {
         this.fileUpload = fileUpload;
     }
-
     public String getFileUploadFileName() {
         return fileUploadFileName;
     }
-
     public void setFileUploadFileName(String fileUploadFileName) {
         this.fileUploadFileName = fileUploadFileName;
     }
-
     public String getFileUploadContentType() {
         return fileUploadContentType;
     }
-
     public void setFileUploadContentType(String fileUploadContentType) {
         this.fileUploadContentType = fileUploadContentType;
     }
-
     public CheckupDetailBo getCheckupDetailBoProxy() {
         return checkupDetailBoProxy;
     }
-
     public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
         this.checkupDetailBoProxy = checkupDetailBoProxy;
     }
-
     public String getFileUploadDocFileName() {
         return fileUploadDocFileName;
     }
-
     public void setFileUploadDocFileName(String fileUploadDocFileName) {
         this.fileUploadDocFileName = fileUploadDocFileName;
     }
-
     public String getFileUploadDocContentType() {
         return fileUploadDocContentType;
     }
-
     public void setFileUploadDocContentType(String fileUploadDocContentType) {
         this.fileUploadDocContentType = fileUploadDocContentType;
     }
@@ -209,10 +205,30 @@ public class CheckupAction extends BaseMasterAction {
 
     @Override
     public String add() {
-
         logger.info("[CheckupAction.add] start process >>>");
-
         HeaderCheckup checkup = new HeaderCheckup();
+        ImSimrsPasienEntity pasien = null;
+        if (idPasien!=null){
+            pasien = pasienBoProxy.getPasienByIdPasien(idPasien);
+            checkup.setNoBpjs(pasien.getNoBpjs());
+            checkup.setIdPasien(pasien.getIdPasien());
+            checkup.setNoKtp(pasien.getNoKtp());
+            checkup.setNama(pasien.getNama());
+            checkup.setJenisKelamin(pasien.getJenisKelamin());
+            checkup.setTempatLahir(pasien.getTempatLahir());
+            checkup.setTglLahir(CommonUtil.dateUtiltoDateSql(pasien.getTglLahir()));
+            checkup.setStTglLahir(CommonUtil.convertDateToString2(pasien.getTglLahir()));
+            checkup.setAgama(pasien.getAgama());
+            checkup.setProfesi(pasien.getProfesi());
+            checkup.setSuku(pasien.getSuku());
+            checkup.setJalan(pasien.getJalan());
+            checkup.setProvinsiId(pasien.getProvinsi());
+            checkup.setKotaId(pasien.getKota());
+            checkup.setKecamatanId(pasien.getKecamatan());
+            checkup.setDesaId(pasien.getDesaId());
+            checkup.setIdJenisPeriksaPasien("002");
+        }
+
         setHeaderCheckup(checkup);
 
         HttpSession session = ServletActionContext.getRequest().getSession();

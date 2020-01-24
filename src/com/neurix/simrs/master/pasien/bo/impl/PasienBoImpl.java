@@ -551,6 +551,46 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.getListFingerPrint] End <<<<<<<");
         return list;
     }
+    @Override
+    public List<Pasien> getListOfPasienByQuery(String query) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getListOfPasienByQuery] start process >>>");
+
+        List<Pasien> pasienList = new ArrayList();
+        List<ImSimrsPasienEntity> pasienEntityList = null;
+        try {
+            pasienEntityList = pasienDao.getListPasienByTmpBpjs(query);
+        } catch (HibernateException e) {
+            logger.error("[PasienBoImpl.getListOfPasienByQuery] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        if (pasienEntityList != null) {
+            for (ImSimrsPasienEntity simrsPasienEntity : pasienEntityList) {
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(simrsPasienEntity.getIdPasien());
+                pasien.setNoBpjs(simrsPasienEntity.getNoBpjs());
+                pasien.setNama(simrsPasienEntity.getNama());
+                pasienList.add(pasien);
+            }
+        }
+        logger.info("[PasienBoImpl.getListOfPasienByQuery] end process <<<");
+        return pasienList;
+    }
+
+    @Override
+    public ImSimrsPasienEntity getPasienByIdPasien(String idPasien){
+        logger.info("[PasienBoImpl.getPasienByIdPasien] start process >>>");
+
+        ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+        try {
+            pasienEntity = pasienDao.getById("idPasien",idPasien);
+        } catch (HibernateException e) {
+            logger.error("[PasienBoImpl.getPasienByIdPasien] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PasienBoImpl.getPasienByIdPasien] end process <<<");
+        return pasienEntity;
+    }
+
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
     }

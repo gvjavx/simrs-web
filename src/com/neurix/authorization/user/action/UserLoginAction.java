@@ -364,7 +364,7 @@ public class UserLoginAction extends ActionSupport {
         logger.info("[BpjsController.registerFinger] end process <<<");
         return "finger";
     }
-    public void prosesRegisterFinger(){
+    public String prosesRegisterFinger(){
         logger.info("[BpjsController.registerFingerProses] start process >>>");
         logger.info(RegTemp);
         String[] data = RegTemp.split(";");
@@ -376,7 +376,14 @@ public class UserLoginAction extends ActionSupport {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
         pasienBo.saveEditFinger(userId,regTemp,sn,vStamp);
-        logger.info("[BpjsController.registerFingerProses] end process <<<");
+
+        String result;
+        FingerPrint finalResult = new FingerPrint();
+        result= "http://localhost:8080/simrs/pasien/search_pasien.action";
+        finalResult.setDataResult(result);
+        fingerPrint=finalResult;
+        logger.info("[BpjsController.prosesRegisterFinger] end process <<<");
+        return "finger";
     }
 
     public String loginFinger(){
@@ -418,7 +425,7 @@ public class UserLoginAction extends ActionSupport {
         logger.info("[BpjsController.loginFinger] end process <<<");
         return "finger";
     }
-    public void prosesLoginFinger(){
+    public String prosesLoginFinger(){
         logger.info("[BpjsController.prosesLoginFinger] start process >>>");
         logger.info(VerPas);
         String[] data = VerPas.split(";");
@@ -427,7 +434,14 @@ public class UserLoginAction extends ActionSupport {
         String time=data[2];
         String sn=data[3];
 
+        String result;
+        FingerPrint finalResult = new FingerPrint();
+        result= CommonConstant.addRawatPasien+"?idPasien="+userId;
+        finalResult.setDataResult(result);
+        fingerPrint=finalResult;
         logger.info("[BpjsController.prosesLoginFinger] end process <<<");
+        return "finger";
+
     }
 
     public String getPetugasId() {

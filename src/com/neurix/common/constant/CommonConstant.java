@@ -140,10 +140,12 @@ public class CommonConstant {
     public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
 
     //FINGER
+    public final static String baseUrl="http://localhost:8080/simrs/";
     public final static String timeLimitReg="15";
     public final static String timeLimitVer="10";
-    public final static String verAddress="http://localhost:8080/simrs/prosesLoginFinger.action";
-    public final static String regAddress="http://localhost:8080/simrs/prosesRegisterFinger.action";
+    public final static String verAddress=baseUrl+"prosesLoginFinger.action";
+    public final static String regAddress=baseUrl+"prosesRegisterFinger.action";
+    public final static String addRawatPasien=baseUrl+"checkup/add_checkup.action";
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";

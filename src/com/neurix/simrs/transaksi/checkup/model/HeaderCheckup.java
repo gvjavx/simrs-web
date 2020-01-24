@@ -66,6 +66,15 @@ public class HeaderCheckup {
 
     private String diagnosa;
     private String namaDiagnosa;
+    private String noBpjs;
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
 
     public String getNamaDiagnosa() {
         return namaDiagnosa;

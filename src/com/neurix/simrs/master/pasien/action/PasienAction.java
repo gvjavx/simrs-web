@@ -394,7 +394,28 @@ public class PasienAction extends BaseMasterAction {
         logger.info("[PasienAction.printCard] end process <<<");
         return "print_card";
     }
+    public List listPasienWithId(String query) {
+        logger.info("[PasienAction.listPasienWithId] start process >>>");
 
+        List<Pasien> pasienList = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        try {
+            pasienList = pasienBo.getListOfPasienByQuery(query);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pasienBo.saveErrorMessage(e.getMessage(), "PasienAction.listPasienWithId");
+            } catch (GeneralBOException e1) {
+                logger.error("[PasienAction.listPasienWithId] Error when saving error,", e1);
+            }
+            logger.error("[PasienAction.listPasienWithId] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[PasienAction.listPasienWithId] end process <<<");
+        return pasienList;
+    }
     @Override
     public String initForm() {
         return "search";
