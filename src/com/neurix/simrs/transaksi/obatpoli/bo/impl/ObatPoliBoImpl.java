@@ -1558,6 +1558,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
             hsCriteria.put("id_pabrik", bean.getIdPabrik());
         }
+        if (bean.getExp() != null && !"".equalsIgnoreCase(bean.getExp())) {
+            hsCriteria.put("exp", bean.getExp());
+        }
 
         hsCriteria.put("flag", "Y");
 

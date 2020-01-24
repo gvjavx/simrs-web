@@ -35,6 +35,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,7 +177,10 @@ public class TransaksiObatAction extends BaseMasterAction {
                         resep.setJenisKelamin(jk);
                         resep.setTempatLahir(headerCheckup.getTempatLahir());
                         resep.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        resep.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + headerCheckup.getTglLahir().toString());
+
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+
+                        resep.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
                         resep.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         resep.setNik(headerCheckup.getNoKtp());
                         resep.setUrlKtp(headerCheckup.getUrlKtp());
@@ -303,6 +307,9 @@ public class TransaksiObatAction extends BaseMasterAction {
     public String saveAddObat(String idObat, String qty, String jenisSatuan) {
         logger.info("[TransaksiObatAction.savePembayaran] START >>>>>>>");
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<TransaksiObatDetail> obatResepList = (List) session.getAttribute("listOfResultResep");
         List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
@@ -310,9 +317,6 @@ public class TransaksiObatAction extends BaseMasterAction {
         if (pembelianObatList == null) {
             pembelianObatList = new ArrayList<>();
         }
-
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         Obat obat = new Obat();
         obat.setIdObat(idObat);
@@ -522,6 +526,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         obatPoli.setIdPabrik(idPabrik);
         obatPoli.setBranchId(CommonUtil.userBranchLogin());
         obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatPoli.setExp("Y");
         obatPoli.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

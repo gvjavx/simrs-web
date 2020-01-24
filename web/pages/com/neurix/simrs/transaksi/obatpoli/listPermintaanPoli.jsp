@@ -44,6 +44,32 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user"></i> Data Request</h3>
+                    </div>
+                    <div class="box-body">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td width="20%"><b>ID Permintaan</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="permintaanObatPoli.idPermintaanObatPoli"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Nama Pelayanan</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanObatPoli.namaPelayanan"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tanggal Permintaan</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanObatPoli.stCreatedDate"></s:label></table>
+                                        </td>
+                                    </tr>
+                                </table>
+                    </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Verifikasi Permintaan Obat Poli</h3>
@@ -174,7 +200,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <button class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</button>
+                                    <a href="initForm_permintaangudang.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
                                     <button class="btn btn-success" onclick="confirm()"><i
                                             class="fa fa-arrow-right"></i> Save
                                     </button>

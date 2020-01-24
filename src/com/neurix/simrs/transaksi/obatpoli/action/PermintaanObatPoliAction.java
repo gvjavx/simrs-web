@@ -225,8 +225,23 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             PermintaanObatPoli entity = permintaanObatPoliList.get(0);
             if(entity != null){
 
+                String branch = CommonUtil.userBranchLogin();
+                String logo = "";
+
+                switch (branch){
+                    case CommonConstant.BRANCH_RS01 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                        break;
+                    case CommonConstant.BRANCH_RS02 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                        break;
+                    case CommonConstant.BRANCH_RS03 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                        break;
+                }
+
                 reportParams.put("permintaanId", idPermintaan);
-                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                reportParams.put("logo", logo);
                 reportParams.put("namaPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
                 reportParams.put("dariPelayanan", entity.getNamaPelayanan());
             }
@@ -247,6 +262,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         logger.info("[PermintaanObatPoliAction.initApprovePermintaan] START process >>>");
 
         String id = getIdApproval();
+        String idPermintaan = getIdPermintaan();
 
         TransaksiObatDetail obatDetail = new TransaksiObatDetail();
         obatDetail.setIdApprovalObat(id);
@@ -258,6 +274,26 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         } catch (HibernateException e){
             logger.error("[PermintaanObatPoliAction.search] ERROR when get data list obat, ", e);
             addActionError("[PermintaanObatPoliAction.search] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        boolean isPoli = false;
+
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanObatPoliAction.printReturePermintaanObat] ERROR when get data list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.printReturePermintaanObat] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        if(!permintaanObatPoliList.isEmpty()){
+            PermintaanObatPoli entity = permintaanObatPoliList.get(0);
+            if(entity != null){
+                setPermintaanObatPoli(entity);
+            }
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();

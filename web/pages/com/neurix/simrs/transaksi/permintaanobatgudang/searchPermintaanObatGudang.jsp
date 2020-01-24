@@ -957,14 +957,14 @@
         }
     }
 
-    function cekIdBarangReture(id, valueIdBarang) {
+    function cekIdBarangReture(id, valueIdBarang, qtyApp) {
         var idBarang = $('#id_barang' + id).text();
         if (valueIdBarang != '') {
             $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             setTimeout(function () {
                 if (idBarang == valueIdBarang) {
                     $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                    $('#new_qty' + id).show().focus();
+                    $('#new_qty' + id).show().val(qtyApp).focus();
                 } else {
                     $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                     $('#new_qty' + id).hide();
@@ -1029,7 +1029,7 @@
                                 "<td align='center'>" + '<span id=qty_approve' + i + '>' + item.qtyApprove + '</span>' + "</td>" +
                                 '<td>' +
                                 '<div class="input-group">' +
-                                '<input class="form-control" onchange="cekIdBarangReture(\'' + i + '\',this.value)">' +
+                                '<input class="form-control" onchange="cekIdBarangReture(\'' + i + '\',this.value,\''+item.qtyApprove+'\')">' +
                                 '<div class="input-group-addon">' +
                                 '<span id=loading' + i + '></span> ' +
                                 '</div>' +
