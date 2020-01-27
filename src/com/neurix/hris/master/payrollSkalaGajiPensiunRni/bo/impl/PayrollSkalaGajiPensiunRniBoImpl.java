@@ -1,10 +1,10 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.bo.impl;
+package com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.bo.PayrollSkalaGajiPensiunRniBo;
-import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.dao.PayrollSkalaGajiPensiunRniDao;
-import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.ImPayrollSkalaGajiPensiunRniEntity;
-import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.payrollSkalaGajiPensiunRni;
+import com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.PayrollSkalaGajiPensiunRniBo;
+import com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao;
+import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity;
+import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
