@@ -61,6 +61,33 @@ public class ImBiodataEntity implements Serializable {
     private BigDecimal persentasiHutangPph;
     private String umur;
     private String flagMess;
+    private String golonganDapenId;
+    private String stMasaKerjaGol;
+    private int masaKerjaGolongan;
+
+    public int getMasaKerjaGolongan() {
+        return masaKerjaGolongan;
+    }
+
+    public void setMasaKerjaGolongan(int masaKerjaGolongan) {
+        this.masaKerjaGolongan = masaKerjaGolongan;
+    }
+
+    public String getStMasaKerjaGol() {
+        return stMasaKerjaGol;
+    }
+
+    public void setStMasaKerjaGol(String stMasaKerjaGol) {
+        this.stMasaKerjaGol = stMasaKerjaGol;
+    }
+
+    public String getGolonganDapenId() {
+        return golonganDapenId;
+    }
+
+    public void setGolonganDapenId(String golonganDapenId) {
+        this.golonganDapenId = golonganDapenId;
+    }
 
     public String getBagianName() {
         return bagianName;

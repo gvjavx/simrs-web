@@ -904,7 +904,7 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                <%--<tr>
                                     <td>
                                         <label class="control-label"><small>Poin :</small></label>
                                     </td>
@@ -918,20 +918,33 @@
                                             </s:else>
                                         </table>
                                     </td>
-                                </tr>
+                                </tr>--%>
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Poin Lebih:</small></label>
+                                        <label class="control-label"><small>Masa Kerja Golongan:</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="poinLebih" name="biodata.poinLebih" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="poinLebih" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="poinLebih"  name="biodata.poinLebih" required="true" cssClass="form-control"/>
+                                                <s:textfield id="poinLebih"  name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
                                             </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Golongan Dapen :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                            <s:select list="#initComboTipe.listComboGolongan" id="golongan2" name="biodata.golonganDapenId"
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>

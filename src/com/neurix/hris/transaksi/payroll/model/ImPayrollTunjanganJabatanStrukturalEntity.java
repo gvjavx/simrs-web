@@ -25,6 +25,33 @@ public class ImPayrollTunjanganJabatanStrukturalEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private String kelompokId;
+    private BigDecimal tunjJabatan;
+    private BigDecimal tunjStruktural;
+
+    public String getKelompokId() {
+        return kelompokId;
+    }
+
+    public void setKelompokId(String kelompokId) {
+        this.kelompokId = kelompokId;
+    }
+
+    public BigDecimal getTunjJabatan() {
+        return tunjJabatan;
+    }
+
+    public void setTunjJabatan(BigDecimal tunjJabatan) {
+        this.tunjJabatan = tunjJabatan;
+    }
+
+    public BigDecimal getTunjStruktural() {
+        return tunjStruktural;
+    }
+
+    public void setTunjStruktural(BigDecimal tunjStruktural) {
+        this.tunjStruktural = tunjStruktural;
+    }
 
     public String getBranchId() {
         return branchId;

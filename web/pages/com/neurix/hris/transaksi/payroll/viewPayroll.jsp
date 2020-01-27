@@ -537,7 +537,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Golongan/Point</label>
+                        <label class="control-label col-sm-1" >Golongan/Level</label>
                         <div class="col-sm-1">
                             <input readonly type="text" class="form-control nip" id="golongan" name="nip">
                         </div>
@@ -585,12 +585,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <%--<div class="form-group">
                         <label class="control-label col-sm-1" >Multifikator</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="multifikator" name="nip">
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="form-group">
                         <label class="control-label col-sm-1" >Gaji Bpjs **</label>
@@ -643,14 +643,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. UMK</label>
+                        <label class="control-label col-sm-1" >Santunan Khusus</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjUmk" name="nip">
                         </div>
-                        <label class="control-label col-sm-2" >PPh Pengobatan</label>
+                        <%--<label class="control-label col-sm-2" >PPh Pengobatan</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="pphPengobatan" name="nip">
-                        </div>
+                        </div>--%>
 
                         <label class="control-label col-sm-2" >Koperasi</label>
                         <div class="col-sm-2">
@@ -658,19 +658,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Struktural</label>
+                        <label class="control-label col-sm-1" >Tunj. Jabatan</label>
                         <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStruktural" name="nip">
+                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
                         </div>
                         <label class="control-label col-sm-2" >Iuran Pensiun</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranPensiun" name="nip">
                         </div>
 
-                        <label class="control-label col-sm-2" >Dansos</label>
+                        <%--<label class="control-label col-sm-2" >Dansos</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" type="text" class="form-control nip" readonly id="dansos" name="nip">
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-1" >Tunj. Peralihan</label>
@@ -688,9 +688,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj.Jab.Struktural</label>
+                        <label class="control-label col-sm-1" >Tunj. Struktural</label>
                         <div class="col-sm-2">
-                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
+                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStruktural" name="nip">
                         </div>
                         <label class="control-label col-sm-2" >Iuran Bpjs Pens.</label>
                         <div class="col-sm-2">
@@ -703,10 +703,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Tunj. Strategis</label>
+                        <%--<label class="control-label col-sm-1" >Tunj. Strategis</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStrategis" name="nip">
-                        </div>
+                        </div>--%>
                         <label class="control-label col-sm-2" >Iuran Bpjs Kes</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKes" name="nip">
@@ -718,10 +718,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Kompensasi</label>
+                        <%--<label class="control-label col-sm-1" >Kompensasi</label>
                         <div class="col-sm-2">
                             <input readonly style="text-align: right" type="text" class="form-control nip" id="kompensasi" name="nip">
-                        </div>
+                        </div>--%>
                         <label class="control-label col-sm-2" >Uang Muka Lain</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" type="text" readonly class="form-control nip" id="uangMukaLain" name="nip">
@@ -733,10 +733,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-1" >Transport</label>
+                        <%--<label class="control-label col-sm-1" >Transport</label>
                         <div class="col-sm-2">
                             <input readonly style="text-align: right"  type="text" class="form-control nip" id="transport" name="nip">
-                        </div>
+                        </div>--%>
                         <label class="control-label col-sm-2" >Kurang Bpjs</label>
                         <div class="col-sm-2">
                             <input readonly style="text-align: right" type="text" class="form-control nip" id="kekuranganIuranBpjs" name="nip">

@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.model;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model;
 
 import com.neurix.common.model.BaseModel;
 

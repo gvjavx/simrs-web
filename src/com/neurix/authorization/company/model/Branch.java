@@ -23,14 +23,32 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal umr;
     private BigDecimal uangMakan;
     private int maxJamIjinKeluar;
-    private String areaId;
+    private String periodeGajiAktif;
+    private String lemburGajiAwal;
+    private String lemburGajiAkhir;
 
-    public String getAreaId() {
-        return areaId;
+    public String getPeriodeGajiAktif() {
+        return periodeGajiAktif;
     }
 
-    public void setAreaId(String areaId) {
-        this.areaId = areaId;
+    public void setPeriodeGajiAktif(String periodeGajiAktif) {
+        this.periodeGajiAktif = periodeGajiAktif;
+    }
+
+    public String getLemburGajiAwal() {
+        return lemburGajiAwal;
+    }
+
+    public void setLemburGajiAwal(String lemburGajiAwal) {
+        this.lemburGajiAwal = lemburGajiAwal;
+    }
+
+    public String getLemburGajiAkhir() {
+        return lemburGajiAkhir;
+    }
+
+    public void setLemburGajiAkhir(String lemburGajiAkhir) {
+        this.lemburGajiAkhir = lemburGajiAkhir;
     }
 
     public String getStrBiayaJasprod() {

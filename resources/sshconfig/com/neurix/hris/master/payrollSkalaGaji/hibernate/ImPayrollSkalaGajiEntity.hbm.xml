@@ -17,9 +17,33 @@
         <property name="point">
             <column name="point" sql-type="int"  not-null="true" />
         </property>
+
+
         <property name="nilai">
-            <column name="nilai" sql-type="numeric" length="5" precision="2" not-null="true" />
+            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
+        <property name="santunanKhusus">
+            <column name="santunan_khusus" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="rumah">
+            <column name="rumah" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="air">
+            <column name="air" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="listrik">
+            <column name="listrik" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="bbm">
+            <column name="bbm" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="total">
+            <column name="total" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+
+
+
 
         <property name="tahun">
             <column name="tahun" sql-type="varchar" length="4" not-null="false" />

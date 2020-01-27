@@ -443,6 +443,9 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                 imBiodataEntity.setCabangBank(bean.getCabangBank());
 
+                imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+
                 if(bean.getFotoUpload() != null){
                     imBiodataEntity.setFotoUpload(bean.getFotoUpload());
                 }
@@ -573,6 +576,8 @@ public class BiodataBoImpl implements BiodataBo {
             imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
             imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
             imBiodataEntity.setGolongan(bean.getGolongan());
+            imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
             //Tanggal Pensiun Lama
             /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
@@ -1019,6 +1024,9 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
+                    returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
+                    returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
+                    returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
 
                     itPersonilPositionEntity = personilPositionDao.getById("nip",personalEntity.getNip(),"Y" );
                     Map hsCriteria2 = new HashMap();

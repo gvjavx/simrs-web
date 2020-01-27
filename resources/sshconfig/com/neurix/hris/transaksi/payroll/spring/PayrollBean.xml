@@ -92,7 +92,7 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
+    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.dao.PayrollSkalaGajiPensiunRniDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="tunjanganJabatanStrukturalDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganJabatanStrukturalDao"
           p:sessionFactory-ref="sessionFactory" />

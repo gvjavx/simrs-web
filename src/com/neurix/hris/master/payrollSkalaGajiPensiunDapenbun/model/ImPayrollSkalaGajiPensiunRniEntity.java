@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.model;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model;
 
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 

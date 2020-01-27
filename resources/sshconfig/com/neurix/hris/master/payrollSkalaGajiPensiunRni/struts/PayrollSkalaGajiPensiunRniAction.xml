@@ -70,7 +70,7 @@
         </global-exception-mappings>
 
         <action name="*_payrollSkalaGajiPensiun"
-                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction" method="{1}">
+                class="com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.action.PayrollSkalaGajiPensiunRniAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
@@ -97,7 +97,7 @@
 
 
         <action name="paging_displaytag_payrollSkalaGajiPensiun"
-                class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunAction" method="paging">
+                class="com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.action.PayrollSkalaGajiPensiunAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunRni/SearchPayrollSkalaGajiPensiun.jsp</result>
         </action>

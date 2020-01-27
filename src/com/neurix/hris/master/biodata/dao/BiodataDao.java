@@ -475,8 +475,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setCabangBank((String) row[66]);
 
             result.setTanggalMasuk((Date) row[68]);
-            result.setBagianId((String) row[69]);
-            result.setBagianName((String) row[70]);
+            result.setGolonganDapenId(row[69].toString());
+            result.setMasaKerjaGolongan((Integer) row[70]);
+            result.setBagianId((String) row[71]);
+            result.setBagianName((String) row[72]);
 
             listOfResult.add(result);
         }

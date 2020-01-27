@@ -1,11 +1,11 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.action;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.PayrollSkalaGajiPensiunRniBo;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni;
+import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.bo.PayrollSkalaGajiPensiunRniBo;
+import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.payrollSkalaGajiPensiunRni;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 

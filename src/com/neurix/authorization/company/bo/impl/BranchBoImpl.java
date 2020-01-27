@@ -85,10 +85,6 @@ public class BranchBoImpl implements BranchBo {
                 hsCriteria.put("branch_address", searchBranch.getBranchAddress());
             }
 
-            if (searchBranch.getAreaId() != null && !"".equalsIgnoreCase(searchBranch.getAreaId())) {
-                hsCriteria.put("area_id", searchBranch.getAreaId());
-            }
-
             if (searchBranch.getFlag() != null && !"".equalsIgnoreCase(searchBranch.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBranch.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -123,7 +119,12 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
                     resultBranch.setUangMakan(imBranches.getUangMakan());
                     resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
-//                    resultBranch.setStrBiayaJasprod(CommonUtil.numbericFormat(imBranches.getBiayaJasprod(), "###,###"));
+                    if (imBranches.getBiayaJasprod()!=null){
+                        resultBranch.setStrBiayaJasprod(CommonUtil.numbericFormat(imBranches.getBiayaJasprod(), "###,###"));
+                    }
+                    resultBranch.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
+                    resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
+                    resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());
 
                     resultBranch.setCreatedWho(imBranches.getCreatedWho());
                     resultBranch.setCreatedDate(imBranches.getCreatedDate());
@@ -132,7 +133,6 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setAction(imBranches.getAction());
                     resultBranch.setFlag(imBranches.getFlag());
                     resultBranch.setEnabled(imBranches.getEnabled());
-                    resultBranch.setAreaId(imBranches.getAreaId());
 
                     listOfResultBranch.add(resultBranch);
                 }
@@ -162,6 +162,7 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setFaktorJasprod(branch.getFaktorJasprod());
             imBranches.setFaktorJubileum(branch.getFaktorJubileum());
             imBranches.setUmr(branch.getUmr());
+            imBranches.setUangMakan(branch.getUangMakan());
             imBranches.setBiayaJasprod(branch.getBiayaJasprod());
             imBranches.setStatusPabrik(branch.getStatusPabrik());
             imBranches.setCreatedWho(branch.getCreatedWho());
@@ -169,7 +170,6 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setLastUpdateWho(branch.getLastUpdateWho());
             imBranches.setLastUpdate(branch.getLastUpdate());
             imBranches.setAction(branch.getAction());
-            imBranches.setAreaId(branch.getAreaId());
             imBranches.setFlag("Y");
 
             String branchId = branch.getBranchId();
@@ -255,11 +255,14 @@ public class BranchBoImpl implements BranchBo {
                 imBranchesOld.setFaktorJasprod(branchNew.getFaktorJasprod());
                 imBranchesOld.setFaktorJubileum(branchNew.getFaktorJubileum());
                 imBranchesOld.setUmr(branchNew.getUmr());
+                imBranchesOld.setUangMakan(branchNew.getUangMakan());
                 imBranchesOld.setBiayaJasprod(branchNew.getBiayaJasprod());
                 imBranchesOld.setLastUpdate(branchNew.getLastUpdate());
                 imBranchesOld.setLastUpdateWho(branchNew.getLastUpdateWho());
                 imBranchesOld.setFlag(imBranchesOld.getFlag());
-                imBranchesOld.setAreaId(imBranchesOld.getAreaId());
+                imBranchesOld.setPeriodeGajiAktif(branchNew.getPeriodeGajiAktif());
+                imBranchesOld.setLemburGajiAwal(branchNew.getLemburGajiAwal());
+                imBranchesOld.setLemburGajiAkhir(branchNew.getLemburGajiAkhir());
 
                 try {
                     branchDao.updateAndSave(imBranchesOld);
@@ -378,6 +381,11 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setFaktorJubileum(imBranches.getFaktorJubileum());
             resultBranch.setUmr(imBranches.getUmr());
             resultBranch.setBiayaJasprod(imBranches.getBiayaJasprod());
+            resultBranch.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
+            resultBranch.setUangMakan(imBranches.getUangMakan());
+            resultBranch.setLemburGajiAwal(imBranches.getLemburGajiAwal());
+            resultBranch.setLemburGajiAkhir(imBranches.getLemburGajiAkhir());
+
             resultBranch.setCreatedWho(imBranches.getCreatedWho());
             resultBranch.setCreatedDate(imBranches.getCreatedDate());
             resultBranch.setLastUpdateWho(imBranches.getLastUpdateWho());

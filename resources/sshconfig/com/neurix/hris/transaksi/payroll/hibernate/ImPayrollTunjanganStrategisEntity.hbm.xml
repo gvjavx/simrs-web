@@ -21,6 +21,36 @@
             <column name="bpjs_jht_persen" sql-type="numeric" length="5" not-null="true" />
         </property>
 
+
+        <!--//tambahanirfan
+        //bpjs Kesehatan-->
+        <property name="iuranBpjsKsKaryPersen">
+            <column name="iuran_bpjs_ks_kary_persen" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="iuranBpjsKsPersPersen">
+            <column name="iuran_bpjs_ks_pers_persen" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="minBpjsKs">
+            <column name="min_bpjs_ks" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="maxBpjsKs">
+            <column name="max_bpjs_ks" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
+        <!--//bpjs tenaga kerja-->
+        <property name="iuranBpjsTkKaryPersen">
+            <column name="iuran_bpjs_tk_kary_persen" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="iuranBpjsTkPersPersen">
+            <column name="iuran_bpjs_tk_pers_persen" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="minBpjsTk">
+            <column name="min_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+        <property name="maxBpjsTk">
+            <column name="max_bpjs_tk" sql-type="numeric" length="10" not-null="true" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

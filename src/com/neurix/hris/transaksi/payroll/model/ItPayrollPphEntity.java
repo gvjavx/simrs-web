@@ -74,6 +74,15 @@ public class ItPayrollPphEntity implements Serializable {
     private BigDecimal bruto;
     private BigDecimal reduce;
     private BigDecimal pphGaji;
+    private BigDecimal iuranBpjsKesehatan;
+
+    public BigDecimal getIuranBpjsKesehatan() {
+        return iuranBpjsKesehatan;
+    }
+
+    public void setIuranBpjsKesehatan(BigDecimal iuranBpjsKesehatan) {
+        this.iuranBpjsKesehatan = iuranBpjsKesehatan;
+    }
 
     public String getFlagKalkulasiPphPengobatan() {
         return flagKalkulasiPphPengobatan;

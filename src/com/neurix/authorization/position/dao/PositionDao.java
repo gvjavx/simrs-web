@@ -100,6 +100,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
+    public List<ImPosition> getPositionById (String positionId) throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();

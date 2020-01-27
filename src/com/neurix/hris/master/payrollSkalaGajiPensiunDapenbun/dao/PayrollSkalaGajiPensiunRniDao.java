@@ -1,7 +1,7 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity;
+import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.ImPayrollSkalaGajiPensiunRniEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

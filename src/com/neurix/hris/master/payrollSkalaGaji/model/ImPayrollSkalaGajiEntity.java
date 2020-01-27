@@ -27,6 +27,63 @@ public class ImPayrollSkalaGajiEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+
+
+    private BigDecimal santunanKhusus;
+    private BigDecimal rumah;
+    private BigDecimal listrik;
+    private BigDecimal air;
+    private BigDecimal bbm;
+    private BigDecimal total;
+
+    public BigDecimal getAir() {
+        return air;
+    }
+
+    public void setAir(BigDecimal air) {
+        this.air = air;
+    }
+
+    public BigDecimal getBbm() {
+        return bbm;
+    }
+
+    public void setBbm(BigDecimal bbm) {
+        this.bbm = bbm;
+    }
+
+    public BigDecimal getListrik() {
+        return listrik;
+    }
+
+    public void setListrik(BigDecimal listrik) {
+        this.listrik = listrik;
+    }
+
+    public BigDecimal getRumah() {
+        return rumah;
+    }
+
+    public void setRumah(BigDecimal rumah) {
+        this.rumah = rumah;
+    }
+
+    public BigDecimal getSantunanKhusus() {
+        return santunanKhusus;
+    }
+
+    public void setSantunanKhusus(BigDecimal santunanKhusus) {
+        this.santunanKhusus = santunanKhusus;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
     public String getTahun() {
         return tahun;
     }

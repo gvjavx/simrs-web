@@ -1,7 +1,7 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo;
+package com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.bo;
 
 import com.neurix.common.bo.BaseMasterBo;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.payrollSkalaGajiPensiunRni;
+import com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.payrollSkalaGajiPensiunRni;
 
 /**
  * Created by IntelliJ IDEA.

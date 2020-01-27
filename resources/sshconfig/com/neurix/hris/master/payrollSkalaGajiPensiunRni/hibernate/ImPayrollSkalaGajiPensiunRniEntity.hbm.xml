@@ -3,8 +3,8 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji_rni" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.payrollSkalaGajiPensiunDapenbun.model.ImPayrollSkalaGajiPensiunRniEntity" dynamic-update="true"
+           table="im_hris_payroll_skala_gaji_dapenbun" select-before-update="true" schema="public">
 
 
         <id name="skalaGajiPensiunId">

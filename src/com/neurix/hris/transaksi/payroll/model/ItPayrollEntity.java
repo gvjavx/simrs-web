@@ -169,6 +169,26 @@ public class ItPayrollEntity implements Serializable {
     private double smkAngka;
     private BigDecimal insentifDiterima;
 
+    private Integer masaKerjaBulan;
+
+    private BigDecimal iuranJkmJkk;
+
+    public BigDecimal getIuranJkmJkk() {
+        return iuranJkmJkk;
+    }
+
+    public void setIuranJkmJkk(BigDecimal iuranJkmJkk) {
+        this.iuranJkmJkk = iuranJkmJkk;
+    }
+
+    public Integer getMasaKerjaBulan() {
+        return masaKerjaBulan;
+    }
+
+    public void setMasaKerjaBulan(Integer masaKerjaBulan) {
+        this.masaKerjaBulan = masaKerjaBulan;
+    }
+
     public BigDecimal getPphGajiRapel() {
         return pphGajiRapel;
     }

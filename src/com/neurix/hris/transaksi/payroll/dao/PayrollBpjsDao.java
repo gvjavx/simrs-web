@@ -69,5 +69,11 @@ public class PayrollBpjsDao extends GenericDao<ImPayrollBpjsEntity, String> {
                 .list();
         return results;
     }
+    public List<ImPayrollBpjsEntity> getBpjsById(String bpjsId) throws HibernateException {
+        List<ImPayrollBpjsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollBpjsEntity.class)
+                .add(Restrictions.eq("bpjsId", bpjsId))
+                .list();
+        return results;
+    }
     
 }

@@ -946,4 +946,7 @@ public class CommonUtil {
         cal.add(Calendar.YEAR, i);
         return cal.getTime();
     }
+    public static BigDecimal percentage(BigDecimal base, BigDecimal pct){
+        return base.multiply(pct).divide(new BigDecimal(100));
+    }
 }
