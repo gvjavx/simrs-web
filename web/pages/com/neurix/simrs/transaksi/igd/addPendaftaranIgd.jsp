@@ -461,7 +461,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4">Diagnosa</label>
+                                            <label class="col-md-4">Diagnosa Awal</label>
                                             <div class="col-md-8">
                                                 <s:action id="initComboDiagnosa" namespace="/checkupdetail"
                                                           name="getListComboDiagnosa_checkupdetail"/>

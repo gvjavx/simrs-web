@@ -5,8 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.bpjs.tindakan.bo.TindakanBpjsBo;
 import com.neurix.simrs.bpjs.tindakan.dao.TindakanBpjsDao;
-import com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity;
-import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
+import com.neurix.simrs.bpjs.tindakan.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
@@ -96,43 +95,4 @@ public class TindakanBpjsBoImpl extends BpjsService implements TindakanBpjsBo {
         logger.info("[TindakanBoImpl.getByCriteria] End <<<<<<<");
         return null;
     }
-
-
-    @Override
-    public void GetTindakanByAPIBpjs(TindakanBpjs bean) throws GeneralBOException {
-        logger.info("[TindakanBoImpl.getListEntityJenisTindakan] Start >>>>>>>");
-        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/referensi/procedure/";
-        String result = null;
-        try {
-            result = GET(feature);
-            JSONObject myResponseCheck = new JSONObject(result);
-            JSONObject response = myResponseCheck.getJSONObject("response");
-            JSONArray arrResponse = response.getJSONArray("procedure");
-
-
-            int length = arrResponse.length();
-            for (int i=0;i<length;i++){
-                JSONObject obj = arrResponse.getJSONObject(i);
-                ImSimrsTindakanBpjsEntity tindakanBpjs = new ImSimrsTindakanBpjsEntity();
-                tindakanBpjs.setKodeTindakanBpjs(obj.getString("kode"));
-                tindakanBpjs.setNamaTindakanBpjs(obj.getString("nama"));
-
-                tindakanBpjs.setIdTindakanBpjs(tindakanBpjsDao.getNextTindakanBpjsId());
-                tindakanBpjs.setFlag(bean.getFlag());
-                tindakanBpjs.setAction(bean.getAction());
-                tindakanBpjs.setCreatedDate(bean.getCreatedDate());
-                tindakanBpjs.setCreatedWho(bean.getCreatedWho());
-                tindakanBpjs.setLastUpdate(bean.getLastUpdate());
-                tindakanBpjs.setLastUpdateWho(bean.getLastUpdateWho());
-
-                tindakanBpjsDao.addAndSave(tindakanBpjs);
-            }
-
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-        logger.info("[TindakanBoImpl.getListEntityJenisTindakan] End <<<<<<<");
-    }
-
 }

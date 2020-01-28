@@ -23,4 +23,7 @@ public interface CheckupBo {
     public AlertPasien getAlertPasien(String idPasien, String branchId) throws GeneralBOException;
     public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException;
     Long saveErrorMessage(String message, String s);
+
+    HeaderCheckup completeBpjs(String nomorBpjs,String unitId);
+    public String getNextHeaderId();
 }

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -66,6 +67,43 @@ public class HeaderCheckup {
 
     private String diagnosa;
     private String namaDiagnosa;
+    private String noBpjs;
+
+    private String noSep;
+    private String jenisTransaksi;
+    private BigDecimal tarifBpjs;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getJenisTransaksi() {
+        return jenisTransaksi;
+    }
+
+    public void setJenisTransaksi(String jenisTransaksi) {
+        this.jenisTransaksi = jenisTransaksi;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
 
     public String getNamaDiagnosa() {
         return namaDiagnosa;

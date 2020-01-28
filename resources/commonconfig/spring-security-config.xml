@@ -16,6 +16,10 @@
             <filter-chain pattern="/login.jsp" filters="none" />
             <filter-chain pattern="/loginUser.action" filters="none" />
             <filter-chain pattern="/logoutUser.action" filters="none" />
+            <filter-chain pattern="/registerFinger.action" filters="none" />
+            <filter-chain pattern="/prosesRegisterFinger.action" filters="none" />
+            <filter-chain pattern="/loginFinger.action" filters="none" />
+            <filter-chain pattern="/prosesLoginFinger.action" filters="none" />
             <filter-chain pattern="/mainMenu.action" filters="none" />
             <filter-chain pattern="/logout.jsp*" filters="none" />
             <filter-chain pattern="/struts/**/*" filters="none" />
@@ -91,9 +95,8 @@
             <filter-chain pattern="/mobileapi/payrol/*" filters="none"/>
             <filter-chain pattern="/mobileapi/historycuti" filters="none"/>
 
-            <filter-chain pattern="/mobileapi/testbpjs" filters="none" />
+            <filter-chain pattern="/mobileapi/bpjs" filters="none" />
             <filter-chain pattern="/mobileapi/loginpasien/*" filters="none" />
-
 
             <filter-chain pattern="/**/*"
                           filters="

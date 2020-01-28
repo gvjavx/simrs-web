@@ -203,26 +203,84 @@
                                         <div class="form-group">
                                             <label class="col-md-4">No BPJS</label>
                                             <div class="col-md-8">
-                                                <div class="input-group date">
-                                                    <s:textfield id="no_bpjs" name="headerCheckup.noBpjs" cssClass="form-control"/>
-                                                    <div class="input-group-addon btn btn-success">
-                                                        <i class="fa fa-search" style="cursor: pointer"></i> Search
-                                                    </div>
-                                                </div>
-                                                <%--<s:textfield id="no_bpjs" name="headerCheckup.noBpjs"--%>
-                                                             <%--cssClass="form-control" onkeypress="$(this).css('border','')"/>--%>
+                                                <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
+                                                             cssClass="form-control"/>
                                             </div>
+                                            <script type="application/javascript">
+                                                var functions, mapped;
+                                                $('#no_bpjs').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+
+                                                        var data = [];
+                                                        dwr.engine.setAsync(false);
+
+                                                        PasienAction.getListComboPasienByBpjs(query, function (listdata) {
+                                                            data = listdata;
+                                                        });
+                                                        if (data.length!=0){
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem = "";
+
+                                                                if(item.noBpjs != '' && item.noBpjs != null){
+                                                                    labelItem = item.noBpjs+"-"+item.noKtp+"-"+item.nama;
+                                                                }else{
+                                                                    labelItem = item.noBpjs+"-"+item.nama;
+                                                                }
+                                                                mapped[labelItem] = {
+                                                                    id: item.idPasien,
+                                                                    nama:item.nama,
+                                                                    ktp: item.noKtp,
+                                                                    bpjs:item.noBpjs,
+                                                                    tempatlahir:item.tempatLahir,
+                                                                    tgllahir:item.tglLahir,
+                                                                    alamat:item.jalan,
+                                                                    suku:item.suku,
+                                                                    profesi:item.profesi,
+                                                                    notelp:item.noTelp,
+                                                                    urlktp:item.urlKtp,
+                                                                    sex:item.jenisKelamin,
+                                                                    agama:item.agama
+                                                                };
+                                                                functions.push(labelItem);
+                                                            });
+                                                            process(functions);
+                                                        }
+                                                        else{
+                                                            alert("No. BPJS belum terdaftar sebagai pasien");
+                                                            $('#no_bpjs').val("");
+                                                        }
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+
+                                                        alertPasien(selectedObj.id);
+
+                                                        $('#id_pasien').val(selectedObj.id);
+                                                        $('#no_ktp').val(selectedObj.ktp);
+                                                        $('#nama_pasien').val(selectedObj.nama);
+                                                        $('#jenis_kelamin').val(selectedObj.sex);
+                                                        $('#tempat_lahir').val(selectedObj.tempatlahir);
+                                                        $('#tanggal_lahir').val(selectedObj.tgllahir);
+                                                        $('#agama').val(selectedObj.agama);
+                                                        $('#profesi').val(selectedObj.profesi);
+                                                        $('#jalan').val(selectedObj.alamat);
+                                                        $('#suku').val(selectedObj.urlktp);
+                                                        $('#url').val(selectedObj.suku);
+                                                        $('#penjamin').val("002");
+                                                        return selectedObj.bpjs;
+                                                    }
+                                                });
+                                            </script>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="id_pasien" name="headerCheckup.idPasien" onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
-                                                <%--<button class="btn btn-success" onclick="alertPasien()" style="cursor: pointer">--%>
-                                                    <%--alert--%>
-                                                <%--</button>--%>
                                             </div>
-
                                             <script type="application/javascript">
                                                 var functions, mapped;
                                                 $('#id_pasien').typeahead({
@@ -280,7 +338,6 @@
                                                         var selectedObj = mapped[item];
 
                                                         alertPasien(selectedObj.id);
-
                                                         $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
                                                         $('#nama_pasien').val(selectedObj.nama);
@@ -441,6 +498,59 @@
                                                 </div>
                                                 <img id="img-upload" width="100%" src="<s:url value="/pages/images/ktp-default.jpg"/>"
                                                      style="border: darkgray solid 1px; height: 170px"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
+                                            <div class="col-md-8">
+                                            <s:if test='tipe == "bpjs"'>
+                                                <s:textfield id="diagnosa_awal" style="margin-top: 7px" name="headerCheckup.diagnosa" cssClass="form-control" required="false"/>
+                                                <s:hidden name="headerCheckup.jenisTransaksi"/>
+                                                <script>
+                                                    var menus, mapped;
+                                                    $('#diagnosa_awal').typeahead({
+                                                        minLength: 3,
+                                                        source: function (query, process) {
+                                                            menus = [];
+                                                            mapped = {};
+
+                                                            var data = [];
+                                                            dwr.engine.setAsync(false);
+                                                            CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                                                data = listdata;
+                                                            });
+
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem = item.namaDiagnosaBpjs;
+                                                                mapped[labelItem] = { id: item.kodeDiagnosaBpjs, label: labelItem, name: item.namaDiagnosaBpjs};
+                                                                menus.push(labelItem);
+                                                            });
+
+                                                            process(menus);
+                                                        },
+                                                        updater: function (item) {
+                                                            var selectedObj = mapped[item];
+                                                            return selectedObj.id;
+
+                                                            // insert to textarea diagnosa_ket
+                                                            $("#diagnosa_ket").html(selectedObj.labelItem);
+                                                        }
+                                                    });
+                                                </script>
+                                                <s:textarea id="diagnosa_ket" disabled="true" name="headerCheckup.namaDiagnosa" cssClass="form-control"></s:textarea>
+
+                                            </s:if>
+                                            <s:else>
+                                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                                name="getListComboDiagnosa_checkupdetail"/>
+                                                <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                                list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                                name="headerCheckup.diagnosa" listKey="idDiagnosa"
+                                                listValue="descOfDiagnosa"
+                                                headerKey="" headerValue="[Select one]"
+                                                cssClass="form-control select2"/>
+                                            </s:else>
                                             </div>
                                         </div>
                                     </div>
@@ -699,7 +809,6 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
-
         $('#pendaftaran').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {

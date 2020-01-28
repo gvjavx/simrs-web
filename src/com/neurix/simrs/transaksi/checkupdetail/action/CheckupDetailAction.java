@@ -969,6 +969,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "print_resep";
     }
 
+
+
     @Override
     public String downloadPdf() {
 return null;

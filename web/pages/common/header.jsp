@@ -424,7 +424,12 @@ apply the skin class to the body tag so the changes take effect.
         var host = window.location.hostname;
         window.location.href = host+"/simrs/j_spring_security_logout";
     }
-
+    window.checkDec = function(el){
+        var ex = /^[0-9]+\.?[0-9]*$/;
+        if(ex.test(el.value)==false){
+            el.value = el.value.substring(0,el.value.length - 1);
+        }
+    }
 </script>
 
 
