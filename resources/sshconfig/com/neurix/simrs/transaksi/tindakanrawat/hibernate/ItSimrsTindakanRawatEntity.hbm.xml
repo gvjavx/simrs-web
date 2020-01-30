@@ -25,7 +25,7 @@
             <column name="id_dokter" sql-type="varchar" length="30" not-null="true"/>
         </property>
         <property name="idPerawat">
-            <column name="id_perawat" sql-type="varchar" length="10" not-null="true"/>
+            <column name="id_perawat" sql-type="varchar" length="10" not-null="false"/>
         </property>
         <property name="tarif">
             <column name="tarif" sql-type="bigint" not-null="false"/>

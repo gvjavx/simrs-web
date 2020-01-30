@@ -35,6 +35,8 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -71,6 +73,24 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String fileUploadDocContentType;
 
     private String idResep;
+    private BigInteger tarifCoverBpjs;
+    private BigInteger tarifTotalTindakan;
+
+    public BigInteger getTarifCoverBpjs() {
+        return tarifCoverBpjs;
+    }
+
+    public void setTarifCoverBpjs(BigInteger tarifCoverBpjs) {
+        this.tarifCoverBpjs = tarifCoverBpjs;
+    }
+
+    public BigInteger getTarifTotalTindakan() {
+        return tarifTotalTindakan;
+    }
+
+    public void setTarifTotalTindakan(BigInteger tarifTotalTindakan) {
+        this.tarifTotalTindakan = tarifTotalTindakan;
+    }
 
     public String getIdResep() {
         return idResep;
@@ -325,6 +345,20 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
 
                         setHeaderDetailCheckup(detailCheckup);
+
+                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
+                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
+                        }
+
+                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+                        try {
+                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
+                        } catch (GeneralBOException e){
+                            logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
+                        }
+                        setTarifTotalTindakan(totalTarif);
+
 
                         break;
                     }

@@ -1,9 +1,12 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
+import com.neurix.simrs.master.tindakan.model.Tindakan;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -72,6 +75,15 @@ public class HeaderCheckup {
     private String noSep;
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
+    private List<Tindakan> tindakanList;
+
+    public List<Tindakan> getTindakanList() {
+        return tindakanList;
+    }
+
+    public void setTindakanList(List<Tindakan> tindakanList) {
+        this.tindakanList = tindakanList;
+    }
 
     public String getNoSep() {
         return noSep;

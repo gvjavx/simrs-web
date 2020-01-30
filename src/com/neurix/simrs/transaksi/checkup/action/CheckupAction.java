@@ -18,6 +18,7 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
@@ -448,6 +449,12 @@ public class CheckupAction extends BaseMasterAction {
 
             }
 
+            Tindakan tindakan = new Tindakan();
+            tindakan.setIdTindakan("03");
+
+            List<Tindakan> tindakans = new ArrayList<>();
+            tindakans.add(tindakan);
+
             checkup.setNoCheckup(noCheckup);
             checkup.setBranchId(userArea);
             checkup.setCreatedWho(userLogin);
@@ -458,6 +465,7 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setFlag("Y");
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
+            checkup.setTindakanList(tindakans);
 
             String fileName = "";
             if (this.fileUpload != null) {
@@ -559,6 +567,7 @@ public class CheckupAction extends BaseMasterAction {
                     klaimDetailRequest.setNomorSep(genNoSep);
                     klaimDetailRequest.setNomorKartu(getPasien.getNoKtp());
                     klaimDetailRequest.setTglMasuk(updateTime.toString());
+                    klaimDetailRequest.setTglPulang(updateTime.toString());
                     klaimDetailRequest.setJenisRawat("1");
                     klaimDetailRequest.setKelasRawat("2");
                     klaimDetailRequest.setAdlChronic("");
@@ -576,9 +585,10 @@ public class CheckupAction extends BaseMasterAction {
 
                     klaimDetailRequest.setTarifRsNonBedah("");
                     klaimDetailRequest.setTarifRsProsedurBedah("");
+
                     klaimDetailRequest.setTarifRsKonsultasi("300000");
                     klaimDetailRequest.setTarifRsTenagaAhli("");
-                    klaimDetailRequest.setTarifRsKeperawatan("80000");
+                    klaimDetailRequest.setTarifRsKeperawatan("");
                     klaimDetailRequest.setTarifRsPenunjang("");
                     klaimDetailRequest.setTarifRsRadiologi("");
                     klaimDetailRequest.setTarifRsLaboratorium("");
@@ -613,11 +623,11 @@ public class CheckupAction extends BaseMasterAction {
 
                     klaimDetailRequest.setTarifPoliEks("");
                     klaimDetailRequest.setNamaDokter(namaDokter);
-                    klaimDetailRequest.setKodeTarif("CS");
+                    klaimDetailRequest.setKodeTarif("AP");
                     klaimDetailRequest.setTarifRsPayorId("3");
                     klaimDetailRequest.setPayorCd("JKN");
                     klaimDetailRequest.setCobCd("");
-                    klaimDetailRequest.setCoderNik("3515040502940001");
+                    klaimDetailRequest.setCoderNik("123456");
 
                     KlaimDetailResponse claimEklaimResponse = new KlaimDetailResponse();
                     try {
@@ -647,7 +657,7 @@ public class CheckupAction extends BaseMasterAction {
 
                             BigDecimal tarifCbg = new BigDecimal(0);
                             if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null){
-                                if ("0".equalsIgnoreCase(grouping1Response.getCbgTarif())){
+                                if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())){
                                     tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
                                 }
                             }

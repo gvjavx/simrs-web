@@ -338,6 +338,16 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="box-body">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><s:property value="tarifCoverBpjs"></s:property></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><s:property value="tarifTotalTindakan"></s:property></div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">

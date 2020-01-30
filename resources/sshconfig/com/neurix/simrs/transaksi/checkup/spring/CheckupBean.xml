@@ -21,6 +21,8 @@
           p:checkupAlergiDao-ref="checkupAlergiDao"
           p:branchDao-ref="branchDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

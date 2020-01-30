@@ -287,7 +287,7 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     logger.error("[EklaimBoImpl.updateDataClaimEklaim] : " + errorNo +" : "+metaData.getString("message"));
                 }
 
-                finalResponse.setStatus(metaData.getString("code"));
+                finalResponse.setStatus(String.valueOf(metaData.getInt("code")));
                 finalResponse.setMessage(metaData.getString("message"));
 
             } catch (IOException | JSONException e) {
@@ -339,41 +339,51 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     finalResponse.setCbgDescription(cbg.getString("description"));
                     finalResponse.setCbgTarif(cbg.getString("tariff"));
 
-                    JSONObject subAcute = response.getJSONObject("sub_acute");
-                    finalResponse.setSubAcuteCode(subAcute.getString("code"));
-                    finalResponse.setSubAcuteDescription(subAcute.getString("description"));
-                    finalResponse.setSubAcuteTarif(subAcute.getString("tariff"));
+                    if (response.has("sub_acute")){
+                        JSONObject subAcute = response.getJSONObject("sub_acute");
+                        finalResponse.setSubAcuteCode(subAcute.getString("code"));
+                        finalResponse.setSubAcuteDescription(subAcute.getString("description"));
+                        finalResponse.setSubAcuteTarif(subAcute.getString("tariff"));
+                    }
 
-                    JSONObject chronic = response.getJSONObject("chronic");
-                    finalResponse.setChronicCode(chronic.getString("code"));
-                    finalResponse.setChronicDescription(chronic.getString("description"));
-                    finalResponse.setChronicTarif(chronic.getString("tariff"));
+                    if (response.has("chronic")){
+                        JSONObject chronic = response.getJSONObject("chronic");
+                        finalResponse.setChronicCode(chronic.getString("code"));
+                        finalResponse.setChronicDescription(chronic.getString("description"));
+                        finalResponse.setChronicTarif(chronic.getString("tariff"));
+                    }
 
                     finalResponse.setKelas(response.getString("kelas"));
-                    finalResponse.setAddPaymentAmt(response.getString("add_payment_amt"));
+                    if (response.has("add_payment_amt")){
+                        finalResponse.setAddPaymentAmt(response.getString("add_payment_amt"));
+                    }
                     finalResponse.setInacbgVersion(response.getString("inacbg_version"));
 
                     List<Grouping1SpecialCmgResponse> specialCmgResponseList = new ArrayList<>();
-                    JSONArray specialCmgOption = myResponseCheck.getJSONArray("special_cmg_option");
-                    int length = specialCmgOption.length();
-                    for (int i=0;i<length;i++) {
-                        JSONObject obj= specialCmgOption.getJSONObject(i);
-                        Grouping1SpecialCmgResponse data = new Grouping1SpecialCmgResponse();
-                        data.setCode(obj.getString("code"));
-                        data.setDescription(obj.getString("description"));
-                        data.setType(obj.getString("type"));
-                        specialCmgResponseList.add(data);
+                    if (myResponseCheck.has("special_cmg_option")){
+                        JSONArray specialCmgOption = myResponseCheck.getJSONArray("special_cmg_option");
+                        int length = specialCmgOption.length();
+                        for (int i=0;i<length;i++) {
+                            JSONObject obj= specialCmgOption.getJSONObject(i);
+                            Grouping1SpecialCmgResponse data = new Grouping1SpecialCmgResponse();
+                            data.setCode(obj.getString("code"));
+                            data.setDescription(obj.getString("description"));
+                            data.setType(obj.getString("type"));
+                            specialCmgResponseList.add(data);
+                        }
                     }
 
                     List<Grouping1TarifAltResponse> tarifAltResponseList = new ArrayList<>();
-                    JSONArray tarifAlt = myResponseCheck.getJSONArray("tarif_alt");
-                    int lengthtarifAlt = tarifAlt.length();
-                    for (int i=0;i<lengthtarifAlt;i++) {
-                        JSONObject obj= tarifAlt.getJSONObject(i);
-                        Grouping1TarifAltResponse data = new Grouping1TarifAltResponse();
-                        data.setTarifInacbg(obj.getString("tarif_inacbg"));
-                        data.setKelas(obj.getString("kelas"));
-                        tarifAltResponseList.add(data);
+                    if (myResponseCheck.has("tarif_alt")){
+                        JSONArray tarifAlt = myResponseCheck.getJSONArray("tarif_alt");
+                        int lengthtarifAlt = tarifAlt.length();
+                        for (int i=0;i<lengthtarifAlt;i++) {
+                            JSONObject obj= tarifAlt.getJSONObject(i);
+                            Grouping1TarifAltResponse data = new Grouping1TarifAltResponse();
+                            data.setTarifInacbg(obj.getString("tarif_inacbg"));
+                            data.setKelas(obj.getString("kelas"));
+                            tarifAltResponseList.add(data);
+                        }
                     }
 
                     finalResponse.setSpecialCmgResponseList(specialCmgResponseList);
@@ -385,6 +395,7 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                throw new GeneralBOException("[EklaimBoImpl.groupingStage1Eklaim] ERROR " + e.getMessage());
             }
         }
         logger.info("[EklaimBoImpl.groupingStage1Eklaim] End <<<<<<<");

@@ -518,7 +518,24 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 saveRawatInap(rawatInapNew);
             }
         }
-        logger.info("[CheckupDetailBoImpl.updateRuanganInap] End <<<<<<<<");
+        logger.info("[CheckupDetailBoImpl.updateRuanganInap] End <<<<<<<<<");
+    }
+
+    @Override
+    public BigInteger getSumOfTindakanByNoCheckup(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.getSumOfTindakanByNoCheckup] Start >>>>>>>>");
+
+        BigInteger result = new BigInteger(String.valueOf(0));
+
+        try {
+            result = checkupDetailDao.sumOfTindakanByNoCheckup(noCheckup);
+        } catch (HibernateException e){
+            logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error ",e);
+            throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error "+e.getMessage());
+        }
+
+        logger.info("[CheckupDetailBoImpl.getSumOfTindakanByNoCheckup] End <<<<<<<<");
+        return result;
     }
 
     private String getNextDetailCheckupId(){
