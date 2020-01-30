@@ -36,12 +36,13 @@
             var kecamatan       = $('#kecamatan11').val();
             var desa            = $('#desa11').val();
             var imgInp          = $('#imgInp').val();
+            console.log(imgInp);
 
             if (idPasien != '' && noKtp != '' && namaPasien != ''
                     && jenisKelamin != '' && tempatLahir != '' && tglLahir != ''
                     && agama != ''
                     && poli != '' && dokter != '' && penjamin != ''
-                    && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && imgInp != '') {
+                    && provinsi != '' && kota != '' && kecamatan != '' && desa != '') {
 
                 $('#confirm_dialog').dialog('open');
 
@@ -239,7 +240,6 @@
                                                         });
 
                                                         $.each(data, function (i, item) {
-                                                            console.log(data);
                                                             var labelItem = "";
 
                                                             if(item.noBpjs != '' && item.noBpjs != null){
@@ -258,7 +258,7 @@
                                                                 suku:item.suku,
                                                                 profesi:item.profesi,
                                                                 notelp:item.noTelp,
-//                                                                urlktp:item.urlKtp,
+                                                                urlktp:item.urlKtp,
                                                                 sex:item.jenisKelamin,
                                                                 agama:item.agama,
                                                                 noBpjs:item.noBpjs,
@@ -269,7 +269,8 @@
                                                                 prov:item.provinsi,
                                                                 kota:item.kota,
                                                                 kec:item.kecamatan,
-                                                                desa:item.desa
+                                                                desa:item.desa,
+                                                                isLama:item.isPasienLama
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -291,8 +292,7 @@
                                                         $('#profesi').val(selectedObj.profesi);
                                                         $('#jalan').val(selectedObj.alamat);
                                                         $('#suku').val(selectedObj.suku);
-//                                                        $('#imgInp').val(selectedObj.urlktp);
-//                                                        $('#img-upload').attr('src', selectedObj.urlktp);
+                                                        $('#img-upload').attr('src', selectedObj.urlktp);
                                                         $('#provinsi').val(selectedObj.prov);
                                                         $('#kabupaten').val(selectedObj.kota);
                                                         $('#kecamatan').val(selectedObj.kec);
@@ -301,6 +301,11 @@
                                                         $('#kabupaten11').val(selectedObj.idKota);
                                                         $('#kecamatan11').val(selectedObj.idKec);
                                                         $('#desa11').val(selectedObj.idDesa);
+                                                        if(selectedObj.isLama){
+                                                            $('#kunjungan').val("Lama").attr('readonly',true);
+                                                        }else{
+                                                            $('#kunjungan').val("Baru").attr('readonly',true);
+                                                        }
                                                         return selectedObj.id;
                                                     }
                                                 });
@@ -430,17 +435,17 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Foto KTP</label>
                                             <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px" id="img_file">
-                                                    <span class="input-group-btn">
-                                                        <span class="btn btn-default btn-file">
-                                                            <%--<input type="file" id="imgInp" accept=".jpg" name="fileUploadKtpPasien" onchange="$('#img_file').css('border','')">--%>
-                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload" onchange="$('#img_file').css('border','')"></s:file>
-                                                        </span>
-                                                    </span>
-                                                    <input type="text" class="form-control" readonly>
-                                                </div>
+                                                <%--<div class="input-group" style="margin-top: 7px" id="img_file">--%>
+                                                    <%--<span class="input-group-btn">--%>
+                                                        <%--<span class="btn btn-default btn-file">--%>
+                                                            <%--&lt;%&ndash;<input type="file" id="imgInp" accept=".jpg" name="fileUploadKtpPasien" onchange="$('#img_file').css('border','')">&ndash;%&gt;--%>
+                                                            <%--Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload" onchange="$('#img_file').css('border','')"></s:file>--%>
+                                                        <%--</span>--%>
+                                                    <%--</span>--%>
+                                                    <%--<input type="text" class="form-control" readonly>--%>
+                                                <%--</div>--%>
                                                 <img id="img-upload" width="100%" src="<s:url value="/pages/images/ktp-default.jpg"/>"
-                                                     style="border: darkgray solid 1px; height: 170px"/>
+                                                     style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
                                             </div>
                                         </div>
                                     </div>

@@ -166,7 +166,7 @@
                                 <td align="center">Qty Approve</td>
                                 <td align="center">Harga (Rp.)</td>
                                 <td width="21%" align="center">Scan ID Pabrikan</td>
-                                <td>Satuan Jenis</td>
+                                <td>Jenis Satuan</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -194,7 +194,7 @@
                                             </s:if>
                                             <s:else>
                                             <div class="input-group">
-                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
+                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>', '<s:property value="sumQtyApprove"/>')" class="form-control"
                                                        id='pabrik<s:property value="idObat"/>'>
                         <div class="input-group-addon">
                             <span id='status<s:property value="idObat"/>'></span>
@@ -598,12 +598,12 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_confirm"><i class="fa fa-arrow-right"></i> Tambah
                     Obat
                 </button>
-                <button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-ban"></i> Cancel Obat
+                <button type="button" class="btn btn-danger" id="cancel_confirm"><i class="fa fa-times"></i> Cancel Obat
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-danger" id="load_confirm"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -661,11 +661,11 @@
         $('#add_qty_request, #add_qty_approve').val(qty);
         $('#add_harga').val(harga);
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\'' + idDetail + '\',\'' + qty + '\',\'' + satuan + '\',\'' + idObat + '\',\'' + idApp + '\')').show();
-        $('#modal-obat').modal('show');
+        $('#modal-obat').modal({show:true, backdrop:'static'});
         $('#modal-confirm').modal('hide');
     }
 
-    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt) {
+    function verify(id, value, qty, idDetail, nama, jenis, harga, idApp, lembarPerBox, bijiPerlembar,noBt, sumQty) {
         var status = false;
         $('#warning_fisik').html('');
         if (id != '' && value != '') {
@@ -675,21 +675,19 @@
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
-                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                         $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
                         $('#app_qty').val(qty);
-                        $('#app_qty_app').val(qty);
+                        $('#app_qty_app').val(sumQty);
                         $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + id + '\', \'' + idDetail + '\', \'' + value + '\', \'' + noBt + '\')').show();
                         $('#save_approve').show();
                         $('#load_approve').hide();
-                        $('#modal-approve').modal('show');
+                        $('#modal-approve').modal({show:true, backdrop:'static'});
                     } else if (response.status == "new") {
-                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                         $('#cancel_confirm').show();
                         $('#load_confirm').hide();
-                        $('#modal-confirm').modal('show');
+                        $('#modal-confirm').modal({show:true, backdrop:'static'});
                         $('#save_confirm').attr('onclick', 'showModal(\'' + id + '\',\'' + value + '\',\'' + idDetail + '\',\'' + nama + '\',\'' + qty + '\',\'' + jenis + '\',\'' + harga + '\',\'' + idApp + '\')');
                         $('#cancel_confirm').attr('onclick', 'saveNotApprove(\'' + id + '\', \'' + idDetail + '\')');
                     } else if(response.status == "warning"){
@@ -697,7 +695,7 @@
                                     '<h4><i class="icon fa fa-ban"></i> Warning!</h4>'+
                                         response.message +
                                     '</div>';
-                        $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                        <%--$('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');--%>
                         $('#app_expired').val('');
                         $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                         $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
@@ -707,7 +705,7 @@
                         $('#save_approve').show();
                         $('#warning_fisik').html(warn);
                         $('#load_approve').hide();
-                        $('#modal-approve').modal('show');
+                        $('#modal-approve').modal({show:true, backdrop:'static'});
                     }
                 }
             });
@@ -768,7 +766,9 @@
             if (response == "success") {
                 dwr.engine.setAsync(false);
                 $('#modal-approve').modal('hide');
-                $('#approve' + id).html("Setuju").addClass("label label-success");
+                $('#status' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+//                $('#approve' + id).html("Setuju").addClass("label label-success");
+
                 totalQtyApp = parseInt(qtyApprove) + parseInt(qty);
                 if(parseInt(totalQtyApp) == parseInt(qtyReq)){
                     $('#pabrik' + id).attr('readonly', true).blur();
@@ -797,7 +797,8 @@
                 dwr.engine.setAsync(true);
                 dwr.engine.setAsync(false);
                 $('#modal-confirm').modal('hide');
-                $('#approve' + id).html("Dibatalkan").addClass("label label-warning");
+                $('#status' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+//                $('#approve' + id).html("Dibatalkan").addClass("label label-warning");
             }
         })
     }

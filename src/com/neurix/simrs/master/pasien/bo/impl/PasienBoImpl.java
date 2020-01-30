@@ -9,6 +9,8 @@ import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -26,6 +28,11 @@ public class PasienBoImpl implements PasienBo {
 
     private PasienDao pasienDao;
     private ProvinsiDao provinsiDao;
+    private HeaderCheckupDao headerCheckupDao;
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
 
     public void setProvinsiDao(ProvinsiDao provinsiDao) {
         this.provinsiDao = provinsiDao;
@@ -116,7 +123,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setAgama(data.getAgama());
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
-            pasien.setUrlKtp(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
+            pasien.setUrlKtp(CommonConstant.URL_IMG+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());
             pasien.setCreatedDate(data.getCreatedDate());
@@ -138,6 +145,15 @@ public class PasienBoImpl implements PasienBo {
                         pasien.setKotaId(obj[5].toString());
                         pasien.setProvinsiId(obj[6].toString());
                     }
+                }
+            }
+
+            if(pasien.getIdPasien() != null){
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_pasien", pasien.getIdPasien());
+                List<ItSimrsHeaderChekupEntity> cekKunjungan = headerCheckupDao.getByCriteria(hsCriteria);
+                if (cekKunjungan.size() > 0){
+                    pasien.setIsPasienLama(true);
                 }
             }
 

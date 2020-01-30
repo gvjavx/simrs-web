@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-md-3 pull-right">
                                     <div class="input-group date">
-                                        <input class="form-control" id="add_resep" placeholder="ID RESEP" onchange="saveAntrian()">
+                                        <input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">
                                         <div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">
                                             <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
                                         </div>
@@ -199,7 +199,7 @@
                                             <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_proses}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
                                     </td>
                                 </tr>

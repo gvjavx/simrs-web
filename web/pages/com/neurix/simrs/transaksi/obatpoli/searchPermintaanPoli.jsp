@@ -235,19 +235,19 @@
                                                     <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{init_permintaan}">
-                                                    <img class="hvr-grow" src="<s:url value="/pages/images/ubah_flat.png"/>" style="width: 30px; height: 30px">
+                                                    <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer">
                                                 </s:a>
                                             </s:if>
                                             <s:else>
-                                                <button class="btn btn btn-info" onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')"><i class="fa fa-edit"></i></button>
+                                                <img onclick="showReture('<s:property value="idPermintaanObatPoli"/>','<s:property value="stCreatedDate"/>','<s:property value="tujuanPelayanan"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer">
                                             </s:else>
                                         </s:if>
                                         <s:elseif test='#row.approvalFlag == "Y" '>
                                             <s:url var="print_permintaan" namespace="/permintaangudang" action="printPermintaanObat_permintaangudang" escapeAmp="false">
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanObatPoli"/></s:param>
                                             </s:url>
-                                            <s:a target="__blank" href="%{print_permintaan}" cssClass="btn btn-info">
-                                                <i class="fa fa-print"></i>
+                                            <s:a target="_blank" href="%{print_permintaan}">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer">
                                             </s:a>
                                         </s:elseif>
 
@@ -381,12 +381,33 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_ret" onclick="saveReture()"><i
+                <button type="button" class="btn btn-success" id="save_ret" onclick="confirmSaveReture()"><i
                         class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ret"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -440,7 +461,7 @@
     }
 
     function showReture(id, tanggal, tujuan){
-        $('#modal-reture').modal('show');
+        $('#modal-reture').modal({show:true, backdrop:'static'});
         $('#ret_tanggal').val(tanggal);
         $('#ret_id_permintaan').val(id);
         $('#judul_ret').html("Konfirmasi Reture Obat");
@@ -449,9 +470,15 @@
         PermintaanObatPoliAction.listDetailObatRequest(id, {callback:function(response){
             if (response != null) {
                 $.each(response, function (i, item) {
+
+                    var idBar = item.idBarang;
+                    var str = idBar.substring(8, 15);
+                    var idBarang = idBar.replace(str, '*******');
+
                     var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
                     table += "<tr>" +
-                            "<td>" +'<span id=id_barang'+i+'>'+ item.idBarang + "</td>"+
+                            "<td>" + idBarang+
+                            '<input type="hidden" id=id_barang' + i + ' value=' + item.idBarang + '>'+
                             '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
                             "<td>" + item.namaObat + "</td>" +
                             "<td align='center'>" + expired + "</td>" +
@@ -475,7 +502,7 @@
     }
 
     function cekIdBarang(id, valueIdBarang, idBatch){
-        var idBarang = $('#id_barang'+id).text();
+        var idBarang = $('#id_barang'+id).val();
         var flag = "";
         var load = "";
         if(valueIdBarang != ''){
@@ -508,49 +535,49 @@
     }
 
 
-    function editQty(id, lembar, biji) {
-        if ($('#img' + id).attr('src') == '/simrs/pages/images/edit-flat-new.png') {
-            var url = '<s:url value="/pages/images/save_flat.png"/>';
-            $('#img' + id).attr('src', url);
-            var qtyApp = $('#qtyApp'+id).text();
-            $('#qtyApp' + id).html('<input type="number" min="1" id=newQty' + id + ' class="form-control" value=' + qtyApp + ' style="width:80px;">');
-        } else {
-            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
+    <%--function editQty(id, lembar, biji) {--%>
+        <%--if ($('#img' + id).attr('src') == '/simrs/pages/images/edit-flat-new.png') {--%>
+            <%--var url = '<s:url value="/pages/images/save_flat.png"/>';--%>
+            <%--$('#img' + id).attr('src', url);--%>
+            <%--var qtyApp = $('#qtyApp'+id).text();--%>
+            <%--$('#qtyApp' + id).html('<input type="number" min="1" id=newQty' + id + ' class="form-control" value=' + qtyApp + ' style="width:80px;">');--%>
+        <%--} else {--%>
+            <%--var url = '<s:url value="/pages/images/edit-flat-new.png"/>';--%>
 
-            var jenisSatuan = $('#jenisSatuan' + id).text();
-            var qtyBox = $('#qtyBox' + id).text();
-            var qtyLembar = $('#qtyLembar' + id).text();
-            var qtyBiji = $('#qtyBiji' + id).text();
-            var qtyReq = $('#qtyReq' + id).text();
-            var approve = $('#newQty' + id).val();
+            <%--var jenisSatuan = $('#jenisSatuan' + id).text();--%>
+            <%--var qtyBox = $('#qtyBox' + id).text();--%>
+            <%--var qtyLembar = $('#qtyLembar' + id).text();--%>
+            <%--var qtyBiji = $('#qtyBiji' + id).text();--%>
+            <%--var qtyReq = $('#qtyReq' + id).text();--%>
+            <%--var approve = $('#newQty' + id).val();--%>
 
-            var stok = 0;
+            <%--var stok = 0;--%>
 
-            if ("box" == jenisSatuan) {
-                stok = qtyBox;
-            }
-            if ("lembar" == jenisSatuan) {
-                stok = parseInt(qtyLembar) + (parseInt(lembar * parseInt(qtyBox)));
-            }
-            if ("biji" == jenisSatuan) {
-                stok = parseInt(qtyBiji) + ((parseInt(lembar * parseInt(qtyBox))) * parseInt(biji));
-            }
+            <%--if ("box" == jenisSatuan) {--%>
+                <%--stok = qtyBox;--%>
+            <%--}--%>
+            <%--if ("lembar" == jenisSatuan) {--%>
+                <%--stok = parseInt(qtyLembar) + (parseInt(lembar * parseInt(qtyBox)));--%>
+            <%--}--%>
+            <%--if ("biji" == jenisSatuan) {--%>
+                <%--stok = parseInt(qtyBiji) + ((parseInt(lembar * parseInt(qtyBox))) * parseInt(biji));--%>
+            <%--}--%>
 
-            if (approve != '' && parseInt(approve) > 0) {
-                if (parseInt(approve) <= parseInt(stok) && parseInt(approve) <= parseInt(qtyReq)) {
-                    $('#img' + id).attr('src', url);
-                    var newQty = $('#newQty' + id).val();
-                    $('#qtyApp' + id).html('<span id=qtyApp' + id + '>' + newQty + '</span>');
-                } else {
-                    $('#warning_request').show().fadeOut(5000);
-                    $('#msg_request').text("Qty Approve tidak boleh melebihi stok");
-                }
-            } else {
-                $('#warning_request').show().fadeOut(5000);
-                $('#msg_request').text("Silahkan cek kembali data inputan");
-            }
-        }
-    }
+            <%--if (approve != '' && parseInt(approve) > 0) {--%>
+                <%--if (parseInt(approve) <= parseInt(stok) && parseInt(approve) <= parseInt(qtyReq)) {--%>
+                    <%--$('#img' + id).attr('src', url);--%>
+                    <%--var newQty = $('#newQty' + id).val();--%>
+                    <%--$('#qtyApp' + id).html('<span id=qtyApp' + id + '>' + newQty + '</span>');--%>
+                <%--} else {--%>
+                    <%--$('#warning_request').show().fadeOut(5000);--%>
+                    <%--$('#msg_request').text("Qty Approve tidak boleh melebihi stok");--%>
+                <%--}--%>
+            <%--} else {--%>
+                <%--$('#warning_request').show().fadeOut(5000);--%>
+                <%--$('#msg_request').text("Silahkan cek kembali data inputan");--%>
+            <%--}--%>
+        <%--}--%>
+    <%--}--%>
 
     function saveRequest() {
         var data = $('#tabel_request').tableToJSON();
@@ -593,10 +620,31 @@
         }
     }
 
-    function saveReture(id) {
-        var data = $('#tabel_reture').tableToJSON();
+    function confirmSaveReture() {
+        var data = $('#tabel_request_detail').tableToJSON();
         var idPermintaan = $('#ret_id_permintaan').val();
         var stringData  = JSON.stringify(data);
+        var result = [];
+        var cek = false;
+
+        $.each(data, function (i, item) {
+           var scan = $('#cek_id_barang'+i).val();
+            if(scan == ""){
+                cek = true;
+            }
+        });
+
+        if(cek){
+            $('#warning_reture').show().fadeOut(5000);
+            $('#msg_reture').text("Silahkan lakukan konfirmasi pada masing-masing id barang..!");
+        }else{
+           $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick','saveReture(\''+idPermintaan+'\')');
+        }
+    }
+
+    function saveReture(idPermintaan){
+        $('#modal-confirm-dialog').modal('hide');
         $('#save_ret').hide();
         $('#load_ret').show();
         dwr.engine.setAsync(true);
@@ -616,7 +664,6 @@
         }
         });
     }
-
     function printRequest(idApp, idPermin){
         PermintaanObatPoliAction.printPermintaanObat(idApp, idPermin, { callback: function (response) {
             if (response == "success") {

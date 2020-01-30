@@ -87,7 +87,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                             if (permintaanVendor.getEnableApprove()) {
                                 permintaanVendor.setKeterangan("Telah Dikonfirmasi");
                             } else {
-                                permintaanVendor.setKeterangan("Prosess Verivikasi");
+                                permintaanVendor.setKeterangan("Prosess Verifikasi");
                             }
 
 //                            permintaanVendor.setApprovalFlag(approvalEntity.getApprovalFlag());

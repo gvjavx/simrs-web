@@ -482,7 +482,7 @@
                         '<td align="center">' + lembarPerBox + '</td>' +
                         '<td align="center">' + bijiPerLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" style="cursor: pointer;"></td>' +
                         '</tr>';
 
                 $('#body_po').append(row);
