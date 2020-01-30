@@ -160,6 +160,15 @@
         <action name="dokter/*" class="com.neurix.simrs.mobileapi.DokterController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="statuspasien/*" class="com.neurix.simrs.mobileapi.StatusPasienController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="checkup/*" class="com.neurix.simrs.mobileapi.CheckupController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="purchaseorder/*" class="com.neurix.simrs.mobileapi.PurchaseOrderController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

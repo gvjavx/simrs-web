@@ -160,6 +160,32 @@ public class PelayananController implements ModelDriven<Object> {
         return (listOfPelayanan != null ? listOfPelayanan : model);
     }
 
+    public HttpHeaders index() {
+        logger.info("[PelayananController.index] start process GET / <<<");
+
+        List<Pelayanan> result = new ArrayList<>();
+         try {
+            result = pelayananBoProxy.getListAllPelayanan();
+         } catch (GeneralBOException e) {
+             logger.error("[PelayananContoller.index] Error when get pelayanan",e);
+
+         }
+
+         if (result != null && result.size() > 0) {
+             for (Pelayanan item : result) {
+                 PelayananMobile pelayananMobile = new PelayananMobile();
+                 pelayananMobile.setIdPelayanan(item.getIdPelayanan());
+                 pelayananMobile.setNamaPelayanan(item.getNamaPelayanan());
+
+                 listOfPelayanan.add(pelayananMobile);
+             }
+         }
+
+        logger.info("[PelayananController.create] start process GET / <<<");
+        return new DefaultHttpHeaders("index").disableCaching();
+
+    }
+
     public HttpHeaders create() {
         logger.info("[PelayananController.create] start process POST / <<<");
 
@@ -177,6 +203,7 @@ public class PelayananController implements ModelDriven<Object> {
                 try {
 //                    logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "registrasi online index");
                 } catch (GeneralBOException el) {
+                    logger.error("Pelayanan.create] Error when get jumlah antrian",e);
 
                 }
             }

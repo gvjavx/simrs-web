@@ -21,7 +21,8 @@ public class StatusPasienBoImpl implements StatusPasienBo {
     private static transient Logger logger = Logger.getLogger(StatusPasienBoImpl.class);
     private StatusPasienDao statusPasienDao;
 
-    protected List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean) throws GeneralBOException {
+    @Override
+    public List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean) throws GeneralBOException {
         logger.info("[StatusPasienBoImpl.getListEnstityStatusPasien] Start >>>>>>>>>");
 
         List<ImSimrsStatusPasienEntity> results = new ArrayList<>();

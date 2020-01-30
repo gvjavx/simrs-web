@@ -87,7 +87,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                             if (permintaanVendor.getEnableApprove()) {
                                 permintaanVendor.setKeterangan("Telah Dikonfirmasi");
                             } else {
-                                permintaanVendor.setKeterangan("Prosess Verivikasi");
+                                permintaanVendor.setKeterangan("Proses Verifikasi");
                             }
 
 //                            permintaanVendor.setApprovalFlag(approvalEntity.getApprovalFlag());
@@ -134,7 +134,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
-                                transaksiObatDetail.setIdPabrik(transaksiObatDetailEntity.getIdPabrik());
+                                transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
                                 transaksiObatDetail.setMerek(transaksiObatDetailEntity.getMrek());
 
                                 if ("box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
@@ -195,7 +195,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return permintaanVendorEntityList;
     }
 
-    private List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
+    public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getListEntityTransObatDetail] START >>>>>>");
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
@@ -582,7 +582,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     TransaksiObatBatch obatBatch = new TransaksiObatBatch();
                     obatBatch.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatBatch.setNoBatch(obatDetail.getNoBatch());
-
 
                     List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
 

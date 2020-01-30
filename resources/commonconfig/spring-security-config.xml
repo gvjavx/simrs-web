@@ -126,6 +126,21 @@
             <filter-chain pattern="/mobileapi/dokter/*" filters="none" />
             <filter-chain pattern="/mobileapi/dokter/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/statuspasien" filters="none" />
+            <filter-chain pattern="/mobileapi/statuspasien/*" filters="none" />
+            <filter-chain pattern="/mobileapi/statuspasien/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/checkup" filters="none" />
+            <filter-chain pattern="/mobileapi/checkup/*" filters="none" />
+            <filter-chain pattern="/mobileapi/checkup/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/purchaseorder" filters="none" />
+            <filter-chain pattern="/mobileapi/purchaseorder/*" filters="none" />
+            <filter-chain pattern="/mobileapi/purchaseorder/*/**" filters="none" />
+
+
+
+
 
 
             <filter-chain pattern="/**/*"
