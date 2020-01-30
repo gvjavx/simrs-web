@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'3':'Selesai'}"
+                                        <s:select list="#{'3':'Proses','4':'Selesai'}"
                                                   cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
                                                   headerKey="0" headerValue="Antrian"
@@ -144,6 +144,9 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
+                                        <a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">
+                                            <i class="fa fa-plus"></i> Beli Obat
+                                        </a>
                                         <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -202,22 +205,36 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResultObat">
+                            <s:iterator value="#session.listOfResult" id="listOfResultObat" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanResep"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
                                     <td align="center">
-                                        <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
-                                               escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_proses}">
-                                            <img border="0" class="hvr-grow"
-                                                 src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                 style="cursor: pointer; height: 25px; width: 25px">
-                                        </s:a>
+                                        <s:if test='#row.flag == "Y"'>
+                                            <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
+                                                   escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_proses}">
+                                                <img border="0" class="hvr-grow"
+                                                     src="<s:url value="/pages/images/edit-flat-new.png"/>"
+                                                     style="cursor: pointer; height: 25px; width: 25px">
+                                            </s:a>
+                                        </s:if>
+                                        <s:else>
+                                            <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
+                                                   escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_proses}" cssClass="btn btn-info"><i class="fa fa-print"></i>
+                                                <%--<img border="0" class="hvr-grow"--%>
+                                                     <%--src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
+                                                     <%--style="cursor: pointer; height: 25px; width: 25px">--%>
+                                            </s:a>
+                                        </s:else>
+
                                     </td>
                                 </tr>
                             </s:iterator>

@@ -76,22 +76,6 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_obat" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="permintaanObatPoli.idObat" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Nama Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="nama_obat" name="permintaanObatPoli.namaObat"--%>
-                                                     <%--required="false" readonly="false"--%>
-                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
@@ -405,7 +389,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_request" onclick="saveAddRequest()"><i
+                <button type="button" class="btn btn-success" id="save_request" onclick="confirmSaveAddRequest()"><i
                         class="fa fa-arrow-right"></i> Request
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -460,8 +444,9 @@
                         <td>Nama Obat</td>
                         <td align="center">Expired Date</td>
                         <td align="center">Qty Approve</td>
-                        <td align="center">Jenis Satuan</td>
                         <td align="center" width="25%">Scan ID Barang</td>
+                        <td >Jenis Satuan</td>
+
                         </thead>
                         <tbody id="body_request_detail">
                         </tbody>
@@ -471,7 +456,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_req_detail" onclick="saveConfirm()"><i
+                <button type="button" class="btn btn-success" id="save_req_detail" onclick="saveConfirmDiterima()"><i
                         class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -531,27 +516,11 @@
                         </tbody>
                     </table>
                 </div>
-                <%--<div class="box-header with-border"></div>--%>
-                <%--<div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Reture Obat--%>
-                <%--</div>--%>
-                <%--<div class="box">--%>
-                    <%--<table class="table table-striped table-bordered" id="tabel_reture_detail">--%>
-                        <%--<thead>--%>
-                        <%--<td>ID</td>--%>
-                        <%--<td>Nama Obat</td>--%>
-                        <%--<td align="center">Qty</td>--%>
-                        <%--<td align="center">Jenis Satuan</td>--%>
-                        <%--<td align="center">Action</td>--%>
-                        <%--</thead>--%>
-                        <%--<tbody id="body_reture_detail">--%>
-                        <%--</tbody>--%>
-                    <%--</table>--%>
-                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_ret_detail" onclick="saveAddReture()"><i
+                <button type="button" class="btn btn-success" id="save_ret_detail" onclick="confirmSaveAddReture()"><i
                         class="fa fa-arrow-right"></i> Reture
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
@@ -563,6 +532,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -668,16 +657,6 @@
 
     }
 
-    //    function setStokPoli(select) {
-    //        var idx = select.selectedIndex;
-    //        var idObat = select.options[idx].value;
-    //        var id = idObat.split('|')[0];
-    //        var nama = idObat.split('|')[1];
-    //        var stok = idObat.split('|')[2];
-    //
-    //        $('#ret_stok').val(stok);
-    //    }
-
     function addObatToList() {
 
         var obat = $('#req_nama_obat').val();
@@ -781,7 +760,6 @@
                             $('#warning_bentuk').show().fadeOut(5000);
                             $('#msg_bentuk').text(pesan);
                         } else {
-//                            $('#req_jenis_satuan').attr('disabled', true);
                             var row = '<tr id=' + id + '>' +
                                     '<td>' + id + '</td>' +
                                     '<td>' + nama + '</td>' +
@@ -819,39 +797,46 @@
         $('#new_qty' + id).attr('disabled', false);
     }
 
-    function saveAddRequest() {
+    function confirmSaveAddRequest() {
 
         var data = $('#tabel_request').tableToJSON();
         var stringData = JSON.stringify(data);
 
         if (stringData != '[]') {
-
-            $('#save_request').hide();
-            $('#load_request').show();
-
-            dwr.engine.setAsync(true);
-            ObatPoliAction.saveAddRequest(stringData, "GDG", {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-request-obat').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#save_request').show();
-                        $('#load_request').hide();
-                        $('#close_pos').val(2);
-                    } else {
-                        $('#warning_request').show().fadeOut(5000);
-                        $('#msg_request').text('Terjadi kesalahan saat menyimpan data ke database...!');
-                        $('#save_request').show();
-                        $('#load_request').hide();
-                    }
-                }
-            });
-
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick','saveAddRequest()');
         } else {
             $('#warning_request').show().fadeOut(5000);
             $('#msg_request').text('Silahkan buat daftar list obat terlebih dahulu..!');
         }
+    }
+
+    function saveAddRequest(){
+
+        var data = $('#tabel_request').tableToJSON();
+        var stringData = JSON.stringify(data);
+
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_request').hide();
+        $('#load_request').show();
+        dwr.engine.setAsync(true);
+        ObatPoliAction.saveAddRequest(stringData, "GDG", {
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#modal-request-obat').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_request').show();
+                    $('#load_request').hide();
+                    $('#close_pos').val(2);
+                } else {
+                    $('#warning_request').show().fadeOut(5000);
+                    $('#msg_request').text('Terjadi kesalahan saat menyimpan data ke database...!');
+                    $('#save_request').show();
+                    $('#load_request').hide();
+                }
+            }
+        });
     }
 
     function confirm(idApp, idPermin, tanggal, tujuan) {
@@ -875,15 +860,15 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + expired + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td align='center'>" + item.jenisSatuan + "</td>" +
                                 "<td align='center'>" +
                                 '<div class="input-group">'+
-                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value)" id=cek_id_barang'+i+'>' +
+                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value,\''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
                                 '<div class="input-group-addon">'+
                                 '<span id=loading'+i+'></span> '+
                                 '</div>'+
                                 '</div>'+
                                 "</td>" +
+                                "<td>" + item.jenisSatuan + "</td>" +
                                 "</tr>";
                     });
                 }
@@ -892,7 +877,7 @@
         $('#body_request_detail').html(table);
     }
 
-    function saveConfirm() {
+    function saveConfirmDiterima() {
         var data = $('#tabel_request_detail').tableToJSON();
         var idApp = $('#req_id_approve').val();
         var idPermin = $('#req_id_permintaan').val();
@@ -909,32 +894,37 @@
 
         var stringData = JSON.stringify(result);
         if (stringData != '[]') {
-
-            $('#save_req_detail').hide();
-            $('#load_req_detail').show();
-
-            dwr.engine.setAsync(true);
-            ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        $('#modal-request-detail').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#save_req_detail').show();
-                        $('#load_req_detail').hide();
-                    } else {
-                        $('#warning_reture').show().fadeOut(5000);
-                        $('#msg_reture_detail').text("Terjadi kesalahan pada saat simpan ke database..!");
-                        $('#save_reture').show();
-                        $('#load_reture').hide();
-                    }
-                }
-            });
-
+            $('#save_con').attr('onclick','saveApproveDiterima(\''+idApp+'\',\''+idPermin+'\',\''+stringData+'\')');
+            $('#modal-confirm-dialog').modal('show');
         } else {
             $('#warning_reture').show().fadeOut(5000);
             $('#msg_reture_detail').text("Silahkan cek kembali data inputan berikut..!");
         }
+    }
+
+    function saveApproveDiterima(idApp, idPermin, stringData){
+
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_req_detail').hide();
+        $('#load_req_detail').show();
+
+        dwr.engine.setAsync(true);
+        ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    dwr.engine.setAsync(false);
+                    $('#modal-request-detail').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_req_detail').show();
+                    $('#load_req_detail').hide();
+                } else {
+                    $('#warning_reture').show().fadeOut(5000);
+                    $('#msg_reture_detail').text("Terjadi kesalahan pada saat simpan ke database..!");
+                    $('#save_reture').show();
+                    $('#load_reture').hide();
+                }
+            }
+        });
     }
 
     function cekIdBarang(id, valueIdBarang, idBatch){
@@ -967,14 +957,14 @@
         }
     }
 
-    function cekIdBarangReture(id, valueIdBarang) {
+    function cekIdBarangReture(id, valueIdBarang, qtyApp) {
         var idBarang = $('#id_barang' + id).text();
         if (valueIdBarang != '') {
             $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             setTimeout(function () {
                 if (idBarang == valueIdBarang) {
                     $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                    $('#new_qty' + id).show().focus();
+                    $('#new_qty' + id).show().val(qtyApp).focus();
                 } else {
                     $('#loading' + id).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                     $('#new_qty' + id).hide();
@@ -1016,7 +1006,6 @@
         var table = "";
         ObatPoliAction.listDetailOldPermintaan(idPermin, {
             callback: function (response) {
-                console.log(response);
                 if (response != null) {
                     $.each(response, function (i, item) {
                         var qtyBox = "";
@@ -1040,7 +1029,7 @@
                                 "<td align='center'>" + '<span id=qty_approve' + i + '>' + item.qtyApprove + '</span>' + "</td>" +
                                 '<td>' +
                                 '<div class="input-group">' +
-                                '<input class="form-control" onchange="cekIdBarangReture(\'' + i + '\',this.value)">' +
+                                '<input class="form-control" onchange="cekIdBarangReture(\'' + i + '\',this.value,\''+item.qtyApprove+'\')">' +
                                 '<div class="input-group-addon">' +
                                 '<span id=loading' + i + '></span> ' +
                                 '</div>' +
@@ -1101,14 +1090,41 @@
         }
     }
 
-    function saveAddReture() {
+    function confirmSaveAddReture() {
+
+        var data = $('#tabel_reture_head').tableToJSON();
+        var idPermintaan = $('#ret_id_permintaan').val();
+        var result = [];
+
+        $.each(data, function (i, item) {
+            var idBarang = data[i]["ID Barang"];
+           var idObat = $('#id_obat'+i).val();
+           var qtyReture = $('#new_qty'+i).val();
+            var jenisSatuan = data[i]["Jenis Satuan"];
+            result.push({'ID Barang': idBarang, 'ID Obat':idObat, 'Qty Reture':qtyReture, 'Jenis Satuan':jenisSatuan});
+        });
+
+        var stringData = JSON.stringify(result);
+
+        if (stringData != '[]') {
+            $('#save_con').attr('onclick','saveAddReture()');
+            $('#modal-confirm-dialog').modal('show');
+        } else {
+            $('#warning_reture_detail').show().fadeOut(5000);
+            $('#msg_reture_detail').text('Silahkan cek kembali data inputan berikut...!');
+        }
+    }
+
+    function saveAddReture(){
+
+        $('#modal-confirm-dialog').modal('show');
         var data = $('#tabel_reture_head').tableToJSON();
         var idPermintaan = $('#ret_id_permintaan').val();
         var result = [];
         $.each(data, function (i, item) {
             var idBarang = data[i]["ID Barang"];
-           var idObat = $('#id_obat'+i).val();
-           var qtyReture = $('#new_qty'+i).val();
+            var idObat = $('#id_obat'+i).val();
+            var qtyReture = $('#new_qty'+i).val();
             var jenisSatuan = data[i]["Jenis Satuan"];
             result.push({'ID Barang': idBarang, 'ID Obat':idObat, 'Qty Reture':qtyReture, 'Jenis Satuan':jenisSatuan});
         });

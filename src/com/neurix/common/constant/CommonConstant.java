@@ -141,6 +141,10 @@ public class CommonConstant {
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
 
+    public final static String BRANCH_RS01 = "RS01";
+    public final static String BRANCH_RS02 = "RS02";
+    public final static String BRANCH_RS03 = "RS03";
+
     public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
 
     public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN="/pages/upload/image/pasien/";

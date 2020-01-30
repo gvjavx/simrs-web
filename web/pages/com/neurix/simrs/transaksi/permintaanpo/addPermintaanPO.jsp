@@ -136,11 +136,6 @@
                                            id="war_po_vendor"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
                                            id="cor_po_vendor"><i class="fa fa-check"></i> correct</p>
-                                        <%--<s:select list="#{'V001':'Vendor A','V002':'Vendor B'}"--%>
-                                        <%--cssStyle="margin-top: 7px" onchange="$(this).css('border','')"--%>
-                                        <%--id="nama_vendor"--%>
-                                        <%--headerKey="" headerValue="[Select one]"--%>
-                                        <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -161,41 +156,6 @@
                                            id="cor_po_obat"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--&lt;%&ndash;<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>&ndash;%&gt;--%>
-                                <%--<s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"--%>
-                                <%--cssStyle="margin-top: 7px; width: 100%"--%>
-                                <%--onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"--%>
-                                <%--id="jenis_satuan"--%>
-                                <%--headerKey="" headerValue="[Select one]"--%>
-                                <%--cssClass="form-control select2"/>--%>
-                                <%--<p style="color: red; display: none;"--%>
-                                <%--id="war_po_jenis"><i class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; display: none;"--%>
-                                <%--id="cor_po_jenis"><i class="fa fa-check"></i> correct</p>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Jumlah</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<input class="form-control" id="jumlah" type="number"--%>
-                                <%--style="margin-top: 7px"--%>
-                                <%--oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>--%>
-                                <%--<p style="color: red; display: none;"--%>
-                                <%--id="war_po_jumlah"><i class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; display: none;"--%>
-                                <%--id="cor_po_jumlah"><i class="fa fa-check"></i> correct</p>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<input class="form-control" id="lembar_box" type="number"--%>
-                                <%--style="margin-top: 7px" min="0" oninput="jmlLembar();">--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group" style="display: none">
                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
                                                resizable="false"
@@ -295,17 +255,6 @@
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Harga</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<input class="form-control" id="harga" style="margin-top: 7px"--%>
-                                <%--oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()};"/>--%>
-                                <%--<p style="color: red; display: none;"--%>
-                                <%--id="war_po_harga"><i class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; display: none;"--%>
-                                <%--id="cor_po_harga"><i class="fa fa-check"></i> correct</p>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                             </div>
                         </div>
                         <div class="box-header with-border"></div>
@@ -314,7 +263,6 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
                                     <div class="col-md-8">
-                                        <%--<input class="form-control" id="box" type="number" style="margin-top: 7px" min="0" oninput="jmlLembar()"/>--%>
                                         <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
                                                   cssStyle="margin-top: 7px; width: 100%"
                                                   onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
@@ -399,7 +347,7 @@
                                 <td align="center">Jenis Satuan</td>
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
-                                <td align="right">Harga (Rp.)</td>
+                                <td align="center">Harga (Rp.)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -504,8 +452,6 @@
 
         var idObat = "";
         var namaObat = "";
-//        var qtyBox = "";
-//        var qtyLembar = "";
 
         var cek = false;
 
@@ -517,12 +463,6 @@
             if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
                 namaObat = obat.split('|')[1];
             }
-//            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
-//                qtyBox = obat.split('|')[2];
-//            }
-//            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
-//                qtyLembar = obat.split('|')[3];
-//            }
 
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
@@ -547,7 +487,6 @@
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
-//                $('#jenis_satuan').attr('disabled', true);
             }
         } else {
             if (obat == '' || obat == null) {

@@ -29,6 +29,15 @@ public class ObatPoli {
     private BigInteger lembarPerBox;
     private BigInteger bijiPerLembar;
     private String idBarang;
+    private String exp;
+
+    public String getExp() {
+        return exp;
+    }
+
+    public void setExp(String exp) {
+        this.exp = exp;
+    }
 
     public String getIdBarang() {
         return idBarang;

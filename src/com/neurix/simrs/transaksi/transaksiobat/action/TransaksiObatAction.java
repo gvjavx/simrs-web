@@ -35,6 +35,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,7 +177,10 @@ public class TransaksiObatAction extends BaseMasterAction {
                         resep.setJenisKelamin(jk);
                         resep.setTempatLahir(headerCheckup.getTempatLahir());
                         resep.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        resep.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + headerCheckup.getTglLahir().toString());
+
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+
+                        resep.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
                         resep.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         resep.setNik(headerCheckup.getNoKtp());
                         resep.setUrlKtp(headerCheckup.getUrlKtp());
@@ -228,23 +232,23 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-//        session = ServletActionContext.getRequest().getSession();
-//        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
+        session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
-        // hitung total bayar
-//        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-//        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
-//
-//        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
-//        setTransaksiObatDetail(transaksiObatDetail);
-//
-//        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
-//
-//        if (jml != null && !jml.equals(0)) {
-//            transaksiObatDetail.setTotalBayar(jml);
-//        } else {
-//            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
-//        }
+//         hitung total bayar
+        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+        BigInteger hitungTotalPembelian = hitungTotalBayar(pembelianObatList);
+
+        transaksiObatDetail.setTotalBayar(hitungTotalResep.add(hitungTotalPembelian));
+        setTransaksiObatDetail(transaksiObatDetail);
+
+        BigInteger jml = hitungTotalResep.add(hitungTotalPembelian);
+
+        if (jml != null && !jml.equals(0)) {
+            transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+        }
 
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdPermintaanResep(id);
@@ -281,6 +285,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<TransaksiObatDetail> obatResepList = (List) session.getAttribute("listOfResultResep");
         List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
 
+        String idPoli = CommonUtil.userPelayananIdLogin();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
 
@@ -288,6 +293,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         transaksiObatDetail.setLastUpdate(time);
         transaksiObatDetail.setLastUpdateWho(userLogin);
         transaksiObatDetail.setBranchId(CommonUtil.userBranchLogin());
+        transaksiObatDetail.setIdPelayanan(idPoli);
 
         try {
             transaksiObatBoProxy.saveAdd(transaksiObatDetail, obatResepList, pembelianObatList);
@@ -303,6 +309,9 @@ public class TransaksiObatAction extends BaseMasterAction {
     public String saveAddObat(String idObat, String qty, String jenisSatuan) {
         logger.info("[TransaksiObatAction.savePembayaran] START >>>>>>>");
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<TransaksiObatDetail> obatResepList = (List) session.getAttribute("listOfResultResep");
         List<TransaksiObatDetail> pembelianObatList = (List) session.getAttribute("listOfResultObat");
@@ -310,9 +319,6 @@ public class TransaksiObatAction extends BaseMasterAction {
         if (pembelianObatList == null) {
             pembelianObatList = new ArrayList<>();
         }
-
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         Obat obat = new Obat();
         obat.setIdObat(idObat);
@@ -399,6 +405,11 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<PermintaanResep> listResep = new ArrayList();
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+
+        if ("4".equalsIgnoreCase(permintaanResep.getStatus())){
+            permintaanResep.setFlag("N");
+            permintaanResep.setStatus("");
+        }
 
         try {
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
@@ -522,6 +533,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         obatPoli.setIdPabrik(idPabrik);
         obatPoli.setBranchId(CommonUtil.userBranchLogin());
         obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatPoli.setExp("Y");
         obatPoli.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -534,7 +546,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                 logger.error("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, ", e);
                 addActionError("[TransaksiObatAction.getListObatEntity] ERROR when get data list obat, " + e.getMessage());
             }
-
             logger.info("[TransaksiObatAction.initApprovePermintaan] END process <<<");
             return obatPoliList;
         } else {
@@ -603,10 +614,15 @@ public class TransaksiObatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        String userLogin = CommonUtil.userLogin();
+
         TransaksiObatDetail obatDetail = new TransaksiObatDetail();
         obatDetail.setIdApprovalObat(idApproval);
         obatDetail.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatDetail.setBranchId(CommonUtil.userBranchLogin());
+        obatDetail.setLastUpdate(time);
+        obatDetail.setLastUpdateWho(userLogin);
 
         try {
             transaksiObatBo.saveApproveResepPoli(obatDetail);
@@ -624,6 +640,25 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
         return response;
+    }
+
+    public String pembelianObat(){
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        setTransaksiObatDetail(transaksiObatDetail);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        return "init_pembelian_obat";
+    }
+
+    public String printStrukTransaksiObat(){
+        logger.info("[TransaksiObatAction.printStrukTransaksiObat] START process >>>");
+
+        String id = getId();
+
+
+
+        logger.info("[TransaksiObatAction.printStrukTransaksiObat] END process <<<");
+        return "print_struk";
     }
 
     @Override

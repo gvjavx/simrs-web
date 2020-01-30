@@ -44,6 +44,32 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-user"></i> Data Request</h3>
+                    </div>
+                    <div class="box-body">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td width="20%"><b>ID Permintaan</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="permintaanObatPoli.idPermintaanObatPoli"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Nama Pelayanan</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanObatPoli.namaPelayanan"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tanggal Permintaan</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanObatPoli.stCreatedDate"></s:label></table>
+                                        </td>
+                                    </tr>
+                                </table>
+                    </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Verifikasi Permintaan Obat Poli</h3>
@@ -174,7 +200,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <button class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</button>
+                                    <a href="initForm_permintaangudang.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
                                     <button class="btn btn-success" onclick="confirm()"><i
                                             class="fa fa-arrow-right"></i> Save
                                     </button>
@@ -256,6 +282,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -317,6 +364,9 @@
                     } else if (diffDays < 30) {
                         warna = '#eea236';
                         color = 'white';
+                    }else {
+                        warna = '#fff';
+                        color = '#333';
                     }
 
                     table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
@@ -341,13 +391,13 @@
                     bijiPerLembar = item.bijiPerLembar;
                 });
 
-                $('#save_app').attr('onclick', 'saveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
+                $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
                 $('#body_approve').html(table);
             }
         });
     }
 
-    function saveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan) {
+    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan) {
 
         var data = $('#tabel_approve').tableToJSON();
         var total = "";
@@ -415,27 +465,8 @@
         if (qtyApp > 0) {
 
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
-
-                dwr.engine.setAsync(true);
-                $('#load_app').show();
-                $('#save_app').hide();
-                PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {
-                    callback: function (response) {
-                        if (response == "success") {
-                            $('#load_app').hide();
-                            $('#save_app').show();
-                            $('#modal-approve').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#qtyApp' + idObat).text(qtyApp);
-                            $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                        } else {
-                            $('#load_app').hide();
-                            $('#save_app').show();
-                            $('#warning_app').show().fadeOut(5000);
-                            $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
-                        }
-                    }
-                });
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\''+qtyApp+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -444,6 +475,30 @@
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Qty Approve tidak boleh kosong..!");
         }
+    }
+
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp){
+        $('#modal-confirm-dialog').modal('hide');
+        dwr.engine.setAsync(true);
+        $('#load_app').show();
+        $('#save_app').hide();
+        PermintaanObatPoliAction.saveVerifikasiObatPoli(idObat, idTransaksi, stringData, {
+            callback: function (response) {
+                if (response == "success") {
+                    $('#load_app').hide();
+                    $('#save_app').show();
+                    $('#modal-approve').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#qtyApp' + idObat).text(qtyApp);
+                    $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                } else {
+                    $('#load_app').hide();
+                    $('#save_app').show();
+                    $('#warning_app').show().fadeOut(5000);
+                    $('#msg_app').text("terjadi Kesalahan saat menyimpan ke database..!");
+                }
+            }
+        });
     }
 
     function cekIdBarang(id, valueIdBarang) {

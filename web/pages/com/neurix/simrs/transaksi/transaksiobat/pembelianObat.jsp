@@ -124,7 +124,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Transaksi Obat Apotek
+            Pembelian Obat Apotek
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -136,161 +136,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-striped" style="margin-top: 20px">
-                                    <s:hidden id="no_checkup" name="permintaanResep.noCheckup"></s:hidden>
-                                    <s:hidden id="id_palayanan" name="permintaanResep.idPelayanan"></s:hidden>
-                                    <s:hidden id="no_detail_checkup" name="permintaanResep.idDetailCheckup"/>
-                                    <s:hidden id="id_pasien" name="permintaanResep.idPasien"/>
-                                    <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.noCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>No Checkup Detail</b></td>
-                                        <td>
-                                            <table><s:label
-                                                    name="permintaanResep.idDetailCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>NIK</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.nik"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Nama</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.namaPasien"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Jenis Kelamin</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.jenisKelamin"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Tempat, Tanggal Lahir</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.tempatTglLahir"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Jenis Pasien</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.jenisPeriksaPasien"></s:label>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="permintaanResep.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
-                                <table class="table table-striped">
-                                    <tr>
-                                        <td><b>Poli</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.namaPelayanan"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Alamat</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.alamat"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Provinsi</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.provinsi"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kabupaten</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.kota"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Kecamatan</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.kecamatan"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Desa</b></td>
-                                        <td>
-                                            <table><s:label name="permintaanResep.desa"></s:label></table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
-                    </div>
-                    <div class="box-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Nama Obat</td>
-                                <td align="center">Qty</td>
-                                <td align="center">Harga Satuan (Rp.)</td>
-                                <td align="center">Harga Total (Rp.)</td>
-                                <td width="21%">Scan ID Pabrikan</td>
-                                <td>Jenis Satuan</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <s:iterator value="#session.listOfResultResep" id="listOfResultResep">
-                                <tr>
-                                    <td><s:property value="namaObat"/></td>
-                                    <td align="center"><s:property value="qty"/></td>
-                                    <td align="right"><script>var val = <s:property value="harga"/>;
-                                    if (val != null && val != '') {
-                                        document.write(formatRupiah(val))
-                                    }</script></td>
-                                    <td align="right"> <script>var val = <s:property value="totalHarga"/>;
-                                    if (val != null && val != '') {
-                                        document.write(formatRupiah(val))
-                                    }</script></td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
-                                            <div class="input-group-addon">
-                                                <span id='status<s:property value="idObat"/>'></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><s:property value="jenisSatuan"/></td>
-                                </tr>
-                            </s:iterator>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Tambahan</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar pembelian obat</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px;"
@@ -371,9 +217,6 @@
                                             </div>
                                             <input class="form-control"id="nominal_dibayar">
                                         </div>
-                                            <%--<s:textfield id="nominal_dibayar" cssStyle="margin-top: 7px"--%>
-                                            <%--required="false"--%>
-                                            <%--readonly="false" cssClass="form-control" onkeypress="showChanges()"/>--%>
                                     </div>
                                     <s:hidden name="transaksiObatDetail.nominal" id="total_dibayar"></s:hidden>
                                 </div>
@@ -543,23 +386,23 @@
                                          cssStyle="margin-top: 7px" id="ob_qtyBiji"></s:textfield>
                         </div>
                     </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
-                            <div class="col-md-7">
-                                <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
-                                          cssStyle="margin-top: 7px; width: 100%"
-                                          onchange="var warn = $('#war_ob_jenis_satuan').is(':visible'); if (warn){$('#cor_ob_jenis_satuan').show().fadeOut(3000);$('#war_ob_jenis_satuan').hide()}"
-                                          id="ob_jenis_satuan"
-                                          headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2"/>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_ob_jenis_satuan"><i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_ob_jenis_satuan"><i class="fa fa-check"></i> correct</p>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                      cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn = $('#war_ob_jenis_satuan').is(':visible'); if (warn){$('#cor_ob_jenis_satuan').show().fadeOut(3000);$('#war_ob_jenis_satuan').hide()}"
+                                      id="ob_jenis_satuan"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
                         </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_ob_jenis_satuan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_ob_jenis_satuan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">

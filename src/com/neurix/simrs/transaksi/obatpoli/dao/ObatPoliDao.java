@@ -51,6 +51,9 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         if (mapCriteria.get("asc") != null){
             criteria.addOrder(Order.asc("createdDate"));
         }
+        if (mapCriteria.get("exp") != null){
+            criteria.addOrder(Order.asc("expiredDate"));
+        }
 
         //criteria.addOrder(Order.asc("primaryKey.idObat"));
         List<MtSimrsObatPoliEntity> results = criteria.list();

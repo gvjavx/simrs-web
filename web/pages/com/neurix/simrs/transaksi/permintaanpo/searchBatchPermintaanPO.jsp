@@ -235,8 +235,8 @@
                         <td>Nama Obat</td>
                         <td align="center">Qty Request</td>
                         <td align="center">Qty Total Approve</td>
-                        <td align="center">Jenis Satuan</td>
-                        <td align="right">Harga</td>
+                        <td>Jenis Satuan</td>
+                        <td align="center">Harga</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
@@ -339,7 +339,7 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qty + "</td>" +
                                 "<td align='center'>" + item.sumQtyApprove + "</td>" +
-                                "<td align='center'>" + item.jenisSatuan + "</td>" +
+                                "<td>" + item.jenisSatuan + "</td>" +
                                 "<td align='right'>" + formatRupiah(item.hargaPo) + "</td>" +
                                 "</tr>";
                     });

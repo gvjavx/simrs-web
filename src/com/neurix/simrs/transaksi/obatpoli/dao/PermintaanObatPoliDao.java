@@ -469,6 +469,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) ob ON ob.id_obat = od.id_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_obat_poli op ON op.id_approval_obat = od.id_approval_obat\n" +
                 "WHERE tb.status = 'Y'\n" +
+                "AND tb.diterima_flag = 'Y' \n" +
                 "AND op.id_permintaan_obat_poli = :id\n" +
                 "AND tb.id_barang is not null\n" +
                 "AND tb.qty_approve > 0\n" +
