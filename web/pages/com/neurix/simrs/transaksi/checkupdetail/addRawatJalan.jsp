@@ -1363,42 +1363,84 @@
     });
 
     function hitungStatusBiaya(){
+        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
+           if(response != null){
 
-        var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';
-        var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';
+               var coverBiaya = response.tarifBpjs;
+               var biayaTindakan = response.tarifTindakan;
 
-        var persen = "";
-        if(coverBiaya != '' && biayaTindakan){
-            persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
-        }else{
-            persen = 0;
-        }
+               var persen = "";
+               if(coverBiaya != '' && biayaTindakan){
+                   persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
+               }else{
+                   persen = 0;
+               }
 
-        var barClass = "";
-        var barLabel = "";
+               var barClass = "";
+               var barLabel = "";
 
-        if(parseInt(persen) > 70){
-            barClass = 'progress-bar-danger';
-        }else if (parseInt(persen) > 50){
-            barClass = 'progress-bar-warning';
-        }else{
-            barClass = 'progress-bar-success';
-        }
+               if(parseInt(persen) > 70){
+                   barClass = 'progress-bar-danger';
+               }else if (parseInt(persen) > 50){
+                   barClass = 'progress-bar-warning';
+               }else{
+                   barClass = 'progress-bar-success';
+               }
 
-        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+               var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
 
-        var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+               var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
 
-        if(coverBiaya != ''){
-            $('#sts_cover_biaya').html(barBpjs);
-            $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
-        }
+               if(coverBiaya != ''){
+                   $('#sts_cover_biaya').html(barBpjs);
+                   $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+               }
 
-        if(biayaTindakan != ''){
-            $('#sts_biaya_tindakan').html(barTindakan);
-            $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
-        }
+               if(biayaTindakan != ''){
+                   $('#sts_biaya_tindakan').html(barTindakan);
+                   $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+               }
+           }
+        });
     }
+
+    <%--function hitungStatusBiaya(){--%>
+
+        <%--var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';--%>
+        <%--var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';--%>
+
+        <%--var persen = "";--%>
+        <%--if(coverBiaya != '' && biayaTindakan){--%>
+            <%--persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);--%>
+        <%--}else{--%>
+            <%--persen = 0;--%>
+        <%--}--%>
+
+        <%--var barClass = "";--%>
+        <%--var barLabel = "";--%>
+
+        <%--if(parseInt(persen) > 70){--%>
+            <%--barClass = 'progress-bar-danger';--%>
+        <%--}else if (parseInt(persen) > 50){--%>
+            <%--barClass = 'progress-bar-warning';--%>
+        <%--}else{--%>
+            <%--barClass = 'progress-bar-success';--%>
+        <%--}--%>
+
+        <%--var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';--%>
+
+        <%--var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';--%>
+
+        <%--if(coverBiaya != ''){--%>
+            <%--$('#sts_cover_biaya').html(barBpjs);--%>
+            <%--$('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");--%>
+        <%--}--%>
+
+        <%--if(biayaTindakan != ''){--%>
+            <%--$('#sts_biaya_tindakan').html(barTindakan);--%>
+            <%--$('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");--%>
+        <%--}--%>
+    <%--}--%>
 
     function saveAlergi(id) {
         var alergi = $('#alergi').val();
@@ -1833,6 +1875,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -1850,6 +1893,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
