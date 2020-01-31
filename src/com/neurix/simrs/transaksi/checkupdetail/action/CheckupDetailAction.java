@@ -359,8 +359,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                             logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
                         }
                         setTarifTotalTindakan(totalTarif);
-
-
                         break;
                     }
                 }

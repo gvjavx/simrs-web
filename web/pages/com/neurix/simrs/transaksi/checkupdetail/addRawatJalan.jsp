@@ -740,6 +740,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <%--<label style="margin-top: 7px"><s:property value="headerDetailCheckup.idJenisPeriksaPasien"/> </label>--%>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
@@ -1818,6 +1819,7 @@
         var idDokter = $('#tin_id_dokter').val();
         var idPerawat = $('#tin_id_perawat').val();
         var qty = $('#tin_qty').val();
+        var idJenisPeriksa = '<s:property value="headerDetailCheckup.idJenisPeriksaPasien"/>'
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
 
@@ -1826,7 +1828,7 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
+                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, idJenisPeriksa, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
