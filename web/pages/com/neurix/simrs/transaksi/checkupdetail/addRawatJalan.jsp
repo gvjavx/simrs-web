@@ -338,6 +338,44 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>
+                                    Cover Biaya Bpjs
+                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span></small>
+                                </h5>
+                                <div class="progress">
+                                    <div id="sts_cover_biaya">
+                                    </div>
+                                </div>
+                                <h5>
+                                    Total Biaya Tindakan
+                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_tindakan"></span></small>
+                                </h5>
+                                <div class="progress">
+                                    <div id="sts_biaya_tindakan">
+                                    </div>
+                                </div>
+                                <ul style="list-style-type: none">
+                                    <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan < 50% dari cover biaya Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan > 50% dan < 70% dari cover biaya Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan > 70% dari cover biaya Bpjs</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -354,9 +392,9 @@
                                 <td>Tindakan</td>
                                 <td>Dokter</td>
                                 <td>Perawat</td>
-                                <td align="right">Tarif</td>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
-                                <td align="right">Total</td>
+                                <td align="center">Total (Rp.)</td>
                                 <td align="center">Action</td>
                                 <input type="hidden" id="tin_id_dokter">
                             </tr>
@@ -775,15 +813,15 @@
                     <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                      name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                      listValue="descOfDiagnosa"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
+                                      <%--name="getListComboDiagnosa_checkupdetail"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
+                                      <%--list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"--%>
+                                      <%--name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"--%>
+                                      <%--listValue="descOfDiagnosa"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1285,6 +1323,8 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
+    var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';
+    var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -1317,8 +1357,47 @@
 
         });
 
+        hitungStatusBiaya();
 
     });
+
+    function hitungStatusBiaya(){
+
+        var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';
+        var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';
+
+        var persen = "";
+        if(coverBiaya != '' && biayaTindakan){
+            persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
+        }else{
+            persen = 0;
+        }
+
+        var barClass = "";
+        var barLabel = "";
+
+        if(parseInt(persen) > 70){
+            barClass = 'progress-bar-danger';
+        }else if (parseInt(persen) > 50){
+            barClass = 'progress-bar-warning';
+        }else{
+            barClass = 'progress-bar-success';
+        }
+
+        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+
+        var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+
+        if(coverBiaya != ''){
+            $('#sts_cover_biaya').html(barBpjs);
+            $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+        }
+
+        if(biayaTindakan != ''){
+            $('#sts_biaya_tindakan').html(barTindakan);
+            $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+        }
+    }
 
     function saveAlergi(id) {
         var alergi = $('#alergi').val();
@@ -1832,6 +1911,7 @@
                     var tarifTotal = "-";
                     var trfTotal = 0;
                     var qtyTotal = 0;
+                    var perawat = "";
 
                     if (item.tarif != null) {
                         tarif = formatRupiah(item.tarif);
@@ -1844,12 +1924,15 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
+                    if(item.idPerawat != null){
+                       perawat = item.idPerawat;
+                    }
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
+                            "<td>" + perawat + "</td>" +
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +

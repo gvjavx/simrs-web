@@ -296,9 +296,11 @@
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatGejalaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/tipepermintaan/hibernate/ImSimrsTipePermintaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/vendor/hibernate/ImSimrsVendorEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsFingerDataEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/fingerPrint/hibernate/imSimrsFingerPrintEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
+                <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsHeaderCheckupEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsDetailCheckupEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/rawatinap/hibernate/ItSimrsRawatInapEntity.hbm.xml</value>

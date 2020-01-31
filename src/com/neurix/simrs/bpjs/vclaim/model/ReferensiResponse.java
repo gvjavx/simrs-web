@@ -1,4 +1,4 @@
-package com.neurix.simrs.bpjs.model;
+package com.neurix.simrs.bpjs.vclaim.model;
 
 /**
  * Created by Toshiba on 24/10/2019.

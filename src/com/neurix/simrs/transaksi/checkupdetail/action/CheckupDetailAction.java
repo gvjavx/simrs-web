@@ -35,6 +35,8 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -71,6 +73,24 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String fileUploadDocContentType;
 
     private String idResep;
+    private BigInteger tarifCoverBpjs;
+    private BigInteger tarifTotalTindakan;
+
+    public BigInteger getTarifCoverBpjs() {
+        return tarifCoverBpjs;
+    }
+
+    public void setTarifCoverBpjs(BigInteger tarifCoverBpjs) {
+        this.tarifCoverBpjs = tarifCoverBpjs;
+    }
+
+    public BigInteger getTarifTotalTindakan() {
+        return tarifTotalTindakan;
+    }
+
+    public void setTarifTotalTindakan(BigInteger tarifTotalTindakan) {
+        this.tarifTotalTindakan = tarifTotalTindakan;
+    }
 
     public String getIdResep() {
         return idResep;
@@ -314,7 +334,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setJenisKelamin(jk);
                         detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
                         detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
                         detailCheckup.setNik(headerCheckup.getNoKtp());
                         detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
@@ -325,6 +346,20 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
 
                         setHeaderDetailCheckup(detailCheckup);
+
+                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
+                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
+                        }
+
+                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+                        try {
+                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
+                        } catch (GeneralBOException e){
+                            logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
+                        }
+                        setTarifTotalTindakan(totalTarif);
+
 
                         break;
                     }
@@ -984,6 +1019,8 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         return "print_resep";
     }
+
+
 
     @Override
     public String downloadPdf() {

@@ -3,6 +3,11 @@ package com.neurix.authorization.user.action;
 import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.finger.bo.FingerPrintBo;
+import com.neurix.simrs.master.finger.model.FingerPrint;
+import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.FingerData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -37,55 +42,15 @@ public class UserLoginAction extends ActionSupport {
     private boolean flagSignUp = false;
     private String userPhotoUrl;
     private UserBo userBoProxy;
+    private PasienBo pasienBoProxy;
     private boolean redirectSession;
+    private String userId;
+    private String petugasId;
+    private String RegTemp;
+    private String VerPas;
+    private FingerPrint fingerPrint;
 
-    public boolean isRedirectSession() {
-        return redirectSession;
-    }
 
-    public void setRedirectSession(boolean redirectSession) {
-        this.redirectSession = redirectSession;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getMessageError() {
-        return messageError;
-    }
-
-    public void setMessageError(String messageError) {
-        this.messageError = messageError;
-    }
-
-    public boolean isFlagError() {
-        return flagError;
-    }
-
-    public void setFlagError(boolean flagError) {
-        this.flagError = flagError;
-    }
-
-    public boolean isFlagSignUp() {
-        return flagSignUp;
-    }
-
-    public void setFlagSignUp(boolean flagSignUp) {
-        this.flagSignUp = flagSignUp;
-    }
-
-    public String getUserPhotoUrl() {
-        return userPhotoUrl;
-    }
-
-    public void setUserPhotoUrl(String userPhotoUrl) {
-        this.userPhotoUrl = userPhotoUrl;
-    }
 
     public String logout() {
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -371,6 +336,219 @@ public class UserLoginAction extends ActionSupport {
 
         return "success";
     }
+    public String registerFinger(){
+        logger.info("[BpjsController.registerFinger] start process >>>");
+        String acsn= "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        FingerPrintBo fingerPrintBo= (FingerPrintBo) ctx.getBean("fingerPrintBoProxy");
+        FingerPrint search = new FingerPrint();
+        FingerPrint fingerPrint1 = new FingerPrint();
+        FingerPrint finalResult = new FingerPrint();
 
+        search.setFlag("Y");
+        search.setUserId(petugasId);
+        List<FingerPrint> fingerPrintList= fingerPrintBo.getByCriteria(search);
+        for (FingerPrint data : fingerPrintList){
+            fingerPrint1.setAc(data.getAc());
+            fingerPrint1.setVc(data.getVc());
+            fingerPrint1.setVkey(data.getVkey());
+            fingerPrint1.setSn(data.getSn());
+        }
+        if (fingerPrint1.getAc()!=null&&fingerPrint1.getVc()!=null){
+            acsn=fingerPrint1.getAc()+fingerPrint1.getSn();
+        }
+        String result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+CommonConstant.regAddress+";"+acsn+";";
+        finalResult.setDataResult(result);
+
+        fingerPrint=finalResult;
+        logger.info("[BpjsController.registerFinger] end process <<<");
+        return "finger";
+    }
+    public String prosesRegisterFinger(){
+        logger.info("[BpjsController.registerFingerProses] start process >>>");
+        logger.info(RegTemp);
+        String[] data = RegTemp.split(";");
+        String vStamp=data[0];
+        String sn=data[1];
+        String userId=data[2];
+        String regTemp=data[3];
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        pasienBo.saveEditFinger(userId,regTemp,sn,vStamp);
+
+        String result;
+        FingerPrint finalResult = new FingerPrint();
+        result= "http://localhost:8080/simrs/pasien/search_pasien.action";
+        finalResult.setDataResult(result);
+        fingerPrint=finalResult;
+        logger.info("[BpjsController.prosesRegisterFinger] end process <<<");
+        return "finger";
+    }
+
+    public String loginFinger(){
+        logger.info("[BpjsController.loginFinger] start process >>>");
+        String acsn= "";
+        String fingerData="0";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        FingerPrintBo fingerPrintBo= (FingerPrintBo) ctx.getBean("fingerPrintBoProxy");
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        FingerPrint search = new FingerPrint();
+        FingerPrint fingerPrint1 = new FingerPrint();
+        FingerPrint finalResult = new FingerPrint();
+
+        search.setFlag("Y");
+        search.setUserId(petugasId);
+        List<FingerPrint> fingerPrintList= fingerPrintBo.getByCriteria(search);
+        for (FingerPrint data : fingerPrintList){
+            fingerPrint1.setAc(data.getAc());
+            fingerPrint1.setVc(data.getVc());
+            fingerPrint1.setVkey(data.getVkey());
+            fingerPrint1.setSn(data.getSn());
+        }
+        if (fingerPrint1.getAc()!=null&&fingerPrint1.getVc()!=null){
+            acsn=fingerPrint1.getAc()+fingerPrint1.getSn();
+        }
+        List<FingerData> fingerDataList= pasienBo.getListFingerPrint(userId);
+        for (FingerData data : fingerDataList){
+            fingerData=data.getFingerData();
+        }
+        if (fingerPrint1.getAc()!=null&&fingerPrint1.getVc()!=null){
+            acsn=fingerPrint1.getAc()+fingerPrint1.getSn();
+        }
+
+        String result;
+        result= userId+";"+fingerData+";SecurityKey;"+CommonConstant.timeLimitVer+";"+CommonConstant.verAddress+";"+acsn+";extraParams";
+        finalResult.setDataResult(result);
+        fingerPrint=finalResult;
+        logger.info("[BpjsController.loginFinger] end process <<<");
+        return "finger";
+    }
+    public String prosesLoginFinger(){
+        logger.info("[BpjsController.prosesLoginFinger] start process >>>");
+        logger.info(VerPas);
+        String[] data = VerPas.split(";");
+        String userId=data[0];
+        String vStamp=data[1];
+        String time=data[2];
+        String sn=data[3];
+
+        String result;
+        FingerPrint finalResult = new FingerPrint();
+        result= CommonConstant.addRawatPasien+"?idPasien="+userId;
+        finalResult.setDataResult(result);
+        fingerPrint=finalResult;
+        logger.info("[BpjsController.prosesLoginFinger] end process <<<");
+        return "finger";
+
+    }
+
+    public String getPetugasId() {
+        return petugasId;
+    }
+
+    public void setPetugasId(String petugasId) {
+        this.petugasId = petugasId;
+    }
+
+    public FingerPrint getFingerPrint() {
+        return fingerPrint;
+    }
+
+    public void setFingerPrint(FingerPrint fingerPrint) {
+        this.fingerPrint = fingerPrint;
+    }
+
+    public String getVerPas() {
+        return VerPas;
+    }
+
+    public void setVerPas(String verPas) {
+        VerPas = verPas;
+    }
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
+
+    public void setPasienBoProxy(PasienBo pasienBoProxy) {
+        this.pasienBoProxy = pasienBoProxy;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        UserLoginAction.logger = logger;
+    }
+
+    public UserBo getUserBoProxy() {
+        return userBoProxy;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getRegTemp() {
+        return RegTemp;
+    }
+
+    public void setRegTemp(String regTemp) {
+        RegTemp = regTemp;
+    }
+
+    public boolean isRedirectSession() {
+        return redirectSession;
+    }
+
+    public void setRedirectSession(boolean redirectSession) {
+        this.redirectSession = redirectSession;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMessageError() {
+        return messageError;
+    }
+
+    public void setMessageError(String messageError) {
+        this.messageError = messageError;
+    }
+
+    public boolean isFlagError() {
+        return flagError;
+    }
+
+    public void setFlagError(boolean flagError) {
+        this.flagError = flagError;
+    }
+
+    public boolean isFlagSignUp() {
+        return flagSignUp;
+    }
+
+    public void setFlagSignUp(boolean flagSignUp) {
+        this.flagSignUp = flagSignUp;
+    }
+
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
+    }
+
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
+    }
 }
 

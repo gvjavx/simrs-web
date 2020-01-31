@@ -1,14 +1,15 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
-import com.neurix.hris.master.provinsi.model.ImDesaEntity;
-import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
-import com.neurix.hris.master.provinsi.model.ImKotaEntity;
-import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
-import com.neurix.hris.master.statusRekruitment.bo.impl.StatusRekruitmentBoImpl;
+import com.neurix.simrs.bpjs.BpjsService;
+import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -22,22 +23,26 @@ import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
 
-public class CheckupBoImpl implements CheckupBo {
+public class CheckupBoImpl extends BpjsService implements CheckupBo {
     protected static transient Logger logger = Logger.getLogger(CheckupBoImpl.class);
 
     private HeaderCheckupDao headerCheckupDao;
@@ -45,8 +50,21 @@ public class CheckupBoImpl implements CheckupBo {
     private ProvinsiDao provinsiDao;
     private DokterTeamDao dokterTeamDao;
     private CheckupAlergiDao checkupAlergiDao;
-    private DiagnosaRawatDao diagnosaRawatDao;
+    private BranchDao branchDao;
+    private TindakanDao tindakanDao;
+    private TindakanRawatDao tindakanRawatDao;
 
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
+
+    public CheckupBoImpl() throws GeneralSecurityException, IOException {
+    }
+    private DiagnosaRawatDao diagnosaRawatDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -159,6 +177,10 @@ public class CheckupBoImpl implements CheckupBo {
             headerCheckup.setHubunganKeluarga(headerList.getHubunganKeluarga());
             headerCheckup.setRujuk(headerList.getRujuk());
             headerCheckup.setJenisKunjungan(headerList.getJenisKunjungan());
+            headerCheckup.setNoSep(headerList.getNoSep());
+            headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
+            headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
+            headerCheckup.setTarifBpjs(headerList.getTarifBpjs());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             try {
@@ -218,10 +240,10 @@ public class CheckupBoImpl implements CheckupBo {
         if (bean != null){
 
             String id = "";
-            id = getNextHeaderId();
+            //id = getNextHeaderId();
 
             ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
-            headerEntity.setNoCheckup("CKP"+id);
+            headerEntity.setNoCheckup(bean.getNoCheckup());
             headerEntity.setIdPasien(bean.getIdPasien());
             headerEntity.setNama(bean.getNama());
             headerEntity.setJenisKelamin(bean.getJenisKelamin());
@@ -250,6 +272,8 @@ public class CheckupBoImpl implements CheckupBo {
             headerEntity.setUrlDocRujuk(bean.getUrlDocRujuk());
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setNoSep(bean.getNoSep());
+            headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
@@ -302,12 +326,78 @@ public class CheckupBoImpl implements CheckupBo {
                     diagnosaRawat.setJenisDiagnosa("0");
                     saveDiagnosa(diagnosaRawat);
                 }
+
+                if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0){
+                    for (Tindakan tindakan : bean.getTindakanList()){
+                        List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
+                        if (tindakanEntities.size() > 0){
+
+                            ImSimrsTindakanEntity tindakanEntity = tindakanEntities.get(0);
+                            ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+                            tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                            tindakanRawatEntity.setIdTindakanRawat("TDR"+getNextDetailCheckupId());
+                            tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
+                            tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
+                            tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+                            tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+                            tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+                            tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
+                            tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
+                            tindakanRawatEntity.setFlag("Y");
+                            tindakanRawatEntity.setAction("U");
+
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisTransaksi())){
+                                tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
+                            } else {
+                                tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
+                            }
+
+                            tindakanRawatEntity.setQty(new BigInteger(String.valueOf(1)));
+                            tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+
+                            try {
+                                tindakanRawatDao.addAndSave(tindakanRawatEntity);
+                            } catch (HibernateException e){
+                                logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" +e.getMessage());
+                                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat"+ e.getMessage());
+                            }
+
+                        }
+                    }
+                }
             }
 
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
     }
 
+    private List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException{
+        logger.info("[CheckupBoImpl.getListEntityTindakan] Start >>>>>>>");
+
+        List<ImSimrsTindakanEntity> tindakanEntities = new ArrayList<>();
+        if (bean != null){
+            Map hsCriteria = new HashMap();
+            if (bean.getIdTindakan() != null){
+                hsCriteria.put("id_tindakan", bean.getIdTindakan());
+            }
+            if (bean.getIdKategoriTindakan() != null){
+                hsCriteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
+            }
+            if (bean.getFlag() != null){
+                hsCriteria.put("flag", bean.getFlag());
+            }
+            try {
+                tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.getListEntityTindakan] ERROR " + e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.getListEntityTindakan] ERROR "+ e.getMessage());
+            }
+
+        }
+        logger.info("[CheckupBoImpl.getListEntityTindakan] End <<<<<<<");
+        return tindakanEntities;
+
+    }
     @Override
     public void saveEdit(HeaderCheckup bean) throws GeneralBOException {
 
@@ -348,6 +438,12 @@ public class CheckupBoImpl implements CheckupBo {
                 headerEntity.setNamaPenanggung(bean.getNamaPenanggung());
                 headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga());
                 headerEntity.setRujuk(bean.getRujuk());
+                headerEntity.setNoSep(bean.getNoSep());
+                headerEntity.setKodeDiagnosa(bean.getDiagnosa());
+                headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
+                if (bean.getTarifBpjs() != null && bean.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                    headerEntity.setTarifBpjs(bean.getTarifBpjs());
+                }
             }
 
             try {
@@ -487,7 +583,8 @@ public class CheckupBoImpl implements CheckupBo {
         return id;
     }
 
-    private String getNextHeaderId(){
+    @Override
+    public String getNextHeaderId(){
         String id = "";
         try {
             id = headerCheckupDao.getNextSeq();
@@ -533,6 +630,53 @@ public class CheckupBoImpl implements CheckupBo {
 
         logger.info("[CheckupBoImpl.getListEntityTeamDokter] End <<<<<<<<");
         return entities;
+    }
+
+    @Override
+    public HeaderCheckup completeBpjs(String nomorBpjs,String unitId) {
+        logger.info("[CheckupBoImpl.completeBpjs] Start >>>>>>>");
+
+        HeaderCheckup finalResult = new HeaderCheckup();
+        java.util.Date dt = new java.util.Date();
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggal = s.format(dt);
+
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/Peserta/nokartu/" + nomorBpjs + "/tglSEP/" + tanggal;
+
+        ImBranches resultBranch = null;
+        try {
+            // Get data from database by ID
+            resultBranch = branchDao.getConsSecrBranchById(unitId);
+        } catch (HibernateException e) {
+            logger.error("[CheckupBoImpl.completeBpjs] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+
+        if (resultBranch != null){
+            try {
+                String result = GET(feature,resultBranch.getConstId(),resultBranch.getSecretKey());
+                JSONObject myResponseCheck = new JSONObject(result);
+                if (myResponseCheck.isNull("response")) {
+                    finalResult = null;
+                    JSONObject response = myResponseCheck.getJSONObject("metaData");
+                    logger.error("[CheckupBoImpl.completeBpjs] : " + response.getString("message"));
+                } else {
+                    JSONObject response = myResponseCheck.getJSONObject("response");
+                    JSONObject obj = response.getJSONObject("peserta");
+                    finalResult.setNoKtp(obj.getString("nik"));
+                    finalResult.setNama(obj.getString("nama"));
+                    finalResult.setJenisKelamin(obj.getString("sex"));
+                    String[] tglLahir =obj.getString("tglLahir").split("-");
+                    finalResult.setStTglLahir(tglLahir[2]+"-"+tglLahir[1]+"-"+tglLahir[0]);
+                }
+            } catch (Exception e) {
+                logger.error("[CheckupBoImpl.completeBpjs] Error when get data");
+            }
+        }
+
+
+        logger.info("[CheckupBoImpl.completeBpjs] End <<<<<<<");
+        return finalResult;
     }
 
     @Override
@@ -744,6 +888,17 @@ public class CheckupBoImpl implements CheckupBo {
         return id;
     }
 
+    private String getNextTindakanRawatId(){
+        String id = "";
+        try {
+            id = tindakanRawatDao.getNextTindakanRawatId();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextTindakanRawatId] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextTindakanRawatId] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
     }
@@ -766,5 +921,13 @@ public class CheckupBoImpl implements CheckupBo {
 
     public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
         this.diagnosaRawatDao = diagnosaRawatDao;
+    }
+
+    public void setTindakanDao(TindakanDao tindakanDao) {
+        this.tindakanDao = tindakanDao;
+    }
+
+    public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
+        this.tindakanRawatDao = tindakanRawatDao;
     }
 }

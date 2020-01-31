@@ -14,6 +14,7 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +116,8 @@ public class RawatInapAction extends BaseMasterAction {
                         rawatInap.setJenisKelamin(jk);
                         rawatInap.setTempatLahir(headerCheckup.getTempatLahir());
                         rawatInap.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
                         rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setNik(headerCheckup.getNoKtp());
                         rawatInap.setUrlKtp(headerCheckup.getUrlKtp());

@@ -5,6 +5,7 @@ import com.neurix.simrs.master.statuspasien.bo.StatusPasienBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -16,4 +17,5 @@ public interface CheckupDetailBo{
     public void updateRuanganInap(String idRuangan, String idDetailCheckup) throws GeneralBOException;
     public void saveEdit(HeaderDetailCheckup bean) throws GeneralBOException;
     public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException;
+    public BigInteger getSumOfTindakanByNoCheckup(String noCheckup) throws GeneralBOException;
 }
