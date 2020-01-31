@@ -346,7 +346,7 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-offset-2 col-md-8">
                                 <h5>
                                     Cover Biaya Bpjs
                                     <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span></small>
@@ -370,7 +370,7 @@
                                     <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan > 70% dari cover biaya Bpjs</li>
                                 </ul>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
 
                             </div>
                         </div>

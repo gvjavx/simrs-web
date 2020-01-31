@@ -18,7 +18,7 @@
 
         $(document).ready(function () {
 
-            $('#resep_poli').addClass('active');
+            $('#transaksi_obat').addClass('active');
             $('#add_resep').focus();
 
         });
@@ -58,7 +58,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Resep Poli
+            Verifikator
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -70,28 +70,32 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>--%>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>
-                                </div>
-                                <div class="col-md-3 pull-right">
-                                    <div class="input-group date">
-                                        <input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">
-                                        <div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">
-                                            <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
-                                        </div>
-                                        <div class="input-group-addon btn btn-success" id="load_resep" style="display: none">
-                                            <i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...
-                                        </div>
+                        <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Obat Apotek</h3>--%>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Obat Apotek</h3>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group date">
+                                    <input class="form-control" id="add_resep" placeholder="Antrian"
+                                           onchange="saveAntrian()">
+                                    <div class="input-group-addon btn btn-success" onclick="saveAntrian()"
+                                         id="save_resep">
+                                        <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
+                                    </div>
+                                    <div class="input-group-addon btn btn-success" id="load_resep"
+                                         style="display: none">
+                                        <i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang
+                                        menyimpan...
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="resepPoliForm" method="post" namespace="/reseppoli"
-                                    action="searchResepPasien_reseppoli.action"
+                            <s:form id="transaksiForm" method="post" namespace="/transaksi"
+                                    action="searchResepPasien_transaksi.action"
                                     theme="simple" cssClass="form-horizontal">
 
                                 <div class="form-group">
@@ -99,7 +103,7 @@
                                     <div class="col-sm-4">
                                         <s:textfield id="no_resep" cssStyle="margin-top: 7px"
                                                      name="permintaanResep.idPermintaanResep" required="false"
-                                                     readonly="false" cssClass="form-control" onchange="saveAntrian()"/>
+                                                     readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -119,35 +123,33 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>&nbsp;</label>
+                                    <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <div class="input-group">
-                                        <input class="form-control" id="namaOrang">
-                                        <div class="input-group-addon" onclick="tesSuara()">
-                                            <i class="fa fa-search"> TEST</i>
-                                        </div>
-                                        </div>
+                                        <s:select list="#{'3':'Proses','4':'Selesai'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="status" name="permintaanResep.status"
+                                                  headerKey="0" headerValue="Antrian"
+                                                  cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <s:hidden name="permintaanResep.status" value="3"></s:hidden>
-                                <s:hidden name="permintaanResep.isUmum" value="N"></s:hidden>
+                                <s:hidden name="permintaanResep.isUmum" value="Y"></s:hidden>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="resepPoliForm"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="transaksiForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
                                                    onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_reseppoli.action">
+                                        <a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">
+                                            <i class="fa fa-plus"></i> Beli Obat
+                                        </a>
+                                        <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <%--<a type="button" class="btn btn-info" href="initForm_transaksi.action">--%>
-                                            <%--<i class="fa fa-history"></i> Riwayat Transaksi--%>
-                                        <%--</a>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -166,7 +168,8 @@
                                                      src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
                                                      name="image_indicator_write">
                                                 <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
@@ -185,7 +188,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Resep Poli</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Transaski Obat</h3>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped" id="myTable">
@@ -199,19 +202,38 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResultObat">
+                            <s:iterator value="#session.listOfResult" id="listOfResultObat" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanResep"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
                                     <td align="center">
-                                        <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_proses}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
+                                        <s:if test='#row.flag == "Y"'>
+                                            <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
+                                                   escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_proses}">
+                                                <img border="0" class="hvr-grow"
+                                                     src="<s:url value="/pages/images/icons8-create-25.png"/>"
+                                                     style="cursor: pointer;">
+                                            </s:a>
+                                        </s:if>
+                                        <s:else>
+                                            <s:url var="print_struk" namespace="/transaksi" action="printStrukResepPasien_transaksi"
+                                                   escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="idResep"><s:property value="idPermintaanResep"/></s:param>
+                                                <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_struk}" target="_blank">
+                                                <img border="0" class="hvr-grow"
+                                                     src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                     style="cursor: pointer;">
+                                            </s:a>
+                                        </s:else>
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -224,37 +246,32 @@
     </section>
     <!-- /.content -->
 </div>
-<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
 <script type='text/javascript'>
 
-    function tesSuara(){
-       var text =  $('#namaOrang').val();
-        responsiveVoice.speak(text,"Indonesian Female").slow();
-    }
-
-    function saveAntrian(){
+    function saveAntrian() {
         var idResep = $('#add_resep').val();
 
-        if(idResep != ''){
+        if (idResep != '') {
             $('#save_resep').hide();
             $('#load_resep').show();
 
             setTimeout(function () {
-                TransaksiObatAction.saveAntrianResep(idResep, "N", function (response) {
+                TransaksiObatAction.saveAntrianResep(idResep, "Y", function (response) {
                     if (response == "success") {
                         $('#save_resep').show();
                         $('#load_resep').hide();
                         $('#no_resep').val(idResep);
-                        document.resepPoliForm.action = 'searchResepPasien_reseppoli.action';
-                        document.resepPoliForm.submit();
+                        document.transaksiForm.action = 'searchResepPasien_transaksi.action';
+                        document.transaksiForm.submit();
                     } else {
                         $('#save_resep').show();
                         $('#load_resep').hide();
                     }
                 })
-            },1500)
+            }, 1500)
 //            dwr.engine.setAsync(true);
-        }else{
+        } else {
 
         }
     }
