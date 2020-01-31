@@ -391,7 +391,7 @@
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
                                 <td>Dokter</td>
-                                <td>Perawat</td>
+                                <%--<td>Perawat</td>--%>
                                 <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
                                 <td align="center">Total (Rp.)</td>
@@ -1978,7 +1978,7 @@
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + perawat + "</td>" +
+//                            "<td>" + perawat + "</td>" +
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
