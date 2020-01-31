@@ -119,7 +119,7 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                                <s:label id="jenis_periksa" name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
                                             </table>
                                         </td>
                                     </tr>
@@ -339,6 +339,7 @@
                         </table>
                     </div>
 
+                    <div id="status_bpjs" style="display: none">
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
@@ -374,6 +375,7 @@
 
                             </div>
                         </div>
+                    </div>
                     </div>
 
                     <div class="box-header with-border" id="pos_tin">
@@ -814,15 +816,15 @@
                     <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
-                                      <%--name="getListComboDiagnosa_checkupdetail"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                      <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
-                                      <%--list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"--%>
-                                      <%--name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"--%>
-                                      <%--listValue="descOfDiagnosa"--%>
-                                      <%--headerKey="" headerValue="[Select one]"--%>
-                                      <%--cssClass="form-control select2"/>--%>
+                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                      name="getListComboDiagnosa_checkupdetail"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
+                                      listValue="descOfDiagnosa"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1324,8 +1326,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
-    var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';
-    var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';
+    var jenisPeriksa = $('#jenis_periksa').text();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -1364,43 +1365,48 @@
 
     function hitungStatusBiaya(){
         CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
-           if(response != null){
+            if(response.jenisTransaksi == "bpjs"){
+                $('#status_bpjs').show();
+                if(response.tarifBpjs != null && response.tarifTindakan != null){
 
-               var coverBiaya = response.tarifBpjs;
-               var biayaTindakan = response.tarifTindakan;
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = response.tarifTindakan;
 
-               var persen = "";
-               if(coverBiaya != '' && biayaTindakan){
-                   persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
-               }else{
-                   persen = 0;
-               }
+                    var persen = "";
+                    if(coverBiaya != '' && biayaTindakan){
+                        persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
+                    }else{
+                        persen = 0;
+                    }
 
-               var barClass = "";
-               var barLabel = "";
+                    var barClass = "";
+                    var barLabel = "";
 
-               if(parseInt(persen) > 70){
-                   barClass = 'progress-bar-danger';
-               }else if (parseInt(persen) > 50){
-                   barClass = 'progress-bar-warning';
-               }else{
-                   barClass = 'progress-bar-success';
-               }
+                    if(parseInt(persen) > 70){
+                        barClass = 'progress-bar-danger';
+                    }else if (parseInt(persen) > 50){
+                        barClass = 'progress-bar-warning';
+                    }else{
+                        barClass = 'progress-bar-success';
+                    }
 
-               var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
 
-               var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+                    var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
 
-               if(coverBiaya != ''){
-                   $('#sts_cover_biaya').html(barBpjs);
-                   $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
-               }
+                    if(coverBiaya != ''){
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+                    }
 
-               if(biayaTindakan != ''){
-                   $('#sts_biaya_tindakan').html(barTindakan);
-                   $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
-               }
-           }
+                    if(biayaTindakan != ''){
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+                    }
+                }
+            }else{
+                $('#status_bpjs').hide();
+            }
         });
     }
 
@@ -2142,7 +2148,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter) {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
 
             $('#save_lab').hide();
             $('#load_lab').show();

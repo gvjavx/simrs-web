@@ -690,7 +690,7 @@
     }
 
     function printPeriksaLab(){
-        window.open('printPeriksaLab_periksalab.action?id'+idDetailCheckup, "_blank");
+        window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");
     }
 
 
