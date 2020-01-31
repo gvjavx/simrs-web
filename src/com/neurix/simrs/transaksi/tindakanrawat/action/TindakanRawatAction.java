@@ -114,7 +114,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty){
+    public String saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String idPerawat, BigInteger qty, String jenisTransaksi){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -145,7 +145,15 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(qty);
+
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+                tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+            } else {
+                tindakanRawat.setTarif(tindakanResult.getTarif());
+            }
+
             tindakanRawat.setTarif(tindakanResult.getTarif());
+            tindakanRawat.setTarifTotal(tindakanRawat.getQty().multiply(tindakanRawat.getTarif()));
             tindakanRawat.setCreatedWho(userLogin);
             tindakanRawat.setLastUpdate(updateTime);
             tindakanRawat.setCreatedDate(updateTime);
@@ -164,6 +172,14 @@ public class TindakanRawatAction extends BaseMasterAction {
             return ERROR;
         }
         return SUCCESS;
+    }
+
+    private void saveUpdateTindakanToInaCbg(String noCheckup, String idTindakan, BigInteger tarif) throws GeneralBOException{
+        logger.info("[TindakanRawatAction.saveUpdateTindakanToInaCbg] START process >>>");
+
+
+
+        logger.info("[TindakanRawatAction.saveUpdateTindakanToInaCbg] END process <<<");
     }
 
     public List<TindakanRawat> listTindakanRawat(String idDetailCheckup){
