@@ -41,6 +41,16 @@ public class Pasien {
     private String password;
     private String email;
 
+    private boolean isPasienLama = false;
+
+    public boolean getIsPasienLama() {
+        return isPasienLama;
+    }
+
+    public void setIsPasienLama(boolean isPasienLama) {
+        this.isPasienLama = isPasienLama;
+    }
+
     public String getEmail() {
         return email;
     }

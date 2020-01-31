@@ -334,7 +334,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setJenisKelamin(jk);
                         detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
                         detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
                         detailCheckup.setNik(headerCheckup.getNoKtp());
                         detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
@@ -969,13 +970,29 @@ public class CheckupDetailAction extends BaseMasterAction {
         String id = getId();
         String jk = "";
 
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+
+        switch (branch){
+            case CommonConstant.BRANCH_RS01 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                break;
+            case CommonConstant.BRANCH_RS02 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                break;
+            case CommonConstant.BRANCH_RS03 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                break;
+        }
+
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
         reportParams.put("resepId", idResep);
-        reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        reportParams.put("logo", logo);
         reportParams.put("nik",headerCheckup.getNoKtp());
         reportParams.put("nama",headerCheckup.getNama());
-        reportParams.put("tglLahir",headerCheckup.getTempatLahir()+", "+headerCheckup.getStTglLahir().toString());
+        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+        reportParams.put("tglLahir",headerCheckup.getTempatLahir()+", "+formatDate);
         if("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())){
             jk = "Laki-Laki";
         }else{

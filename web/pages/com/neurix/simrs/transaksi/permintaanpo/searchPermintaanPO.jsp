@@ -174,13 +174,12 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <%--transaksiObatDetails--%>
                                     <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
-                                        <label class="label label-warning"><s:property value="keterangan"/></label>
-                                    </s:if><s:else>
+                                    <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
+                                    </s:if><s:else>
+                                        <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
 
@@ -188,30 +187,8 @@
                                             <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
                                         </s:url>
                                         <s:a href="%{verify_po}">
-                                            <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
-                                        <%--<s:if test='#row.enableApprove == false'>--%>
-                                            <%--<s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{verify_po}">--%>
-                                                <%--<button class="btn btn-primary"><i class="fa fa-edit"></i></button>--%>
-                                            <%--</s:a>--%>
-                                        <%--</s:if>--%>
-                                        <%--<s:else>--%>
-                                            <%--<s:url var="print_doc" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{print_doc}">--%>
-                                                <%--<button class="btn btn-info"><i class="fa fa-print"></i></button>--%>
-                                            <%--</s:a>--%>
-                                            <%--<s:url var="approve_po" namespace="/permintaanpo" action="initApproval_permintaanpo" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{approve_po}">--%>
-                                                <%--<button class="btn btn-success"><i class="fa fa-check"></i></button>--%>
-                                            <%--</s:a>--%>
-                                        <%--</s:else>--%>
                                     </td>
                                 </tr>
                             </s:iterator>

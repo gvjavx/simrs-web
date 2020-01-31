@@ -138,27 +138,27 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-
-                                        <a type="button" class="btn btn-primary" href="add_checkup.action"><i
-                                                class="fa fa-plus"></i> Tambah Rawat Pasien</a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=umum">
+                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs">
+                                                    <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                            </ul>
+                                        </div>
+                                        <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
+                                                <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
                                                 class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-
-                                        <button type="button" class="btn btn-primary">Daftar Periksa</button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
-                                                data-toggle="dropdown" style="height: 34px">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="/simrs/checkup/add_checkup.action?tipe=umum"><i class="fa fa-plus"></i>
-                                                Pasien Umum</a></li>
-                                            <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs"><i class="fa fa-refresh"></i> Pasien
-                                                Bpjs</a></li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -223,15 +223,16 @@
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"
-                                             style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{edit}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                 style="cursor: pointer; width: 25px; height: 25px">
-                                        </s:a>
+                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                             src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>')">
+                                        <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
+                                        <%--</s:url>--%>
+                                        <%--<s:a href="%{edit}">--%>
+                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
+                                                 <%--style="cursor: pointer; width: 25px; height: 25px">--%>
+                                        <%--</s:a>--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -446,8 +447,8 @@
 
         setTimeout(function () {
 
-            var url = '<s:url value="/pages/images/search_flat.png"/>';
-            $('#v_'+idCheckup).attr('src',url).css('width', '25px', 'height', '25px');
+            var url = '<s:url value="/pages/images/icons8-search-25.png"/>';
+            $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
             CheckupAction.listDataPasien(idCheckup, function (response) {
                 dataPasien = response;

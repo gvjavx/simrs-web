@@ -12,6 +12,7 @@
          p:pasienDao-ref="pasienDao"
           p:fingerDataDao-ref="fingerDataDao"
          p:provinsiDao-ref="provinsiDao"
+         p:headerCheckupDao-ref="headerCheckupDao"
     />
 
     <bean id="pasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

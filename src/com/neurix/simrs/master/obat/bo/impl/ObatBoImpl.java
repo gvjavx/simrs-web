@@ -640,6 +640,8 @@ public class ObatBoImpl implements ObatBo {
             hsCriteria.put("id_pabrik", bean.getIdPabrik());
         }
 
+        hsCriteria.put("exp", "Y");
+
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
 
         try {
