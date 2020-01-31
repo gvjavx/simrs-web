@@ -377,6 +377,43 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "init_add";
     }
 
+    public HeaderCheckup getStatusBiayaTindakan(String noCheckup){
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try {
+            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+        }
+
+        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+
+        try {
+            totalTarif = checkupDetailBo.getSumOfTindakanByNoCheckup(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
+        }
+
+        HeaderCheckup result = new HeaderCheckup();
+        if (!headerCheckupList.isEmpty()){
+            result = headerCheckupList.get(0);
+
+            if (result.getTarifBpjs() != null && result.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                result.setTarifBpjs(result.getTarifBpjs());
+                result.setTarifTindakan(new BigDecimal(totalTarif));
+            }
+
+        }
+
+        return result;
+    }
+
 
 
     @Override

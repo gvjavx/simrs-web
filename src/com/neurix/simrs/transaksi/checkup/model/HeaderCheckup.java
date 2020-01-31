@@ -77,6 +77,16 @@ public class HeaderCheckup {
     private BigDecimal tarifBpjs;
     private List<Tindakan> tindakanList;
 
+    private BigDecimal tarifTindakan;
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
     public List<Tindakan> getTindakanList() {
         return tindakanList;
     }
