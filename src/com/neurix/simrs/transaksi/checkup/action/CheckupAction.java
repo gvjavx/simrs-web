@@ -9,6 +9,7 @@ import com.neurix.simrs.bpjs.eklaim.bo.impl.EklaimBoImpl;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
+import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
@@ -72,6 +73,7 @@ public class CheckupAction extends BaseMasterAction {
         this.dokterBoProxy = dokterBoProxy;
     }
     private List<JenisPriksaPasien> listOfJenisPriksaPasien = new ArrayList<>();
+    private List<JenisPriksaPasien> listOfJenisPriksaNotBpjs = new ArrayList<>();
     private List<Pelayanan> listOfPelayanan = new ArrayList<>();
     private List<Pelayanan> listOfApotek = new ArrayList<>();
 
@@ -272,7 +274,7 @@ public class CheckupAction extends BaseMasterAction {
             //checkup.setIdJenisPeriksaPasien(tipe);
 
         }
-        checkup.setIdJenisPeriksaPasien(tipe);
+//        checkup.setIdJenisPeriksaPasien(tipe);
         checkup.setJenisTransaksi(tipe);
         setHeaderCheckup(checkup);
 
@@ -468,32 +470,32 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setTindakanList(tindakans);
 
             String fileName = "";
-            if (this.fileUpload != null) {
-                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
-                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-
-                        // file name
-                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
-
-                        // deklarasi path file
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
-
-                        // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
-
-                        try {
-                            // pemindahan file
-                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlKtp(fileName);
-                        } catch (IOException e) {
-                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
-                        }
-                    }
-                }
-            }
+//            if (this.fileUpload != null) {
+//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+//                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+//
+//                        // file name
+//                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
+//
+//                        // deklarasi path file
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+////                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+//                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
+//
+//                        // persiapan pemindahan file
+//                        File fileToCreate = new File(filePath, fileName);
+//
+//                        try {
+//                            // pemindahan file
+//                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+//                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
+//                            checkup.setUrlKtp(fileName);
+//                        } catch (IOException e) {
+//                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -714,6 +716,38 @@ public class CheckupAction extends BaseMasterAction {
 
         listOfJenisPriksaPasien.addAll(lisJenisPeriksa);
         return "init_add";
+    }
+
+    public List<JenisPriksaPasien> getComboJenisPeriksaPasienNotBpjs(){
+        List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
+        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        try {
+            lisJenisPeriksa = jenisPriksaPasienBo.getListJenisPeriksaNotBpjs(jenisPriksaPasien);
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
+            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
+        }
+
+       return  lisJenisPeriksa;
+    }
+
+    public List<JenisPriksaPasien> getComboJenisPeriksaPasienWithBpjs(){
+        List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
+        JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JenisPriksaPasienBo jenisPriksaPasienBo = (JenisPriksaPasienBo) ctx.getBean("jenisPriksaPasienBoProxy");
+
+        try {
+            lisJenisPeriksa = jenisPriksaPasienBo.getListAllJenisPeriksa(jenisPriksaPasien);
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
+            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
+        }
+
+        return  lisJenisPeriksa;
     }
 
     public String getComboPelayanan(){
@@ -1064,6 +1098,36 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         logger.info("[CheckupAction.updateInsertTarifBpjs] end process <<<");
+
+    }
+
+    public PesertaResponse checkStatusBpjs(String noBpjs){
+
+        logger.info("[CheckupAction.checkStatusBpjs] START process <<<");
+
+        PesertaResponse response = new PesertaResponse();
+        String unitId =  CommonUtil.userBranchLogin();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        String tglSep = formatDate;
+        logger.info("[CheckupAction.checkStatusBpjs] TGL        -->" +date);
+        logger.info("[CheckupAction.checkStatusBpjs] TGL SEP    -->" +tglSep);
+        logger.info("[CheckupAction.checkStatusBpjs] UnitID     -->" +unitId);
+
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
+
+        try {
+            response = bpjsBo.GetPesertaBpjsByAPIBpjs(noBpjs, tglSep, unitId);
+        }catch (HibernateException e){
+            logger.error("[CheckupAction.checkStatusBpjs] ERROR "+e.getMessage());
+            addActionError("[CheckupAction.checkStatusBpjs] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.checkStatusBpjs] END process <<<");
+        return response;
 
     }
 }

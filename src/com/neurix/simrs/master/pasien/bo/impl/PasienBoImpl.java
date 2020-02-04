@@ -136,6 +136,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setAgama(data.getAgama());
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
+            pasien.setImgKtp(data.getUrlKtp());
             pasien.setUrlKtp(CommonConstant.URL_IMG+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());

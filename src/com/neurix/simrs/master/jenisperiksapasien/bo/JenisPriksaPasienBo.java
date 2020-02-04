@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface JenisPriksaPasienBo {
     public List<JenisPriksaPasien> getListAllJenisPeriksa(JenisPriksaPasien bean);
+    public List<JenisPriksaPasien> getListJenisPeriksaNotBpjs(JenisPriksaPasien bean);
 }

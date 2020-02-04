@@ -56,4 +56,38 @@ public class JenisPriksaPasienImpl implements JenisPriksaPasienBo {
 
         return result;
     }
+
+    @Override
+    public List<JenisPriksaPasien> getListJenisPeriksaNotBpjs(JenisPriksaPasien bean) {
+        logger.info("[jenisPriksaPasienImpl.getListJenisPeriksaNotBpjs] Start >>>>>>");
+        List<JenisPriksaPasien> result = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            hsCriteria.put("id_jenis_periksa_pasien", bean.getIdJenisPeriksaPasien());
+        }
+
+        hsCriteria.put("except_bpjs","bpjs");
+        hsCriteria.put("flag","Y");
+
+        List<ImJenisPeriksaPasienEntity> imJenisPeriksaPasienEntityList = null;
+        try {
+            imJenisPeriksaPasienEntityList = jenisPeriksaPasienDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[jenisPriksaPasienImpl.getListJenisPeriksaNotBpjs] Error get jenis periksa data "+e.getMessage());
+        }
+
+        if (!imJenisPeriksaPasienEntityList.isEmpty()){
+            JenisPriksaPasien jenisPriksaPasien;
+            for (ImJenisPeriksaPasienEntity listEntity : imJenisPeriksaPasienEntityList){
+                jenisPriksaPasien = new JenisPriksaPasien();
+                jenisPriksaPasien.setIdJenisPeriksaPasien(listEntity.getIdJenisPeriksaPasien());
+                jenisPriksaPasien.setKeterangan(listEntity.getKeterangan());
+                result.add(jenisPriksaPasien);
+            }
+        }
+        logger.info("[jenisPriksaPasienImpl.getListJenisPeriksaNotBpjs] End <<<<<<");
+
+        return result;
+    }
 }

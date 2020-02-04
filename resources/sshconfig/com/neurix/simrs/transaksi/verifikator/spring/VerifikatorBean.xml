@@ -6,9 +6,12 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="verifikatorAction" class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
     />
 
     <bean id="verifikatorBo" class="com.neurix.simrs.transaksi.verifikator.bo.impl.VerifikatorBoImpl"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
     />
 
     <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

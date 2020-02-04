@@ -10,45 +10,21 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
     </style>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
     <script type='text/javascript'>
 
-        $(document).ready(function () {
-
-            $('#transaksi_obat').addClass('active');
-            $('#add_resep').focus();
-
+        $( document ).ready(function() {
+            $('#verifikasi_tindakan').addClass('active');
         });
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            event.originalEvent.options.submit = true;
-            $('#confirm_dialog').dialog('close');
-            $("html, body").animate({scrollTop: 0}, 600);
-            $.publish('showDialog');
-        });
-
-        $.subscribe('successDialog', function (event, data) {
-            if (event.originalEvent.request.status == 200) {
-                jQuery(".ui-dialog-titlebar-close").hide();
-                $("html, body").animate({scrollTop: 0}, 600);
-                $.publish('showInfoDialog');
-            }
-        });
-
-        $.subscribe('errorDialog', function (event, data) {
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
-        });
 
     </script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <div class="se-pre-con"></div>
-
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -58,7 +34,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikator
+            Verifikasi Tindakan Rawat
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -70,84 +46,80 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Obat Apotek</h3>--%>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Transaksi Obat Apotek</h3>
-                            </div>
-                            <div class="col-md-3 pull-right">
-                                <div class="input-group date">
-                                    <input class="form-control" id="add_resep" placeholder="Antrian"
-                                           onchange="saveAntrian()">
-                                    <div class="input-group-addon btn btn-success" onclick="saveAntrian()"
-                                         id="save_resep">
-                                        <i class="fa fa-arrow-right" style="cursor: pointer"></i> Save
-                                    </div>
-                                    <div class="input-group-addon btn btn-success" id="load_resep"
-                                         style="display: none">
-                                        <i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang
-                                        menyimpan...
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Tindakan Rawat</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="transaksiForm" method="post" namespace="/transaksi"
-                                    action="searchResepPasien_transaksi.action"
-                                    theme="simple" cssClass="form-horizontal">
-
+                            <s:form id="verifikatorForm" method="post" namespace="/verifikator" action="search_verifikator.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Resep</label>
+                                    <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="no_resep" cssStyle="margin-top: 7px"
-                                                     name="permintaanResep.idPermintaanResep" required="false"
-                                                     readonly="false" cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">No Checkup Detail</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
-                                                     name="permintaanResep.idDetailCheckup" required="false"
+                                        <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
+                                                     name="headerDetailCheckup.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama" cssStyle="margin-top: 7px"
-                                                     name="permintaanResep.namaPasien" required="false"
-                                                     readonly="false" cssClass="form-control"/>
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Poli</label>
+                                        <div class="col-sm-4">
+                                            <s:action id="initComboPoli" namespace="/checkup"
+                                                      name="getComboPelayanan_checkup"/>
+                                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                      list="#initComboPoli.listOfPelayanan"
+                                                      name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                      listValue="namaPelayanan"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2" theme="simple"/>
+                                        </div>
+                                    </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'3':'Proses','4':'Selesai'}"
-                                                  cssStyle="margin-top: 7px"
-                                                  id="status" name="permintaanResep.status"
-                                                  headerKey="0" headerValue="Antrian"
+                                        <s:select list="#{'2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="headerDetailCheckup.statusPeriksa"
+                                                  headerKey="1" headerValue="Periksa"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <s:hidden name="permintaanResep.isUmum" value="Y"></s:hidden>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control"
+                                                         required="false"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control"
+                                                         required="false"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="transaksiForm"
-                                                   id="search" name="search"
-                                                   onClickTopics="showDialogLoading"
-                                                   onCompleteTopics="closeDialogLoading">
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="verifikatorForm" id="search" name="search"
+                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-primary" href="pembelianObat_transaksi.action">
-                                            <i class="fa fa-plus"></i> Beli Obat
-                                        </a>
-                                        <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_verifikator.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -168,18 +140,15 @@
                                                      src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
                                                      name="image_indicator_write">
                                                 <br>
-                                                <img class="spin" border="0"
-                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
-                                                   resizable="false" cssStyle="text-align:left;"
+                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
                                                    height="650" width="900" autoOpen="false" title="View Detail"
                                         >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                                         alt="Loading..."/></center>
+                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
                                     </div>
                                 </div>
@@ -188,52 +157,39 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Transaski Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" id="myTable">
-                            <thead>
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Resep</td>
-                                <td>No Checkup Detail</td>
+                                <td>No Checkup</td>
+                                <td>ID Pasien</td>
                                 <td>Nama</td>
+                                <td>Alamat</td>
                                 <td>Status</td>
+                                <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResultObat" var="row">
+                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
                                 <tr>
-                                    <td><s:property value="idPermintaanResep"/></td>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="status"/></td>
+                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="statusPeriksaName"/></td>
+                                    <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:if test='#row.flag == "Y"'>
-                                            <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
-                                                   escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_proses}">
-                                                <img border="0" class="hvr-grow"
-                                                     src="<s:url value="/pages/images/icons8-create-25.png"/>"
-                                                     style="cursor: pointer;">
-                                            </s:a>
+                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                            <%--<s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">--%>
+                                                <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{add_rawat_jalan}">--%>
+                                                <img onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            <%--</s:a>--%>
                                         </s:if>
-                                        <s:else>
-                                            <s:url var="print_struk" namespace="/transaksi" action="printStrukResepPasien_transaksi"
-                                                   escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="idResep"><s:property value="idPermintaanResep"/></s:param>
-                                                <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{print_struk}" target="_blank">
-                                                <img border="0" class="hvr-grow"
-                                                     src="<s:url value="/pages/images/icons8-print-25.png"/>"
-                                                     style="cursor: pointer;">
-                                            </s:a>
-                                        </s:else>
-
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -247,35 +203,239 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="modal-detail-pasien">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Tindakan Rawat Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>No Checkup</b></td>
+                                    <td><span id="det_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="det_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="det_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="det_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><span id="det_tgl"></span></td>
+                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td><b>Agama</b></td>--%>
+                                    <%--<td><span id="det_agama"></span></td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td><b>Suku</b></td>--%>
+                                    <%--<td><span id="det_suku"></span></td>--%>
+                                <%--</tr>--%>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="det_alamat"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="det_provinsi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="det_kabupaten"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="det_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="det_desa"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="hidden" id="tin_id_detail_checkup">
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td>Nama Tindakan</td>
+                            <td align="center">Kategori</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_tindakan">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_verif"><i class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript'>
+    function detailTindakan(idCheckup, idDetailCheckup) {
+        var table = "";
+        var dataTindakan = [];
+        var dataPasien = [];
+        var noCheckup = "";
+        var nik = "";
+        var namaPasien = "";
+        var jenisKelamin = "";
+        var tglLahir = "";
+        var agama = "";
+        var suku = "";
+        var alamat = "";
+        var provinsi = "";
+        var kabupaten = "";
+        var kecamatan = "";
+        var desa = "";
+        var tindakan = "";
 
-    function saveAntrian() {
-        var idResep = $('#add_resep').val();
+        var url = '<s:url value="/pages/images/spinner.gif"/>';
+        $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
 
-        if (idResep != '') {
-            $('#save_resep').hide();
-            $('#load_resep').show();
 
-            setTimeout(function () {
-                TransaksiObatAction.saveAntrianResep(idResep, "Y", function (response) {
-                    if (response == "success") {
-                        $('#save_resep').show();
-                        $('#load_resep').hide();
-                        $('#no_resep').val(idResep);
-                        document.transaksiForm.action = 'searchResepPasien_transaksi.action';
-                        document.transaksiForm.submit();
-                    } else {
-                        $('#save_resep').show();
-                        $('#load_resep').hide();
-                    }
-                })
-            }, 1500)
-//            dwr.engine.setAsync(true);
-        } else {
+        setTimeout(function () {
 
-        }
+            var url = '<s:url value="/pages/images/icons8-search-25.png"/>';
+            $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
+
+            CheckupAction.listDataPasien(idCheckup, function (response) {
+                dataPasien = response;
+                if (dataPasien != null) {
+                    $.each(dataPasien, function (i, item) {
+                        var tanggal = item.tglLahir;
+                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        noCheckup = item.noCheckup;
+                        nik = item.noKtp;
+                        namaPasien = item.nama;
+
+                        if (item.jenisKelamin == "L") {
+                            jenisKelamin = "Laki-Laki";
+                        } else {
+                            jenisKelamin = "Perempuan";
+                        }
+
+                        tglLahir = item.tempatLahir + ", " + dateFormat;
+                        agama = item.agama;
+                        suku = item.suku;
+                        alamat = item.jalan;
+                        provinsi = item.namaProvinsi;
+                        kabupaten = item.namaKota;
+                        kecamatan = item.namaKecamatan;
+                        desa = item.namaDesa;
+                    });
+                }
+            });
+
+            VerifikatorAction.getListTindakanRawat(idDetailCheckup, function (response) {
+                dataTindakan = response;
+                if (dataTindakan != null) {
+                    $.each(dataTindakan, function (i, item) {
+
+                        if (item.namaTindakan) {
+                            tindakan = item.namaTindakan;
+                        }
+
+                        table += "<tr>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td>" +
+                                '<select onclick="toSelect2(\''+i+'\')" class="form-control" id=ts'+i+'>' +
+                                '<option value="">[Select One]</option>'+
+                                '<option value="1">Prosedur Non Bedah</option>'+
+                                '<option value="2">Tenaga Ahli</option>'+
+                                '<option value="3">Radiologi</option>'+
+                                '<option value="4">Rehabilitasi</option>'+
+                                '<option value="5">Obat</option>'+
+                                '<option value="6">Alkes</option>'+
+                                '<option value="7">Prosedur Bedah</option>'+
+                                '<option value="8">Keperawatan</option>'+
+                                '<option value="9">Laboratorium</option>'+
+                                '<option value="10">Kamar / Akomodasi</option>'+
+                                '<option value="11">Obat Kronis</option>'+
+                                '<option value="12">BMHP</option>'+
+                                '<option value="13">Konsultasi</option>'+
+                                '<option value="14">Penunjang</option>'+
+                                '<option value="15">Pelayanan Darah</option>'+
+                                '<option value="16">Rawat Intensif</option>'+
+                                '<option value="17">Obat Kemoterapi</option>'+
+                                '</select>' + "</td>" +
+                                "<td align='center'>" + '<img class="hvr-grow" onclick="updateApproveFlag(\''+item.idTindakanRawat+'\')" src="<s:url value="/pages/images/icons8-save-25.png"/>">' + "</td>" +
+                                "</tr>";
+                    });
+                }
+            });
+
+            $('#det_no_checkup').html(noCheckup);
+            $('#det_nik').html(nik);
+            $('#det_nama').html(namaPasien);
+            $('#det_jenis_kelamin').html(jenisKelamin);
+            $('#det_tgl').html(tglLahir);
+            $('#det_agama').html(agama);
+            $('#det_suku').html(suku);
+            $('#det_alamat').html(alamat);
+            $('#det_provinsi').html(provinsi);
+            $('#det_kabupaten').html(kabupaten);
+            $('#det_kecamatan').html(kecamatan);
+            $('#det_desa').html(desa);
+            $('#body_tindakan').html(table);
+            $('#tin_id_detail_checkup').val(idDetailCheckup);
+            $('#save_verif').attr('onclick','saveApproveTindakan(\''+idDetailCheckup+'\')');
+            $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
+        }, 100);
     }
 
+    function toSelect2(i){
+        $('#ts'+i).select2();
+    }
+
+    function updateApproveFlag(idTindakan){
+        var tes = $('#tabel_tindakan').tableToJSON();
+        $.each(tes, function (i, item) {
+            $('#ts'+i).select2();
+        })
+        VerifikatorAction.updateApproveBpjsFlag(idTindakan, function (response) {
+            console.log(response);
+        });
+    }
+
+    function saveApproveTindakan(idDetailCheckup){
+        VerifikatorAction.
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
