@@ -524,9 +524,11 @@
             $('#modal-detail-pasien').modal('show');
         }, 100)
     }
+
     $('#btnFingerPrint').on('click',function() {
         $('#modal-add-finger').modal('show');
     });
+
     $('#btnSearchFingerPrint').on('click',function() {
         var idPasien = $('#fin_id_pas').val();
         if (idPasien==""){

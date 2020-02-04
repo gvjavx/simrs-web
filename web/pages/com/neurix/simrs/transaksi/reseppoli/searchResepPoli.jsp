@@ -118,17 +118,17 @@
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>&nbsp;</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                        <input class="form-control" id="namaOrang">
-                                        <div class="input-group-addon" onclick="tesSuara()">
-                                            <i class="fa fa-search"> TEST</i>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label>&nbsp;</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<div class="input-group">--%>
+                                        <%--<input class="form-control" id="namaOrang">--%>
+                                        <%--<div class="input-group-addon" onclick="tesSuara()">--%>
+                                            <%--<i class="fa fa-search"> TEST</i>--%>
+                                        <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <s:hidden name="permintaanResep.status" value="3"></s:hidden>
                                 <s:hidden name="permintaanResep.isUmum" value="N"></s:hidden>
                                 <br>
@@ -229,7 +229,7 @@
 
     function tesSuara(){
        var text =  $('#namaOrang').val();
-        responsiveVoice.speak(text,"Indonesian Female").slow();
+        responsiveVoice.speak(text,"Indonesian Female");
     }
 
     function saveAntrian(){

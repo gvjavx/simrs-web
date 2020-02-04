@@ -418,6 +418,12 @@ apply the skin class to the body tag so the changes take effect.
         $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
         //Money Euro
         $('[data-mask]').inputmask()
+
+        $('#tabel_tindakan_ts tbody tr').find("select").each(function(idx, ele) {
+            $(ele).data("select2").$container.find('.select2-selection')
+                    .css("background-color", "rgb(10,10,10)");
+        });
+
     });
 
     function logout(){
