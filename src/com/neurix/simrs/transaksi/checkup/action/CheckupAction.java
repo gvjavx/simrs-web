@@ -617,7 +617,7 @@ public class CheckupAction extends BaseMasterAction {
                     klaimDetailRequest.setTarifRsPayorId("3");
                     klaimDetailRequest.setPayorCd("JKN");
                     klaimDetailRequest.setCobCd("");
-                    klaimDetailRequest.setCoderNik("3515040502940001");
+                    klaimDetailRequest.setCoderNik("123456");
 
                     KlaimDetailResponse claimEklaimResponse = new KlaimDetailResponse();
                     try {

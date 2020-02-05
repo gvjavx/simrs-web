@@ -268,7 +268,7 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     " \"payor_id\": \""+klaimDetailRequest.getTarifRsPayorId()+"\",\n" +
                     " \"payor_cd\": \""+klaimDetailRequest.getPayorCd()+"\",\n" +
                     " \"cob_cd\": \""+klaimDetailRequest.getCobCd()+"\",\n" +
-                    " \"coder_nik\": \""+Integer.valueOf(klaimDetailRequest.getCoderNik())+"\"\n" +
+                    " \"coder_nik\": \""+klaimDetailRequest.getCoderNik()+"\"\n" +
                     " } }";
             try {
                 request = new JSONObject(jsonData);

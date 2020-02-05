@@ -132,8 +132,14 @@ public class CommonConstant {
 
     //BPJS
     public final static String APP_NAME = "simrs";
+
+    //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
     public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest/";
+
+    //developer purpose only
+//    public final static String BPJS_BASE_URL = "https://dvlp.bpjs-kesehatan.go.id";
+//    public final static String BPJS_SERVICE_VKLAIM = "/vclaim-rest/";
     public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest/";
     public final static String BPJS_SERVICE_PCARE = "/pcare-rest-v3.0";
     public final static String EKLAIM_SERVICE = "/E-Klaim/ws.php";

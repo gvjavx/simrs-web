@@ -954,7 +954,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
     @Override
     public SepResponse insertSepBpjs(SepRequest sepRequest, String unitId) throws GeneralBOException {
         logger.info("[BPJSBoImpl.insertSepBpjs] Start >>>>>>>");
-        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "/SEP/1.1/insert";
+        String feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM + "SEP/1.1/insert";
         JSONObject request = null;
         String jsonData="        {\n" +
                 "           \"request\": {\n" +
@@ -1043,7 +1043,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     sepResponse.setNoSep(sep.getString("noSep"));
                     sepResponse.setPenjamin(sep.getString("penjamin"));
 
-                    JSONObject peserta = response.getJSONObject("peserta");
+                    JSONObject peserta = sep.getJSONObject("peserta");
                     sepResponse.setAsuransi(peserta.getString("asuransi"));
                     sepResponse.setHakKelas(peserta.getString("hakKelas"));
                     sepResponse.setJnsPeserta(peserta.getString("jnsPeserta"));
@@ -1053,7 +1053,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     sepResponse.setNoMr(peserta.getString("noMr"));
                     sepResponse.setTglLahir(peserta.getString("tglLahir"));
 
-                    JSONObject informasi = response.getJSONObject("informasi");
+                    JSONObject informasi = sep.getJSONObject("informasi");
                     if (!informasi.isNull("Dinsos")){
                         sepResponse.setDinsos(informasi.getString("Dinsos"));
                     }
@@ -1064,9 +1064,9 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                         sepResponse.setNoSktm(informasi.getString("noSKTM"));
                     }
 
-                    sepResponse.setPoli(informasi.getString("poli"));
-                    sepResponse.setPoliEksekutif(informasi.getString("poliEksekutif"));
-                    sepResponse.setTglSep(informasi.getString("tglSep"));
+                    sepResponse.setPoli(sep.getString("poli"));
+                    sepResponse.setPoliEksekutif(sep.getString("poliEksekutif"));
+                    sepResponse.setTglSep(sep.getString("tglSep"));
                 }
             } catch (IOException | JSONException | GeneralSecurityException e) {
                 e.printStackTrace();
