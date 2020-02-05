@@ -1,13 +1,16 @@
 package com.neurix.simrs.transaksi.tindakanrawat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +57,11 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             if (mapCriteria.get("flag")!=null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
+            if (mapCriteria.get("approve_bpjs_flag")!=null) {
+                criteria.add(Restrictions.eq("approveBpjsFlag", (String) mapCriteria.get("approve_bpjs_flag")));
+            }
 
         }
-
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idTindakanRawat"));

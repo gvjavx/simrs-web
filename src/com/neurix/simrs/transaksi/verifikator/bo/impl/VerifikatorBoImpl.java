@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.verifikator.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -23,8 +24,9 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     }
 
     @Override
-    public void updateApproveBpjsFlag(TindakanRawat bean) throws GeneralBOException {
+    public CheckResponse updateApproveBpjsFlag(TindakanRawat bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.updateApproveBpjsFlag] START process <<<");
+        CheckResponse response = new CheckResponse();
         if(bean != null){
 
             ItSimrsTindakanRawatEntity entity = new ItSimrsTindakanRawatEntity();
@@ -37,36 +39,23 @@ public class VerifikatorBoImpl implements VerifikatorBo {
             if(entity != null){
 
                 entity.setApproveBpjsFlag("Y");
+                entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
 
                 try {
                     tindakanRawatDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
                 }catch (HibernateException e){
                     logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
+                    response.setStatus("error");
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : "+e.getMessage());
                 }
             }
         }
         logger.info("[VerifikatorBoImpl.updateApproveBpjsFlag] END process <<<");
-
-    }
-
-    @Override
-    public void saveApproveTindakan(TindakanRawat bean) throws GeneralBOException {
-        logger.info("[VerifikatorBoImpl.saveApproveTindakan] START process <<<");
-
-        if(bean != null){
-
-            try {
-
-            }catch (HibernateException e){
-                logger.error("[VerifikatorBoImpl.saveApproveTindakan] Error when search detail eklaim", e);
-            }
-
-
-        }
-
-        logger.info("[VerifikatorBoImpl.saveApproveTindakan] END process <<<");
+        return response;
     }
 }

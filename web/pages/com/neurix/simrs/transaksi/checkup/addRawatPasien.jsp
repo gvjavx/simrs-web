@@ -1058,6 +1058,7 @@
         dwr.engine.setAsync(true);
         CheckupAction.checkStatusBpjs(noBpjs, {
             callback: function (response) {
+                console.log(response);
                 var warnClass = "";
                 var title = "";
                 var msg = "";
