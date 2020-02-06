@@ -27,10 +27,15 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
@@ -39,6 +44,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -470,33 +476,6 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setTindakanList(tindakans);
 
             String fileName = "";
-//            if (this.fileUpload != null) {
-//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
-//                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-//
-//                        // file name
-//                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
-//
-//                        // deklarasi path file
-//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-////                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-//                        logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
-//
-//                        // persiapan pemindahan file
-//                        File fileToCreate = new File(filePath, fileName);
-//
-//                        try {
-//                            // pemindahan file
-//                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-//                            logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
-//                            checkup.setUrlKtp(fileName);
-//                        } catch (IOException e) {
-//                            logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
-//                        }
-//                    }
-//                }
-//            }
-
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
@@ -909,8 +888,9 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
+        String branchId = CommonUtil.userBranchLogin();
         try {
-            alertPasien = checkupBo.getAlertPasien(idPasien,"");
+            alertPasien = checkupBo.getAlertPasien(idPasien,branchId);
         } catch (GeneralBOException e){
             logger.error("[CheckupAction.initAlertPasien] ERROR "+e.getMessage());
         }
@@ -1128,6 +1108,70 @@ public class CheckupAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.checkStatusBpjs] END process <<<");
         return response;
+    }
 
+    public ItSimrsPemeriksaanFisikEntity getPemeriksaanFisikByNoCheckup(String noCheckup){
+        logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] START process <<<");
+        ItSimrsPemeriksaanFisikEntity pemeriksaanFisikEntity = new ItSimrsPemeriksaanFisikEntity();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            pemeriksaanFisikEntity = checkupBo.getEntityPemeriksaanFisikByNoCheckup(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+            addActionError("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+        }
+        logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] END process <<<");
+        return pemeriksaanFisikEntity;
+    }
+
+    public String savePemeriksaanFisik(String jsonParam) throws JSONException{
+        logger.info("[CheckupAction.savePemeriksaanFisik] START process <<<");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        JSONArray json = new JSONArray(jsonParam);
+        PemeriksaanFisik pemeriksaanFisik = new PemeriksaanFisik();
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            pemeriksaanFisik.setNoCheckup(obj.getString("nocheckup"));
+            pemeriksaanFisik.setKepala(obj.getString("kepala"));
+            pemeriksaanFisik.setMata(obj.getString("mata"));
+            pemeriksaanFisik.setLeher(obj.getString("leher"));
+            pemeriksaanFisik.setThorak(obj.getString("thorak"));
+            pemeriksaanFisik.setThorakChor(obj.getString("thorakchor"));
+            pemeriksaanFisik.setThorakPulmo(obj.getString("thorakpulmo"));
+            pemeriksaanFisik.setAbdoman(obj.getString("abdoman"));
+            pemeriksaanFisik.setExtrimitas(obj.getString("extrimitas"));
+            pemeriksaanFisik.setTinggiBadan(obj.getString("tb"));
+            pemeriksaanFisik.setBeratBadan(obj.getString("bb"));
+            pemeriksaanFisik.setNadi(obj.getString("nadi"));
+            pemeriksaanFisik.setRespirationRate(obj.getString("rr"));
+            pemeriksaanFisik.setTekananDarah(obj.getString("td"));
+            pemeriksaanFisik.setSuhu(obj.getString("suhu"));
+            pemeriksaanFisik.setTriase(obj.getString("triase"));
+
+            pemeriksaanFisik.setFlag("Y");
+            pemeriksaanFisik.setAction("C");
+            pemeriksaanFisik.setCreatedDate(now);
+            pemeriksaanFisik.setLastUpdate(now);
+            pemeriksaanFisik.setCreatedWho(userLogin);
+            pemeriksaanFisik.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            checkupBo.savePemeriksaanFisik(pemeriksaanFisik);
+        } catch (GeneralBOException e){
+            return e.getMessage();
+        }
+
+        logger.info("[CheckupAction.savePemeriksaanFisik] END process <<<");
+        return "success";
     }
 }

@@ -20,6 +20,9 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -35,6 +38,7 @@ import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -53,18 +57,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private BranchDao branchDao;
     private TindakanDao tindakanDao;
     private TindakanRawatDao tindakanRawatDao;
-
-    public BranchDao getBranchDao() {
-        return branchDao;
-    }
-
-    public void setBranchDao(BranchDao branchDao) {
-        this.branchDao = branchDao;
-    }
-
-    public CheckupBoImpl() throws GeneralSecurityException, IOException {
-    }
     private DiagnosaRawatDao diagnosaRawatDao;
+    private PemeriksaanFisikDao pemeriksaanFisikDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -274,6 +268,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setTinggi(bean.getTinggi());
             headerEntity.setNoSep(bean.getNoSep());
             headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
+            headerEntity.setKetRujukan(bean.getKetPerujuk());
+            headerEntity.setKetKeyakinan(bean.getKetKeyakinan());
+            headerEntity.setBantuanBahasa(bean.getBantuanBahasa());
+            headerEntity.setBahasa(bean.getBahasa());
+            headerEntity.setAlatBantu(bean.getAlatBantu());
+            headerEntity.setGangguanLain(bean.getGangguanLain());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
@@ -877,6 +877,106 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return alertPasienList;
     }
 
+    @Override
+    public ItSimrsPemeriksaanFisikEntity getEntityPemeriksaanFisikByNoCheckup(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getEntityPemeriksaanFisikByNoCheckup] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSimrsPemeriksaanFisikEntity> pemeriksaanFisikEntities = new ArrayList<>();
+        try {
+            pemeriksaanFisikEntities = pemeriksaanFisikDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getEntityPemeriksaanFisikByNoCheckup] ERROR ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getEntityPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+        }
+
+        ItSimrsPemeriksaanFisikEntity pemeriksaanFisikEntity = new ItSimrsPemeriksaanFisikEntity();
+        if (pemeriksaanFisikEntities.size() > 0){
+            pemeriksaanFisikEntity = pemeriksaanFisikEntities.get(0);
+        }
+        logger.info("[CheckupBoImpl.getEntityPemeriksaanFisikByNoCheckup] End <<<<<<<<");
+        return pemeriksaanFisikEntity;
+    }
+
+    @Override
+    public void savePemeriksaanFisik(PemeriksaanFisik bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.savePemeriksaanFisik] Start >>>>>>>>");
+
+        ItSimrsPemeriksaanFisikEntity entity = getEntityPemeriksaanFisikByNoCheckup(bean.getNoCheckup());
+        if (entity.getId() != null && !"".equalsIgnoreCase(entity.getId())){
+
+            entity.setKepala(bean.getKepala());
+            entity.setMata(bean.getMata());
+            entity.setLeher(bean.getLeher());
+            entity.setThorak(bean.getThorak());
+            entity.setThorakChor(bean.getThorakChor());
+            entity.setThorakPulmo(bean.getThorakPulmo());
+            entity.setAbdoman(bean.getAbdoman());
+            entity.setExtrimitas(bean.getExtrimitas());
+            entity.setTinggiBadan(bean.getTinggiBadan());
+            entity.setBeratBadan(bean.getBeratBadan());
+            entity.setNadi(bean.getNadi());
+            entity.setRespirationRate(bean.getRespirationRate());
+            entity.setTekananDarah(bean.getTekananDarah());
+            entity.setSuhu(bean.getSuhu());
+            entity.setTriase(bean.getTriase());
+
+            entity.setFlag(bean.getFlag());
+            entity.setAction("U");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                pemeriksaanFisikDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.savePemeriksaanFisik] Error when update ",e);
+                throw new GeneralBOException("[CheckupBoImpl.updatePenunjang] Error when update "+e.getMessage());
+            }
+
+        } else {
+
+            DateFormat df = new SimpleDateFormat("yyMM"); // Just the year, with 2 digits
+            String formattedDate = df.format(Calendar.getInstance().getTime());
+
+            entity = new ItSimrsPemeriksaanFisikEntity();
+            entity.setId(formattedDate+"F"+getNextIdPemeriksaanFisik());
+            entity.setNoCheckup(bean.getNoCheckup());
+            entity.setKepala(bean.getKepala());
+            entity.setMata(bean.getMata());
+            entity.setLeher(bean.getLeher());
+            entity.setThorak(bean.getThorak());
+            entity.setThorakChor(bean.getThorakChor());
+            entity.setThorakPulmo(bean.getThorakPulmo());
+            entity.setAbdoman(bean.getAbdoman());
+            entity.setExtrimitas(bean.getExtrimitas());
+            entity.setTinggiBadan(bean.getTinggiBadan());
+            entity.setBeratBadan(bean.getBeratBadan());
+            entity.setNadi(bean.getNadi());
+            entity.setRespirationRate(bean.getRespirationRate());
+            entity.setTekananDarah(bean.getTekananDarah());
+            entity.setSuhu(bean.getSuhu());
+            entity.setTriase(bean.getTriase());
+
+            entity.setFlag(bean.getFlag());
+            entity.setAction(bean.getAction());
+            entity.setCreatedDate(bean.getCreatedDate());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setCreatedWho(bean.getCreatedWho());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                pemeriksaanFisikDao.addAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.savePemeriksaanFisik] Error when insert ",e);
+                throw new GeneralBOException("[CheckupBoImpl.savePemeriksaanFisik] Error when insert "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupBoImpl.savePemeriksaanFisik] End <<<<<<<<");
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -898,6 +998,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
         return id;
     }
+    private String getNextIdPemeriksaanFisik(){
+        String id = "";
+        try {
+            id = pemeriksaanFisikDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextIdPemeriksaanFisik] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextIdPemeriksaanFisik] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
@@ -929,5 +1040,20 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
         this.tindakanRawatDao = tindakanRawatDao;
+    }
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
+
+    public CheckupBoImpl() throws GeneralSecurityException, IOException {
+    }
+
+    public void setPemeriksaanFisikDao(PemeriksaanFisikDao pemeriksaanFisikDao) {
+        this.pemeriksaanFisikDao = pemeriksaanFisikDao;
     }
 }

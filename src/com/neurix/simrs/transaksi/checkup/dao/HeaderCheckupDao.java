@@ -187,7 +187,15 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
-                "INNER JOIN (SELECT * FROM it_simrs_diagnosa_rawat WHERE jenis_diagnosa = '1') diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT a.* FROM it_simrs_diagnosa_rawat a\n" +
+                "\tINNER JOIN (\n" +
+                "\tSELECT id_detail_checkup, \n" +
+                "\tMAX(created_date) as created_date \n" +
+                "\tFROM it_simrs_diagnosa_rawat\n" +
+                "\tGROUP BY id_detail_checkup\n" +
+                "\t) b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date\n" +
+                ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
                 "WHERE ck.id_pasien = :idPasien \n" +
                 "AND ck.branch_id LIKE :branchId \n" +
                 "ORDER BY hdc.last_update DESC\n" +

@@ -408,6 +408,8 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.AlertPasien"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>

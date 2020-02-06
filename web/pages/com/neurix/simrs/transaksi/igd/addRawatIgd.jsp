@@ -201,7 +201,13 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
                     </div>
+
                     <div class="box-body">
+
+                        <button class="btn btn-success" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-plus"></i> Tambah Pemeriksaan fisik
+                        </button>
+
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan cek kembali data inputan!
@@ -1163,6 +1169,100 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-fisik">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Pemeriksaan Fisik Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_obat">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="obat_error"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group" id="jenis_form">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <s:action id="initJenis" namespace="/jenisobat"
+                                      name="getListJenisObat_jenisobat"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initJenis.listOfJenisObat" id="obat_jenis_obat"
+                                      listKey="idJenisObat"
+                                      listValue="namaJenisObat"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control select2"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group" id="nama_form">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ob_id_obat"
+                                    onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);">
+                                <option value="">[select one]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_obat"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_obat">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group" id="nama_obat_form">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="nama_obat"></s:textfield>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield readonly="true" type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="ob_stok"></s:textfield>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
+                        <div class="col-md-7">
+                            <s:textfield value="1" type="number" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="ob_qty"
+                                         onkeypress="var warn =$('#war_qty_obat').is(':visible'); if (warn){$('#cor_qty_obat').show().fadeOut(3000);$('#war_qty_obat').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_qty_obat"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_qty_obat"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="set_id_obat">
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -2491,7 +2591,18 @@
             $('#warning_penunjang').show().fadeOut(5000);
         }
     }
+    
+    function showModalCheckFisik(noCheckup){
 
+        $("#modal-fisik").modal("show");
+        dwr.engine.setAsync(true);
+        CheckupAction.getPemeriksaanFisikByNoCheckup(noCheckup, function(response){
+            if(response != null){
+                
+            }
+        });
+
+    }
 
 </script>
 
