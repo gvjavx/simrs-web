@@ -29,6 +29,10 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
+import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -61,6 +65,16 @@ public class CheckupAction extends BaseMasterAction {
     private PasienBo pasienBoProxy;
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
+    private TindakanRawatBo tindakanRawatBoProxy;
+    private DiagnosaRawatBo diagnosaRawatBoProxy;
+
+    public void setDiagnosaRawatBoProxy(DiagnosaRawatBo diagnosaRawatBoProxy) {
+        this.diagnosaRawatBoProxy = diagnosaRawatBoProxy;
+    }
+
+    public void setTindakanRawatBoProxy(TindakanRawatBo tindakanRawatBoProxy) {
+        this.tindakanRawatBoProxy = tindakanRawatBoProxy;
+    }
 
     public PasienBo getPasienBoProxy() {
         return pasienBoProxy;
@@ -837,11 +851,37 @@ public class CheckupAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
         try {
             headerCheckupList = checkupBo.getByCriteria(headerCheckup);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data, please inform to your admin.", e);
+        }
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        if(headerCheckupList.size() > 0){
+            checkup = headerCheckupList.get(0);
+
+            if(checkup != null){
+
+                List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
+                DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+                diagnosaRawat.setIdDetailCheckup(headerCheckup.getIdDetailCheckup());
+
+                try {
+                    diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+                }catch (GeneralBOException e){
+                    logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data diagnosa, please inform to your admin.", e);
+                }
+
+                if (diagnosaRawatList.size() > 0){
+                    for (DiagnosaRawat rawat: diagnosaRawatList){
+                        headerCheckup.setDiagnosa(rawat.getIdDiagnosa());
+                        headerCheckup.setNamaDiagnosa(rawat.getKeteranganDiagnosa());
+                    }
+                }
+            }
         }
 
         logger.info("[CheckupAction.listDataPasien] end process >>>");
