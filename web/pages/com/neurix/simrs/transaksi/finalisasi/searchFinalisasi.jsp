@@ -307,6 +307,10 @@
                 <input type="hidden" id="tin_id_detail_checkup">
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-medkit"></i> Data Diagnosa</h3>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">

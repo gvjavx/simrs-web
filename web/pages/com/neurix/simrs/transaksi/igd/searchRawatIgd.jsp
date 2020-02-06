@@ -87,15 +87,14 @@
                                                       name="getComboPelayanan_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                                       list="#initComboPoli.listOfPelayanan" id="poli"
-                                                      name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                      listKey="idPelayanan"
+                                                      name="headerDetailCheckup.idPelayanan"
                                                       listValue="namaPelayanan"
                                                       headerKey="007" headerValue="IGD"
                                                       cssClass="form-control select2" theme="simple" disabled="true"/>
                                         </div>
+                                        <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     </div>
-                                </s:else>
-                                <s:else>
-                                    <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                 </s:else>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
