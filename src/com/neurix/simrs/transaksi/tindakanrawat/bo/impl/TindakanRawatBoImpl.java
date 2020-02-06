@@ -184,6 +184,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
+        if (bean.getApproveBpjsFlag() != null && !"".equalsIgnoreCase(bean.getApproveBpjsFlag())){
+            hsCriteria.put("approve_bpjs_flag", bean.getApproveBpjsFlag());
+        }
 
         hsCriteria.put("flag","Y");
         try {
@@ -219,6 +222,8 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setCreatedWho(entity.getCreatedWho());
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
+            tindakanRawat.setApproveBpjsFlag(entity.getApproveBpjsFlag());
+            tindakanRawat.setKategoriTindakanBpjs(entity.getKategoriTindakanBpjs());
 
             if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
                 List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());

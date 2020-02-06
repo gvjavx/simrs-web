@@ -6,6 +6,42 @@ public class Grouping1TarifAltResponse {
 
     private String tarifSp;
     private String tarifSr;
+    private String tarifSi;
+    private String tarifSd;
+    private String tarifChronic;
+    private String tarifSubAcut;
+
+    public String getTarifSi() {
+        return tarifSi;
+    }
+
+    public void setTarifSi(String tarifSi) {
+        this.tarifSi = tarifSi;
+    }
+
+    public String getTarifSd() {
+        return tarifSd;
+    }
+
+    public void setTarifSd(String tarifSd) {
+        this.tarifSd = tarifSd;
+    }
+
+    public String getTarifChronic() {
+        return tarifChronic;
+    }
+
+    public void setTarifChronic(String tarifChronic) {
+        this.tarifChronic = tarifChronic;
+    }
+
+    public String getTarifSubAcut() {
+        return tarifSubAcut;
+    }
+
+    public void setTarifSubAcut(String tarifSubAcut) {
+        this.tarifSubAcut = tarifSubAcut;
+    }
 
     public String getTarifSp() {
         return tarifSp;

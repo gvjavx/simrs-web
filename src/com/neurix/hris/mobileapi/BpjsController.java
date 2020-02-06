@@ -152,6 +152,9 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
             case "eklaim-print-data":
                 printEklaim(keyword);
                 break;
+            case "insert-sep":
+                sendSep();
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -288,19 +291,19 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
 
     public void sendSep(){
         SepRequest sepRequest = new SepRequest();
-        sepRequest.setNoKartu("0001112230666");
-        sepRequest.setTglSep("2017-10-18");
-        sepRequest.setPpkPelayanan("0301R001");
+        sepRequest.setNoKartu("0001543129907");
+        sepRequest.setTglSep("2020-02-05");
+        sepRequest.setPpkPelayanan("1311R003");
         sepRequest.setJnsPelayanan("2");
         sepRequest.setKlsRawat("3");
         sepRequest.setNoMr("123456");
         sepRequest.setAsalRujukan("1");
-        sepRequest.setTglRujukan("2017-10-17");
-        sepRequest.setNoRujukan("123456");
-        sepRequest.setPpkRujukan("00010001");
+        sepRequest.setTglRujukan("2020-01-31");
+        sepRequest.setNoRujukan("0189B0220120P000650");
+        sepRequest.setPpkRujukan("0189B022");
         sepRequest.setCatatan("test");
-        sepRequest.setDiagAwal("A00.1");
-        sepRequest.setPoliTujuan("INT");
+        sepRequest.setDiagAwal("I63");
+        sepRequest.setPoliTujuan("IGD");
         sepRequest.setPoliEksekutif("0");
         sepRequest.setCob("0");
         sepRequest.setKatarak("0");
@@ -308,7 +311,7 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         sepRequest.setPenjamin("");
         sepRequest.setTglKejadian("");
         sepRequest.setKeterangan("");
-        sepRequest.setSuplesi("");
+        sepRequest.setSuplesi("0");
         sepRequest.setNoSepSuplesi("");
         sepRequest.setKdProvinsiLakaLantas("");
         sepRequest.setKdKecamatanLakaLantas("");

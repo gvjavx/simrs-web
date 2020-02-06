@@ -274,6 +274,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setBahasa(bean.getBahasa());
             headerEntity.setAlatBantu(bean.getAlatBantu());
             headerEntity.setGangguanLain(bean.getGangguanLain());
+            headerEntity.setTarifBpjs(bean.getTarifBpjs());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);

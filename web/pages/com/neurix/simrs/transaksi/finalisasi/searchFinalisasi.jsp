@@ -15,8 +15,17 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
     <script type='text/javascript'>
 
+//        function dateToday(){
+//            var today = new Date();
+//            var dd = String(today.getDate()).padStart(2, '0');
+//            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+//            var yyyy = today.getFullYear();
+//            today = dd + '-' + mm + '-' + yyyy;
+//            return today;
+//        }
+
         $( document ).ready(function() {
-            $('#verifikasi_tindakan').addClass('active');
+            $('#finalisasi_claim').addClass('active');
         });
 
 
@@ -34,7 +43,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Tindakan Rawat
+            Finalisasi E-Klaim
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -46,11 +55,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Tindakan Rawat</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Finalisasi E-Klaim</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="verifikatorForm" method="post" namespace="/verifikator" action="search_verifikator.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="finalisasiForm" method="post" namespace="/finalisasi" action="searchFinalClaim_finalisasi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
@@ -84,9 +93,10 @@
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="headerDetailCheckup.statusPeriksa"
-                                                  headerKey="1" headerValue="Periksa"
-                                                  cssClass="form-control select2"/>
+                                                  id="status"
+                                                  headerKey="3" headerValue="Selesai"
+                                                  cssClass="form-control select2" disabled="true"/>
+                                        <s:hidden name="headerDetailCheckup.statusPeriksa" value="3"></s:hidden>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -114,12 +124,12 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="verifikatorForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="finalisasiForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_verifikator.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_finalisasi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -198,14 +208,7 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
-                                            <%--<s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">--%>
-                                                <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                                            <%--</s:url>--%>
-                                            <%--<s:a href="%{add_rawat_jalan}">--%>
-                                                <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            <%--</s:a>--%>
-                                        </s:if>
+                                        <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                     </td>
                                 </tr>
                             </s:iterator>

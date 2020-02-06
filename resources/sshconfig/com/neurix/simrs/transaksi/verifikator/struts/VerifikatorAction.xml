@@ -74,7 +74,6 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifikator.jsp</result>
-            <result name="init_bayar">/pages/com/neurix/simrs/transaksi/reseppoli/prosesResepPoli.jsp</result>
 
             <!--<result name="print_struk_resep_pasien" type="jasper">-->
                 <!--<param name="location">/pages/report/com/neurix/simrs/printStrukResepPasien.jasper</param>-->
