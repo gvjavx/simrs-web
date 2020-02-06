@@ -70,7 +70,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 nama = bean.getNamaPasien();
             }
 
-            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                 idPelayanan = bean.getIdPelayanan();
             }
 

@@ -274,6 +274,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setTinggi(bean.getTinggi());
             headerEntity.setNoSep(bean.getNoSep());
             headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
+            headerEntity.setTarifBpjs(bean.getTarifBpjs());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);

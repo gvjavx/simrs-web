@@ -9,6 +9,7 @@ import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.TindakanResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
@@ -353,7 +354,8 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                         if (subAcute.has("tariff") && subAcute.has("code") && subAcute.has("description")) {
                             finalResponse.setSubAcuteCode(subAcute.getString("code"));
                             finalResponse.setSubAcuteDescription(subAcute.getString("description"));
-                            finalResponse.setSubAcuteTarif(subAcute.getString("tariff"));
+                            String tarifAcute = String.valueOf(subAcute.getInt("tariff"));
+                            finalResponse.setSubAcuteTarif(tarifAcute);
                         }
                     }
 
@@ -362,7 +364,8 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                         if (chronic.has("tariff") && chronic.has("code") && chronic.has("description")) {
                             finalResponse.setChronicCode(chronic.getString("code"));
                             finalResponse.setChronicDescription(chronic.getString("description"));
-                            finalResponse.setChronicTarif(chronic.getString("tariff"));
+                            String tarifChronic = String.valueOf(chronic.getInt("tariff"));
+                            finalResponse.setChronicTarif(tarifChronic);
                         }
                     }
 
@@ -393,7 +396,43 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                         for (int i = 0; i < lengthtarifAlt; i++) {
                             JSONObject obj = tarifAlt.getJSONObject(i);
                             Grouping1TarifAltResponse data = new Grouping1TarifAltResponse();
-                            data.setTarifInacbg(obj.getString("tarif_inacbg"));
+                            String tarifInacbg = "";
+                            String tarifSi="";
+                            String tarifSr="";
+                            String tarifSd="";
+                            String tarifChronic="";
+                            String tarifSp="";
+                            String tarifSubAcute="";
+
+                            if (!obj.isNull("tarif_inacbg")){
+                                tarifInacbg=String.valueOf(obj.getInt("tarif_inacbg"));
+                            }
+                            if(obj.has("tarif_si")){
+                                tarifSi=String.valueOf(obj.getInt("tarif_si"));
+                            }
+                            if(obj.has("tarif_sr")){
+                                tarifSr=String.valueOf(obj.getInt("tarif_sr"));
+                            }
+                            if(obj.has("tarif_sd")){
+                                tarifSd=String.valueOf(obj.getInt("tarif_sd"));
+                            }
+                            if(obj.has("tarif_chronic")){
+                                tarifChronic=String.valueOf(obj.getInt("tarif_chronic"));
+                            }
+                            if(obj.has("tarif_sp")){
+                                tarifSp=String.valueOf(obj.getInt("tarif_sp"));
+                            }
+                            if(obj.has("tarif_sub_acute")){
+                                tarifSubAcute=String.valueOf(obj.getInt("tarif_sub_acute"));
+                            }
+
+                            data.setTarifInacbg(tarifInacbg);
+                            data.setTarifSi(tarifSi);
+                            data.setTarifSr(tarifSr);
+                            data.setTarifSd(tarifSd);
+                            data.setTarifChronic(tarifChronic);
+                            data.setTarifSp(tarifSp);
+                            data.setTarifSubAcut(tarifSubAcute);
                             data.setKelas(obj.getString("kelas"));
                             tarifAltResponseList.add(data);
                         }
@@ -515,8 +554,11 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
     }
 
     @Override
-    public void finalisasiClaimEklaim(String noSep, String coderNik, String unitId) throws GeneralBOException {
+    public CheckResponse finalisasiClaimEklaim(String noSep, String coderNik, String unitId) throws GeneralBOException {
         logger.info("[EklaimBoImpl.finalisasiClaimEklaim] Start >>>>>>>");
+
+        CheckResponse response = new CheckResponse();
+
         ImBranches resultBranch = null;
         try {
             // Get data from database by ID
@@ -553,11 +595,19 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                     String errorNo = metaData.getString("error_no");
                     logger.error("[EklaimBoImpl.finalisasiClaimEklaim] : " + errorNo + " : " + metaData.getString("message"));
                 }
+
+                //response final claim
+                response.setStatus(String.valueOf(metaData.getInt("code")));
+                response.setMessage(metaData.getString("message"));
+
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                response.setStatus("error");
+                response.setMessage(e.getMessage());
             }
         }
         logger.info("[EklaimBoImpl.finalisasiClaimEklaim] End <<<<<<<");
+        return response;
     }
 
     @Override
@@ -712,6 +762,8 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                         data.setKemkesDcStatus(obj.getString("kemkes_dc_Status"));
                         data.setBpjsDcStatus(obj.getString("bpjs_dc_Status"));
                         data.setCobDcStatus(obj.getString("cob_dc_status"));
+                        data.setMessage(metaData.getString("message"));
+                        data.setStatus(String.valueOf(metaData.getInt("code")));
                         finalResponse.add(data);
                     }
                     logger.info("[EklaimBoImpl.kirimKeDataCenterPerSepEklaim] : " + metaData.getString("message"));

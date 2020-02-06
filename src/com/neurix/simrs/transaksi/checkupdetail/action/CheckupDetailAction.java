@@ -76,6 +76,15 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String idResep;
     private BigInteger tarifCoverBpjs;
     private BigInteger tarifTotalTindakan;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public BigInteger getTarifCoverBpjs() {
         return tarifCoverBpjs;
@@ -863,12 +872,17 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.add] start process >>>");
 
+        // tipe transaksi
+        String tipe = getTipe();
+        setTipe(tipe);
+
         HeaderCheckup checkup = new HeaderCheckup();
 
         if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())){
             checkup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         }
 
+        checkup.setJenisTransaksi(tipe);
         setHeaderCheckup(checkup);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -897,7 +911,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                 checkup.setTglLahir(sqlDate);
             } catch (ParseException e) {
-
+                logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
+                throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when convert string to date "+e.getMessage());
             }
 
             checkup.setBranchId(userArea);
@@ -911,33 +926,33 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setStatusPeriksa("1");
 
             String fileName = "";
-            if (this.fileUpload != null) {
-                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
-                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-
-                        // file name
-                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
-
-                        // deklarasi path file
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
-
-                        // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
-
-                        try {
-                            // pemindahan file
-                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlKtp(fileName);
-                        } catch (IOException e) {
-                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
-                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
-                        }
-                    }
-                }
-            }
+//            if (this.fileUpload != null) {
+//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+//                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+//
+//                        // file name
+//                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
+//
+//                        // deklarasi path file
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+////                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+//                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
+//
+//                        // persiapan pemindahan file
+//                        File fileToCreate = new File(filePath, fileName);
+//
+//                        try {
+//                            // pemindahan file
+//                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+//                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
+//                            checkup.setUrlKtp(fileName);
+//                        } catch (IOException e) {
+//                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
+//                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -1054,6 +1069,24 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         return "print_resep";
+    }
+
+    public String printGelangPasien(){
+
+        String id = getId();
+        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+        reportParams.put("noCheckup",id);
+        reportParams.put("nama",headerCheckup.getNama());
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_gelang_pasien";
     }
 
 

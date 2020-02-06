@@ -570,6 +570,10 @@
                                             class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                         Sedang Menyimpan...
                                     </button>
+                                    <button class="btn btn-primary" onclick="printGelangPasien()"
+                                            style="margin-top: 15px;"><i
+                                            class="fa fa-print"></i> Print
+                                    </button>
                                 </div>
                             </div>
                             <%--<div class="col-md-2">--%>
@@ -1362,6 +1366,10 @@
         hitungStatusBiaya();
 
     });
+
+    function printGelangPasien(){
+        window.open('printGelangPasien_checkupdetail.action?id='+noCheckup, '_blank');
+    }
 
     function hitungStatusBiaya(){
         CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {

@@ -9,24 +9,45 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
-        .list-diq {
-            display: block;
-            width: 100%;
-            height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
         }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /*.dropdown-content a:hover {background-color: #f1f1f1}*/
+
+        /*.dropdown:hover .dropdown-content {*/
+            /*display: block;*/
+        /*}*/
+
+        /*.dropdown:hover .dropbtn {*/
+            /*background-color: #3e8e41;*/
+        /*}*/
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -364,6 +385,11 @@
                                                              onkeypress="$(this).css('border','');"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
+                                            <script>
+                                                function tesPasien(val){
+                                                    $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
+                                                }
+                                            </script>
                                             <script type="application/javascript">
                                                 var functions, mapped;
                                                 $('#id_pasien').typeahead({
@@ -398,6 +424,7 @@
                                                                 suku: item.suku,
                                                                 profesi: item.profesi,
                                                                 notelp: item.noTelp,
+                                                                imgKtp: item.imgKtp,
                                                                 urlktp: item.urlKtp,
                                                                 sex: item.jenisKelamin,
                                                                 agama: item.agama,
@@ -672,18 +699,18 @@
                                                               cssClass="form-control select2"/>
 
                                                 </s:else>
-                                                <div id="diag_umum" style="display:none">
-                                                    <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                                              name="getListComboDiagnosa_checkupdetail"/>
-                                                    <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                              onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                                              list="#initComboDiagnosa.listOfComboDiagnosa"
-                                                              id="nosa_id_diagnosa_2"
-                                                              name="headerCheckup.diagnosa" listKey="idDiagnosa"
-                                                              listValue="descOfDiagnosa"
-                                                              headerKey="" headerValue="[Select one]"
-                                                              cssClass="form-control select2"/>
-                                                </div>
+                                                <%--<div id="diag_umum" style="display:none">--%>
+                                                    <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
+                                                              <%--name="getListComboDiagnosa_checkupdetail"/>--%>
+                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                              <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
+                                                              <%--list="#initComboDiagnosa.listOfComboDiagnosa"--%>
+                                                              <%--id="nosa_id_diagnosa_2"--%>
+                                                              <%--name="headerCheckup.diagnosa" listKey="idDiagnosa"--%>
+                                                              <%--listValue="descOfDiagnosa"--%>
+                                                              <%--headerKey="" headerValue="[Select one]"--%>
+                                                              <%--cssClass="form-control select2"/>--%>
+                                                <%--</div>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -766,18 +793,6 @@
                                                 <span style="color: green; display: none" id="con_dokter"><i class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Penjamin</label>
-                                            <div class="col-md-8">
-                                                <select style="margin-top: 7px" id="penjamin"
-                                                        class="form-control select2"
-                                                        name="headerCheckup.idJenisPeriksaPasien"
-                                                        style="margin-top: 7px; width: 100%"
-                                                        onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
-                                                    <option value="">[Select One]</option>
-                                                </select>
-                                                <span style="color: red; display: none" id="war_penjamin"><i class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_penjamin"><i class="fa fa-check"></i> correct</span>
                                                     <%--<s:action id="initComboPenjamin" namespace="/checkup"--%>
                                                     <%--name="getComboJenisPeriksaPasien_checkup"/>--%>
                                                     <%--<s:select cssStyle="margin-top: 7px"--%>
@@ -786,11 +801,23 @@
                                                     <%--listKey="idJenisPeriksaPasien" listValue="keterangan"--%>
                                                     <%--headerKey="" headerValue="[Select one]" onchange="$(this).css('border','')"--%>
                                                     <%--cssClass="form-control"/>--%>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 7px">Penjamin</label>
+                                        <div class="col-md-8">
+                                            <select style="margin-top: 7px" id="penjamin"
+                                                    class="form-control select2"
+                                                    name="headerCheckup.idJenisPeriksaPasien"
+                                                    style="margin-top: 7px; width: 100%"
+                                                    onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
+                                                <option value="">[Select One]</option>
+                                            </select>
+                                            <span style="color: red; display: none" id="war_penjamin"><i class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none" id="con_penjamin"><i class="fa fa-check"></i> correct</span>
+                                        </div>
+                                    </div>
                                         <div class="form-group">
                                             <label class="col-md-4">Kunjungan</label>
                                             <div class="col-md-8">
@@ -802,13 +829,31 @@
                                                 <s:hidden name="headerCheckup.jenisKunjungan" id="kunjungan_val"></s:hidden>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4">Nomor Rujukan</label>
+                                            <div class="col-md-8">
+                                                <s:textfield cssClass="form-control"></s:textfield>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="perujuk" name="headerCheckup.rujuk"
+                                                <s:textfield name="headerCheckup.rujuk"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Foto Surat Rujuk</label>
                                             <div class="col-md-8">

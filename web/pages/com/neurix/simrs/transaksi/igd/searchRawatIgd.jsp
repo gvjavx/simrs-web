@@ -131,15 +131,31 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="igdForm" id="search" name="search"
-                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="igdForm"
+                                                   id="search" name="search"
+                                                   onClickTopics="showDialogLoading"
+                                                   onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <s:if test="isEnabledAddPasien()">
-                                        <a type="button" class="btn btn-primary" href="addRawatIgd_igd.action"><i
-                                                class="fa fa-plus"></i> Tambah Rawat IGD Pasien</a>
-                                        </s:if>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="addRawatIgd_igd.action?tipe=umum">
+                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
+                                                <li><a href="addRawatIgd_igd.action?tipe=bpjs">
+                                                    <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                            </ul>
+                                        </div>
+                                            <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
+                                            <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
+                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
+                                                class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -208,7 +224,7 @@
                                                 <s:param name="id"><s:property value="noCheckup"/></s:param>
                                             </s:url>
                                             <s:a href="%{add_rawat_jalan}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:if>
                                     </td>

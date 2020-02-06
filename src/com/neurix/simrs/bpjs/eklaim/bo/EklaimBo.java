@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.TindakanResponse;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface EklaimBo{
 
     Grouping2Response groupingStage2Eklaim(String noSep, String specialCmg, String unitId) throws GeneralBOException;
 
-    void finalisasiClaimEklaim(String noSep, String coderNik, String unitId) throws GeneralBOException;
+    CheckResponse finalisasiClaimEklaim(String noSep, String coderNik, String unitId) throws GeneralBOException;
 
     void reeditClaimEklaim(String noSep, String unitId) throws GeneralBOException;
 
