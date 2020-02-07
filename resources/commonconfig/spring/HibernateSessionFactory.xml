@@ -333,6 +333,7 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImTipeJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

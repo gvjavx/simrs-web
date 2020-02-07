@@ -190,5 +190,6 @@
     <include file="sshconfig/com/neurix/akuntansi/master/kodeRekening/struts/KodeRekeningAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/tipeJurnal/struts/TipeJurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/tipeRekening/struts/TipeRekeningAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/struts/LaporanAkuntansiAction.xml"/>
 
 </struts>
