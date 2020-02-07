@@ -30,6 +30,15 @@ public class TindakanRawat extends BaseModel {
 
     private String approveBpjsFlag;
     private String kategoriTindakanBpjs;
+    private String idRuangan;
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
 
     public String getKategoriTindakanBpjs() {
         return kategoriTindakanBpjs;

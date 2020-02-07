@@ -262,10 +262,10 @@
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
                                 <td>Dokter</td>
-                                <td>Perawat</td>
-                                <td align="right">Tarif</td>
+                                <%--<td>Perawat</td>--%>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
-                                <td align="right">Total</td>
+                                <td align="center">Total (Rp.)</td>
                                 <td align="center">Action</td>
                                 <input type="hidden" id="tin_id_dokter">
                             </tr>
@@ -569,25 +569,25 @@
                                id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
-                                    id="tin_id_perawat"
-                                    onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">
-                                <option value="">[select one]</option>
-                                <option value="1">Angel</option>
-                                <option value="2">Anya</option>
-                                <option value="3">Ayu</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_perawat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
+                                    <%--id="tin_id_perawat"--%>
+                                    <%--onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">--%>
+                                <%--<option value="">[select one]</option>--%>
+                                <%--<option value="1">Angel</option>--%>
+                                <%--<option value="2">Anya</option>--%>
+                                <%--<option value="3">Ayu</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">--%>
+                                <%--<i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_perawat"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -1774,7 +1774,7 @@
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
         var idDokter = $('#tin_id_dokter').val();
-        var idPerawat = $('#tin_id_perawat').val();
+        var idPerawat = 1;
         var qty = $('#tin_qty').val();
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
@@ -1886,7 +1886,7 @@
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
+//                            "<td>" + item.idPerawat + "</td>" +
                             "<td align='right'>" + tarif +"</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
