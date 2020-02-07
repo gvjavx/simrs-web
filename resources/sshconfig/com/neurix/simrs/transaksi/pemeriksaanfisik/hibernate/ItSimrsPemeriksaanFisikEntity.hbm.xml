@@ -38,6 +38,24 @@
         <property name="extrimitas">
             <column name="extrimitas" sql-type="varchar" length="100" not-null="false"/>
         </property>
+        <property name="tinggiBadan">
+            <column name="tinggi_badan" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="beratBadan">
+            <column name="berat_badan" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="nadi">
+            <column name="nadi" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="respirationRate">
+            <column name="respiration_rate" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="tekananDarah">
+            <column name="tekanan_darah" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="suhu">
+            <column name="suhu" sql-type="varchar" length="10" not-null="false"/>
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

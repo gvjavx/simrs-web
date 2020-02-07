@@ -25,9 +25,9 @@ public class KategoriResikoJatuhDao extends GenericDao<ImSimrsKategoriResikoJatu
         if (mapCriteria.get("id_kategori") != null){
             criteria.add(Restrictions.eq("idKategori", mapCriteria.get("id_kategori").toString()));
         }
-        if (mapCriteria.get("tahun") != null){
-            Integer tahun = (Integer) mapCriteria.get("tahun");
-            criteria.add(Restrictions.sqlRestriction("umur_dari >= '"+tahun+"' AND umur_sampai <= '"+tahun+"'"));
+        if (mapCriteria.get("umur") != null){
+            Integer tahun = (Integer) mapCriteria.get("umur");
+            criteria.add(Restrictions.sqlRestriction("umur_dari <= '"+tahun+"' AND umur_sampai >= '"+tahun+"'"));
         }
 
         List<ImSimrsKategoriResikoJatuhEntity> result = criteria.list();

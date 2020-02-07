@@ -23,6 +23,15 @@ import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity
 import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
+import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
+import com.neurix.simrs.transaksi.rencanarawat.dao.KategoriRencanaRawatDao;
+import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
+import com.neurix.simrs.transaksi.rencanarawat.dao.RencanaRawatDao;
+import com.neurix.simrs.transaksi.resikojatuh.dao.KategoriResikoJatuhDao;
+import com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao;
+import com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao;
+import com.neurix.simrs.transaksi.resikojatuh.dao.SkorResikoJatuhDao;
+import com.neurix.simrs.transaksi.resikojatuh.model.*;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -59,6 +68,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private TindakanRawatDao tindakanRawatDao;
     private DiagnosaRawatDao diagnosaRawatDao;
     private PemeriksaanFisikDao pemeriksaanFisikDao;
+    private KategoriResikoJatuhDao kategoriResikoJatuhDao;
+    private ParameterResikoJatuhDao parameterResikoJatuhDao;
+    private SkorResikoJatuhDao skorResikoJatuhDao;
+    private ResikoJatuhDao resikoJatuhDao;
+    private PsikososialDao psikososialDao;
+    private KategoriRencanaRawatDao kategoriRencanaRawatDao;
+    private ParameterRencanaRawatDao parameterRencanaRawatDao;
+    private RencanaRawatDao rencanaRawatDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -978,6 +995,69 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.savePemeriksaanFisik] End <<<<<<<<");
     }
 
+    @Override
+    public ResikoJatuhResponse getResikojatuh(ResikoJatuh bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.savePemeriksaanFisik] Start >>>>>>>>");
+
+        ResikoJatuhResponse response = new ResikoJatuhResponse();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", bean.getNoCheckup());
+        List<ItSImrsResikoJatuhEntity> resikoJatuhEntities = resikoJatuhDao.getByCriteria(hsCriteria);
+        if (resikoJatuhEntities.size() > 0){
+            response.setStatus("success");
+            response.setResikoJatuhEntityList(resikoJatuhEntities);
+        } else {
+
+
+            hsCriteria = new HashMap();
+            hsCriteria.put("umur", bean.getUmur());
+            List<ImSimrsKategoriResikoJatuhEntity> kategoriResikoJatuhEntities = kategoriResikoJatuhDao.getByCriteria(hsCriteria);
+            if (kategoriResikoJatuhEntities.size() > 0){
+
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_kategori", kategoriResikoJatuhEntities.get(0).getIdKategori());
+                List<ImSimrsParameterResikoJatuhEntity> parameterResikoJatuhEntities = parameterResikoJatuhDao.getByCriteria(hsCriteria);
+                if(parameterResikoJatuhEntities.size() > 0){
+
+                    resikoJatuhEntities = new ArrayList<>();
+                    ItSImrsResikoJatuhEntity resikoJatuhEntity;
+                    for (ImSimrsParameterResikoJatuhEntity parameter : parameterResikoJatuhEntities){
+                        resikoJatuhEntity = new ItSImrsResikoJatuhEntity();
+                        resikoJatuhEntity.setIdParameter(parameter.getIdParameter());
+                        resikoJatuhEntity.setNamaParameter(parameter.getNamaParameter());
+                        resikoJatuhEntity.setIdKategori(parameter.getIdKategori());
+                        resikoJatuhEntities.add(resikoJatuhEntity);
+                    }
+                    response.setStatus("success");
+                    response.setResikoJatuhEntityList(resikoJatuhEntities);
+                }
+            }
+        }
+
+        logger.info("[CheckupBoImpl.savePemeriksaanFisik] End <<<<<<<<");
+        return response;
+    }
+
+    @Override
+    public List<ImSimrsSkorResikoJatuhEntity> getListSkorResikoByIdParameter(String id) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListSkorResikoById] Start >>>>>>>>");
+
+        List<ImSimrsSkorResikoJatuhEntity> skorResikoJatuhEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_parameter", id);
+
+        try {
+            skorResikoJatuhEntities = skorResikoJatuhDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getListSkorResikoById] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.getListSkorResikoById] End <<<<<<<<");
+        return skorResikoJatuhEntities;
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -1006,6 +1086,39 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         } catch (HibernateException e){
             logger.error("[CheckupBoImpl.getNextIdPemeriksaanFisik] Error when get seq ",e);
             throw new GeneralBOException("[CheckupBoImpl.getNextIdPemeriksaanFisik] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextIdResikoJatuh(){
+        String id = "";
+        try {
+            id = resikoJatuhDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextIdResikoJatuh] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextIdResikoJatuh] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextPsikososialId(){
+        String id = "";
+        try {
+            id = psikososialDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextPsikososialId] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextPsikososialId] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextRencanaRawatId(){
+        String id = "";
+        try {
+            id = rencanaRawatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getNextRencanaRawatId] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getNextRencanaRawatId] Error when get seq "+e.getMessage());
         }
         return id;
     }
@@ -1056,5 +1169,37 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setPemeriksaanFisikDao(PemeriksaanFisikDao pemeriksaanFisikDao) {
         this.pemeriksaanFisikDao = pemeriksaanFisikDao;
+    }
+
+    public void setKategoriResikoJatuhDao(KategoriResikoJatuhDao kategoriResikoJatuhDao) {
+        this.kategoriResikoJatuhDao = kategoriResikoJatuhDao;
+    }
+
+    public void setParameterResikoJatuhDao(ParameterResikoJatuhDao parameterResikoJatuhDao) {
+        this.parameterResikoJatuhDao = parameterResikoJatuhDao;
+    }
+
+    public void setSkorResikoJatuhDao(SkorResikoJatuhDao skorResikoJatuhDao) {
+        this.skorResikoJatuhDao = skorResikoJatuhDao;
+    }
+
+    public void setResikoJatuhDao(ResikoJatuhDao resikoJatuhDao) {
+        this.resikoJatuhDao = resikoJatuhDao;
+    }
+
+    public void setPsikososialDao(PsikososialDao psikososialDao) {
+        this.psikososialDao = psikososialDao;
+    }
+
+    public void setKategoriRencanaRawatDao(KategoriRencanaRawatDao kategoriRencanaRawatDao) {
+        this.kategoriRencanaRawatDao = kategoriRencanaRawatDao;
+    }
+
+    public void setParameterRencanaRawatDao(ParameterRencanaRawatDao parameterRencanaRawatDao) {
+        this.parameterRencanaRawatDao = parameterRencanaRawatDao;
+    }
+
+    public void setRencanaRawatDao(RencanaRawatDao rencanaRawatDao) {
+        this.rencanaRawatDao = rencanaRawatDao;
     }
 }
