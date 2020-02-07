@@ -185,4 +185,10 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/ResepPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanVendorAction.xml"/>
 
+    <!--AKUNTANSI-->
+    <!--MASTER -->
+    <include file="sshconfig/com/neurix/akuntansi/master/kodeRekening/struts/KodeRekeningAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/tipeJurnal/struts/TipeJurnalAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/tipeRekening/struts/TipeRekeningAction.xml"/>
+
 </struts>

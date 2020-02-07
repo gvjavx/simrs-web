@@ -406,6 +406,12 @@
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
 
+
+      <!--AKUNTANSI-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.kodeRekening.action.KodeRekeningAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.KodeRekening"/>
   </allow>
 
 </dwr>
