@@ -276,7 +276,7 @@
                                                         <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
                                                                      cssClass="form-control"/>
                                                         <div class="input-group-addon btn btn-success"
-                                                             onclick="checkBpjs()">
+                                                             onclick="checkBpjs()" style="background-color: green;color:#fff;">
                                                             <span id="btn-cek"><i class="fa fa-search"></i> Check</span>
                                                         </div>
                                                     </div>
@@ -718,6 +718,78 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Pre-Admisi Untuk Pasien</h3>
+                            </div>
+                            <div class="box-body">
+                                <br>
+                                <%-- <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> --%>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"
+                                                         cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>
+                                        <div class="col-md-8">
+                                            <s:select list="#{'Y':'Ya'}" id="bantuanBahasa"
+                                            onchange="changeBahasa(this)"
+                                            cssStyle="width:20%;"
+                                            headerKey="N" headerValue="Tidak"
+                                            cssClass="form-control" name="headerCheckup.bantuanBahasa"/>
+                                            <s:textfield id="bahasa" name="headerCheckup.bahasa"
+                                                         cssClass="form-control" placeholder="bahasa lain"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"
+                                                         cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="alatBantu" name="headerCheckup.alatBantu"
+                                                         cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="alergi" cssClass="form-control" 
+                                            name="headerCheckup.alergi"
+                                            />
+                                            <%-- <div class="input-group-addon btn btn-success"
+                                                    onclick="addAlergi()" style="background-color: green;color:#fff;">
+                                            <span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> --%>
+                                            <%-- </div> --%>
+                                            <div id="new_alergi">
+
+                                            </div>
+                                            <%-- <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> --%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Penanggung Jawab</h3>
                             </div>
                             <div class="box-body">
@@ -842,7 +914,21 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:textfield name="headerCheckup.rujuk"
+                                                <s:select list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}"
+                                                          cssStyle="margin-top: 7px"
+                                                          name="headerCheckup.rujuk"
+                                                          onchange="changePlaceHolder(this)"
+                                                          id="perujuk"
+                                                          headerKey="" headerValue="[Select one]"
+                                                          cssClass="form-control"/>
+                                                    <%--<s:textfield id="perujuk" name="headerCheckup.rujuk"--%>
+                                                    <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Keterangan Perujuk</label>
+                                            <div class="col-md-8">
+                                                <s:textfield id="intansi_perujuk" name="headerCheckup.ketPerujuk"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
@@ -1030,9 +1116,96 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-admisi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Admisi Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
+                            <div class="col-md-8">
+                                <s:textfield id="in_ketKeyakinan" 
+                                             cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>
+                            <div class="col-md-8">
+                                <s:select list="#{'Y':'Ya'}" id="in_bantuanBahasa"
+                                 cssStyle="margin-top: 7px"
+                                 headerKey="N" headerValue="Tidak"
+                                 cssClass="form-control"/>
+                                <s:textfield id="in_bahasa" cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>
+                            <div class="col-md-8">
+                                <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
+                                             cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Apakah kontak yang diisi sudah benar ?</label>
+                            <div class="col-md-8">
+                                <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
+                                             cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>
+                            <div class="col-md-8">
+                                <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
+                                             cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>
+                            <div class="col-md-8">
+                                <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
+                                             cssClass="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
+        $("#bahasa").val("indonesia");
+        $("#bahasa").attr("readOnly","true");
         $('#pendaftaran').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {
@@ -1288,6 +1461,33 @@
         }
     });
 
+    function changePlaceHolder(n){
+
+        var idx = n.selectedIndex;
+        var perujuk = n.options[idx].value;
+
+        if (perujuk == "dokter"){
+            $("#intansi_perujuk").attr("placeholder","nama dokter");
+        }
+        if (perujuk == "puskesmas"){
+            $("#intansi_perujuk").attr("placeholder","nama puskesmas");
+        }
+        if (perujuk == "rs"){
+            $("#intansi_perujuk").attr("placeholder","nama rumah sakit");
+        }
+        if (perujuk == "bidan"){
+            $("#intansi_perujuk").attr("placeholder","nama bidan");
+        }
+        if (perujuk == "polisi"){
+            $("#intansi_perujuk").attr("placeholder","nama instansi");
+        }
+        if (perujuk == "sendiri"){
+            $("#intansi_perujuk").attr("disabled","true");
+            $("#intansi_perujuk").removeAttr("placeholder");
+        }
+
+    }
+
 
 </script>
 <script type='text/javascript'>
@@ -1395,6 +1595,30 @@
             return namaAlat;
         }
     });
+
+    function showAdmisiPasien(){
+        $("#modal-admisi").modal('show');
+    }
+
+    function changeBahasa(n){
+        var idx = n.selectedIndex;
+        var val_bantuan = n.options[idx].value;
+        console.log(val_bantuan);
+
+        if(val_bantuan == "Y"){
+            $("#bahasa").removeAttr("readOnly");
+            $("#bahasa").val("");
+        } else {
+            $("#bahasa").attr("readOnly","true");
+            $("#bahasa").val("indonesia");
+        }
+    }
+
+    var listAlergi = [];
+    function addAlergi(alergi){
+        alert(alergi);
+        listAlergi.push("alergi" : alergi);
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

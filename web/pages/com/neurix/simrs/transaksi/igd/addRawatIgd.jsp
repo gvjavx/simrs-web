@@ -199,53 +199,68 @@
                     </div>
 
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
+
                     <div class="box-body">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            Silahkan cek kembali data inputan!
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            Data berhasil disimpan!
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Tinggi</label>
-                                    <div class="input-group date">
-                                        <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
-                                                     cssClass="form-control" type="number"/>
-                                        <div class="input-group-addon btn btn-success">
-                                            cm
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Berat</label>
-                                    <div class="input-group date">
-                                        <s:textfield id="berat" name="headerDetailCheckup.berat"
-                                                     cssClass="form-control" type="number"/>
-                                        <div class="input-group-addon btn btn-success">
-                                            Kg
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <br>
-                            <button id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i class="fa fa-check"></i>
-                                Save
-                            </button>
-                            <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_penunjang">
-                                <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                            </button>
-                        </div>
-                    </div>
+
+                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Psikosial
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Rencana Keperawatan
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Resiko Jatuh
+                        </button>
+
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">--%>
+                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                            <%--Silahkan cek kembali data inputan!--%>
+                        <%--</div>--%>
+                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">--%>
+                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                            <%--Data berhasil disimpan!--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">Tinggi</label>--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<s:textfield id="tinggi" name="headerDetailCheckup.tinggi"--%>
+                                                     <%--cssClass="form-control" type="number"/>--%>
+                                        <%--<div class="input-group-addon btn btn-success">--%>
+                                            <%--cm--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">Berat</label>--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<s:textfield id="berat" name="headerDetailCheckup.berat"--%>
+                                                     <%--cssClass="form-control" type="number"/>--%>
+                                        <%--<div class="input-group-addon btn btn-success">--%>
+                                            <%--Kg--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<br>--%>
+                            <%--<button id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i class="fa fa-check"></i>--%>
+                                <%--Save--%>
+                            <%--</button>--%>
+                            <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_penunjang">--%>
+                                <%--<i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                            <%--</button>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
@@ -1153,16 +1168,227 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <%--<button type="button" class="btn btn-success" id="save_resep_detail" onclick="saveResepDetail()"><i--%>
-                <%--class="fa fa-arrow-right"></i> Save--%>
-                <%--</button>--%>
-                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resep_detail"><i--%>
-                <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-                <%--</button>--%>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-fisik">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Pemeriksaan Fisik Pasien</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">tinggi badan</label>
+                            <input type="text" name="" id="tb" class="form-control" placeholder="cm">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">berat badan</label>
+                            <input type="text" name="" id="bb" class="form-control" placeholder="Kg">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">nadi</label>
+                            <input type="text" name="" id="nadi" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">resp rate</label>
+                            <input type="text" name="" id="rr" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">tknn darah</label>
+                            <input type="text" name="" id="td" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">suhu</label>
+                            <input type="text" name="" id="suhu" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-4">
+                            <label>Kepala</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="kepala" class="form-control">
+                            <script>
+
+//                                var menus, mapped;
+//                                $('#kepala').typeahead({
+//                                    minLength: 0,
+//                                    source: function (query, process) {
+//                                        menus = [];
+//                                        mapped = {};
+//
+//                                        var data = [];
+//                                        dwr.engine.setAsync(false);
+//                                        CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+//                                            data = listdata;
+//                                        });
+//
+//                                        $.each(data, function (i, item) {
+//                                            var labelItem = item.namaDiagnosaBpjs;
+//                                            mapped[labelItem] = {
+//                                                id: item.kodeDiagnosaBpjs,
+//                                                label: labelItem,
+//                                                name: item.namaDiagnosaBpjs
+//                                            };
+//                                            menus.push(labelItem);
+//                                        });
+//
+//                                        process(menus);
+//                                    },
+//                                    updater: function (item) {
+//                                        var selectedObj = mapped[item];
+//                                        // insert to textarea diagnosa_ket
+//                                        $("#diagnosa_ket").val(selectedObj.name);
+//                                        return selectedObj.id;
+//                                    }
+//                                });
+                            </script>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Mata</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="mata" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Leher/Spine</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="leher" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorak" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak Cor</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorakchor" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak Pulmo</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorakpulmo" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Abdomen</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="abdomen" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Extrimitas</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="extrimitas" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_fisik">
+                    <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_fisik">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_fisik"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="close_fisik"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_fisik" onclick="savePemeriksaanFisik('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_fisik"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-resiko-jatuh">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Resiko Jatuh</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan..!
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    Data berhasil diupdate..!
+                </div>
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row" id="body_resiko_jatuh">
+                            <%--<div class="col-md-4">--%>
+                                <%--<label>Sample</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-8">--%>
+                                <%--<select class="form-control">--%>
+                                    <%--<option value="1">sample 1</option>--%>
+                                    <%--<option value="2">sample 2</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                    <%--<table class="table table-striped table-bordered" id="tabel_rep">--%>
+                        <%--&lt;%&ndash;<thead>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<td>Obat</td>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<td>Qty</td>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<td>Keterangan</td>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<td align="center" width="5%">Action</td>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</thead>&ndash;%&gt;--%>
+                        <%--<tbody id="body_resiko_jatuh">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -2490,6 +2716,130 @@
         } else {
             $('#warning_penunjang').show().fadeOut(5000);
         }
+    }
+    
+    function showModalCheckFisik(noCheckup){
+
+        $("#save_fisik").show();
+        $("#load_fisik").hide();
+        $("#close_fisik").show();
+        $("#success_save_fisik").hide();
+        $("#error_save_fisik").hide();
+        $("#error_ket_fisik").html("");
+
+        $("#modal-fisik").modal("show");
+
+        dwr.engine.setAsync(true);
+        CheckupAction.getPemeriksaanFisikByNoCheckup(noCheckup, function(response){
+            if(response != null){
+
+                var item = response;
+                $("#tb").val(item.tinggiBadan)
+                $("#bb").val(item.beratBadan)
+                $("#nadi").val(item.nadi)
+                $("#rr").val(item.respirationRate)
+                $("#td").val(item.tekananDarah)
+                $("#suhu").val(item.suhu)
+
+                $("#kepala").val(item.kepala)
+                $("#mata").val(item.mata)
+                $("#leher").val(item.leher)
+                $("#thorak").val(item.thorak)
+                $("#thorakchor").val(item.thorakChor)
+                $("#thorakpulmo").val(item.thorakPulmo)
+                $("#abdomen").val(item.abdoman)
+                $("#extrimitas").val(item.extrimitas)
+//                console.log(response);
+            }
+        });
+
+    }
+
+    function savePemeriksaanFisik(noCheckup) {
+
+//        alert(noCheckup);
+        $("#save_fisik").hide();
+        $("#load_fisik").show();
+        $("#close_fisik").hide();
+
+        var jsonrq = [];
+        jsonrq.push({
+            'nocheckup': noCheckup,
+            'tb': $("#tb").val(),
+            'bb': $("#bb").val(),
+            'nadi': $("#nadi").val(),
+            'rr': $("#rr").val(),
+            'td': $("#td").val(),
+            'suhu': $("#suhu").val(),
+            'kepala': $("#kepala").val(),
+            'mata': $("#mata").val(),
+            'leher': $("#leher").val(),
+            'thorak': $("#thorak").val(),
+            'thorakchor': $("#thorakchor").val(),
+            'thorakpulmo': $("#thorakpulmo").val(),
+            'abdomen': $("#abdomen").val(),
+            'extrimitas': $("#extrimitas").val()
+        });
+
+        var jsonstr = JSON.stringify(jsonrq);
+
+        dwr.engine.setAsync(true);
+        CheckupAction.savePemeriksaanFisik(jsonstr, function(response){
+            if(response != null){
+                if(response == "success"){
+                    $("#close_fisik").show();
+                    $("#load_fisik").hide();
+                    $("#success_save_fisik").show();
+                    $("#error_save_fisik").hide();
+                } else {
+                    $("#load_fisik").hide();
+                    $("#close_fisik").show();
+                    $("#success_save_fisik").hide();
+                    $("#error_save_fisik").show();
+                    $("#error_ket_fisik").html(response);
+                }
+            }
+        });
+    }
+
+    function showModalResikoJatuh(noCheckup, tgl) {
+        $("#modal-resiko-jatuh").modal("show");
+
+        var str = "";
+        dwr.engine.setAsync(true);
+        CheckupAction.getListResikoJatuh(noCheckup, tgl, function(response){
+            if(response != null){
+//                console.log(response)
+                if(response.status == "success"){
+                    $.each(response.resikoJatuhEntityList, function (i, item) {
+                        var topline = "";
+                        topline = "<div class='col-md-4'>"+
+                                "<label>"+item.namaParameter+"</label>"+
+                                "</div>"+
+                                "<div class='col-md-8'>"+
+                                "<select class='form-control'>";
+
+                                var skor = "";
+                                CheckupAction.getListResikoJatuh(item.idParameter, function(skors){
+                                    $.each(skors, function (n, itemSkor) {
+                                        skor += "<option value="+itemSkor.skor+">"+itemSkor.namaSkor+"</option>";
+                                    });
+
+
+                                    var bottomline = "";
+                                    bottomline = "</select>"+
+                                        "</div>";
+
+                                    str += topline+skor+bottomline;
+                                    console.log(str);
+                                    $("#body_resiko_jatuh").html(str);
+                                });
+                    });
+
+                }
+            }
+        });
+
     }
 
 
