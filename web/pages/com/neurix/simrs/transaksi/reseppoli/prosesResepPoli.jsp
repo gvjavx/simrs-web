@@ -106,6 +106,7 @@
                                     <s:hidden id="no_detail_checkup" name="permintaanResep.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="permintaanResep.idPasien"/>
                                     <s:hidden id="id_approve" name="transaksiObatDetail.idApprovalObat"/>
+                                    <s:hidden id="id_resep" name="permintaanResep.idPermintaanResep"></s:hidden>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -208,11 +209,16 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
                     </div>
                     <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list_obat">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            Silahkan lakukan konfirmasi qty untuk masing masing obat...!
+                        </div>
                         <table class="table table-bordered table-striped" id="tabel_list_obat">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
                                 <td align="center">Qty</td>
+                                <td align="center">Qty Approve</td>
                                 <td align="center">Harga Satuan (Rp.)</td>
                                 <td align="center">Harga Total (Rp.)</td>
                                 <td width="21%">Scan ID Pabrikan</td>
@@ -224,6 +230,7 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
+                                    <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
                                     <td align="right"><script>var val = <s:property value="harga"/>;
                                     if (val != null && val != '') {
                                         document.write(formatRupiah(val))
@@ -251,13 +258,13 @@
                     <div class="box-body">
                         <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
                         <a onclick="confirm()" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</a>
+                        <a onclick="printStrukResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
                         <div class="form-group">
                             <s:form id="pembayaranForm" method="post" namespace="/transaksi"
                                     action="pembayaran_transaksi.action"
                                     theme="simple" cssClass="form-horizontal">
 
                                 <br>
-
                                 <div class="form-group">
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
@@ -348,6 +355,11 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_app"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_exp">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_exp"></p>
+                </div>
                 <table class="table table-striped">
                     <tr>
                         <td width="25%">ID Obat</td>
@@ -381,8 +393,8 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="row">
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 30 hari</div>
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 10 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #eea236"></i> Expired Date Kurang dari 30 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #dd4b39"></i> Expired Date Kurang dari 10 hari</div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -420,15 +432,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-warning">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dd4b39; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-warning"></i> Warning
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible">
+                    ID Pabrik tidak ditemukan...!
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type='text/javascript'>
 
     var id_approve = $('#id_approve').val();
+    var idResep = $('#id_resep').val();
+    var idCheckup = $('#no_checkup').val();
+    var idDetailCheckup = $('#no_detail_checkup').val();
+
+    function printStrukResep(){
+        window.open('printStrukResepPasien_reseppoli.action?id='+idDetailCheckup+'&idResep='+idResep+'&idApprove='+id_approve, "_blank");
+    }
 
     function toContent(){
         var ref = $('#ref').val();
         if(ref == 1){
-            window.location.href = 'initForm_reseppoli.action';
+            window.location.reload(true);
         }
     }
 
@@ -449,13 +489,12 @@
         var lembarPerBox = "";
         var bijiPerLembar = "";
         if (idPabrik != "") {
-            $('#loading_data').show();
-            $('#modal-approve').modal({show: true, backdrop: 'static'});
-            $('#status' + idObat).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             TransaksiObatAction.listObatPoliEntity(idObat, idPabrik, {
                 callback: function (response) {
+                    if (response.length > 0) {
 
-                    if (response != null) {
+                        $('#loading_data').show();
+                        $('#modal-approve').modal({show: true, backdrop: 'static'});
 
                         $.each(response, function (i, item) {
                             var qtyBox = "";
@@ -496,8 +535,14 @@
                                 color = '#333';
                             }
 
+                            var idBar = item.idBarang;
+                            var str = idBar.substring(8, 15);
+                            var idBarang = idBar.replace(str, '*******');
+
                             table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
-                                    '<td>' + '<span id=id_barang' + i + '>' + item.idBarang + '</span>' + '</td>' +
+                                    '<td>' + idBarang +
+                                    '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
+                                    '</td>' +
                                     '<td>' + dateFormat + '</td>' +
                                     '<td align="center">' + qtyBox + '</td>' +
                                     '<td align="center">' + qtyLembar + '</td>' +
@@ -510,7 +555,7 @@
                                     '</div>' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td><input style="display: none" id=newQty' + i + ' type="number" class="form-control"></td>' +
+                                    '<td><input style="display: none" id=newQty' + i + ' type="number" class="form-control" onchange="validasiInput(this.value,\''+qtyReq+'\', \''+qtyBox+'\',\''+qtyLembar+'\',\''+qtyBiji+'\',\''+item.lembarPerBox+'\',\''+item.bijiPerLembar+'\',\''+jenisSatuan+'\',\''+dateFormat+'\')"></td>' +
                                     '<td>' + jenisSatuan + '</td>' +
                                     '</tr>';
 
@@ -521,6 +566,8 @@
                         $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\')');
                         $('#body_approve').html(table);
                     } else {
+                        $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                        $('#modal-warning').modal('show');
                         $('#loading_data').hide();
                     }
                 }
@@ -531,8 +578,63 @@
         }
     }
 
+    function validasiInput(value, qtyReq, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar, jenisSatuan, dateFormat){
+
+        var data = $('#tabel_approve').tableToJSON();
+        var choseDate = new Date(dateFormat.split("-").reverse().join("-"));
+        var check = false;
+        var result = [];
+
+        $.each(data, function (i, item) {
+            var expired = data[i]["Expired Date"];
+            var qty = $('#newQty'+i).val();
+            var expDate = new Date(expired.split("-").reverse().join("-"));
+            if(qty == ""){
+                if(choseDate.getTime() != expDate.getTime()){
+                    result.push({'expired':expDate});
+                }
+            }
+        });
+
+        $.each(result, function (i, item) {
+            var exp = new Date(result[i]["expired"]);
+            console.log(exp);
+            console.log(choseDate.getTime());
+            console.log(exp.getTime());
+           if(choseDate.getTime() > exp.getTime()){
+               check = true;
+               console.log("true");
+           }
+        });
+
+        if(check){
+            $('#warning_exp').show();
+            $('#msg_exp').text("Silahkan pilih Expired Date yang mau habis dulu...!");
+        }
+
+        var stok = 0;
+
+        if ("box" == jenisSatuan) {
+            stok = qtyBox;
+        }
+        if ("lembar" == jenisSatuan) {
+            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+        }
+        if ("biji" == jenisSatuan) {
+            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+        }
+
+        if (parseInt(value) <= parseInt(stok) && parseInt(value) <= parseInt(qtyReq)){
+
+        }else{
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
+        }
+
+    }
+
     function cekIdBarang(id, valueIdBarang) {
-        var idBarang = $('#id_barang' + id).text();
+        var idBarang = $('#id_barang' + id).val();
         if (valueIdBarang != '') {
             $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             setTimeout(function () {
@@ -564,7 +666,7 @@
             var expired = data[i]["Expired Date"];
             var expDate = expired.split("-").reverse().join("-");
             var qty = $('#newQty'+i).val();
-            var idBarang = data[i]["ID Barang"];
+            var idBarang = $('#id_barang'+i).val();
             var jenisSatuan = data[i]["Jenis Satuan"];
 
             result.push({'Expired Date': expDate, 'Qty Approve': qty, 'ID Barang':idBarang, 'Jenis Satuan':jenisSatuan});
@@ -615,7 +717,7 @@
 
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
                 $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\')');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -626,7 +728,7 @@
         }
     }
 
-    function saveApprove(idObat, idTransaksi, stringData){
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp){
         $('#modal-confirm-dialog').modal('hide');
         dwr.engine.setAsync(true);
         $('#load_app').show();
@@ -637,6 +739,7 @@
                 $('#save_app').show();
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
+                $('#qtyAppove'+idObat).text(qtyApp);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
             } else {
                 $('#load_app').hide();
@@ -648,8 +751,25 @@
     }
 
     function confirm(){
+
         var data = $('#tabel_list_obat').tableToJSON();
-        $('#confirm_dialog').dialog('open');
+        var cek = 0;
+
+        $.each(data, function (i, item) {
+            var qtyApp = data[i]["Qty Approve"];
+            if (qtyApp == ""){
+                qtyApp = 0;
+            }
+            cek = parseInt(cek) + parseInt(qtyApp);
+        });
+
+        if(cek > 0){
+            $('#confirm_dialog').dialog('open');
+        }else{
+            $('#warning_list_obat').show().fadeOut(5000);
+        }
+        console.log(cek);
+
     }
 
     function saveApproveResep(){

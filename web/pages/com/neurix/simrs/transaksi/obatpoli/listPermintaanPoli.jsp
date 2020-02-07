@@ -157,8 +157,8 @@
                                 <td>Nama Obat</td>
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
-                                <td>Jenis Satuan</td>
                                 <td align="center">Scan ID Pabrik</td>
+                                <td>Jenis Satuan</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -173,7 +173,6 @@
                                     <td align="center"><s:property value="qty"/></td>
                                     <td align="center"><span id='qtyApp<s:property value="idObat"/>'><s:property
                                             value="qtyApprove"/></span></td>
-                                    <td><s:property value="jenisSatuan"/></td>
                                     <td width="21%">
                                             <%--<div class="col-md-8">--%>
                                             <%--<input class="form-control" id='pabrik<s:property value="idObat"/>'--%>
@@ -190,6 +189,7 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td><s:property value="jenisSatuan"/></td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -228,6 +228,11 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_app"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_exp">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_exp"></p>
+                </div>
                 <table class="table table-striped">
                     <tr>
                         <td width="25%">ID Obat</td>
@@ -263,8 +268,8 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="row">
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #eea236"></i> Kurang dari 30 hari</div>
-                    <div class="col-md-3"><i class="fa fa-square" style="color: #dd4b39"></i> Kurang dari 10 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #eea236"></i> Expired Date Kurang dari 30 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #dd4b39"></i> Expired Date Kurang dari 10 hari</div>
                 </div>
             </div>
             <input type="hidden" id="set_id_obat">
@@ -303,6 +308,28 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-warning">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dd4b39; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-warning"></i> Warning
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible">
+                    ID Pabrik tidak ditemukan...!
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -314,11 +341,6 @@
         $('#app_id').text(idObat);
         $('#app_nama').text(nama);
         $('#app_req').text(qtyReq);
-
-        if (idPabrik != "") {
-            $('#modal-approve').modal({show: true, backdrop: 'static'});
-        }
-
         var table = [];
         var lembarPerBox = "";
         var bijiPerLembar = "";
@@ -328,73 +350,137 @@
         var yyyy = today.getFullYear();
         today = mm + '-' + dd + '-' + yyyy;
 
-        PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
+        if (idPabrik != "") {
+            PermintaanObatPoliAction.listObatEntity(idObat, idPabrik, function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (i, item) {
+                        $('#modal-approve').modal({show: true, backdrop: 'static'});
+                        var dateExp = $.datepicker.formatDate('mm-dd-yy', new Date(item.expiredDate));
 
-                    const date1 = new Date(today);
-                    const date2 = new Date(dateExp);
-                    const diffTime = Math.abs(date2 - date1);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const date1 = new Date(today);
+                        const date2 = new Date(dateExp);
+                        const diffTime = Math.abs(date2 - date1);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                    var qtyBox = "";
-                    var qtyLembar = "";
-                    var qtyBiji = "";
+                        var qtyBox = "";
+                        var qtyLembar = "";
+                        var qtyBiji = "";
 
-                    if (item.qtyBox != null) {
-                        qtyBox = item.qtyBox;
-                    }
-                    if (item.qtyLembar != null) {
-                        qtyLembar = item.qtyLembar;
-                    }
-                    if (item.qtyBiji != null) {
-                        qtyBiji = item.qtyBiji;
-                    }
+                        if (item.qtyBox != null) {
+                            qtyBox = item.qtyBox;
+                        }
+                        if (item.qtyLembar != null) {
+                            qtyLembar = item.qtyLembar;
+                        }
+                        if (item.qtyBiji != null) {
+                            qtyBiji = item.qtyBiji;
+                        }
 
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
 
-                    var warna = "";
-                    var color = "";
+                        var warna = "";
+                        var color = "";
 
-                    if (diffDays < 10) {
-                        warna = '#dd4b39';
-                        color = 'white';
+                        if (diffDays < 10) {
+                            warna = '#dd4b39';
+                            color = 'white';
 
-                    } else if (diffDays < 30) {
-                        warna = '#eea236';
-                        color = 'white';
-                    }else {
-                        warna = '#fff';
-                        color = '#333';
-                    }
+                        } else if (diffDays < 30) {
+                            warna = '#eea236';
+                            color = 'white';
+                        }else {
+                            warna = '#fff';
+                            color = '#333';
+                        }
 
-                    table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
-                            '<td>' + '<span id=id_barang' + i + '>' + item.idBarang + '</span>' + '</td>' +
-                            '<td>' + dateFormat + '</td>' +
-                            '<td align="center">' + qtyBox + '</td>' +
-                            '<td align="center">' + qtyLembar + '</td>' +
-                            '<td align="center">' + qtyBiji + '</td>' +
-                            '<td>' +
-                            '<div class="input-group">' +
-                            '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
-                            '<div class="input-group-addon">' +
-                            '<span id=loading' + i + '></span> ' +
-                            '</div>' +
-                            '</div>' +
-                            '</td>' +
-                            '<td>' + '<input type="number" style="display: none" class="form-control" id=newQty' + i + '>' + '</td>' +
-                            '<td>' + satuan + '</td>' +
-                            '</tr>';
+                        var idBar = item.idBarang;
+                        var str = idBar.substring(8, 15);
+                        var idBarang = idBar.replace(str, '*******');
 
-                    lembarPerBox = item.lembarPerBox;
-                    bijiPerLembar = item.bijiPerLembar;
-                });
+                        table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
+                                '<td>' + idBarang +
+                                '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
+                                '</td>' +
+                                '<td>' + dateFormat + '</td>' +
+                                '<td align="center">' + qtyBox + '</td>' +
+                                '<td align="center">' + qtyLembar + '</td>' +
+                                '<td align="center">' + qtyBiji + '</td>' +
+                                '<td>' +
+                                '<div class="input-group">' +
+                                '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
+                                '<div class="input-group-addon">' +
+                                '<span id=loading' + i + '></span> ' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td>' + '<input onchange="validasiInput(this.value,\''+qtyReq+'\', \''+qtyBox+'\',\''+qtyLembar+'\',\''+qtyBiji+'\',\''+item.lembarPerBox+'\',\''+item.bijiPerLembar+'\',\''+satuan+'\',\''+dateFormat+'\')" type="number" style="display: none" class="form-control" id=newQty' + i + '>' + '</td>' +
+                                '<td>' + satuan + '</td>' +
+                                '</tr>';
 
-                $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
-                $('#body_approve').html(table);
+                        lembarPerBox = item.lembarPerBox;
+                        bijiPerLembar = item.bijiPerLembar;
+                    });
+
+                    $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + satuan + '\')');
+                    $('#body_approve').html(table);
+                }else {
+                    $('#modal-warning').modal('show');
+                    $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                }
+            });
+        }else{
+            $('#status' + idObat).html('');
+        }
+    }
+
+    function validasiInput(value, qtyReq, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar, jenisSatuan, dateFormat){
+
+        var data = $('#tabel_approve').tableToJSON();
+        var choseDate = new Date(dateFormat.split("-").reverse().join("-"));
+        var check = false;
+        var result = [];
+
+        $.each(data, function (i, item) {
+            var expired = data[i]["Expired Date"];
+            var qty = $('#newQty'+i).val();
+            var expDate = new Date(expired.split("-").reverse().join("-"));
+            if(qty == ""){
+                if(choseDate.getTime() != expDate.getTime()){
+                    result.push({'expired':expDate});
+                }
             }
         });
+
+        $.each(result, function (i, item) {
+            var exp = new Date(result[i]["expired"]);
+            if(choseDate.getTime() > exp.getTime()){
+                check = true;
+            }
+        });
+
+        if(check){
+            $('#warning_exp').show();
+            $('#msg_exp').text("Silahkan pilih Expired Date yang mau habis dulu...!");
+        }
+
+        var stok = 0;
+
+        if ("box" == jenisSatuan) {
+            stok = qtyBox;
+        }
+        if ("lembar" == jenisSatuan) {
+            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
+        }
+        if ("biji" == jenisSatuan) {
+            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
+        }
+
+        if (parseInt(value) <= parseInt(stok) && parseInt(value) <= parseInt(qtyReq)){
+
+        }else{
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
+        }
     }
 
     function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan) {
@@ -412,7 +498,7 @@
             var expDate = data[i]["Expired Date"];
             var expired = expDate.split("-").reverse().join("-");
             var qty = $('#newQty' + i).val();
-            var idBarang = data[i]["ID Barang"];
+            var idBarang = $('#id_barang'+i).val();
             result.push({
                 'Expired Date': expired,
                 'Qty Approve': qty,
@@ -502,7 +588,7 @@
     }
 
     function cekIdBarang(id, valueIdBarang) {
-        var idBarang = $('#id_barang' + id).text();
+        var idBarang = $('#id_barang' + id).val();
         if (valueIdBarang != '') {
             $('#loading' + id).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
             setTimeout(function () {
@@ -514,7 +600,7 @@
                     $('#newQty' + id).hide();
                     $('#newQty' + id).val('');
                 }
-            }, 700);
+            }, 500);
         } else {
             $('#loading' + id).html('');
             $('#newQty' + id).val('');

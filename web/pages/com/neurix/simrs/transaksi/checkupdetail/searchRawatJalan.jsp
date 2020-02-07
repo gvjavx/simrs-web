@@ -87,15 +87,14 @@
                                                       name="getComboPelayanan_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                                       list="#initComboPoli.listOfPelayanan" id="poli"
-                                                      name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
+                                                      listKey="idPelayanan"
+                                                      name="headerDetailCheckup.idPelayanan"
                                                       listValue="namaPelayanan"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2" theme="simple" disabled="true"/>
                                         </div>
+                                        <s:hidden name="headerDetailCheckup.idPelayanan" id=""></s:hidden>
                                     </div>
-                                </s:else>
-                                <s:else>
-                                    <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                 </s:else>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
@@ -208,7 +207,7 @@
                                                 <s:param name="id"><s:property value="noCheckup"/></s:param>
                                             </s:url>
                                             <s:a href="%{add_rawat_jalan}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:if>
                                     </td>

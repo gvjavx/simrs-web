@@ -48,11 +48,12 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_SAVED_UPLOAD_PAYMENT_DIRECTORY = "C:\\xampp\\tomcat\\webapps\\";
 
     //sodiq, 18 Nov 2019, Upload KTP pasien
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
+//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
     public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
-//    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -128,13 +129,29 @@ public class CommonConstant {
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
 
     public final static String HGU = "HGU";
+
+    //BPJS
     public final static String APP_NAME = "simrs";
-    public final static String BPJS_CONS_ID = "10356";
-    public final static String BPJS_SECRET_KEY = "7eT69578CF";
+
+    //for prod
     public final static String BPJS_BASE_URL = "https://new-api.bpjs-kesehatan.go.id:8080";
-    public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest";
-    public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest";
+    public final static String BPJS_SERVICE_VKLAIM = "/new-vclaim-rest/";
+
+    //developer purpose only
+//    public final static String BPJS_BASE_URL = "https://dvlp.bpjs-kesehatan.go.id";
+//    public final static String BPJS_SERVICE_VKLAIM = "/vclaim-rest/";
+    public final static String BPJS_SERVICE_APLICARE = "/aplicaresws/rest/";
     public final static String BPJS_SERVICE_PCARE = "/pcare-rest-v3.0";
+    public final static String EKLAIM_SERVICE = "/E-Klaim/ws.php";
+    public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
+
+    //FINGER
+    public final static String baseUrl="http://localhost:8080/simrs/";
+    public final static String timeLimitReg="15";
+    public final static String timeLimitVer="10";
+    public final static String verAddress=baseUrl+"prosesLoginFinger.action";
+    public final static String regAddress=baseUrl+"prosesRegisterFinger.action";
+    public final static String addRawatPasien=baseUrl+"checkup/add_checkup.action";
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";

@@ -78,7 +78,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.addOrder(Order.asc("createdDate"));
             } else if (mapCriteria.get("desc") != null){
                 criteria.addOrder(Order.desc("createdDate"));
-            } else {
+            } else if(mapCriteria.get("exp") != null){
+                criteria.addOrder(Order.asc("expiredDate"));
+            } else{
                 criteria.addOrder(Order.asc("idObat"));
             }
         }

@@ -63,6 +63,16 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity,String> {
         return listOfResult;
     }
 
+    public List<ImSimrsPasienEntity> getListPasienByTmpBpjs(String tmp){
+
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
+        criteria.add(Restrictions.ilike("noBpjs", "%"+tmp+"%"));
+        criteria.add(Restrictions.eq("flag", "Y"));
+
+        List<ImSimrsPasienEntity> listOfResult = criteria.list();
+        return listOfResult;
+    }
+
     public List<Object[]> getListAlamat(String desaId){
 
         String sql = "SELECT \n" +

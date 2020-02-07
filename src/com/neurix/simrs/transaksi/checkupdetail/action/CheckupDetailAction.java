@@ -4,6 +4,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 
@@ -35,6 +36,8 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -71,6 +74,33 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String fileUploadDocContentType;
 
     private String idResep;
+    private BigInteger tarifCoverBpjs;
+    private BigInteger tarifTotalTindakan;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public BigInteger getTarifCoverBpjs() {
+        return tarifCoverBpjs;
+    }
+
+    public void setTarifCoverBpjs(BigInteger tarifCoverBpjs) {
+        this.tarifCoverBpjs = tarifCoverBpjs;
+    }
+
+    public BigInteger getTarifTotalTindakan() {
+        return tarifTotalTindakan;
+    }
+
+    public void setTarifTotalTindakan(BigInteger tarifTotalTindakan) {
+        this.tarifTotalTindakan = tarifTotalTindakan;
+    }
 
     public String getIdResep() {
         return idResep;
@@ -314,7 +344,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setJenisKelamin(jk);
                         detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
                         detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
                         detailCheckup.setNik(headerCheckup.getNoKtp());
                         detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
@@ -326,6 +357,18 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         setHeaderDetailCheckup(detailCheckup);
 
+                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
+                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
+                        }
+
+                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+                        try {
+                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
+                        } catch (GeneralBOException e){
+                            logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
+                        }
+                        setTarifTotalTindakan(totalTarif);
                         break;
                     }
                 }
@@ -340,6 +383,43 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.add] end process <<<");
 
         return "init_add";
+    }
+
+    public HeaderCheckup getStatusBiayaTindakan(String noCheckup){
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try {
+            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+        }
+
+        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+
+        try {
+            totalTarif = checkupDetailBo.getSumOfTindakanByNoCheckup(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
+        }
+
+        HeaderCheckup result = new HeaderCheckup();
+        if (!headerCheckupList.isEmpty()){
+            result = headerCheckupList.get(0);
+
+            if (result.getTarifBpjs() != null && result.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1){
+                result.setTarifBpjs(result.getTarifBpjs());
+                result.setTarifTindakan(new BigDecimal(totalTarif));
+            }
+
+        }
+
+        return result;
     }
 
 
@@ -792,12 +872,17 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.add] start process >>>");
 
+        // tipe transaksi
+        String tipe = getTipe();
+        setTipe(tipe);
+
         HeaderCheckup checkup = new HeaderCheckup();
 
         if(CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())){
             checkup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         }
 
+        checkup.setJenisTransaksi(tipe);
         setHeaderCheckup(checkup);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -826,7 +911,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                 checkup.setTglLahir(sqlDate);
             } catch (ParseException e) {
-
+                logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
+                throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when convert string to date "+e.getMessage());
             }
 
             checkup.setBranchId(userArea);
@@ -840,33 +926,33 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setStatusPeriksa("1");
 
             String fileName = "";
-            if (this.fileUpload != null) {
-                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
-                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-
-                        // file name
-                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
-
-                        // deklarasi path file
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
-
-                        // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
-
-                        try {
-                            // pemindahan file
-                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlKtp(fileName);
-                        } catch (IOException e) {
-                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
-                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
-                        }
-                    }
-                }
-            }
+//            if (this.fileUpload != null) {
+//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
+//                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
+//
+//                        // file name
+//                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
+//
+//                        // deklarasi path file
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+////                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
+//                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
+//
+//                        // persiapan pemindahan file
+//                        File fileToCreate = new File(filePath, fileName);
+//
+//                        try {
+//                            // pemindahan file
+//                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+//                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
+//                            checkup.setUrlKtp(fileName);
+//                        } catch (IOException e) {
+//                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
+//                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -984,6 +1070,26 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         return "print_resep";
     }
+
+    public String printGelangPasien(){
+
+        String id = getId();
+        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+        reportParams.put("noCheckup",id);
+        reportParams.put("nama",headerCheckup.getNama());
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_gelang_pasien";
+    }
+
+
 
     @Override
     public String downloadPdf() {

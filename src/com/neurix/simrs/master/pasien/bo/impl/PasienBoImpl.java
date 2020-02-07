@@ -8,13 +8,19 @@ import com.neurix.hris.master.cuti.model.ImCutiEntity;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 
 import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.dao.FingerDataDao;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.FingerData;
+import com.neurix.simrs.master.pasien.model.ImSimrsFingerDataEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,7 +33,21 @@ public class PasienBoImpl implements PasienBo {
     protected static transient Logger logger = org.apache.log4j.Logger.getLogger(PasienBoImpl.class);
 
     private PasienDao pasienDao;
+    private FingerDataDao fingerDataDao;
     private ProvinsiDao provinsiDao;
+    private HeaderCheckupDao headerCheckupDao;
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public FingerDataDao getFingerDataDao() {
+        return fingerDataDao;
+    }
+
+    public void setFingerDataDao(FingerDataDao fingerDataDao) {
+        this.fingerDataDao = fingerDataDao;
+    }
 
     public void setProvinsiDao(ProvinsiDao provinsiDao) {
         this.provinsiDao = provinsiDao;
@@ -119,7 +139,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setAgama(data.getAgama());
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
-            pasien.setUrlKtp(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
+            pasien.setImgKtp(data.getUrlKtp());
+            pasien.setUrlKtp(CommonConstant.URL_IMG+CommonConstant.RESOURCE_PATH_KTP_PASIEN+data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());
             pasien.setCreatedDate(data.getCreatedDate());
@@ -141,6 +162,15 @@ public class PasienBoImpl implements PasienBo {
                         pasien.setKotaId(obj[5].toString());
                         pasien.setProvinsiId(obj[6].toString());
                     }
+                }
+            }
+
+            if(pasien.getIdPasien() != null){
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_pasien", pasien.getIdPasien());
+                List<ItSimrsHeaderChekupEntity> cekKunjungan = headerCheckupDao.getByCriteria(hsCriteria);
+                if (cekKunjungan.size() > 0){
+                    pasien.setIsPasienLama(true);
                 }
             }
 
@@ -357,6 +387,28 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
+    public List<Pasien> getListComboPasienByBpjs(String query) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getListComboPasienByBpjs] Start >>>>>>>");
+
+        String tmp = "%" + query + "%";
+
+        List<ImSimrsPasienEntity> pasienEntityList = new ArrayList<>();
+        try {
+            pasienEntityList = pasienDao.getListPasienByTmpBpjs(tmp);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        logger.info("[PasienBoImpl.getListComboPasienByBpjs] End <<<<<<<");
+        if (!pasienEntityList.isEmpty()){
+            return setTemplatePasien(pasienEntityList);
+        }
+
+        return new ArrayList<>();
+    }
+
+
+    @Override
     public List<Pasien> getDataPasien(String desaId) throws GeneralBOException {
         logger.info("[PasienBoImpl.getDataPasien] Start >>>>>>>");
         List<Pasien> list = new ArrayList<>();
@@ -407,6 +459,37 @@ public class PasienBoImpl implements PasienBo {
 
         logger.info("[PasienBoImpl.isUserPasienById] End <<<<<<<");
         return isFound;
+    }
+
+    @Override
+    public void saveEditFinger(String userId, String regTemp, String sn, String vStamp) {
+        logger.info("[PasienBoImpl.saveEditFinger] Start >>>>>>>");
+
+        List<ImSimrsFingerDataEntity> fingerDataEntityList = fingerDataDao.getFingerData(regTemp);
+
+        if (fingerDataEntityList.size()==0){
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ImSimrsFingerDataEntity fingerDataEntity = new ImSimrsFingerDataEntity();
+            fingerDataEntity.setIdFingerData(fingerDataDao.getNextIdFingerData());
+            fingerDataEntity.setIdPasien(userId);
+            fingerDataEntity.setFingerData(regTemp);
+            fingerDataEntity.setSn(sn);
+
+            fingerDataEntity.setAction("C");
+            fingerDataEntity.setFlag("Y");
+            fingerDataEntity.setCreatedWho("");
+            fingerDataEntity.setLastUpdateWho("");
+            fingerDataEntity.setLastUpdate(updateTime);
+            fingerDataEntity.setCreatedDate(updateTime);
+            try {
+                fingerDataDao.addAndSave(fingerDataEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.saveEditFinger] Error when search pasien by criteria "+e.getMessage());
+                throw new GeneralBOException("[PasienBoImpl.saveEditFinger] Error when search pasien by criteria "+e.getMessage());
+            }
+        }
+
+        logger.info("[PasienBoImpl.saveEditFinger] End <<<<<<<");
     }
 
     @Override
@@ -465,6 +548,70 @@ public class PasienBoImpl implements PasienBo {
 
         logger.info("[PasienBoImpl.getIdPasien] End <<<<<<<");
         return id;
+    }
+    @Override
+    public List<FingerData> getListFingerPrint(String pasienId) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getListFingerPrint] Start >>>>>>>");
+        List<FingerData> list = new ArrayList<>();
+        List<ImSimrsFingerDataEntity> imSimrsFingerDataEntityList = null;
+        try {
+            imSimrsFingerDataEntityList = fingerDataDao.getFingerByPasien(pasienId);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getListFingerPrint] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        if (imSimrsFingerDataEntityList != null){
+            for (ImSimrsFingerDataEntity data: imSimrsFingerDataEntityList){
+                FingerData fingerData = new FingerData();
+                fingerData.setIdFingerData(data.getIdFingerData());
+                fingerData.setFingerData(data.getFingerData());
+                fingerData.setIdPasien(data.getIdPasien());
+                fingerData.setSn(data.getSn());
+                list.add(fingerData);
+            }
+        }
+
+        logger.info("[PasienBoImpl.getListFingerPrint] End <<<<<<<");
+        return list;
+    }
+    @Override
+    public List<Pasien> getListOfPasienByQuery(String query) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getListOfPasienByQuery] start process >>>");
+
+        List<Pasien> pasienList = new ArrayList();
+        List<ImSimrsPasienEntity> pasienEntityList = null;
+        try {
+            pasienEntityList = pasienDao.getListPasienByTmpBpjs(query);
+        } catch (HibernateException e) {
+            logger.error("[PasienBoImpl.getListOfPasienByQuery] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        if (pasienEntityList != null) {
+            for (ImSimrsPasienEntity simrsPasienEntity : pasienEntityList) {
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(simrsPasienEntity.getIdPasien());
+                pasien.setNoBpjs(simrsPasienEntity.getNoBpjs());
+                pasien.setNama(simrsPasienEntity.getNama());
+                pasienList.add(pasien);
+            }
+        }
+        logger.info("[PasienBoImpl.getListOfPasienByQuery] end process <<<");
+        return pasienList;
+    }
+
+    @Override
+    public ImSimrsPasienEntity getPasienByIdPasien(String idPasien){
+        logger.info("[PasienBoImpl.getPasienByIdPasien] start process >>>");
+
+        ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+        try {
+            pasienEntity = pasienDao.getById("idPasien",idPasien);
+        } catch (HibernateException e) {
+            logger.error("[PasienBoImpl.getPasienByIdPasien] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PasienBoImpl.getPasienByIdPasien] end process <<<");
+        return pasienEntity;
     }
 
     public void setPasienDao(PasienDao pasienDao) {

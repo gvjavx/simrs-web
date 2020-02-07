@@ -20,7 +20,7 @@ import org.springframework.security.crypto.codec.Base64;
 public class BpjsApi {
     public static void main(String[] args) throws GeneralSecurityException, IOException {
 
-        String secretKey = CommonConstant.BPJS_SECRET_KEY;
+        String secretKey = "7eT69578CF";
         String salt = "0123456789";
 
         String generateHmacSHA256Signature = generateHmacSHA256Signature(salt, secretKey);
@@ -66,8 +66,8 @@ public class BpjsApi {
     }
 
     public static String getSignatureKey() throws GeneralSecurityException, IOException{
-        String secretKey = CommonConstant.BPJS_SECRET_KEY;
-        String salt = CommonConstant.BPJS_CONS_ID +"&"+ getBpjsTimestamp();
+        String secretKey = "7eT69578CF";
+        String salt = "10356" +"&"+ getBpjsTimestamp();
 
         String generateHmacSHA256Signature = generateHmacSHA256Signature(salt, secretKey);
         String urlEncodedSign = URLEncoder.encode(generateHmacSHA256Signature, "UTF-8");

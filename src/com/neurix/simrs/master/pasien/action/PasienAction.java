@@ -22,10 +22,31 @@ public class PasienAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(PasienAction.class);
 
     private Pasien pasien;
+    private String userId;
     private PasienBo pasienBoProxy;
     private List<Pasien> listOfpasien = new ArrayList<>();
 
     private String tipe;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PasienAction.logger = logger;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public PasienBo getPasienBoProxy() {
+        return pasienBoProxy;
+    }
 
     public List<Pasien> getListOfpasien() {
         return listOfpasien;
@@ -373,7 +394,28 @@ public class PasienAction extends BaseMasterAction {
         logger.info("[PasienAction.printCard] end process <<<");
         return "print_card";
     }
+    public List listPasienWithId(String query) {
+        logger.info("[PasienAction.listPasienWithId] start process >>>");
 
+        List<Pasien> pasienList = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        try {
+            pasienList = pasienBo.getListOfPasienByQuery(query);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pasienBo.saveErrorMessage(e.getMessage(), "PasienAction.listPasienWithId");
+            } catch (GeneralBOException e1) {
+                logger.error("[PasienAction.listPasienWithId] Error when saving error,", e1);
+            }
+            logger.error("[PasienAction.listPasienWithId] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[PasienAction.listPasienWithId] end process <<<");
+        return pasienList;
+    }
     @Override
     public String initForm() {
         return "search";
@@ -407,6 +449,24 @@ public class PasienAction extends BaseMasterAction {
         return listOfPasien;
     }
 
+    public List getListComboPasienByBpjs(String query){
+        logger.info("[PasienAction.getListComboPasienByBpjs] start process >>>");
+
+        List<Pasien> listOfPasien = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        try {
+            listOfPasien = pasienBo.getListComboPasienByBpjs(query);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienAction.getListComboPasienByBpjs] Error when get combo pasien, please inform to your admin.", e);
+        }
+
+        logger.info("[PasienAction.getListComboPasienByBpjs] end process <<<");
+        return listOfPasien;
+    }
+
     public String getListComboSelectPasien(){
         logger.info("[PasienAction.getListComboSelectPasien] start process >>>");
 
@@ -424,8 +484,6 @@ public class PasienAction extends BaseMasterAction {
         logger.info("[PasienAction.getListComboSelectPasien] end process <<<");
         return SUCCESS;
     }
-
-
 
     public String getTipe() {
         return tipe;

@@ -60,6 +60,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String dateFrom = "";
             String dateTo = "";
 
+            String jenisPasien = "%";
+
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
             }
@@ -68,7 +70,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 nama = bean.getNamaPasien();
             }
 
-            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                 idPelayanan = bean.getIdPelayanan();
             }
 
@@ -86,6 +88,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
                 branchId = bean.getBranchId();
+            }
+
+            if(bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                jenisPasien = bean.getIdJenisPeriksaPasien();
             }
 
 
@@ -110,12 +116,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
+                    "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND hd.created_date > :dateFrom AND hd.created_date < :dateTo " +
+                SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')"+
                         "\n ORDER BY dt.tgl_antrian ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -125,6 +132,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("status", statusPeriksa)
                         .setParameter("dateFrom", dateFrom)
                         .setParameter("dateTo", dateTo)
+                        .setParameter("jenisPasien", jenisPasien)
                         .list();
 
             } else {
@@ -135,6 +143,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("idPasien", idPasien)
                         .setParameter("nama", nama)
                         .setParameter("idPelayanan", idPelayanan)
+                        .setParameter("jenisPasien", jenisPasien)
                         .setParameter("status", statusPeriksa)
                         .list();
             }
@@ -202,6 +211,31 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 .list();
 
         return results;
+    }
+
+    public BigInteger sumOfTindakanByNoCheckup(String noCheckup){
+
+        String SQL = "SELECT ck.no_checkup, SUM(tin.tarif_total) as total_tarif\n" +
+                "FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN it_simrs_header_detail_checkup dc ON dc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_tindakan_rawat WHERE flag = 'Y') tin ON tin.id_detail_checkup = dc.id_detail_checkup\n" +
+                "WHERE ck.no_checkup = :noCheckup\n" +
+                "GROUP BY ck.no_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noCheckup", noCheckup)
+                .list();
+
+        BigInteger result = new BigInteger(String.valueOf(0));
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                if (obj[1] != null){
+                    result = new BigInteger(obj[1].toString());
+                }
+            }
+        }
+
+        return result;
     }
 
     public String getNextId(){

@@ -11,7 +11,7 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        e-HEALTH
+        GO-HEALTH
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2019 <a href="#" style="color: #50d4a3">PT. Nusantara Medika Utama</a>.</strong> All rights reserved.

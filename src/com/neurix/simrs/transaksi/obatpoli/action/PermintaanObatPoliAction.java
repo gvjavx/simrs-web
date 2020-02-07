@@ -401,6 +401,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         obat.setIdPabrik(idPabrik);
         obat.setFlag("Y");
 
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 

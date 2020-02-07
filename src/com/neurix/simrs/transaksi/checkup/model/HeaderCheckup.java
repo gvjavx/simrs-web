@@ -1,8 +1,12 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
+import com.neurix.simrs.master.tindakan.model.Tindakan;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -66,6 +70,62 @@ public class HeaderCheckup {
 
     private String diagnosa;
     private String namaDiagnosa;
+    private String noBpjs;
+
+    private String noSep;
+    private String jenisTransaksi;
+    private BigDecimal tarifBpjs;
+    private List<Tindakan> tindakanList;
+
+    private BigDecimal tarifTindakan;
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
+    public List<Tindakan> getTindakanList() {
+        return tindakanList;
+    }
+
+    public void setTindakanList(List<Tindakan> tindakanList) {
+        this.tindakanList = tindakanList;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getJenisTransaksi() {
+        return jenisTransaksi;
+    }
+
+    public void setJenisTransaksi(String jenisTransaksi) {
+        this.jenisTransaksi = jenisTransaksi;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
 
     public String getNamaDiagnosa() {
         return namaDiagnosa;

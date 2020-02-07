@@ -119,7 +119,7 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                                <s:label id="jenis_periksa" name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
                                             </table>
                                         </td>
                                     </tr>
@@ -338,6 +338,46 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div id="status_bpjs" style="display: none">
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-8">
+                                <h5>
+                                    Cover Biaya Bpjs
+                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span></small>
+                                </h5>
+                                <div class="progress">
+                                    <div id="sts_cover_biaya">
+                                    </div>
+                                </div>
+                                <h5>
+                                    Total Biaya Tindakan
+                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_tindakan"></span></small>
+                                </h5>
+                                <div class="progress">
+                                    <div id="sts_biaya_tindakan">
+                                    </div>
+                                </div>
+                                <ul style="list-style-type: none">
+                                    <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan < 50% dari cover biaya Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan > 50% dan < 70% dari cover biaya Bpjs</li>
+                                    <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan > 70% dari cover biaya Bpjs</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -352,11 +392,11 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
-                                <td>Dokter</td>
-                                <td>Perawat</td>
-                                <td align="right">Tarif</td>
+                                <%--<td>Dokter</td>--%>
+                                <%--<td>Perawat</td>--%>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
-                                <td align="right">Total</td>
+                                <td align="center">Total (Rp.)</td>
                                 <td align="center">Action</td>
                                 <input type="hidden" id="tin_id_dokter">
                             </tr>
@@ -530,6 +570,10 @@
                                             class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                         Sedang Menyimpan...
                                     </button>
+                                    <button class="btn btn-primary" onclick="printGelangPasien()"
+                                            style="margin-top: 15px;"><i
+                                            class="fa fa-print"></i> Print
+                                    </button>
                                 </div>
                             </div>
                             <%--<div class="col-md-2">--%>
@@ -702,6 +746,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <%--<label style="margin-top: 7px"><s:property value="headerDetailCheckup.idJenisPeriksaPasien"/> </label>--%>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
@@ -716,25 +761,25 @@
                                id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
-                                    id="tin_id_perawat"
-                                    onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">
-                                <option value="">[select one]</option>
-                                <option value="1">Angel</option>
-                                <option value="2">Anya</option>
-                                <option value="3">Ayu</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_perawat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
+                                    <%--id="tin_id_perawat"--%>
+                                    <%--onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">--%>
+                                <%--<option value="">[select one]</option>--%>
+                                <%--<option value="1">Angel</option>--%>
+                                <%--<option value="2">Anya</option>--%>
+                                <%--<option value="3">Ayu</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">--%>
+                                <%--<i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_perawat"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -1285,6 +1330,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
+    var jenisPeriksa = $('#jenis_periksa').text();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -1317,8 +1363,98 @@
 
         });
 
+        hitungStatusBiaya();
 
     });
+
+    function printGelangPasien(){
+        window.open('printGelangPasien_checkupdetail.action?id='+noCheckup, '_blank');
+    }
+
+    function hitungStatusBiaya(){
+        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
+            if(response.jenisTransaksi == "bpjs"){
+                $('#status_bpjs').show();
+                if(response.tarifBpjs != null && response.tarifTindakan != null){
+
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = response.tarifTindakan;
+
+                    var persen = "";
+                    if(coverBiaya != '' && biayaTindakan){
+                        persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
+                    }else{
+                        persen = 0;
+                    }
+
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if(parseInt(persen) > 70){
+                        barClass = 'progress-bar-danger';
+                    }else if (parseInt(persen) > 50){
+                        barClass = 'progress-bar-warning';
+                    }else{
+                        barClass = 'progress-bar-success';
+                    }
+
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+
+                    var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+
+                    if(coverBiaya != ''){
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+                    }
+
+                    if(biayaTindakan != ''){
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+                    }
+                }
+            }else{
+                $('#status_bpjs').hide();
+            }
+        });
+    }
+
+    <%--function hitungStatusBiaya(){--%>
+
+        <%--var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';--%>
+        <%--var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';--%>
+
+        <%--var persen = "";--%>
+        <%--if(coverBiaya != '' && biayaTindakan){--%>
+            <%--persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);--%>
+        <%--}else{--%>
+            <%--persen = 0;--%>
+        <%--}--%>
+
+        <%--var barClass = "";--%>
+        <%--var barLabel = "";--%>
+
+        <%--if(parseInt(persen) > 70){--%>
+            <%--barClass = 'progress-bar-danger';--%>
+        <%--}else if (parseInt(persen) > 50){--%>
+            <%--barClass = 'progress-bar-warning';--%>
+        <%--}else{--%>
+            <%--barClass = 'progress-bar-success';--%>
+        <%--}--%>
+
+        <%--var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';--%>
+
+        <%--var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';--%>
+
+        <%--if(coverBiaya != ''){--%>
+            <%--$('#sts_cover_biaya').html(barBpjs);--%>
+            <%--$('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");--%>
+        <%--}--%>
+
+        <%--if(biayaTindakan != ''){--%>
+            <%--$('#sts_biaya_tindakan').html(barTindakan);--%>
+            <%--$('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");--%>
+        <%--}--%>
+    <%--}--%>
 
     function saveAlergi(id) {
         var alergi = $('#alergi').val();
@@ -1368,7 +1504,7 @@
                 $.each(response, function (i, item) {
                     table += "<tr>" +
                             "<td>" + item.alergi + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
                 });
             }
@@ -1705,7 +1841,7 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">' + "</td>" +
                             "</tr>";
                     dokter = item.idDokter;
                 });
@@ -1737,8 +1873,9 @@
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
         var idDokter = $('#tin_id_dokter').val();
-        var idPerawat = $('#tin_id_perawat').val();
+        var idPerawat = 1;
         var qty = $('#tin_qty').val();
+        var idJenisPeriksa = '<s:property value="headerDetailCheckup.idJenisPeriksaPasien"/>'
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
 
@@ -1747,11 +1884,12 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
+                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, idJenisPeriksa, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -1769,6 +1907,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -1832,6 +1971,7 @@
                     var tarifTotal = "-";
                     var trfTotal = 0;
                     var qtyTotal = 0;
+                    var perawat = "";
 
                     if (item.tarif != null) {
                         tarif = formatRupiah(item.tarif);
@@ -1844,21 +1984,24 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
+                    if(item.idPerawat != null){
+                       perawat = item.idPerawat;
+                    }
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
-                            "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
+//                            "<td>" + item.namaDokter + "</td>" +
+//                            "<td>" + perawat + "</td>" +
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
 
                 });
                 table = table + "<tr>" +
-                        "<td colspan='6'>Total</td>" +
+                        "<td colspan='4'>Total</td>" +
                         "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
@@ -1954,7 +2097,7 @@
                             "<td>" + id + "</td>" +
                             "<td>" + ket + "</td>" +
                             "<td>" + jen + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2013,7 +2156,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter) {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
 
             $('#save_lab').hide();
             $('#load_lab').show();
@@ -2092,7 +2235,7 @@
                             "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2265,7 +2408,7 @@
                             "<td>" + obat + "</td>" +
                             "<td align='center'>" + qty + "</td>" +
                             "<td>" + jenis + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2635,8 +2778,8 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
-                            ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                             "</td>" +
                             "</tr>"
                 });
@@ -2699,8 +2842,8 @@
                             '<option value="2 x 1 /Hari">2 x 1 /Hari</option>' +
                             '<option value="3 x 1 /Hari">3 x 1 /Hari</option>' +
                             '</select>' + "</td>" +
-                            "<td align='center'>" + '<img border="0" id=' + idObat + ' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
-                            '<img border="0" id=save' + idObat + ' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/save_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px; display: none">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" id=' + idObat + ' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            '<img border="0" id=save' + idObat + ' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-save-25.png"/>" style="cursor: pointer; display: none">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2711,7 +2854,7 @@
 
     function editObatResep(id, idObat, qty, ket, namaObat) {
 
-        if ($('#' + idObat).attr('src') == '/simrs/pages/images/edit-flat-new.png') {
+        if ($('#' + idObat).attr('src') == '/simrs/pages/images/icons8-create-25.png') {
             var url = '<s:url value="/pages/images/cnacel-flat.png"/>';
             $('#' + idObat).attr('src', url);
             $('#obat' + idObat).hide();
@@ -2724,7 +2867,7 @@
             $('#save' + idObat).show();
 
         } else {
-            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
+            var url = '<s:url value="/pages/images/icons8-create-25.png"/>';
             $('#' + idObat).attr('src', url);
             $('#obat' + idObat).show();
             $('#qty' + idObat).show();

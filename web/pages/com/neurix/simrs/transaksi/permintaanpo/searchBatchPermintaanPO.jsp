@@ -174,6 +174,7 @@
                                     <tr bgcolor="#90ee90">
                                         <td>No Batch</td>
                                         <td>Last Update</td>
+                                        <td>Status</td>
                                         <td align="center">Action</td>
                                     </tr>
                                     </thead>
@@ -186,14 +187,21 @@
                                         </span>
                                             </td>
                                             <td><s:property value="stLastUpdateWho"/></td>
+                                            <td>
+                                                <s:if test='#row.isApprove == "Y"'><span class="label label-warning">Prosess Approve</span></s:if>
+                                                <s:else><span class="label label-success">Telah di Approve</span></s:else>
+                                            </td>
                                             <td align="center">
                                                 <s:if test='#row.isApprove == "Y"'>
-                                                    <a onclick="updateBatch('<s:property value="noBatch"/>')" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                                    <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')" class="btn btn-success"><i class="fa fa-check"></i> Approve</a>
+                                                    <a onclick="updateBatch('<s:property value="noBatch"/>')">
+                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                    </a>
+                                                    <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')">
+                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-23.png"/>" style="cursor: pointer;">
+                                                    </a>
                                                 </s:if>
                                                 <s:else>
-                                                    <span class="label label-success">Telah di Approve</span>
-                                                    <button onclick="showDetailListObat('<s:property value="noBatch"/>')" class="btn btn-info"><i class="fa fa-print"></i> List Print Barcode</button>
+                                                    <img onclick="showDetailListObat('<s:property value="noBatch"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                                 </s:else>
                                                 <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
                                             </td>
@@ -248,7 +256,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_approve" onclick="approveBatch()"><i class="fa fa-arrow-right"></i> Konfirmasi
+                <button type="button" class="btn btn-success" id="save_approve" onclick="confirmDialog()"><i class="fa fa-arrow-right"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -290,6 +298,27 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con" onclick="approveBatch()"><i class="fa fa-arrow-right"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -357,8 +386,11 @@
         });
     }
 
+    function confirmDialog(){
+        $('#modal-confirm-dialog').modal('show');
+    }
     function approveBatch(){
-
+        $('#modal-confirm-dialog').modal('hide');
         var noBatch = $('#app_no_batch').val();
         $('#save_approve').hide();
         $('#load_approve').show();
@@ -396,7 +428,9 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
                                 "<td align='center'>" + item.jenisSatuan + "</td>" +
-                                "<td align='center'>" + '<a target="_blank" href="printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'" class="btn btn-primary"><i class="fa fa-print"></i></a>'+ "</td>" +
+                                "<td align='center'>" + '<a target="_blank" href="printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'">' +
+                                '<img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;"></a>'+
+                                "</td>" +
                                 "</tr>";
                     });
                     $('#loading_detail').hide();

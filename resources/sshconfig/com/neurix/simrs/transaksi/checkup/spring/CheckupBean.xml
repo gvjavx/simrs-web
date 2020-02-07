@@ -10,6 +10,7 @@
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:dokterBoProxy-ref="dokterBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
     />
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
@@ -18,7 +19,10 @@
           p:provinsiDao-ref="provinsiDao"
           p:dokterTeamDao-ref="dokterTeamDao"
           p:checkupAlergiDao-ref="checkupAlergiDao"
+          p:branchDao-ref="branchDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

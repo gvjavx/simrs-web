@@ -119,8 +119,9 @@
             <interceptor-ref name="mobileStack"/>
         </action>
 
-        <action name="testbpjs/*" class="com.neurix.hris.mobileapi.TestBpjsController">
+        <action name="bpjs/*" class="com.neurix.hris.mobileapi.BpjsController">
             <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
         </action>
 
         <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReturePermintaanObat" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -74,7 +74,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			<staticText>
 				<reportElement x="189" y="17" width="153" height="20" uuid="bc81f7c9-c28f-4030-861c-305cac8d2b33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Retur Permintaan Obat]]></text>
 			</staticText>
@@ -85,7 +85,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			<staticText>
 				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
@@ -94,39 +94,53 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			</line>
 			<staticText>
 				<reportElement x="0" y="88" width="37" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Untuk]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="69" width="37" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Dari]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="120" width="161" height="20" uuid="aa5e43ce-e967-4928-9a53-c8cab1710c00"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Daftar reture permintaan obat]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="32" y="68" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="32" y="88" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="37" y="68" width="189" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.namaPelayanan} == null ? "" : $P{reportParams.namaPelayanan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="37" y="88" width="189" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.dariPelayanan} == null ? "" : $P{reportParams.dariPelayanan}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -143,7 +157,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ID Barang]]></text>
 			</staticText>
@@ -157,7 +171,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Jenis Satuan]]></text>
 			</staticText>
@@ -171,7 +185,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qty Reture]]></text>
 			</staticText>
@@ -185,7 +199,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Obat]]></text>
 			</staticText>
@@ -202,7 +216,9 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{id_barang}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -214,7 +230,9 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{qty_app}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -226,7 +244,9 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{jenis_satuan}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -238,12 +258,22 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="114" splitType="Stretch"/>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="375" y="94" width="100" height="20" uuid="a60391a2-a845-4878-ad3e-ad9fb472fb22"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TTD]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>
