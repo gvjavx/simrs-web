@@ -12,6 +12,7 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
     <script type='text/javascript'>
 
@@ -199,7 +200,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
+                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" var="row">
                                 <tr>
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -208,7 +209,12 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        <s:if test='#row.klaimBpjsFlag == "Y"'>
+                                            <label class="text-center label label-warning">Sudah difinalisasi</label>
+                                        </s:if>
+                                        <s:else>
+                                            <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -228,7 +234,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Tindakan Rawat Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Finalisasi & Kirim Online E-Klaim</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tin">
@@ -266,10 +272,10 @@
                                     <td><b>Tempat, TGL Lahir</b></td>
                                     <td><span id="det_tgl"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                    <%--<td><b>Agama</b></td>--%>
-                                    <%--<td><span id="det_agama"></span></td>--%>
-                                <%--</tr>--%>
+                                <tr>
+                                    <td><b>Diagnosa Awal</b></td>
+                                    <td><span id="det_diagnosa"></span></td>
+                                </tr>
                                 <%--<tr>--%>
                                     <%--<td><b>Suku</b></td>--%>
                                     <%--<td><span id="det_suku"></span></td>--%>
@@ -305,21 +311,55 @@
                     </div>
                 </div>
                 <input type="hidden" id="tin_id_detail_checkup">
-                <div class="box-header with-border"></div>
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-medkit"></i> Data Diagnosa</h3>
+                </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>
+                                Cover Biaya Bpjs
+                                <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span></small>
+                            </h5>
+                            <div class="progress">
+                                <div id="sts_cover_biaya">
+                                </div>
+                            </div>
+                            <h5>
+                                Total Biaya Tindakan
+                                <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_tindakan"></span></small>
+                            </h5>
+                            <div class="progress">
+                                <div id="sts_biaya_tindakan">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Keterangan</h5>
+                            <ul style="list-style-type: none">
+                                <small><li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs</li></small>
+                                <small><li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan < 50% </li></small>
+                                <small><li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan > 50% dan < 70%</li></small>
+                                <small><li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan > 70%</li></small>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_ts">
+                    <table class="table table-bordered table-striped" id="tabel_detail">
                         <thead>
                         <tr bgcolor="#90ee90">
                             <td>Nama Tindakan</td>
-                            <td align="center">Kategori</td>
-                            <td align="center">Action</td>
+                            <td>Kategori Bpjs</td>
+                            <td align="center">Qty</td>
+                            <td align="center">Tarif (Rp.)</td>
+                            <td align="center">Total Tarif (Rp.)</td>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan">
@@ -330,7 +370,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_verif"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_verif"><i class="fa fa-arrow-right"></i> Finalisasi Klaim
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_verif"><i
@@ -340,6 +380,40 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-send-klaim">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-check-square"></i> Konfirmasi Kirim Eklaim
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_send">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_send"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_send">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_send2"></p>
+                </div>
+                <h4 class="text-center">Kirim Final Klaim..!</h4>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_send"><i class="fa fa-arrow-right"></i> Kirim Klaim</button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_send"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
@@ -363,7 +437,16 @@
 </div>
 
 <script type='text/javascript'>
+
+    function formatRupiah(angka) {
+        var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+    }
+
     function detailTindakan(idCheckup, idDetailCheckup) {
+
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -379,7 +462,8 @@
         var kabupaten = "";
         var kecamatan = "";
         var desa = "";
-        var tindakan = "";
+        var idDignosa = "";
+        var namaDiagnosa = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -420,43 +504,88 @@
 
             VerifikatorAction.getListTindakanRawat(idDetailCheckup, function (response) {
                 dataTindakan = response;
+                console.log(dataTindakan);
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
 
-                        if (item.namaTindakan) {
+                        var tindakan = "";
+                        var qty = "";
+                        var tarif = "";
+                        var totalTarif = "";
+                        var kategori = "";
+
+                        if (item.namaTindakan != null ) {
                             tindakan = item.namaTindakan;
+                        }
+                        if (item.qty != null) {
+                            qty = item.qty;
+                        }
+                        if (item.tarif != null) {
+                            tarif = item.tarif;
+                        }
+                        if (item.tarifTotal != null) {
+                            totalTarif = item.tarifTotal;
+                        }
+                        if (item.kategoriTindakanBpjs != null) {
+                            kategori = item.kategoriTindakanBpjs;
                         }
 
                         table += "<tr>" +
                                 "<td>" + tindakan + "</td>" +
-                                "<td>" +
-                                '<select class="form-control" id="kategori'+i+'">' +
-                                '<option value="">[Select One]</option>'+
-                                '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
-                                '<option value="tenaga_ahli">Tenaga Ahli</option>'+
-                                '<option value="radiologi">Radiologi</option>'+
-                                '<option value="rehabilitasi">Rehabilitasi</option>'+
-                                '<option value="obat">Obat</option>'+
-                                '<option value="alkes">Alkes</option>'+
-
-                                '<option value="prosedur_bedah">Prosedur Bedah</option>'+
-                                '<option value="keperawatan">Keperawatan</option>'+
-                                '<option value="laboratorium">Laboratorium</option>'+
-                                '<option value="kamar_akomodasi">Kamar / Akomodasi</option>'+
-                                '<option value="obat_kronis">Obat Kronis</option>'+
-                                '<option value="bmhp">BMHP</option>'+
-
-                                '<option value="konsultasi">Konsultasi</option>'+
-                                '<option value="penunjang">Penunjang</option>'+
-                                '<option value="pelayanan_darah">Pelayanan Darah</option>'+
-                                '<option value="rawat_intensif">Rawat Intensif</option>'+
-                                '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
-                                '<option value="sewa_alat">Sewa Alat</option>'+
-                                '</select>' + "</td>" +
-                                "<td align='center'>" +'<input type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" onclick="updateApproveFlag(\''+item.idTindakanRawat+'\',\''+i+'\')" src="<s:url value="/pages/images/icons8-edit-25.png"/>">' + "</td>" +
+                                "<td>" + kategori +"</td>" +
+                                "<td align='right'>" + qty +"</td>" +
+                                "<td align='right'>" + formatRupiah(tarif) +"</td>" +
+                                "<td align='right'>" + formatRupiah(totalTarif) +"</td>" +
                                 "</tr>";
                     });
                 }
+            });
+
+            CheckupAction.getDiagnosaRawatPasien(idDetailCheckup, function (response) {
+                if(response != null){
+                    idDignosa = response.idDignosa;
+                    namaDiagnosa = response.keteranganDiagnosa;
+                }
+            });
+
+            CheckupDetailAction.getStatusBiayaTindakan(idCheckup, function (response) {
+                    if(response.tarifBpjs != null && response.tarifTindakan != null){
+
+                        var coverBiaya = response.tarifBpjs;
+                        var biayaTindakan = response.tarifTindakan;
+
+                        var persen = "";
+                        if(coverBiaya != '' && biayaTindakan){
+                            persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
+                        }else{
+                            persen = 0;
+                        }
+
+                        var barClass = "";
+                        var barLabel = "";
+
+                        if(parseInt(persen) > 70){
+                            barClass = 'progress-bar-danger';
+                        }else if (parseInt(persen) > 50){
+                            barClass = 'progress-bar-warning';
+                        }else{
+                            barClass = 'progress-bar-success';
+                        }
+
+                        var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+
+                        var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+
+                        if(coverBiaya != ''){
+                            $('#sts_cover_biaya').html(barBpjs);
+                            $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+                        }
+
+                        if(biayaTindakan != ''){
+                            $('#sts_biaya_tindakan').html(barTindakan);
+                            $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+                        }
+                    }
             });
 
             $('#det_no_checkup').html(noCheckup);
@@ -471,88 +600,79 @@
             $('#det_kabupaten').html(kabupaten);
             $('#det_kecamatan').html(kecamatan);
             $('#det_desa').html(desa);
+            $('#det_diagnosa').html(namaDiagnosa);
             $('#body_tindakan').html(table);
             $('#tin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
+            $('#save_verif').attr('onclick','confirmSaveApproveKlamin(\''+idCheckup+'\')');
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);
     }
 
-    function toSelect2(i){
-        $('#ts'+i).select2();
-    }
-
-    function updateApproveFlag(idTindakan, i){
-        var kategoriBpjs = $('#kategori'+i).val();
-
-        if(kategoriBpjs != ''){
-            var url = '<s:url value="/pages/images/spinner.gif"/>'
-            $('#btn'+i).attr('src',url).css('width', '30px', 'height', '40px');
-            dwr.engine.setAsync(true);
-            VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, {
-                callback: function (response) {
-                if (response.status == "success"){
-                    var url = "<s:url value="/pages/images/icon_success.ico"/>";
-                    $('#btn'+i).attr('src',url).css('width', '', 'height', '');
-                    $('#btn'+i).removeAttr("class");
-                    $('#btn'+i).removeAttr("style");
-                    $('#btn'+i).removeAttr("onclick");
-                    $('#status'+i).val(1);
-                    $('#msg_tin2').text(response.message);
-                    $('#success_tin').show().fadeOut(5000);
-                }else{
-                    var url = "<s:url value="/pages/images/icons8-edit-25.png"/>";
-                    $('#btn'+i).attr('src',url).css('width', '', 'height', '');
-                    $('#msg_tin').text(response.message);
-                    $('#warning_tin').show().fadeOut(5000);
-                }
-            }});
-        }else{
-            $('#msg_tin').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
-            $('#warning_tin').show().fadeOut(5000);
-        }
-    }
-
-    function confirmSaveApproveTindakan(idDetailCheckup){
+    function confirmSaveApproveKlamin(idCheckup){
         var data = $('#tabel_tindakan_ts').tableToJSON();
         var cek = false;
-
-        //cek select kategori tindakan
-        $.each(data, function (i, item) {
-            var kategori = $('#kategori' + i).val();
-            var status   = $('#status'+i).val();
-            if (kategori == "" || status == "") {
-                cek = true;
-            }
-        });
 
         if (cek) {
             $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih kemudian klik icon di pinggir untuk konfirmasi...!");
             $('#warning_tin').show().fadeOut(5000);
         } else {
-            $('#save_con').attr('onclick','saveApproveTindakan(\''+idDetailCheckup+'\')');
+            $('#save_con').attr('onclick','saveApproveKlaim(\''+idCheckup+'\')');
             $('#modal-confirm-dialog').modal('show');
         }
 
     }
 
-    function saveApproveTindakan(idDetailCheckup) {
+    function saveApproveKlaim(idCheckup) {
         $('#modal-confirm-dialog').modal('hide');
         $('#load_verif').show();
         $('#save_verif').hide();
         dwr.engine.setAsync(true);
-        VerifikatorAction.saveApproveTindakan(idDetailCheckup, {
+        VerifikatorAction.finalClaim(idCheckup, {
             callback:function (response) {
+                console.log(response);
                 if(response.status == "200"){
                     $('#load_verif').hide();
                     $('#save_verif').show();
-                    $('#modal-detail-pasien').modal('hide');
-                    $('#info_dialog').dialog('open');
+                    $('#msg_tin2').text(response.message);
+                    $('#warning_tin').show().fadeOut(5000);
+                    $('#modal-send-klaim').modal({show:true, backdrop:'static'});
+                    $('#save_send').attr('onclick','confirmSendKlaim(\''+idCheckup+'\')');
+//                    $('#modal-detail-pasien').modal('hide');
+//                    $('#info_dialog').dialog('open');
                 }else{
                     $('#load_verif').hide();
                     $('#save_verif').show();
                     $('#msg_tin').text(response.message);
                     $('#warning_tin').show().fadeOut(5000);
+                }
+            }
+        });
+    }
+
+    function confirmSendKlaim(idCheckup){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','sendKlaim(\''+idCheckup+'\')');
+    }
+
+    function sendKlaim(idCheckup){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#load_send').show();
+        $('#save_send').hide();
+        dwr.engine.setAsync(true);
+        VerifikatorAction.sendClaimOnline(idCheckup, {
+            callback:function (response) {
+                console.log(response);
+                if(response.status == "200"){
+                    $('#load_verif').hide();
+                    $('#save_verif').show();
+                    $('#modal-send-klaim').modal('hide');
+                    $('#modal-detail-pasien').modal('hide');
+                    $('#info_dialog').dialog('open');
+                }else{
+                    $('#load_send').hide();
+                    $('#save_send').show();
+                    $('#msg_send').text(response.message);
+                    $('#warning_send').show().fadeOut(5000);
                 }
             }
         });

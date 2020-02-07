@@ -11,6 +11,8 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:dokterBoProxy-ref="dokterBoProxy"
           p:pasienBoProxy-ref="pasienBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
     />
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"

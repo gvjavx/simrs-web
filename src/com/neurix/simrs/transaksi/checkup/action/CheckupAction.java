@@ -12,6 +12,8 @@ import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
 import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
 import com.neurix.simrs.bpjs.vclaim.model.SepResponse;
+import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
@@ -67,6 +69,11 @@ public class CheckupAction extends BaseMasterAction {
     private EklaimBo eklaimBoProxy;
     private TindakanRawatBo tindakanRawatBoProxy;
     private DiagnosaRawatBo diagnosaRawatBoProxy;
+    private DiagnosaBo diagnosaBoProxy;
+
+    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
+        this.diagnosaBoProxy = diagnosaBoProxy;
+    }
 
     public void setDiagnosaRawatBoProxy(DiagnosaRawatBo diagnosaRawatBoProxy) {
         this.diagnosaRawatBoProxy = diagnosaRawatBoProxy;
@@ -471,77 +478,81 @@ public class CheckupAction extends BaseMasterAction {
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String noCheckup = "CKP" + checkupBoProxy.getNextHeaderId();
+        long millis = System.currentTimeMillis();
+        java.util.Date dateNow = new java.util.Date(millis);
+        String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
         //jika bpjs
-        if ("bpjs".equalsIgnoreCase(checkup.getJenisTransaksi())) {
+        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
-            SepRequest sepRequest = new SepRequest();
-            sepRequest.setNoKartu("0001543129907");
-            sepRequest.setTglSep("2020-02-05");
-            sepRequest.setPpkPelayanan("1311R003");
-            sepRequest.setJnsPelayanan("2");
-            sepRequest.setKlsRawat("3");
-            sepRequest.setNoMr("123456");
-            sepRequest.setAsalRujukan("1");
-            sepRequest.setTglRujukan("2020-01-31");
-            sepRequest.setNoRujukan("0189B0220120P000650");
-            sepRequest.setPpkRujukan("0189B022");
-            sepRequest.setCatatan("test");
-            sepRequest.setDiagAwal("I63");
-            sepRequest.setPoliTujuan("IGD");
-            sepRequest.setPoliEksekutif("0");
-            sepRequest.setCob("0");
-            sepRequest.setKatarak("0");
-            sepRequest.setLakaLantas("0");
-            sepRequest.setPenjamin("");
-            sepRequest.setTglKejadian("");
-            sepRequest.setKeterangan("");
-            sepRequest.setSuplesi("0");
-            sepRequest.setNoSepSuplesi("");
-            sepRequest.setKdProvinsiLakaLantas("");
-            sepRequest.setKdKecamatanLakaLantas("");
-            sepRequest.setKdKabupatenLakaLantas("");
-            sepRequest.setNoSuratSkdp("000002");
-            sepRequest.setKodeDpjp("31661");
-            sepRequest.setNoTelp("081919999");
-            sepRequest.setUserPembuatSep("Coba Ws");
-
-            SepResponse response = new SepResponse();
+            List<Pasien> pasienList = new ArrayList<>();
+            Pasien pasien = new Pasien();
+            pasien.setIdPasien(checkup.getIdPasien());
+            pasien.setFlag("Y");
 
             try {
-                response = bpjsBoProxy.insertSepBpjs(sepRequest, "RS01");
-            } catch (Exception e) {
+                pasienList = pasienBoProxy.getByCriteria(pasien);
+            } catch (GeneralBOException e) {
                 Long logId = null;
-                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when insert SEP.\n" + e.getMessage());
+                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when search id pasien, please inform to your admin.\n" + e.getMessage());
                 return ERROR;
             }
 
-            if (response.getNoSep() != null) {
+            if (pasienList.size() > 0) {
 
-                genNoSep = response.getNoSep();
-                logger.info("[CheckupAction.saveAdd] NO. SEP : " + genNoSep);
+                Pasien getPasien = pasienList.get(0);
 
-                List<Pasien> pasienList = new ArrayList<>();
-                Pasien pasien = new Pasien();
-                pasien.setIdPasien(checkup.getIdPasien());
-                pasien.setFlag("Y");
+                SepRequest sepRequest = new SepRequest();
+                sepRequest.setNoKartu(getPasien.getNoBpjs());
+                sepRequest.setTglSep(dateToday);
+                sepRequest.setPpkPelayanan("1311R003");
+                sepRequest.setJnsPelayanan("2");
+                sepRequest.setKlsRawat("3");
+                sepRequest.setNoMr("123456");
+                sepRequest.setAsalRujukan("1");
+                sepRequest.setTglRujukan(checkup.getTglRujukan());
+                sepRequest.setNoRujukan(checkup.getNoRujukan());
+                sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+                sepRequest.setCatatan("test");
+                sepRequest.setDiagAwal("I63");
+                sepRequest.setPoliTujuan("IGD");
+                sepRequest.setPoliEksekutif("0");
+                sepRequest.setCob("0");
+                sepRequest.setKatarak("0");
+                sepRequest.setLakaLantas("0");
+                sepRequest.setPenjamin("");
+                sepRequest.setTglKejadian("");
+                sepRequest.setKeterangan("");
+                sepRequest.setSuplesi("0");
+                sepRequest.setNoSepSuplesi("");
+                sepRequest.setKdProvinsiLakaLantas("");
+                sepRequest.setKdKecamatanLakaLantas("");
+                sepRequest.setKdKabupatenLakaLantas("");
+                sepRequest.setNoSuratSkdp("000002");
+                sepRequest.setKodeDpjp("31661");
+                sepRequest.setNoTelp("081919999");
+                sepRequest.setUserPembuatSep("Coba Ws");
+
+                SepResponse response = new SepResponse();
 
                 try {
-                    pasienList = pasienBoProxy.getByCriteria(pasien);
-                } catch (GeneralBOException e) {
+                    response = bpjsBoProxy.insertSepBpjs(sepRequest, "RS01");
+                } catch (Exception e) {
                     Long logId = null;
-                    logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when search id pasien, please inform to your admin.\n" + e.getMessage());
+                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when insert SEP.\n" + e.getMessage());
                     return ERROR;
                 }
 
-                if (pasienList.size() > 0) {
+                if (response.getNoSep() != null) {
 
-                    Pasien getPasien = pasienList.get(0);
+                    genNoSep = response.getNoSep();
+                    logger.info("[CheckupAction.saveAdd] NO. SEP : " + genNoSep);
+
                     KlaimRequest klaimRequest = new KlaimRequest();
                     klaimRequest.setNoSep(genNoSep);
-                    klaimRequest.setNoKartu(getPasien.getNoKtp());
+                    klaimRequest.setNoKartu(getPasien.getNoBpjs());
                     klaimRequest.setNoRm(getPasien.getIdPasien());
                     klaimRequest.setNamaPasien(getPasien.getNama());
                     klaimRequest.setTglLahir(getPasien.getTglLahir());
@@ -687,6 +698,27 @@ public class CheckupAction extends BaseMasterAction {
                     }
                 }
 
+            }
+        }
+
+        if(checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
+           && checkup.getNamaDiagnosa() != null && !"".equalsIgnoreCase(checkup.getNamaDiagnosa())){
+            //diagnosa ambil dari depan...
+        }else{
+            List<Diagnosa> diagnosaList = new ArrayList<>();
+            Diagnosa diagnosaResult = new Diagnosa();
+
+            Diagnosa diagnosa = new Diagnosa();
+            diagnosa.setIdDiagnosa(checkup.getDiagnosa());
+
+            try {
+                diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
+            }catch (GeneralBOException e){
+                logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+            if (!diagnosaList.isEmpty()){
+                diagnosaResult = diagnosaList.get(0);
+                checkup.setNamaDiagnosa(diagnosaResult.getDescOfDiagnosa());
             }
         }
 
@@ -851,7 +883,6 @@ public class CheckupAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
-        DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
         try {
             headerCheckupList = checkupBo.getByCriteria(headerCheckup);
@@ -859,33 +890,31 @@ public class CheckupAction extends BaseMasterAction {
             logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data, please inform to your admin.", e);
         }
 
-        HeaderCheckup checkup = new HeaderCheckup();
-        if(headerCheckupList.size() > 0){
-            checkup = headerCheckupList.get(0);
-
-            if(checkup != null){
-
-                List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
-                DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-                diagnosaRawat.setIdDetailCheckup(headerCheckup.getIdDetailCheckup());
-
-                try {
-                    diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
-                }catch (GeneralBOException e){
-                    logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data diagnosa, please inform to your admin.", e);
-                }
-
-                if (diagnosaRawatList.size() > 0){
-                    for (DiagnosaRawat rawat: diagnosaRawatList){
-                        headerCheckup.setDiagnosa(rawat.getIdDiagnosa());
-                        headerCheckup.setNamaDiagnosa(rawat.getKeteranganDiagnosa());
-                    }
-                }
-            }
-        }
-
         logger.info("[CheckupAction.listDataPasien] end process >>>");
         return headerCheckupList;
+    }
+
+    public DiagnosaRawat getDiagnosaRawatPasien(String idDetail) {
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] start process >>>");
+        DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+        diagnosaRawat.setIdDetailCheckup(idDetail);
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
+
+        List<DiagnosaRawat> diagnosaRawatList = new ArrayList<>();
+
+        try {
+            diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupAction.getDiagnosaRawatPasien] Error when searching diagnosa pasien, Found problem when searching data, please inform to your admin.", e);
+        }
+
+        if (diagnosaRawatList.size() > 0) {
+            diagnosaRawat = diagnosaRawatList.get(0);
+        }
+
+        logger.info("[CheckupAction.getDiagnosaRawatPasien] end process >>>");
+        return diagnosaRawat;
     }
 
     public List<HeaderDetailCheckup> listRiwayatPasien(String noCheckup) {

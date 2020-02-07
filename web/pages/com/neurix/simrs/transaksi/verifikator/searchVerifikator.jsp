@@ -372,7 +372,6 @@
         var kabupaten = "";
         var kecamatan = "";
         var desa = "";
-        var tindakan = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -415,14 +414,12 @@
                 dataTindakan = response;
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
+                        var tindakan    = "";
+                        var statusVal   = "";
+                        var btn         = "<s:url value="/pages/images/icons8-edit-25.png"/>";
+                        var onclick     = 'onclick="updateApproveFlag(\''+item.idTindakanRawat+'\',\''+i+'\')"';
 
-                        if (item.namaTindakan) {
-                            tindakan = item.namaTindakan;
-                        }
-
-                        table += "<tr>" +
-                                "<td>" + tindakan + "</td>" +
-                                "<td>" +
+                        var kategori =
                                 '<select class="form-control" id="kategori'+i+'">' +
                                 '<option value="">[Select One]</option>'+
                                 '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
@@ -445,8 +442,25 @@
                                 '<option value="rawat_intensif">Rawat Intensif</option>'+
                                 '<option value="obat_kemoterapi">Obat Kemoterapi</option>'+
                                 '<option value="sewa_alat">Sewa Alat</option>'+
-                                '</select>' + "</td>" +
-                                "<td align='center'>" +'<input type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" onclick="updateApproveFlag(\''+item.idTindakanRawat+'\',\''+i+'\')" src="<s:url value="/pages/images/icons8-edit-25.png"/>">' + "</td>" +
+                                '</select>';
+
+                        if (item.namaTindakan) {
+                            tindakan = item.namaTindakan;
+                        }
+
+                        if (item.kategoriTindakanBpjs != null) {
+                            kategori =  '<select class="form-control" id="kategori'+i+'" disabled>' +
+                                        '<option value="'+item.kategoriTindakanBpjs+'">'+item.kategoriTindakanBpjs+'</option>'
+                                        '</select>';
+                            statusVal = 1;
+                            btn = "<s:url value="/pages/images/icon_success.ico"/>";
+                            onclick = "";
+                        }
+
+                        table += "<tr>" +
+                                "<td>" + tindakan + "</td>" +
+                                "<td>" + kategori + "</td>" +
+                                "<td align='center'>" +'<input value="'+statusVal+'" type="hidden" id="status'+i+'">'+ '<img id="btn'+i+'" class="hvr-grow" style="cursor: pointer" '+onclick+' src="'+btn+'">' + "</td>" +
                                 "</tr>";
                     });
                 }

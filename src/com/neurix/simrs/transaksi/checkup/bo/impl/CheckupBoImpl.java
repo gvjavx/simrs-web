@@ -273,8 +273,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
             headerEntity.setNoSep(bean.getNoSep());
-            headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
+            headerEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
             headerEntity.setTarifBpjs(bean.getTarifBpjs());
+            headerEntity.setNoRujukan(bean.getNoRujukan());
+            headerEntity.setNoPpkRujukan(bean.getNoPpkRujukan());
+            if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
+                headerEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
+            }
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);

@@ -12,6 +12,7 @@
 
     <bean id="verifikatorBo" class="com.neurix.simrs.transaksi.verifikator.bo.impl.VerifikatorBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:checkupDao-ref="headerCheckupDao"
     />
 
     <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

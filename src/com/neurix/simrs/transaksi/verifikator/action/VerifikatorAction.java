@@ -5,10 +5,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
-import com.neurix.simrs.bpjs.eklaim.model.DataPerKlaimResponse;
-import com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse;
-import com.neurix.simrs.bpjs.eklaim.model.KlaimDetailRequest;
-import com.neurix.simrs.bpjs.eklaim.model.KlaimDetailResponse;
+import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
@@ -37,6 +34,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class VerifikatorAction extends BaseMasterAction {
@@ -542,15 +540,48 @@ public class VerifikatorAction extends BaseMasterAction {
                         klaimDetailRequest.setCoderNik("123456");
 
                         KlaimDetailResponse klaimDetailResponse = new KlaimDetailResponse();
+
                         //update eklaim with new tarif tindakan
                         try {
                             klaimDetailResponse = eklaimBo.updateDataClaimEklaim(klaimDetailRequest, unitId);
+                            response.setStatus(klaimDetailResponse.getStatus());
+                            response.setMessage(klaimDetailResponse.getMessage());
                         } catch (GeneralBOException e) {
                             logger.error("[VerifikatorAction.saveApproveTindakan] Error When update tarif tindakan to eklaim", e);
+                            response.setStatus("error");
+                            response.setMessage("[VerifikatorAction.saveApproveTindakan] Found Error: " + e);
                         }
 
-                        response.setStatus(klaimDetailResponse.getStatus());
-                        response.setMessage(klaimDetailResponse.getMessage());
+                        if (klaimDetailResponse != null) {
+                            if ("200".equalsIgnoreCase(klaimDetailResponse.getStatus())) {
+                                Grouping1Response grouping1Response = new Grouping1Response();
+
+                                //groper setelah update tarif tindakan
+                                try {
+                                    grouping1Response = eklaimBo.groupingStage1Eklaim(checkup.getNoSep(), unitId);
+                                } catch (GeneralBOException e) {
+                                    logger.error("[CheckupAction.saveAdd] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
+                                    response.setStatus("error");
+                                    response.setMessage("[VerifikatorAction.saveApproveTindakan] Found Error: " + e);
+                                }
+
+                                // jika ada special cmg maka proses grouping stage 2
+                                if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
+
+                                    for (Grouping1SpecialCmgResponse specialCmgResponse : grouping1Response.getSpecialCmgResponseList()) {
+
+                                        Grouping2Response grouping2Response = new Grouping2Response();
+                                        try {
+                                            grouping2Response = eklaimBo.groupingStage2Eklaim(checkup.getNoSep(), specialCmgResponse.getCode(), unitId);
+                                        } catch (GeneralBOException e) {
+                                            logger.error("[CheckupAction.saveAdd] Error when adding item ,Found problem when saving add data, please inform to your admin.", e);
+                                            response.setStatus("error");
+                                            response.setMessage("[VerifikatorAction.saveApproveTindakan] Found Error: " + e);
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
                     }
                 }
@@ -561,10 +592,10 @@ public class VerifikatorAction extends BaseMasterAction {
         return response;
     }
 
-    public KlaimDataCenterResponse finalClaim(String noCheckup) {
+    public CheckResponse finalClaim(String noCheckup) {
         logger.info("[VerifikatorAction.finalClaim] START process <<<");
 
-        KlaimDataCenterResponse dataCenterResponse = new KlaimDataCenterResponse();
+        CheckResponse response = new CheckResponse();
 
         String unitId = CommonUtil.userBranchLogin();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -588,42 +619,95 @@ public class VerifikatorAction extends BaseMasterAction {
             checkup = headerCheckupList.get(0);
             if (checkup != null) {
 
-                CheckResponse response = new CheckResponse();
-
                 try {
                     response = eklaimBo.finalisasiClaimEklaim(checkup.getNoSep(), "123456", unitId);
-                }catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     logger.error("[VerifikatorAction.finalClaim] Error When final claim", e);
                 }
+            }
+        }
 
-                if("200".equalsIgnoreCase(response.getStatus())){
+        logger.info("[VerifikatorAction.finalClaim] END process <<<");
+        return response;
+    }
 
-                    List<KlaimDataCenterResponse> klaimDataCenterResponses = new ArrayList<>();
+    public KlaimDataCenterResponse sendClaimOnline(String noCheckup) {
+        logger.info("[VerifikatorAction.sendClaimOnline] START process <<<");
 
-                    try {
-                        klaimDataCenterResponses = eklaimBo.kirimKeDataCenterPerSepEklaim(checkup.getNoSep(), unitId);
-                    }catch (GeneralBOException e){
-                        logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+        KlaimDataCenterResponse dataCenterResponse = new KlaimDataCenterResponse();
+        String unitId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
+        VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+
+        try {
+            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorAction.sendClaimOnline] Error When Get Header Checkup Data", e);
+        }
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        if (!headerCheckupList.isEmpty()) {
+            checkup = headerCheckupList.get(0);
+            if (checkup != null) {
+                List<KlaimDataCenterResponse> klaimDataCenterResponses = new ArrayList<>();
+
+                try {
+                    klaimDataCenterResponses = eklaimBo.kirimKeDataCenterPerSepEklaim(checkup.getNoSep(), unitId);
+                } catch (GeneralBOException e) {
+                    logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+                }
+
+                KlaimDataCenterResponse detailResponse = new KlaimDataCenterResponse();
+                if (!klaimDataCenterResponses.isEmpty()) {
+                    detailResponse = klaimDataCenterResponses.get(0);
+
+                    if (detailResponse != null) {
+                        dataCenterResponse.setBpjsDcStatus(detailResponse.getBpjsDcStatus());
+                        dataCenterResponse.setCobDcStatus(detailResponse.getCobDcStatus());
+                        dataCenterResponse.setKemkesDcStatus(detailResponse.getKemkesDcStatus());
+                        dataCenterResponse.setKemkesDcStatus(detailResponse.getKemkesDcStatus());
+                        dataCenterResponse.setSEP(detailResponse.getSEP());
+                        dataCenterResponse.setTglPulang(detailResponse.getTglPulang());
+                        dataCenterResponse.setStatus(detailResponse.getStatus());
+                        dataCenterResponse.setMessage(detailResponse.getMessage());
                     }
 
-                    KlaimDataCenterResponse detailResponse = new KlaimDataCenterResponse();
-                    if(!klaimDataCenterResponses.isEmpty()){
-                        detailResponse = klaimDataCenterResponses.get(0);
+                    if("200".equalsIgnoreCase(detailResponse.getStatus())){
 
-                        if(detailResponse != null){
-                            dataCenterResponse.setBpjsDcStatus(detailResponse.getBpjsDcStatus());
-                            dataCenterResponse.setCobDcStatus(detailResponse.getCobDcStatus());
-                            dataCenterResponse.setKemkesDcStatus(detailResponse.getKemkesDcStatus());
-                            dataCenterResponse.setKemkesDcStatus(detailResponse.getKemkesDcStatus());
-                            dataCenterResponse.setSEP(detailResponse.getSEP());
-                            dataCenterResponse.setTglPulang(detailResponse.getTglPulang());
+                        String userLogin = CommonUtil.userLogin();
+                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                        HeaderCheckup header = new HeaderCheckup();
+                        header.setNoCheckup(checkup.getNoCheckup());
+                        header.setLastUpdateWho(userLogin);
+                        header.setLastUpdate(updateTime);
+
+                        CheckResponse response = new CheckResponse();
+
+                        try {
+                            response = verifikatorBo.updateKlaimBpjsFlag(header);
+                        }catch (HibernateException e){
+                            logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+                        }
+
+                        if(response != null){
+                            dataCenterResponse.setStatus(response.getStatus());
+                            dataCenterResponse.setMessage(response.getMessage());
                         }
                     }
                 }
             }
         }
 
-        logger.info("[VerifikatorAction.finalClaim] END process <<<");
+        logger.info("[VerifikatorAction.sendClaimOnline] END process <<<");
         return dataCenterResponse;
     }
 

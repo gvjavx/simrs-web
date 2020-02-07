@@ -394,6 +394,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+
         try {
             headerCheckupList = checkupBo.getByCriteria(headerCheckup);
         } catch (GeneralBOException e){

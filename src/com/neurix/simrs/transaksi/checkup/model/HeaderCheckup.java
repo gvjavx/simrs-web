@@ -78,6 +78,42 @@ public class HeaderCheckup {
     private List<Tindakan> tindakanList;
 
     private BigDecimal tarifTindakan;
+    private String noRujukan;
+    private String noPpkRujukan;
+    private String tglRujukan;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getNoPpkRujukan() {
+        return noPpkRujukan;
+    }
+
+    public void setNoPpkRujukan(String noPpkRujukan) {
+        this.noPpkRujukan = noPpkRujukan;
+    }
+
+    public String getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(String tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
 
     public BigDecimal getTarifTindakan() {
         return tarifTindakan;

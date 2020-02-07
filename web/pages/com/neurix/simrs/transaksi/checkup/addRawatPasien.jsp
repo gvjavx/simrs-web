@@ -97,8 +97,8 @@
                     && desa != '') {
 
                 if (tipe == "bpjs") {
-
-                    if(diagnosa != ''){
+//
+//                    if(diagnosa != ''){
                         if (status != '') {
                             $('#confirm_dialog').dialog('open');
                         } else {
@@ -106,12 +106,12 @@
                             $('#warning_pasien').show().fadeOut(10000);
                             $('#msg_pasien').text("Silahkan cek status BPJS terlebih dahulu...!");
                         }
-                    }else{
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali inputan data pasien...!");
-                        $('#diagnosa_awal').css('border','red solid 1px');
-                    }
+//                    }else{
+//                        $("html, body").animate({scrollTop: 0}, 600);
+//                        $('#warning_pasien').show().fadeOut(10000);
+//                        $('#msg_pasien').text("Silahkan cek kembali inputan data pasien...!");
+//                        $('#diagnosa_awal').css('border','red solid 1px');
+//                    }
                 } else {
                     $('#confirm_dialog').dialog('open');
                 }
@@ -699,18 +699,18 @@
                                                               cssClass="form-control select2"/>
 
                                                 </s:else>
-                                                <%--<div id="diag_umum" style="display:none">--%>
-                                                    <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
-                                                              <%--name="getListComboDiagnosa_checkupdetail"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
-                                                              <%--list="#initComboDiagnosa.listOfComboDiagnosa"--%>
-                                                              <%--id="nosa_id_diagnosa_2"--%>
-                                                              <%--name="headerCheckup.diagnosa" listKey="idDiagnosa"--%>
-                                                              <%--listValue="descOfDiagnosa"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-                                                <%--</div>--%>
+                                                <div id="diag_umum" style="display:none">
+                                                    <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                                              name="getListComboDiagnosa_checkupdetail"/>
+                                                    <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                              onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                                              list="#initComboDiagnosa.listOfComboDiagnosa"
+                                                              id="nosa_id_diagnosa_2"
+                                                              name="headerCheckup.diagnosa" listKey="idDiagnosa"
+                                                              listValue="descOfDiagnosa"
+                                                              headerKey="" headerValue="[Select one]"
+                                                              cssClass="form-control select2" disabled="true"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -840,20 +840,40 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-4">Nomor Rujukan</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssClass="form-control"></s:textfield>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
                                                 <s:textfield name="headerCheckup.rujuk"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
+                                            <div class="col-md-8">
+                                                <s:textfield cssStyle="margin-top: 7px" cssClass="form-control" name="headerCheckup.noRujukan"></s:textfield>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">No PPK Rujukan</label>
+                                            <div class="col-md-8">
+                                                <s:textfield name="headerCheckup.noPpkRujukan"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">Tanggal Rujukan</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group date" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <s:textfield name="headerCheckup.tglRujukan"
+                                                                 cssClass="form-control datepicker"
+                                                                 onchange="$('#st_tgl_lahir').css('border','')"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Foto Surat Rujuk</label>
                                             <div class="col-md-8">
@@ -882,7 +902,7 @@
                                     <button type="button" class="btn btn-success" onclick="confirm()"><i
                                             class="fa fa-arrow-right"></i> Save
                                     </button>
-                                    <button type="button" class="btn btn-danger" onclick="resetField()">
+                                    <button type="button" class="btn btn-danger" onclick="window.location.reload(true)">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
                                     <a type="button" class="btn btn-warning" href="initForm_checkup.action">
@@ -1049,7 +1069,7 @@
             readURL(this);
         });
 
-        listPenjaminWithBpjs();
+        initlistPenjamin();
     });
 
     function tes(query) {
@@ -1064,7 +1084,7 @@
         });
     }
 
-    function listPenjaminWithBpjs() {
+    function initlistPenjamin() {
         var url_string = window.location.href;
         var url = new URL(url_string);
         var tipe = url.searchParams.get("tipe");
@@ -1081,6 +1101,10 @@
         });
         if (tipe == "bpjs") {
             $('#penjamin').val('bpjs').trigger('change');
+        }
+        if (tipe == "umum") {
+            listPenjaminNoBpjs()
+            $('#penjamin').val('umum').trigger('change');
         }
     }
 
@@ -1118,6 +1142,7 @@
                     msg = "No Bpjs berhasil diverifikasi dengan status AKTIF!";
                     $('#diag_bpjs').show();
                     $('#diag_umum').hide();
+                    $('#nosa_id_diagnosa_2').attr('disabled',true);
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";
@@ -1126,6 +1151,7 @@
                     msg = "No Bpjs berhasil diverifikasi dengan status TIDAK AKTIF!";
                     $('#diag_bpjs').hide();
                     $('#diag_umum').show();
+                    $('#diagnosa_awal').attr('disabled',true);
                     listPenjaminNoBpjs();
                     $('#penjamin').val('umum').trigger('change');
                 } else {
@@ -1136,6 +1162,7 @@
                     msg = "No Bpjs tidak ditemukan!";
                     $('#diag_bpjs').hide();
                     $('#diag_umum').show();
+                    $('#diagnosa_awal').attr('disabled',true);
                     listPenjaminNoBpjs();
                     $('#penjamin').val('umum').trigger('change');
                 }
@@ -1146,6 +1173,7 @@
                 $('#status').val(val);
                 $('#warn-bpjs').html(warning);
                 $('#btn-cek').html('<i class="fa fa-search"></i> Check');
+
             }
         });
 
@@ -1157,14 +1185,16 @@
         CheckupAction.listOfDokter(idPoli, function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response != null) {
+                console.log(response);
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
                 });
+
+                $('#dokter').html(option);
             } else {
                 option = option;
             }
         });
-        $('#dokter').html(option);
     }
 
     function alertPasien(noPasien) {

@@ -106,7 +106,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "hd.desa_id,\n" +
                     "dt.status_periksa,\n" +
                     "st.keterangan,\n" +
-                    "dt.keterangan_selesai\n" +
+                    "dt.keterangan_selesai,\n" +
+                    "hd.klaim_bpjs_flag\n" +
                     "FROM \n" +
                     "it_simrs_header_checkup hd\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
@@ -164,6 +165,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setStatusPeriksa(obj[7].toString());
                     headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
                     headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+                    headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
