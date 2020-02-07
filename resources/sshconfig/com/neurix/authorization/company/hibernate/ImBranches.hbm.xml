@@ -69,6 +69,30 @@
         <property name="enabled">
             <column name="enabled" sql-type="varchar" length="1"/>
         </property>
+        <property name="minBpjsKs">
+            <column name="min_bpjs_ks" sql-type="numeric" length="10"/>
+        </property>
+        <property name="maxBpjsKs">
+            <column name="max_bpjs_ks" sql-type="numeric" length="10"/>
+        </property>
+        <property name="minBpjsTk">
+            <column name="min_bpjs_tk" sql-type="numeric" length="10"/>
+        </property>
+        <property name="maxBpjsTk">
+            <column name="max_bpjs_tk" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentKsKary">
+            <column name="percent_ks_kary" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentKsPers">
+            <column name="percent_ks_pers" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentTkKary">
+            <column name="percent_tk_kary" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentTkPers">
+            <column name="percent_tk_pers" sql-type="numeric" length="10"/>
+        </property>
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>

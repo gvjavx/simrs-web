@@ -149,6 +149,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .list();
         return results;
     }
+
     public List<ImBiodataEntity> getPegawaiMess() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
@@ -372,7 +373,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select \n" +
+        String query = "select DISTINCT \n" +
                 "\titPosisi.branch_id,\n" +
                 "\tdivisi.department_id,\n" +
                 "\titPosisi.position_id,\n" +

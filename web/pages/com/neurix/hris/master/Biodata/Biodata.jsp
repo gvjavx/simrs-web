@@ -401,7 +401,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Bagian :</small></label>
+                                        <label class="control-label"><small>Bidang :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -790,25 +790,6 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Struktur Gaji :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#{'H':'Harian (PKWT Harian)', 'G':'Golongan (PKWT Golongan)', 'L':'Lumsum (PKWT Lumsum)', 'D':'Direksi',
-                                             'K':'Komisaris'}" id="strukturGaji" name="biodata.strukturGaji" disabled="true" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <select id="strukturGaji" name="biodata.strukturGaji" class="form-control"></select>
-                                                <s:textfield id="strukturGaji2" cssStyle="display: none" name="biodata.strukturGaji2" class="form-control"></s:textfield>
-                                                <%--<s:select list="" id="strukturGaji" name="biodata.strukturGaji"  headerValue="[Select one]" cssClass="form-control"/>--%>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
                                         <label class="control-label"><small>Status Pegawai * :</small></label>
                                     </td>
                                     <td>
@@ -831,64 +812,9 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Gaji:</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="gaji" name="biodata.gaji" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="gaji"  name="biodata.gaji" required="true" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Status Giling :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#{'': '', 'DMG':'Dalam Masa Giling', 'LMG' : 'Luar Masa Giling'}" id="statusGiling" name="biodata.statusGiling"
-                                                          cssClass="form-control" readOnly="true" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#{'': '', 'DMG':'Dalam Masa Giling', 'LMG' : 'Luar Masa Giling'}" id="statusGiling" name="biodata.statusGiling"
-                                                          cssClass="form-control" disabled="true" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Masa Tanam :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:action id="listComboMasaTanam" namespace="/masaTanam" name="searchMasaTanam_masaTanam"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#listComboMasaTanam.listComboMasaTanam"
-                                                          id="masaTanam" name="biodata.mt" disabled="true"
-                                                          listKey="masaTanamId" listValue="masaTanamName" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#listComboMasaTanam.listComboMasaTanam"
-                                                          id="masaTanam" name="biodata.mt" listKey="masaTanamId" disabled="true"
-                                                          listValue="masaTanamName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
                                         <label class="control-label"><small>Golongan :</small></label>
                                     </td>
-                                    <td>
+                                    <td id="golongan1Group">
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
@@ -897,7 +823,23 @@
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="golonganName" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                    <td id="golongan2Group">
+                                        <table>
+                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                            <s:if test="isDelete()">
+                                                <%--Untuk list Golongan PKWT--%>
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan3" name="biodata.golongan" disabled="true"
+                                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <%--Untuk list Golongan PKWT--%>
+                                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan3" name="biodata.golongan"
+                                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -942,9 +884,9 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                            <s:select list="#initComboTipe.listComboGolongan" id="golongan2" name="biodata.golonganDapenId"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
+                                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>
@@ -2299,11 +2241,12 @@
 
     window.changePegawai = function (id) {
         if (id == "TP01") {
-            $('#golongan1').removeAttr('disabled');
+            $('#golongan1Group').show();
+            $('#golongan2Group').hide();
             $('#point').removeAttr('disabled');
             $('#danaPensiun').removeAttr('disabled');
-            $('#masaTanam').prop('disabled', 'true');
-            $('#statusGiling').prop('disabled', 'true');
+//            $('#masaTanam').prop('disabled', 'true');
+            /*$('#statusGiling').prop('disabled', 'true');
             $('#strukturGaji').empty();
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'G')
@@ -2313,9 +2256,11 @@
                     .text('Direksi'));
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'K')
-                    .text('Komisaris'));
+                    .text('Komisaris'));*/
         } else {
-            $('#strukturGaji').empty();
+            $('#golongan1Group').hide();
+            $('#golongan2Group').show();
+            /*$('#strukturGaji').empty();
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'G')
                     .text('Golongan (PKWT Golongan)'));
@@ -2326,8 +2271,8 @@
                     .attr("value", 'L')
                     .text('Lumsum (PKWT Lumsum)'));
             $('#statusGiling').removeAttr('disabled');
-            $('#masaTanam').removeAttr('disabled');
-            $('#golongan1').prop('disabled', 'true');
+            $('#masaTanam').removeAttr('disabled');*/
+//            $('#golongan1').prop('disabled', 'true');
             $('#point').prop('disabled', 'true');
             $('#danaPensiun').prop('disabled', 'true');
         }
@@ -2389,11 +2334,11 @@
         var divisi = document.getElementById("divisi1").value;
         var posisi = document.getElementById("posisi2").value;
         var tipePegawai = document.getElementById("tipePegawai1").value;
-        var strukturGaji = document.getElementById("strukturGaji2").value;
+//        var strukturGaji = document.getElementById("strukturGaji2").value;
         listPosisi(branch, divisi);
         changePegawai(tipePegawai);
         $('#positionId1').val(posisi);
-        $('#strukturGaji').val(strukturGaji);
+//        $('#strukturGaji').val(strukturGaji);
 
         var pathFoto = document.getElementById("pathFoto").value;
         var nama = document.getElementById("namaPegawai1").value;

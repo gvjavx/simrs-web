@@ -18,22 +18,185 @@ import java.sql.Timestamp;
  */
 
 public class ItPayrollPphEntity implements Serializable {
+//======================================================================================================================
+//   Yang dipakai di table it_hris_payroll_pph
     private String pphId;
     private String payrollId;
+    private BigDecimal pkp;
+    private BigDecimal pphGaji;
+    private BigDecimal bruto;
+    private BigDecimal reduce;
+    private String nip;
+    private String bulan;
+    private String tahun;
     private BigDecimal ptkp;
+    private BigDecimal netto;
+    private BigDecimal biayaJabatan;
+    private BigDecimal hutangPph; //hutang pph setahun
+    private BigDecimal tunjanganPph;
     private BigDecimal gaji;
-    private BigDecimal tunjanganUmk;
-    private BigDecimal tunjanganStrategis;
-    private BigDecimal tunjanganPeralihan;
-    private BigDecimal tunjanganJabatanStruktural;
+    private BigDecimal sankhus;
+    private BigDecimal tunjanganJabatanStruktural; //tunj. Jabatan
     private BigDecimal tunjanganStruktural;
+    private BigDecimal tunjanganStrategis; //tunj. fungsional
+    private BigDecimal tunjanganPeralihan;
+    private BigDecimal totalTunjLain;
+    private BigDecimal tunjTambahan;
+    private BigDecimal pemondokan;
+    private BigDecimal komunikasi;
+    private BigDecimal totalRlab;
+    private BigDecimal iuranPegawai;
+    private BigDecimal tunjanganLembur; //lembur
+    private BigDecimal tunjanganPensiun; //pensiun
+    private BigDecimal bpjsTk;
+    private BigDecimal bpjsKs;
+    private BigDecimal Bonus; //nilai untuk tunjangan tidak teratur
+    private String keterangan; //Keterangan tentang bonus yang diberikan
+
+
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private Timestamp lastUpdate;
+    private String createdWho;
+    private String lastUpdateWho;
+//======================================================================================================================
+
+
+    public BigDecimal getBonus() {
+        return Bonus;
+    }
+
+    public void setBonus(BigDecimal bonus) {
+        Bonus = bonus;
+    }
+
+    public BigDecimal getBpjsKs() {
+        return bpjsKs;
+    }
+
+    public void setBpjsKs(BigDecimal bpjsKs) {
+        this.bpjsKs = bpjsKs;
+    }
+
+    public BigDecimal getBpjsTk() {
+        return bpjsTk;
+    }
+
+    public void setBpjsTk(BigDecimal bpjsTk) {
+        this.bpjsTk = bpjsTk;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public BigDecimal getIuranPegawai() {
+        return iuranPegawai;
+    }
+
+    public void setIuranPegawai(BigDecimal iuranPegawai) {
+        this.iuranPegawai = iuranPegawai;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public BigDecimal getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(BigDecimal komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getNetto() {
+        return netto;
+    }
+
+    public void setNetto(BigDecimal netto) {
+        this.netto = netto;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public BigDecimal getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(BigDecimal pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getSankhus() {
+        return sankhus;
+    }
+
+    public void setSankhus(BigDecimal sankhus) {
+        this.sankhus = sankhus;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public BigDecimal getTotalRlab() {
+        return totalRlab;
+    }
+
+    public void setTotalRlab(BigDecimal totalRlab) {
+        this.totalRlab = totalRlab;
+    }
+
+    public BigDecimal getTotalTunjLain() {
+        return totalTunjLain;
+    }
+
+    public void setTotalTunjLain(BigDecimal totalTunjLain) {
+        this.totalTunjLain = totalTunjLain;
+    }
+
+    public BigDecimal getTunjanganPensiun() {
+        return tunjanganPensiun;
+    }
+
+    public void setTunjanganPensiun(BigDecimal tunjanganPensiun) {
+        this.tunjanganPensiun = tunjanganPensiun;
+    }
+
+    public BigDecimal getTunjTambahan() {
+        return tunjTambahan;
+    }
+
+    public void setTunjTambahan(BigDecimal tunjTambahan) {
+        this.tunjTambahan = tunjTambahan;
+    }
+
+    private BigDecimal tunjanganUmk;
     private BigDecimal tunjanganKompensasi;
     private BigDecimal tunjanganTransport;
     private BigDecimal tunjanganAirListrik;
     private BigDecimal tunjanganPerumahan;
     private BigDecimal tunjanganPengobatan;
-    private BigDecimal tunjanganPph;
-    private BigDecimal tunjanganLembur;
     private BigDecimal tunjanganLainLain;
     private BigDecimal thr;
     private BigDecimal asumsiThr;
@@ -47,17 +210,9 @@ public class ItPayrollPphEntity implements Serializable {
     private BigDecimal pensiun;
     private BigDecimal pakaianDinas;
     private BigDecimal iuranJkmJkk;
-    private BigDecimal biayaJabatan;
     private BigDecimal iuranPensiun;
-    private BigDecimal pkp;
-    private BigDecimal hutangPph;
 
-    private String flag;
-    private String action;
-    private Timestamp createdDate;
-    private Timestamp lastUpdate;
-    private String createdWho;
-    private String lastUpdateWho;
+
 
     private String flagKalkulasiPph;
     private String flagKalkulasiPphPengobatan;
@@ -71,9 +226,6 @@ public class ItPayrollPphEntity implements Serializable {
     private BigDecimal danaPensiun;
     private BigDecimal bpjsJht;
     private BigDecimal bpjsPensiun;
-    private BigDecimal bruto;
-    private BigDecimal reduce;
-    private BigDecimal pphGaji;
     private BigDecimal iuranBpjsKesehatan;
 
     public BigDecimal getIuranBpjsKesehatan() {

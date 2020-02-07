@@ -81,7 +81,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();
 
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
+        String query = "SELECT DISTINCT \n" +
                 "  pegawai.nip,\n" +
                 "  pegawai.nama_pegawai,\n" +
                 "  posisi.branch_id,\n" +
@@ -115,7 +115,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  pegawai.golongan_dapen, \n" +
                 "  pegawai.golongan_dapen_nusindo,  \n" +
                 "  pegawai.poin_lebih," +
-                "  branch.umr \n" +
+                "  branch.umr, \n" +
+                "pegawai.golongan_dapen_id, \n"+
+                "pegawai.masa_kerja_gol"+
                 "   FROM im_hris_pegawai pegawai\n" +
                 "LEFT JOIN it_hris_pegawai_position posisi\n" +
                 "  ON posisi.nip = pegawai.nip\n" +
@@ -183,6 +185,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             if (row[33]!=null){
                 result.setUmr(BigDecimal.valueOf(Double.parseDouble(row[33].toString())));
             }
+            result.setGolonganDapenId(row[34].toString());
+            result.setMasaKerjaGol((Integer)row[35]);
             listOfResult.add(result);
         }
         return listOfResult;

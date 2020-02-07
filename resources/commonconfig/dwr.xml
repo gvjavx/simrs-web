@@ -241,6 +241,7 @@
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollPendidikan"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollUpahHarian"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollKonsistensi"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollTunjanganLain"/>
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.tipepegawai.action.TipePegawaiAction"/>
       </create>

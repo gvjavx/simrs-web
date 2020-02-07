@@ -16,6 +16,33 @@ import java.sql.Timestamp;
 
 public class Payroll extends BaseModel {
     //tambahan irfan
+    //data pegawai
+    private int masaKerjaGol;
+    private String stMasaKerjaGol;
+    private String golonganDapenId;
+    private String golonganDapenName;
+
+    //tunjangan - tunjangan
+    private String tunjanganLain;
+    private BigDecimal tunjanganLainNilai;
+    private String tunjanganDapen;
+    private BigDecimal tunjanganDapenNilai;
+    private String tunjanganTambahan;
+    private BigDecimal tunjanganTambahanNilai;
+    private String tunjanganPph;
+    private BigDecimal tunjanganPphNilai;
+    private String tunjanganBpjsKs;
+    private BigDecimal tunjanganBpjsKsNilai;
+    private String tunjanganBpjsTk;
+    private BigDecimal tunjanganBpjsTkNilai;
+    private String tunjanganSosialLain;
+    private BigDecimal tunjanganSosialLainNilai;
+    private String pemondokan;
+    private BigDecimal pemondokanNilai;
+    private String komunikasi;
+    private BigDecimal komunikasiNilai;
+
+
     //tunjangan RLAB
     private String tunjanganRumah;
     private String tunjanganListrik;
@@ -47,8 +74,371 @@ public class Payroll extends BaseModel {
     private BigDecimal iuranBpjsKsKaryNilai;
     private BigDecimal iuranBpjsKsPersNilai;
 
+    //iuran ypks
+    private String iuranYpks;
+    private BigDecimal iuranYpksNilai;
+
+    //potongan rincian C
+    private String totalPotonganLain;
+    private BigDecimal totalPotonganLainNilai;
     private String gajiKotor;
     private BigDecimal gajiKotorNilai;
+    private String kopkar;
+    private String iuranSp;
+    private String iuranPiikb;
+    private String bankBri;
+    private String bankMandiri;
+    private String infaq;
+    private String PerkesDanObat;
+    private String listrik;
+    private String iuranProfesi;
+    private String potonganLain;
+    private BigDecimal kopkarNilai;
+    private BigDecimal iuranSpNilai;
+    private BigDecimal iuranPiikbNilai;
+    private BigDecimal bankBriNilai;
+    private BigDecimal bankMandiriNilai;
+    private BigDecimal infaqNilai;
+    private BigDecimal PerkesDanObatNilai;
+    private BigDecimal listrikNilai;
+    private BigDecimal iuranProfesiNilai;
+    private BigDecimal potonganLainNilai;
+
+    public String getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(String komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getKomunikasiNilai() {
+        return komunikasiNilai;
+    }
+
+    public void setKomunikasiNilai(BigDecimal komunikasiNilai) {
+        this.komunikasiNilai = komunikasiNilai;
+    }
+
+    public String getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(String pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getPemondokanNilai() {
+        return pemondokanNilai;
+    }
+
+    public void setPemondokanNilai(BigDecimal pemondokanNilai) {
+        this.pemondokanNilai = pemondokanNilai;
+    }
+
+    public String getBankBri() {
+        return bankBri;
+    }
+
+    public void setBankBri(String bankBri) {
+        this.bankBri = bankBri;
+    }
+
+    public BigDecimal getBankBriNilai() {
+        return bankBriNilai;
+    }
+
+    public void setBankBriNilai(BigDecimal bankBriNilai) {
+        this.bankBriNilai = bankBriNilai;
+    }
+
+    public String getBankMandiri() {
+        return bankMandiri;
+    }
+
+    public void setBankMandiri(String bankMandiri) {
+        this.bankMandiri = bankMandiri;
+    }
+
+    public BigDecimal getBankMandiriNilai() {
+        return bankMandiriNilai;
+    }
+
+    public void setBankMandiriNilai(BigDecimal bankMandiriNilai) {
+        this.bankMandiriNilai = bankMandiriNilai;
+    }
+
+    public String getInfaq() {
+        return infaq;
+    }
+
+    public void setInfaq(String infaq) {
+        this.infaq = infaq;
+    }
+
+    public BigDecimal getInfaqNilai() {
+        return infaqNilai;
+    }
+
+    public void setInfaqNilai(BigDecimal infaqNilai) {
+        this.infaqNilai = infaqNilai;
+    }
+
+    public String getIuranPiikb() {
+        return iuranPiikb;
+    }
+
+    public void setIuranPiikb(String iuranPiikb) {
+        this.iuranPiikb = iuranPiikb;
+    }
+
+    public BigDecimal getIuranPiikbNilai() {
+        return iuranPiikbNilai;
+    }
+
+    public void setIuranPiikbNilai(BigDecimal iuranPiikbNilai) {
+        this.iuranPiikbNilai = iuranPiikbNilai;
+    }
+
+    public String getIuranProfesi() {
+        return iuranProfesi;
+    }
+
+    public void setIuranProfesi(String iuranProfesi) {
+        this.iuranProfesi = iuranProfesi;
+    }
+
+    public BigDecimal getIuranProfesiNilai() {
+        return iuranProfesiNilai;
+    }
+
+    public void setIuranProfesiNilai(BigDecimal iuranProfesiNilai) {
+        this.iuranProfesiNilai = iuranProfesiNilai;
+    }
+
+    public String getIuranSp() {
+        return iuranSp;
+    }
+
+    public void setIuranSp(String iuranSp) {
+        this.iuranSp = iuranSp;
+    }
+
+    public BigDecimal getIuranSpNilai() {
+        return iuranSpNilai;
+    }
+
+    public void setIuranSpNilai(BigDecimal iuranSpNilai) {
+        this.iuranSpNilai = iuranSpNilai;
+    }
+
+    public String getKopkar() {
+        return kopkar;
+    }
+
+    public void setKopkar(String kopkar) {
+        this.kopkar = kopkar;
+    }
+
+    public BigDecimal getKopkarNilai() {
+        return kopkarNilai;
+    }
+
+    public void setKopkarNilai(BigDecimal kopkarNilai) {
+        this.kopkarNilai = kopkarNilai;
+    }
+
+    public String getListrik() {
+        return listrik;
+    }
+
+    public void setListrik(String listrik) {
+        this.listrik = listrik;
+    }
+
+    public BigDecimal getListrikNilai() {
+        return listrikNilai;
+    }
+
+    public void setListrikNilai(BigDecimal listrikNilai) {
+        this.listrikNilai = listrikNilai;
+    }
+
+    public String getPerkesDanObat() {
+        return PerkesDanObat;
+    }
+
+    public void setPerkesDanObat(String perkesDanObat) {
+        PerkesDanObat = perkesDanObat;
+    }
+
+    public BigDecimal getPerkesDanObatNilai() {
+        return PerkesDanObatNilai;
+    }
+
+    public void setPerkesDanObatNilai(BigDecimal perkesDanObatNilai) {
+        PerkesDanObatNilai = perkesDanObatNilai;
+    }
+
+    public String getPotonganLain() {
+        return potonganLain;
+    }
+
+    public void setPotonganLain(String potonganLain) {
+        this.potonganLain = potonganLain;
+    }
+
+    public BigDecimal getPotonganLainNilai() {
+        return potonganLainNilai;
+    }
+
+    public void setPotonganLainNilai(BigDecimal potonganLainNilai) {
+        this.potonganLainNilai = potonganLainNilai;
+    }
+
+    public String getIuranYpks() {
+        return iuranYpks;
+    }
+
+    public void setIuranYpks(String iuranYpks) {
+        this.iuranYpks = iuranYpks;
+    }
+
+    public BigDecimal getIuranYpksNilai() {
+        return iuranYpksNilai;
+    }
+
+    public void setIuranYpksNilai(BigDecimal iuranYpksNilai) {
+        this.iuranYpksNilai = iuranYpksNilai;
+    }
+
+    public String getTotalPotonganLain() {
+        return totalPotonganLain;
+    }
+
+    public void setTotalPotonganLain(String totalPotonganLain) {
+        this.totalPotonganLain = totalPotonganLain;
+    }
+
+    public BigDecimal getTotalPotonganLainNilai() {
+        return totalPotonganLainNilai;
+    }
+
+    public void setTotalPotonganLainNilai(BigDecimal totalPotonganLainNilai) {
+        this.totalPotonganLainNilai = totalPotonganLainNilai;
+    }
+
+    public String getTunjanganSosialLain() {
+        return tunjanganSosialLain;
+    }
+
+    public void setTunjanganSosialLain(String tunjanganSosialLain) {
+        this.tunjanganSosialLain = tunjanganSosialLain;
+    }
+
+    public BigDecimal getTunjanganSosialLainNilai() {
+        return tunjanganSosialLainNilai;
+    }
+
+    public void setTunjanganSosialLainNilai(BigDecimal tunjanganSosialLainNilai) {
+        this.tunjanganSosialLainNilai = tunjanganSosialLainNilai;
+    }
+
+    public String getTunjanganBpjsKs() {
+        return tunjanganBpjsKs;
+    }
+
+    public void setTunjanganBpjsKs(String tunjanganBpjsKs) {
+        this.tunjanganBpjsKs = tunjanganBpjsKs;
+    }
+
+    public BigDecimal getTunjanganBpjsKsNilai() {
+        return tunjanganBpjsKsNilai;
+    }
+
+    public void setTunjanganBpjsKsNilai(BigDecimal tunjanganBpjsKsNilai) {
+        this.tunjanganBpjsKsNilai = tunjanganBpjsKsNilai;
+    }
+
+    public String getTunjanganBpjsTk() {
+        return tunjanganBpjsTk;
+    }
+
+    public void setTunjanganBpjsTk(String tunjanganBpjsTk) {
+        this.tunjanganBpjsTk = tunjanganBpjsTk;
+    }
+
+    public BigDecimal getTunjanganBpjsTkNilai() {
+        return tunjanganBpjsTkNilai;
+    }
+
+    public void setTunjanganBpjsTkNilai(BigDecimal tunjanganBpjsTkNilai) {
+        this.tunjanganBpjsTkNilai = tunjanganBpjsTkNilai;
+    }
+
+    public String getTunjanganDapen() {
+        return tunjanganDapen;
+    }
+
+    public void setTunjanganDapen(String tunjanganDapen) {
+        this.tunjanganDapen = tunjanganDapen;
+    }
+
+    public BigDecimal getTunjanganDapenNilai() {
+        return tunjanganDapenNilai;
+    }
+
+    public void setTunjanganDapenNilai(BigDecimal tunjanganDapenNilai) {
+        this.tunjanganDapenNilai = tunjanganDapenNilai;
+    }
+
+    public String getGolonganDapenName() {
+        return golonganDapenName;
+    }
+
+    public void setGolonganDapenName(String golonganDapenName) {
+        this.golonganDapenName = golonganDapenName;
+    }
+
+    public String getGolonganDapenId() {
+        return golonganDapenId;
+    }
+
+    public void setGolonganDapenId(String golonganDapenId) {
+        this.golonganDapenId = golonganDapenId;
+    }
+
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
+    }
+
+    public String getStMasaKerjaGol() {
+        return stMasaKerjaGol;
+    }
+
+    public void setStMasaKerjaGol(String stMasaKerjaGol) {
+        this.stMasaKerjaGol = stMasaKerjaGol;
+    }
+
+    public String getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(String tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
+    public BigDecimal getTunjanganTambahanNilai() {
+        return tunjanganTambahanNilai;
+    }
+
+    public void setTunjanganTambahanNilai(BigDecimal tunjanganTambahanNilai) {
+        this.tunjanganTambahanNilai = tunjanganTambahanNilai;
+    }
 
     public String getIuranBpjsKsKary() {
         return iuranBpjsKsKary;
@@ -301,14 +691,10 @@ public class Payroll extends BaseModel {
     private BigDecimal tunjanganPengobatanNilai;
     private String tunjanganPerumahan;
     private BigDecimal tunjanganPerumahanNilai;
-    private String tunjanganPph;
     private String potPph;
-    private BigDecimal tunjanganPphNilai;
     private BigDecimal potPphNilai;
     private String tunjanganBajuDinas;
     private BigDecimal tunjanganBajuDinasNilai;
-    private String tunjanganLain;
-    private BigDecimal tunjanganLainNilai;
     private String tunjanganLembur;
     private BigDecimal tunjanganLemburNilai;
     private BigDecimal umr;

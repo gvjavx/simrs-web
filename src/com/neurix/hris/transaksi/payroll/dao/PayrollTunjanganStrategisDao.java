@@ -74,5 +74,13 @@ public class PayrollTunjanganStrategisDao extends GenericDao<ImPayrollTunjanganS
                 .list();
         return results;
     }
+    public List<ImPayrollTunjanganStrategisEntity> getDataTunjStrategisById(String positionId, String golonganId) throws HibernateException {
+        List<ImPayrollTunjanganStrategisEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganStrategisEntity.class)
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("golonganId", golonganId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
 
 }

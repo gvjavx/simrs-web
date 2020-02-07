@@ -86,5 +86,14 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
         this.sessionFactory.getCurrentSession().save(entity);
 
     }
+    public List<ImGolonganEntity> getGolonganById(String golonganId) throws HibernateException {
+
+        List<ImGolonganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganEntity.class)
+                .add(Restrictions.ilike("golonganId",golonganId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("golonganId"))
+                .list();
+        return results;
+    }
 
 }

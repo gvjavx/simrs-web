@@ -72,6 +72,9 @@
 
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/golonganDapen/hibernate/ImGolonganDapenEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentEntity.hbm.xml</value>
@@ -178,12 +181,14 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganJabatanStrukturalEntity.hbm.xml</value>
 
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganStrategisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollTunjanganLainEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganPerumahan/hibernate/ImPayrollTunjanganPerumahanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelEntity.hbm.xml</value>

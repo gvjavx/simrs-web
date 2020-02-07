@@ -63,13 +63,13 @@ public class ImBiodataEntity implements Serializable {
     private String flagMess;
     private String golonganDapenId;
     private String stMasaKerjaGol;
-    private int masaKerjaGolongan;
+    private Integer masaKerjaGolongan;
 
-    public int getMasaKerjaGolongan() {
+    public Integer getMasaKerjaGolongan() {
         return masaKerjaGolongan;
     }
 
-    public void setMasaKerjaGolongan(int masaKerjaGolongan) {
+    public void setMasaKerjaGolongan(Integer masaKerjaGolongan) {
         this.masaKerjaGolongan = masaKerjaGolongan;
     }
 

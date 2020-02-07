@@ -608,7 +608,12 @@ public class BiodataAction extends BaseMasterAction{
                 try {
 
                     Biodata editBiodata = getBiodata();
-
+                    String golonganId = editBiodata.getGolongan().replace(",","");
+                    editBiodata.setGolongan(golonganId);
+                    editBiodata.setGolonganId(golonganId);
+                    String golonganId2 = editBiodata.getGolongan().replace(" ","");
+                    editBiodata.setGolongan(golonganId2);
+                    editBiodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -683,6 +688,12 @@ public class BiodataAction extends BaseMasterAction{
                 //add
                 try {
                     Biodata biodata = getBiodata();
+                    String golonganId = biodata.getGolongan().replace(",","");
+                    biodata.setGolongan(golonganId);
+                    biodata.setGolonganId(golonganId);
+                    String golonganId2 = biodata.getGolongan().replace(" ","");
+                    biodata.setGolongan(golonganId2);
+                    biodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 

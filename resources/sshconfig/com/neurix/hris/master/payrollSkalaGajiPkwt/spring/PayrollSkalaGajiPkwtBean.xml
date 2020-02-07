@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="payrollSkalaGajiPkwtAction" class="com.neurix.hris.master.payrollSkalaGajiPkwt.action.PayrollSkalaGajiPkwtAction"
+          p:payrollSkalaGajiPkwtBoProxy-ref="payrollSkalaGajiPkwtBoProxy" />
+
+    <bean id="payrollSkalaGajiPkwtBo" class="com.neurix.hris.master.payrollSkalaGajiPkwt.bo.impl.PayrollSkalaGajiPkwtBoImpl"
+          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao" />
+
+    <bean id="payrollSkalaGajiPkwtBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="payrollSkalaGajiPkwtBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="payrollSkalaGajiPkwtDao" class="com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

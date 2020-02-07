@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.payroll.bo;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.payroll.model.*;
 
@@ -132,4 +133,9 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public BigDecimal getSkalaGaji(String golonganId);
     public ImPayrollTunjanganJabatanStrukturalEntity getTunjanganJabatanStrukturalSimRs(String kelompokId);
     public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId);
+    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId);
+
+    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, BigDecimal minBpjs, BigDecimal maxBpjs, BigDecimal percent);
+
+    public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
 }

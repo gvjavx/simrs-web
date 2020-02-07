@@ -10,31 +10,129 @@
         <id name="pphId">
             <column name="pph_id" sql-type="varchar" length="11" not-null="true" />
         </id>
-
         <property name="payrollId">
             <column name="payroll_id" sql-type="varchar" length="15" not-null="false" />
         </property>
+        <property name="pkp">
+            <column name="pkp" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pphGaji">
+            <column name="pph_gaji" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="bruto">
+            <column name="bruto" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="reduce">
+            <column name="reduce" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="15" not-null="false" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar" length="15" not-null="false" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="15" not-null="false" />
+        </property>
         <property name="ptkp">
-            <column name="ptkp" sql-type="numeric" length="10" precision="2" not-null="false" />
+            <column name="ptkp" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="netto">
+            <column name="netto" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="biayaJabatan">
+            <column name="biaya_jabatan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="hutangPph">
+            <column name="hutang_pph_setahun" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPph">
+            <column name="tunj_pph" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
         <property name="gaji">
-            <column name="gaji" sql-type="numeric" length="10" precision="2" not-null="false" />
+            <column name="gaji" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
-        <property name="tunjanganUmk">
-            <column name="tunjangan_umk" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
-        <property name="tunjanganStrategis">
-            <column name="tunjangan_strategis" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
-        <property name="tunjanganPeralihan">
-            <column name="tunjangan_peralihan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        <property name="sankhus">
+            <column name="sankhus" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
         <property name="tunjanganJabatanStruktural">
-            <column name="tunjangan_jabatan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
+            <column name="tunj_jabatan" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
         <property name="tunjanganStruktural">
-            <column name="tunjangan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
+            <column name="tunj_struktural" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
+        <property name="tunjanganStrategis">
+            <column name="tunj_fungsional" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPeralihan">
+            <column name="tunj_peralihan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="totalTunjLain">
+            <column name="total_tunj_lain" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjTambahan">
+            <column name="tunj_tambahan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pemondokan">
+            <column name="pemondokan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="iuranPegawai">
+            <column name="iuran_pegawai" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganLembur">
+            <column name="lembur" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPensiun">
+            <column name="tunj_pensiun" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="bpjsTk">
+            <column name="bpjs_tk" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="bpjsKs">
+            <column name="bpjs_ks" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="bonus">
+            <column name="bonus" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+
+
+
+
+
+        <!--<property name="tunjanganUmk">
+            <column name="tunjangan_umk" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
         <property name="tunjanganKompensasi">
             <column name="tunjangan_kompensasi" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
@@ -50,12 +148,8 @@
         <property name="tunjanganPengobatan">
             <column name="tunjangan_pengobatan" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="tunjanganPph">
-            <column name="tunjangan_pph" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
-        <property name="tunjanganLembur">
-            <column name="tunjangan_lembur" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+
+
         <property name="tunjanganLainLain">
             <column name="tunjangan_lain_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
@@ -92,18 +186,11 @@
         <property name="pakaianDinas">
             <column name="pakaian_dinas" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="bruto">
-            <column name="bruto" sql-type="numeric" length="15" precision="2" not-null="false" />
-        </property>
-        <property name="reduce">
-            <column name="reduce" sql-type="numeric" length="15" precision="2" not-null="false" />
-        </property>
+
         <property name="iuranJkmJkk">
             <column name="iuran_jkm_jkk" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="biayaJabatan">
-            <column name="biaya_jabatan" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+
         <property name="iuranPensiun">
             <column name="iuran_pensiun" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
@@ -116,15 +203,9 @@
         <property name="bpjsPensiun">
             <column name="bpjs_pensiun" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="pkp">
-            <column name="pkp" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
-        <property name="hutangPph">
-            <column name="hutang_pph" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
-        <property name="pphGaji">
-            <column name="pph_gaji" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+
+
+
 
         <property name="jumlahPengobatan">
             <column name="jumlah_pengobatan" sql-type="numeric" length="10" precision="2" not-null="false" />
@@ -148,26 +229,9 @@
         </property>
         <property name="flagKalkulasiPphPengobatan">
             <column name="flag_kalkulasi_pph_pengobatan" sql-type="varchar" length="1" not-null="false" />
-        </property>
+        </property>-->
 
-        <property name="flag">
-            <column name="flag" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="action">
-            <column name="action" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="createdWho">
-            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
-        </property>
-        <property name="lastUpdateWho">
-            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
-        </property>
-        <property name="createdDate">
-            <column name="created_date" sql-type="date" not-null="false" />
-        </property>
-        <property name="lastUpdate">
-            <column name="last_update" sql-type="date" not-null="false" />
-        </property>
+
 
 
     </class>

@@ -426,7 +426,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setRtRw(bean.getRtRw());
                 imBiodataEntity.setTipePegawai(bean.getTipePegawai());
                 imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
-                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
+//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
                 imBiodataEntity.setStatusGiling(bean.getStatusGiling());
                 imBiodataEntity.setMt(bean.getMt());
                 imBiodataEntity.setGolongan(bean.getGolongan());
