@@ -138,6 +138,14 @@
             <filter-chain pattern="/mobileapi/purchaseorder/*" filters="none" />
             <filter-chain pattern="/mobileapi/purchaseorder/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/permintaanobat" filters="none" />
+            <filter-chain pattern="/mobileapi/permintaanobat/*" filters="none" />
+            <filter-chain pattern="/mobileapi/permintaanobat/*/**" filters="none" />
+
+            <filter-chain pattern="/mobileapi/transaksiapotek" filters="none" />
+            <filter-chain pattern="/mobileapi/transaksiapotek/*" filters="none" />
+            <filter-chain pattern="/mobileapi/transaksiapotek/*/**" filters="none" />
+
 
 
 

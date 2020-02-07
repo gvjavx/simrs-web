@@ -169,6 +169,12 @@
         <action name="purchaseorder/*" class="com.neurix.simrs.mobileapi.PurchaseOrderController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="permintaanobat/*" class="com.neurix.simrs.mobileapi.PermintaanObatController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="transaksiapotek/*" class="com.neurix.simrs.mobileapi.TransaksiApotekController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

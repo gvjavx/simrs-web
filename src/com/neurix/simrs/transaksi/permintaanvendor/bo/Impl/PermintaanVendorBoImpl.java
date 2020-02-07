@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.permintaanvendor.bo.Impl;
 
+import com.google.gson.Gson;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.dao.ObatDao;
@@ -377,7 +378,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         if (bean.getNoBatch() != null && bean.getNoBatch().compareTo(0) == 1){
 
-
             MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
 
             Boolean isNew = true;
@@ -709,7 +709,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
-        String userLogin = CommonUtil.userLogin();
+//        String userLogin = CommonUtil.userLogin();
 
         Obat sumObat = new Obat();
         try {
@@ -806,10 +806,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setFlag("Y");
         newObatEntity.setAction("C");
         newObatEntity.setCreatedDate(time);
-        newObatEntity.setCreatedWho(userLogin);
+        newObatEntity.setCreatedWho(bean.getCreatedWho());
         newObatEntity.setLastUpdate(time);
-        newObatEntity.setLastUpdateWho(userLogin);
-        newObatEntity.setBranchId(CommonUtil.userBranchLogin());
+        newObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        newObatEntity.setBranchId(bean.getBranchId());
 
         try {
             obatDao.addAndSave(newObatEntity);

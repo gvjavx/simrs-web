@@ -1660,7 +1660,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_obat", id);
-        hsCriteria.put("branch_id", CommonUtil.userBranchLogin());
+        hsCriteria.put("branch_id", "RS01");
         hsCriteria.put("flag", "Y");
 
         try {
@@ -1825,7 +1825,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetail.setAverageHargaBiji(obatDetailEntity.getAverageHargaBiji());
                 obatDetail.setFlagDiterima(obatDetailEntity.getFlagDiterima());
                 obatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
-                obatDetail.setIdPabrik(obatDetailEntity.getIdPabrik());
+                obatDetail.setIdPabrik(obatEntity.getIdPabrik());
                 obatDetail.setMerek(obatDetailEntity.getMrek());
                 obatDetails.add(obatDetail);
             }

@@ -59,6 +59,16 @@ public class PermintaanObatPoli{
     private String idTransaksiObatDetail;
     private String idBatch;
 
+    private String isMobile;
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
+
     public String getIdBatch() {
         return idBatch;
     }

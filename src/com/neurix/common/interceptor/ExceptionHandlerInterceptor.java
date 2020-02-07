@@ -98,6 +98,10 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
             logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             } else if ("/mobileapi/purchaseorder".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/permintaanobat".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }else if ("/mobileapi/transaksiapotek".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             }
             else {
 

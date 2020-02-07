@@ -14,6 +14,14 @@
           p:obatPoliBoProxy-ref="obatPoliBo"
     />
 
+    <bean id="permintaanObatController" class="com.neurix.simrs.mobileapi.PermintaanObatController"
+          p:obatPoliBoProxy-ref="obatPoliBo"
+    />
+
+    <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.TransaksiApotekController"
+          p:obatPoliBoProxy-ref="obatPoliBo"
+    />
+
     <bean id="obatPoliBo" class="com.neurix.simrs.transaksi.obatpoli.bo.impl.ObatPoliBoImpl"
           p:obatDao-ref="obatDao"
           p:obatPoliDao-ref="obatPoliDao"

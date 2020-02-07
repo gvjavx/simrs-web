@@ -83,6 +83,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                     transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
+                    transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
 
                     HargaObat hargaObat = new HargaObat();
                     hargaObat.setIdObat(obatDetailEntity.getIdObat());
@@ -331,6 +332,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         String stDate = dateFormat.format(now);
         String id = getNextTransPembelian();
         String noPemebelian = bean.getBranchId() + stDate + id;
+
         Integer compare = bean.getTotalBayar().compareTo(bean.getNominal());
 
         if (bean.getNominal() == null)
