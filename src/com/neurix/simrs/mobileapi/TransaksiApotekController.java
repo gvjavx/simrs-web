@@ -596,6 +596,22 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
         }
 
+        if  (action.equalsIgnoreCase("saveListObatPembelian")) {
+
+            TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+            transaksiObatDetail.setIdApprovalObat(idApprovalObat);
+            transaksiObatDetail.setBranchId(branchId);
+            transaksiObatDetail.setIdPelayanan(idPelayanan);
+            transaksiObatDetail.setCreatedDate(time);
+            transaksiObatDetail.setLastUpdate(time);
+
+            try {
+                transaksiObatBoProxy.saveListObatPembelian(transaksiObatDetail, jsonObatDetail);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiApotekController.create] Error, save list obat pembelian " + e.getMessage());
+            }
+        }
+
         logger.info("[TransaksiApotekController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
     }
