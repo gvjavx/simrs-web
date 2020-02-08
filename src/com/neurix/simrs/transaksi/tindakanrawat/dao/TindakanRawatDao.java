@@ -90,6 +90,32 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
         return jumlah;
     }
 
+    public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal){
+
+        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+
+        String SQL = "SELECT id_tindakan, id_detail_checkup FROM it_simrs_tindakan_rawat \n" +
+                "WHERE CAST(created_date AS date) = to_date(:tanggal, 'dd-MM-yyyy') AND id_detail_checkup = :idDetail";
+
+        List<Object[]> result = new ArrayList<>();
+
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tanggal", tanggal)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        TindakanRawat rawat;
+        if (!result.isEmpty()){
+            for (Object[] obj : result){
+                rawat = new TindakanRawat();
+                rawat.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+                rawat.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                tindakanRawatList.add(rawat);
+            }
+        }
+        return tindakanRawatList;
+    }
+
     public String getNextTindakanRawatId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tindakan_rawat')");
         Iterator<BigInteger> iter=query.list().iterator();

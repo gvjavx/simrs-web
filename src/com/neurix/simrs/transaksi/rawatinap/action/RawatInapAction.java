@@ -3,19 +3,31 @@ package com.neurix.simrs.transaksi.rawatinap.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
+import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RawatInapAction extends BaseMasterAction {
@@ -25,9 +37,24 @@ public class RawatInapAction extends BaseMasterAction {
     private RawatInapBo rawatInapBoProxy;
     private CheckupBo checkupBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+    private TindakanRawatBo tindakanRawatBoProxy;
+    private RuanganBo ruanganBoProxy;
+    private TeamDokterBo teamDokterBoProxy;
 
     private String id;
     private String idResep;
+
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
+
+    public void setRuanganBoProxy(RuanganBo ruanganBoProxy) {
+        this.ruanganBoProxy = ruanganBoProxy;
+    }
+
+    public void setTindakanRawatBoProxy(TindakanRawatBo tindakanRawatBoProxy) {
+        this.tindakanRawatBoProxy = tindakanRawatBoProxy;
+    }
 
     @Override
     public String getId() {
@@ -124,6 +151,75 @@ public class RawatInapAction extends BaseMasterAction {
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+
+                        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+                        long millis = System.currentTimeMillis();
+                        java.util.Date dateToday = new java.util.Date(millis);
+                        String today = new SimpleDateFormat("dd-MM-yyyy").format(dateToday);
+
+                        try {
+                            tindakanRawatList = tindakanRawatBoProxy.cekTodayTindakanTarifKamar(rawatInap.getIdDetailCheckup(), today);
+                        }catch (GeneralBOException e){
+                            logger.error("[RawatInapAction.add] Error When get cek tindakan tarif kamar", e);
+                        }
+
+                        if(tindakanRawatList.isEmpty()){
+
+                            List<Ruangan> ruanganList = new ArrayList<>();
+                            Ruangan ruangan = new Ruangan();
+                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
+
+                            try {
+                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
+                            }catch (GeneralBOException e){
+                                logger.error("[RawatInapAction.add] Error When search tarif kamar", e);
+                            }
+
+                            if(ruanganList.size() > 0){
+                                ruangan = ruanganList.get(0);
+                                if(ruangan != null){
+
+                                    List<DokterTeam> dokterTeamList = new ArrayList<>();
+                                    DokterTeam dokterTeam = new DokterTeam();
+                                    dokterTeam.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+
+                                    try {
+                                        dokterTeamList = teamDokterBoProxy.getByCriteria(dokterTeam);
+                                    }catch (GeneralBOException e){
+                                        logger.error("[RawatInapAction.add] Error When search tarif kamar", e);
+                                    }
+
+                                    if(dokterTeamList.size() > 0){
+
+                                        dokterTeam = dokterTeamList.get(0);
+
+                                        String userName = CommonUtil.userLogin();
+                                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                                        TindakanRawat tindakanRawat = new TindakanRawat();
+                                        tindakanRawat.setIdTindakan(ruangan.getIdRuangan());
+                                        tindakanRawat.setIdDokter(dokterTeam.getIdDokter());
+                                        tindakanRawat.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan() + " No. " +ruangan.getNoRuangan());
+                                        tindakanRawat.setIdRuangan(ruangan.getIdRuangan());
+                                        tindakanRawat.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+                                        tindakanRawat.setTarif(ruangan.getTarif());
+                                        tindakanRawat.setQty(new BigInteger(String.valueOf(1)));
+                                        tindakanRawat.setCreatedDate(updateTime);
+                                        tindakanRawat.setCreatedWho(userName);
+                                        tindakanRawat.setLastUpdate(updateTime);
+                                        tindakanRawat.setLastUpdateWho(userName);
+                                        tindakanRawat.setAction("C");
+                                        tindakanRawat.setFlag("Y");
+
+                                        try {
+                                            tindakanRawatBoProxy.saveAdd(tindakanRawat);
+                                        }catch (GeneralBOException e){
+                                            logger.error("[RawatInapAction.add] Error When insert tarif kamar to tindakan", e);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
 
                         setRawatInap(rawatInap);
 

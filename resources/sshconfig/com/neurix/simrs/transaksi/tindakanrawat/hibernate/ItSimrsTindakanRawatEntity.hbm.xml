@@ -60,6 +60,9 @@
         <property name="kategoriTindakanBpjs">
             <column name="kategori_tindakan_bpjs" sql-type="varchar" length="1000" not-null="false" />
         </property>
+        <property name="idRuangan">
+            <column name="id_ruangan" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
 
     </class>

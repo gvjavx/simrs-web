@@ -198,14 +198,14 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
+                                        <%--<s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">--%>
                                             <%--<s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">--%>
                                                 <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
                                             <%--</s:url>--%>
                                             <%--<s:a href="%{add_rawat_jalan}">--%>
                                                 <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             <%--</s:a>--%>
-                                        </s:if>
+                                        <%--</s:if>--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -372,6 +372,7 @@
         var kabupaten = "";
         var kecamatan = "";
         var desa = "";
+        var cekTindakan = false;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -457,6 +458,10 @@
                             onclick = "";
                         }
 
+                        if(item.kategoriTindakanBpjs == null){
+                            cekTindakan = true;
+                        }
+
                         table += "<tr>" +
                                 "<td>" + tindakan + "</td>" +
                                 "<td>" + kategori + "</td>" +
@@ -480,7 +485,12 @@
             $('#det_desa').html(desa);
             $('#body_tindakan').html(table);
             $('#tin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
+            if(cekTindakan){
+                $('#save_verif').show();
+                $('#save_verif').attr('onclick','confirmSaveApproveTindakan(\''+idDetailCheckup+'\')');
+            }else{
+                $('#save_verif').hide();
+            }
             $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
         }, 100);
     }

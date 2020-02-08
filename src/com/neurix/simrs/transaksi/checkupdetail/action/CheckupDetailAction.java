@@ -370,6 +370,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         } catch (GeneralBOException e){
                             logger.error("[CheckupDetailAction.add] Error when get total tarif "+e.getMessage());
                         }
+
                         setTarifTotalTindakan(totalTarif);
                         break;
                     }

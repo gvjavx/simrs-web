@@ -8,10 +8,7 @@ import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.bo.impl.EklaimBoImpl;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
-import com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse;
-import com.neurix.simrs.bpjs.vclaim.model.PesertaResponse;
-import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
-import com.neurix.simrs.bpjs.vclaim.model.SepResponse;
+import com.neurix.simrs.bpjs.vclaim.model.*;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -23,6 +20,7 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
@@ -84,6 +82,11 @@ public class CheckupAction extends BaseMasterAction {
     private TindakanRawatBo tindakanRawatBoProxy;
     private DiagnosaRawatBo diagnosaRawatBoProxy;
     private DiagnosaBo diagnosaBoProxy;
+    private TindakanBo tindakanBoProxy;
+
+    public void setTindakanBoProxy(TindakanBo tindakanBoProxy) {
+        this.tindakanBoProxy = tindakanBoProxy;
+    }
 
     public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
         this.diagnosaBoProxy = diagnosaBoProxy;
@@ -582,6 +585,23 @@ public class CheckupAction extends BaseMasterAction {
                         return ERROR;
                     }
 
+                    List<Tindakan> tindakanList = new ArrayList<>();
+                    Tindakan tindakan = new Tindakan();
+                    tindakan.setIdTindakan("03");
+
+                    try {
+                        tindakanList = tindakanBoProxy.getByCriteria(tindakan);
+                    } catch (GeneralBOException e) {
+                        Long logId = null;
+                        logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                        addActionError("Error, " + "[code=" + logId + "] Found problem when search tindakan, please inform to your admin.\n" + e.getMessage());
+                        return ERROR;
+                    }
+
+                    if(tindakanList.size() > 0){
+                        tindakan = tindakanList.get(0);
+                    }
+
                     if (responseNewClaim.getPatientId() != null) {
                         KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
                         klaimDetailRequest.setNomorSep(genNoSep);
@@ -606,7 +626,7 @@ public class CheckupAction extends BaseMasterAction {
                         klaimDetailRequest.setTarifRsNonBedah("");
                         klaimDetailRequest.setTarifRsProsedurBedah("");
 
-                        klaimDetailRequest.setTarifRsKonsultasi("300000");
+                        klaimDetailRequest.setTarifRsKonsultasi(tindakan.getTarifBpjs().toString());
                         klaimDetailRequest.setTarifRsTenagaAhli("");
                         klaimDetailRequest.setTarifRsKeperawatan("");
                         klaimDetailRequest.setTarifRsPenunjang("");
@@ -715,10 +735,10 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        if(checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
-           && checkup.getNamaDiagnosa() != null && !"".equalsIgnoreCase(checkup.getNamaDiagnosa())){
+        if (checkup.getDiagnosa() != null && !"".equalsIgnoreCase(checkup.getDiagnosa())
+                && checkup.getNamaDiagnosa() != null && !"".equalsIgnoreCase(checkup.getNamaDiagnosa())) {
             //diagnosa ambil dari depan...
-        }else{
+        } else {
             List<Diagnosa> diagnosaList = new ArrayList<>();
             Diagnosa diagnosaResult = new Diagnosa();
 
@@ -727,10 +747,10 @@ public class CheckupAction extends BaseMasterAction {
 
             try {
                 diagnosaList = diagnosaBoProxy.getByCriteria(diagnosa);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
-            if (!diagnosaList.isEmpty()){
+            if (!diagnosaList.isEmpty()) {
                 diagnosaResult = diagnosaList.get(0);
                 checkup.setNamaDiagnosa(diagnosaResult.getDescOfDiagnosa());
             }
@@ -1044,9 +1064,9 @@ public class CheckupAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
         try {
-            alertPasien = checkupBo.getAlertPasien(idPasien,branchId);
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.initAlertPasien] ERROR "+e.getMessage());
+            alertPasien = checkupBo.getAlertPasien(idPasien, branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupAction.initAlertPasien] ERROR " + e.getMessage());
         }
 
         logger.info("[CheckupAction.getAlertPasien] end process <<<");
@@ -1264,7 +1284,7 @@ public class CheckupAction extends BaseMasterAction {
         return response;
     }
 
-    public ItSimrsPemeriksaanFisikEntity getPemeriksaanFisikByNoCheckup(String noCheckup){
+    public ItSimrsPemeriksaanFisikEntity getPemeriksaanFisikByNoCheckup(String noCheckup) {
         logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] START process <<<");
         ItSimrsPemeriksaanFisikEntity pemeriksaanFisikEntity = new ItSimrsPemeriksaanFisikEntity();
 
@@ -1273,15 +1293,15 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             pemeriksaanFisikEntity = checkupBo.getEntityPemeriksaanFisikByNoCheckup(noCheckup);
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
-            addActionError("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR " + e.getMessage());
+            addActionError("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR " + e.getMessage());
         }
         logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] END process <<<");
         return pemeriksaanFisikEntity;
     }
 
-    public String savePemeriksaanFisik(String jsonParam) throws JSONException{
+    public String savePemeriksaanFisik(String jsonParam) throws JSONException {
         logger.info("[CheckupAction.savePemeriksaanFisik] START process <<<");
 
         String userLogin = CommonUtil.userLogin();
@@ -1321,7 +1341,7 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             checkupBo.savePemeriksaanFisik(pemeriksaanFisik);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             return e.getMessage();
         }
 
@@ -1329,7 +1349,7 @@ public class CheckupAction extends BaseMasterAction {
         return "success";
     }
 
-    public ResikoJatuhResponse getListResikoJatuh(String noCheckup, String tglLahir){
+    public ResikoJatuhResponse getListResikoJatuh(String noCheckup, String tglLahir) {
         logger.info("[CheckupAction.getListResikoJatuh] START process <<<");
 
         ResikoJatuhResponse response = new ResikoJatuhResponse();
@@ -1354,16 +1374,16 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             response = checkupBo.getResikojatuh(resikoJatuh);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             response.setStatus("error");
-            response.setMsg("[CheckupAction.getListResikoJatuh] ERROR "+e.getMessage());
+            response.setMsg("[CheckupAction.getListResikoJatuh] ERROR " + e.getMessage());
         }
 
         logger.info("[CheckupAction.getListResikoJatuh] END process <<<");
         return response;
     }
 
-    public List<ImSimrsSkorResikoJatuhEntity> getListResikoJatuh(String id){
+    public List<ImSimrsSkorResikoJatuhEntity> getListResikoJatuh(String id) {
         logger.info("[CheckupAction.getListResikoJatuh] START process <<<");
         List<ImSimrsSkorResikoJatuhEntity> skors = new ArrayList<>();
 
@@ -1372,15 +1392,15 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             skors = checkupBo.getListSkorResikoByIdParameter(id);
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.getListResikoJatuh] ERROR "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupAction.getListResikoJatuh] ERROR " + e.getMessage());
         }
 
         logger.info("[CheckupAction.getListResikoJatuh] END process <<<");
         return skors;
     }
 
-    public List<ItSimrsRencanaRawatEntity> getListRencanaRawat(String noCheckup, String idDetailCheckup, String kategoriRawat){
+    public List<ItSimrsRencanaRawatEntity> getListRencanaRawat(String noCheckup, String idDetailCheckup, String kategoriRawat) {
         logger.info("[CheckupAction.getListRencanaRawat] START process <<<");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1389,15 +1409,15 @@ public class CheckupAction extends BaseMasterAction {
         List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = new ArrayList<>();
         try {
 
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.getListRencanaRawat] ERROR "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupAction.getListRencanaRawat] ERROR " + e.getMessage());
         }
 
         logger.info("[CheckupAction.getListRencanaRawat] END process <<<");
         return rencanaRawatEntities;
     }
 
-    public ItSimrsDataPsikososialEntity getPsikososial(String noCheckup){
+    public ItSimrsDataPsikososialEntity getPsikososial(String noCheckup) {
         logger.info("[CheckupAction.getPsikososial] START process <<<");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1407,12 +1427,32 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
 
-        } catch (HibernateException e){
-            logger.error("[CheckupAction.getPsikososial] ERROR "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getPsikososial] ERROR " + e.getMessage());
         }
 
         logger.info("[CheckupAction.getPsikososial] END process <<<");
         return psikososialEntity;
     }
 
+    public RujukanResponse checkSuratRujukan(String noRujukan, String jenisRujuk) {
+
+        logger.info("[CheckupAction.checkSuratRujukan] START process <<<");
+
+        RujukanResponse response = new RujukanResponse();
+        String unitId = CommonUtil.userBranchLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
+
+        try {
+            response = bpjsBo.caraRujukanBerdasarNomorBpjs(noRujukan, jenisRujuk, unitId);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.checkSuratRujukan] ERROR " + e.getMessage());
+            addActionError("[CheckupAction.checkSuratRujukan] ERROR " + e.getMessage());
+        }
+
+        logger.info("[CheckupAction.checkSuratRujukan] END process <<<");
+        return response;
+    }
 }

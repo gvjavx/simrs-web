@@ -129,6 +129,20 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         logger.info("[TindakanRawatBoImpl.saveEdit] End <<<<<<");
     }
 
+    @Override
+    public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal) throws GeneralBOException {
+        logger.info("[TindakanRawatBoImpl.cekTodayTindakanTarifKamar] SATRT <<<<<<");
+        List<TindakanRawat> result = new ArrayList<>();
+        try {
+            result = tindakanRawatDao.cekTodayTindakanTarifKamar(idDetail, tanggal);
+        }catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.saveAdd] Error when cek tindakan tarif kamar hari ini ", e);
+            throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when cek tindakan tarif kamar hari ini " + e.getMessage());
+        }
+        logger.info("[TindakanRawatBoImpl.cekTodayTindakanTarifKamar] END <<<<<<");
+        return result;
+    }
+
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{
         logger.info("[TindakanRawatBoImpl.updateDetailCheckup] Start >>>>>>>");
 

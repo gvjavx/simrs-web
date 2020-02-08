@@ -671,7 +671,7 @@
                 }else{
                     $('#load_send').hide();
                     $('#save_send').show();
-                    $('#msg_send').text(response.message);
+                    $('#msg_send').text("Terjadi kesalahan pada saat mengirim klaim, Found Eror: ["+response.message+"]");
                     $('#warning_send').show().fadeOut(5000);
                 }
             }

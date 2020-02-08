@@ -12,4 +12,5 @@ public interface TindakanRawatBo {
     public List<TindakanRawat> getByCriteria(TindakanRawat bean)throws GeneralBOException;
     public void saveAdd(TindakanRawat bean)throws GeneralBOException;
     public void saveEdit(TindakanRawat bean)throws GeneralBOException;
+    public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal) throws GeneralBOException;
 }
