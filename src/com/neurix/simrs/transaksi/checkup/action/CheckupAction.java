@@ -29,14 +29,24 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
+import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
+import com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsSkorResikoJatuhEntity;
+import com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuh;
+import com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuhResponse;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
-import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
@@ -45,11 +55,15 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -999,10 +1013,11 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
+        String branchId = CommonUtil.userBranchLogin();
         try {
-            alertPasien = checkupBo.getAlertPasien(idPasien, "");
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupAction.initAlertPasien] ERROR " + e.getMessage());
+            alertPasien = checkupBo.getAlertPasien(idPasien,branchId);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.initAlertPasien] ERROR "+e.getMessage());
         }
 
         logger.info("[CheckupAction.getAlertPasien] end process <<<");
@@ -1218,6 +1233,157 @@ public class CheckupAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.checkStatusBpjs] END process <<<");
         return response;
-
     }
+
+    public ItSimrsPemeriksaanFisikEntity getPemeriksaanFisikByNoCheckup(String noCheckup){
+        logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] START process <<<");
+        ItSimrsPemeriksaanFisikEntity pemeriksaanFisikEntity = new ItSimrsPemeriksaanFisikEntity();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            pemeriksaanFisikEntity = checkupBo.getEntityPemeriksaanFisikByNoCheckup(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+            addActionError("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR "+e.getMessage());
+        }
+        logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] END process <<<");
+        return pemeriksaanFisikEntity;
+    }
+
+    public String savePemeriksaanFisik(String jsonParam) throws JSONException{
+        logger.info("[CheckupAction.savePemeriksaanFisik] START process <<<");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        JSONArray json = new JSONArray(jsonParam);
+        PemeriksaanFisik pemeriksaanFisik = new PemeriksaanFisik();
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            pemeriksaanFisik.setNoCheckup(obj.getString("nocheckup"));
+            pemeriksaanFisik.setKepala(obj.getString("kepala"));
+            pemeriksaanFisik.setMata(obj.getString("mata"));
+            pemeriksaanFisik.setLeher(obj.getString("leher"));
+            pemeriksaanFisik.setThorak(obj.getString("thorak"));
+            pemeriksaanFisik.setThorakChor(obj.getString("thorakchor"));
+            pemeriksaanFisik.setThorakPulmo(obj.getString("thorakpulmo"));
+            pemeriksaanFisik.setAbdoman(obj.getString("abdomen"));
+            pemeriksaanFisik.setExtrimitas(obj.getString("extrimitas"));
+            pemeriksaanFisik.setTinggiBadan(obj.getString("tb"));
+            pemeriksaanFisik.setBeratBadan(obj.getString("bb"));
+            pemeriksaanFisik.setNadi(obj.getString("nadi"));
+            pemeriksaanFisik.setRespirationRate(obj.getString("rr"));
+            pemeriksaanFisik.setTekananDarah(obj.getString("td"));
+            pemeriksaanFisik.setSuhu(obj.getString("suhu"));
+//            pemeriksaanFisik.setTriase(obj.getString("triase"));
+
+            pemeriksaanFisik.setFlag("Y");
+            pemeriksaanFisik.setAction("C");
+            pemeriksaanFisik.setCreatedDate(now);
+            pemeriksaanFisik.setLastUpdate(now);
+            pemeriksaanFisik.setCreatedWho(userLogin);
+            pemeriksaanFisik.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            checkupBo.savePemeriksaanFisik(pemeriksaanFisik);
+        } catch (GeneralBOException e){
+            return e.getMessage();
+        }
+
+        logger.info("[CheckupAction.savePemeriksaanFisik] END process <<<");
+        return "success";
+    }
+
+    public ResikoJatuhResponse getListResikoJatuh(String noCheckup, String tglLahir){
+        logger.info("[CheckupAction.getListResikoJatuh] START process <<<");
+
+        ResikoJatuhResponse response = new ResikoJatuhResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        LocalDate now = LocalDate.now();
+        LocalDate birthDay = null;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        birthDay = LocalDate.parse(tglLahir, formatter);
+
+        Integer umur = new Integer(0);
+        if ((birthDay != null) && (now != null)) {
+            umur = new Integer(Period.between(birthDay, now).getYears());
+        }
+
+        ResikoJatuh resikoJatuh = new ResikoJatuh();
+        resikoJatuh.setNoCheckup(noCheckup);
+        resikoJatuh.setUmur(umur);
+
+        try {
+            response = checkupBo.getResikojatuh(resikoJatuh);
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[CheckupAction.getListResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListResikoJatuh] END process <<<");
+        return response;
+    }
+
+    public List<ImSimrsSkorResikoJatuhEntity> getListResikoJatuh(String id){
+        logger.info("[CheckupAction.getListResikoJatuh] START process <<<");
+        List<ImSimrsSkorResikoJatuhEntity> skors = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            skors = checkupBo.getListSkorResikoByIdParameter(id);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListResikoJatuh] END process <<<");
+        return skors;
+    }
+
+    public List<ItSimrsRencanaRawatEntity> getListRencanaRawat(String noCheckup, String idDetailCheckup, String kategoriRawat){
+        logger.info("[CheckupAction.getListRencanaRawat] START process <<<");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = new ArrayList<>();
+        try {
+
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListRencanaRawat] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getListRencanaRawat] END process <<<");
+        return rencanaRawatEntities;
+    }
+
+    public ItSimrsDataPsikososialEntity getPsikososial(String noCheckup){
+        logger.info("[CheckupAction.getPsikososial] START process <<<");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        ItSimrsDataPsikososialEntity psikososialEntity = new ItSimrsDataPsikososialEntity();
+
+        try {
+
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getPsikososial] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getPsikososial] END process <<<");
+        return psikososialEntity;
+    }
+
 }

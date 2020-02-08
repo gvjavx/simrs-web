@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity" dynamic-update="true"
            table="it_simrs_header_checkup" select-before-update="true" schema="public">
 
-
         <id name="noCheckup">
             <column name="no_checkup" sql-type="varchar" length="30" not-null="true" />
         </id>
@@ -80,27 +79,21 @@
         <property name="jenisKunjungan">
             <column name="jenis_kunjungan" sql-type="varchar" length="10" not-null="false" />
         </property>
-
         <property name="namaPenanggung">
             <column name="nama_penanggung" sql-type="varchar" length="100" not-null="false" />
         </property>
-
         <property name="hubunganKeluarga">
             <column name="hubungan_keluarga" sql-type="varchar" length="100" not-null="false" />
         </property>
-
         <property name="rujuk">
             <column name="rujuk" sql-type="varchar" length="100" not-null="false" />
         </property>
-
         <property name="urlDocRujuk">
             <column name="url_doc_rujuk" sql-type="varchar" length="1000" not-null="false" />
         </property>
-
         <property name="tinggi">
             <column name="tinggi" sql-type="varchar" length="10" not-null="false" />
         </property>
-
         <property name="berat">
         <column name="berat_badan" sql-type="varchar" length="10" not-null="false" />
         </property>
@@ -119,6 +112,23 @@
         <property name="kodeDiagnosa">
             <column name="kode_diagnosa" sql-type="varchar" length="30"/>
         </property>
-
+        <property name="ketRujukan">
+            <column name="ket_rujukan" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="ketKeyakinan">
+            <column name="ket_keyakinan" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="bantuanBahasa">
+            <column name="bantuan_bahasa" sql-type="varchar" length="1"/>
+        </property>
+        <property name="bahasa">
+            <column name="bahasa" sql-type="varchar" length="100"/>
+        </property>
+        <property name="alatBantu">
+            <column name="alat_bantu" sql-type="varchar" length="30"/>
+        </property>
+        <property name="gangguanLain">
+            <column name="gangguan_lain" sql-type="varchar" length="100"/>
+        </property>
     </class>
 </hibernate-mapping>

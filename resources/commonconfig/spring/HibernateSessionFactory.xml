@@ -282,7 +282,6 @@
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/operatorlab/hibernate/ImSimrsOperatorLabEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsPasienEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPelayananEntitiy.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPoliSpesialisEntity.hbm.xml</value>
@@ -303,6 +302,11 @@
                 <value>sshconfig/com/neurix/simrs/master/vendor/hibernate/ImSimrsVendorEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsFingerDataEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/fingerPrint/hibernate/imSimrsFingerPrintEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsParameterResikoJatuhEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsSkorResikoJatuhEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ImSimrsKategoriRencanaRawatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ImSimrsParameterRencanaRawatEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
@@ -313,7 +317,6 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryRuanganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/history/hibernate/ItSimrsHistoryLayananEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsCheckupAlergiEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/simrs/transaksi/antrianonline/hibernate/ItSimrsAntrianOnlineEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/antrianonline/hibernate/ItSimrsRegistrasiOnlineEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/diagnosarawat/hibernate/ItSimrsDiagnosaRawatEntity.hbm.xml</value>
@@ -333,6 +336,11 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/MtSimrsPermintaanVendorEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transaksiobat/hibernate/ImtSimrsTransaksiObatDetailBatchEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/pemeriksaanfisik/hibernate/ItSimrsPemeriksaanFisikEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ItSimrsResikoJatuhEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/psikososial/hibernate/ItSimrsPsikosialEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ItSimrsRencanaRawatEntity.hbm.xml</value>
+
             </list>
         </property>
     </bean>

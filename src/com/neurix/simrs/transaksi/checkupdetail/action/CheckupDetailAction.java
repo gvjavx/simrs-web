@@ -43,7 +43,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -452,6 +454,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+//        if ("".equalsIgnoreCase(headerDetailCheckup.getIdPelayanan()) && headerDetailCheckup.getIdPelayanan() == null){
+//            headerDetailCheckup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+//        }
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -496,6 +501,23 @@ public class CheckupDetailAction extends BaseMasterAction {
         HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
         String userRoleLogin = CommonUtil.roleAsLogin();
         String idPelayanan   = CommonUtil.userPelayananIdLogin();
+        //Instant now = Instant.now();
+        //Instant yesterday = now.minus(1, ChronoUnit.DAYS);
+        //Instant tomorrow = now.plus(1,ChronoUnit.DAYS);
+
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.add(Calendar.DATE, -1);
+        Date yesterday = new Date(cal.getTimeInMillis());
+
+        cal.add(Calendar.DATE, 1);
+        Date tomorrow = new Date(cal.getTimeInMillis());
+
+        String stYesterday = yesterday.toString();
+        String stTomorrow = tomorrow.toString();
+
+
 
         if(CommonConstant.ROLE_ADMIN_RS.equalsIgnoreCase(userRoleLogin)){
             setEnabledPoli(true);
@@ -510,6 +532,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             setEnabledAddPasien(true);
         }
 
+
+//        checkupdetail.setStDateFrom(stYesterday);
+//        checkupdetail.setStDateTo(stTomorrow);
         setHeaderDetailCheckup(checkupdetail);
 
         HttpSession session = ServletActionContext.getRequest().getSession();

@@ -218,6 +218,9 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
+                                        <%-- <a href="#" onClick="showPemeriksaan('<s:property value="noCheckup"/>')">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon-inspection.png"/>" style="cursor: pointer; height: 25px; width: 25px">
+                                        </a> --%>
                                         <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
                                             <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
                                                 <s:param name="id"><s:property value="noCheckup"/></s:param>
@@ -238,6 +241,44 @@
     </section>
     <!-- /.content -->
 </div>
+
+<%-- <div class="modal fade" id="modal-pemeriksaan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pemeriksaan Fisik</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
+                        <thead>
+                        <td>No RM</td>
+                        <td>Nama Pasien</td>
+                        <td>Diagnosa Terakhir</td>
+                        <td>Tanggal Keluar</td>
+                        </thead>
+                        <tbody id="body-rekam-medic">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div> --%>
+
+
+<%-- <script>
+function showPemeriksaan(n){
+    $("#modal-pemeriksaan").modal("show");
+    // alert(n);
+}
+</script> --%>
 
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

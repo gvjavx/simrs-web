@@ -45,6 +45,60 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
     private String kodeDiagnosa;
+    private String ketRujukan;
+    private String ketKeyakinan;
+    private String bantuanBahasa;
+    private String bahasa;
+    private String alatBantu;
+    private String gangguanLain;
+
+    public String getGangguanLain() {
+        return gangguanLain;
+    }
+
+    public void setGangguanLain(String gangguanLain) {
+        this.gangguanLain = gangguanLain;
+    }
+
+    public String getKetKeyakinan() {
+        return ketKeyakinan;
+    }
+
+    public void setKetKeyakinan(String ketKeyakinan) {
+        this.ketKeyakinan = ketKeyakinan;
+    }
+
+    public String getBantuanBahasa() {
+        return bantuanBahasa;
+    }
+
+    public void setBantuanBahasa(String bantuanBahasa) {
+        this.bantuanBahasa = bantuanBahasa;
+    }
+
+    public String getBahasa() {
+        return bahasa;
+    }
+
+    public void setBahasa(String bahasa) {
+        this.bahasa = bahasa;
+    }
+
+    public String getAlatBantu() {
+        return alatBantu;
+    }
+
+    public void setAlatBantu(String alatBantu) {
+        this.alatBantu = alatBantu;
+    }
+
+    public String getKetRujukan() {
+        return ketRujukan;
+    }
+
+    public void setKetRujukan(String ketRujukan) {
+        this.ketRujukan = ketRujukan;
+    }
 
     public String getKodeDiagnosa() {
         return kodeDiagnosa;

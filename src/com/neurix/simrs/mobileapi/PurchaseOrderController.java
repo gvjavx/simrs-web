@@ -64,7 +64,6 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     private String action;
 
 
-
     public String getUserId() {
         return userId;
     }
@@ -380,28 +379,25 @@ public class PurchaseOrderController implements ModelDriven<Object> {
             if (result != null && result.size() > 0) {
                 if (action.equalsIgnoreCase("getPO")) {
                     for (PermintaanVendor item : result) {
-                        if (item.getKeterangan().equalsIgnoreCase("Proses Verifikasi")) {
-                            PurchaseOrderMobile purchaseOrderMobile = new PurchaseOrderMobile();
-                            purchaseOrderMobile.setIdPermintaanVendor(item.getIdPermintaanVendor());
-                            purchaseOrderMobile.setIdApprovalObat(item.getIdApprovalObat());
-                            purchaseOrderMobile.setIdVendor(item.getIdVendor());
-                            purchaseOrderMobile.setFlag(item.getFlag());
-                            purchaseOrderMobile.setAction(item.getFlag());
-                            purchaseOrderMobile.setUrlDocPo(item.getUrlDocPo());
-                            purchaseOrderMobile.setBranchId(item.getBranchId());
-                            purchaseOrderMobile.setIdObat(item.getIdObat());
-                            purchaseOrderMobile.setNamaObat(item.getNamaObat());
-                            purchaseOrderMobile.setNamaVendor(item.getNamaVendor());
-                            purchaseOrderMobile.setIdPelayanan(item.getIdPelayanan());
-                            purchaseOrderMobile.setStCreatedDate(item.getStCreatedDate());
-                            purchaseOrderMobile.setKeterangan(item.getKeterangan());
-                            purchaseOrderMobile.setApprovalFlag(item.getApprovalFlag());
-                            purchaseOrderMobile.setNotFlagR(item.getNotFlagR());
 
-                            listOfPurchaseOrder.add(purchaseOrderMobile);
-                        }
+                        PurchaseOrderMobile purchaseOrderMobile = new PurchaseOrderMobile();
+                        purchaseOrderMobile.setIdPermintaanVendor(item.getIdPermintaanVendor());
+                        purchaseOrderMobile.setIdApprovalObat(item.getIdApprovalObat());
+                        purchaseOrderMobile.setIdVendor(item.getIdVendor());
+                        purchaseOrderMobile.setFlag(item.getFlag());
+                        purchaseOrderMobile.setAction(item.getFlag());
+                        purchaseOrderMobile.setUrlDocPo(item.getUrlDocPo());
+                        purchaseOrderMobile.setBranchId(item.getBranchId());
+                        purchaseOrderMobile.setIdObat(item.getIdObat());
+                        purchaseOrderMobile.setNamaObat(item.getNamaObat());
+                        purchaseOrderMobile.setNamaVendor(item.getNamaVendor());
+                        purchaseOrderMobile.setIdPelayanan(item.getIdPelayanan());
+                        purchaseOrderMobile.setStCreatedDate(item.getStCreatedDate());
+                        purchaseOrderMobile.setKeterangan(item.getKeterangan());
+                        purchaseOrderMobile.setApprovalFlag(item.getApprovalFlag());
+                        purchaseOrderMobile.setNotFlagR(item.getNotFlagR());
 
-
+                        listOfPurchaseOrder.add(purchaseOrderMobile);
                     }
                 }
 
@@ -429,6 +425,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatMobile.setJenisSatuan(item.getJenisSatuan());
                             transaksiObatMobile.setIdPabrik(item.getIdPabrik());
                             transaksiObatMobile.setMerek(item.getMerek());
+                            if (item.getSumQtyApprove() != null) {
+                                transaksiObatMobile.setSumQtyApprove(item.getSumQtyApprove().toString());
+                            } else transaksiObatMobile.setSumQtyApprove("0");
 
 
                         if ("box".equalsIgnoreCase(item.getJenisSatuan())) {
@@ -506,6 +505,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatMobile.setKeterangan(item.getKeterangan());
                             transaksiObatMobile.setQtyApprove(item.getSumQtyApprove().toString());
                             transaksiObatMobile.setIsFullOfQty(item.getIsFullOfQty());
+                            transaksiObatMobile.setSumQtyApprove(item.getSumQtyApprove().toString());
 //                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
 //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
 //                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());

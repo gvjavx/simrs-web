@@ -11,6 +11,7 @@ import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -605,8 +606,11 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             transaksiObatDetail.setCreatedDate(time);
             transaksiObatDetail.setLastUpdate(time);
 
+            CheckObatResponse response;
+
             try {
-                transaksiObatBoProxy.saveListObatPembelian(transaksiObatDetail, jsonObatDetail);
+               response = transaksiObatBoProxy.saveListObatPembelian(transaksiObatDetail, jsonObatDetail);
+               model.setMessage(response.getMessage());
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, save list obat pembelian " + e.getMessage());
             }
