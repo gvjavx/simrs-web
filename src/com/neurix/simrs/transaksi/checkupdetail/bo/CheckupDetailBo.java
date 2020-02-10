@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkupdetail.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.statuspasien.bo.StatusPasienBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
@@ -23,4 +24,6 @@ public interface CheckupDetailBo {
     public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException;
 
     public BigInteger getSumOfTindakanByNoCheckup(String noCheckup) throws GeneralBOException;
+
+    public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
 }

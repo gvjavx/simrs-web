@@ -57,8 +57,8 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             if (mapCriteria.get("flag")!=null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
-            if (mapCriteria.get("approve_bpjs_flag")!=null) {
-                criteria.add(Restrictions.eq("approveBpjsFlag", (String) mapCriteria.get("approve_bpjs_flag")));
+            if (mapCriteria.get("approve_flag")!=null) {
+                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
             }
 
         }

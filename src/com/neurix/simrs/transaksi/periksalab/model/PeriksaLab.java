@@ -61,6 +61,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String urlKtp;
 
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
     public String getUrlKtp() {
         return urlKtp;
     }

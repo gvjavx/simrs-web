@@ -46,8 +46,8 @@ public class VerifikatorBoImpl implements VerifikatorBo {
 
             if(entity != null){
 
-                entity.setApproveBpjsFlag("Y");
-                entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
+//                entity.setApproveBpjsFlag("Y");
+//                entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());

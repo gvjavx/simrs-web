@@ -238,7 +238,6 @@ public class VerifikatorAction extends BaseMasterAction {
         tindakanRawat.setIdTindakan(idTindakan);
         tindakanRawat.setLastUpdate(time);
         tindakanRawat.setLastUpdateWho(userLogin);
-        tindakanRawat.setKategoriTindakanBpjs(kategoriTindakanBpjs);
 
         if (!"".equalsIgnoreCase(idTindakan) && idTindakan != null) {
 
@@ -311,7 +310,6 @@ public class VerifikatorAction extends BaseMasterAction {
                         List<TindakanRawat> tindakanRawatList = new ArrayList<>();
                         TindakanRawat tindakanRawat = new TindakanRawat();
                         tindakanRawat.setIdDetailCheckup(idDetailCheckup);
-                        tindakanRawat.setApproveBpjsFlag("Y");
 
                         //search tindakan rawat by id detail checkup
                         try {
@@ -406,81 +404,81 @@ public class VerifikatorAction extends BaseMasterAction {
 
                         for (TindakanRawat tindakan : tindakanRawatList) {
 
-                            if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTarif() != null) {
+//                            if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTarif() != null) {
+//
+//                                if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(tindakan.getTarifTotal());
+//                                }
+//                                if ("tenaga_ahli".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsTenagaAhli = tarifRsTenagaAhli.add(tindakan.getTarifTotal());
+//                                }
+//                                if ("radiologi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsRadiologi = tarifRsRadiologi.add(tindakan.getTarifTotal());
+//                                }
+//                                if ("rehabilitasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsRehabilitasi = tarifRsRehabilitasi.add(tindakan.getTarifTotal());
+//                                }
+//                                if ("obat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsObat = tarifRsObat.add(tindakan.getTarifTotal());
+//                                }
+//                                if ("alkes".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsAlkes = tarifRsAlkes.add(tindakan.getTarifTotal());
+//
+//                                }
+//
+//                                //--------------
+//                                if ("prosedur_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsProsedurBedah = tarifRsProsedurBedah.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("keperawatan".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsKeperawatan = tarifRsKeperawatan.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("laboratorium".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsLaboratorium = tarifRsLaboratorium.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("kamar_akomodasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsKamar = tarifRsKamar.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("obat_kronis".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsObatKronis = tarifRsObatKronis.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("bmhp".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsBmhp = tarifRsBmhp.add(tindakan.getTarifTotal());
+//
+//                                }
+//
+//                                //--------------
+//                                if ("konsultasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsKonsultasi = tarifRsKonsultasi.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("penunjang".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsPenunjang = tarifRsPenunjang.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("pelayanan_darah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsPelayananDarah = tarifRsPelayananDarah.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("rawat_intensif".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsRawatIntensif = tarifRsRawatIntensif.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("obat_kemoterapi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(tindakan.getTarifTotal());
+//
+//                                }
+//                                if ("sewa_alat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+//                                    tarifRsSewaAlat = tarifRsSewaAlat.add(tindakan.getTarifTotal());
+//
+//                                }
 
-                                if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(tindakan.getTarifTotal());
-                                }
-                                if ("tenaga_ahli".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsTenagaAhli = tarifRsTenagaAhli.add(tindakan.getTarifTotal());
-                                }
-                                if ("radiologi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsRadiologi = tarifRsRadiologi.add(tindakan.getTarifTotal());
-                                }
-                                if ("rehabilitasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsRehabilitasi = tarifRsRehabilitasi.add(tindakan.getTarifTotal());
-                                }
-                                if ("obat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsObat = tarifRsObat.add(tindakan.getTarifTotal());
-                                }
-                                if ("alkes".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsAlkes = tarifRsAlkes.add(tindakan.getTarifTotal());
-
-                                }
-
-                                //--------------
-                                if ("prosedur_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsProsedurBedah = tarifRsProsedurBedah.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("keperawatan".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsKeperawatan = tarifRsKeperawatan.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("laboratorium".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsLaboratorium = tarifRsLaboratorium.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("kamar_akomodasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsKamar = tarifRsKamar.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("obat_kronis".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsObatKronis = tarifRsObatKronis.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("bmhp".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsBmhp = tarifRsBmhp.add(tindakan.getTarifTotal());
-
-                                }
-
-                                //--------------
-                                if ("konsultasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsKonsultasi = tarifRsKonsultasi.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("penunjang".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsPenunjang = tarifRsPenunjang.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("pelayanan_darah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsPelayananDarah = tarifRsPelayananDarah.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("rawat_intensif".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsRawatIntensif = tarifRsRawatIntensif.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("obat_kemoterapi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(tindakan.getTarifTotal());
-
-                                }
-                                if ("sewa_alat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-                                    tarifRsSewaAlat = tarifRsSewaAlat.add(tindakan.getTarifTotal());
-
-                                }
-
-                            }
+//                            }
                         }
 
                         KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();

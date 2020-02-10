@@ -199,7 +199,6 @@ public class RawatInapAction extends BaseMasterAction {
                                         tindakanRawat.setIdTindakan(ruangan.getIdRuangan());
                                         tindakanRawat.setIdDokter(dokterTeam.getIdDokter());
                                         tindakanRawat.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan() + " No. " +ruangan.getNoRuangan());
-                                        tindakanRawat.setIdRuangan(ruangan.getIdRuangan());
                                         tindakanRawat.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                                         tindakanRawat.setTarif(ruangan.getTarif());
                                         tindakanRawat.setQty(new BigInteger(String.valueOf(1)));

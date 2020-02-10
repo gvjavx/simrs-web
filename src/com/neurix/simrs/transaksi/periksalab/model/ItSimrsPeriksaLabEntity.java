@@ -21,6 +21,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String statusPeriksa;
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getIdLab() {
         return idLab;

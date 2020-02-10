@@ -61,7 +61,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         logger.info("[RiwayatTindakanBoImpl.saveAdd] Start >>>>>>>>");
         if(bean != null){
             ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
-            entity.setIdRiwayatTindakan(bean.getIdRiwayatTindakan());
+            entity.setIdRiwayatTindakan("RWT"+getNextIdRiwayatTindakan());
             entity.setIdDetailCheckup(bean.getIdDetailCheckup());
             entity.setIdTindakan(bean.getIdTindakan());
             entity.setNamaTindakan(bean.getNamaTindakan());
@@ -113,5 +113,15 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] End <<<<<<<<");
         return entities;
+    }
+
+    private String getNextIdRiwayatTindakan(){
+        String id = "";
+        try {
+            id = riwayatTindakanDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
     }
 }
