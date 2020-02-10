@@ -10,6 +10,7 @@ import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -1362,7 +1363,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public ItSImrsPatrusEntity getDataPatrus(String noCheckup) throws GeneralBOException {
+    public List<ItSImrsPatrusEntity> getDataPatrus(String noCheckup) throws GeneralBOException {
         logger.info("[CheckupBoImpl.getDataPatrus] Start >>>>>>>>");
 
         Map hsCriteria = new HashMap();
@@ -1377,11 +1378,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             throw new GeneralBOException("[CheckupBoImpl.getDataPatrus] ERROR "+e.getMessage());
         }
 
-        if (patrusEntities.size() > 0){
-            patrusEntity = patrusEntities.get(0);
-        }
         logger.info("[CheckupBoImpl.getDataPatrus] End <<<<<<<<");
-        return patrusEntity;
+        return patrusEntities;
     }
 
     @Override
@@ -1415,6 +1413,42 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 throw new GeneralBOException("[CheckupBoImpl.saveRekonObat] ERROR "+e.getMessage());
             }
         }
+    }
+
+    @Override
+    public CrudResponse savePatrus(ItSImrsPatrusEntity bean) {
+
+        CrudResponse response = new CrudResponse();
+        if (bean.getKetPatrus() != null && !"".equalsIgnoreCase(bean.getKetPatrus())){
+            bean.setId("PTR"+getIdPatrus());
+            try {
+                patrusDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.savePatrus] ERROR "+e.getMessage());
+                response.setStatus("error");
+                response.setMsg("[CheckupBoImpl.savePatrus] ERROR "+e.getMessage());
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveTranfusi(ItSimrsTranfusiEntity bean) {
+        CrudResponse response = new CrudResponse();
+
+            bean.setId("TFS"+getIdPatrus());
+            try {
+                tranfusiDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveTranfusi] ERROR "+e.getMessage());
+                response.setStatus("error");
+                response.setMsg("[CheckupBoImpl.saveTranfusi] ERROR "+e.getMessage());
+            }
+
+        return response;
     }
 
     private String getNextIdAlergi(){

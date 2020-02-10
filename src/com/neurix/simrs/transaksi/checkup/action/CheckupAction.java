@@ -1670,22 +1670,22 @@ public class CheckupAction extends BaseMasterAction {
         return tranfusiEntities;
     }
 
-    public ItSImrsPatrusEntity getPatrus(String noCheckup){
+    public List<ItSImrsPatrusEntity> getListPatrus(String noCheckup){
         logger.info("[CheckupAction.getPatrus] START process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
-        ItSImrsPatrusEntity patrusEntity = new ItSImrsPatrusEntity();
+        List<ItSImrsPatrusEntity> patrusEntities = new ArrayList<>();
 
         try {
-            patrusEntity = checkupBo.getDataPatrus(noCheckup);
+            patrusEntities = checkupBo.getDataPatrus(noCheckup);
         } catch (GeneralBOException e){
             logger.error("[CheckupAction.getPatrus] ERROR "+e.getMessage());
         }
 
         logger.info("[CheckupAction.getPatrus] END process <<<");
-        return patrusEntity;
+        return patrusEntities;
     }
 
     public List<ItSimrsRekonsiliasiObatEntity> getListRekonsiliasiObat(String noCheckup){
@@ -1744,6 +1744,57 @@ public class CheckupAction extends BaseMasterAction {
             response.setStatus("error");
             response.setMsg("CheckupAction.getKategoriResiko] ERROR "+e.getMessage());
         }
+
+        return response;
+    }
+
+    public CrudResponse savePatrus(String noCheckup, String ket){
+        logger.info("[CheckupAction.savePatrus] START process >>>");
+
+        CrudResponse crudResponse = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        ItSImrsPatrusEntity patrusEntity = new ItSImrsPatrusEntity();
+        patrusEntity.setKetPatrus(ket);
+        patrusEntity.setNoCheckup(noCheckup);
+        patrusEntity.setFlag("Y");
+        patrusEntity.setAction("C");
+        patrusEntity.setLastUpdate(now);
+        patrusEntity.setLastUpdateWho(userLogin);
+        patrusEntity.setCreatedDate(now);
+        patrusEntity.setCreatedWho(userLogin);
+
+        crudResponse = checkupBo.savePatrus(patrusEntity);
+        logger.info("[CheckupAction.savePatrus] END <<<");
+        return crudResponse;
+    }
+
+    public CrudResponse saveTranfusi(String noCheckup, String ket, String cc){
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsTranfusiEntity tranfusiEntity = new ItSimrsTranfusiEntity();
+        tranfusiEntity.setKetTransfusi(ket);
+        tranfusiEntity.setCc(cc);
+        tranfusiEntity.setNoCheckup(noCheckup);
+        tranfusiEntity.setFlag("Y");
+        tranfusiEntity.setAction("C");
+        tranfusiEntity.setLastUpdate(now);
+        tranfusiEntity.setLastUpdateWho(userLogin);
+        tranfusiEntity.setCreatedDate(now);
+        tranfusiEntity.setCreatedWho(userLogin);
+
+        checkupBo.saveTranfusi(tranfusiEntity);
 
         return response;
     }

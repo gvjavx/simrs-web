@@ -41,8 +41,8 @@
         });
     </script>
     <style>
-        .btn {
-            margin-bottom:7px;
+        .btn{
+          margin-top: 7px;
         }
         .form-control{
             margin-bottom: 7px;
@@ -227,10 +227,10 @@
                         <button class="btn btn-primary" onclick="showModalRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
                             <i class="fa fa-edit"></i> Form Rekonsiliasi Obat
                         </button>
-                        <button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                        <button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')">
                             <i class="fa fa-edit"></i> Form Tranfusi
                         </button>
-                        <button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                        <button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')">
                             <i class="fa fa-edit"></i> Form Patrus
                         </button>
 
@@ -1205,32 +1205,32 @@
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">tinggi badan</label>
-                            <input type="text" name="" id="tb" class="form-control" placeholder="cm">
+                            <input type="number" name="" id="tb" class="form-control" placeholder="cm">
                         </div>
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">berat badan</label>
-                            <input type="text" name="" id="bb" class="form-control" placeholder="Kg">
+                            <input type="number" name="" id="bb" class="form-control" placeholder="Kg">
                         </div>
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">nadi</label>
-                            <input type="text" name="" id="nadi" class="form-control">
+                            <input type="number" name="" id="nadi" class="form-control">
                         </div>
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">resp rate</label>
-                            <input type="text" name="" id="rr" class="form-control">
+                            <input type="number" name="" id="rr" class="form-control">
                         </div>
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">tknn darah</label>
-                            <input type="text" name="" id="td" class="form-control">
+                            <input type="number" name="" id="td" class="form-control">
                         </div>
 
                         <div class="col-md-2">
                             <label style="font-size: 11px;">suhu</label>
-                            <input type="text" name="" id="suhu" class="form-control">
+                            <input type="number" name="" id="suhu" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -1244,41 +1244,6 @@
                         </div>
                         <div class="col-md-8">
                             <input type="text" name="" id="kepala" class="form-control">
-                            <script>
-
-//                                var menus, mapped;
-//                                $('#kepala').typeahead({
-//                                    minLength: 0,
-//                                    source: function (query, process) {
-//                                        menus = [];
-//                                        mapped = {};
-//
-//                                        var data = [];
-//                                        dwr.engine.setAsync(false);
-//                                        CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
-//                                            data = listdata;
-//                                        });
-//
-//                                        $.each(data, function (i, item) {
-//                                            var labelItem = item.namaDiagnosaBpjs;
-//                                            mapped[labelItem] = {
-//                                                id: item.kodeDiagnosaBpjs,
-//                                                label: labelItem,
-//                                                name: item.namaDiagnosaBpjs
-//                                            };
-//                                            menus.push(labelItem);
-//                                        });
-//
-//                                        process(menus);
-//                                    },
-//                                    updater: function (item) {
-//                                        var selectedObj = mapped[item];
-//                                        // insert to textarea diagnosa_ket
-//                                        $("#diagnosa_ket").val(selectedObj.name);
-//                                        return selectedObj.id;
-//                                    }
-//                                });
-                            </script>
                         </div>
                         <div class="col-md-4">
                             <label>Mata</label>
@@ -1511,14 +1476,16 @@
                             <label>Intensitas Nyeri</label>
                         </div>
                         <div class="col-md-8">
-                            <input type="text" name="" id="intensitasNyeri" class="form-control">
+                            <input type="number" name="" id="intensitasNyeri" max="10" min="0" class="form-control">
+                            <%-- <input type="text" name="" id="intensitasNyeri" class="form-control"> --%>
                         </div>
 
                         <div class="col-md-4">
                             <label>Jenis Intensitas Nyeri</label>
                         </div>
                         <div class="col-md-8">
-                            <input type="text" name="" id="jenisIntensitasNyeri" class="form-control">
+                          <input type="number" name="" id="jenisIntensitasNyeri" max="10" min="0" class="form-control">
+                            <%-- <input type="text" name="" id="jenisIntensitasNyeri" class="form-control"> --%>
                         </div>
 
                         <div class="col-md-4">
@@ -1560,7 +1527,7 @@
 </div>
 
 <div class="modal fade" id="modal-rekonsiliasi">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1659,6 +1626,130 @@
                         <td>Obat dari rumah dilanjutkan saat pulang</td>
                         </thead>
                         <tbody id="body_rekon">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-patrus">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Patrus </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label >Katerangan Patrus</label>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="inp_patrus">
+                                    <option value="Lahir Hidup">Lahir Hidup</option>
+                                    <option value="Lahir Mati">Lahir Mati</option>
+                                    <option value="Lahir < 2500 gram">Lahir < 2500 gram</option>
+                                    <option value="Abortus">Abortus</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success" id="save_patrus" onclick="saveDataPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                    Add & Save
+                                </button>
+                                <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_patrus"><i
+                                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_patrus">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_patrus">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_patrus"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Keterangan Patrus</td>
+                        </thead>
+                        <tbody id="body_patrus">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-tranfusi">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Tranfus </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                              <select class="form-control" id="name_tranfusi">
+                                  <option value="Whole Blood">Whole Blood</option>
+                                  <option value="Packed Red Cells">Packed Red Cells</option>
+                                  <option value="Liquid Plasma">Liquid Plasma</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <input type="number" class="form-control" id="cc_tranfusi" placeholder="CC"/>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success" id="save_tranfusi" onclick="saveTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                    Add & Save
+                                </button>
+                            </div>
+                        </div>
+                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_tranfusi"><i
+                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </button>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_tranfusi">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_tranfusi">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_tranfusi"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Keterangan Tranfusi</td>
+                        <td>CC</td>
+                        <td>tanggal</td>
+                        </thead>
+                        <tbody id="body_tranfusi">
                         </tbody>
                     </table>
                     <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
@@ -3446,6 +3537,134 @@
       });
     }
 
+    function showModalPatrus(noCheckup){
+      $("#modal-patrus").modal("show");
+      $("#error_ket_patrus").html("");
+      $("#success_save_patrus").hide();
+      $("#error_save_patrus").hide();
+      $("#load_patrus").hide();
+      $("#save_patrus").show();
+
+      dwr.engine.setAsync(true);
+      CheckupAction.getListPatrus(noCheckup, function (response) {
+          if(response != null){
+            var str = "";
+            $.each(response, function(i,item){
+              str += "<tr>"+
+                    "<td>"+item.ketPatrus+"</td>"+
+                    "</tr>";
+            });
+
+          $("#body_patrus").html(str);
+          }
+      });
+    }
+
+    function saveDataPatrus(noCheckup){
+      $("#load_patrus").show();
+      $("#save_patrus").hide();
+
+      var ket = $("#inp_patrus").val();
+      dwr.engine.setAsync(true);
+      CheckupAction.savePatrus(noCheckup, ket, function (response) {
+        if (response.status == "success") {
+
+          $("#error_ket_patrus").html("");
+          $("#success_save_patrus").show();
+          $("#error_save_patrus").hide();
+          $("#load_patrus").hide();
+          $("#save_patrus").show();
+
+          CheckupAction.getListPatrus(noCheckup, function (listResponse) {
+              if(listResponse != null){
+                var str = "";
+                $.each(listResponse, function(i,item){
+                  str += "<tr>"+
+                        "<td>"+item.ketPatrus+"</td>"+
+                        "</tr>";
+                });
+
+              $("#body_patrus").html("");
+              $("#body_patrus").html(str);
+              }
+          });
+        } else {
+          $("#error_ket_patrus").html(response.msg);
+          $("#success_save_patrus").hide();
+          $("#error_save_patrus").show();
+          $("#load_patrus").hide();
+          $("#save_patrus").show();
+        }
+
+      });
+    }
+
+    function showModalTranfusi(noCheckup){
+      $("#modal-tranfusi").modal("show");
+      $("#error_ket_tranfusi").html("");
+      $("#success_save_tranfusi").hide();
+      $("#error_save_tranfusi").hide();
+      $("#load_tranfusi").hide();
+      $("#save_tranfusi").show();
+
+      dwr.engine.setAsync(true);
+      CheckupAction.getListTranfusi(noCheckup, function (response) {
+        if (response != null) {
+           // console.log(response);
+          var str = "";
+          $.each(response, function(i,item){
+            str += "<tr>"+
+                  "<td>"+item.ketTransfusi+"</td>"+
+                  "<td>"+item.cc+"</td>"+
+                  "<td>"+item.createdDate+"</td>"+
+                  "</tr>";
+          });
+          $("#body_tranfusi").html(str);
+        }
+      });
+    }
+
+    function saveTranfusi(noCheckup){
+      $("#load_tranfusi").show();
+      $("#save_tranfusi").hide();
+
+      var ket = $("#name_tranfusi").val();
+      var cc = $("#cc_tranfusi").val();
+
+      dwr.engine.setAsync(true);
+      CheckupAction.saveTranfusi(noCheckup, ket, cc, function (response) {
+        if (response.status == "success") {
+
+          $("#error_ket_tranfusi").html("");
+          $("#success_save_tranfusi").show();
+          $("#error_save_tranfusi").hide();
+          $("#load_tranfusi").hide();
+          $("#save_tranfusi").show();
+
+          CheckupAction.getListTranfusi(noCheckup, function (listResponse) {
+            if (listResponse != null) {
+               // console.log(response);
+              var str = "";
+              $.each(listResponse, function(i,item){
+                str += "<tr>"+
+                      "<td>"+item.ketTransfusi+"</td>"+
+                      "<td>"+item.cc+"</td>"+
+                      "<td>"+item.createdDate+"</td>"+
+                      "</tr>";
+              });
+              $("#body_tranfusi").html("");
+              $("#body_tranfusi").html(str);
+            }
+          });
+        } else {
+          $("#error_ket_tranfusi").html(response.msg);
+          $("#success_save_tranfusi").hide();
+          $("#error_save_tranfusi").show();
+          $("#load_tranfusi").hide();
+          $("#save_tranfusi").show();
+        }
+      });
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -42,9 +43,11 @@ public interface CheckupBo {
     public ItSimrsDataPsikososialEntity getDataPsikososial(String noCheckup) throws GeneralBOException;
     public void saveDataPsikososial(String noCheckup, ItSimrsDataPsikososialEntity psikososial) throws GeneralBOException;
     public List<ItSimrsTranfusiEntity> getListTranfusi(String noCheckup) throws GeneralBOException;
-    public ItSImrsPatrusEntity getDataPatrus(String noCheckup) throws GeneralBOException;
+    public List<ItSImrsPatrusEntity> getDataPatrus(String noCheckup) throws GeneralBOException;
     public List<ItSimrsRekonsiliasiObatEntity> getListRekonsiliasiObat(String noCheckup) throws GeneralBOException;
     public void saveRekonObat(String noCheckup, ItSimrsRekonsiliasiObatEntity obatEntity) throws GeneralBOException;
+    public CrudResponse savePatrus(ItSImrsPatrusEntity bean);
+    public CrudResponse saveTranfusi(ItSimrsTranfusiEntity bean);
 
     Long saveErrorMessage(String message, String s);
 
