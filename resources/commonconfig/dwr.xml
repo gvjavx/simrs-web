@@ -414,10 +414,17 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuhResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ItSImrsResikoJatuhEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsSkorResikoJatuhEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsKategoriResikoJatuhEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsKategoriRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsParameterRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity"/>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
+
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.PesertaResponse"/>

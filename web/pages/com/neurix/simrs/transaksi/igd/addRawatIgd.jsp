@@ -40,6 +40,14 @@
             $.publish('showErrorDialog');
         });
     </script>
+    <style>
+        .btn {
+            margin-bottom:7px;
+        }
+        .form-control{
+            margin-bottom: 7px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -207,14 +215,23 @@
                         <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
                             <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
                         </button>
-                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                        <button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">
                             <i class="fa fa-edit"></i> Form Psikosial
                         </button>
-                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                        <button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">
                             <i class="fa fa-edit"></i> Form Rencana Keperawatan
                         </button>
                         <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
                             <i class="fa fa-edit"></i> Form Resiko Jatuh
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Rekonsiliasi Obat
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Tranfusi
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Patrus
                         </button>
 
                         <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">--%>
@@ -1355,30 +1372,297 @@
                 </div>
                 <div class="box">
                     <br>
+                    <input type="hidden" id="id-kat-jatuh" class="form form-control"/>
                     <div class="form-group">
+                        Kategori : <span id="label-kat-resiko-jatuh"></span>
+                        <br>
                         <div class="row" id="body_resiko_jatuh">
-                            <%--<div class="col-md-4">--%>
-                                <%--<label>Sample</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-8">--%>
-                                <%--<select class="form-control">--%>
-                                    <%--<option value="1">sample 1</option>--%>
-                                    <%--<option value="2">sample 2</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
+                        </div>
+                        <br>
+                        Skor : <span id="sum-resiko-jatuh"></span>
+                    </div>
+                    <input type="hidden" id="ind_resiko_jatuh" class="form form-control"/>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_resiko"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resiko"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rencana">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rencana Awal Rawat <div id="label-rencana"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row" id="body_rencana">
                         </div>
                     </div>
-                    <%--<table class="table table-striped table-bordered" id="tabel_rep">--%>
-                        <%--&lt;%&ndash;<thead>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<td>Obat</td>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<td>Qty</td>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<td>Keterangan</td>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;<td align="center" width="5%">Action</td>&ndash;%&gt;--%>
-                        <%--&lt;%&ndash;</thead>&ndash;%&gt;--%>
-                        <%--<tbody id="body_resiko_jatuh">--%>
-                        <%--</tbody>--%>
-                    <%--</table>--%>
+                    <input type="hidden" id="ind_rencana" class="form form-control"/>
                     <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_rencana">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_rencana">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_rencana"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_rencana" onclick="saveRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_rencana"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-psikososial">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Data Psikososial</h4>
+            </div>
+            <div class="modal-body">
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+                        <%--<input type="hidden" id="id_psikososial"/>--%>
+                        <div class="col-md-4">
+                            <label>Komunikasi</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="komunikasi" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Kemampuan Bicara</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="kemampuanBicara" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Konsep Diri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="konsepDiri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Pernah Dirawat</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="pernahDirawat" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tahun Tentang Sakitnya</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="tahuTentangSakitNya" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Obat Dari Rumah</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="obatDariRumah" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="nyeri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Intensitas Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="intensitasNyeri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Jenis Intensitas Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="jenisIntensitasNyeri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Numeric Rating Scale</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="numericRatingScale" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Wong Baker Pain Scale</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="wongBakerPainScale" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_psikososial">
+                    <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_psikososial">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_psikososial"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="close_psikososial"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_psikososial" onclick="saveDataPsikososial('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_psikososial"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rekonsiliasi">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekonsiliasi Obat <div id="label-rencana"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div>
+                              <div class="col-md-4">
+                                  <label>nama obat</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="namaObatRekon" class="form-control">
+                               </div>
+                               <div class="col-md-4">
+                                   <label>Bentuk Sediaan</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="bentukSediaanRekon" class="form-control">
+                               </div>
+
+                               <div class="col-md-4">
+                                   <label>Dosis</label>
+                               </div>
+                               <div class="col-md-5">
+                                   <input type="text" name="" id="dosisRekon" class="form-control">
+                               </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="satuanRekon">
+                                      <option value="mg">mg</option>
+                                      <option value="mL">mL</option>
+                                      <option value="mcg">mcg</option>
+                                      <option value="unit">unit</option>
+                                    </select>
+                                </div>
+
+                               <div class="col-md-4">
+                                   <label>Frekuensi</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="frekuensiRekon" class="form-control">
+                               </div>
+                               <div class="col-md-4">
+                                   <label>Rute</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="ruteRekon" class="form-control">
+                               </div>
+                               <div class="col-md-8">
+                                   <label>Permintaan Obat yang Diberikan Saat Masuk</label>
+                               </div>
+                               <div class="col-md-4">
+                                 <select class="form-control" id="obatMasukRekon">
+                                   <option value="Y">Ya</option>
+                                   <option value="N">Tidak</option>
+                                 </select>
+                               </div>
+                               <div class="col-md-8">
+                                   <label>Obat dari Rumah dianjutkan saat pulang</label>
+                               </div>
+                               <div class="col-md-4">
+                                 <select class="form-control" id="obatRumahRekon">
+                                   <option value="Y">Ya</option>
+                                   <option value="N">Tidak</option>
+                                 </select>
+                               </div>
+                            </div>
+                        </div>
+                        <button type="button" style="float: right" class="btn btn-success" id="save_rekon" onclick="saveRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                        </button>
+                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_rekon"><i
+                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </button>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_rekon">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_rekon">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_rekon"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>nama obat</td>
+                        <td>bentuk sediaan</td>
+                        <td>dosis</td>
+                        <td>frekuensi</td>
+                        <td>rute</td>
+                        <td>Permintaan Obat yang diberikan saat masuk</td>
+                        <td>Obat dari rumah dilanjutkan saat pulang</td>
+                        </thead>
+                        <tbody id="body_rekon">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -2717,7 +3001,7 @@
             $('#warning_penunjang').show().fadeOut(5000);
         }
     }
-    
+
     function showModalCheckFisik(noCheckup){
 
         $("#save_fisik").show();
@@ -2805,43 +3089,362 @@
     function showModalResikoJatuh(noCheckup, tgl) {
         $("#modal-resiko-jatuh").modal("show");
 
+        $("#error_ket_resiko").hide();
+        $("#success_save_resiko").hide();
+        $("#error_save_resiko").hide();
+        $("#load_resiko").hide();
+        $("#save_resiko").show();
+
         var str = "";
         dwr.engine.setAsync(true);
-        CheckupAction.getListResikoJatuh(noCheckup, tgl, function(response){
-            if(response != null){
+        CheckupAction.getKategoriResiko( tgl, function(kategori){
+
+            $("#label-kat-resiko-jatuh").html(kategori.namaKategori);
+            $("#id-kat-jatuh").val(kategori.idKategori);
+
+            CheckupAction.getListResikoJatuh(noCheckup, tgl, function(response){
+                if(response != null){
 //                console.log(response)
-                if(response.status == "success"){
-                    $.each(response.resikoJatuhEntityList, function (i, item) {
-                        var topline = "";
-                        topline = "<div class='col-md-4'>"+
+                    if(response.status == "success"){
+
+                        var n = 0;
+                        $.each(response.resikoJatuhEntityList, function (i, item) {
+                            n=i;
+
+                            var topline = "";
+                            topline = "<div class='col-md-4'>"+
                                 "<label>"+item.namaParameter+"</label>"+
                                 "</div>"+
                                 "<div class='col-md-8'>"+
-                                "<select class='form-control'>";
+                                "<select class='form-control' id='val_rjh_"+i+"'>";
 
-                                var skor = "";
-                                CheckupAction.getListResikoJatuh(item.idParameter, function(skors){
-                                    $.each(skors, function (n, itemSkor) {
-                                        skor += "<option value="+itemSkor.skor+">"+itemSkor.namaSkor+"</option>";
-                                    });
-
-
-                                    var bottomline = "";
-                                    bottomline = "</select>"+
-                                        "</div>";
-
-                                    str += topline+skor+bottomline;
-                                    console.log(str);
-                                    $("#body_resiko_jatuh").html(str);
+                            var skor = "";
+                            CheckupAction.getListResikoJatuh(item.idParameter, function(skors){
+                                $.each(skors, function (n, itemSkor) {
+                                    if (itemSkor.skor == item.skor){
+                                        skor += "<option value='"+itemSkor.skor+"' selected>"+itemSkor.namaSkor+"</option>";
+                                    } else {
+                                        skor += "<option value='"+itemSkor.skor+"'>"+itemSkor.namaSkor+"</option>";
+                                    }
                                 });
-                    });
 
+
+                                var bottomline = "";
+                                bottomline = "</select>"+
+                                    "</div>" +
+                                    "<input type='hidden' id='id_rjh_"+i+"' value='"+item.idParameter+"'>" +
+                                    "<input type='hidden' id='name_rjh_"+i+"' value='"+item.namaParameter+"'>" +
+                                    "<input type='hidden' id='kat_rjh_"+i+"' value='"+item.idKategori+"'>";
+
+                                str += topline+skor+bottomline;
+                                console.log(str);
+                                $("#body_resiko_jatuh").html(str);
+                            });
+                        });
+                        $("#ind_resiko_jatuh").val(n);
+                    }
                 }
-            }
+
+//                var idKategori = $("#id-kat-jatuh").val();
+                CheckupAction.getSumResikoJatuh(noCheckup, kategori.idKategori, function(sum){
+                    $("#sum-resiko-jatuh").html(sum);
+                });
+
+            });
+
         });
+
 
     }
 
+    function showModalRencanaRawat(noCheckup, idDetailCheckup) {
+        $("#modal-rencana").modal("show");
+
+        $("#error_ket_rencana").hide();
+        $("#success_save_rencana").hide();
+        $("#error_save_rencana").hide();
+        $("#load_rencana").hide();
+        $("#save_rencana").show();
+
+        var str = "";
+        dwr.engine.setAsync(true);
+        CheckupAction.getListRencanaRawat(noCheckup, idDetailCheckup, "rigd", function(response){
+
+            if (response != null){
+                var n = 0;
+                $.each(response, function (i, item) {
+                    n = i;
+
+                    var upline ="<div class='form-group'>" +
+                        "<div class='col-md-8'>"+
+                        "<label>"+item.namaParameter+"</label>"+
+                        "</div>"+
+                        "<div class='col-md-4'>"+
+                        "<select class='form-control' id='val_rcn_"+i+"'>";
+
+                        var opt = "";
+
+                            if (item.check == "Y"){
+                                opt = "<option value=\"N\"> - </option>"+
+                                    "<option value=\"Y\" selected> Ya </option>";
+                            } else {
+                                opt = "<option value=\"N\" selected> - </option>"+
+                                "<option value=\"Y\"> Ya </option>";
+                            }
+
+
+                        var downline = "</select>" +
+                        "<input type='hidden' id='id_rcn_"+i+"' value='"+item.idParameter+"'>"+
+                        "<input type='hidden' id='name_rcn_"+i+"' value='"+item.namaParameter+"'>"+
+                        "</div>" +
+                        "</div>";
+
+                    str += upline+opt+downline;
+                });
+
+                $("#ind_rencana").val(n);
+                $("#body_rencana").html(str);
+
+//                console.log(str);
+            }
+        });
+    }
+
+    function saveRencanaRawat(noCheckup, idDetail, kategori) {
+
+        var jsonrq = [];
+        var ind = $("#ind_rencana").val();
+
+        for (i = 0; i <= ind; i++){
+
+            var id_rcn = $("#id_rcn_"+i+"").val();
+            var val_rcn = $("#val_rcn_"+i+"").val();
+            var name_rcn = $("#name_rcn_"+i+"").val();
+
+            jsonrq.push({'id':id_rcn, 'val':val_rcn, 'name':name_rcn});
+        }
+
+        var jsonstr = JSON.stringify(jsonrq);
+        $("#load_rencana").show();
+
+        dwr.engine.setAsync(true);
+        CheckupAction.saveRencanaRawat(noCheckup, idDetail, jsonstr, function(response){
+            if (response.status == "success"){
+                $("#error_ket_rencana").hide();
+                $("#error_ket_rencana").val("");
+                $("#success_save_rencana").show();
+                $("#error_save_rencana").hide();
+                $("#load_rencana").hide();
+            } else {
+                $("#error_ket_rencana").hide();
+                $("#error_ket_rencana").val("");
+                $("#success_save_rencana").show();
+                $("#error_save_rencana").hide();
+                $("#load_rencana").hide();
+            }
+        });
+    }
+
+    function saveResikoJatuh(noCheckup) {
+
+        var jsonrq = [];
+        var ind = $("#ind_resiko_jatuh").val();
+
+        for (i = 0; i <= ind; i++){
+
+            var id_rjh = $("#id_rjh_"+i+"").val();
+            var val_rjh = $("#val_rjh_"+i+"").val();
+            var name_rjh = $("#name_rjh_"+i+"").val();
+            var kat_rjh = $("#kat_rjh_"+i+"").val();
+
+            jsonrq.push({'id':id_rjh, 'val':val_rjh, 'name':name_rjh, 'kat':kat_rjh});
+        }
+
+        var jsonstr = JSON.stringify(jsonrq);
+        $("#load_rencana").show();
+
+        dwr.engine.setAsync(true);
+        CheckupAction.saveResikoJatuh(noCheckup, jsonstr, function(response){
+            if (response.status == "success"){
+                $("#error_ket_resiko").hide();
+                $("#error_ket_resiko").val("");
+                $("#success_save_resiko").show();
+                $("#error_save_resiko").hide();
+                $("#load_resiko").hide();
+
+
+            } else {
+                $("#error_ket_resiko").hide();
+                $("#error_ket_resiko").val(response.msg);
+                $("#success_save_resiko").show();
+                $("#error_save_resiko").hide();
+                $("#load_resiko").hide();
+            }
+        });
+    }
+
+    function showModalPsikosial(noCheckup){
+        $("#modal-psikososial").modal("show");
+
+        dwr.engine.setAsync(true);
+        CheckupAction.getPsikososial(noCheckup, function (response) {
+            if(response != null){
+                var item = response;
+//                $("#id_psikososial").val(item.idPsikososial);
+                $("#komunikasi").val(item.komunikasi);
+                $("#kemampuanBicara").val(item.kemampuanBicara);
+                $("#konsepDiri").val(item.konsepDiri);
+                $("#pernahDirawat").val(item.pernahDirawat);
+                $("#tahuTentangSakitNya").val(item.tahuTentangSakitNya);
+                $("#obatDariRumah").val(item.obatDariRumah);
+                $("#nyeri").val(item.nyeri);
+                $("#intensitasNyeri").val(item.intensitasNyeri);
+                $("#jenisIntensitasNyeri").val(item.jenisIntensitasNyeri);
+                $("#numericRatingScale").val(item.numericRatingScale);
+                $("#wongBakerPainScale").val(item.wongBakerPainScale);
+
+            }
+        });
+    }
+
+
+    function saveDataPsikososial(noCheckup){
+        $("#load_psikososial").show();
+
+        var jsonrq = [];
+        jsonrq.push({
+            'komunikasi': $("#komunikasi").val(),
+            'kemampuanBicara': $("#kemampuanBicara").val(),
+            'tahuTentangSakitNya': $("#tahuTentangSakitNya").val(),
+            'konsepDiri':   $("#konsepDiri").val(),
+            'pernahDirawat' : $("#pernahDirawat").val(),
+            'obatDariRumah': $("#obatDariRumah").val(),
+            'nyeri': $("#nyeri").val(),
+            'intensitasNyeri': $("#intensitasNyeri").val(),
+            'jenisIntensitasNyeri': $("#jenisIntensitasNyeri").val(),
+            'numericRatingScale': $("#numericRatingScale").val(),
+            'wongBakerPainScale': $("#wongBakerPainScale").val()
+        });
+
+        var jsonstr = JSON.stringify(jsonrq);
+        dwr.engine.setAsync(true);
+        CheckupAction.saveDataPsikososial(noCheckup, jsonstr, function (response) {
+            if (response.status == "success") {
+                $("#error_ket_psikososial").val("");
+                $("#success_save_psikososial").show();
+                $("#error_save_psikososial").hide();
+                $("#load_psikososial").hide();
+            } else {
+                $("#error_ket_psikososial").val(response.msg);
+                $("#success_save_psikososial").hide();
+                $("#error_save_psikososial").show();
+                $("#load_psikososial").hide();
+            }
+        });
+    }
+
+    function showModalRekonObat(noCheckup){
+      $("#modal-rekonsiliasi").modal("show");
+      $("#load_rekon").hide();
+      $("#save_rekon").show();
+      $("#error_ket_rekon").val("");
+      $("#success_save_rekon").hide();
+      $("#error_save_rekon").hide();
+
+      $("#namaObatRekon").val("");
+      $("#bentukSediaanRekon").val("");
+      $("#satuanRekon").val("");
+      $("#dosisRekon").val("");
+      $("#frekuensiRekon").val("");
+      $("#ruteRekon").val("");
+      $("#obatMasukRekon").val("");
+      $("#obatRumahRekon").val("");
+
+      dwr.engine.setAsync(true);
+      CheckupAction.getListRekonsiliasiObat(noCheckup, function (response) {
+        if (response != null) {
+          // console.log(response);
+          var str = "";
+          $.each(response, function(i,item){
+            str += "<tr>"+
+                  "<td>"+item.namaObat+"</td>"+
+                  "<td>"+item.bentuk+"</td>"+
+                  "<td>"+item.dosis+" "+item.satuanDosis+"</td>"+
+                  "<td>"+item.frekuensi+"</td>"+
+                  "<td>"+item.rute+"</td>"+
+                  "<td>"+item.obatMasukFlag+"</td>"+
+                  "<td>"+item.obatDariRumahFlag+"</td>"+
+                  "</tr>";
+          });
+          $("#body_rekon").html(str);
+        }
+      });
+    }
+
+    function saveRekonObat(noCheckup){
+      $("#load_rekon").show();
+      $("#save_rekon").hide();
+
+      var jsonrq = [];
+      jsonrq.push({
+          'nama': $("#namaObatRekon").val(),
+          'bentuk': $("#bentukSediaanRekon").val(),
+          'satuan': $("#satuanRekon").val(),
+          'dosis': $("#dosisRekon").val(),
+          'frekuensi': $("#frekuensiRekon").val(),
+          'rute': $("#ruteRekon").val(),
+          'obatmasuk': $("#obatMasukRekon").val(),
+          'obatrumah': $("#obatRumahRekon").val()
+      });
+
+      var jsonstr = JSON.stringify(jsonrq);
+      dwr.engine.setAsync(true);
+      CheckupAction.saveRekonsilisasiObat(noCheckup, jsonstr, function (response) {
+          if (response.status == "success") {
+              $("#error_ket_rekon").val("");
+              $("#success_save_rekon").show();
+              $("#error_save_rekon").hide();
+              $("#load_rekon").hide();
+              $("#save_rekon").show();
+
+
+              $("#namaObatRekon").val("");
+              $("#bentukSediaanRekon").val("");
+              $("#satuanRekon").val("");
+              $("#dosisRekon").val("");
+              $("#frekuensiRekon").val("");
+              $("#ruteRekon").val("");
+              $("#obatMasukRekon").val("");
+              $("#obatRumahRekon").val("");
+
+              CheckupAction.getListRekonsiliasiObat(noCheckup, function (response) {
+                if (response != null) {
+                  // console.log(response);
+                  var str = "";
+                  $.each(response, function(i,item){
+                    str += "<tr>"+
+                          "<td>"+item.namaObat+"</td>"+
+                          "<td>"+item.bentuk+"</td>"+
+                          "<td>"+item.dosis+" "+item.satuanDosis+"</td>"+
+                          "<td>"+item.frekuensi+"</td>"+
+                          "<td>"+item.rute+"</td>"+
+                          "<td>"+item.obatMasukFlag+"</td>"+
+                          "<td>"+item.obatDariRumahFlag+"</td>"+
+                          "</tr>";
+                  });
+                  $("#body_rekon").html("");
+                  $("#body_rekon").html(str);
+                }
+              });
+
+          } else {
+              $("#error_ket_rekon").val(response.msg);
+              $("#success_save_rekon").hide();
+              $("#error_save_rekon").show();
+              $("#load_rekon").hide();
+          }
+      });
+    }
 
 </script>
 
