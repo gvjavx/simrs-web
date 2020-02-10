@@ -32,6 +32,7 @@ apply the skin class to the body tag so the changes take effect.
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/skins/skin-blue.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/dataTables.bootstrap.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/pace/pace.min.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/plugins/iCheck/all.css"/>">
 <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />--%>
 
 <%--<link rel="stylesheet" href="<s:url value="/pages/css/style-form.css"/>">--%>
@@ -86,6 +87,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
 <script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 <script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
+<script src="<s:url value="/pages/plugins/iCheck/icheck.min.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>

@@ -758,6 +758,16 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
 
+            try {
+                JSONObject obj = new JSONObject(checkup.getAdmisi());
+                checkup.setKetKeyakinan(obj.getString("keyakinan"));
+                checkup.setBantuanBahasa(obj.getString("penerjemah"));
+                checkup.setAlatBantu(obj.getString("alatBantu"));
+                checkup.setAlergi(obj.getString("alergi"));
+            }catch (JSONException e){
+                logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
+            }
+
             String tgl_lahir = checkup.getStTglLahir();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 

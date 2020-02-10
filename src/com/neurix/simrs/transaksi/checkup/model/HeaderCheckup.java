@@ -85,6 +85,16 @@ public class HeaderCheckup {
     private String gangguanLain;
     private String alergi;
 
+    private String admisi;
+
+    public String getAdmisi() {
+        return admisi;
+    }
+
+    public void setAdmisi(String admisi) {
+        this.admisi = admisi;
+    }
+
     public String getAlergi() {
         return alergi;
     }

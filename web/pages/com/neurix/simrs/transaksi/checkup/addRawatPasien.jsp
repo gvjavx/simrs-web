@@ -28,7 +28,7 @@
             position: absolute;
             background-color: #f9f9f9;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
 
@@ -81,7 +81,7 @@
             var tipe = url.searchParams.get("tipe");
             var diagnosa = $('#diagnosa_awal').val();
 
-            if (    idPasien != ''
+            if (idPasien != ''
                     && noKtp != ''
                     && namaPasien != ''
                     && jenisKelamin != ''
@@ -276,8 +276,10 @@
                                                         <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
                                                                      cssClass="form-control"/>
                                                         <div class="input-group-btn" onclick="checkBpjs()">
-                                                            <a class="btn btn-success"><i class="fa fa-search"></i> Check</a>
-                                                            <%--<span id="btn-cek"><i class="fa fa-search"></i> </span>--%>
+                                                            <a class="btn btn-success">
+                                                                <span id="btn-cek"><i
+                                                                        class="fa fa-search"></i> Check</span></a>
+                                                                <%--<span id="btn-cek"><i class="fa fa-search"></i> </span>--%>
                                                         </div>
                                                     </div>
                                                     <script type="application/javascript">
@@ -370,7 +372,7 @@
                                                                     $('#kunjungan').val("Baru").attr('disabled', true);
                                                                     $('#kunjungan_val').val("Baru");
                                                                 }
-                                                                $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border','');
+                                                                $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                                 return selectedObj.bpjs;
                                                             }
                                                         });
@@ -386,7 +388,7 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                             <script>
-                                                function tesPasien(val){
+                                                function tesPasien(val) {
                                                     $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
                                                 }
                                             </script>
@@ -475,7 +477,7 @@
                                                             $('#kunjungan').val("Baru").attr('disabled', true);
                                                             $('#kunjungan_val').val("Baru");
                                                         }
-                                                        $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border','');
+                                                        $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
                                                     }
                                                 });
@@ -638,9 +640,9 @@
                                             <div class="col-md-8">
                                                 <div id="diag_bpjs">
                                                     <s:if test='tipe == "bpjs"'>
-
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
-                                                                     name="headerCheckup.diagnosa" onkeypress="$(this).css('border','')"
+                                                                     name="headerCheckup.diagnosa"
+                                                                     onkeypress="$(this).css('border','')"
                                                                      cssClass="form-control" required="false"/>
                                                         <s:hidden name="headerCheckup.jenisTransaksi"/>
                                                         <script>
@@ -757,77 +759,77 @@
                                 </div>
                             </div>
 
-                            <%--<div class="box-header with-border"></div>--%>
-                            <%--<div class="box-header with-border">--%>
+                                <%--<div class="box-header with-border"></div>--%>
+                                <%--<div class="box-header with-border">--%>
                                 <%--<h3 class="box-title"><i class="fa fa-user"></i> Pre-Admisi Untuk Pasien</h3>--%>
-                            <%--</div>--%>
-                            <%--<div class="box-body">--%>
+                                <%--</div>--%>
+                                <%--<div class="box-body">--%>
                                 <%--<br>--%>
-                                    <%--&lt;%&ndash; <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> &ndash;%&gt;--%>
+                                <%--&lt;%&ndash; <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> &ndash;%&gt;--%>
                                 <%--<div class="row">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>--%>
-                                        <%--<div class="col-md-8">--%>
-                                            <%--<s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"--%>
-                                                         <%--cssClass="form-control"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"--%>
+                                <%--cssClass="form-control"/>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<br>--%>
                                 <%--<div class="row">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>--%>
-                                        <%--<div class="col-md-8">--%>
-                                            <%--<s:select list="#{'Y':'Ya'}" id="bantuanBahasa"--%>
-                                                      <%--onchange="changeBahasa(this)"--%>
-                                                      <%--cssStyle="width:20%;"--%>
-                                                      <%--headerKey="N" headerValue="Tidak"--%>
-                                                      <%--cssClass="form-control" name="headerCheckup.bantuanBahasa"/>--%>
-                                            <%--<s:textfield id="bahasa" name="headerCheckup.bahasa"--%>
-                                                         <%--cssClass="form-control" placeholder="bahasa lain"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<s:select list="#{'Y':'Ya'}" id="bantuanBahasa"--%>
+                                <%--onchange="changeBahasa(this)"--%>
+                                <%--cssStyle="width:20%;"--%>
+                                <%--headerKey="N" headerValue="Tidak"--%>
+                                <%--cssClass="form-control" name="headerCheckup.bantuanBahasa"/>--%>
+                                <%--<s:textfield id="bahasa" name="headerCheckup.bahasa"--%>
+                                <%--cssClass="form-control" placeholder="bahasa lain"/>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<br>--%>
                                 <%--<div class="row">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>--%>
-                                        <%--<div class="col-md-8">--%>
-                                            <%--<s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"--%>
-                                                         <%--cssClass="form-control" />--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"--%>
+                                <%--cssClass="form-control" />--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<br>--%>
                                 <%--<div class="row">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>--%>
-                                        <%--<div class="col-md-8">--%>
-                                            <%--<s:textfield id="alatBantu" name="headerCheckup.alatBantu"--%>
-                                                         <%--cssClass="form-control" />--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<s:textfield id="alatBantu" name="headerCheckup.alatBantu"--%>
+                                <%--cssClass="form-control" />--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                                 <%--<br>--%>
                                 <%--<div class="row">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>--%>
-                                        <%--<div class="col-md-8">--%>
-                                            <%--<s:textfield id="alergi" cssClass="form-control"--%>
-                                                         <%--name="headerCheckup.alergi"--%>
-                                            <%--/>--%>
-                                                <%--&lt;%&ndash; <div class="input-group-addon btn btn-success"--%>
-                                                        <%--onclick="addAlergi()" style="background-color: green;color:#fff;">--%>
-                                                <%--<span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> &ndash;%&gt;--%>
-                                                <%--&lt;%&ndash; </div> &ndash;%&gt;--%>
-                                            <%--<div id="new_alergi">--%>
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                <%--<s:textfield id="alergi" cssClass="form-control"--%>
+                                <%--name="headerCheckup.alergi"--%>
+                                <%--/>--%>
+                                <%--&lt;%&ndash; <div class="input-group-addon btn btn-success"--%>
+                                <%--onclick="addAlergi()" style="background-color: green;color:#fff;">--%>
+                                <%--<span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> &ndash;%&gt;--%>
+                                <%--&lt;%&ndash; </div> &ndash;%&gt;--%>
+                                <%--<div id="new_alergi">--%>
 
-                                            <%--</div>--%>
-                                                <%--&lt;%&ndash; <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> &ndash;%&gt;--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
                                 <%--</div>--%>
-                            <%--</div>--%>
+                                <%--&lt;%&ndash; <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> &ndash;%&gt;--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
 
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
@@ -848,8 +850,10 @@
                                                           onchange="$(this).css('border',''); listDokter(this); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control select2"/>
-                                                <span style="color: red; display: none" id="war_poli"><i class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_poli"><i class="fa fa-check"></i> correct</span>
+                                                <span style="color: red; display: none" id="war_poli"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_poli"><i
+                                                        class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -861,8 +865,10 @@
                                                         onchange="var warn =$('#war_dokter').is(':visible'); if (warn){$('#con_dokter').show().fadeOut(3000);$('#war_dokter').hide()}">
                                                     <option value=''>[Select One]</option>
                                                 </select>
-                                                <span style="color: red; display: none" id="war_dokter"><i class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_dokter"><i class="fa fa-check"></i> correct</span>
+                                                <span style="color: red; display: none" id="war_dokter"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_dokter"><i
+                                                        class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
                                             <%--<s:action id="initComboPenjamin" namespace="/checkup"--%>
@@ -886,8 +892,10 @@
                                                         onchange="var warn =$('#war_penjamin').is(':visible'); if (warn){$('#con_penjamin').show().fadeOut(3000);$('#war_penjamin').hide()}">
                                                     <option value="">[Select One]</option>
                                                 </select>
-                                                <span style="color: red; display: none" id="war_penjamin"><i class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_penjamin"><i class="fa fa-check"></i> correct</span>
+                                                <span style="color: red; display: none" id="war_penjamin"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_penjamin"><i
+                                                        class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -898,7 +906,8 @@
                                                           id="kunjungan"
                                                           headerKey="" headerValue="[Select one]"
                                                           cssClass="form-control"/>
-                                                <s:hidden name="headerCheckup.jenisKunjungan" id="kunjungan_val"></s:hidden>
+                                                <s:hidden name="headerCheckup.jenisKunjungan"
+                                                          id="kunjungan_val"></s:hidden>
                                             </div>
                                         </div>
                                     </div>
@@ -914,15 +923,16 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:select list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}"
-                                                          cssStyle="margin-top: 7px"
-                                                          name="headerCheckup.rujuk"
-                                                          onchange="changePlaceHolder(this)"
-                                                          id="perujuk"
-                                                          headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
-                                                <%--<s:textfield name="headerCheckup.rujuk"--%>
-                                                             <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                                <s:select
+                                                        list="#{'sendiri':'Sendiri','dokter':'Dokter','puskesmas':'Puskesmas','rs':'RS Lain','bidan':'Bidan','polis':'Polisi'}"
+                                                        cssStyle="margin-top: 7px"
+                                                        name="headerCheckup.rujuk"
+                                                        onchange="changePlaceHolder(this)"
+                                                        id="perujuk"
+                                                        headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control"/>
+                                                    <%--<s:textfield name="headerCheckup.rujuk"--%>
+                                                    <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -936,10 +946,12 @@
                                             <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
                                             <div class="col-md-8">
                                                 <div class="input-group" style="margin-top: 7px">
-                                                <s:textfield id="no_rujukan" cssClass="form-control" name="headerCheckup.noRujukan"></s:textfield>
-                                                <div class="input-group-btn">
-                                                    <a class="btn btn-success" onclick="cekNoRujukan()"> <i class="fa fa-search"></i> Check</a>
-                                                </div>
+                                                    <s:textfield id="no_rujukan" cssClass="form-control"
+                                                                 name="headerCheckup.noRujukan"></s:textfield>
+                                                    <div class="input-group-btn">
+                                                        <a class="btn btn-success" onclick="cekNoRujukan()">
+                                                            <span id="btn-cek-rujukan"><i class="fa fa-search"></i> Check</span></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -986,43 +998,51 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
+                                <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
                             </div>
                             <div class="box-body">
-                                <input type="hidden" id="data_admisi">
-                                <div class="form-group">
-                                    <a class="btn btn-primary" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
-                                    <a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
-                                    <a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
+                                <s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
+                                            <%--<a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
+                                            <%--<a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
+                                    </div>
+                                    <div class="form-group" style="margin-top: 20px">
+                                        <i class="fa fa-square" style="color: #286090"></i> Belum diisi
+                                        <i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi
+                                    </div>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                    <div class="row">
+                                <div class="row">
                                     <div class="col-md-12">
-                                <div class="form-group" style="display: inline;">
-                                        <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                    <button type="button" class="btn btn-success" onclick="confirm()"><i
-                                            class="fa fa-arrow-right"></i> Save
-                                    </button>
-                                    <button type="button" class="btn btn-danger" onclick="window.location.reload(true)">
-                                        <i class="fa fa-refresh"></i> Reset
-                                    </button>
-                                    <a type="button" class="btn btn-warning" href="initForm_checkup.action">
-                                        <i class="fa fa-arrow-left"></i> Back
-                                    </a>
-                                    <a type="button" id="btn-rm" style="display:none;" class="btn btn-primary"
-                                       onclick="initRekamMedic()">
-                                        <i class="fa fa-search"></i> View Rekam Medik
-                                    </a>
+                                        <div class="form-group" style="display: inline;">
+                                            <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
+                                                <button type="button" class="btn btn-success" onclick="confirm()"><i
+                                                        class="fa fa-arrow-right"></i> Save
+                                                </button>
+                                                <button type="button" class="btn btn-danger"
+                                                        onclick="window.location.reload(true)">
+                                                    <i class="fa fa-refresh"></i> Reset
+                                                </button>
+                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
+                                                    <i class="fa fa-arrow-left"></i> Back
+                                                </a>
+                                                <a type="button" id="btn-rm" style="display:none;"
+                                                   class="btn btn-primary"
+                                                   onclick="initRekamMedic()">
+                                                    <i class="fa fa-search"></i> View Rekam Medik
+                                                </a>
+                                            </div>
                                         </div>
-                                        </div>
-                                        </div>
+                                    </div>
                                 </div>
                                 <div style="display: none">
                                     <sj:dialog id="confirm_dialog" modal="true" resizable="false" closeOnEscape="false"
                                                height="200" width="400" autoOpen="false" title="Confirmation Dialog">
-                                        <center><img border="0" style="height: 40px; width: 40px"
+                                        <center><img border="0 " style="height: 40px; width: 40px"
                                                      src="<s:url value="/pages/images/icon_warning.ico"/>"
                                                      name="icon_success">
                                             Do you want to save this record?
@@ -1143,26 +1163,66 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Admisi Pasien</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pre">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_pre"></p>
+                </div>
                 <div class="row">
-                <div class="form-group">
-                    <label class="col-md-8">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
-                    <div class="col-md-4"><s:textfield id="in_ketKeyakinan" cssClass="form-control"/></div>
-                </div>
                     <div class="form-group">
-                        <label class="col-md-8">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
-                        <div class="col-md-4"><s:textfield id="in_ketKeyakinan" cssClass="form-control"/></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-8">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
-                        <div class="col-md-4"><s:textfield id="in_ketKeyakinan" cssClass="form-control"/></div>
+                        <label class="col-md-6">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami
+                            ketahui ?</label>
+                        <div class="col-md-6"><input class="form-control" id="pre_keyakinan"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-6" style="margin-top: 7px">Apakah anda membutuhkan penerjemah bahasa
+                            ?</label>
+                        <div class="col-md-6">
+                            <label>
+                                <input type="radio" name="r3" class="flat-red"> Ya
+                            </label>
+                            <label>
+                                <input type="radio" name="r3" class="flat-red" checked> Tidak
+                            </label>
+                            <input class="form-control" style="margin-top: 7px" id="pre_penerjemah" value="Indonesia"
+                                   disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-6" style="margin-top: 7px">Apakah anda memiliki masalah dalam berbicara,
+                            pendengaran, penglihatan ?</label>
+                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_indra"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-6" style="margin-top: 7px">Apakah kontak yang diisi sudah benar ?</label>
+                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_kontak"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-6" style="margin-top: 7px">Apakah anda membutuhkan alat bantu khusus
+                            ?</label>
+                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_alat_bantu">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-6" style="margin-top: 7px">Apakah anda mempunyai riwayat alergi ?</label>
+                        <div class="col-md-6"><input class="form-control" style="margin-top: 7px" id="pre_alergi"></div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
+                        class="fa fa-arrow-right"></i> Save
                 </button>
             </div>
         </div>
@@ -1210,16 +1270,70 @@
         initlistPenjamin();
     });
 
-    function setFormAdmisi(){
-        $('#modal-admisi').modal({show:true, backdrop:'static'});
+    function setFormAdmisi() {
+        $('#modal-admisi').modal({show: true, backdrop: 'static'});
+        var dataAdmisi = $('#data_admisi').val();
+        if (json != null) {
+            var json = JSON.parse(dataAdmisi);
+            $('#pre_keyakinan').val(json.keyakinan);
+            $('#pre_penerjemah').val(json.penerjemah);
+            $('#pre_indra').val(json.indra);
+            $('#pre_kontak').val(json.kontak);
+            $('#pre_alat_bantu').val(json.alatBantu);
+            $('#pre_alergi').val(json.alergi);
+        }
+    }
+
+    function saveFormAdmisi() {
+
+        var data = "";
+        var keyakinan = $('#pre_keyakinan').val();
+        var penerjemah = $('#pre_penerjemah').val();
+        var indra = $('#pre_indra').val();
+        var kontak = $('#pre_kontak').val();
+        var alatBantu = $('#pre_alat_bantu').val();
+        var alergi = $('#pre_alergi').val();
+
+        data = {
+            'keyakinan': keyakinan,
+            'penerjemah': penerjemah,
+            'indra': indra,
+            'kontak': kontak,
+            'alatBantu': alatBantu,
+            'alergi': alergi
+        };
+
+        var stringJson = JSON.stringify(data);
+        $('#data_admisi').val(stringJson);
+        var dataAdmisi = $('#data_admisi').val();
+        var json = JSON.parse(dataAdmisi);
+
+        if (keyakinan != '' && penerjemah != '' && indra != '' && kontak != '' && alatBantu != '' && alergi != '') {
+            $('#btn-admisi').addClass("btn btn-warning");
+        } else {
+            $('#btn-admisi').removeClass("btn btn-warning").addClass("btn btn-success");
+        }
+        $('#modal-admisi').modal('hide');
     }
 
     function cekNoRujukan() {
         var noRujukan = $('#no_rujukan').val();
+        var perujuk = $('#perujuk').val();
+        var jenisRujukan = "";
 
-        if(noRujukan != ''){
-            CheckupAction.checkSuratRujukan(noRujukan, "R", function(response){
-               console.log(response);
+        if (noRujukan != '' && perujuk != '') {
+            if (perujuk == 'puskesmas') {
+                jenisRujukan = "P";
+            } else if (perujuk == "rs") {
+                jenisRujukan == "R";
+            }
+            $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
+            dwr.engine.setAsync(true);
+            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
+                callback: function (response) {
+                    console.log(response);
+                    $('#btn-cek-rujukan').html('<i class="fa fa-search"></i> Check')
+                }
             });
         }
     }
@@ -1282,7 +1396,7 @@
                     msg = "No Bpjs berhasil diverifikasi dengan status AKTIF!";
                     $('#diag_bpjs').show();
                     $('#diag_umum').hide();
-                    $('#nosa_id_diagnosa_2').attr('disabled',true);
+                    $('#nosa_id_diagnosa_2').attr('disabled', true);
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";
@@ -1291,7 +1405,7 @@
                     msg = "No Bpjs berhasil diverifikasi dengan status TIDAK AKTIF!";
                     $('#diag_bpjs').hide();
                     $('#diag_umum').show();
-                    $('#diagnosa_awal').attr('disabled',true);
+                    $('#diagnosa_awal').attr('disabled', true);
                     listPenjaminNoBpjs();
                     $('#penjamin').val('umum').trigger('change');
                 } else {
@@ -1302,7 +1416,7 @@
                     msg = "No Bpjs tidak ditemukan!";
                     $('#diag_bpjs').hide();
                     $('#diag_umum').show();
-                    $('#diagnosa_awal').attr('disabled',true);
+                    $('#diagnosa_awal').attr('disabled', true);
                     listPenjaminNoBpjs();
                     $('#penjamin').val('umum').trigger('change');
                 }
@@ -1536,55 +1650,55 @@
         }
     });
 
-    function changePlaceHolder(n){
+    function changePlaceHolder(n) {
 
         var idx = n.selectedIndex;
         var perujuk = n.options[idx].value;
-        $("#intansi_perujuk").attr("disabled",false);
+        $("#intansi_perujuk").attr("disabled", false);
 
-        if (perujuk == "dokter"){
-            $("#intansi_perujuk").attr("placeholder","nama dokter");
+        if (perujuk == "dokter") {
+            $("#intansi_perujuk").attr("placeholder", "nama dokter");
         }
-        if (perujuk == "puskesmas"){
-            $("#intansi_perujuk").attr("placeholder","nama puskesmas");
+        if (perujuk == "puskesmas") {
+            $("#intansi_perujuk").attr("placeholder", "nama puskesmas");
         }
-        if (perujuk == "rs"){
-            $("#intansi_perujuk").attr("placeholder","nama rumah sakit");
+        if (perujuk == "rs") {
+            $("#intansi_perujuk").attr("placeholder", "nama rumah sakit");
         }
-        if (perujuk == "bidan"){
-            $("#intansi_perujuk").attr("placeholder","nama bidan");
+        if (perujuk == "bidan") {
+            $("#intansi_perujuk").attr("placeholder", "nama bidan");
         }
-        if (perujuk == "polisi"){
-            $("#intansi_perujuk").attr("placeholder","nama instansi");
+        if (perujuk == "polisi") {
+            $("#intansi_perujuk").attr("placeholder", "nama instansi");
         }
-        if (perujuk == "sendiri"){
-            $("#intansi_perujuk").attr("disabled",true);
+        if (perujuk == "sendiri") {
+            $("#intansi_perujuk").attr("disabled", true);
             $("#intansi_perujuk").removeAttr("placeholder");
         }
 
     }
 
-    function showAdmisiPasien(){
+    function showAdmisiPasien() {
         $("#modal-admisi").modal('show');
     }
 
-    function changeBahasa(n){
+    function changeBahasa(n) {
         var idx = n.selectedIndex;
         var val_bantuan = n.options[idx].value;
         console.log(val_bantuan);
 
-        if(val_bantuan == "Y"){
+        if (val_bantuan == "Y") {
             $("#bahasa").removeAttr("readOnly");
             $("#bahasa").val("");
         } else {
-            $("#bahasa").attr("readOnly","true");
+            $("#bahasa").attr("readOnly", "true");
             $("#bahasa").val("indonesia");
         }
     }
 
     var listAlergi = [];
-    function addAlergi(alergi){
-        listAlergi.push({"alergi" : alergi});
+    function addAlergi(alergi) {
+        listAlergi.push({"alergi": alergi});
     }
 </script>
 
