@@ -77,6 +77,7 @@
                                     <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
+                                    <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
                                     <tr>
                                         <td width="45%"><b>No SEP</b></td>
                                         <td>
@@ -500,11 +501,23 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_all_war"></p>
+                        </div>
+                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_all">
+                            <h4><i class="icon fa fa-info"></i> Info!</h4>
+                            <p id="msg_all_suc"></p>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="col-md-offset-4 col-md-4 text-center">
-                                        <a class="btn btn-success" onclick="saveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
+                                        <a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
+                                        <button style="display: none; cursor: no-drop;" type="button"
+                                                class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -632,7 +645,7 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
-                                        <a class="btn btn-success" id="save_ket" onclick="saveKeterangan()"><i class="fa fa-arrow-right"></i> Save Keterangan</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-arrow-right"></i> Save Keterangan</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -1623,15 +1636,14 @@
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                 });
+                $('#kamar_detail').html(option);
             } else {
                 option = option;
             }
         });
-
-        $('#kamar_detail').html(option);
     }
 
-    function saveKeterangan() {
+    function confirmSaveKeterangan(){
         var idKtg = $("#keterangan").val();
         var noCheckup = $("#no_checkup").val();
         var poli = "";
@@ -1641,21 +1653,15 @@
         var ket_selesai = "";
         var tgl_cekup = "";
         var ket_cekup = "";
+        var jenisPasien = $('#jenis_pasien').val();
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
                 poli = $("#poli_lain").val();
                 idDokter = $("#list_dokter").val();
                 if (poli != '' && idDokter != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     if (poli == '') {
@@ -1672,15 +1678,8 @@
                 kamar = $("#kamar_detail").val();
 
                 if (kelas != '' && kamar != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 }
                 else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1700,15 +1699,8 @@
                 ket_cekup = $('#cekup_ket').val();
 
                 if (ket_selesai != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     $('#war_kolom-2').show();
@@ -1717,6 +1709,49 @@
         } else {
             $('#warning_ket').show().fadeOut(5000);
             $('#war_catatan').show();
+        }
+    }
+
+    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien) {
+        $('#modal-confirm-dialog').modal('hide');
+        var idDokter = $('#tin_id_dokter').val();
+        if(idKtg == "pindah"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, function (response) {
+                if(response == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
+            });
+        }
+        if(idKtg == "rujuk"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, function (response) {
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(6);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            });
+        }
+        if(idKtg == "selesai"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, function (response) {
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(6);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            });
         }
     }
 
@@ -3049,13 +3084,31 @@
         $('#resep_nama_obat').html(option);
     }
 
-    function saveAllTindakan(){
+    function confirmSaveAllTindakan(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','saveAllTindakan()');
+    }
 
+    function saveAllTindakan(){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_all').hide();
+        $('#load_all').show();
         dwr.engine.setAsync(true);
-        CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup,
-                {callback : function (response) {
-                    console.log(response);
-                }});
+        CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup, {
+            callback : function (response) {
+                console.log(response);
+                if(response.status == "success"){
+                    $('#success_all').show().fadeOut(5000);
+                    $('#msg_all_suc').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }else{
+                    $('#warning_all').show().fadeOut(5000);
+                    $('#msg_all_war').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }
+            }});
     }
 
 

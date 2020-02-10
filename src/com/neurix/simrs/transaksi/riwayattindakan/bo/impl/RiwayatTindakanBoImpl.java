@@ -67,6 +67,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             entity.setNamaTindakan(bean.getNamaTindakan());
             entity.setKeterangan(bean.getKeterangan());
             entity.setTotalTarif(bean.getTotalTarif());
+            entity.setJenisPasien(bean.getJenisPasien());
             entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
             entity.setApproveBpjsFlag(bean.getApproveBpjsFlag());
             entity.setAction(bean.getAction());

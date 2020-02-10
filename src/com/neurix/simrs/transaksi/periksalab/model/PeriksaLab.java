@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 

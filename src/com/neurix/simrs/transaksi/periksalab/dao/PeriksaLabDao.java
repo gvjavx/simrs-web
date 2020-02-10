@@ -52,6 +52,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             if (mapCriteria.get("status")!=null) {
                 criteria.add(Restrictions.eq("statusPeriksa", (String) mapCriteria.get("status")));
             }
+            if (mapCriteria.get("approve_flag")!=null) {
+                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

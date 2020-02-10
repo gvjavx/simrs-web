@@ -229,6 +229,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
+        if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
+            hsCriteria.put("approve_flag", bean.getApproveFlag());
+        }
 
         hsCriteria.put("flag","Y");
         try {

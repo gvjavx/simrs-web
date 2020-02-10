@@ -16,6 +16,8 @@ import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
 import com.neurix.simrs.master.keterangankeluar.model.KeteranganKeluar;
+import com.neurix.simrs.master.lab.bo.LabBo;
+import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
@@ -30,6 +32,7 @@ import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -74,6 +77,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     private HeaderCheckup headerCheckup;
     private TindakanRawatBo tindakanRawatBoProxy;
     private PeriksaLabBo periksaLabBoProxy;
+    private RiwayatTindakanBo riwayatTindakanBoProxy;
 
     private File fileUpload;
     private String fileUploadFileName;
@@ -87,6 +91,10 @@ public class CheckupDetailAction extends BaseMasterAction {
     private BigInteger tarifCoverBpjs;
     private BigInteger tarifTotalTindakan;
     private String tipe;
+
+    public void setRiwayatTindakanBoProxy(RiwayatTindakanBo riwayatTindakanBoProxy) {
+        this.riwayatTindakanBoProxy = riwayatTindakanBoProxy;
+    }
 
     public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
         this.periksaLabBoProxy = periksaLabBoProxy;
@@ -639,7 +647,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup){
+    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien){
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         String status = "error";
@@ -698,7 +706,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             status = "sukses";
         }
 
-        saveAddToRiwayatTindakan(idDetailCheckup);
+        saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
@@ -1134,15 +1142,22 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    public String saveAddToRiwayatTindakan(String idDetail){
+    public String saveAddToRiwayatTindakan(String idDetail, String jenisPasien){
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] START process >>>");
         if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String user = CommonUtil.userLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+            LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
 
             List<TindakanRawat> listTindakan = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetail);
+            tindakanRawat.setApproveFlag("Y");
 
             try {
                 listTindakan = tindakanRawatBo.getByCriteria(tindakanRawat);
@@ -1151,7 +1166,80 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             if(listTindakan.size()>0){
-                RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                for (TindakanRawat entity: listTindakan){
+                    RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                    riwayatTindakan.setIdTindakan(entity.getIdTindakanRawat());
+                    riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
+                    riwayatTindakan.setTotalTarif(new BigDecimal(entity.getTarifTotal()));
+                    riwayatTindakan.setKeterangan("tindakan");
+                    riwayatTindakan.setJenisPasien(jenisPasien);
+                    riwayatTindakan.setAction("C");
+                    riwayatTindakan.setFlag("Y");
+                    riwayatTindakan.setCreatedWho(user);
+                    riwayatTindakan.setCreatedDate(updateTime);
+                    riwayatTindakan.setLastUpdate(updateTime);
+                    riwayatTindakan.setLastUpdateWho(user);
+
+                    try {
+                        riwayatTindakanBo.saveAdd(riwayatTindakan);
+                    }catch (GeneralBOException e){
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :"+e.getMessage());
+                    }
+                }
+            }
+
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdDetailCheckup(idDetail);
+            periksaLab.setApproveFlag("Y");
+
+            try {
+                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+            }catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :"+e.getMessage());
+            }
+
+            if(periksaLabList.size() > 0){
+                for (PeriksaLab entity: periksaLabList){
+
+                    List<Lab> labList = new ArrayList<>();
+                    Lab lab = new Lab();
+                    lab.setIdLab(entity.getIdLab());
+
+                    try {
+                        labList = labBo.getByCriteria(lab);
+                    }catch (GeneralBOException e){
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tarif tindakan :"+e.getMessage());
+                    }
+
+                    if(labList.size() > 0 ){
+                        lab = labList.get(0);
+
+                        if(lab != null){
+
+                            RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                            riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
+                            riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                            riwayatTindakan.setNamaTindakan("Periksa Lab " +entity.getLabName());
+                            riwayatTindakan.setTotalTarif(lab.getTarif());
+                            riwayatTindakan.setKeterangan("periksa lab");
+                            riwayatTindakan.setJenisPasien(jenisPasien);
+                            riwayatTindakan.setAction("C");
+                            riwayatTindakan.setFlag("Y");
+                            riwayatTindakan.setCreatedWho(user);
+                            riwayatTindakan.setCreatedDate(updateTime);
+                            riwayatTindakan.setLastUpdate(updateTime);
+                            riwayatTindakan.setLastUpdateWho(user);
+
+                            try {
+                                riwayatTindakanBo.saveAdd(riwayatTindakan);
+                            }catch (GeneralBOException e){
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :"+e.getMessage());
+                            }
+                        }
+                    }
+                }
             }
         }
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] END process >>>");
