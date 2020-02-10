@@ -15,7 +15,7 @@
             <column name="no_checkup" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="komunikasi">
-            <column name="kepala" sql-type="varchar" length="30" not-null="false"/>
+            <column name="komunikasi" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="kemampuanBicara">
             <column name="kemampuan_bicara" sql-type="varchar" length="30" not-null="false"/>
@@ -45,7 +45,7 @@
             <column name="wong_baker_pain_scale" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="intensitasNyeri">
-            <column name="intensitas _nyeri" sql-type="integer" not-null="false"/>
+            <column name="intensitas_nyeri" sql-type="integer" not-null="false"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

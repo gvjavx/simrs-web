@@ -20,13 +20,21 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
+import com.neurix.simrs.transaksi.patrus.dao.PatrusDao;
+import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
+import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+import com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao;
+import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.dao.KategoriRencanaRawatDao;
 import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
 import com.neurix.simrs.transaksi.rencanarawat.dao.RencanaRawatDao;
+import com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsKategoriRencanaRawatEntity;
+import com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsParameterRencanaRawatEntity;
+import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.dao.KategoriResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao;
@@ -37,6 +45,8 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
+import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONObject;
@@ -76,6 +86,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private KategoriRencanaRawatDao kategoriRencanaRawatDao;
     private ParameterRencanaRawatDao parameterRencanaRawatDao;
     private RencanaRawatDao rencanaRawatDao;
+    private PatrusDao patrusDao;
+    private TranfusiDao tranfusiDao;
+    private RekonsiliasiObatDao rekonsiliasiObatDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -1065,6 +1078,345 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return skorResikoJatuhEntities;
     }
 
+    @Override
+    public List<ItSimrsRencanaRawatEntity> getListRencanaRawat(String noCheckup, String idDetail, String kategori) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListRencanaRawat] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+        hsCriteria.put("id_detail_checkup", idDetail);
+        hsCriteria.put("id_kategori", kategori);
+
+        List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = rencanaRawatDao.getByCriteria(hsCriteria);
+        if (rencanaRawatEntities.size() == 0){
+            rencanaRawatEntities = new ArrayList<>();
+
+            hsCriteria = new HashMap();
+            hsCriteria.put("id_kategori", kategori);
+
+            List<ImSimrsParameterRencanaRawatEntity> parameterRencanaRawatEntities = parameterRencanaRawatDao.getByCriteria(hsCriteria);
+            if (parameterRencanaRawatEntities.size() > 0){
+
+                ItSimrsRencanaRawatEntity rencanaRawatEntity;
+                for (ImSimrsParameterRencanaRawatEntity parameterRencanaRawatEntity : parameterRencanaRawatEntities){
+                    rencanaRawatEntity = new ItSimrsRencanaRawatEntity();
+                    rencanaRawatEntity.setNamaParameter(parameterRencanaRawatEntity.getNamaParameter());
+                    rencanaRawatEntity.setIdParameter(parameterRencanaRawatEntity.getIdParameter());
+                    rencanaRawatEntities.add(rencanaRawatEntity);
+                }
+            }
+        }
+
+        logger.info("[CheckupBoImpl.getListRencanaRawat] End <<<<<<<<");
+        return rencanaRawatEntities;
+    }
+
+    @Override
+    public void saveRencanaRawat(String noCheckup, String idDetail, List<ItSimrsRencanaRawatEntity> rencanaRawats) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveRencanaRawat] Start >>>>>>>>");
+
+        for (ItSimrsRencanaRawatEntity rencana : rencanaRawats){
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("no_checkup", noCheckup);
+            hsCriteria.put("id_detail_checkup", idDetail);
+            hsCriteria.put("id_parameter", rencana.getIdParameter());
+
+            List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = rencanaRawatDao.getByCriteria(hsCriteria);
+            if (rencanaRawatEntities.size() > 0){
+                ItSimrsRencanaRawatEntity rencanaRawatEntity = rencanaRawatEntities.get(0);
+                rencanaRawatEntity.setCheck(rencana.getCheck());
+                rencanaRawatEntity.setAction("U");
+                rencanaRawatEntity.setLastUpdate(rencana.getLastUpdate());
+                rencanaRawatEntity.setLastUpdateWho(rencana.getLastUpdateWho());
+
+                try {
+                    rencanaRawatDao.updateAndSave(rencanaRawatEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveRencanaRawat] ERROR "+e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveRencanaRawat] ERROR "+e.getMessage());
+                }
+            } else {
+                ItSimrsRencanaRawatEntity rencanaRawatEntity = new ItSimrsRencanaRawatEntity();
+                rencanaRawatEntity.setIdRencana("RCN"+rencanaRawatDao.getNextSeq());
+                rencanaRawatEntity.setIdParameter(rencana.getIdParameter());
+                rencanaRawatEntity.setNamaParameter(rencana.getNamaParameter());
+                rencanaRawatEntity.setCheck(rencana.getCheck());
+                rencanaRawatEntity.setNoCheckup(noCheckup);
+                rencanaRawatEntity.setIdDetailCheckup(idDetail);
+                rencanaRawatEntity.setFlag(rencana.getFlag());
+                rencanaRawatEntity.setAction(rencana.getAction());
+                rencanaRawatEntity.setCreatedDate(rencana.getCreatedDate());
+                rencanaRawatEntity.setCreatedWho(rencana.getCreatedWho());
+                rencanaRawatEntity.setLastUpdate(rencana.getLastUpdate());
+                rencanaRawatEntity.setLastUpdateWho(rencana.getLastUpdateWho());
+
+                try {
+                    rencanaRawatDao.addAndSave(rencanaRawatEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveRencanaRawat] ERROR "+e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveRencanaRawat] ERROR "+e.getMessage());
+                }
+            }
+        }
+
+        logger.info("[CheckupBoImpl.saveRencanaRawat] End <<<<<<<<");
+    }
+
+    @Override
+    public void saveResikoJatuh(String noCheckup, List<ItSImrsResikoJatuhEntity> resikoJatuhList) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveResikoJatuh] Start >>>>>>>>");
+
+        for (ItSImrsResikoJatuhEntity resikoJatuh : resikoJatuhList) {
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("no_checkup", noCheckup);
+            hsCriteria.put("id_parameter", resikoJatuh.getIdParameter());
+            hsCriteria.put("id_kategori", resikoJatuh.getIdParameter());
+            List<ItSImrsResikoJatuhEntity> resikoJatuhEntities = resikoJatuhDao.getByCriteria(hsCriteria);
+            if (resikoJatuhEntities.size() > 0){
+                ItSImrsResikoJatuhEntity resikoJatuhEntity = resikoJatuhEntities.get(0);
+
+                resikoJatuhEntity.setSkor(resikoJatuh.getSkor());
+                resikoJatuhEntity.setAction("U");
+                resikoJatuhEntity.setLastUpdate(resikoJatuh.getLastUpdate());
+                resikoJatuhEntity.setLastUpdateWho(resikoJatuh.getLastUpdateWho());
+                try {
+                    resikoJatuhDao.updateAndSave(resikoJatuhEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+                }
+            } else {
+                ItSImrsResikoJatuhEntity resikoJatuhEntity = new ItSImrsResikoJatuhEntity();
+                resikoJatuhEntity.setId("RJH"+getNextIdResikoJatuh());
+                resikoJatuhEntity.setIdParameter(resikoJatuh.getIdParameter());
+                resikoJatuhEntity.setNamaParameter(resikoJatuh.getNamaParameter());
+                resikoJatuhEntity.setNoCheckup(noCheckup);
+                resikoJatuhEntity.setIdKategori(resikoJatuh.getIdKategori());
+                resikoJatuhEntity.setSkor(resikoJatuh.getSkor());
+                resikoJatuhEntity.setFlag(resikoJatuh.getFlag());
+                resikoJatuhEntity.setAction(resikoJatuh.getAction());
+                resikoJatuhEntity.setCreatedDate(resikoJatuh.getCreatedDate());
+                resikoJatuhEntity.setCreatedWho(resikoJatuh.getCreatedWho());
+                resikoJatuhEntity.setLastUpdate(resikoJatuh.getLastUpdate());
+                resikoJatuhEntity.setLastUpdateWho(resikoJatuh.getLastUpdateWho());
+
+                try {
+                    resikoJatuhDao.addAndSave(resikoJatuhEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+                }
+            }
+        }
+        logger.info("[CheckupBoImpl.saveResikoJatuh] End <<<<<<<<");
+    }
+
+    @Override
+    public String getSumResikoJatuh(String noCheckup, String idKategori) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getSumResikoJatuh] Start >>>>>>>>");
+
+        String sum = "";
+        try {
+            sum = resikoJatuhDao.getSumOfResikoJatuh(noCheckup, idKategori);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.saveResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.getSumResikoJatuh] End <<<<<<<<");
+        return sum;
+    }
+
+    @Override
+    public ImSimrsKategoriResikoJatuhEntity getKategoriResikoJatuh(Integer umur) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getKategoriResikoJatuh] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("umur", umur);
+
+        List<ImSimrsKategoriResikoJatuhEntity> resikoJatuhEntities = new ArrayList<>();
+
+        try {
+            resikoJatuhEntities = kategoriResikoJatuhDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getKategoriResikoJatuh] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getKategoriResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        ImSimrsKategoriResikoJatuhEntity kategoriResikoJatuhEntity = new ImSimrsKategoriResikoJatuhEntity();
+        if (resikoJatuhEntities.size() > 0){
+            kategoriResikoJatuhEntity = resikoJatuhEntities.get(0);
+        }
+        logger.info("[CheckupBoImpl.getKategoriResikoJatuh] End <<<<<<<<");
+        return kategoriResikoJatuhEntity;
+    }
+
+    @Override
+    public ItSimrsDataPsikososialEntity getDataPsikososial(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getDataPsikososial] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSimrsDataPsikososialEntity> dataPsikososialEntities = new ArrayList<>();
+        try {
+            dataPsikososialEntities = psikososialDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getDataPsikososial] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getDataPsikososial] ERROR "+e.getMessage());
+        }
+
+        ItSimrsDataPsikososialEntity dataPsikososialEntity = new ItSimrsDataPsikososialEntity();
+        if (dataPsikososialEntities.size() > 0){
+             dataPsikososialEntity = dataPsikososialEntities.get(0);
+        }
+        logger.info("[CheckupBoImpl.getDataPsikososial] End <<<<<<<<");
+        return dataPsikososialEntity;
+    }
+
+    @Override
+    public void saveDataPsikososial(String noCheckup, ItSimrsDataPsikososialEntity psikososial) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.saveDataPsikososial] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSimrsDataPsikososialEntity> dataPsikososialEntities = psikososialDao.getByCriteria(hsCriteria);
+        if (dataPsikososialEntities.size() > 0){
+            ItSimrsDataPsikososialEntity dataPsikososialEntity = dataPsikososialEntities.get(0);
+
+            dataPsikososialEntity.setNoCheckup(psikososial.getNoCheckup());
+            dataPsikososialEntity.setKomunikasi(psikososial.getKomunikasi());
+            dataPsikososialEntity.setKemampuanBicara(psikososial.getKemampuanBicara());
+            dataPsikososialEntity.setKonsepDiri(psikososial.getKonsepDiri());
+            dataPsikososialEntity.setPernahDirawat(psikososial.getPernahDirawat());
+            dataPsikososialEntity.setTahuTentangSakitNya(psikososial.getTahuTentangSakitNya());
+            dataPsikososialEntity.setObatDariRumah(psikososial.getObatDariRumah());
+            dataPsikososialEntity.setNyeri(psikososial.getNyeri());
+            dataPsikososialEntity.setIntensitasNyeri(psikososial.getIntensitasNyeri());
+            dataPsikososialEntity.setJenisIntensitasNyeri(psikososial.getJenisIntensitasNyeri());
+            dataPsikososialEntity.setNumericRatingScale(psikososial.getNumericRatingScale());
+            dataPsikososialEntity.setWongBakerPainScale(psikososial.getWongBakerPainScale());
+
+            dataPsikososialEntity.setAction("U");
+            dataPsikososialEntity.setLastUpdate(psikososial.getLastUpdate());
+            dataPsikososialEntity.setLastUpdateWho(psikososial.getLastUpdateWho());
+
+            try {
+                psikososialDao.updateAndSave(dataPsikososialEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveDataPsikososial] ERROR "+e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveDataPsikososial] ERROR "+e.getMessage());
+            }
+        } else {
+
+            ItSimrsDataPsikososialEntity dataPsikososialEntity = new ItSimrsDataPsikososialEntity();
+            dataPsikososialEntity.setId("PS"+getNextPsikososialId());
+            dataPsikososialEntity.setNoCheckup(psikososial.getNoCheckup());
+            dataPsikososialEntity.setKomunikasi(psikososial.getKomunikasi());
+            dataPsikososialEntity.setKemampuanBicara(psikososial.getKemampuanBicara());
+            dataPsikososialEntity.setTahuTentangSakitNya(psikososial.getTahuTentangSakitNya());
+            dataPsikososialEntity.setObatDariRumah(psikososial.getObatDariRumah());
+            dataPsikososialEntity.setNyeri(psikososial.getNyeri());
+            dataPsikososialEntity.setIntensitasNyeri(psikososial.getIntensitasNyeri());
+            dataPsikososialEntity.setJenisIntensitasNyeri(psikososial.getJenisIntensitasNyeri());
+            dataPsikososialEntity.setNumericRatingScale(psikososial.getNumericRatingScale());
+            dataPsikososialEntity.setWongBakerPainScale(psikososial.getWongBakerPainScale());
+
+            dataPsikososialEntity.setFlag("Y");
+            dataPsikososialEntity.setAction("C");
+            dataPsikososialEntity.setCreatedDate(psikososial.getCreatedDate());
+            dataPsikososialEntity.setCreatedWho(psikososial.getCreatedWho());
+            dataPsikososialEntity.setLastUpdate(psikososial.getLastUpdate());
+            dataPsikososialEntity.setLastUpdateWho(psikososial.getLastUpdateWho());
+
+            try {
+                psikososialDao.addAndSave(dataPsikososialEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveDataPsikososial] ERROR "+e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveDataPsikososial] ERROR "+e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupBoImpl.saveDataPsikososial] End <<<<<<<<");
+    }
+
+    @Override
+    public List<ItSimrsTranfusiEntity> getListTranfusi(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListTranfusi] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSimrsTranfusiEntity> tranfusiEntities = new ArrayList<>();
+        try {
+            tranfusiEntities = tranfusiDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getListTranfusi] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getListTranfusi] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.getListTranfusi] End <<<<<<<<");
+        return tranfusiEntities;
+    }
+
+    @Override
+    public ItSImrsPatrusEntity getDataPatrus(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getDataPatrus] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        ItSImrsPatrusEntity patrusEntity = new ItSImrsPatrusEntity();
+        List<ItSImrsPatrusEntity> patrusEntities = new ArrayList<>();
+        try {
+            patrusEntities = patrusDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getDataPatrus] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getDataPatrus] ERROR "+e.getMessage());
+        }
+
+        if (patrusEntities.size() > 0){
+            patrusEntity = patrusEntities.get(0);
+        }
+        logger.info("[CheckupBoImpl.getDataPatrus] End <<<<<<<<");
+        return patrusEntity;
+    }
+
+    @Override
+    public List<ItSimrsRekonsiliasiObatEntity> getListRekonsiliasiObat(String noCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getListRekonsiliasiObat] Start >>>>>>>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        List<ItSimrsRekonsiliasiObatEntity> rekonsiliasiObatEntities = new ArrayList<>();
+        try {
+            rekonsiliasiObatEntities = rekonsiliasiObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getListRekonsiliasiObat] ERROR "+e.getMessage());
+            throw new GeneralBOException("[CheckupBoImpl.getListRekonsiliasiObat] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupBoImpl.getDataPatrus] End <<<<<<<<");
+        return rekonsiliasiObatEntities;
+    }
+
+    @Override
+    public void saveRekonObat(String noCheckup, ItSimrsRekonsiliasiObatEntity obatEntity) throws GeneralBOException {
+
+        if (obatEntity.getNoCheckup() != null && !"".equalsIgnoreCase(obatEntity.getNoCheckup())){
+            obatEntity.setId("RKN"+getIdRekonsiliasi());
+            try {
+                rekonsiliasiObatDao.addAndSave(obatEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveRekonObat] ERROR "+e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveRekonObat] ERROR "+e.getMessage());
+            }
+        }
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -1126,6 +1478,39 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         } catch (HibernateException e){
             logger.error("[CheckupBoImpl.getNextRencanaRawatId] Error when get seq ",e);
             throw new GeneralBOException("[CheckupBoImpl.getNextRencanaRawatId] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getIdTranfusi(){
+        String id = "";
+        try {
+            id = tranfusiDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getIdTranfusi] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getIdTranfusi] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getIdPatrus(){
+        String id = "";
+        try {
+            id = patrusDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getIdPatrus] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getIdPatrus] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getIdRekonsiliasi(){
+        String id = "";
+        try {
+            id = rekonsiliasiObatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[CheckupBoImpl.getIdRekonsiliasi] Error when get seq ",e);
+            throw new GeneralBOException("[CheckupBoImpl.getIdRekonsiliasi] Error when get seq "+e.getMessage());
         }
         return id;
     }
@@ -1208,5 +1593,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setRencanaRawatDao(RencanaRawatDao rencanaRawatDao) {
         this.rencanaRawatDao = rencanaRawatDao;
+    }
+
+    public void setPatrusDao(PatrusDao patrusDao) {
+        this.patrusDao = patrusDao;
+    }
+
+    public void setTranfusiDao(TranfusiDao tranfusiDao) {
+        this.tranfusiDao = tranfusiDao;
+    }
+
+    public void setRekonsiliasiObatDao(RekonsiliasiObatDao rekonsiliasiObatDao) {
+        this.rekonsiliasiObatDao = rekonsiliasiObatDao;
     }
 }

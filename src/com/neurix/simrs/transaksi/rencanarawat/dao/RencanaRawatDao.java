@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -34,7 +35,11 @@ public class RencanaRawatDao extends GenericDao<ItSimrsRencanaRawatEntity, Strin
         if (mapCriteria.get("no_checkup") != null){
             criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
         }
+        if (mapCriteria.get("id_parameter") != null){
+            criteria.add(Restrictions.eq("idParameter", mapCriteria.get("id_parameter").toString()));
+        }
 
+        criteria.addOrder(Order.asc("idRencana"));
         List<ItSimrsRencanaRawatEntity> results = criteria.list();
         return results;
     }

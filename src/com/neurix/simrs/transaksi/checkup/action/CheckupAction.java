@@ -22,6 +22,7 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
@@ -29,17 +30,18 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
-import com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsSkorResikoJatuhEntity;
-import com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuh;
-import com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuhResponse;
+import com.neurix.simrs.transaksi.resikojatuh.model.*;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
+import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -1418,9 +1420,9 @@ public class CheckupAction extends BaseMasterAction {
 
         List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = new ArrayList<>();
         try {
-
-        } catch (GeneralBOException e) {
-            logger.error("[CheckupAction.getListRencanaRawat] ERROR " + e.getMessage());
+            rencanaRawatEntities = checkupBo.getListRencanaRawat(noCheckup, idDetailCheckup, kategoriRawat);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListRencanaRawat] ERROR "+e.getMessage());
         }
 
         logger.info("[CheckupAction.getListRencanaRawat] END process <<<");
@@ -1436,9 +1438,9 @@ public class CheckupAction extends BaseMasterAction {
         ItSimrsDataPsikososialEntity psikososialEntity = new ItSimrsDataPsikososialEntity();
 
         try {
-
-        } catch (HibernateException e) {
-            logger.error("[CheckupAction.getPsikososial] ERROR " + e.getMessage());
+            psikososialEntity = checkupBo.getDataPsikososial(noCheckup);
+        } catch (HibernateException e){
+            logger.error("[CheckupAction.getPsikososial] ERROR "+e.getMessage());
         }
 
         logger.info("[CheckupAction.getPsikososial] END process <<<");
@@ -1465,4 +1467,285 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.checkSuratRujukan] END process <<<");
         return response;
     }
+
+    public CrudResponse saveRencanaRawat(String noCheckup, String idDetail, String jsonString) throws JSONException{
+        logger.info("[CheckupAction.saveRencanaRawat] START process <<<");
+
+        CrudResponse crudResponse = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        JSONArray json = new JSONArray(jsonString);
+        List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = new ArrayList<>();
+        ItSimrsRencanaRawatEntity rencanaRawatEntity;
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            rencanaRawatEntity  = new ItSimrsRencanaRawatEntity();
+            rencanaRawatEntity.setIdParameter(obj.getString("id"));
+            rencanaRawatEntity.setNamaParameter(obj.getString("name"));
+            rencanaRawatEntity.setCheck(obj.getString("val"));
+
+            rencanaRawatEntity.setFlag("Y");
+            rencanaRawatEntity.setAction("C");
+            rencanaRawatEntity.setCreatedDate(now);
+            rencanaRawatEntity.setLastUpdate(now);
+            rencanaRawatEntity.setCreatedWho(userLogin);
+            rencanaRawatEntity.setLastUpdateWho(userLogin);
+            rencanaRawatEntities.add(rencanaRawatEntity);
+        }
+
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+
+        try {
+            checkupBo.saveRencanaRawat(noCheckup, idDetail, rencanaRawatEntities);
+            crudResponse.setStatus("success");
+        } catch (GeneralBOException e){
+            crudResponse.setStatus("error");
+            crudResponse.setMsg("CheckupAction.saveRencanaRawat] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.saveRencanaRawat] END process <<<");
+        return crudResponse;
+    }
+
+    public CrudResponse saveResikoJatuh(String noCheckup, String jsonString) throws JSONException{
+        logger.info("[CheckupAction.saveResikoJatuh] START process <<<");
+
+        CrudResponse crudResponse = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        JSONArray json = new JSONArray(jsonString);
+        List<ItSImrsResikoJatuhEntity> resikoJatuhEntities = new ArrayList<>();
+        ItSImrsResikoJatuhEntity resikoJatuhEntity;
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            resikoJatuhEntity  = new ItSImrsResikoJatuhEntity();
+            resikoJatuhEntity.setIdParameter(obj.getString("id"));
+            resikoJatuhEntity.setNamaParameter(obj.getString("name"));
+            resikoJatuhEntity.setSkor(Integer.valueOf(obj.getString("val")));
+            resikoJatuhEntity.setIdKategori(obj.getString("kat"));
+
+            resikoJatuhEntity.setFlag("Y");
+            resikoJatuhEntity.setAction("C");
+            resikoJatuhEntity.setCreatedDate(now);
+            resikoJatuhEntity.setLastUpdate(now);
+            resikoJatuhEntity.setCreatedWho(userLogin);
+            resikoJatuhEntity.setLastUpdateWho(userLogin);
+            resikoJatuhEntities.add(resikoJatuhEntity);
+        }
+
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+
+        try {
+            checkupBo.saveResikoJatuh(noCheckup, resikoJatuhEntities);
+            crudResponse.setStatus("success");
+        } catch (GeneralBOException e){
+            crudResponse.setStatus("error");
+            crudResponse.setMsg("CheckupAction.saveResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.saveResikoJatuh] END process <<<");
+        return crudResponse;
+    }
+
+    public String getSumResikoJatuh(String noCheckup, String idKategori){
+        logger.info("[CheckupAction.getSumResikoJatuh] START process <<<");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        String skor = "";
+
+        try {
+            skor = checkupBo.getSumResikoJatuh(noCheckup, idKategori);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getSumResikoJatuh] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getSumResikoJatuh] END process <<<");
+        return skor;
+    }
+
+    public ImSimrsKategoriResikoJatuhEntity getKategoriResiko(String tgllahir){
+        logger.info("[CheckupAction.getKategoriResiko] START process <<<");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        LocalDate now = LocalDate.now();
+        LocalDate birthDay = null;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        birthDay = LocalDate.parse(tgllahir, formatter);
+
+        Integer umur = new Integer(0);
+        if ((birthDay != null) && (now != null)) {
+            umur = new Integer(Period.between(birthDay, now).getYears());
+        }
+
+        ImSimrsKategoriResikoJatuhEntity resikoJatuhEntity = new ImSimrsKategoriResikoJatuhEntity();
+
+        try {
+            resikoJatuhEntity = checkupBo.getKategoriResikoJatuh(umur);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getKategoriResiko] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getKategoriResiko] END process <<<");
+        return resikoJatuhEntity;
+    }
+
+    public CrudResponse saveDataPsikososial(String noCheckup, String jsonString) throws JSONException{
+        logger.info("[CheckupAction.getKategoriResiko] START process >>>");
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        CrudResponse crudResponse = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        JSONArray json = new JSONArray(jsonString);
+        List<ItSimrsDataPsikososialEntity> psikososialEntities = new ArrayList<>();
+        ItSimrsDataPsikososialEntity psikososialEntity = new ItSimrsDataPsikososialEntity();
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            psikososialEntity.setNoCheckup(noCheckup);
+            psikososialEntity.setKomunikasi(obj.getString("komunikasi"));
+            psikososialEntity.setKemampuanBicara(obj.getString("kemampuanBicara"));
+            psikososialEntity.setTahuTentangSakitNya(obj.getString("tahuTentangSakitNya"));
+            psikososialEntity.setKonsepDiri(obj.getString("konsepDiri"));
+            psikososialEntity.setPernahDirawat(obj.getString("pernahDirawat"));
+            psikososialEntity.setObatDariRumah(obj.getString("obatDariRumah"));
+            psikososialEntity.setNyeri(obj.getString("nyeri"));
+            psikososialEntity.setIntensitasNyeri(Integer.valueOf(obj.getString("intensitasNyeri")));
+            psikososialEntity.setJenisIntensitasNyeri(obj.getString("jenisIntensitasNyeri"));
+            psikososialEntity.setNumericRatingScale(obj.getString("numericRatingScale"));
+            psikososialEntity.setWongBakerPainScale(obj.getString("wongBakerPainScale"));
+
+            psikososialEntity.setFlag("Y");
+            psikososialEntity.setAction("C");
+            psikososialEntity.setCreatedDate(now);
+            psikososialEntity.setLastUpdate(now);
+            psikososialEntity.setCreatedWho(userLogin);
+            psikososialEntity.setLastUpdateWho(userLogin);
+        }
+
+        try {
+            checkupBo.saveDataPsikososial(noCheckup, psikososialEntity);
+            crudResponse.setStatus("success");
+        } catch (GeneralBOException e){
+            crudResponse.setStatus("error");
+            crudResponse.setMsg("CheckupAction.getKategoriResiko] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getKategoriResiko] END process <<<");
+        return crudResponse;
+    }
+
+    public List<ItSimrsTranfusiEntity> getListTranfusi(String noCheckup){
+        logger.info("[CheckupAction.getKategoriResiko] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        List<ItSimrsTranfusiEntity> tranfusiEntities = new ArrayList<>();
+
+        try {
+            tranfusiEntities = checkupBo.getListTranfusi(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getKategoriResiko] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getKategoriResiko] END process <<<");
+        return tranfusiEntities;
+    }
+
+    public ItSImrsPatrusEntity getPatrus(String noCheckup){
+        logger.info("[CheckupAction.getPatrus] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        ItSImrsPatrusEntity patrusEntity = new ItSImrsPatrusEntity();
+
+        try {
+            patrusEntity = checkupBo.getDataPatrus(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getPatrus] ERROR "+e.getMessage());
+        }
+
+        logger.info("[CheckupAction.getPatrus] END process <<<");
+        return patrusEntity;
+    }
+
+    public List<ItSimrsRekonsiliasiObatEntity> getListRekonsiliasiObat(String noCheckup){
+        logger.info("[CheckupAction.getListRekonsiliasiObat] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        List<ItSimrsRekonsiliasiObatEntity> rekonsiliasiObatEntities = new ArrayList<>();
+
+        try {
+            rekonsiliasiObatEntities = checkupBo.getListRekonsiliasiObat(noCheckup);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.getListRekonsiliasiObat] ERROR "+e.getMessage());
+        }
+        logger.info("[CheckupAction.getListRekonsiliasiObat] END process <<<");
+        return rekonsiliasiObatEntities;
+    }
+
+    public CrudResponse saveRekonsilisasiObat(String noCheckup, String jsonString) throws JSONException{
+
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        ItSimrsRekonsiliasiObatEntity rekonsiliasiObatEntity = new ItSimrsRekonsiliasiObatEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            rekonsiliasiObatEntity.setNoCheckup(noCheckup);
+            rekonsiliasiObatEntity.setNamaObat(obj.getString("nama"));
+            rekonsiliasiObatEntity.setBentuk(obj.getString("bentuk"));
+            rekonsiliasiObatEntity.setDosis(obj.getString("dosis"));
+            rekonsiliasiObatEntity.setFrekuensi(obj.getString("frekuensi"));
+            rekonsiliasiObatEntity.setRute(obj.getString("rute"));
+            rekonsiliasiObatEntity.setObatMasukFlag(obj.getString("obatmasuk"));
+            rekonsiliasiObatEntity.setObatDariRumahFlag(obj.getString("obatrumah"));
+            rekonsiliasiObatEntity.setSatuanDosis(obj.getString("satuan"));
+
+            rekonsiliasiObatEntity.setFlag("Y");
+            rekonsiliasiObatEntity.setAction("C");
+            rekonsiliasiObatEntity.setCreatedDate(now);
+            rekonsiliasiObatEntity.setLastUpdate(now);
+            rekonsiliasiObatEntity.setCreatedWho(userLogin);
+            rekonsiliasiObatEntity.setLastUpdateWho(userLogin);
+        }
+
+        try {
+            checkupBo.saveRekonObat(noCheckup, rekonsiliasiObatEntity);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("CheckupAction.getKategoriResiko] ERROR "+e.getMessage());
+        }
+
+        return response;
+    }
+
 }
