@@ -78,6 +78,13 @@
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <tr>
+                                        <td width="45%"><b>No SEP</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="headerDetailCheckup.noSep"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
                                             <table>
@@ -115,14 +122,6 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Jenis Pasien</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label id="jenis_periksa" name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
-                                            </table>
-                                        </td>
-                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -135,6 +134,15 @@
                                 <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
                                 <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
+                                    <tr>
+                                        <td><b>Jenis Pasien</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label id="jenis_periksa"
+                                                         name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -240,11 +248,13 @@
                                 <div class="form-group">
                                     <label>&nbsp</label>
                                     <div>
-                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i
+                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()"
+                                                class="btn btn-success"><i
                                                 class="fa fa-check"></i>
                                             Save
                                         </button>
-                                        <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                                        <button style="display: none; cursor: no-drop" type="button"
+                                                class="btn btn-success"
                                                 id="load_penunjang">
                                             <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                                         </button>
@@ -253,7 +263,7 @@
                             </div>
                         </div>
                         <%--<div class="form-group">--%>
-                            <%--<br>--%>
+                        <%--<br>--%>
 
                         <%--</div>--%>
                     </div>
@@ -304,12 +314,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            </div>
+                        </div>
                     </div>
 
                     <%--<div class="box-header with-border"></div>--%>
                     <%--<div class="box-header with-border">--%>
-                        <%----%>
+                    <%----%>
                     <%--</div>--%>
                     <%--<div class="box-body">--%>
 
@@ -340,42 +350,51 @@
                     </div>
 
                     <div id="status_bpjs" style="display: none">
-                    <div class="box-header with-border">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-offset-2 col-md-8">
-                                <h5>
-                                    Cover Biaya Bpjs
-                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span></small>
-                                </h5>
-                                <div class="progress">
-                                    <div id="sts_cover_biaya">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Bpjs
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya">
+                                        </div>
                                     </div>
-                                </div>
-                                <h5>
-                                    Total Biaya Tindakan
-                                    <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_tindakan"></span></small>
-                                </h5>
-                                <div class="progress">
-                                    <div id="sts_biaya_tindakan">
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan">
+                                        </div>
                                     </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Bpjs
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul style="list-style-type: none">
-                                    <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs</li>
-                                    <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan < 50% dari cover biaya Bpjs</li>
-                                    <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan > 50% dan < 70% dari cover biaya Bpjs</li>
-                                    <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan > 70% dari cover biaya Bpjs</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-2">
+                                <div class="col-md-2">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
 
                     <div class="box-header with-border" id="pos_tin">
@@ -478,11 +497,23 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-4 text-center">
+                                        <a class="btn btn-success" onclick="saveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">
@@ -490,44 +521,25 @@
                             Silahkan cek kembali data inputan!
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-offset-1 col-md-5">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">Keterangan</label>
-                                    <select class="form-control select2" id="keterangan" style="width: 100%"
-                                            onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
-                                        <option value=''>[Select One]</option>
-                                        <option value='selesai'>Selesai</option>
-                                        <option value='pindah'>Pindah Poli Lain</option>
-                                        <option value='rujuk'>Rujuk Rawat Inap</option>
-                                    </select>
-                                </div>
-                                <div id="form-poli" style="display: none">
-                                    <div class="form-group">
-                                        <label style="margin-top: 7px">Poli</label>
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select
-                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
-                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                listValue="namaPelayanan" cssStyle="width: 100%"
-                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
-                                                headerKey="" headerValue="[Select one]"
-                                                cssClass="form-control select2"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label style="margin-top: 7px">Dokter</label>
-                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
-                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
+                                    <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control select2" id="keterangan" style="width: 100%"
+                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
                                             <option value=''>[Select One]</option>
+                                            <option value='selesai'>Selesai</option>
+                                            <option value='pindah'>Pindah Poli Lain</option>
+                                            <option value='rujuk'>Rujuk Rawat Inap</option>
                                         </select>
-
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-md-5">
                                 <div id="form-selesai" style="display: none">
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Keterangan Selesai</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <div class="col-md-8">
                                         <s:action id="initComboKet" namespace="/checkupdetail"
                                                   name="getListComboKeteranganKeluar_checkupdetail"/>
                                         <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
@@ -536,12 +548,33 @@
                                                   onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this);"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        </div>
                                     </div>
                                 </div>
-
+                                <div id="form-cekup" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Tgl Ckp Ulang</label>
+                                        <div class="col-md-8">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <div class="col-md-8">
+                                        <s:textarea cssClass="form-control" rows="5" id="cekup_ket"
+                                                    style="margin-top: 7px"></s:textarea>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="kamar" style="display: none;">
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Kelas</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Kelas</label>
+                                        <div class="col-md-8">
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
                                         <s:select
@@ -551,68 +584,65 @@
                                                 listValue="namaKelasRuangan"
                                                 headerKey="" headerValue="[Select one]"
                                                 cssClass="form-control select2"/>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Kamar</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Kamar</label>
+                                        <div class="col-md-8">
                                         <select class="form-control select2" id="kamar_detail" style="width: 100%"
                                                 onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
                                             <option value=''>[Select One]</option>
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <button class="btn btn-success" onclick="saveKeterangan()"
-                                            style="margin-top: 15px; width: 150px" id="save_ket"><i
-                                            class="fa fa-arrow-right"></i> Save
-                                    </button>
-                                    <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
-                                            class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
-                                        Sedang Menyimpan...
-                                    </button>
-                                    <button class="btn btn-primary" onclick="printGelangPasien()"
-                                            style="margin-top: 15px;"><i
-                                            class="fa fa-print"></i> Print
-                                    </button>
-                                </div>
-                            </div>
-                            <%--<div class="col-md-2">--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_catatan"><i class="fa fa-times"></i>required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_catatan"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-2"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-2"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-3"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-3"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <div class="col-md-4" id="form-cekup" style="display: none;">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Tanggal Checkup Ulang</label>
-                                    <div class="input-group date" style="margin-top: 7px">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Catatan</label>
-                                    <s:textarea cssClass="form-control" rows="5" id="cekup_ket"
-                                                style="margin-top: 7px"></s:textarea>
+                                <div id="form-poli" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Poli</label>
+                                        <div class="col-md-8">
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select
+                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
+                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                listValue="namaPelayanan" cssStyle="width: 100%"
+                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
+                                                headerKey="" headerValue="[Select one]"
+                                                cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Dokter</label>
+                                        <div class="col-md-8">
+                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
+                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
+                                            <option value=''>[Select One]</option>
+                                        </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-4 text-center">
+                                        <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="saveKeterangan()"><i class="fa fa-arrow-right"></i> Save Keterangan</a>
+                                        <button style="display: none; cursor: no-drop;" type="button"
+                                                class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
                 </div>
             </div>
         </div>
@@ -762,23 +792,23 @@
                         </div>
                     </div>
                     <%--<div class="form-group">--%>
-                        <%--<label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
-                                    <%--id="tin_id_perawat"--%>
-                                    <%--onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">--%>
-                                <%--<option value="">[select one]</option>--%>
-                                <%--<option value="1">Angel</option>--%>
-                                <%--<option value="2">Anya</option>--%>
-                                <%--<option value="3">Ayu</option>--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">--%>
-                                <%--<i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                               <%--id="cor_perawat"><i class="fa fa-check"></i> correct</p>--%>
-                        <%--</div>--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
+                    <%--id="tin_id_perawat"--%>
+                    <%--onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">--%>
+                    <%--<option value="">[select one]</option>--%>
+                    <%--<option value="1">Angel</option>--%>
+                    <%--<option value="2">Anya</option>--%>
+                    <%--<option value="3">Ayu</option>--%>
+                    <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">--%>
+                    <%--<i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_perawat"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
                     <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
@@ -1322,6 +1352,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -1367,52 +1419,52 @@
 
     });
 
-    function printGelangPasien(){
-        window.open('printGelangPasien_checkupdetail.action?id='+noCheckup, '_blank');
+    function printGelangPasien() {
+        window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
     }
 
-    function hitungStatusBiaya(){
+    function hitungStatusBiaya() {
         CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
-            if(response.jenisTransaksi == "bpjs"){
+            if (response.jenisTransaksi == "bpjs") {
                 $('#status_bpjs').show();
-                if(response.tarifBpjs != null && response.tarifTindakan != null){
+                if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
                     var coverBiaya = response.tarifBpjs;
                     var biayaTindakan = response.tarifTindakan;
 
                     var persen = "";
-                    if(coverBiaya != '' && biayaTindakan){
-                        persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);
-                    }else{
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                    } else {
                         persen = 0;
                     }
 
                     var barClass = "";
                     var barLabel = "";
 
-                    if(parseInt(persen) > 70){
+                    if (parseInt(persen) > 70) {
                         barClass = 'progress-bar-danger';
-                    }else if (parseInt(persen) > 50){
+                    } else if (parseInt(persen) > 50) {
                         barClass = 'progress-bar-warning';
-                    }else{
+                    } else {
                         barClass = 'progress-bar-success';
                     }
 
-                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
 
-                    var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
 
-                    if(coverBiaya != ''){
+                    if (coverBiaya != '') {
                         $('#sts_cover_biaya').html(barBpjs);
-                        $('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");
+                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
                     }
 
-                    if(biayaTindakan != ''){
+                    if (biayaTindakan != '') {
                         $('#sts_biaya_tindakan').html(barTindakan);
-                        $('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
                 }
-            }else{
+            } else {
                 $('#status_bpjs').hide();
             }
         });
@@ -1420,40 +1472,40 @@
 
     <%--function hitungStatusBiaya(){--%>
 
-        <%--var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';--%>
-        <%--var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';--%>
+    <%--var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';--%>
+    <%--var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';--%>
 
-        <%--var persen = "";--%>
-        <%--if(coverBiaya != '' && biayaTindakan){--%>
-            <%--persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);--%>
-        <%--}else{--%>
-            <%--persen = 0;--%>
-        <%--}--%>
+    <%--var persen = "";--%>
+    <%--if(coverBiaya != '' && biayaTindakan){--%>
+    <%--persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);--%>
+    <%--}else{--%>
+    <%--persen = 0;--%>
+    <%--}--%>
 
-        <%--var barClass = "";--%>
-        <%--var barLabel = "";--%>
+    <%--var barClass = "";--%>
+    <%--var barLabel = "";--%>
 
-        <%--if(parseInt(persen) > 70){--%>
-            <%--barClass = 'progress-bar-danger';--%>
-        <%--}else if (parseInt(persen) > 50){--%>
-            <%--barClass = 'progress-bar-warning';--%>
-        <%--}else{--%>
-            <%--barClass = 'progress-bar-success';--%>
-        <%--}--%>
+    <%--if(parseInt(persen) > 70){--%>
+    <%--barClass = 'progress-bar-danger';--%>
+    <%--}else if (parseInt(persen) > 50){--%>
+    <%--barClass = 'progress-bar-warning';--%>
+    <%--}else{--%>
+    <%--barClass = 'progress-bar-success';--%>
+    <%--}--%>
 
-        <%--var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';--%>
+    <%--var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';--%>
 
-        <%--var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';--%>
+    <%--var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';--%>
 
-        <%--if(coverBiaya != ''){--%>
-            <%--$('#sts_cover_biaya').html(barBpjs);--%>
-            <%--$('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");--%>
-        <%--}--%>
+    <%--if(coverBiaya != ''){--%>
+    <%--$('#sts_cover_biaya').html(barBpjs);--%>
+    <%--$('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");--%>
+    <%--}--%>
 
-        <%--if(biayaTindakan != ''){--%>
-            <%--$('#sts_biaya_tindakan').html(barTindakan);--%>
-            <%--$('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");--%>
-        <%--}--%>
+    <%--if(biayaTindakan != ''){--%>
+    <%--$('#sts_biaya_tindakan').html(barTindakan);--%>
+    <%--$('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");--%>
+    <%--}--%>
     <%--}--%>
 
     function saveAlergi(id) {
@@ -1984,8 +2036,8 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
-                    if(item.idPerawat != null){
-                       perawat = item.idPerawat;
+                    if (item.idPerawat != null) {
+                        perawat = item.idPerawat;
                     }
 
                     table += "<tr>" +
@@ -2515,15 +2567,15 @@
         var qtyLembar1 = "";
         var qtyBiji1 = "";
 
-        if(qtyBox != 'null'){
+        if (qtyBox != 'null') {
             qtyBox1 = qtyBox;
         }
 
-        if(qtyLembar != 'null'){
+        if (qtyLembar != 'null') {
             qtyLembar1 = qtyLembar;
         }
 
-        if(qtyBiji != 'null'){
+        if (qtyBiji != 'null') {
             qtyBiji1 = qtyBiji;
         }
         $('#load_obat, #warning_obat, #war_ob_jenis_satuan, #war_obat, #war_qty_obat').hide();
@@ -2596,16 +2648,6 @@
         }
     }
 
-    //    function showFormCekup(select) {
-    //        var idx = select.selectedIndex;
-    //        var idKet = select.options[idx].value;
-    //        if (idKet == "Cekup Ulang") {
-    //            $('#form-cekup').show();
-    //        } else {
-    //            $('#form-cekup').hide();
-    //        }
-    //    }
-
     function addObatToList() {
 
         var apotek = $('#resep_apotek').val();
@@ -2665,11 +2707,6 @@
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
-            console.log(jenisSatuan);
-            console.log(obat);
-            console.log(stok);
-            console.log(lembarPerBox);
-            console.log(bijiPerLembar);
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
@@ -3010,6 +3047,15 @@
             option = "";
         }
         $('#resep_nama_obat').html(option);
+    }
+
+    function saveAllTindakan(){
+
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup,
+                {callback : function (response) {
+                    console.log(response);
+                }});
     }
 
 

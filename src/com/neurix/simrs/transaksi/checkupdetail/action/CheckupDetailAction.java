@@ -21,12 +21,18 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -66,6 +72,8 @@ public class CheckupDetailAction extends BaseMasterAction {
     private boolean enabledPoli = false;
     private boolean enabledAddPasien = false;
     private HeaderCheckup headerCheckup;
+    private TindakanRawatBo tindakanRawatBoProxy;
+    private PeriksaLabBo periksaLabBoProxy;
 
     private File fileUpload;
     private String fileUploadFileName;
@@ -79,6 +87,14 @@ public class CheckupDetailAction extends BaseMasterAction {
     private BigInteger tarifCoverBpjs;
     private BigInteger tarifTotalTindakan;
     private String tipe;
+
+    public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
+        this.periksaLabBoProxy = periksaLabBoProxy;
+    }
+
+    public void setTindakanRawatBoProxy(TindakanRawatBo tindakanRawatBoProxy) {
+        this.tindakanRawatBoProxy = tindakanRawatBoProxy;
+    }
 
     public String getTipe() {
         return tipe;
@@ -353,6 +369,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
                         detailCheckup.setTinggi(headerCheckup.getTinggi());
                         detailCheckup.setBerat(headerCheckup.getBerat());
+                        detailCheckup.setNoSep(headerCheckup.getNoSep());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
@@ -456,9 +473,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
-//        if ("".equalsIgnoreCase(headerDetailCheckup.getIdPelayanan()) && headerDetailCheckup.getIdPelayanan() == null){
-//            headerDetailCheckup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-//        }
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -683,6 +697,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         } else {
             status = "sukses";
         }
+
+        saveAddToRiwayatTindakan(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
@@ -953,33 +969,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             checkup.setStatusPeriksa("1");
 
             String fileName = "";
-//            if (this.fileUpload != null) {
-//                if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
-//                    if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-//
-//                        // file name
-//                        fileName = checkup.getNoKtp()+"_"+this.fileUploadFileName;
-//
-//                        // deklarasi path file
-//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-////                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-//                        logger.info("[CheckupDetailAction.uploadImages] FILEPATH :" + filePath);
-//
-//                        // persiapan pemindahan file
-//                        File fileToCreate = new File(filePath, fileName);
-//
-//                        try {
-//                            // pemindahan file
-//                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-//                            logger.info("[CheckupDetailAction.uploadImages] SUCCES PINDAH");
-//                            checkup.setUrlKtp(fileName);
-//                        } catch (IOException e) {
-//                            logger.error("[CheckupDetailAction.uploadImages] error, " + e.getMessage());
-//                            throw new GeneralBOException("[CheckupDetailAction.uploadImages] Error when copy images to directori "+e.getMessage());
-//                        }
-//                    }
-//                }
-//            }
 
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
@@ -1114,6 +1103,59 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         return "print_gelang_pasien";
+    }
+
+    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup){
+
+        logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] START process >>>");
+        CheckResponse response = new CheckResponse();
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String user = CommonUtil.userLogin();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setLastUpdate(updateTime);
+            headerDetailCheckup.setLastUpdateWho(user);
+
+            try {
+               response = checkupDetailBo.saveApproveAllTindakanRawatJalan(headerDetailCheckup);
+            }catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+
+        logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] END process >>>");
+
+        return response;
+    }
+
+    public String saveAddToRiwayatTindakan(String idDetail){
+        logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] START process >>>");
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+
+            List<TindakanRawat> listTindakan = new ArrayList<>();
+            TindakanRawat tindakanRawat = new TindakanRawat();
+            tindakanRawat.setIdDetailCheckup(idDetail);
+
+            try {
+                listTindakan = tindakanRawatBo.getByCriteria(tindakanRawat);
+            }catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tindakan :"+e.getMessage());
+            }
+
+            if(listTindakan.size()>0){
+                RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+            }
+        }
+        logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] END process >>>");
+        return SUCCESS;
     }
 
 

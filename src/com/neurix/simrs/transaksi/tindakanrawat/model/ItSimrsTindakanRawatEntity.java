@@ -21,33 +21,16 @@ public class ItSimrsTindakanRawatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String approveBpjsFlag;
-    private String kategoriTindakanBpjs;
-    private String idRuangan;
+    private String approveFlag;
 
-    public String getIdRuangan() {
-        return idRuangan;
+    public String getApproveFlag() {
+        return approveFlag;
     }
 
-    public void setIdRuangan(String idRuangan) {
-        this.idRuangan = idRuangan;
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
     }
 
-    public String getKategoriTindakanBpjs() {
-        return kategoriTindakanBpjs;
-    }
-
-    public void setKategoriTindakanBpjs(String kategoriTindakanBpjs) {
-        this.kategoriTindakanBpjs = kategoriTindakanBpjs;
-    }
-
-    public String getApproveBpjsFlag() {
-        return approveBpjsFlag;
-    }
-
-    public void setApproveBpjsFlag(String approveBpjsFlag) {
-        this.approveBpjsFlag = approveBpjsFlag;
-    }
     public String getIdTindakanRawat() {
         return idTindakanRawat;
     }

@@ -1311,7 +1311,7 @@
         if (keyakinan != '' && penerjemah != '' && indra != '' && kontak != '' && alatBantu != '' && alergi != '') {
             $('#btn-admisi').addClass("btn btn-warning");
         } else {
-            $('#btn-admisi').removeClass("btn btn-warning").addClass("btn btn-success");
+            $('#btn-admisi').removeClass("btn btn-warning").addClass("btn btn-primary");
         }
         $('#modal-admisi').modal('hide');
     }
