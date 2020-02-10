@@ -24,6 +24,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/OrderGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
 
     <script type='text/javascript'>
 

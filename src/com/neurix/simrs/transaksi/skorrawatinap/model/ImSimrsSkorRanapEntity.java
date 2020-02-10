@@ -15,7 +15,7 @@ public class ImSimrsSkorRanapEntity implements Serializable {
     private String flag;
     private String action;
     private Timestamp createdDate;
-    private String createWho;
+    private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
@@ -75,12 +75,12 @@ public class ImSimrsSkorRanapEntity implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public String getCreateWho() {
-        return createWho;
+    public String getCreatedWho() {
+        return createdWho;
     }
 
-    public void setCreateWho(String createWho) {
-        this.createWho = createWho;
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
     }
 
     public Timestamp getLastUpdate() {

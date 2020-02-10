@@ -31,6 +31,10 @@ public class SkorRanapDao extends GenericDao<ItSimrsSkorRanapEntity, String> {
             criteria.add(Restrictions.eq("groupId", mapCriteria.get("group_id").toString()));
         if (mapCriteria.get("id_kategori") != null)
             criteria.add(Restrictions.eq("idKategori", mapCriteria.get("id_kategori").toString()));
+        if (mapCriteria.get("no_checkup") != null)
+            criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
+        if (mapCriteria.get("id_detail_checkup") != null)
+            criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
         if (mapCriteria.get("date") != null){
             String stDate = mapCriteria.get("date").toString();
             criteria.add(Restrictions.sqlRestriction("created_date = '"+stDate+"'"));

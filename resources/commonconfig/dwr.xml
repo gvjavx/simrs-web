@@ -387,6 +387,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"/>
       </create>
 
+      <!--Rawat Inap-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.rawatinap.action.RawatInapAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
@@ -420,6 +425,11 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsParameterRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity"/>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsParameterSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity"/>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>

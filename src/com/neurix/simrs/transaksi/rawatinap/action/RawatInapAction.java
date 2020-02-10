@@ -13,6 +13,8 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity;
+import com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
@@ -20,6 +22,8 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
@@ -388,5 +392,24 @@ public class RawatInapAction extends BaseMasterAction {
         }
 
         return "print_resep";
+    }
+
+    public List<ItSimrsSkorRanapEntity> getListSkorByKategori(String noCheckup, String idDetailCheckup, String kategori){
+        logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
+
+        List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        SkorRanap skorRanap = new SkorRanap();
+        skorRanap.setNoCheckup(noCheckup);
+        skorRanap.setIdDetailCheckup(idDetailCheckup);
+        skorRanap.setIdKategori(kategori);
+
+        skorRanapEntities = rawatInapBo.getListSkorRanap(skorRanap);
+
+        logger.info("[RawatInapAction.getListSkorByKategori] end process <<<");
+        return skorRanapEntities;
     }
 }

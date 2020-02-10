@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 10/02/20.
  */
-public class ItSimrsSkorRanapEntity implements Serializable{
+public class SkorRanap{
     private String id;
     private String groupId;
     private String idParameter;
@@ -21,6 +21,15 @@ public class ItSimrsSkorRanapEntity implements Serializable{
     private String lastUpdateWho;
     private String idKategori;
     private String skor;
+    private String stDate;
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
 
     public String getId() {
         return id;
