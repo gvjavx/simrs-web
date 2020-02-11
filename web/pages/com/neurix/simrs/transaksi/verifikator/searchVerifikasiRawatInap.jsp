@@ -16,7 +16,7 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#verifikasi_tindakan').addClass('active');
+            $('#verifikasi_rawat_inap').addClass('active');
         });
 
 
@@ -34,7 +34,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Tindakan Rawat
+            Verifikasi Tindakan Rawat Inap
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -46,7 +46,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Tindakan Rawat</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Tindakan Rawat Inap</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">

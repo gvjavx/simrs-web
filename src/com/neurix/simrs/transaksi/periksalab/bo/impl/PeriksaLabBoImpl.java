@@ -527,6 +527,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
             hsCriteria.put("status", bean.getStatusPeriksa());
         }
 
+        if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
+            hsCriteria.put("approve_flag", bean.getApproveFlag());
+        }
+
         hsCriteria.put("flag","Y");
         List<ItSimrsPeriksaLabEntity> periksaLabEntities = new ArrayList<>();
         try {

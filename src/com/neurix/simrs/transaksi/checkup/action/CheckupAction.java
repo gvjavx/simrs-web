@@ -763,7 +763,7 @@ public class CheckupAction extends BaseMasterAction {
             try {
                 JSONObject obj = new JSONObject(checkup.getAdmisi());
                 checkup.setKetKeyakinan(obj.getString("keyakinan"));
-                checkup.setBantuanBahasa(obj.getString("penerjemah"));
+                checkup.setBahasa(obj.getString("penerjemah"));
                 checkup.setAlatBantu(obj.getString("alatBantu"));
                 checkup.setAlergi(obj.getString("alergi"));
             }catch (JSONException e){

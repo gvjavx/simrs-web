@@ -1185,8 +1185,7 @@
                             <label>
                                 <input type="radio" name="r3" class="flat-red" checked> Tidak
                             </label>
-                            <input class="form-control" style="margin-top: 7px" id="pre_penerjemah" value="Indonesia"
-                                   disabled>
+                            <input class="form-control" style="margin-top: 7px" id="pre_penerjemah">
                         </div>
                     </div>
                 </div>

@@ -2,12 +2,14 @@ package com.neurix.simrs.transaksi.riwayattindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,32 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         List<ItSimrsRiwayatTindakanEntity> result = criteria.list();
         return result;
     }
+
+//    public List<RiwayatTindakan> cekTodayTindakanTarifKamar(String idDetail, String tanggal){
+//
+//        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+//
+//        String SQL = "SELECT id_tindakan, id_detail_checkup FROM it_simrs_riwayat_tindakan \n" +
+//                "WHERE CAST(created_date AS date) = to_date(:tanggal, 'dd-MM-yyyy') AND id_detail_checkup = :idDetail";
+//
+//        List<Object[]> result = new ArrayList<>();
+//
+//        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+//                .setParameter("tanggal", tanggal)
+//                .setParameter("idDetail", idDetail)
+//                .list();
+//
+//        RiwayatTindakan tindakan;
+//        if (!result.isEmpty()){
+//            for (Object[] obj : result){
+//                tindakan = new RiwayatTindakan();
+//                tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+//                tindakan.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+//                riwayatTindakanList.add(tindakan);
+//            }
+//        }
+//        return riwayatTindakanList;
+//    }
 
     public String getNextSeq(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");
