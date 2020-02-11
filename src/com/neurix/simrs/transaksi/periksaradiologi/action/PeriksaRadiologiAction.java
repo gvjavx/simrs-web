@@ -20,6 +20,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -131,7 +132,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                         periksaLab.setJenisKelamin(jk);
                         periksaLab.setTempatLahir(headerCheckup.getTempatLahir());
                         periksaLab.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+headerCheckup.getTglLahir().toString());
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir()+", "+formatDate);
                         periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         periksaLab.setNik(headerCheckup.getNoKtp());
                         periksaLab.setUrlKtp(headerCheckup.getUrlKtp());

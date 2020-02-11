@@ -12,6 +12,7 @@ import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
@@ -129,6 +130,50 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         logger.info("[TindakanRawatBoImpl.saveEdit] End <<<<<<");
     }
 
+    @Override
+    public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal) throws GeneralBOException {
+        logger.info("[TindakanRawatBoImpl.cekTodayTindakanTarifKamar] SATRT <<<<<<");
+        List<TindakanRawat> result = new ArrayList<>();
+        try {
+            result = tindakanRawatDao.cekTodayTindakanTarifKamar(idDetail, tanggal);
+        }catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.saveAdd] Error when cek tindakan tarif kamar hari ini ", e);
+            throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when cek tindakan tarif kamar hari ini " + e.getMessage());
+        }
+        logger.info("[TindakanRawatBoImpl.cekTodayTindakanTarifKamar] END <<<<<<");
+        return result;
+    }
+
+    @Override
+    public CheckResponse updateFlagApproveTindakan(TindakanRawat bean) throws GeneralBOException {
+        logger.info("[TindakanRawatBoImpl.updateFlagApproveTindakan] START >>>>>>>");
+        CheckResponse response = new CheckResponse();
+        if(bean != null){
+            List<ItSimrsTindakanRawatEntity> entityList = getListEntityTindakanRawat(bean);
+            if(entityList.size() > 0){
+                 for (ItSimrsTindakanRawatEntity entity: entityList){
+                     entity.setApproveFlag("Y");
+                     entity.setLastUpdate(bean.getLastUpdate());
+                     entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                     try {
+                         tindakanRawatDao.updateAndSave(entity);
+                         response.setStatus("success");
+                         response.setMessage("Berhasil update tindakan");
+                     }catch (HibernateException e){
+                         response.setStatus("error");
+                         response.setMessage("Error when update tindakan, Found Eror: "+e.getMessage());
+                         logger.error("[TindakanRawatBoImpl.updateFlagApproveTindakan] Error when update approve flag ", e);
+                         throw new GeneralBOException("[TindakanRawatBoImpl.updateFlagApproveTindakan] Error when update approve flag " + e.getMessage());
+                     }
+                 }
+            }
+
+        }
+        logger.info("[TindakanRawatBoImpl.updateFlagApproveTindakan] END >>>>>>>");
+        return response;
+    }
+
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{
         logger.info("[TindakanRawatBoImpl.updateDetailCheckup] Start >>>>>>>");
 
@@ -184,6 +229,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
+        if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
+            hsCriteria.put("approve_flag", bean.getApproveFlag());
+        }
 
         hsCriteria.put("flag","Y");
         try {
@@ -219,6 +267,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setCreatedWho(entity.getCreatedWho());
             tindakanRawat.setLastUpdate(entity.getLastUpdate());
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
+            tindakanRawat.setApproveFlag(entity.getApproveFlag());
 
             if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
                 List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());

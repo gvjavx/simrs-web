@@ -28,6 +28,16 @@ public class TindakanRawat extends BaseModel {
 
     private String idKategoriTindakan;
 
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
     public String getIdKategoriTindakan() {
         return idKategoriTindakan;
     }

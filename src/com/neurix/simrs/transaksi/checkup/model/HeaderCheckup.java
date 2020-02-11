@@ -1,8 +1,12 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
+import com.neurix.simrs.master.tindakan.model.Tindakan;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -59,6 +63,7 @@ public class HeaderCheckup {
     private String namaPenanggung;
     private String hubunganKeluarga;
     private String rujuk;
+    private String ketPerujuk;
 
     private String urlDocRujuk;
     private String tinggi;
@@ -66,6 +71,171 @@ public class HeaderCheckup {
 
     private String diagnosa;
     private String namaDiagnosa;
+    private String noBpjs;
+
+    private String noSep;
+    private String jenisTransaksi;
+    private BigDecimal tarifBpjs;
+    private List<Tindakan> tindakanList;
+
+    private String ketKeyakinan;
+    private String bantuanBahasa;
+    private String bahasa;
+    private String alatBantu;
+    private String gangguanLain;
+    private String alergi;
+
+    private String admisi;
+
+    public String getAdmisi() {
+        return admisi;
+    }
+
+    public void setAdmisi(String admisi) {
+        this.admisi = admisi;
+    }
+
+    public String getAlergi() {
+        return alergi;
+    }
+
+    public void setAlergi(String alergi) {
+        this.alergi = alergi;
+    }
+
+    public String getGangguanLain() {
+        return gangguanLain;
+    }
+
+    public void setGangguanLain(String gangguanLain) {
+        this.gangguanLain = gangguanLain;
+    }
+
+    public String getKetKeyakinan() {
+        return ketKeyakinan;
+    }
+
+    public void setKetKeyakinan(String ketKeyakinan) {
+        this.ketKeyakinan = ketKeyakinan;
+    }
+
+    public String getBantuanBahasa() {
+        return bantuanBahasa;
+    }
+
+    public void setBantuanBahasa(String bantuanBahasa) {
+        this.bantuanBahasa = bantuanBahasa;
+    }
+
+    public String getBahasa() {
+        return bahasa;
+    }
+
+    public void setBahasa(String bahasa) {
+        this.bahasa = bahasa;
+    }
+
+    public String getAlatBantu() {
+        return alatBantu;
+    }
+
+    public void setAlatBantu(String alatBantu) {
+        this.alatBantu = alatBantu;
+    }
+
+    public String getKetPerujuk() {
+        return ketPerujuk;
+    }
+
+    public void setKetPerujuk(String ketPerujuk) {
+        this.ketPerujuk = ketPerujuk;
+    }
+
+    private BigDecimal tarifTindakan;
+    private String noRujukan;
+    private String noPpkRujukan;
+    private String tglRujukan;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getNoPpkRujukan() {
+        return noPpkRujukan;
+    }
+
+    public void setNoPpkRujukan(String noPpkRujukan) {
+        this.noPpkRujukan = noPpkRujukan;
+    }
+
+    public String getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(String tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
+    public List<Tindakan> getTindakanList() {
+        return tindakanList;
+    }
+
+    public void setTindakanList(List<Tindakan> tindakanList) {
+        this.tindakanList = tindakanList;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getJenisTransaksi() {
+        return jenisTransaksi;
+    }
+
+    public void setJenisTransaksi(String jenisTransaksi) {
+        this.jenisTransaksi = jenisTransaksi;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public String getNoBpjs() {
+        return noBpjs;
+    }
+
+    public void setNoBpjs(String noBpjs) {
+        this.noBpjs = noBpjs;
+    }
 
     public String getNamaDiagnosa() {
         return namaDiagnosa;

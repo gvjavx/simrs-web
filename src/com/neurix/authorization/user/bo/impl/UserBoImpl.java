@@ -574,8 +574,12 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"igd\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Resep Poli")) {
                             menuNameString = "<li id=\"resep_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-text-o\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Permintaan PO")) {
+                        }else if (menuName.equalsIgnoreCase("Purchase Order")) {
                             menuNameString = "<li id=\"permintaan_po\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Verifikasi Rawat Jalan")) {
+                            menuNameString = "<li id=\"verifikasi_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Verifikasi Rawat Inap")) {
+                                menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
                         }
 //                        else if (menuName.equalsIgnoreCase("Obat Poli")) {
 //                            menuNameString = "<li id=\"obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
@@ -608,6 +612,7 @@ public class UserBoImpl implements UserBo {
                             idLi = "obat_poli_active";
                             openLu = "obat_poli_open";
                         }
+
                         menuNameString +=
                                 "<li class=\"treeview\" id="+idLi+"> " +
                                         "<a href=\"#\">"+icon+"<span> "+" "+ menuName+"</span>" +

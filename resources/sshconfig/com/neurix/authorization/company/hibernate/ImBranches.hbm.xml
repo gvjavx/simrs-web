@@ -48,6 +48,21 @@
         <property name="areaId">
             <column name="area_id" sql-type="varchar" length="10"/>
         </property>
+        <property name="constId">
+            <column name="const_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="secretKey">
+            <column name="secret_key" sql-type="varchar" length="10"/>
+        </property>
+        <property name="username">
+            <column name="username" sql-type="varchar" length="10"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar" length="10"/>
+        </property>
+        <property name="kdAplikasi">
+            <column name="kd_aplikasi" sql-type="varchar" length="10"/>
+        </property>
         <property name="createdDate">
             <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
         </property>
@@ -68,6 +83,12 @@
         </property>
         <property name="enabled">
             <column name="enabled" sql-type="varchar" length="1"/>
+        </property>
+        <property name="eklaimAddress">
+            <column name="eklaim_address" sql-type="varchar" length="100"/>
+        </property>
+        <property name="keyEklaim">
+            <column name="key_eklaim" sql-type="varchar" length="100"/>
         </property>
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">

@@ -12,11 +12,6 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
@@ -248,8 +243,8 @@
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
                                         </button>
-                                        <button class="btn btn-primary" onclick=""
-                                                style="margin-top: 15px;" id="print_ket"><i
+                                        <button class="btn btn-primary" onclick="printPeriksaLab()"
+                                                style="margin-top: 15px;"><i
                                                 class="fa fa-print"></i> Print
                                         </button>
                                         <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
@@ -499,7 +494,7 @@
             $('#save_lab').show();
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
-            $('#modal-lab').modal('show');
+            $('#modal-lab').modal({show:true, backdrop:'static'});
         }
     }
 
@@ -595,11 +590,11 @@
             if (data != null) {
                 $.each(data, function (i, item) {
 
-                    var pemeriksaan = "-";
-                    var hasil       = "-";
-                    var satuan      = "-";
-                    var acuan       = "-";
-                    var keterangan  = "-";
+                    var pemeriksaan = "";
+                    var hasil       = "";
+                    var satuan      = "";
+                    var acuan       = "";
+                    var keterangan  = "";
 
                     if(item.namaDetailPeriksa != null){
                         pemeriksaan = item.namaDetailPeriksa;
@@ -622,7 +617,7 @@
                             "<td>" + satuan + "</td>" +
                             "<td>" + acuan + "</td>" +
                             "<td>" + keterangan + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaLabDetail+'\',\''+hasil+'\',\''+keterangan+'\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaLabDetail+'\',\''+hasil+'\',\''+keterangan+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -636,7 +631,7 @@
         $('#par_hasil').val(hasil);
         $('#par_ket').val(keterangan);
         $('#save_par').attr('onclick','saveEditParameter(\''+id+'\')');
-        $('#modal-edit-parameter').modal('show');
+        $('#modal-edit-parameter').modal({show:true, backdrop:'static'});
     }
 
     function saveEditParameter(id) {
@@ -692,6 +687,10 @@
         });
 
         $('#lab_name').html(lab);
+    }
+
+    function printPeriksaLab(){
+        window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");
     }
 
 

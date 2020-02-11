@@ -348,7 +348,12 @@ public class CommonUtil {
             return "";
         }
     }
-
+    public static java.util.Date dateSqltoDateUtil(Date date) {
+        return new java.util.Date(date.getTime());
+    }
+    public static Date dateUtiltoDateSql(java.util.Date date) {
+        return new java.sql.Date(date.getTime());
+    }
     public static int elapsed(Calendar before, Calendar after, int field) {
         Calendar clone = (Calendar) before.clone(); // Otherwise changes are been reflected.
         int elapsed = -1;
@@ -497,7 +502,16 @@ public class CommonUtil {
         String text = df.format(date);
         return text;
     }
-
+    public static String convertDateToString2(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String text = df.format(date);
+        return text;
+    }
+    public static String convertDateToString2(java.util.Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String text = df.format(date);
+        return text;
+    }
     public static String removeCommaNumber(String nilai){
         String hasil = nilai.replace(",", "");
         return hasil;

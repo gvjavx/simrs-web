@@ -54,10 +54,9 @@
         }
     </style>
     <%@ include file="/pages/common/header.jsp" %>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/RekruitmenAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TipePegawaiAction.js"/>'></script>
     <script type="text/javascript">
         $(document).ready(function () {
             window.close = function () {
@@ -80,7 +79,6 @@
 
             $.subscribe('beforeProcessSave', function (event, data) {
                 var noBpjs = document.getElementById("no_bpjs").value;
-                // var idPasien = document.getElementById("id_pasien").value;
                 var noKtp = document.getElementById("no_ktp").value;
                 var namaPasien = document.getElementById("nama_pasien").value;
                 var jenisKelamin = document.getElementById("jenis_kelamin").value;
@@ -96,7 +94,7 @@
                 var desa = document.getElementById("desa11").value;
 
                 if (noBpjs != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
-                        && tglLahir != '' && agama != '' && noTelp != '' && suku != '' && alamat != '' && provinsi != '' && kabupaten != ''  && kecamatan != ''
+                        && tglLahir != '' && noTelp != '' && alamat != '' && provinsi != '' && kabupaten != ''  && kecamatan != ''
                         && desa != '') {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -132,14 +130,8 @@
                     if (tglLahir == '') {
                         msg += 'Field <strong>Tgl Lahir</strong> is required.' + '<br/>';
                     }
-                    if (agama == '') {
-                        msg += 'Field <strong>Agama</strong> is required.' + '<br/>';
-                    }
                     if (noTelp == '') {
                         msg += 'Field <strong>No. Telp</strong> is required.' + '<br/>';
-                    }
-                    if (suku == '') {
-                        msg += 'Field <strong>Suku</strong> is required.' + '<br/>';
                     }
                     if (alamat == '') {
                         msg += 'Field <strong>Alamat</strong> is required.' + '<br/>';
@@ -235,7 +227,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Add Pasien Form</h3>
+                        <h3 class="box-title">Add Pasien</h3>
                     </div>
                     <table width="100%" align="center">
                         <tr>
@@ -251,41 +243,55 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <br>
                                     <table>
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <h4>Data Pasien</h4>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label">
-                                                    <small>No BPJS</small>
+                                                    <small>No BPJS **:</small>
                                                 </label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield id="no_bpjs" cssStyle="margin-top: 7px"
-                                                                 name="pasien.noBpjs" required="false"
-                                                                 readonly="false" cssClass="form-control"/>
+                                                    <div class="input-group date">
+                                                        <s:textfield id="no_bpjs" name="headerCheckup.noBpjs" cssClass="form-control" onkeyup="checkDec(this);"/>
+                                                        <div class="input-group-addon btn btn-success" id="btnSearchBpjsPerson">
+                                                            <i class="fa fa-search" style="cursor: pointer"></i> Search
+                                                        </div>
+                                                    </div>
                                                 </table>
                                             </td>
                                         </tr>
+                                        <script>
+                                            $('#btnSearchBpjsPerson').click(function () {
+                                                var nobpjs=$('#no_bpjs').val();
+                                                if (nobpjs!=''){
+                                                    CheckupAction.completeBpjs(nobpjs, function(response){
+                                                        if (response!=null){
+                                                            $('#no_ktp').val(response.noKtp);
+                                                            $('#nama_pasien').val(response.nama);
+                                                            $('#jenis_kelamin').val(response.jenisKelamin);
+                                                            $('#tanggalLahir').val(response.stTglLahir);
+                                                            $("#no_bpjs").prop("readonly", true);
+                                                        }else{
+                                                            alert("Data BPJS tidak ditemukan");
+                                                        }
+
+                                                    });
+                                                } else{
+                                                    alert("Nomor BPJS masih kosong");
+                                                }
+                                            });
+                                        </script>
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>No KTP</small>
+                                                    <small>No KTP **:</small>
                                                 </label>
                                             </td>
                                             <td>
                                                 <table>
                                                     <s:textfield id="no_ktp" name="pasien.noKtp"
-                                                                 required="false" readonly="false"
+                                                                 required="false" readonly="false" onkeyup="checkDec(this);"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"/>
                                                 </table>
                                             </td>
@@ -293,7 +299,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Nama Pasien</small>
+                                                    <small>Nama Pasien *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -307,7 +313,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Jenis Kelamin :</small>
+                                                    <small>Jenis Kelamin *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -323,7 +329,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Tempat / Tanggal Lahir :</small>
+                                                    <small>Tempat / Tanggal Lahir *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -339,8 +345,8 @@
                                                                 <div class="input-group-addon" >
                                                                     <i class="fa fa-calendar"></i>
                                                                 </div>
-                                                                <s:textfield id="tanggal_lahir"
-                                                                             name="pasien.tglLahir"
+                                                                <s:textfield id="tanggalLahir"
+                                                                             name="pasien.tglLahir" readonly="true" cssStyle="background-color: white"
                                                                              cssClass="form-control pull-right"
                                                                              required="false"/>
                                                             </div>
@@ -353,7 +359,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Agama</small>
+                                                    <small>Agama :</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -369,7 +375,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>No. Telp</small>
+                                                    <small>No. Telp *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -383,7 +389,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Suku</small>
+                                                    <small>Suku :</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -397,7 +403,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Alamat :</small>
+                                                    <small>Alamat *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -411,7 +417,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Provinsi :</small>
+                                                    <small>Provinsi *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -437,14 +443,17 @@
                                                     ProvinsiAction.initComboProvinsi(query, function (listdata) {
                                                         data = listdata;
                                                     });
-
-                                                    $.each(data, function (i, item) {
-                                                        var labelItem = item.provinsiName;
-                                                        mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                                                        functions.push(labelItem);
-                                                    });
-
-                                                    process(functions);
+                                                    if (data.length!=0){
+                                                        $.each(data, function (i, item) {
+                                                            var labelItem = item.provinsiName;
+                                                            mapped[labelItem] = {id: item.provinsiId, label: labelItem};
+                                                            functions.push(labelItem);
+                                                        });
+                                                        process(functions);
+                                                    } else{
+                                                        alert("Provinsi tidak ada");
+                                                        $('#provinsi').val("");
+                                                    }
                                                 },
                                                 updater: function (item) {
                                                     var selectedObj = mapped[item];
@@ -460,7 +469,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Kabupaten :</small>
+                                                    <small>Kabupaten *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -487,15 +496,19 @@
                                                     ProvinsiAction.initComboKota(query, prov, function (listdata) {
                                                         data = listdata;
                                                     });
-                                                    //alert(prov);
-                                                    $.each(data, function (i, item) {
-                                                        //alert(item.kotaName);
-                                                        var labelItem = item.kotaName;
-                                                        mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                                                        functions.push(labelItem);
-                                                    });
+                                                    if (data.length!=0) {
+                                                        $.each(data, function (i, item) {
+                                                            //alert(item.kotaName);
+                                                            var labelItem = item.kotaName;
+                                                            mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                                                            functions.push(labelItem);
+                                                        });
 
-                                                    process(functions);
+                                                        process(functions);
+                                                    } else{
+                                                        alert("kabupaten tidak ada");
+                                                        $('#kabupaten').val("");
+                                                    }
                                                 },
                                                 updater: function (item) {
                                                     var selectedObj = mapped[item];
@@ -513,7 +526,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Kecamatan :</small>
+                                                    <small>Kecamatan *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -541,14 +554,19 @@
                                                         data = listdata;
                                                     });
                                                     //alert(prov);
-                                                    $.each(data, function (i, item) {
-                                                        //alert(item.kotaName);
-                                                        var labelItem = item.kecamatanName;
-                                                        mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                                                        functions.push(labelItem);
-                                                    });
+                                                    if (data.length!=0) {
+                                                        $.each(data, function (i, item) {
+                                                            //alert(item.kotaName);
+                                                            var labelItem = item.kecamatanName;
+                                                            mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
+                                                            functions.push(labelItem);
+                                                        });
 
-                                                    process(functions);
+                                                        process(functions);
+                                                    } else{
+                                                        alert("kecamatan tidak ada");
+                                                        $('#kecamatan').val("");
+                                                    }
                                                 },
                                                 updater: function (item) {
                                                     var selectedObj = mapped[item];
@@ -563,7 +581,7 @@
                                         <tr>
                                             <td>
                                                 <label class="control-label">
-                                                    <small>Desa :</small>
+                                                    <small>Desa *:</small>
                                                 </label>
                                             </td>
                                             <td>
@@ -590,14 +608,19 @@
                                                         data = listdata;
                                                     });
                                                     //alert(prov);
-                                                    $.each(data, function (i, item) {
-                                                        //alert(item.kotaName);
-                                                        var labelItem = item.desaName;
-                                                        mapped[labelItem] = {id: item.desaId, label: labelItem};
-                                                        functions.push(labelItem);
-                                                    });
+                                                    if (data.length != 0) {
+                                                        $.each(data, function (i, item) {
+                                                            //alert(item.kotaName);
+                                                            var labelItem = item.desaName;
+                                                            mapped[labelItem] = {id: item.desaId, label: labelItem};
+                                                            functions.push(labelItem);
+                                                        });
 
-                                                    process(functions);
+                                                        process(functions);
+                                                    } else{
+                                                        alert("desa tidak ada");
+                                                        $('#desa').val("");
+                                                    }
                                                 },
                                                 updater: function (item) {
                                                     var selectedObj = mapped[item];
@@ -611,9 +634,19 @@
                                         </script>
                                         <br>
                                         <br>
+                                        <tr style="font-size: 14px">
+                                            <td>
+                                                *) Wajib diisi
+                                            </td>
+                                        </tr>
+                                        <tr style="font-size: 14px">
+                                            <td>
+                                                **) Boleh diisi salah satu
+                                            </td>
+                                        </tr>
                                     </table>
-                                    <br><br>
 
+                                    <br><br>
                                     <div id="actions" class="form-actions">
                                         <table align="center">
                                             <tr>
@@ -754,6 +787,8 @@
                                         </table>
                                     </div>
                                 </s:form>
+                                <br>
+                                <br>
                             </td>
                         </tr>
                     </table>
@@ -764,6 +799,7 @@
     </section>
     <!-- /.content -->
 </div>
+
 <!-- /.content-wrapper -->
 
 <%@ include file="/pages/common/footer.jsp" %>
@@ -772,169 +808,11 @@
 </html>
 <script>
     $(document).ready(function () {
-        $('#statusKeluarga').change(function(){
-            $('#jumlahAnak').val("0");
-        });
-        $('#btnAddStudy').click(function () {
-            $('#myFormStudy')[0].reset();
-            console.log($('#myFormStudy')[0]);
-            $('#modal-edit-study').modal('show');
-            $('#myFormStudy').attr('action', 'addStudy');
-            $('#modal-edit-study').find('.modal-title').text('Add Study');
-        });
-        $('#btnAddDocument').click(function () {
-            $('#modal-edit-document').modal('show');
-            $('#myFormDocument').attr('id', document.getElementById('calonPegawaiId').value);
-            $('#modal-edit-document').find('.modal-title').text('Upload Document');
-        });
         $('#tanggalLahir').datepicker({
-            dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            yearRange: "1980:2018"
+            yearRange: '1980:2019',
+            dateFormat: 'dd-mm-yy'
         });
-        window.loadFoto=function(){
-            dwr.engine.setAsync(false);
-            var id = $('#calonPegawaiId').val();
-            RekruitmenAction.searchProfilPhotoBySession(function (listdata) {
-                $("#profile-image1").attr("src",listdata.fotoUpload);
-            })
-        };
-        $('#btnSaveStudy').click(function () {
-            var url = $('#myFormStudy').attr('action');
-            var data = $('#myFormStudy').serialize();
-
-            var Cpid = document.getElementById("calonPegawaiId").value;
-            var tipeStudy = document.getElementById("jenjang").value;
-            var studyName = document.getElementById("namaSekolah").value;
-            var tahunAwal = document.getElementById("tahunAwal").value;
-            var tahunAkhir = document.getElementById("tahunAkhir").value;
-            var nilai = document.getElementById("nilai").value;
-
-            //alert(personName + branchName + positionName + divisiName);
-            if (url == 'addStudy') {
-                if (Cpid != '') {
-                    if (tipeStudy!=''&&studyName!=''&&tahunAwal!=''&&tahunAkhir!=''&&nilai!=''){
-                        if (confirm('Are you sure you want to save this Record?')) {
-                            dwr.engine.setAsync(false);
-                            RekruitmenAction.saveAddStudy(Cpid, tipeStudy, studyName, tahunAwal, tahunAkhir, nilai, function (listdata) {
-                                alert('Data Successfully Added');
-                                $('#modal-edit-study').modal('hide');
-                                $('#myFormStudy')[0].reset();
-                            });
-                        }
-                    } else{
-                        alert("masih ada yang kosong , cek kembali ")
-                    }
-
-                } else {
-                    alert('Calon Pegawai Id masih kosong');
-                }
-            } else if (url == 'editStudy') {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    RekruitmenAction.saveEditStudy(Cpid, tipeStudy, studyName, tahunAwal, tahunAkhir, nilai, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-edit-study').modal('hide');
-                        $('#myFormStudy')[0].reset();
-                        loadRekruitmen();
-                    });
-                }
-            } else {
-                if (confirm('Are you sure you want to delete this Record?')) {
-                    RekruitmenAction.saveRekruitmenStudyDelete(Cpid, function (listdata) {
-                        $('#modal-edit').modal('hide');
-                        $('#myFormStudy')[0].reset();
-                        alert('Record has been Deleted successfully.');
-                        loadRekruitmen();
-                    });
-                }
-            }
-        });
-        $('#file').change(function () {
-            var cpid = document.getElementById('calonPegawaiId').value;
-            if (cpid != null && cpid != "") {
-                $('#cpiddoc').val(cpid);
-            }
-            else {
-                alert("Calon Pegawai ID is Empty");
-                $('#file').val("");
-            }
-        });
-
-        $('.rekruitmenStudyTable').on('click', '.item-view-study', function () {
-            var id = $(this).attr('data');
-            dwr.engine.setAsync(false);
-            RekruitmenAction.searchRekruitmenStudyPerson(id, function (listdata) {
-                $.each(listdata, function (i, item) {
-                    $('#namaSekolahView').val(item.studyName);
-                    $('#nilaiView').val(item.nilai);
-                    $('#jenjangView').val(item.tipeStudy).change();
-                    $('#tahunAwalView').val(item.stTahunAwal).change();
-                    $('#tahunAkhirView').val(item.stTahunAkhir).change();
-                });
-            });
-
-            $('#modal-view-study').find('.modal-title').text('View Study');
-            $('#modal-view-study').modal('show');
-            $('#ViewStudy').attr('action', 'editPerson');
-        });
-        $('.rekruitmenDocumentTable').on('click', '.item-view-document', function () {
-            var id = $(this).attr('data');
-            var judul = $(this).attr('judul');
-            dwr.engine.setAsync(false);
-            $("#my-image").attr("src", "/hris/pages/upload/file/rekruitmen/" + id);
-            $('#modal-view-document').find('.modal-title').text(judul);
-            $('#modal-view-document').modal('show');
-            $('#ViewDocument').attr('action', 'editPerson');
-        });
-        $('#profile-image1').on('click', function () {
-            $('#profile-image-upload').click();
-        });
-
-        $('[data-toggle="popover"]').popover();
-
-        $("#profile-image-upload").on('change',function(){
-            $('#saveProfil').click();
-        });
-        loadRekruitmen();
     });
-    window.listPosisi = function(branch, divisi){
-        var branch = document.getElementById("branchId").value;
-        var divisi = document.getElementById("departmentId").value;
-        $('#positionId').empty();
-        PositionAction.searchPosition2(branch, divisi, function(listdata){
-            $.each(listdata, function (i, item) {
-                $('#positionId').append($("<option></option>")
-                    .attr("value",item.positionId)
-                    .text(item.positionName));
-            });
-        });
-    };
-    window.listDivisi= function(){
-        var branch = document.getElementById("branchId").value;
-        $('#departmentId').empty();
-        PositionAction.searchDivisi(branch, function(listdata){
-            $.each(listdata, function (i, item) {
-                $('#departmentId').append($("<option></option>")
-                    .attr("value",item.departmentId)
-                    .text(item.departmentName));
-            });
-        });
-        listPosisi();
-    };
-    window.listTipePegawai = function(){
-        var branch = document.getElementById("branchId").value;
-        TipePegawaiAction.searchTipePegawai(branch, function(listdata){
-            $.each(listdata, function (i, item) {
-                $('#tipePegawai1').append($("<option></option>")
-                    .attr("value",item.tipePegawaiId)
-                    .text(item.tipePegawaiName));
-            });
-        });
-    }
-    $('#branchId').change(function () {
-        $('#tipePegawai1').empty();
-        listTipePegawai();
-    })
 </script>

@@ -41,7 +41,26 @@
             <result name="success">/pages/webgis/dashboard.html</result>
         </action>
 
-
+        <action name="registerFinger"
+                class="com.neurix.authorization.user.action.UserLoginAction" method="registerFinger">
+            <result name="finger">/pages/common/finger.jsp</result>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="prosesRegisterFinger"
+                class="com.neurix.authorization.user.action.UserLoginAction" method="prosesRegisterFinger">
+            <result name="finger">/pages/common/finger.jsp</result>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="loginFinger"
+                class="com.neurix.authorization.user.action.UserLoginAction" method="loginFinger">
+            <result name="finger">/pages/common/finger.jsp</result>
+            <interceptor-ref name="basicStack"/>
+        </action>
+        <action name="prosesLoginFinger"
+                class="com.neurix.authorization.user.action.UserLoginAction" method="prosesLoginFinger">
+            <interceptor-ref name="basicStack"/>
+            <result name="finger">/pages/common/finger.jsp</result>
+        </action>
     </package>
 
 </struts>

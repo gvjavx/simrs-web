@@ -2,6 +2,7 @@ package com.neurix.simrs.master.lab.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Lab extends BaseModel {
@@ -17,6 +18,16 @@ public class Lab extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     private String kategoriLabName;
 

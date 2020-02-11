@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,9 +36,57 @@ public class Obat extends BaseModel {
     private BigDecimal averageHargaBiji;
     private String idPabrik;
     private String merk;
-    private String janisSatuan;
 
     private BigDecimal hargaTerakhir;
+    private String idSeqObat;
+    private Date expiredDate;
+    private String idTransaksiDetail;
+
+    private BigInteger qtyApprove;
+    private Integer noBatch;
+
+    private String idBarang;
+    private String jenisSatuan;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
+
+    public BigInteger getQtyApprove() {
+        return qtyApprove;
+    }
+
+    public void setQtyApprove(BigInteger qtyApprove) {
+        this.qtyApprove = qtyApprove;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
+    }
+
+    public String getIdTransaksiDetail() {
+        return idTransaksiDetail;
+    }
+
+    public void setIdTransaksiDetail(String idTransaksiDetail) {
+        this.idTransaksiDetail = idTransaksiDetail;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;
@@ -47,12 +96,20 @@ public class Obat extends BaseModel {
         this.hargaTerakhir = hargaTerakhir;
     }
 
-    public String getJanisSatuan() {
-        return janisSatuan;
+    public String getIdSeqObat() {
+        return idSeqObat;
     }
 
-    public void setJanisSatuan(String janisSatuan) {
-        this.janisSatuan = janisSatuan;
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
     }
 
     public List<Obat> getLabelJenisObat() {

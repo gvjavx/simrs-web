@@ -8,8 +8,8 @@
            table="mt_simrs_obat_poli" select-before-update="true" schema="public">
 
         <composite-id  name="primaryKey" class="com.neurix.simrs.transaksi.obatpoli.model.ObatPoliPk">
-            <key-property name="idObat">
-                <column name="id_obat" sql-type="varchar" length="30" not-null="true"/>
+            <key-property name="idBarang">
+                <column name="id_barang" sql-type="varchar" length="30" not-null="true"/>
             </key-property>
             <key-property name="idPelayanan">
                 <column name="id_pelayanan" sql-type="varchar" length="30" not-null="true" />
@@ -40,7 +40,24 @@
         <property name="qty">
             <column name="qty" sql-type="bigint" not-null="false" />
         </property>
-
+        <property name="qtyBox">
+            <column name="qty_box" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="qtyLembar">
+            <column name="qty_lembar" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="qtyBiji">
+            <column name="qty_biji" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="idObat">
+            <column name="id_obat" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="expiredDate">
+            <column name="expired_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="idPabrik">
+            <column name="id_pabrik" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

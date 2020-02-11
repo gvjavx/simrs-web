@@ -65,6 +65,26 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
 
     private String status;
 
+    private String klaimBpjsFlag;
+
+    private String noSep;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
     public String getStatus() {
         return status;
     }

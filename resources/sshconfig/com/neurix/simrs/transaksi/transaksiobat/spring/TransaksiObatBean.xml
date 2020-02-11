@@ -6,7 +6,8 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="transaksiObatAction" class="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"
-          p:transaksiObatBoProxy-ref="transaksiObatBo"
+          p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
+          p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
     />
 
     <bean id="transaksiObatBo" class="com.neurix.simrs.transaksi.transaksiobat.bo.impl.TransaksiObatBoImpl"
@@ -20,6 +21,8 @@
           p:riwayatTransPembelianObatDao-ref="riwayatTransPembelianObatDao"
           p:obatPoliDao-ref="obatPoliDao"
           p:vendorDao-ref="vendorDao"
+          p:batchDao-ref="transaksiObatDetailBatchDao"
+          p:hargaObatDao-ref="hargaObatDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -52,6 +55,10 @@
     <bean id="approvalTransaksiObatDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="transaksiObatDetailDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transaksiObatDetailBatchDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="hargaObatDao" class="com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

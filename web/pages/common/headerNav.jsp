@@ -340,7 +340,7 @@
         <span class="logo-mini"><b>NMU</b></span>
         <!-- logo for regular state and mobile devices -->
         <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 25px; width: 35px;">--%>
-        <span class="logo-lg" style="margin-left: -40px"> <b>e-HEALTH NMU</b></span>
+        <span class="logo-lg" > <b>GO-HEALTH NMU</b></span>
     </a>
 
     <!-- Header Navbar -->

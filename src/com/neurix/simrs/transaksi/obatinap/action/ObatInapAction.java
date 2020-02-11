@@ -82,7 +82,7 @@ public class ObatInapAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveObatInap(String idDetailCheckup, String idObat, BigInteger qty){
+    public String saveObatInap(String idDetailCheckup, String idObat, BigInteger qty, String jenisSatuan){
         logger.info("[ObatInapAction.saveObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -113,12 +113,13 @@ public class ObatInapAction extends BaseMasterAction {
             obatInap.setIdDetailCheckup(idDetailCheckup);
             obatInap.setNamaObat(obatResult.getNamaObat());
             obatInap.setQty(qty);
-            obatInap.setHarga(obatResult.getHarga());
-            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
+//            obatInap.setHarga(obatResult.getHarga());
+//            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
             obatInap.setCreatedWho(userLogin);
             obatInap.setLastUpdate(updateTime);
             obatInap.setCreatedDate(updateTime);
             obatInap.setLastUpdateWho(userLogin);
+            obatInap.setJenisSatuan(jenisSatuan);
             obatInap.setAction("C");
             obatInap.setFlag("Y");
 
@@ -161,7 +162,7 @@ public class ObatInapAction extends BaseMasterAction {
         }
     }
 
-    public String editObatInap(String idObatInap, String idDetailCheckup, String idObat, BigInteger qty){
+    public String editObatInap(String idObatInap, String idDetailCheckup, String idObat, BigInteger qty, String jenisSatuan){
         logger.info("[ObatInapAction.editObatInap] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -193,11 +194,12 @@ public class ObatInapAction extends BaseMasterAction {
             obatInap.setIdObatInap(idObatInap);
             obatInap.setNamaObat(obatResult.getNamaObat());
             obatInap.setQty(qty);
-            obatInap.setHarga(obatResult.getHarga());
-            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
+//            obatInap.setHarga(obatResult.getHarga());
+//            obatInap.setTotalHarga(obatResult.getHarga().multiply(qty));
             obatInap.setLastUpdate(updateTime);
             obatInap.setLastUpdateWho(userLogin);
             obatInap.setAction("U");
+            obatInap.setJenisSatuan(jenisSatuan);
 
             ObatInapBo obatInapBo = (ObatInapBo) ctx.getBean("obatInapBoProxy");
             obatInapBo.saveEdit(obatInap);

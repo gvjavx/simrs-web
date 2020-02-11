@@ -43,9 +43,10 @@ public class RiwayatTransaksiObatDao extends GenericDao<ImtSimrsRiwayatTransaksi
             if (mapCriteria.get("total_harga")!=null) {
                 criteria.add(Restrictions.eq("totalHarga", mapCriteria.get("total_harga")));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
         }
-
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idRiwayatTransaksiObat"));

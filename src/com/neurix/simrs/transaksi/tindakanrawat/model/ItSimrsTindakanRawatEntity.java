@@ -21,6 +21,15 @@ public class ItSimrsTindakanRawatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getIdTindakanRawat() {
         return idTindakanRawat;

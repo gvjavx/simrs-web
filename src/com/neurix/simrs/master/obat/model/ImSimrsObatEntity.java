@@ -3,10 +3,12 @@ package com.neurix.simrs.master.obat.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class ImSimrsObatEntity implements Serializable{
 
+    private String idSeqObat;
     private String idObat;
     private String namaObat;
     private String idJenisObat;
@@ -29,8 +31,35 @@ public class ImSimrsObatEntity implements Serializable{
     private BigDecimal averageHargaBiji;
     private String idPabrik;
     private String merk;
+    private String idBarang;
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
 
     private BigDecimal hargaTerakhir;
+    private Date expiredDate;
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getIdSeqObat() {
+        return idSeqObat;
+    }
+
+
+    public void setIdSeqObat(String idSeqObat) {
+        this.idSeqObat = idSeqObat;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;

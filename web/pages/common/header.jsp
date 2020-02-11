@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 
-<TITLE>e-HEALTH NMU</TITLE>
+<TITLE>GO-HEALTH NMU</TITLE>
 <link rel="shortcut icon" href="<s:url value="/pages/images/logo-nmu.webp"/>"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
@@ -32,6 +32,7 @@ apply the skin class to the body tag so the changes take effect.
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/skins/skin-blue.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/dataTables.bootstrap.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/pace/pace.min.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/plugins/iCheck/all.css"/>">
 <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />--%>
 
 <%--<link rel="stylesheet" href="<s:url value="/pages/css/style-form.css"/>">--%>
@@ -44,7 +45,7 @@ apply the skin class to the body tag so the changes take effect.
 
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<%--<![endif]-->--%>
 
 
 <%--<!--<script type='text/javascript' src='<s:url value="/pages/mozilla/dmenu.js"/>'></script>-->--%>
@@ -86,6 +87,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/input-mask/jquery.inputmask.extensions.js"/>"></script>
 <script src="<s:url value="/pages/bootstraplte/js/jquery.tabletojson.js"/>"></script>
 <script src="<s:url value="/pages/plugins/pace/pace.min.js"/>"></script>
+<script src="<s:url value="/pages/plugins/iCheck/icheck.min.js"/>"></script>
 
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
@@ -262,16 +264,16 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
-    .se-pre-con {
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;
-        background-size: 100px 100px;
-    }
+    <%--.se-pre-con {--%>
+        <%--position: fixed;--%>
+        <%--left: 0px;--%>
+        <%--top: 0px;--%>
+        <%--width: 100%;--%>
+        <%--height: 100%;--%>
+        <%--z-index: 9999;--%>
+        <%--background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;--%>
+        <%--background-size: 100px 100px;--%>
+    <%--}--%>
     /*.pulse-button {*/
 
         /*position: relative;*/
@@ -374,12 +376,23 @@ apply the skin class to the body tag so the changes take effect.
         $('#myTable').DataTable();
         $("#tanggal_lahir").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
         });
 
         $(".datepicker").datepicker({
             autoclose: true,
+            changeMonth: true,
+            changeYear:true,
             dateFormat:'yy-mm-dd'
+        });
+
+        $(".datepicker2").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy'
         });
 
         $("#tgl_from, #tgl_to").datepicker({
@@ -404,15 +417,22 @@ apply the skin class to the body tag so the changes take effect.
         $('.select2').select2({});
         //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
+        $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
         //Money Euro
         $('[data-mask]').inputmask()
+
     });
 
     function logout(){
         var host = window.location.hostname;
         window.location.href = host+"/simrs/j_spring_security_logout";
     }
-
+    window.checkDec = function(el){
+        var ex = /^[0-9]+\.?[0-9]*$/;
+        if(ex.test(el.value)==false){
+            el.value = el.value.substring(0,el.value.length - 1);
+        }
+    }
 </script>
 
 

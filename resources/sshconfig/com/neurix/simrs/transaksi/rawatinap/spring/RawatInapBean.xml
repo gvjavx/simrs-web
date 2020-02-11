@@ -8,10 +8,15 @@
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:ruanganBoProxy-ref="ruanganBoProxy"
     />
 
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"
           p:rawatInapDao-ref="rawatInapDao"
+          p:parameterSkorRanapDao-ref="parameterSkorRanapDao"
+          p:kategoriSkorRanapDao-ref="kategoriSkorRanapDao"
+          p:masterSkorRanapDao-ref="masterSkorRanapDao"
+          p:skorRanapDao-ref="skorRanapDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -36,6 +41,14 @@
     </bean>
 
     <bean id="rawatInapDao" class="com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kategoriSkorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.KategoriSkorRanapDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="parameterSkorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.ParameterSkorRanapDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="masterSkorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="skorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -37,6 +37,9 @@ public class RuanganBoImpl implements RuanganBo {
 
         Map hsCriteria = new HashMap();
 
+        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+            hsCriteria.put("id_ruangan", bean.getIdRuangan());
+        }
         if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }

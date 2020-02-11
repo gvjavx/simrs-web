@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.model;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -40,13 +41,103 @@ public class PermintaanObatPoli{
 
     private String tujuanPelayanan;
 
-    private String qtyApprove;
+    private BigInteger qtyApprove;
 
-    private String qtyPoli;
-
+    private BigInteger qtyPoli;
     private String namaTujuanPelayanan;
-
     private String stCreatedDate;
+
+    private BigInteger qtyBox;
+    private BigInteger qtyLembar;
+    private BigInteger qtyBiji;
+    private BigInteger lembarPerBox;
+    private BigInteger bijiPerLembar;
+    private String jenisSatuan;
+
+    private Date expiredDate;
+    private String idBarang;
+    private String idTransaksiObatDetail;
+    private String idBatch;
+
+    public String getIdBatch() {
+        return idBatch;
+    }
+
+    public void setIdBatch(String idBatch) {
+        this.idBatch = idBatch;
+    }
+
+    public String getIdTransaksiObatDetail() {
+        return idTransaksiObatDetail;
+    }
+
+    public void setIdTransaksiObatDetail(String idTransaksiObatDetail) {
+        this.idTransaksiObatDetail = idTransaksiObatDetail;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
+    }
+
+    public String getJenisSatuan() {
+        return jenisSatuan;
+    }
+
+    public void setJenisSatuan(String jenisSatuan) {
+        this.jenisSatuan = jenisSatuan;
+    }
+
+    public BigInteger getQtyBox() {
+        return qtyBox;
+    }
+
+    public void setQtyBox(BigInteger qtyBox) {
+        this.qtyBox = qtyBox;
+    }
+
+    public BigInteger getQtyLembar() {
+        return qtyLembar;
+    }
+
+    public void setQtyLembar(BigInteger qtyLembar) {
+        this.qtyLembar = qtyLembar;
+    }
+
+    public BigInteger getQtyBiji() {
+        return qtyBiji;
+    }
+
+    public void setQtyBiji(BigInteger qtyBiji) {
+        this.qtyBiji = qtyBiji;
+    }
+
+    public BigInteger getLembarPerBox() {
+        return lembarPerBox;
+    }
+
+    public void setLembarPerBox(BigInteger lembarPerBox) {
+        this.lembarPerBox = lembarPerBox;
+    }
+
+    public BigInteger getBijiPerLembar() {
+        return bijiPerLembar;
+    }
+
+    public void setBijiPerLembar(BigInteger bijiPerLembar) {
+        this.bijiPerLembar = bijiPerLembar;
+    }
 
     public String getStCreatedDate() {
         return stCreatedDate;
@@ -64,19 +155,19 @@ public class PermintaanObatPoli{
         this.namaTujuanPelayanan = namaTujuanPelayanan;
     }
 
-    public String getQtyPoli() {
+    public BigInteger getQtyPoli() {
         return qtyPoli;
     }
 
-    public void setQtyPoli(String qtyPoli) {
+    public void setQtyPoli(BigInteger qtyPoli) {
         this.qtyPoli = qtyPoli;
     }
 
-    public String getQtyApprove() {
+    public BigInteger getQtyApprove() {
         return qtyApprove;
     }
 
-    public void setQtyApprove(String qtyApprove) {
+    public void setQtyApprove(BigInteger qtyApprove) {
         this.qtyApprove = qtyApprove;
     }
 

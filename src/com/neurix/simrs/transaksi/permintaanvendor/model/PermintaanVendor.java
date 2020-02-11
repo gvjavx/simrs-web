@@ -43,6 +43,27 @@ public class PermintaanVendor{
     private String keterangan;
     private String approvalFlag;
 
+    private Boolean enableApprove = false;
+    private String notFlagR;
+
+    private Integer noBatch;
+
+    public String getNotFlagR() {
+        return notFlagR;
+    }
+
+    public void setNotFlagR(String notFlagR) {
+        this.notFlagR = notFlagR;
+    }
+
+    public Boolean getEnableApprove() {
+        return enableApprove;
+    }
+
+    public void setEnableApprove(Boolean enableApprove) {
+        this.enableApprove = enableApprove;
+    }
+
     public String getApprovalFlag() {
         return approvalFlag;
     }
@@ -225,5 +246,13 @@ public class PermintaanVendor{
 
     public void setUrlDocPo(String urlDocPo) {
         this.urlDocPo = urlDocPo;
+    }
+
+    public Integer getNoBatch() {
+        return noBatch;
+    }
+
+    public void setNoBatch(Integer noBatch) {
+        this.noBatch = noBatch;
     }
 }

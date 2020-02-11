@@ -57,6 +57,15 @@ public class RawatInap {
     private String kelasRuanganName;
 
     private String urlKtp;
+    private String noSep;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
 
     public String getUrlKtp() {
         return urlKtp;
