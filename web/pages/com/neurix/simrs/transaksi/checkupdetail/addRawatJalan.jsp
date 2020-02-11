@@ -501,31 +501,6 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_all_war"></p>
-                        </div>
-                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_all">
-                            <h4><i class="icon fa fa-info"></i> Info!</h4>
-                            <p id="msg_all_suc"></p>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-offset-4 col-md-4 text-center">
-                                        <a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
-                                        <button style="display: none; cursor: no-drop;" type="button"
-                                                class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>
-                                            Sedang Menyimpan...
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-header with-border">
-                    </div>
-                    <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
                     <div class="box-body">
@@ -860,26 +835,80 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <div class="form-group">
+                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                        <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                      name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                      listValue="descOfDiagnosa"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                        <s:textfield id="diagnosa_awal" style="margin-top: 7px"
+                                     name="headerCheckup.diagnosa"
+                                     onkeypress="$(this).css('border','')"
+                                     cssClass="form-control" required="false"/>
+                        <s:hidden name="headerCheckup.jenisTransaksi"/>
+                        <script>
+                            var menus, mapped;
+                            $('#diagnosa_awal').typeahead({
+                                minLength: 3,
+                                source: function (query, process) {
+                                    menus = [];
+                                    mapped = {};
+
+                                    var data = [];
+                                    dwr.engine.setAsync(false);
+                                    CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                        data = listdata;
+                                    });
+
+                                    $.each(data, function (i, item) {
+                                        var labelItem = item.namaDiagnosaBpjs;
+                                        mapped[labelItem] = {
+                                            id: item.kodeDiagnosaBpjs,
+                                            label: labelItem,
+                                            name: item.namaDiagnosaBpjs
+                                        };
+                                        menus.push(labelItem);
+                                    });
+
+                                    process(menus);
+                                },
+                                updater: function (item) {
+                                    var selectedObj = mapped[item];
+                                    // insert to textarea diagnosa_ket
+                                    $("#diagnosa_ket").val(selectedObj.name);
+                                    return selectedObj.id;
+                                }
+                            });
+                        </script>
                         </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_diagnosa"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                        <div class="col-md-offset-3 col-md-7">
+                        <s:textarea rows="4" id="diagnosa_ket"
+                                    cssStyle="margin-top: 7px" readonly="true"
+                                    name="headerCheckup.namaDiagnosa"
+                                    cssClass="form-control"></s:textarea>
                         </div>
-                    </div>
+                        </div>
+                    </s:if>
+                    <s:else>
+                        <div class="form-group">
+                            <label class="col-md-3">Diagnosa</label>
+                            <div class="col-md-7">
+                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                          name="getListComboDiagnosa_checkupdetail"/>
+                                <s:select cssStyle="margin-top: 7px; width: 100%"
+                                          onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                          name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
+                                          listValue="descOfDiagnosa"
+                                          headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2"/>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_diagnosa"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </s:else>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">

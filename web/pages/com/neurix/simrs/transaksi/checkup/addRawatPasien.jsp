@@ -1003,6 +1003,7 @@
                             <div class="box-body">
                                 <s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>
                                 <div class="row">
+                                    <div class="col-md-12">
                                     <div class="form-group">
                                         <a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
                                             <%--<a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
@@ -1011,6 +1012,7 @@
                                     <div class="form-group" style="margin-top: 20px">
                                         <i class="fa fa-square" style="color: #286090"></i> Belum diisi
                                         <i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi
+                                    </div>
                                     </div>
                                 </div>
                             </div>

@@ -1113,7 +1113,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "print_gelang_pasien";
     }
 
-    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup){
+    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien){
 
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] START process >>>");
         CheckResponse response = new CheckResponse();
