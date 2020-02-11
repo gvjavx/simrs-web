@@ -298,7 +298,6 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>

@@ -201,6 +201,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Resiko Dekubitus
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Fungsional
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">
+                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Amak
+                        </button>
+                    </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
                     <div class="box-header with-border">

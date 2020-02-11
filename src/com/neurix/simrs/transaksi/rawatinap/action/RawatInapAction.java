@@ -394,7 +394,7 @@ public class RawatInapAction extends BaseMasterAction {
         return "print_resep";
     }
 
-    public List<ItSimrsSkorRanapEntity> getListSkorByKategori(String noCheckup, String idDetailCheckup, String kategori){
+    public List<ItSimrsSkorRanapEntity> getListParameterByKategori(String noCheckup, String idDetailCheckup, String kategori){
         logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
 
         List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
