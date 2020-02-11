@@ -178,6 +178,7 @@ public class ItPayrollEntity implements Serializable {
     private String golonganDapenName;
 
     //tunjangan - tunjangan
+    private BigDecimal tambahanLain;
     private BigDecimal tunjanganLain;
     private BigDecimal tunjanganDapen;
     private BigDecimal tunjanganTambahan;
@@ -223,6 +224,14 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal listrik;
     private BigDecimal iuranProfesi;
     private BigDecimal potonganLain;
+
+    public BigDecimal getTambahanLain() {
+        return tambahanLain;
+    }
+
+    public void setTambahanLain(BigDecimal tambahanLain) {
+        this.tambahanLain = tambahanLain;
+    }
 
     public BigDecimal getKomunikasi() {
         return komunikasi;

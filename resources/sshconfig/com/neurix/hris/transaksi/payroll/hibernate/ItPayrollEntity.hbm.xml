@@ -312,6 +312,9 @@
         <property name="komunikasi">
             <column name="komunikasi" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
+        <property name="tambahanLain">
+            <column name="tambahan_lain" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
 
         <!--Tunjangan RLAB-->
         <property name="tunjanganRumah">

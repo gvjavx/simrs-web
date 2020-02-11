@@ -38,6 +38,54 @@ public class ItPayrollThrEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    //tambahan irfan
+    //tambahan irfan
+    private BigDecimal tunjanganLain;
+    private BigDecimal tunjanganTambahan;
+    private BigDecimal pemondokan;
+    private BigDecimal komunikasi;
+    private BigDecimal totalRlab;
+
+    public BigDecimal getTotalRlab() {
+        return totalRlab;
+    }
+
+    public void setTotalRlab(BigDecimal totalRlab) {
+        this.totalRlab = totalRlab;
+    }
+
+    public BigDecimal getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(BigDecimal komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(BigDecimal pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getTunjanganLain() {
+        return tunjanganLain;
+    }
+
+    public void setTunjanganLain(BigDecimal tunjanganLain) {
+        this.tunjanganLain = tunjanganLain;
+    }
+
+    public BigDecimal getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(BigDecimal tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
     public BigDecimal getTotalThrBersih() {
         return totalThrBersih;
     }

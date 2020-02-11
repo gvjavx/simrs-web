@@ -22,6 +22,9 @@ public class Payroll extends BaseModel {
     private String golonganDapenId;
     private String golonganDapenName;
 
+    private String tambahanLain;
+    private BigDecimal tambahanLainNilai;
+
     //tunjangan - tunjangan
     private String tunjanganLain;
     private BigDecimal tunjanganLainNilai;
@@ -103,6 +106,22 @@ public class Payroll extends BaseModel {
     private BigDecimal listrikNilai;
     private BigDecimal iuranProfesiNilai;
     private BigDecimal potonganLainNilai;
+
+    public String getTambahanLain() {
+        return tambahanLain;
+    }
+
+    public void setTambahanLain(String tambahanLain) {
+        this.tambahanLain = tambahanLain;
+    }
+
+    public BigDecimal getTambahanLainNilai() {
+        return tambahanLainNilai;
+    }
+
+    public void setTambahanLainNilai(BigDecimal tambahanLainNilai) {
+        this.tambahanLainNilai = tambahanLainNilai;
+    }
 
     public String getKomunikasi() {
         return komunikasi;

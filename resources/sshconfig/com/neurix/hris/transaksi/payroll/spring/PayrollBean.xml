@@ -69,6 +69,7 @@
           p:golonganDapenDao-ref="golonganDapenDao"
           p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
           p:payrollTunjanganLainDao-ref="payrollTunjanganLainDao"
+          p:golonganPkwtDao-ref="golonganPkwtDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -168,5 +169,7 @@
     <bean id="payrollTunjanganLainDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganLainDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollSkalaGajiPkwtDao" class="com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="golonganPkwtDao" class="com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

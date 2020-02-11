@@ -7,13 +7,14 @@
 	<parameter name="reportParams.payrollId" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
+	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select
+		<![CDATA[select distinct
 	pegawai.nip,
 	pegawai.nama_pegawai,
 	thr.*,
 	payroll.tahun,
-	case when golongan.golongan_name is null then '-' else golongan.golongan_name end,
+	case when golongan.golongan_name is null then golongan_pkwt.golongan_pkwt_name else golongan.golongan_name end,
 	position.position_name,
 	payroll.gaji_bersih,
 	payroll.pph_gaji
@@ -22,10 +23,11 @@ from
 	left join it_hris_payroll payroll on payroll.payroll_id = thr.payroll_id
 	left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
 	left join im_hris_golongan golongan on golongan.golongan_id = pegawai.golongan_id
+	left join im_hris_golongan_pkwt golongan_pkwt on golongan_pkwt.golongan_pkwt_id = pegawai.golongan_id
 	left join it_hris_pegawai_position posisi on posisi.nip = payroll.nip
 	left join im_position position on position.position_id = posisi.position_id
 where
-	payroll.branch_id = $P{reportParams.branchId}
+	payroll.branch_id = 'RS02'
 	and payroll.flag = 'Y']]>
 	</queryString>
 	<field name="nip" class="java.lang.String"/>
@@ -48,6 +50,11 @@ where
 	<field name="bulan_aktif" class="java.lang.Integer"/>
 	<field name="thr_bersih" class="java.math.BigDecimal"/>
 	<field name="tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="pemondokan" class="java.math.BigDecimal"/>
+	<field name="komunikasi" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lain" class="java.math.BigDecimal"/>
+	<field name="tunjangan_tambahan" class="java.math.BigDecimal"/>
+	<field name="total_rlab" class="java.math.BigDecimal"/>
 	<field name="tahun" class="java.lang.String"/>
 	<field name="golongan_name" class="java.lang.String"/>
 	<field name="position_name" class="java.lang.String"/>
@@ -70,12 +77,26 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement x="0" y="78" width="555" height="1" uuid="b658dec7-b370-4fae-aeac-5f96828bf6f4"/>
 			</line>
 			<staticText>
-				<reportElement x="211" y="19" width="146" height="32" uuid="d97ac932-7b57-4402-a7dd-139ee4b9da06"/>
-				<textElement textAlignment="Center">
-					<font size="18"/>
+				<reportElement x="100" y="11" width="170" height="25" uuid="99b3ea0e-2bc5-489f-b392-ee8a7e1a5303"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="11" width="132" height="25" uuid="cf3cdc92-1796-4671-9b1b-f93547be725a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Slip Gaji THR]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="100" y="36" width="168" height="20" uuid="25529ad3-250c-438a-8547-b9585db858a4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.branchName}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -171,7 +192,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</textField>
 			<staticText>
 				<reportElement x="35" y="169" width="121" height="20" uuid="7635a64b-39fb-42d6-ac85-1f3f85eb2af2"/>
-				<text><![CDATA[Tunjangan UMK]]></text>
+				<text><![CDATA[Santunan Khusus]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="35" y="189" width="121" height="20" uuid="924ce3cd-d6ba-4c03-bee9-ce23051f4a57"/>
@@ -179,15 +200,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</staticText>
 			<staticText>
 				<reportElement x="35" y="209" width="121" height="20" uuid="23ecd39d-7261-46f4-b492-ec4fd48be5ab"/>
-				<text><![CDATA[Tunj. Jabatan Struktural]]></text>
+				<text><![CDATA[Tunj. Jabatan]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="35" y="229" width="121" height="20" uuid="5f976ed3-9165-4c95-9107-a385a46bc811"/>
-				<text><![CDATA[Tunjangan Strategis]]></text>
+				<text><![CDATA[Tunjangan Fungsional]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="35" y="269" width="121" height="20" uuid="e3f65f51-4fad-4abe-ba71-6d037cd9c057"/>
-				<text><![CDATA[Tunjangan Pph]]></text>
+				<text><![CDATA[Tunjangan Lain]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="156" y="269" width="14" height="20" uuid="6d0b79f2-eac6-450c-a11c-6a467a7e00c4"/>
@@ -220,7 +241,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			<textField pattern="#,##0">
 				<reportElement x="170" y="269" width="100" height="20" uuid="c6e4065f-826b-48a6-aed3-6b8e627488fd"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{tunjangan_pph}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tunjangan_lain}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="170" y="229" width="100" height="20" uuid="b579962a-74db-47a2-a62d-cead3cee3527"/>
@@ -304,6 +325,20 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement x="184" y="337" width="86" height="20" uuid="1379eb87-a5e1-42ac-b107-6b198e6a51c5"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{thr_bersih}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="35" y="289" width="121" height="20" uuid="85a1bc16-a8c6-48e3-9286-a553877eab15"/>
+				<text><![CDATA[Tunjangan Tambahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="289" width="14" height="20" uuid="1c0fae52-5fe2-4ea2-a2ca-290ab91df35e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="170" y="289" width="100" height="20" uuid="5db845c8-c7bc-406a-ac6a-0c07f089b1cf"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tunjangan_tambahan}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
