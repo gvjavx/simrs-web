@@ -22,6 +22,15 @@ public class SkorRanap{
     private String idKategori;
     private String skor;
     private String stDate;
+    private String namaKategori;
+
+    public String getNamaKategori() {
+        return namaKategori;
+    }
+
+    public void setNamaKategori(String namaKategori) {
+        this.namaKategori = namaKategori;
+    }
 
     public String getStDate() {
         return stDate;

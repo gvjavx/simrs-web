@@ -3,23 +3,31 @@ package com.neurix.simrs.transaksi.rawatinap.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
+import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -329,4 +337,75 @@ public class RawatInapAction extends BaseMasterAction {
         logger.info("[RawatInapAction.getListSkorByKategori] end process <<<");
         return skorRanapEntities;
     }
+
+    public List<ImSimrsSkorRanapEntity> getListSkorRanapByParam(String iParameter){
+        logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
+
+        List<ImSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        skorRanapEntities = rawatInapBo.getListMasterSkor(iParameter);
+
+        logger.info("[RawatInapAction.getListSkorByKategori] end process <<<");
+        return skorRanapEntities;
+    }
+
+    public CrudResponse saveSkorRanapByKategori(String noCheckup, String idDetail, String kategori, String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+        JSONArray json = new JSONArray(jsonString);
+
+        ItSimrsSkorRanapEntity ranapEntity;
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            ranapEntity = new ItSimrsSkorRanapEntity();
+            ranapEntity.setIdParameter(obj.getString("id"));
+            ranapEntity.setNamaParameter(obj.getString("name"));
+            ranapEntity.setSkor(Integer.valueOf(obj.getString("val")));
+            ranapEntity.setIdKategori(kategori);
+            ranapEntity.setNoCheckup(noCheckup);
+            ranapEntity.setIdDetailCheckup(idDetail);
+
+            ranapEntity.setFlag("Y");
+            ranapEntity.setAction("U");
+            ranapEntity.setCreatedDate(now);
+            ranapEntity.setCreatedWho(userLogin);
+            ranapEntity.setLastUpdate(now);
+            ranapEntity.setLastUpdateWho(userLogin);
+            skorRanapEntities.add(ranapEntity);
+        }
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        response = rawatInapBo.saveAddSkorRanap(noCheckup, idDetail, skorRanapEntities);
+
+        return response;
+    }
+
+    public List<SkorRanap> getListGroupSkorRanap(String noCheckup, String idDetail, String kategori){
+        logger.info("[RawatInapAction.getListGroupSkorRanap] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        logger.info("[RawatInapAction.getListGroupSkorRanap] end process <<<");
+        return rawatInapBo.getListSumSkorRanap(noCheckup, idDetail, kategori);
+    }
+
+    public ImSimrsKategoriSkorRanapEntity getKategoriSkorRanap(String id){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.kategoriSkorRanap(id);
+    }
+
 }

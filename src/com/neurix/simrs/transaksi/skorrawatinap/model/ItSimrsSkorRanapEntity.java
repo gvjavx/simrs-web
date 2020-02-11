@@ -20,7 +20,7 @@ public class ItSimrsSkorRanapEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idKategori;
-    private String skor;
+    private Integer skor;
 
     public String getId() {
         return id;
@@ -102,11 +102,11 @@ public class ItSimrsSkorRanapEntity implements Serializable{
         this.createdWho = createdWho;
     }
 
-    public String getSkor() {
+    public Integer getSkor() {
         return skor;
     }
 
-    public void setSkor(String skor) {
+    public void setSkor(Integer skor) {
         this.skor = skor;
     }
 

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
@@ -11,9 +12,7 @@ import com.neurix.simrs.transaksi.skorrawatinap.dao.KategoriSkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.ParameterSkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao;
-import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsParameterSkorRanapEntity;
-import com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity;
-import com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap;
+import com.neurix.simrs.transaksi.skorrawatinap.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -111,14 +110,17 @@ public class RawatInapBoImpl implements RawatInapBo {
                 hsCriteria.put("date", bean.getStDate());
             }
 
-            try {
-                skorRanapEntities = skorRanapDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
-                throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+            if (bean.getGroupId() != null && !"".equalsIgnoreCase(bean.getGroupId())){
+                try {
+                    skorRanapEntities = skorRanapDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                }
             }
 
-            if (skorRanapEntities.size() > 0){
+
+            if (skorRanapEntities.size() == 0){
 
                 hsCriteria = new HashMap();
                 hsCriteria.put("id_kategori", bean.getIdKategori());
@@ -146,6 +148,77 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         logger.info("[RawatInapBoImpl.getListSkorRanap] End <<<<<<<<");
         return skorRanapEntities;
+    }
+
+    @Override
+    public ImSimrsKategoriSkorRanapEntity kategoriSkorRanap(String id) {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori", id);
+
+        List<ImSimrsKategoriSkorRanapEntity> kategoriSkorRanapEntities = new ArrayList<>();
+        try {
+            kategoriSkorRanapEntities = kategoriSkorRanapDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR"+e.getMessage());
+        }
+
+        ImSimrsKategoriSkorRanapEntity kategoriSkorRanapEntity = new ImSimrsKategoriSkorRanapEntity();
+        if (kategoriSkorRanapEntities.size() > 0){
+            kategoriSkorRanapEntity = kategoriSkorRanapEntities.get(0);
+        }
+
+        return kategoriSkorRanapEntity;
+    }
+
+    @Override
+    public List<ImSimrsSkorRanapEntity> getListMasterSkor(String id) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getListMasterSkor] Start >>>>>>>");
+
+        List<ImSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_parameter", id);
+
+        skorRanapEntities = masterSkorRanapDao.getByCriteria(hsCriteria);
+        logger.info("[RawatInapBoImpl.getListMasterSkor] End <<<<<<<<");
+        return skorRanapEntities;
+    }
+
+    @Override
+    public CrudResponse saveAddSkorRanap(String noCheckup, String idDetail, List<ItSimrsSkorRanapEntity> skors) {
+
+        CrudResponse response = new CrudResponse();
+        if (skors.size() > 0){
+            String groupId = "GRS"+getNextGroupSkorRanap();
+            for (ItSimrsSkorRanapEntity entity : skors){
+                entity.setId("SKI"+getNextSkorRanap());
+                entity.setGroupId(groupId);
+
+                try {
+                    skorRanapDao.addAndSave(entity);
+                    response.setStatus("success");
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveAddSkorRanap] ERROR ",e);
+                    response.setStatus("error");
+                    response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<SkorRanap> getListSumSkorRanap(String noCheckup, String idDetail, String idkategori) {
+
+        List<SkorRanap> skorRanaps = new ArrayList<>();
+        try {
+            skorRanaps = skorRanapDao.getListSumSkorRanap(noCheckup, idDetail, idkategori);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListSumSkorRanap] ERROR ",e);
+        }
+
+        return skorRanaps;
     }
 
     private String getNextSkorRanap(){

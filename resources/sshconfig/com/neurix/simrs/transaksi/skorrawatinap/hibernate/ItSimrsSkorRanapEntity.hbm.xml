@@ -10,6 +10,9 @@
         <id name="id">
             <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>
+        <property name="groupId">
+            <column name="group_id" sql-type="varchar" length="30" not-null="false"/>
+        </property>
         <property name="idParameter">
             <column name="id_parameter" sql-type="varchar" length="30" not-null="false"/>
         </property>

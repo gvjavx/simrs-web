@@ -430,6 +430,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsParameterSkorRanapEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap"/>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>

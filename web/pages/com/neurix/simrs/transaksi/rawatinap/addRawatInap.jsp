@@ -205,16 +205,16 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
                             <i class="fa fa-edit"></i> Form Resiko Dekubitus
                         </button>
-                        <button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
                             <i class="fa fa-edit"></i> Form Fungsional
                         </button>
-                        <button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
                             <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
                         </button>
-                        <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
                             <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Amak
                         </button>
                     </div>
@@ -1484,6 +1484,82 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-resiko">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i><div id="label-skor"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                  <button type="button" class="btn btn-success" id="add_resiko" onclick="addResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')">
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                  <table class="table table-bordered">
+                    <thead>
+                      <td>Asesmen</td>
+                      <td>Skor</td>
+                      <td>Created By</td>
+                      <td>Created</td>
+                    </thead>
+                    <tbody id="body-list-resiko">
+
+                    </tbody>
+                  </table>
+                  <input type="hidden" id="kat_skor"/>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+              <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+              </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-resiko">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Resiko Dekubitas <div id="label-resiko"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row" id="body_resiko">
+                        </div>
+                    </div>
+                    <input type="hidden" id="ind_resiko" class="form form-control"/>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_resiko"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resiko"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <script type='text/javascript'>
 
@@ -3067,6 +3143,138 @@
 
     function printResep(id) {
         window.location.href = 'printResepPasien_rawatinap.action?id=' + noCheckup+'&idResep='+id;
+    }
+
+    function showModalResiko(noCheckup, idDetail, kat){
+
+      $("#modal-resiko").modal("show");
+      $("#kat_skor").val(kat);
+      dwr.engine.setAsync(true);
+      RawatInapAction.getKategoriSkorRanap("inap1", function(kategori){
+        $("#label-skor").html("");
+        $("#label-skor").html(kategori.namaKategori);
+
+        RawatInapAction.getListGroupSkorRanap(noCheckup, idDetail, kat, function(response){
+          if (response != null) {
+            var str = "";
+            $.each(response, function(i, item){
+              str += "<tr>"+
+              "<td>"+item.namaKategori+"</td>"+
+              "<td>"+item.skor+"</td>"+
+              "<td>"+item.createdWho+"</td>"+
+              "<td>"+item.stDate+"</td>"+
+              "</tr>";
+            });
+
+            $("#body-list-resiko").html(str);
+          }
+          // console.log(response);
+        });
+      });
+    }
+
+    function addResiko(noCheckup, idDetail){
+      $("#modal-add-resiko").modal("show");
+      var kategori = $("#kat_skor").val();
+
+      dwr.engine.setAsync(true);
+      RawatInapAction.getListParameterByKategori(noCheckup, idDetail, kategori, function(response){
+
+        var str = "";
+        if (response != null){
+                var n = 0;
+                $.each(response, function (i, item) {
+                    n = i;
+                    var upline = "";
+                    if (item.namaParameter.length > 20) {
+                      upline ="<div class='form-group'>" +
+                      "<div class='col-md-8'>"+
+                      "<label>"+item.namaParameter+"</label>"+
+                      "</div>"+
+                      "<div class='col-md-4'>"+
+                      "<select class='form-control' id='val_rsk_"+i+"'>"
+                    } else {
+                      upline ="<div class='form-group'>" +
+                      "<div class='col-md-4'>"+
+                      "<label>"+item.namaParameter+"</label>"+
+                      "</div>"+
+                      "<div class='col-md-8'>"+
+                      "<select class='form-control' id='val_rsk_"+i+"'>"
+                    }
+
+                        var opt = "";
+                        RawatInapAction.getListSkorRanapByParam(item.idParameter, function(skors){
+
+                          $.each(skors, function(i, itemSkor){
+                            if (item.skor == itemSkor.skor){
+                                opt += "<option value='"+itemSkor.skor+"' selected> "+itemSkor.namaSkor+" </option>";
+                            } else {
+                              opt += "<option value='"+itemSkor.skor+"'> "+itemSkor.namaSkor+" </option>";
+                            }
+                          });
+
+                          console.log(skors);
+
+                          var downline = "</select>" +
+                          "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
+                          "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
+                          "</div>" +
+                          "</div>";
+                          str += upline+opt+downline;
+
+                          $("#ind_resiko").val(n);
+                          $("#body_resiko").html(str);
+                        });
+                });
+              }
+      });
+    }
+
+    function saveResiko(noCheckup, idDetail){
+
+        var jsonrq = [];
+        var ind = $("#ind_resiko").val();
+
+       for (i = 0; i <= ind; i++){
+
+           var id_rsk = $("#id_rsk_"+i+"").val();
+           var val_rsk = $("#val_rsk_"+i+"").val();
+           var name_rsk = $("#name_rsk_"+i+"").val();
+
+           jsonrq.push({'id':id_rsk, 'val':val_rsk, 'name':name_rsk});
+       }
+
+       var kategori = $("#kat_skor").val();
+
+      var jsonstr = JSON.stringify(jsonrq);
+      dwr.engine.setAsync(true);
+      RawatInapAction.saveSkorRanapByKategori(noCheckup, idDetail, kategori, jsonstr, function(response){
+        if (response.status == "success") {
+          alert("sukses");
+
+          RawatInapAction.getListGroupSkorRanap(noCheckup, idDetail, kategori, function(response){
+            if (response != null) {
+              var str = "";
+              $.each(response, function(i, item){
+                str += "<tr>"+
+                "<td>"+item.namaKategori+"</td>"+
+                "<td>"+item.skor+"</td>"+
+                "<td>"+item.createdWho+"</td>"+
+                "<td>"+item.stDate+"</td>"+
+                "</tr>";
+              });
+
+              $("#modal-add-resiko").modal("hide");
+              $("#body-list-resiko").html("");
+              $("#body-list-resiko").html(str);
+            }
+            // console.log(response);
+          });
+
+        } else {
+          alert(response.msg);
+        }
+      });
     }
 
 

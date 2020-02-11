@@ -39,6 +39,7 @@ import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
@@ -1798,5 +1799,4 @@ public class CheckupAction extends BaseMasterAction {
 
         return response;
     }
-
 }
