@@ -69,6 +69,16 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
 
     private String noSep;
 
+    private boolean cekApprove;
+
+    public boolean isCekApprove() {
+        return cekApprove;
+    }
+
+    public void setCekApprove(boolean cekApprove) {
+        this.cekApprove = cekApprove;
+    }
+
     public String getNoSep() {
         return noSep;
     }

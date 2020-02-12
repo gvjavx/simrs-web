@@ -9,6 +9,7 @@
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:ruanganBoProxy-ref="ruanganBoProxy"
+          p:riwayatTindakanBoProxy-ref="riwayatTindakanBoProxy"
     />
 
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"

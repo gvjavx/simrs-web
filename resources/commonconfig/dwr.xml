@@ -436,6 +436,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>

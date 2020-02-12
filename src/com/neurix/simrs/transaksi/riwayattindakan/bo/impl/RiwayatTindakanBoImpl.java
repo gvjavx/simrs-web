@@ -48,6 +48,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     riwayatTindakan.setCreatedWho(entity.getCreatedWho());
                     riwayatTindakan.setLastUpdate(entity.getLastUpdate());
                     riwayatTindakan.setLastUpdateWho(entity.getLastUpdateWho());
+                    riwayatTindakan.setFlagUpdateKlaim(entity.getFlagUpdateKlaim());
                     result.add(riwayatTindakan);
                 }
             }
@@ -68,8 +69,6 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             entity.setKeterangan(bean.getKeterangan());
             entity.setTotalTarif(bean.getTotalTarif());
             entity.setJenisPasien(bean.getJenisPasien());
-            entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
-            entity.setApproveBpjsFlag(bean.getApproveBpjsFlag());
             entity.setAction(bean.getAction());
             entity.setFlag(bean.getFlag());
             entity.setCreatedDate(bean.getCreatedDate());
@@ -87,20 +86,20 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         logger.info("[RiwayatTindakanBoImpl.saveAdd] Start >>>>>>>>");
     }
 
-//    @Override
-//    public List<RiwayatTindakan> cekTodayTarifKamar(String iddetail, String tanggal) throws GeneralBOException {
-//        logger.info("[RiwayatTindakanBoImpl.cekTodayTarifKamar] START >>>>>>>>");
-//        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-//        if(iddetail != null && tanggal != null){
-//            try {
-//                riwayatTindakanList = riwayatTindakanDao.cekTodayTindakanTarifKamar(iddetail, tanggal);
-//            }catch (HibernateException e) {
-//                logger.error("[RiwayatTindakanBoImpl.cekTodayTarifKamar] Error when get data riwayat tindakan");
-//            }
-//        }
-//        logger.info("[RiwayatTindakanBoImpl.cekTodayTarifKamar] END >>>>>>>>");
-//        return riwayatTindakanList;
-//    }
+    @Override
+    public List<RiwayatTindakan> cekTodayTarifKamar(String idDetail) throws GeneralBOException {
+        logger.info("[RiwayatTindakanBoImpl.cekTodayTarifKamar] START >>>>>>>>");
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            try {
+                riwayatTindakanList = riwayatTindakanDao.cekTodayTindakanTarifKamar(idDetail);
+            }catch (HibernateException e) {
+                logger.error("[RiwayatTindakanBoImpl.cekTodayTarifKamar] Error when get data riwayat tindakan");
+            }
+        }
+        logger.info("[RiwayatTindakanBoImpl.cekTodayTarifKamar] END >>>>>>>>");
+        return riwayatTindakanList;
+    }
 
     private List<ItSimrsRiwayatTindakanEntity> getListEntityRiwayatTindakan(RiwayatTindakan bean) {
         logger.info("[RiwayatTindakanBoImpl.getListEntityRiwayatTindakan] Start >>>>>>>>");
@@ -110,6 +109,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         if (bean != null) {
             if (bean.getIdRiwayatTindakan() != null) {
                 hsCriteria.put("id_riwayat_tindakan", bean.getIdRiwayatTindakan());
+            }
+            if (bean.getIdTindakan() != null) {
+                hsCriteria.put("id_tindakan", bean.getIdTindakan());
             }
             if (bean.getIdDetailCheckup() != null) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());

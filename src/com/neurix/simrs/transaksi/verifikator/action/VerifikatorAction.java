@@ -20,6 +20,10 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.verifikator.bo.VerifikatorBo;
@@ -55,6 +59,24 @@ public class VerifikatorAction extends BaseMasterAction {
     private TindakanRawatBo tindakanRawatBoProxy;
     private VerifikatorBo verifikatorBoProxy;
     private EklaimBo eklaimBoProxy;
+    private RawatInapBo rawatInapBoProxy;
+    private RawatInap rawatInap;
+
+    public void setVerifikatorBoProxy(VerifikatorBo verifikatorBoProxy) {
+        this.verifikatorBoProxy = verifikatorBoProxy;
+    }
+
+    public RawatInap getRawatInap() {
+        return rawatInap;
+    }
+
+    public void setRawatInap(RawatInap rawatInap) {
+        this.rawatInap = rawatInap;
+    }
+
+    public void setRawatInapBoProxy(RawatInapBo rawatInapBoProxy) {
+        this.rawatInapBoProxy = rawatInapBoProxy;
+    }
 
     public void setEklaimBoProxy(EklaimBo eklaimBoProxy) {
         this.eklaimBoProxy = eklaimBoProxy;
@@ -155,7 +177,7 @@ public class VerifikatorAction extends BaseMasterAction {
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
+            listOfsearchHeaderDetailCheckup = verifikatorBoProxy.getListVerifikasiRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[VerifikatorAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
@@ -171,51 +193,58 @@ public class VerifikatorAction extends BaseMasterAction {
         return "search";
     }
 
-    public String searchFinalClaim() {
-        logger.info("[VerifikatorAction.searchFinalClaim] START process >>>");
+    public String searchRawatInap() {
+        logger.info("[VerifikatorAction.searchRawatInap] START process >>>");
 
-        HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
-        List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
-        headerDetailCheckup.setIdJenisPeriksaPasien("bpjs");
-        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+        RawatInap rawatInap = getRawatInap();
+        List<RawatInap> rawatInapList = new ArrayList();
+        rawatInap.setIdJenisPeriksa("bpjs");
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
+            rawatInapList = verifikatorBoProxy.getListVerifikasiRawatInap(rawatInap);
         } catch (GeneralBOException e) {
             Long logId = null;
-            logger.error("[VerifikatorAction.searchFinalClaim] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[VerifikatorAction.searchRawatInap] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+        session.setAttribute("listOfResult", rawatInapList);
 
-        logger.info("[VerifikatorAction.searchFinalClaim] END process <<<");
+        logger.info("[VerifikatorAction.searchRawatInap] END process <<<");
         return "search";
     }
 
     @Override
     public String initForm() {
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+        RawatInap rawatInap = new RawatInap();
+
+        setRawatInap(rawatInap);
         setHeaderDetailCheckup(headerDetailCheckup);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+
         return "search";
     }
 
-    public List<TindakanRawat> getListTindakanRawat(String idDetailCheckup) {
+    public List<RiwayatTindakan> getListTindakanRawat(String noCheckup, String idDetail) {
         logger.info("[VerifikatorAction.getListTindakanRawat] START process <<<");
 
-        List<TindakanRawat> result = new ArrayList<>();
+        List<RiwayatTindakan> result = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
-        TindakanRawat tindakanRawat = new TindakanRawat();
-        tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+        VerifikatorBo riwayatTindakanBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
+
+        RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+        tindakanRawat.setNoCheckup(noCheckup);
+        tindakanRawat.setIdDetailCheckup(idDetail);
+        tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            result = tindakanRawatBo.getByCriteria(tindakanRawat);
+            result = riwayatTindakanBo.getListAllTindakan(tindakanRawat);
         } catch (GeneralBOException e) {
             logger.error("[VerifikatorAction.getListTindakanRawat] Error when get data tindakan rawat ", e);
         }
@@ -234,8 +263,9 @@ public class VerifikatorAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
 
-        TindakanRawat tindakanRawat = new TindakanRawat();
-        tindakanRawat.setIdTindakan(idTindakan);
+        RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+        tindakanRawat.setIdRiwayatTindakan(idTindakan);
+        tindakanRawat.setKategoriTindakanBpjs(kategoriTindakanBpjs);
         tindakanRawat.setLastUpdate(time);
         tindakanRawat.setLastUpdateWho(userLogin);
 
@@ -262,7 +292,8 @@ public class VerifikatorAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
-        TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
 
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
@@ -307,13 +338,13 @@ public class VerifikatorAction extends BaseMasterAction {
                             logger.error("[VerifikatorAction.saveApproveTindakan] Error When Get Header Checkup Data", e);
                         }
 
-                        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
-                        TindakanRawat tindakanRawat = new TindakanRawat();
+                        List<RiwayatTindakan> tindakanRawatList = new ArrayList<>();
+                        RiwayatTindakan tindakanRawat = new RiwayatTindakan();
                         tindakanRawat.setIdDetailCheckup(idDetailCheckup);
 
                         //search tindakan rawat by id detail checkup
                         try {
-                            tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
+                            tindakanRawatList = riwayatTindakanBo.getByCriteria(tindakanRawat);
                         } catch (GeneralBOException e) {
                             logger.error("[VerifikatorAction.saveApproveTindakan] Error When Get Tindakan Rawat Data", e);
                         }
@@ -402,83 +433,97 @@ public class VerifikatorAction extends BaseMasterAction {
 
                         }
 
-                        for (TindakanRawat tindakan : tindakanRawatList) {
+                        for (RiwayatTindakan tindakan : tindakanRawatList) {
 
-//                            if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTarif() != null) {
-//
-//                                if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(tindakan.getTarifTotal());
-//                                }
-//                                if ("tenaga_ahli".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsTenagaAhli = tarifRsTenagaAhli.add(tindakan.getTarifTotal());
-//                                }
-//                                if ("radiologi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsRadiologi = tarifRsRadiologi.add(tindakan.getTarifTotal());
-//                                }
-//                                if ("rehabilitasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsRehabilitasi = tarifRsRehabilitasi.add(tindakan.getTarifTotal());
-//                                }
-//                                if ("obat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsObat = tarifRsObat.add(tindakan.getTarifTotal());
-//                                }
-//                                if ("alkes".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsAlkes = tarifRsAlkes.add(tindakan.getTarifTotal());
-//
-//                                }
-//
-//                                //--------------
-//                                if ("prosedur_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsProsedurBedah = tarifRsProsedurBedah.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("keperawatan".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsKeperawatan = tarifRsKeperawatan.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("laboratorium".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsLaboratorium = tarifRsLaboratorium.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("kamar_akomodasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsKamar = tarifRsKamar.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("obat_kronis".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsObatKronis = tarifRsObatKronis.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("bmhp".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsBmhp = tarifRsBmhp.add(tindakan.getTarifTotal());
-//
-//                                }
-//
-//                                //--------------
-//                                if ("konsultasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsKonsultasi = tarifRsKonsultasi.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("penunjang".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsPenunjang = tarifRsPenunjang.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("pelayanan_darah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsPelayananDarah = tarifRsPelayananDarah.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("rawat_intensif".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsRawatIntensif = tarifRsRawatIntensif.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("obat_kemoterapi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(tindakan.getTarifTotal());
-//
-//                                }
-//                                if ("sewa_alat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
-//                                    tarifRsSewaAlat = tarifRsSewaAlat.add(tindakan.getTarifTotal());
-//
-//                                }
+                            if ("Y".equalsIgnoreCase(tindakan.getApproveBpjsFlag()) && tindakan.getTotalTarif() != null && !"Y".equalsIgnoreCase(tindakan.getFlagUpdateKlaim())) {
 
-//                            }
+                                if ("prosedur_non_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsProsedurNonBedah = tarifRsProsedurNonBedah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                }
+                                if ("tenaga_ahli".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsTenagaAhli = tarifRsTenagaAhli.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                }
+                                if ("radiologi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsRadiologi = tarifRsRadiologi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                }
+                                if ("rehabilitasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsRehabilitasi = tarifRsRehabilitasi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                }
+                                if ("obat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsObat = tarifRsObat.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+                                }
+                                if ("alkes".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsAlkes = tarifRsAlkes.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+
+                                //--------------
+                                if ("prosedur_bedah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsProsedurBedah = tarifRsProsedurBedah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("keperawatan".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsKeperawatan = tarifRsKeperawatan.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("laboratorium".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsLaboratorium = tarifRsLaboratorium.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("kamar_akomodasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsKamar = tarifRsKamar.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("obat_kronis".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsObatKronis = tarifRsObatKronis.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("bmhp".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsBmhp = tarifRsBmhp.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+
+                                //--------------
+                                if ("konsultasi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsKonsultasi = tarifRsKonsultasi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("penunjang".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsPenunjang = tarifRsPenunjang.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("pelayanan_darah".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsPelayananDarah = tarifRsPelayananDarah.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("rawat_intensif".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsRawatIntensif = tarifRsRawatIntensif.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("obat_kemoterapi".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsObatKemoterapi = tarifRsObatKemoterapi.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+                                if ("sewa_alat".equalsIgnoreCase(tindakan.getKategoriTindakanBpjs())) {
+                                    tarifRsSewaAlat = tarifRsSewaAlat.add(new BigInteger(String.valueOf(tindakan.getTotalTarif())));
+
+                                }
+
+                            }
+
+                            CheckResponse response1 = new CheckResponse();
+                            String userLogin = CommonUtil.userLogin();
+                            Timestamp time = new Timestamp(System.currentTimeMillis());
+                            RiwayatTindakan riwayat = new RiwayatTindakan();
+                            riwayat.setIdRiwayatTindakan(tindakan.getIdRiwayatTindakan());
+                            riwayat.setLastUpdateWho(userLogin);
+                            riwayat.setLastUpdate(time);
+
+                            try {
+                                response1 = verifikatorBo.updateFlagKlaim(riwayat);
+                            }catch (GeneralBOException e){
+                                logger.error("[VerifikatorAction] Found error when update riwayat tindakan, "+e);
+                            }
                         }
 
                         KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
@@ -600,6 +645,7 @@ public class VerifikatorAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
+        VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
 
         HeaderCheckup headerCheckup = new HeaderCheckup();
         headerCheckup.setNoCheckup(noCheckup);
@@ -621,6 +667,25 @@ public class VerifikatorAction extends BaseMasterAction {
                     response = eklaimBo.finalisasiClaimEklaim(checkup.getNoSep(), "123456", unitId);
                 } catch (GeneralBOException e) {
                     logger.error("[VerifikatorAction.finalClaim] Error When final claim", e);
+                }
+
+                if("200".equalsIgnoreCase(response.getStatus())){
+
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                    HeaderCheckup header = new HeaderCheckup();
+                    header.setNoCheckup(checkup.getNoCheckup());
+                    header.setLastUpdateWho(userLogin);
+                    header.setLastUpdate(updateTime);
+
+                    CheckResponse response1 = new CheckResponse();
+
+                    try {
+                        response1 = verifikatorBo.updateKlaimBpjsFlag(header);
+                    }catch (HibernateException e){
+                        logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+                    }
                 }
             }
         }

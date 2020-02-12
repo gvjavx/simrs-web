@@ -1870,7 +1870,7 @@
         }
     }
 
-    function saveKeterangan(){
+    function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup){
         $('#modal-confirm-dialog').modal('hide');
         $('#save_ket').hide();
         $('#load_ket').show();
