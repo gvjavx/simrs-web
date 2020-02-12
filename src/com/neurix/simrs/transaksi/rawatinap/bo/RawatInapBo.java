@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface RawatInapBo {
     public List<RawatInap> getSearchRawatInap(RawatInap bean) throws GeneralBOException;
-    public List<ItSimrsSkorRanapEntity> getListSkorRanap(SkorRanap bean) throws GeneralBOException;
+    public List<SkorRanap> getListSkorRanap(SkorRanap bean) throws GeneralBOException;
     public List<ImSimrsSkorRanapEntity> getListMasterSkor(String id) throws GeneralBOException;
     public CrudResponse saveAddSkorRanap(String noCheckup, String idDetail, List<ItSimrsSkorRanapEntity> skors);
     public List<SkorRanap> getListSumSkorRanap(String noCheckup, String idDetail, String idkategori);

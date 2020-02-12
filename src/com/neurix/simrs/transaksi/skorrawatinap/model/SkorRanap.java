@@ -23,6 +23,24 @@ public class SkorRanap{
     private String skor;
     private String stDate;
     private String namaKategori;
+    private String type;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getNamaKategori() {
         return namaKategori;

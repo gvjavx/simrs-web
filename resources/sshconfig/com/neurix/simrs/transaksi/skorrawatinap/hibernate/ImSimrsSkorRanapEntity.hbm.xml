@@ -19,6 +19,9 @@
         <property name="idParameter">
             <column name="id_parameter" sql-type="varchar" length="30" not-null="false"/>
         </property>
+        <property name="ketSkor">
+            <column name="ket_skor" sql-type="varchar" length="100" not-null="false"/>
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

@@ -16,6 +16,8 @@ public class ImSimrsParameterSkorRanapEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String type;
+    private Integer idx;
 
     public String getIdParameter() {
         return idParameter;
@@ -87,5 +89,21 @@ public class ImSimrsParameterSkorRanapEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getIdx() {
+        return idx;
+    }
+
+    public void setIdx(Integer idx) {
+        this.idx = idx;
     }
 }

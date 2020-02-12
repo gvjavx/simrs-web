@@ -319,10 +319,10 @@ public class RawatInapAction extends BaseMasterAction {
         return "print_resep";
     }
 
-    public List<ItSimrsSkorRanapEntity> getListParameterByKategori(String noCheckup, String idDetailCheckup, String kategori){
+    public List<SkorRanap> getListParameterByKategori(String noCheckup, String idDetailCheckup, String kategori){
         logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
 
-        List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+        List<SkorRanap> skorRanapEntities = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
@@ -407,6 +407,17 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         return rawatInapBo.kategoriSkorRanap(id);
+    }
+
+    public List<SkorRanap> getListViewSkorRanapByGrupId(String groupId){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        SkorRanap skorRanap = new SkorRanap();
+        skorRanap.setGroupId(groupId);
+
+        return rawatInapBo.getListSkorRanap(skorRanap);
     }
 
 }
