@@ -648,7 +648,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien){
+    public String saveKeterangan (String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan){
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         String status = "error";
@@ -676,6 +676,10 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if ("selesai".equalsIgnoreCase(idKtg)){
             headerDetailCheckup.setKeteranganSelesai(ket);
+            headerDetailCheckup.setCaraPasienPulang(caraPulang);
+            headerDetailCheckup.setPendamping(pendamping);
+            headerDetailCheckup.setTempatTujuan(tujuan);
+            headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
         }
         if ("pindah".equalsIgnoreCase(idKtg)){

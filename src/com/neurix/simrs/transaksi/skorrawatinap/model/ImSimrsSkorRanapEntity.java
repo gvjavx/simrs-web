@@ -10,7 +10,7 @@ public class ImSimrsSkorRanapEntity implements Serializable {
 
     private String idSkor;
     private String namaSkor;
-    private String skor;
+    private Integer skor;
     private String idParameter;
     private String flag;
     private String action;
@@ -18,6 +18,7 @@ public class ImSimrsSkorRanapEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String ketSkor;
 
     public String getIdSkor() {
         return idSkor;
@@ -35,11 +36,11 @@ public class ImSimrsSkorRanapEntity implements Serializable {
         this.namaSkor = namaSkor;
     }
 
-    public String getSkor() {
+    public Integer getSkor() {
         return skor;
     }
 
-    public void setSkor(String skor) {
+    public void setSkor(Integer skor) {
         this.skor = skor;
     }
 
@@ -97,5 +98,13 @@ public class ImSimrsSkorRanapEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getKetSkor() {
+        return ketSkor;
+    }
+
+    public void setKetSkor(String ketSkor) {
+        this.ketSkor = ketSkor;
     }
 }

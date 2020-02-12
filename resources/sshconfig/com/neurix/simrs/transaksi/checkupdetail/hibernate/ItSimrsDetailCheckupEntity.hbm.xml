@@ -60,5 +60,14 @@
         <property name="keteranganCekupUlang">
             <column name="keterangan_cekup_ulang" sql-type="varchar" length="1000" not-null="false" />
         </property>
+        <property name="caraPasienPulang">
+            <column name="cara_pasien_pulang" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="pendamping">
+            <column name="pendamping" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tempatTujuan">
+            <column name="tempat_tujuan" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

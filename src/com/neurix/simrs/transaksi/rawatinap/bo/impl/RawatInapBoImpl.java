@@ -86,9 +86,10 @@ public class RawatInapBoImpl implements RawatInapBo {
     }
 
     @Override
-    public List<ItSimrsSkorRanapEntity> getListSkorRanap(SkorRanap bean) throws GeneralBOException {
+    public List<SkorRanap> getListSkorRanap(SkorRanap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListSkorRanap] Start >>>>>>>");
 
+        List<SkorRanap> skorRanaps = new ArrayList<>();
         List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
         if (bean != null){
 
@@ -134,20 +135,41 @@ public class RawatInapBoImpl implements RawatInapBo {
                 }
 
                 if (parameterSkorRanapEntities.size() > 0){
-                    ItSimrsSkorRanapEntity skorRanapEntity;
+                    SkorRanap skorRanap;
                     for (ImSimrsParameterSkorRanapEntity parameter : parameterSkorRanapEntities){
-                        skorRanapEntity = new ItSimrsSkorRanapEntity();
-                        skorRanapEntity.setIdKategori(parameter.getIdKategori());
-                        skorRanapEntity.setIdParameter(parameter.getIdParameter());
-                        skorRanapEntity.setNamaParameter(parameter.getNamaParameter());
-                        skorRanapEntities.add(skorRanapEntity);
+                        skorRanap = new SkorRanap();
+                        skorRanap.setIdKategori(parameter.getIdKategori());
+                        skorRanap.setIdParameter(parameter.getIdParameter());
+                        skorRanap.setNamaParameter(parameter.getNamaParameter());
+                        skorRanap.setType(parameter.getType());
+                        skorRanaps.add(skorRanap);
                     }
+                }
+            } else {
+                SkorRanap skorRanap;
+                for (ItSimrsSkorRanapEntity skorRanapEntity : skorRanapEntities){
+                    skorRanap = new SkorRanap();
+                    skorRanap.setId(skorRanapEntity.getId());
+                    skorRanap.setGroupId(skorRanapEntity.getGroupId());
+                    skorRanap.setIdKategori(skorRanapEntity.getIdKategori());
+                    skorRanap.setIdParameter(skorRanapEntity.getIdParameter());
+                    skorRanap.setNamaParameter(skorRanapEntity.getNamaParameter());
+                    skorRanap.setSkor(skorRanapEntity.getSkor().toString());
+                    skorRanap.setKeterangan(skorRanapEntity.getKeterangan());
+                    skorRanap.setFlag(skorRanapEntity.getFlag());
+                    skorRanap.setAction(skorRanapEntity.getAction());
+                    skorRanap.setCreatedDate(skorRanapEntity.getCreatedDate());
+                    skorRanap.setCreatedWho(skorRanapEntity.getCreatedWho());
+                    skorRanap.setLastUpdate(skorRanapEntity.getLastUpdate());
+                    skorRanap.setLastUpdateWho(skorRanapEntity.getLastUpdateWho());
+                    skorRanap.setStDate(skorRanapEntity.getCreatedDate().toString());
+                    skorRanaps.add(skorRanap);
                 }
             }
         }
 
         logger.info("[RawatInapBoImpl.getListSkorRanap] End <<<<<<<<");
-        return skorRanapEntities;
+        return skorRanaps;
     }
 
     @Override

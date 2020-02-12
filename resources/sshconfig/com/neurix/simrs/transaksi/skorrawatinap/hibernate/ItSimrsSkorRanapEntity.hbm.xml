@@ -22,6 +22,9 @@
         <property name="namaParameter">
             <column name="nama_parameter" sql-type="varchar" length="100" not-null="false"/>
         </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
         <property name="noCheckup">
             <column name="no_checkup" sql-type="varchar" length="30" not-null="false"/>
         </property>
