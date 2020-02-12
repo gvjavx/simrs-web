@@ -348,6 +348,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
         PermintaanObatPoli bean = new PermintaanObatPoli();
         bean.setTipePermintaan(tipePermintaan);
         bean.setIdPelayanan(idPelayanan);
+        bean.setBranchId(branchId);
         bean.setFlag(flag);
         bean.setIsMobile("Y");
 
@@ -401,10 +402,11 @@ public class PermintaanObatController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getListObat")){
 
             List<TransaksiObatDetail> resultObat = new ArrayList<>();
-//            List<PermintaanObatPoli> resultPermintaan = new ArrayList<>();
+            List<PermintaanObatPoli> resultPermintaan = new ArrayList<>();
 
             TransaksiObatDetail beanObat = new TransaksiObatDetail();
             beanObat.setIdApprovalObat(idApproval);
+            beanObat.setBranchId(branchId);
 
 
             try{
@@ -579,6 +581,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("saveApprove")){
 
             bean.setIdPermintaanObatPoli(idPermintaanObatPoli);
+            bean.setBranchId(branchId);
 
             try{
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
@@ -598,6 +601,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("saveApproveDiterima")){
             bean.setIdPermintaanObatPoli(idPermintaanObatPoli);
+            bean.setBranchId(branchId);
 
             try{
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);

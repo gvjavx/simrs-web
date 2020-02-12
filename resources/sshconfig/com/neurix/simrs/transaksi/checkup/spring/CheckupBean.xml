@@ -12,6 +12,12 @@
           p:dokterBoProxy-ref="dokterBoProxy"
           p:pasienBoProxy-ref="pasienBoProxy"
     />
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
+
+
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
           p:headerCheckupDao-ref="headerCheckupDao"

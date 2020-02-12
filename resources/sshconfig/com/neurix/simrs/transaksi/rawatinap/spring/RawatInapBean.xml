@@ -10,6 +10,10 @@
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:rawatInapBoProxy-ref="rawatInapBoProxy"
+    />
+
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"
           p:rawatInapDao-ref="rawatInapDao"
     />

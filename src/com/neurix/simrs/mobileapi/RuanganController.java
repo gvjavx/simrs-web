@@ -5,6 +5,8 @@ import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.mobileapi.model.RuanganMobile;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.apache.struts2.rest.DefaultHttpHeaders;
+import org.apache.struts2.rest.HttpHeaders;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +24,16 @@ public class RuanganController implements ModelDriven<Object> {
 
     private String idKelasRuangan;
     private String namaKelasRuangan;
+
+    private String action;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;
@@ -74,5 +86,13 @@ public class RuanganController implements ModelDriven<Object> {
     @Override
     public Object getModel() {
         return  (listOfRuangan != null ? listOfRuangan : model);
+    }
+
+    public HttpHeaders create() {
+        logger.info("[RuanganController.create] start process POST / <<<");
+
+
+        logger.info("[RuanganController.create] end process POST / <<<");
+        return new DefaultHttpHeaders("create").disableCaching();
     }
 }

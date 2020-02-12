@@ -153,8 +153,9 @@
             <filter-chain pattern="/mobileapi/transaksiapotek/*" filters="none" />
             <filter-chain pattern="/mobileapi/transaksiapotek/*/**" filters="none" />
 
-
-
+            <filter-chain pattern="/mobileapi/rawatinap" filters="none" />
+            <filter-chain pattern="/mobileapi/rawatinap/*" filters="none" />
+            <filter-chain pattern="/mobileapi/rawatinap/*/**" filters="none" />
 
 
             <filter-chain pattern="/**/*"

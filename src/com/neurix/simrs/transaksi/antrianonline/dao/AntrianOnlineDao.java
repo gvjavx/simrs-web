@@ -134,7 +134,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             result.setNamaPelayanan((String) row[4]);
             result.setNoCheckupOnline((String) row[5]);
             result.setNama((String) row[6]);
-            result.setTglCheckup(CommonUtil.convertDateToString((Date) row[7]));
+            result.setTglCheckup(row[7].toString());
             result.setJamAwal((String) row[8]);
             result.setJamAkhir((String) row[9]);
             result.setLastUpdate((Timestamp) row[10]);

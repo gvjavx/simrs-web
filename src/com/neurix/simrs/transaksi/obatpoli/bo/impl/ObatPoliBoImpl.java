@@ -70,7 +70,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
                     obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
 
-                    ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
+                    ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId());
 
                     if (obatEntity != null) {
                         obatPoli.setNamaObat(obatEntity.getNamaObat());
@@ -130,7 +130,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
                 permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
 
-                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat());
+                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat(), bean.getBranchId());
                 if (simrsObatEntity != null) {
                     permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
                     permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
@@ -1124,7 +1124,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         if (obatPoliEntity != null) {
 
-            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat());
+            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId());
 
             if (obatEntity != null) {
 
@@ -1654,13 +1654,16 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return null;
     }
 
-    private ImSimrsObatEntity getObatById(String id) throws GeneralBOException {
+    private ImSimrsObatEntity getObatById(String id, String branchId) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.getObatById] START >>>>>>>>>>");
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_obat", id);
-        hsCriteria.put("branch_id", "RS01");
+        if (branchId != null && !branchId.isEmpty()) {
+            hsCriteria.put("branch_id", branchId);
+        } else hsCriteria.put("branch_id", CommonUtil.userBranchLogin());
+
         hsCriteria.put("flag", "Y");
 
         try {
@@ -1800,7 +1803,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities) {
                 obatDetail = new TransaksiObatDetail();
 
-                ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
+                ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat(), bean.getBranchId());
 
                 obatDetail.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
                 obatDetail.setNamaObat(obatEntity.getNamaObat());

@@ -1,6 +1,10 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
@@ -73,4 +77,6 @@ public class RawatInapBoImpl implements RawatInapBo {
         logger.info("[RawatInapBoImpl.getSearchRawatInap] End <<<<<<<<");
         return results;
     }
+
+
 }

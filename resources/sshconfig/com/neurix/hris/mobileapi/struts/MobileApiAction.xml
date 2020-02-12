@@ -176,6 +176,9 @@
         <action name="transaksiapotek/*" class="com.neurix.simrs.mobileapi.TransaksiApotekController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="rawatinap/*" class="com.neurix.simrs.mobileapi.RawatInapController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

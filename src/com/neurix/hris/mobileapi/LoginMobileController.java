@@ -160,27 +160,28 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                             throw new GeneralBOException(e);
                         }
                     } else {
-
+                        model.setActionMessage("Unable to create token, please call your admin to handle it.");
                         logger.info("Unable to create token, please call your admin to handle it.");
                         throw new GeneralBOException("Unable to create token, please call your admin to handle it.");
 
                     }
 
                 } else {
-
+                    model.setActionMessage("Incorrect password, please right password or call your admin to handle it.");
                     logger.info("Incorrect password, please right password or call your admin to handle it.");
                     throw new GeneralBOException("Incorrect password, please right password or call your admin to handle it.");
 
                 }
 
             } else {
-
+                model.setActionMessage("No found this user at database system, please call your admin to handle it.");
                 logger.info("No found this user at database system, please call your admin to handle it.");
                 throw new GeneralBOException("No found this user at database system, please call your admin to handle it.");
 
             }
 
         } else {
+            model.setActionMessage("Found this user is still using apps with other device, please call your admin to handle it.");
             logger.info("Found this user is still using apps with other device, please call your admin to handle it.");
             throw new GeneralBOException("Found this user is still using apps with other device, please call your admin to handle it.");
         }
