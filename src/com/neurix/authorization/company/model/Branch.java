@@ -24,6 +24,15 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal uangMakan;
     private int maxJamIjinKeluar;
     private String areaId;
+    private String alamatSurat;
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
 
     public String getAreaId() {
         return areaId;

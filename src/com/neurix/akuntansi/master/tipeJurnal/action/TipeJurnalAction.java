@@ -53,7 +53,7 @@ public class TipeJurnalAction extends BaseMasterAction {
         this.tipeJurnal = tipeJurnal;
     }
 
-    private List<TipeJurnal> initComboTipeJurnal;
+
 
     public static Logger getLogger() {
         return logger;
@@ -64,12 +64,28 @@ public class TipeJurnalAction extends BaseMasterAction {
     }
 
 
-    public List<TipeJurnal> getInitComboTipeJurnal() {
-        return initComboTipeJurnal;
-    }
+    public String initComboTipeJurnal() {
+        logger.info("[TipeJurnalAction.initComboTipeJurnal] start process >>>");
 
-    public void setInitComboTipeJurnal(List<TipeJurnal> initComboTipeJurnal) {
-        this.initComboTipeJurnal = initComboTipeJurnal;
+        TipeJurnal search = new TipeJurnal();
+        List<TipeJurnal> tipeJurnalList = new ArrayList();
+        search.setFlag("Y");
+        try {
+            tipeJurnalList = tipeJurnalBoProxy.getByCriteria(search);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = tipeJurnalBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[TipeJurnalAction.initComboTipeJurnal] Error when saving error,", e1);
+            }
+            logger.error("[TipeJurnalAction.initComboTipeJurnal] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+        listOfComboTipeJurnal.addAll(tipeJurnalList);
+        logger.info("[TipeJurnalAction.initComboTipeJurnal] end process <<<");
+        return SUCCESS;
     }
 
     public TipeJurnal init(String kode, String flag){

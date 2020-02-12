@@ -10,6 +10,8 @@
 
     <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
           p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:biodataDao-ref="biodataDao"
     />
 
     <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

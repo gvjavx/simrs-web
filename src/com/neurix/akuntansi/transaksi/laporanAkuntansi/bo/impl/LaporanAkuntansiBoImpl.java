@@ -6,9 +6,12 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ItLaporanAkuntansiE
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -22,6 +25,24 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
 
     protected static transient Logger logger = Logger.getLogger(LaporanAkuntansiBoImpl.class);
     private LaporanAkuntansiDao laporanAkuntansiDao;
+    private PersonilPositionDao personilPositionDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -106,11 +127,39 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
 
         return listOfResult;
     }
-    
+    @Override
+    public LaporanAkuntansi getNipDanNamaManagerKeuanganDanGeneralManager(String branchId) throws GeneralBOException {
+        LaporanAkuntansi nama = new LaporanAkuntansi();
+        List<ItPersonilPositionEntity> managerList = new ArrayList<>();
+
+        //untuk manager keuangan
+        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,"201");
+        if (managerList.size()!=0){
+            for (ItPersonilPositionEntity manager : managerList){
+                ImBiodataEntity biodataEntity = biodataDao.getById("nip",manager.getNip());
+                nama.setNipManagerKeuangan(biodataEntity.getNip());
+                nama.setNamaManagerKeuangan(biodataEntity.getNamaPegawai());
+            }
+        }
+        //untuk general manager
+        managerList=personilPositionDao.getPersonilPositionByUnitdanPosisi(branchId,"4");
+        if (managerList.size()!=0){
+            for (ItPersonilPositionEntity manager : managerList){
+                ImBiodataEntity biodataEntity = biodataDao.getById("nip",manager.getNip());
+                nama.setNipGeneralManager(biodataEntity.getNip());
+                nama.setNamaGeneralManager(biodataEntity.getNamaPegawai());
+            }
+        }
+
+        return nama;
+    }
+
+
     @Override
     public List<LaporanAkuntansi> getAll() throws GeneralBOException {
         return null;
     }
+
 
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {

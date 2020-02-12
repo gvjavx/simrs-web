@@ -2,19 +2,26 @@ package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -24,6 +31,24 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(LaporanAkuntansiAction.class);
     private LaporanAkuntansiBo laporanAkuntansiBoProxy;
     private LaporanAkuntansi laporanAkuntansi;
+    private String tipeLaporan;
+    private JRBeanCollectionDataSource dataPrint;
+
+    public JRBeanCollectionDataSource getDataPrint() {
+        return dataPrint;
+    }
+
+    public void setDataPrint(JRBeanCollectionDataSource dataPrint) {
+        this.dataPrint = dataPrint;
+    }
+
+    public String getTipeLaporan() {
+        return tipeLaporan;
+    }
+
+    public void setTipeLaporan(String tipeLaporan) {
+        this.tipeLaporan = tipeLaporan;
+    }
 
     private List<LaporanAkuntansi> listOfComboLaporanAkuntansi = new ArrayList<LaporanAkuntansi>();
 
@@ -237,6 +262,241 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.initForm] end process >>>");
         return INPUT;
     }
+
+    public String searchReportNeracaSaldo() {
+        logger.info("[LaporanAkuntansiAction.searchReportNeracaSaldo] start process >>>");
+
+        return "search_laporan_neraca_saldo";
+    }
+
+    public String searchReportNeracaMutasi() {
+        logger.info("[LaporanAkuntansiAction.searchReportNeracaMutasi] start process >>>");
+
+        return "search_laporan_neraca_mutasi";
+    }
+
+    public String searchReportIkhtisarBukuBesar() {
+        logger.info("[LaporanAkuntansiAction.searchReportIkhitisarBukuBesar] start process >>>");
+
+        return "search_laporan_ikhitisar_buku_besar";
+    }
+
+    public String searchReportIkhtisarSubBukuBesar() {
+        logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
+
+        return "search_laporan_ikhitisar_sub_buku_besar";
+    }
+    public String searchReportAging() {
+        logger.info("[LaporanAkuntansiAction.searchReportAging] start process >>>");
+
+        return "search_laporan_aging";
+    }
+
+    public String printReportNeracaSaldo(){
+        logger.info("[LaporanAkuntansiAction.printReportNeracaSaldo] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportNeracaSaldo");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportNeracaSaldo] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportNeracaSaldo] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportNeracaSaldo] end process <<<");
+        return "print_report_akuntansi_neraca_saldo";
+    }
+    public String printReportNeracaMutasi(){
+        logger.info("[LaporanAkuntansiAction.printReportNeracaMutasi] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportNeracaMutasi");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportNeracaMutasi] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportNeracaMutasi] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportNeracaMutasi] end process <<<");
+        return "print_report_akuntansi_neraca_mutasi";
+    }
+
+    public String printReportIkhtisarBukuBesar(){
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarBukuBesar] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportNeracaSaldo");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportNeracaSaldo] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportNeracaSaldo] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarBukuBesar] end process <<<");
+        return "print_report_akuntansi_ikhitisar_buku_besar";
+    }
+
+    public String printReportIkhtisarSubBukuBesar(){
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String titleReport="";
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("tipeJurnal",data.getTipeLaporan());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportIkhtisarSubBukuBesar");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] end process <<<");
+        return "print_report_akuntansi_ikhitisar_sub_buku_besar";
+    }
+
+    public String printReportAging(){
+        logger.info("[LaporanAkuntansiAction.printReportAging] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        LaporanAkuntansi data = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
+        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        String titleReport="";
+        String query1="";
+        if (data.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
+            titleReport="AGING PIUTANG USAHA";
+            query1="kode_rekening='103.01.00.00'\n" +
+                    "         OR       kode_rekening='103.02.00.00' \n" +
+                    "         OR       kode_rekening='103.03.00.00'\n" +
+                    "         OR       kode_rekening='103.04.00.00' \n" +
+                    "         OR       kode_rekening='103.05.00.00' \n" +
+                    "         OR       kode_rekening='103.06.00.00' \n" +
+                    "         OR       kode_rekening='103.11.00.00' \n" +
+                    "         OR       kode_rekening='103.12.00.00' \n" +
+                    "         OR       kode_rekening='103.13.00.00'\n" +
+                    "         OR       kode_rekening='103.14.00.00' \n" +
+                    "         OR       kode_rekening='103.15.00.00'";
+        }
+
+        reportParams.put("reportTitle", titleReport);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        Date now = new Date();
+        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+        reportParams.put("kota",branch.getBranchName());
+        reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("query1",query1);
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            Long logId = null;
+            try {
+                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportAging");
+            } catch (GeneralBOException e1) {
+                logger.error("[LaporanAkuntansiAction.printReportAging] Error when downloading ,", e1);
+            }
+            logger.error("[LaporanAkuntansiAction.printReportAging] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        }
+        logger.info("[LaporanAkuntansiAction.printReportAging] end process <<<");
+        return "print_report_akuntansi_aging";
+    }
+
 
     public String paging(){
         return SUCCESS;

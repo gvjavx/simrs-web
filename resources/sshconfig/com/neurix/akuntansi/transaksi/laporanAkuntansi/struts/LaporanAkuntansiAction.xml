@@ -90,6 +90,44 @@
 
             <result name="failure">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/editLaporanAkuntansi.jsp</result>
 
+            <!-- LAPORAN -->
+            <result name="search_laporan_neraca_saldo">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchNeracaSaldoLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_neraca_mutasi">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchNeracaMutasiLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_ikhitisar_buku_besar">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchIkhitisarBukuBesarLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_ikhitisar_sub_buku_besar">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchIkhitisarSubBukuBesarLaporanAkuntansi.jsp</result>
+            <result name="search_laporan_aging">/pages/com/neurix/akuntansi/transaksi/laporanAkuntansi/report/searchAgingLaporanAkuntansi.jsp</result>
+
+            <!-- HASIL LAPORAN -->
+            <result name="print_report_akuntansi_neraca_saldo" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/NeracaSaldo.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_neraca_mutasi" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/NeracaMutasi.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_ikhitisar_buku_besar" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/IkhtisarBukuBesarPerBukuBantu.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_ikhitisar_sub_buku_besar" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/Ikhtisar.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_aging" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/Aging.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
         </action>
 
         <action name="paging_displaytag_laporanAkuntansi"
