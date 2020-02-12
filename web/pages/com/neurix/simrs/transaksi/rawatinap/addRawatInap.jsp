@@ -545,6 +545,42 @@
                                               cssClass="form-control select2"/>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Cara Pasien </label>
+                                    <div class="col-md-7">
+                                    <s:action id="initComboKet" namespace="/checkupdetail"
+                                              name="getListComboKeteranganKeluar_checkupdetail"/>
+                                    <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
+                                              name="headerCheckup.idPelayanan" listKey="keterangan"
+                                              listValue="keterangan" cssStyle="width: 100%"
+                                              headerKey="" headerValue="[Select one]"
+                                              cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Didampingi Oleh</label>
+                                    <div class="col-md-7">
+                                    <s:action id="initComboKet" namespace="/checkupdetail"
+                                              name="getListComboKeteranganKeluar_checkupdetail"/>
+                                    <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
+                                              name="headerCheckup.idPelayanan" listKey="keterangan"
+                                              listValue="keterangan" cssStyle="width: 100%"
+                                              headerKey="" headerValue="[Select one]"
+                                              cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                      <label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Tempat Tujuan</label>
+                                      <div class="col-md-7">
+                                      <s:action id="initComboKet" namespace="/checkupdetail"
+                                                name="getListComboKeteranganKeluar_checkupdetail"/>
+                                      <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
+                                                name="headerCheckup.idPelayanan" listKey="keterangan"
+                                                listValue="keterangan" cssStyle="width: 100%"
+                                                headerKey="" headerValue="[Select one]"
+                                                cssClass="form-control select2"/>
+                                      </div>
+                                </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group" id="form-cekup" style="display: none">
@@ -1808,7 +1844,7 @@
                 <div class="box">
                       <div id="head-view-asesmen"></div>
                     <br>
-                      <table class="table">
+                      <table class="table table-bordered">
                         <tbody id="body-view-asesmen">
                         </tbody>
                       </table>
@@ -3707,14 +3743,11 @@
 
                         var opt = "";
                         RawatInapAction.getListSkorRanapByParam(item.idParameter, function(skors){
-                          var up_select = "<select class='form-control' id='val_rsk_"+i+"'>";
+                          var up_select = "<select class='form-control' id='val_rsk_"+i+"' onchange=\"showOtherInput(this.id)\">";
+                          // var other_text = "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none'/>";
                           if (skors.length > 0) {
                             $.each(skors, function(i, itemSkor){
-                              if (item.skor == itemSkor.skor){
-                                  opt += "<option value="+itemSkor.ketSkor+" selected> "+itemSkor.namaSkor+" </option>";
-                              } else {
-                                opt += "<option value="+itemSkor.ketSkor+"> "+itemSkor.namaSkor+" </option>";
-                              }
+                              opt += "<option value="+itemSkor.ketSkor+">"+itemSkor.namaSkor+"</option>";
                             });
                           } else {
                             if (item.type == "date") {
@@ -3730,6 +3763,7 @@
                           var down_select = "</select>";
                           var downline = "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
                                         "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
+                                        "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none' placeholder='sebutkan ...'/>"+
                                         "</div>" +
                                         "</div>"+
                                         "<hr style='color:#b0b0b0;'/>"+
@@ -3758,10 +3792,25 @@
        for (i = 0; i <= ind; i++){
 
            var id_rsk = $("#id_rsk_"+i+"").val();
+
+           var nilai = "";
+           if ($("#val_rsk_"+i+"").is("select")) {
+             nilai = $("#val_rsk_"+i+" option:selected").text();
+           } else {
+             nilai = $("#val_rsk_"+i+"").val();
+           }
+
            // var nilai = $("#val_rsk_"+i+"").val();
+           // var nilai = $("#val_rsk_"+i+" option:selected").text();
            var name_rsk = $("#name_rsk_"+i+"").val();
-           var ket_rsk = $("#val_rsk_"+i+"").val();
+           var ket_rsk = "";
            var val_rsk = "0";
+
+           if (nilai.toLowerCase() == "lain") {
+             ket_rsk = $("#ot_val_rsk_"+i+"").val();
+           } else {
+             ket_rsk = nilai;
+           }
 
            // var intNilai = parseInt(nilai);
            // if (isNaN(intNilai)) {
@@ -3860,6 +3909,17 @@
                     $('#load_all').hide();
                 }
             }});
+    }
+
+    function showOtherInput(id){
+      var nilai = $("#"+id+"").val();
+      // console.log(id+" - "+nilai);
+      if (nilai.toLowerCase() == "lain") {
+        $("#ot_"+id+"").removeAttr('style');
+      } else {
+        $("#ot_"+id+"").hide();
+        $("#ot_"+id+"").val("");
+      }
     }
 
 
