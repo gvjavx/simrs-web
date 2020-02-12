@@ -21,6 +21,7 @@ public class ItSimrsSkorRanapEntity implements Serializable{
     private String lastUpdateWho;
     private String idKategori;
     private Integer skor;
+    private String keterangan;
 
     public String getId() {
         return id;
@@ -132,5 +133,13 @@ public class ItSimrsSkorRanapEntity implements Serializable{
 
     public void setIdKategori(String idKategori) {
         this.idKategori = idKategori;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 }

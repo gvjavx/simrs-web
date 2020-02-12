@@ -367,6 +367,7 @@ public class RawatInapAction extends BaseMasterAction {
             ranapEntity.setIdParameter(obj.getString("id"));
             ranapEntity.setNamaParameter(obj.getString("name"));
             ranapEntity.setSkor(Integer.valueOf(obj.getString("val")));
+            ranapEntity.setKeterangan(obj.getString("ket"));
             ranapEntity.setIdKategori(kategori);
             ranapEntity.setNoCheckup(noCheckup);
             ranapEntity.setIdDetailCheckup(idDetail);

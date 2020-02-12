@@ -43,6 +43,11 @@
 
 
     </script>
+    <style>
+    .btn{
+      margin-bottom: 7px;
+    }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -215,7 +220,7 @@
                             <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
                         </button>
                         <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
-                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Amak
+                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
                         </button>
                     </div>
                     <div class="box-header with-border" id="pos_dok">
@@ -1490,7 +1495,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i><div id="label-skor"> </div></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-skor"> </span></h4>
             </div>
             <div class="modal-body">
                 <div class="box">
@@ -1526,15 +1531,13 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Resiko Dekubitas <div id="label-resiko"> </div></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-add-resiko"> </span></h4>
             </div>
             <div class="modal-body">
                 <div class="box">
                     <br>
-                    <div class="form-group">
-                        <div class="row" id="body_resiko">
-                        </div>
-                    </div>
+                      <div id="body_resiko">
+                      </div>
                     <input type="hidden" id="ind_resiko" class="form form-control"/>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
@@ -3150,9 +3153,12 @@
       $("#modal-resiko").modal("show");
       $("#kat_skor").val(kat);
       dwr.engine.setAsync(true);
-      RawatInapAction.getKategoriSkorRanap("inap1", function(kategori){
+      RawatInapAction.getKategoriSkorRanap(kat, function(kategori){
         $("#label-skor").html("");
         $("#label-skor").html(kategori.namaKategori);
+
+        $("#label-add-resiko").html("");
+        $("#label-add-resiko").html(kategori.namaKategori);
 
         RawatInapAction.getListGroupSkorRanap(noCheckup, idDetail, kat, function(response){
           if (response != null) {
@@ -3186,41 +3192,54 @@
                 $.each(response, function (i, item) {
                     n = i;
                     var upline = "";
-                    if (item.namaParameter.length > 20) {
+                    if (item.namaParameter.length > 25) {
                       upline ="<div class='form-group'>" +
+                      "<div class='row'>"+
                       "<div class='col-md-8'>"+
                       "<label>"+item.namaParameter+"</label>"+
                       "</div>"+
-                      "<div class='col-md-4'>"+
-                      "<select class='form-control' id='val_rsk_"+i+"'>"
+                      "<div class='col-md-4'>";
                     } else {
                       upline ="<div class='form-group'>" +
+                      "<div class='row'>"+
                       "<div class='col-md-4'>"+
                       "<label>"+item.namaParameter+"</label>"+
                       "</div>"+
-                      "<div class='col-md-8'>"+
-                      "<select class='form-control' id='val_rsk_"+i+"'>"
+                      "<div class='col-md-8'>";
                     }
 
                         var opt = "";
                         RawatInapAction.getListSkorRanapByParam(item.idParameter, function(skors){
+                          var up_select = "<select class='form-control' id='val_rsk_"+i+"'>";
+                          if (skors.length > 0) {
+                            $.each(skors, function(i, itemSkor){
+                              if (item.skor == itemSkor.skor){
+                                  opt += "<option value="+itemSkor.skor+" selected> "+itemSkor.namaSkor+" </option>";
+                              } else {
+                                opt += "<option value="+itemSkor.skor+"> "+itemSkor.namaSkor+" </option>";
+                              }
+                            });
+                          } else {
+                            opt = "<input type='text' class='form-control' id='val_rsk_"+i+"'>";
+                          }
 
-                          $.each(skors, function(i, itemSkor){
-                            if (item.skor == itemSkor.skor){
-                                opt += "<option value='"+itemSkor.skor+"' selected> "+itemSkor.namaSkor+" </option>";
-                            } else {
-                              opt += "<option value='"+itemSkor.skor+"'> "+itemSkor.namaSkor+" </option>";
-                            }
-                          });
 
-                          console.log(skors);
+                          // console.log(skors);
 
-                          var downline = "</select>" +
-                          "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
-                          "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
-                          "</div>" +
-                          "</div>";
-                          str += upline+opt+downline;
+                          var down_select = "</select>";
+                          var downline = "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
+                                        "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
+                                        "</div>" +
+                                        "</div>"+
+                                        "<hr/>"
+                                        "</div>";
+                                        // "<div class='box-header with-border' style='margin-bottom: 7px;'></div>";
+
+                          if (skors.length > 0) {
+                            str += upline+up_select+opt+down_select+downline;
+                          } else {
+                            str += upline+opt+downline;
+                          }
 
                           $("#ind_resiko").val(n);
                           $("#body_resiko").html(str);
@@ -3238,10 +3257,22 @@
        for (i = 0; i <= ind; i++){
 
            var id_rsk = $("#id_rsk_"+i+"").val();
-           var val_rsk = $("#val_rsk_"+i+"").val();
+           var nilai = $("#val_rsk_"+i+"").val();
            var name_rsk = $("#name_rsk_"+i+"").val();
+           var ket_rsk = "";
+           var val_rsk = "0";
 
-           jsonrq.push({'id':id_rsk, 'val':val_rsk, 'name':name_rsk});
+           var intNilai = parseInt(nilai);
+           if (isNaN(intNilai)) {
+             ket_rsk = nilai;
+           } else {
+             val_rsk = nilai;
+           }
+           // console.log(parseInt(nilai));
+           // console.log(typeof nilai);
+           // console.log(isNaN(intNilai));
+
+           jsonrq.push({'id':id_rsk, 'val':val_rsk, 'name':name_rsk, 'ket':ket_rsk});
        }
 
        var kategori = $("#kat_skor").val();
