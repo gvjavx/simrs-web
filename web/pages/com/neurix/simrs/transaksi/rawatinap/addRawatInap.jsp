@@ -86,6 +86,14 @@
                                     <s:hidden id="no_detail_checkup" name="rawatInap.idDetailCheckup"/>
                                     <s:hidden id="id_rawat_inap" name="rawatInap.idRawatInap"/>
                                     <s:hidden id="id_pasien" name="rawatInap.idPasien"/>
+                                    <s:hidden id="id_jenis_pasien" name="rawatInap.idJenisPeriksa"/>
+                                    <tr>
+                                        <td width="45%"><b>No SEP</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="rawatInap.noSep"></s:label></table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -123,14 +131,6 @@
                                             <table><s:label name="rawatInap.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Jenis Pasien</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="rawatInap.jenisPeriksaPasien"></s:label>
-                                            </table>
-                                        </td>
-                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -139,6 +139,14 @@
                                     <img border="2" id="img_ktp" src="<s:property value="rawatInap.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
                                 <table class="table table-striped">
+                                    <tr>
+                                        <td><b>Jenis Pasien</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="rawatInap.jenisPeriksaPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -285,6 +293,54 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="status_bpjs" style="display: none">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Bpjs
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya">
+                                        </div>
+                                    </div>
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan">
+                                        </div>
+                                    </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Bpjs
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -299,7 +355,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
-                                <td>Dokter</td>
+                                <%--<td>Dokter</td>--%>
                                 <%--<td>Perawat</td>--%>
                                 <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
@@ -441,7 +497,33 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_all_war"></p>
+                        </div>
+                        <div class="alert alert-success alert-dismissible" style="display: none" id="success_all">
+                            <h4><i class="icon fa fa-info"></i> Info!</h4>
+                            <p id="msg_all_suc"></p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-4 text-center">
+                                        <a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>
+                                        <button style="display: none; cursor: no-drop;" type="button"
+                                                class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai rawat inap)</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">
@@ -449,9 +531,10 @@
                             Silahkan cek kembali data inputan!
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-offset-1 col-md-5">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px; margin-bottom: -2px;">Keterangan Selesai</label>
+                                    <label class="col-md-5" style="margin-top: 7px; margin-bottom: -2px;">Catatan Selesai</label>
+                                    <div class="col-md-7">
                                     <s:action id="initComboKet" namespace="/checkupdetail"
                                               name="getListComboKeteranganKeluar_checkupdetail"/>
                                     <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
@@ -460,49 +543,53 @@
                                               onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; showFormCekup(this)"
                                               headerKey="" headerValue="[Select one]"
                                               cssClass="form-control select2"/>
+                                    </div>
                                 </div>
-                                <div class="form-group" id="form-cekup" style="display: none;">
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group" id="form-cekup" style="display: none">
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Tanggal Chekup Ulang</label>
+                                        <label class="col-md-5" style="margin-top: 7px">Tanggal Chekup Ulang</label>
+                                        <div class="col-md-7">
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
                                             <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
                                         </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Catatan</label>
-                                        <s:textarea cssClass="form-control" rows="5" id="cekup_ket"></s:textarea>
+                                        <label class="col-md-5" style="margin-top: 7px">Catatan</label>
+                                        <div class="col-md-7">
+                                        <s:textarea cssStyle="margin-top: 7px" cssClass="form-control" rows="5" id="cekup_ket"></s:textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-success" onclick="saveKeterangan()"
-                                            style="margin-top: 15px;" id="save_ket"><i
-                                            class="fa fa-arrow-right"></i> Save
-                                    </button>
-                                    <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
-                                            class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
-                                        Sedang Menyimpan...
-                                    </button>
-                                    <a href="initForm_rawatinap.action" class="btn btn-warning"
-                                       style="margin-top: 15px;"><i
-                                            class="fa fa-arrow-left"></i> Back
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">&nbsp;</label>
-                                    <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                       id="war_catatan"><i class="fa fa-times"></i>required</p>
-                                    <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                       id="cor_catatan"><i class="fa fa-check"></i> correct</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-4 text-center">
+                                        <a href="initForm_rawatinap.action" class="btn btn-warning"
+                                           style="margin-top: 15px;"><i
+                                                class="fa fa-arrow-left"></i> Back
+                                        </a>
+                                        <button class="btn btn-success" onclick="confirmSaveKeterangan()"
+                                                style="margin-top: 15px;" id="save_ket"><i
+                                                class="fa fa-arrow-right"></i> Save Keterangan
+                                        </button>
+                                        <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
+                                                class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -663,26 +750,80 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3">Diagnosa</label>
-                        <div class="col-md-7">
-                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                      name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                      listValue="descOfDiagnosa"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                        <div class="form-group">
+                            <label class="col-md-3">Diagnosa</label>
+                            <div class="col-md-7">
+                                <s:textfield id="diagnosa_awal" style="margin-top: 7px"
+                                             name="headerCheckup.diagnosa"
+                                             onkeypress="$(this).css('border','')"
+                                             cssClass="form-control" required="false"/>
+                                <s:hidden name="headerCheckup.jenisTransaksi"/>
+                                <script>
+                                    var menus, mapped;
+                                    $('#diagnosa_awal').typeahead({
+                                        minLength: 3,
+                                        source: function (query, process) {
+                                            menus = [];
+                                            mapped = {};
+
+                                            var data = [];
+                                            dwr.engine.setAsync(false);
+                                            CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                                data = listdata;
+                                            });
+
+                                            $.each(data, function (i, item) {
+                                                var labelItem = item.namaDiagnosaBpjs;
+                                                mapped[labelItem] = {
+                                                    id: item.kodeDiagnosaBpjs,
+                                                    label: labelItem,
+                                                    name: item.namaDiagnosaBpjs
+                                                };
+                                                menus.push(labelItem);
+                                            });
+
+                                            process(menus);
+                                        },
+                                        updater: function (item) {
+                                            var selectedObj = mapped[item];
+                                            // insert to textarea diagnosa_ket
+                                            $("#diagnosa_ket").val(selectedObj.name);
+                                            return selectedObj.id;
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="col-md-offset-3 col-md-7">
+                                <s:textarea rows="4" id="diagnosa_ket"
+                                            cssStyle="margin-top: 7px" readonly="true"
+                                            name="headerCheckup.namaDiagnosa"
+                                            cssClass="form-control"></s:textarea>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_diagnosa"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                    </s:if>
+                    <s:else>
+                        <div class="form-group">
+                            <label class="col-md-3">Diagnosa</label>
+                            <div class="col-md-7">
+                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                          name="getListComboDiagnosa_checkupdetail"/>
+                                <s:select cssStyle="margin-top: 7px; width: 100%"
+                                          onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                          name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
+                                          listValue="descOfDiagnosa"
+                                          headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2"/>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_diagnosa"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                            </div>
                         </div>
-                    </div>
+                    </s:else>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">
@@ -1675,20 +1816,35 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+              </button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-
-
-
-<%-- <div class="mask"></div> --%>
+<div class="mask"></div>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -1728,7 +1884,56 @@
 
             }
         });
+
+        hitungStatusBiaya();
     });
+
+    function hitungStatusBiaya() {
+        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
+            if (response.jenisTransaksi == "bpjs") {
+                $('#status_bpjs').show();
+                if (response.tarifBpjs != null && response.tarifTindakan != null) {
+
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = response.tarifTindakan;
+
+                    var persen = "";
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                    } else {
+                        persen = 0;
+                    }
+
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if (parseInt(persen) > 70) {
+                        barClass = 'progress-bar-danger';
+                    } else if (parseInt(persen) > 50) {
+                        barClass = 'progress-bar-warning';
+                    } else {
+                        barClass = 'progress-bar-success';
+                    }
+
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
+
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                    if (coverBiaya != '') {
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                    }
+
+                    if (biayaTindakan != '') {
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                    }
+                }
+            } else {
+                $('#status_bpjs').hide();
+            }
+        });
+    }
 
     function listSelectDokter() {
         var option = "";
@@ -1766,7 +1971,7 @@
         $('#ruangan_ruang').html(option);
     }
 
-    function saveKeterangan() {
+    function confirmSaveKeterangan() {
 
         var idKtg       = "selesai";
         var noCheckup   = $("#no_checkup").val();
@@ -1778,20 +1983,26 @@
         var tgl_cekup   = $('#tgl_cekup').val();
         var ket_cekup   = $('#cekup_ket').val();
 
-        if (idKtg != '' && ket_selesai != '') {
-            $('#save_ket').hide();
-            $('#load_ket').show();
-            dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(8);
-                $('#save_ket').show();
-                $('#load_ket').hide();
-            });
+        if (idKtg != '' && ket_selesai != ''){
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+idDokter+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\')');
         } else {
             $('#warning_ket').show().fadeOut(5000);
             $('#war_catatan').show();
         }
+    }
+
+    function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_ket').hide();
+        $('#load_ket').show();
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
+            $('#info_dialog').dialog('open');
+            $('#close_pos').val(8);
+            $('#save_ket').show();
+            $('#load_ket').hide();
+        });
     }
 
     function listSelectTindakan(idKategori) {
@@ -2107,7 +2318,7 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
-                            "<td>" + item.namaDokter + "</td>" +
+                            // "<td>" + item.namaDokter + "</td>" +
 //                            "<td>" + item.idPerawat + "</td>" +
                             "<td align='right'>" + tarif +"</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
@@ -2117,14 +2328,15 @@
 
                 });
                 table = table + "<tr>" +
-                        "<td colspan='6'>Total</td>" +
+                        "<td colspan='4'>Total</td>" +
                         "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
+                $('#body_tindakan').html(table);
             }
         });
 
-        $('#body_tindakan').html(table);
+
 
     }
 
@@ -2993,7 +3205,7 @@
     function showFormCekup(select){
         var idx = select.selectedIndex;
         var idKet = select.options[idx].value;
-        if(idKet == "Cekup Ulang"){
+        if(idKet == "Checkup Ulang"){
             $('#form-cekup').show();
         }else{
             $('#form-cekup').hide();
@@ -3621,6 +3833,33 @@
           }
         });
       });
+    }
+
+    function confirmSaveAllTindakan(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','saveAllTindakan()');
+    }
+
+    function saveAllTindakan(){
+        var jenisPasien = $('#id_jenis_pasien').val();
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_all').hide();
+        $('#load_all').show();
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien, {
+            callback : function (response) {
+                if(response.status == "success"){
+                    $('#success_all').show().fadeOut(5000);
+                    $('#msg_all_suc').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }else{
+                    $('#warning_all').show().fadeOut(5000);
+                    $('#msg_all_war').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }
+            }});
     }
 
 
