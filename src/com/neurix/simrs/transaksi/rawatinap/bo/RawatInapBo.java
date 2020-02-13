@@ -2,6 +2,10 @@ package com.neurix.simrs.transaksi.rawatinap.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -24,4 +28,8 @@ public interface RawatInapBo {
     public ImSimrsKategoriSkorRanapEntity kategoriSkorRanap(String id);
     public List<MonVitalSign> getListMonVitalSign(MonVitalSign bean);
     public CrudResponse saveMonVitalSign(ItSimrsMonVitalSignEntity bean);
+    public List<MonCairan> getListMonCairan(MonCairan bean);
+    public CrudResponse saveMonCairan(ItSimrsMonCairanEntity bean);
+    public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean);
+    public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean);
 }

@@ -34,6 +34,9 @@
         <property name="cekTambahanObat">
             <column name="cek_tambahan_obat" sql-type="varchar" length="100" not-null="false"/>
         </property>
+        <property name="sisa">
+            <column name="sisa" sql-type="varchar" length="10" not-null="false"/>
+        </property>
         <property name="jamUkurBuang">
             <column name="jam_ukur_buang" sql-type="varchar" length="10" not-null="false"/>
         </property>

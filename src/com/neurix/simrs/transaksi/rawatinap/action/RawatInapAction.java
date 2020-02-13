@@ -11,6 +11,10 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
@@ -486,13 +490,13 @@ public class RawatInapAction extends BaseMasterAction {
 
         MonVitalSign monVitalSign = new MonVitalSign();
 
-        if ("".equalsIgnoreCase(noCheckup))
+        if (!"".equalsIgnoreCase(noCheckup))
             monVitalSign.setNoCheckup(noCheckup);
 
-        if ("".equalsIgnoreCase(idDetailCheckup))
+        if (!"".equalsIgnoreCase(idDetailCheckup))
             monVitalSign.setIdDetailCheckup(idDetailCheckup);
 
-        if ("".equalsIgnoreCase(id))
+        if (!"".equalsIgnoreCase(id))
             monVitalSign.setId(id);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -519,7 +523,7 @@ public class RawatInapAction extends BaseMasterAction {
             monVitalSignEntity.setTensi(Integer.valueOf(obj.getString("tensi").toString()));
 
             monVitalSignEntity.setFlag("Y");
-            monVitalSignEntity.setAction("U");
+            monVitalSignEntity.setAction("C");
             monVitalSignEntity.setCreatedDate(now);
             monVitalSignEntity.setCreatedWho(userLogin);
             monVitalSignEntity.setLastUpdate(now);
@@ -530,6 +534,109 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         return rawatInapBo.saveMonVitalSign(monVitalSignEntity);
+    }
+
+    public List<MonCairan> getListMonCairan(String noCheckup, String idDetailCheckup, String id){
+
+        MonCairan monCairan = new MonCairan();
+        if (!"".equalsIgnoreCase(noCheckup))
+            monCairan.setNoCheckup(noCheckup);
+
+        if (!"".equalsIgnoreCase(idDetailCheckup))
+            monCairan.setIdDetailCheckup(idDetailCheckup);
+
+        if (!"".equalsIgnoreCase(id))
+            monCairan.setId(id);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getListMonCairan(monCairan);
+    }
+
+    public CrudResponse saveMonCairan(String noCheckup, String idDetail, String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonCairanEntity monCairanEntity = new ItSimrsMonCairanEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monCairanEntity.setNoCheckup(noCheckup);
+            monCairanEntity.setIdDetailCheckup(idDetail);
+            monCairanEntity.setMacamCairan(obj.getString("macam"));
+            monCairanEntity.setMelalui(obj.getString("melalui"));
+            monCairanEntity.setJumlah(obj.getString("jumlah"));
+            monCairanEntity.setJamMulai(obj.getString("mulai"));
+            monCairanEntity.setJamSelesai(obj.getString("selesai"));
+            monCairanEntity.setCekTambahanObat(obj.getString("cek"));
+            monCairanEntity.setJamUkurBuang(obj.getString("jam_ukur_buang"));
+            monCairanEntity.setDari(obj.getString("dari"));
+            monCairanEntity.setBalanceCairan(obj.getString("balance"));
+            monCairanEntity.setKeterangan(obj.getString("ket"));
+            monCairanEntity.setSisa(obj.getString("sisa"));
+            monCairanEntity.setFlag("Y");
+            monCairanEntity.setAction("C");
+            monCairanEntity.setCreatedDate(now);
+            monCairanEntity.setCreatedWho(userLogin);
+            monCairanEntity.setLastUpdate(now);
+            monCairanEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.saveMonCairan(monCairanEntity);
+    }
+
+    public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String id){
+
+        MonPemberianObat monPemberianObat = new MonPemberianObat();
+        if (!"".equalsIgnoreCase(noCheckup))
+            monPemberianObat.setNoCheckup(noCheckup);
+
+        if (!"".equalsIgnoreCase(idDetailCheckup))
+            monPemberianObat.setIdDetailCheckup(idDetailCheckup);
+
+        if (!"".equalsIgnoreCase(id))
+            monPemberianObat.setId(id);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getListPemberianObat(monPemberianObat);
+    }
+
+    public CrudResponse saveMonPemberianObat(String noCheckup, String idDetail, String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonPemberianObatEntity monPemberianObatEntity = new ItSimrsMonPemberianObatEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monPemberianObatEntity.setNoCheckup(noCheckup);
+            monPemberianObatEntity.setIdDetailCheckup(idDetail);
+            monPemberianObatEntity.setNamaObat(obj.getString("name"));
+            monPemberianObatEntity.setCaraPemberian(obj.getString("cara"));
+            monPemberianObatEntity.setDosis(obj.getString("dosis"));
+            monPemberianObatEntity.setSkinTes(obj.getString("tes"));
+            monPemberianObatEntity.setWaktu(obj.getString("waktu"));
+            monPemberianObatEntity.setKeterangan(obj.getString("ket"));
+            monPemberianObatEntity.setFlag("Y");
+            monPemberianObatEntity.setAction("C");
+            monPemberianObatEntity.setCreatedDate(now);
+            monPemberianObatEntity.setCreatedWho(userLogin);
+            monPemberianObatEntity.setLastUpdate(now);
+            monPemberianObatEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.saveMonPemberianObat(monPemberianObatEntity);
     }
 
 }

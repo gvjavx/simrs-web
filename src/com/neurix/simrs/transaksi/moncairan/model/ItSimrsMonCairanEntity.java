@@ -27,6 +27,7 @@ public class ItSimrsMonCairanEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String sisa;
 
     public String getId() {
         return id;
@@ -178,5 +179,13 @@ public class ItSimrsMonCairanEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getSisa() {
+        return sisa;
+    }
+
+    public void setSisa(String sisa) {
+        this.sisa = sisa;
     }
 }

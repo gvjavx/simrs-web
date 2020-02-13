@@ -21,6 +21,8 @@ public class ItSimrsMonVitalSignEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Integer tb;
+    private Integer bb;
 
     public String getId() {
         return id;
@@ -132,5 +134,21 @@ public class ItSimrsMonVitalSignEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public Integer getTb() {
+        return tb;
+    }
+
+    public void setTb(Integer tb) {
+        this.tb = tb;
+    }
+
+    public Integer getBb() {
+        return bb;
+    }
+
+    public void setBb(Integer bb) {
+        this.bb = bb;
     }
 }

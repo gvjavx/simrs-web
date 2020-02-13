@@ -4,6 +4,8 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -31,6 +33,7 @@ public class MonVitalSignDao extends GenericDao<ItSimrsMonVitalSignEntity, Strin
         if (mapCriteria.get("id_detail_checkup") != null)
             mapCriteria.get(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
 
+        criteria.addOrder(Order.desc("createdDate"));
         List<ItSimrsMonVitalSignEntity> resuts = criteria.list();
         return resuts;
     }

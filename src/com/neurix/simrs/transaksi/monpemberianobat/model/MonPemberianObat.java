@@ -22,6 +22,15 @@ public class MonPemberianObat {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String stDate;
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
 
     public String getId() {
         return id;

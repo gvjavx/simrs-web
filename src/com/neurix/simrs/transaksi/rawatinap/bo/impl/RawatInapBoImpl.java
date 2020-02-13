@@ -4,7 +4,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
 import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
 import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
@@ -296,6 +300,136 @@ public class RawatInapBoImpl implements RawatInapBo {
             } catch (HibernateException e){
                 response.setStatus("error");
                 response.setMsg("[RawatInapBoImpl.saveMonVitalSign] ERROR "+ e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonCairan> getListMonCairan(MonCairan bean) {
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonCairanEntity> monCairanEntities = new ArrayList<>();
+        try {
+            monCairanEntities = monCairanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        }
+
+        List<MonCairan> monCairans = new ArrayList<>();
+        if (monCairanEntities.size() > 0){
+            MonCairan monCairan;
+            for (ItSimrsMonCairanEntity entity : monCairanEntities){
+                monCairan = new MonCairan();
+                monCairan.setId(entity.getId());
+                monCairan.setNoCheckup(entity.getNoCheckup());
+                monCairan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monCairan.setMacamCairan(entity.getMacamCairan());
+                monCairan.setMelalui(entity.getMelalui());
+                monCairan.setJumlah(entity.getJumlah());
+                monCairan.setJamMulai(entity.getJamMulai());
+                monCairan.setJamSelesai(entity.getJamSelesai());
+                monCairan.setCekTambahanObat(entity.getCekTambahanObat());
+                monCairan.setJamUkurBuang(entity.getJamUkurBuang());
+                monCairan.setDari(entity.getDari());
+                monCairan.setBalanceCairan(entity.getBalanceCairan());
+                monCairan.setKeterangan(entity.getKeterangan());
+                monCairan.setFlag(entity.getFlag());
+                monCairan.setAction(entity.getAction());
+                monCairan.setCreatedDate(entity.getCreatedDate());
+                monCairan.setCreatedWho(entity.getCreatedWho());
+                monCairan.setLastUpdate(entity.getLastUpdate());
+                monCairan.setLastUpdateWho(entity.getLastUpdateWho());
+                monCairan.setStDate(entity.getCreatedDate().toString());
+                monCairans.add(monCairan);
+            }
+        }
+        return monCairans;
+    }
+
+    @Override
+    public CrudResponse saveMonCairan(ItSimrsMonCairanEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonCairan] bean is null");
+        if (bean != null){
+            bean.setId("OCR"+getNextMonCairan());
+            try {
+                monCairanDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonCairan] ERROR "+ e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean) {
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonPemberianObatEntity> pemberianObatEntities = new ArrayList<>();
+        try {
+            pemberianObatEntities = monPemberianObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        }
+
+        List<MonPemberianObat> monPemberianObats = new ArrayList<>();
+        if (pemberianObatEntities.size() > 0){
+            MonPemberianObat monPemberianObat;
+            for (ItSimrsMonPemberianObatEntity entity : pemberianObatEntities){
+                monPemberianObat = new MonPemberianObat();
+                monPemberianObat.setId(entity.getId());
+                monPemberianObat.setNoCheckup(entity.getNoCheckup());
+                monPemberianObat.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monPemberianObat.setNamaObat(entity.getNamaObat());
+                monPemberianObat.setCaraPemberian(entity.getCaraPemberian());
+                monPemberianObat.setDosis(entity.getDosis());
+                monPemberianObat.setSkinTes(entity.getSkinTes());
+                monPemberianObat.setWaktu(entity.getWaktu());
+                monPemberianObat.setKeterangan(entity.getKeterangan());
+                monPemberianObat.setFlag(entity.getFlag());
+                monPemberianObat.setAction(entity.getAction());
+                monPemberianObat.setCreatedDate(entity.getCreatedDate());
+                monPemberianObat.setCreatedWho(entity.getCreatedWho());
+                monPemberianObat.setLastUpdate(entity.getLastUpdate());
+                monPemberianObat.setLastUpdateWho(entity.getLastUpdateWho());
+                monPemberianObat.setStDate(entity.getCreatedDate().toString());
+                monPemberianObats.add(monPemberianObat);
+            }
+        }
+        return monPemberianObats;
+    }
+
+    @Override
+    public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] bean is null");
+        if (bean != null){
+            bean.setId("POT"+getNextMonPemberianObat());
+            try {
+                monPemberianObatDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] ERROR "+ e.getMessage());
             }
         }
         return response;
