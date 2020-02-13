@@ -579,9 +579,9 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 logger.error("[PermintaanObatController.create] Error, get transaksi obat detail " + e.getMessage());
             }
 
-            resultTransaksi.get(0).setTotalBayar(new BigInteger(totalBayar));
-            resultTransaksi.get(0).setTotalHarga(new BigInteger(totalHarga));
-            resultTransaksi.get(0).setKembalian(new BigInteger(kembalian));
+            resultTransaksi.get(0).setTotalBayar(new BigInteger("0"));
+            resultTransaksi.get(0).setTotalHarga(new BigInteger("0"));
+            resultTransaksi.get(0).setKembalian(new BigInteger("0"));
             resultTransaksi.get(0).setNominal(new BigInteger("0"));
             resultTransaksi.get(0).setIdPermintaanResep(idPermintaanResep);
 

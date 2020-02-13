@@ -95,7 +95,7 @@
             <column name="tinggi" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="berat">
-        <column name="berat_badan" sql-type="varchar" length="10" not-null="false" />
+            <column name="berat_badan" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="tglKeluar">
             <column name="tgl_keluar" sql-type="timestamp" not-null="false" />
@@ -112,7 +112,6 @@
         <property name="kodeDiagnosa">
             <column name="kode_diagnosa" sql-type="varchar" length="30"/>
         </property>
-
         <property name="noRujukan">
             <column name="no_rujukan" sql-type="varchar" length="100"/>
         </property>

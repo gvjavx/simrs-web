@@ -99,8 +99,6 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     public void setKetRujukan(String ketRujukan) {
         this.ketRujukan = ketRujukan;
     }
-<<<<<<< HEAD
-=======
 
     private String noRujukan;
     private String noPpkRujukan;
@@ -138,7 +136,6 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     public void setTglRujukan(Date tglRujukan) {
         this.tglRujukan = tglRujukan;
     }
->>>>>>> sodiq/editor
 
     public String getKodeDiagnosa() {
         return kodeDiagnosa;
