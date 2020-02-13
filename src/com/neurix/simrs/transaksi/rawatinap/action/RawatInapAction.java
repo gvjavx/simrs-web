@@ -10,6 +10,8 @@ import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
+import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
@@ -418,6 +420,56 @@ public class RawatInapAction extends BaseMasterAction {
         skorRanap.setGroupId(groupId);
 
         return rawatInapBo.getListSkorRanap(skorRanap);
+    }
+
+    public List<MonVitalSign> getListMonVitalSign(String noCheckup, String idDetailCheckup, String id){
+
+        MonVitalSign monVitalSign = new MonVitalSign();
+
+        if ("".equalsIgnoreCase(noCheckup))
+            monVitalSign.setNoCheckup(noCheckup);
+
+        if ("".equalsIgnoreCase(idDetailCheckup))
+            monVitalSign.setIdDetailCheckup(idDetailCheckup);
+
+        if ("".equalsIgnoreCase(id))
+            monVitalSign.setId(id);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.getListMonVitalSign(monVitalSign);
+    }
+
+    public CrudResponse saveMonVitalSign(String noCheckup, String idDetail, String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsMonVitalSignEntity monVitalSignEntity = new ItSimrsMonVitalSignEntity();
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            monVitalSignEntity.setNoCheckup(noCheckup);
+            monVitalSignEntity.setIdDetailCheckup(idDetail);
+            monVitalSignEntity.setJam(Integer.valueOf(obj.getString("jam").toString()));
+            monVitalSignEntity.setNadi(Integer.valueOf(obj.getString("nadi").toString()));
+            monVitalSignEntity.setNafas(Integer.valueOf(obj.getString("nafas").toString()));
+            monVitalSignEntity.setSuhu(Integer.valueOf(obj.getString("suhu").toString()));
+            monVitalSignEntity.setTensi(Integer.valueOf(obj.getString("tensi").toString()));
+
+            monVitalSignEntity.setFlag("Y");
+            monVitalSignEntity.setAction("U");
+            monVitalSignEntity.setCreatedDate(now);
+            monVitalSignEntity.setCreatedWho(userLogin);
+            monVitalSignEntity.setLastUpdate(now);
+            monVitalSignEntity.setLastUpdateWho(userLogin);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+
+        return rawatInapBo.saveMonVitalSign(monVitalSignEntity);
     }
 
 }

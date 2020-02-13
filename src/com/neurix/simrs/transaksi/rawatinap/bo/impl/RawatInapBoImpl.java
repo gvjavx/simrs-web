@@ -6,6 +6,8 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
 import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
+import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
+import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -231,6 +233,69 @@ public class RawatInapBoImpl implements RawatInapBo {
                     response.setStatus("error");
                     response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR "+e.getMessage());
                 }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonVitalSign> getListMonVitalSign(MonVitalSign bean) {
+
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonVitalSignEntity> monVitalSignEntities = new ArrayList<>();
+        try {
+            monVitalSignEntities = monVitalSignDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonVitalSign] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonVitalSign] ERROR"+e.getMessage());
+        }
+
+        List<MonVitalSign> monVitalSigns = new ArrayList<>();
+        if (monVitalSignEntities.size() > 0){
+            MonVitalSign monVitalSign;
+            for (ItSimrsMonVitalSignEntity entity : monVitalSignEntities){
+                monVitalSign = new MonVitalSign();
+                monVitalSign.setId(entity.getId());
+                monVitalSign.setNoCheckup(entity.getNoCheckup());
+                monVitalSign.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monVitalSign.setNadi(entity.getNadi());
+                monVitalSign.setNafas(entity.getNafas());
+                monVitalSign.setSuhu(entity.getSuhu());
+                monVitalSign.setTensi(entity.getTensi());
+                monVitalSign.setJam(entity.getJam());
+                monVitalSign.setFlag(entity.getFlag());
+                monVitalSign.setAction(entity.getAction());
+                monVitalSign.setCreatedDate(entity.getCreatedDate());
+                monVitalSign.setCreatedWho(entity.getCreatedWho());
+                monVitalSign.setLastUpdate(entity.getLastUpdate());
+                monVitalSign.setLastUpdateWho(entity.getLastUpdateWho());
+                monVitalSign.setStDate(entity.getCreatedDate().toString());
+                monVitalSigns.add(monVitalSign);
+            }
+        }
+        return monVitalSigns;
+    }
+
+    @Override
+    public CrudResponse saveMonVitalSign(ItSimrsMonVitalSignEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonVitalSign] bean is null");
+        if (bean != null){
+            bean.setId("OVS"+getNextMonVitalSign());
+            try {
+                monVitalSignDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonVitalSign] ERROR "+ e.getMessage());
             }
         }
         return response;
