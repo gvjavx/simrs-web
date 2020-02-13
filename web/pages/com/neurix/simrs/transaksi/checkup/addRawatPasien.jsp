@@ -1127,19 +1127,19 @@
 </div>
 
 <div class="modal fade" id="modal-rekam-medic">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
                         <thead>
-                        <td>No RM</td>
-                        <td>Nama Pasien</td>
+                        <td>No Checkup</td>
+                        <%--<td>Nama Pasien</td>--%>
                         <td>Diagnosa Terakhir</td>
                         <td>Tanggal Keluar</td>
                         </thead>
@@ -1465,7 +1465,7 @@
 
                 namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
                 diagnosa = response.diagnosa;
-                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" + response.stTgl + "</strong>";
+                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTgl)) + "</strong>";
 
                 if (response.listOfAlergi != null) {
                     $.each(response.listOfAlergi, function (i, item) {
@@ -1492,18 +1492,37 @@
     function initRekamMedic() {
         var idPasien = $("#id_pasien").val();
         var table = "";
+        var namaPasien = "";
 
         CheckupAction.listRekamMedic(idPasien, function (response) {
+            console.log(response);
             $.each(response, function (i, item) {
+                var noCheckup = "";
+                var dignosa = "";
+                var tanggal = "";
+                var dateFormat = "";
+
+                if(item.noCheckup != null){
+                    noCheckup = item.noCheckup;
+                }
+                if(item.diagnosa != null){
+                    dignosa = item.diagnosa;
+                }
+                if(item.stTgl != null){
+                    tanggal = item.stTgl;
+                    dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                }
                 table += "<tr>" +
-                        "<td>" + item.noCheckup + "</td>" +
-                        "<td>" + item.namaPasien + "</td>" +
-                        "<td>" + item.diagnosa + "</td>" +
-                        "<td>" + item.stTgl + "</td>" +
+                        "<td>" + noCheckup + "</td>" +
+                        "<td>" + dignosa + "</td>" +
+                        "<td>" + dateFormat + "</td>" +
                         "</tr>";
+
+                namaPasien = item.namaPasien;
             });
 
             $("#modal-rekam-medic").modal('show');
+            $('#nama_medik').html(namaPasien);
             $("#body-rekam-medic").html(table);
         });
     }

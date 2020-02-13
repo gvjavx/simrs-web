@@ -30,12 +30,16 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -1162,6 +1166,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
             RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
             LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
+            PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+            TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
             List<TindakanRawat> listTindakan = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
@@ -1275,9 +1281,81 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
                 }
             }
+
+            List<PermintaanResep> resepList = new ArrayList<>();
+            PermintaanResep resep = new PermintaanResep();
+            resep.setIdDetailCheckup(idDetail);
+            resep.setFlag("Y");
+
+            try {
+                resepList = permintaanResepBo.getByCriteria(resep);
+            }catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tindakan :"+e.getMessage());
+            }
+
+            if(resepList.size()> 0 ){
+                for (PermintaanResep entity: resepList){
+
+                    List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+                    RiwayatTindakan tindakan = new RiwayatTindakan();
+                    tindakan.setIdTindakan(entity.getIdPermintaanResep());
+
+                    try {
+                        riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
+                    }catch (HibernateException e){
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :"+e.getMessage());
+                    }
+
+                    if (riwayatTindakanList.isEmpty()){
+
+                        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+                        TransaksiObatDetail detail = new TransaksiObatDetail();
+                        detail.setIdPermintaanResep(entity.getIdPermintaanResep());
+
+                        try {
+                            obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(detail);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :"+e.getMessage());
+                        }
+
+                        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+
+                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                        riwayatTindakan.setIdTindakan(entity.getIdPermintaanResep());
+                        riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                        riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep "+entity.getIdPermintaanResep());
+                        riwayatTindakan.setTotalTarif(new BigDecimal(hitungTotalResep));
+                        riwayatTindakan.setKeterangan("resep");
+                        riwayatTindakan.setJenisPasien(jenisPasien);
+                        riwayatTindakan.setAction("C");
+                        riwayatTindakan.setFlag("Y");
+                        riwayatTindakan.setCreatedWho(user);
+                        riwayatTindakan.setCreatedDate(updateTime);
+                        riwayatTindakan.setLastUpdate(updateTime);
+                        riwayatTindakan.setLastUpdateWho(user);
+
+                        try {
+                            riwayatTindakanBo.saveAdd(riwayatTindakan);
+                        }catch (GeneralBOException e){
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :"+e.getMessage());
+                        }
+                    }
+                }
+            }
         }
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] END process >>>");
         return SUCCESS;
+    }
+
+    private BigInteger hitungTotalBayar(List<TransaksiObatDetail> transaksiObatDetails) {
+
+        BigInteger total = new BigInteger(String.valueOf("0"));
+        if (transaksiObatDetails != null && transaksiObatDetails.size() > 0) {
+            for (TransaksiObatDetail trans : transaksiObatDetails) {
+                total = total.add(trans.getTotalHarga());
+            }
+        }
+        return total;
     }
 
 

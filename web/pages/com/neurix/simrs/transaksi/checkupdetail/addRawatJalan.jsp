@@ -1512,44 +1512,6 @@
         });
     }
 
-    <%--function hitungStatusBiaya(){--%>
-
-    <%--var coverBiaya = '<s:property value="tarifCoverBpjs"></s:property>';--%>
-    <%--var biayaTindakan = '<s:property value="tarifTotalTindakan"></s:property>';--%>
-
-    <%--var persen = "";--%>
-    <%--if(coverBiaya != '' && biayaTindakan){--%>
-    <%--persen = ((parseInt(biayaTindakan)/parseInt(coverBiaya))*100).toFixed(2);--%>
-    <%--}else{--%>
-    <%--persen = 0;--%>
-    <%--}--%>
-
-    <%--var barClass = "";--%>
-    <%--var barLabel = "";--%>
-
-    <%--if(parseInt(persen) > 70){--%>
-    <%--barClass = 'progress-bar-danger';--%>
-    <%--}else if (parseInt(persen) > 50){--%>
-    <%--barClass = 'progress-bar-warning';--%>
-    <%--}else{--%>
-    <%--barClass = 'progress-bar-success';--%>
-    <%--}--%>
-
-    <%--var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">'+"100.00%"+'</div>';--%>
-
-    <%--var barTindakan = '<div class="progress-bar '+barClass+'" style="width: '+persen+'%" role="progressbar" aria-valuenow="'+persen+'" aria-valuemin="0" aria-valuemax="100">'+persen+"%"+ '</div>';--%>
-
-    <%--if(coverBiaya != ''){--%>
-    <%--$('#sts_cover_biaya').html(barBpjs);--%>
-    <%--$('#b_bpjs').html(formatRupiah(coverBiaya)+" (100%)");--%>
-    <%--}--%>
-
-    <%--if(biayaTindakan != ''){--%>
-    <%--$('#sts_biaya_tindakan').html(barTindakan);--%>
-    <%--$('#b_tindakan').html(formatRupiah(biayaTindakan)+" ("+persen+"%)");--%>
-    <%--}--%>
-    <%--}--%>
-
     function saveAlergi(id) {
         var alergi = $('#alergi').val();
 
@@ -1861,7 +1823,6 @@
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
             $('#modal-lab').modal('show');
         } else if (select == 5) {
-//            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
             $('#ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
             $('#nama_form').show();
@@ -2107,8 +2068,6 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
-//                            "<td>" + item.namaDokter + "</td>" +
-//                            "<td>" + perawat + "</td>" +
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
@@ -2362,7 +2321,6 @@
 
     function saveObat(idInap) {
 
-//        var idJenis = $('#obat_jenis_obat').val();
         var jenisSatuan = $('#ob_jenis_satuan').val();
         var obat = $('#ob_id_obat').val();
         var qty = $('#ob_qty').val();
@@ -2544,19 +2502,6 @@
         var lembarPerBox = "";
         var bijiPerLembar = "";
 
-//        if (idObat != '') {
-//            ObatAction.getStokObat(idObat, function (response) {
-//                if (response != null) {
-//                    $.each(response, function (i, item) {
-//                        if (item.idObat == idObat) {
-//                            if (item.qty != null) {
-//                                stok = item.qty;
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
         if (idx > 0) {
 
             var obat = select.options[idx].value;
@@ -2626,6 +2571,7 @@
         $('#lab_parameter').val(idParameter).trigger('change');
         $('#modal-lab').modal('show');
     }
+
     function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
         var qtyBox1 = "";
         var qtyLembar1 = "";
@@ -2891,9 +2837,7 @@
     }
 
     function printResep(id) {
-
         window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
-//        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
     }
 
     function detailResep(id) {

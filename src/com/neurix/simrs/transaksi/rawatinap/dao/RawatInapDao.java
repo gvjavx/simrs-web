@@ -490,7 +490,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
                     rawatInap.setNoSep(obj[16].toString());
-                    rawatInap.setKlaimBpjsFlag(obj[17].toString());
+                    rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());

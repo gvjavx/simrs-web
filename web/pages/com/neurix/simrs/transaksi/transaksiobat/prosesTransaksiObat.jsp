@@ -14,6 +14,18 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type="text/javascript">
+        function formatRupiah(angka) {
+            if (angka != '' && angka != null) {
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            } else {
+                return 0;
+            }
+        }
+    </script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -156,46 +168,6 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
                     </div>
                     <div class="box-body">
-                        <%--<table class="table table-bordered table-striped">--%>
-                            <%--<thead>--%>
-                            <%--<tr bgcolor="#90ee90">--%>
-                                <%--<td>Nama Obat</td>--%>
-                                <%--<td align="center">Qty Request</td>--%>
-                                <%--<td align="center">Qty Approve</td>--%>
-                                <%--<td align="center">Harga Satuan (Rp.)</td>--%>
-                                <%--<td align="center">Harga Total (Rp.)</td>--%>
-                                <%--<td width="21%">Scan ID Pabrikan</td>--%>
-                                <%--<td>Jenis Satuan</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<s:iterator value="#session.listOfResultResep" id="listOfResultResep">--%>
-                                <%--<tr>--%>
-                                    <%--<td><s:property value="namaObat"/></td>--%>
-                                    <%--<td align="center"><s:property value="qty"/></td>--%>
-                                    <%--<td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>--%>
-                                    <%--<td align="right"><script>var val = <s:property value="harga"/>;--%>
-                                    <%--if (val != null && val != '') {--%>
-                                        <%--document.write(formatRupiah(val))--%>
-                                    <%--}</script></td>--%>
-                                    <%--<td align="right"> <script>var val = <s:property value="totalHarga"/>;--%>
-                                    <%--if (val != null && val != '') {--%>
-                                        <%--document.write(formatRupiah(val))--%>
-                                    <%--}</script></td>--%>
-                                    <%--<td>--%>
-                                        <%--<div class="input-group">--%>
-                                            <%--<input type="text" class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<span id='status<s:property value="idObat"/>'></span>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</td>--%>
-                                    <%--<td><s:property value="jenisSatuan"/></td>--%>
-                                <%--</tr>--%>
-                            <%--</s:iterator>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -208,9 +180,58 @@
                                 <td>Jenis Satuan</td>
                             </tr>
                             </thead>
-                            <tbody id="body_list_obat">
+                            <tbody>
+                            <s:iterator value="#session.listOfResultResep" id="listOfResultResep" var="row">
+                                <tr>
+                                    <td><s:property value="namaObat"/></td>
+                                    <td align="center"><s:property value="qty"/></td>
+                                    <%--<td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>--%>
+                                    <td align="right"><script>var val = <s:property value="harga"/>;
+                                    if (val != null && val != '') {
+                                        document.write(formatRupiah(val))
+                                    }</script></td>
+                                    <td align="right"> <script>var val = <s:property value="totalHarga"/>;
+                                    if (val != null && val != '') {
+                                        document.write(formatRupiah(val))
+                                    }</script></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <s:if test='#row.flagVerifikasi == "Y"'>
+                                                <input type="text" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                <div class="input-group-addon">
+                                                    <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
+                                                </div>
+                                            </s:if>
+                                            <s:else>
+                                                <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                <div class="input-group-addon">
+                                                    <span id='status<s:property value="idObat"/>'></span>
+                                                </div>
+                                            </s:else>
+
+                                        </div>
+                                    </td>
+                                    <td><s:property value="jenisSatuan"/></td>
+                                </tr>
+                            </s:iterator>
                             </tbody>
                         </table>
+
+                        <%--<table class="table table-bordered table-striped">--%>
+                            <%--<thead>--%>
+                            <%--<tr bgcolor="#90ee90">--%>
+                                <%--<td>Nama Obat</td>--%>
+                                <%--<td align="center">Qty Request</td>--%>
+                                <%--&lt;%&ndash;<td align="center">Qty Approve</td>&ndash;%&gt;--%>
+                                <%--<td align="center">Harga Satuan (Rp.)</td>--%>
+                                <%--<td align="center">Harga Total (Rp.)</td>--%>
+                                <%--<td width="21%">Scan ID Pabrikan</td>--%>
+                                <%--<td>Jenis Satuan</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_list_obat">--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-body">
@@ -489,17 +510,6 @@
     var idCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
 
-    function formatRupiah(angka) {
-        if (angka != '' && angka != null) {
-            var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
-        } else {
-            return 0;
-        }
-    }
-
     function formatRupiah2(angka) {
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
@@ -541,7 +551,7 @@
             }
         });
 
-        listObatResep();
+        // listObatResep();
         cekListObat();
     });
 
@@ -619,7 +629,7 @@
                     })
                 }
             });
-        },5000);
+        },1000);
     }
 
     function confirm() {
@@ -879,9 +889,9 @@
                                 warna = '#ccc';
                                 color = '#fff';
                                 disabled = 'disabled';
-                            }
-                            else if (diffDays < 10) {
-                                warna = '#dd4b39 #ccc';
+
+                            } else if (diffDays < 10) {
+                                warna = '#dd4b39';
                                 color = '#fff';
 
                             } else if (diffDays < 30) {
