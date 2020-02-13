@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
@@ -433,6 +434,16 @@ public class RawatInapBoImpl implements RawatInapBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public List<Obat> getListObatParenteral(String idPelayanan) {
+        return monPemberianObatDao.getListObatParenteral(idPelayanan);
+    }
+
+    @Override
+    public List<Obat> getListObatNonParenteral(String idDetail, String kategori) {
+        return monPemberianObatDao.getListObatNonParenteral(idDetail, kategori);
     }
 
     @Override

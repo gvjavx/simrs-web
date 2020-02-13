@@ -6,6 +6,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -637,6 +638,18 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
 
         return rawatInapBo.saveMonPemberianObat(monPemberianObatEntity);
+    }
+
+    public List<Obat> getListObatParenteral(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        return rawatInapBo.getListObatParenteral(id);
+    }
+
+    public List<Obat> getListObatNonParenteral(String id, String kategori){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        return rawatInapBo.getListObatNonParenteral(id, kategori);
     }
 
 }

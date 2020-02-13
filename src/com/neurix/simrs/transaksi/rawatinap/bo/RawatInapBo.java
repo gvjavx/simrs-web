@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -32,4 +33,6 @@ public interface RawatInapBo {
     public CrudResponse saveMonCairan(ItSimrsMonCairanEntity bean);
     public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean);
     public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean);
+    public List<Obat> getListObatParenteral(String idPelayanan);
+    public List<Obat> getListObatNonParenteral(String idDetail, String kategori);
 }
