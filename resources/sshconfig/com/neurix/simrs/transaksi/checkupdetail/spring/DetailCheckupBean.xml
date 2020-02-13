@@ -12,6 +12,7 @@
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:keteranganKeluarBoProxy-ref="keteranganKeluarBoProxy"
+          p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
@@ -22,6 +23,8 @@
           p:dokterTeamDao-ref="dokterTeamDao"
           p:ruanganDao-ref="ruanganDao"
           p:headerCheckupDao-ref="headerCheckupDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:periksaLabDao-ref="periksaLabDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"

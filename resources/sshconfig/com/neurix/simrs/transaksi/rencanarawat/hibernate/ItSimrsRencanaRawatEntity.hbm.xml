@@ -20,10 +20,10 @@
             <column name="no_checkup" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="namaParameter">
-            <column name="nama_parameter" sql-type="varchar" length="100" not-null="false"/>
+            <column name="nama_parameter" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="check">
-            <column name="check" sql-type="varchar" length="1" not-null="false"/>
+            <column name="checking_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

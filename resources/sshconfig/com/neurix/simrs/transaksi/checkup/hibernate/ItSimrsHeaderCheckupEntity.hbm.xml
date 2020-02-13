@@ -112,6 +112,19 @@
         <property name="kodeDiagnosa">
             <column name="kode_diagnosa" sql-type="varchar" length="30"/>
         </property>
+
+        <property name="noRujukan">
+            <column name="no_rujukan" sql-type="varchar" length="100"/>
+        </property>
+        <property name="noPpkRujukan">
+            <column name="no_ppk_rujukan" sql-type="varchar" length="100"/>
+        </property>
+        <property name="tglRujukan">
+            <column name="tgl_rujukan" sql-type="date"/>
+        </property>
+        <property name="klaimBpjsFlag">
+            <column name="klaim_bpjs_flag" sql-type="date"/>
+        </property>
         <property name="ketRujukan">
             <column name="ket_rujukan" sql-type="varchar" length="1000"/>
         </property>
@@ -130,5 +143,7 @@
         <property name="gangguanLain">
             <column name="gangguan_lain" sql-type="varchar" length="100"/>
         </property>
+
+
     </class>
 </hibernate-mapping>

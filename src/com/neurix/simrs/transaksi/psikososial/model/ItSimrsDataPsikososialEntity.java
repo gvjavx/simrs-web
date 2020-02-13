@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  */
 public class ItSimrsDataPsikososialEntity implements Serializable {
     private String id;
+
+    private String noCheckup;
     private String komunikasi;
     private String kemampuanBicara;
     private String tahuTentangSakitNya;
@@ -25,7 +27,6 @@ public class ItSimrsDataPsikososialEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String noCheckup;
 
     public String getNoCheckup() {
         return noCheckup;

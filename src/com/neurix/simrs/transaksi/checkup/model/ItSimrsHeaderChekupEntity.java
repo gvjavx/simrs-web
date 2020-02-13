@@ -99,6 +99,46 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     public void setKetRujukan(String ketRujukan) {
         this.ketRujukan = ketRujukan;
     }
+<<<<<<< HEAD
+=======
+
+    private String noRujukan;
+    private String noPpkRujukan;
+    private Date tglRujukan;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getNoPpkRujukan() {
+        return noPpkRujukan;
+    }
+
+    public void setNoPpkRujukan(String noPpkRujukan) {
+        this.noPpkRujukan = noPpkRujukan;
+    }
+
+    public Date getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(Date tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
+>>>>>>> sodiq/editor
 
     public String getKodeDiagnosa() {
         return kodeDiagnosa;

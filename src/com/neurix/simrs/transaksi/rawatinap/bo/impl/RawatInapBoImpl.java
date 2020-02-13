@@ -1,11 +1,18 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.KategoriSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.ParameterSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -21,6 +28,10 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     private static transient Logger logger = Logger.getLogger(RawatInapBoImpl.class);
     private RawatInapDao rawatInapDao;
+    private KategoriSkorRanapDao kategoriSkorRanapDao;
+    private ParameterSkorRanapDao parameterSkorRanapDao;
+    private MasterSkorRanapDao masterSkorRanapDao;
+    private SkorRanapDao skorRanapDao;
 
     protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -72,5 +83,202 @@ public class RawatInapBoImpl implements RawatInapBo {
         }
         logger.info("[RawatInapBoImpl.getSearchRawatInap] End <<<<<<<<");
         return results;
+    }
+
+    @Override
+    public List<SkorRanap> getListSkorRanap(SkorRanap bean) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getListSkorRanap] Start >>>>>>>");
+
+        List<SkorRanap> skorRanaps = new ArrayList<>();
+        List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+        if (bean != null){
+
+            Map hsCriteria = new HashMap();
+
+            if (bean.getNoCheckup() != null){
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
+            if (bean.getIdDetailCheckup() != null){
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if (bean.getIdKategori() != null){
+                hsCriteria.put("id_kategori", bean.getIdKategori());
+            }
+            if (bean.getGroupId() != null){
+                hsCriteria.put("group_id", bean.getGroupId());
+            }
+            if (bean.getStDate() != null){
+                hsCriteria.put("date", bean.getStDate());
+            }
+
+            if (bean.getGroupId() != null && !"".equalsIgnoreCase(bean.getGroupId())){
+                try {
+                    skorRanapEntities = skorRanapDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                }
+            }
+
+
+            if (skorRanapEntities.size() == 0){
+
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_kategori", bean.getIdKategori());
+
+                List<ImSimrsParameterSkorRanapEntity> parameterSkorRanapEntities = new ArrayList<>();
+                try {
+                    parameterSkorRanapEntities = parameterSkorRanapDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                }
+
+                if (parameterSkorRanapEntities.size() > 0){
+                    SkorRanap skorRanap;
+                    for (ImSimrsParameterSkorRanapEntity parameter : parameterSkorRanapEntities){
+                        skorRanap = new SkorRanap();
+                        skorRanap.setIdKategori(parameter.getIdKategori());
+                        skorRanap.setIdParameter(parameter.getIdParameter());
+                        skorRanap.setNamaParameter(parameter.getNamaParameter());
+                        skorRanap.setType(parameter.getType());
+                        skorRanaps.add(skorRanap);
+                    }
+                }
+            } else {
+                SkorRanap skorRanap;
+                for (ItSimrsSkorRanapEntity skorRanapEntity : skorRanapEntities){
+                    skorRanap = new SkorRanap();
+                    skorRanap.setId(skorRanapEntity.getId());
+                    skorRanap.setGroupId(skorRanapEntity.getGroupId());
+                    skorRanap.setIdKategori(skorRanapEntity.getIdKategori());
+                    skorRanap.setIdParameter(skorRanapEntity.getIdParameter());
+                    skorRanap.setNamaParameter(skorRanapEntity.getNamaParameter());
+                    skorRanap.setSkor(skorRanapEntity.getSkor().toString());
+                    skorRanap.setKeterangan(skorRanapEntity.getKeterangan());
+                    skorRanap.setFlag(skorRanapEntity.getFlag());
+                    skorRanap.setAction(skorRanapEntity.getAction());
+                    skorRanap.setCreatedDate(skorRanapEntity.getCreatedDate());
+                    skorRanap.setCreatedWho(skorRanapEntity.getCreatedWho());
+                    skorRanap.setLastUpdate(skorRanapEntity.getLastUpdate());
+                    skorRanap.setLastUpdateWho(skorRanapEntity.getLastUpdateWho());
+                    skorRanap.setStDate(skorRanapEntity.getCreatedDate().toString());
+                    skorRanaps.add(skorRanap);
+                }
+            }
+        }
+
+        logger.info("[RawatInapBoImpl.getListSkorRanap] End <<<<<<<<");
+        return skorRanaps;
+    }
+
+    @Override
+    public ImSimrsKategoriSkorRanapEntity kategoriSkorRanap(String id) {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori", id);
+
+        List<ImSimrsKategoriSkorRanapEntity> kategoriSkorRanapEntities = new ArrayList<>();
+        try {
+            kategoriSkorRanapEntities = kategoriSkorRanapDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR"+e.getMessage());
+        }
+
+        ImSimrsKategoriSkorRanapEntity kategoriSkorRanapEntity = new ImSimrsKategoriSkorRanapEntity();
+        if (kategoriSkorRanapEntities.size() > 0){
+            kategoriSkorRanapEntity = kategoriSkorRanapEntities.get(0);
+        }
+
+        return kategoriSkorRanapEntity;
+    }
+
+    @Override
+    public List<ImSimrsSkorRanapEntity> getListMasterSkor(String id) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getListMasterSkor] Start >>>>>>>");
+
+        List<ImSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_parameter", id);
+
+        skorRanapEntities = masterSkorRanapDao.getByCriteria(hsCriteria);
+        logger.info("[RawatInapBoImpl.getListMasterSkor] End <<<<<<<<");
+        return skorRanapEntities;
+    }
+
+    @Override
+    public CrudResponse saveAddSkorRanap(String noCheckup, String idDetail, List<ItSimrsSkorRanapEntity> skors) {
+
+        CrudResponse response = new CrudResponse();
+        if (skors.size() > 0){
+            String groupId = "GRS"+getNextGroupSkorRanap();
+            for (ItSimrsSkorRanapEntity entity : skors){
+                entity.setId("SKI"+getNextSkorRanap());
+                entity.setGroupId(groupId);
+
+                try {
+                    skorRanapDao.addAndSave(entity);
+                    response.setStatus("success");
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveAddSkorRanap] ERROR ",e);
+                    response.setStatus("error");
+                    response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<SkorRanap> getListSumSkorRanap(String noCheckup, String idDetail, String idkategori) {
+
+        List<SkorRanap> skorRanaps = new ArrayList<>();
+        try {
+            skorRanaps = skorRanapDao.getListSumSkorRanap(noCheckup, idDetail, idkategori);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListSumSkorRanap] ERROR ",e);
+        }
+
+        return skorRanaps;
+    }
+
+    private String getNextSkorRanap(){
+        String id = "";
+        try {
+            id = skorRanapDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextSkorRanap] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextSkorRanap] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextGroupSkorRanap(){
+        String id = "";
+        try {
+            id = skorRanapDao.getNextGroupSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+
+    public void setKategoriSkorRanapDao(KategoriSkorRanapDao kategoriSkorRanapDao) {
+        this.kategoriSkorRanapDao = kategoriSkorRanapDao;
+    }
+
+    public void setParameterSkorRanapDao(ParameterSkorRanapDao parameterSkorRanapDao) {
+        this.parameterSkorRanapDao = parameterSkorRanapDao;
+    }
+
+    public void setMasterSkorRanapDao(MasterSkorRanapDao masterSkorRanapDao) {
+        this.masterSkorRanapDao = masterSkorRanapDao;
+    }
+
+    public void setSkorRanapDao(SkorRanapDao skorRanapDao) {
+        this.skorRanapDao = skorRanapDao;
     }
 }

@@ -11,6 +11,8 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:dokterBoProxy-ref="dokterBoProxy"
           p:pasienBoProxy-ref="pasienBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
     />
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
@@ -32,6 +34,10 @@
           p:kategoriRencanaRawatDao-ref="kategoriRencanaRawatDao"
           p:parameterRencanaRawatDao-ref="parameterRencanaRawatDao"
           p:rencanaRawatDao-ref="rencanaRawatDao"
+          p:rekonsiliasiObatDao-ref="rekonsiliasiObatDao"
+          p:patrusDao-ref="patrusDao"
+          p:tranfusiDao-ref="tranfusiDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -77,5 +83,11 @@
     <bean id="kategoriRencanaRawatDao" class="com.neurix.simrs.transaksi.rencanarawat.dao.KategoriRencanaRawatDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="psikososialDao" class="com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="patrusDao" class="com.neurix.simrs.transaksi.patrus.dao.PatrusDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tranfusiDao" class="com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="rekonsiliasiObatDao" class="com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

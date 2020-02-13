@@ -8,18 +8,27 @@ import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
+import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
+import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -40,6 +49,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private CheckupDetailDao checkupDetailDao;
     private DokterTeamDao dokterTeamDao;
     private HeaderCheckupDao headerCheckupDao;
+    private TindakanRawatDao tindakanRawatDao;
+    private PeriksaLabDao periksaLabDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -179,6 +190,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setAction(bean.getAction());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setCaraPasienPulang(bean.getCaraPasienPulang());
+            entity.setPendamping(bean.getPendamping());
+            entity.setTempatTujuan(bean.getTempatTujuan());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -538,6 +552,114 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return result;
     }
 
+    @Override
+    public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveApproveAllTindakanRawatJalan] START <<<<<<<<");
+        CheckResponse response = new CheckResponse();
+        if(bean != null){
+
+            TindakanRawat tindakanRawat = new TindakanRawat();
+            tindakanRawat.setIdDetailCheckup(bean.getIdDetailCheckup());
+            List<ItSimrsTindakanRawatEntity> entityTindakanList = getListEntityTindakanRawat(tindakanRawat);
+
+            if(entityTindakanList.size() > 0){
+                for (ItSimrsTindakanRawatEntity entity: entityTindakanList){
+                    entity.setApproveFlag("Y");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        tindakanRawatDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil update tindakan");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMessage("Error when update tindakan, Found Eror: "+e.getMessage());
+                        logger.error("[TindakanRawatBoImpl.updateFlagApproveTindakan] Error when update approve flag ", e);
+                        throw new GeneralBOException("[TindakanRawatBoImpl.updateFlagApproveTindakan] Error when update approve flag " + e.getMessage());
+                    }
+                }
+            }
+
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdDetailCheckup(bean.getIdDetailCheckup());
+            List<ItSimrsPeriksaLabEntity> entityPeriksaList = getListEntityPeriksaLab(periksaLab);
+            if(entityPeriksaList.size() > 0){
+                for (ItSimrsPeriksaLabEntity entity: entityPeriksaList){
+
+                    entity.setApproveFlag("Y");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        periksaLabDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil update periksa lab");
+                    }catch (HibernateException e){
+                        response.setMessage("error");
+                        response.setMessage("Error when update periksa lab : "+e.getMessage());
+                        logger.error("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] Error when update periksa lab ", e);
+                        throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[CheckupDetailBoImpl.saveApproveAllTindakanRawatJalan] END <<<<<<<<");
+        return response;
+    }
+
+    protected List<ItSimrsTindakanRawatEntity> getListEntityTindakanRawat(TindakanRawat bean) throws GeneralBOException{
+        logger.info("[TindakanRawatBoImpl.getListEntityTindakanRawat] Start >>>>>>>");
+        List<ItSimrsTindakanRawatEntity> results = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())){
+            hsCriteria.put("id_tindakan_rawat", bean.getIdTindakanRawat());
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+
+        hsCriteria.put("flag","Y");
+        try {
+            results = tindakanRawatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[TindakanRawatBoImpl.getListEntityTindakanRawat] Erro when searching tindakan rawat ", e);
+        }
+
+        logger.info("[TindakanRawatBoImpl.getListEntityTindakanRawat] End <<<<<<");
+        return results;
+    }
+
+    private List<ItSimrsPeriksaLabEntity> getListEntityPeriksaLab(PeriksaLab bean) throws GeneralBOException{
+        logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] START >>>>>>>>> ");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab())){
+            hsCriteria.put("id_periksa_lab", bean.getIdPeriksaLab());
+        }
+
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+
+        if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
+            hsCriteria.put("status", bean.getStatusPeriksa());
+        }
+
+        hsCriteria.put("flag","Y");
+        List<ItSimrsPeriksaLabEntity> periksaLabEntities = new ArrayList<>();
+        try {
+            periksaLabEntities = periksaLabDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PeriksaLabBoImpl.getListEntityPeriksaLab] ERROR When search data periksa lab ", e);
+            throw new GeneralBOException("[PeriksaLabBoImpl.getListEntityPeriksaLab] ERROR When search data periksa lab "+ e.getCause());
+        }
+
+        logger.info("[PeriksaLabBoImpl.getListEntityPeriksaLab] END <<<<<<<<< ");
+        return periksaLabEntities;
+    }
+
     private String getNextDetailCheckupId(){
         String id = "";
         try {
@@ -585,5 +707,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
+        this.tindakanRawatDao = tindakanRawatDao;
+    }
+
+    public void setPeriksaLabDao(PeriksaLabDao periksaLabDao) {
+        this.periksaLabDao = periksaLabDao;
     }
 }

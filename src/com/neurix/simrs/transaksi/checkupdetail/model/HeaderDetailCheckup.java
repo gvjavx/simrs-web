@@ -65,6 +65,64 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
 
     private String status;
 
+    private String klaimBpjsFlag;
+
+    private String noSep;
+
+    private boolean cekApprove;
+
+    private String caraPasienPulang;
+    private String pendamping;
+    private String tempatTujuan;
+
+    public String getCaraPasienPulang() {
+        return caraPasienPulang;
+    }
+
+    public void setCaraPasienPulang(String caraPasienPulang) {
+        this.caraPasienPulang = caraPasienPulang;
+    }
+
+    public String getPendamping() {
+        return pendamping;
+    }
+
+    public void setPendamping(String pendamping) {
+        this.pendamping = pendamping;
+    }
+
+    public String getTempatTujuan() {
+        return tempatTujuan;
+    }
+
+    public void setTempatTujuan(String tempatTujuan) {
+        this.tempatTujuan = tempatTujuan;
+    }
+
+    public boolean isCekApprove() {
+        return cekApprove;
+    }
+
+    public void setCekApprove(boolean cekApprove) {
+        this.cekApprove = cekApprove;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
     public String getStatus() {
         return status;
     }

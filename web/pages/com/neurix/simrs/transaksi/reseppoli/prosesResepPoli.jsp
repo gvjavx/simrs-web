@@ -46,6 +46,8 @@
         $(document).ready(function () {
 
             $('#resep_poli').addClass('active');
+
+            cekListObat();
         });
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -217,8 +219,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
-                                <td align="center">Qty</td>
-                                <td align="center">Qty Approve</td>
+                                <td align="center">Qty Request</td>
+                                <%--<td align="center">Qty Approve</td>--%>
                                 <td align="center">Harga Satuan (Rp.)</td>
                                 <td align="center">Harga Total (Rp.)</td>
                                 <td width="21%">Scan ID Pabrikan</td>
@@ -230,7 +232,7 @@
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
-                                    <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>
+                                    <%--<td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>--%>
                                     <td align="right"><script>var val = <s:property value="harga"/>;
                                     if (val != null && val != '') {
                                         document.write(formatRupiah(val))
@@ -241,10 +243,18 @@
                                     }</script></td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
-                                            <div class="input-group-addon">
-                                                <span id='status<s:property value="idObat"/>'></span>
-                                            </div>
+                                            <s:if test='#row.flagVerifikasi == "Y"'>
+                                                <input type="text" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                <div class="input-group-addon">
+                                                    <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
+                                                </div>
+                                            </s:if>
+                                            <s:else>
+                                                <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                <div class="input-group-addon">
+                                                    <span id='status<s:property value="idObat"/>'></span>
+                                                </div>
+                                            </s:else>
                                         </div>
                                     </td>
                                     <td><s:property value="jenisSatuan"/></td>
@@ -465,6 +475,25 @@
         window.open('printStrukResepPasien_reseppoli.action?id='+idDetailCheckup+'&idResep='+idResep+'&idApprove='+id_approve, "_blank");
     }
 
+    function cekListObat() {
+
+        setInterval(function () {
+            TransaksiObatAction.getListResepPasien(idResep, function (response) {
+                console.log(response);
+                if(response.length > 0) {
+                    $.each(response, function (i, item) {
+                        if(item.flagVerifikasi == "Y"){
+                            $('#input'+item.idObat).attr('disabled','true');
+                            $('#status'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                        }else {
+                            $('#input'+item.idObat).removeAttr('disabled');
+                            $('#status'+item.idObat).html('<span id="status'+item.idObat+'"></span>');
+                        }
+                    })
+                }
+            });
+        },1000);
+    }
     function toContent(){
         var ref = $('#ref').val();
         if(ref == 1){
@@ -522,14 +551,20 @@
 
                             var warna = "";
                             var color = "";
+                            var disabled = "";
 
-                            if (diffDays < 10) {
+                            if(Math.abs(date1) > Math.abs(date2)){
+                                warna = '#ccc';
+                                color = '#fff';
+                                disabled = 'disabled';
+
+                            } else if (diffDays < 10) {
                                 warna = '#dd4b39';
-                                color = 'white';
+                                color = '#fff';
 
                             } else if (diffDays < 30) {
                                 warna = '#eea236';
-                                color = 'white';
+                                color = '#fff';
                             } else {
                                 warna = '#fff';
                                 color = '#333';
@@ -549,7 +584,7 @@
                                     '<td align="center">' + qtyBiji + '</td>' +
                                     '<td>' +
                                     '<div class="input-group">' +
-                                    '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
+                                    '<input '+disabled+' class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
                                     '<div class="input-group-addon">' +
                                     '<span id=loading' + i + '></span> ' +
                                     '</div>' +
