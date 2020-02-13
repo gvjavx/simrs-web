@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -60,6 +61,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String stDateTo;
 
     private String urlKtp;
+
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getUrlKtp() {
         return urlKtp;

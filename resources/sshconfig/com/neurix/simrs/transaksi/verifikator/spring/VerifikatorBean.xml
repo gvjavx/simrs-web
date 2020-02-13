@@ -8,10 +8,16 @@
     <bean id="verifikatorAction" class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:checkupBoProxy-ref="checkupBoProxy"
+          p:rawatInapBoProxy-ref="rawatInapBoProxy"
+          p:verifikatorBoProxy-ref="verifikatorBoProxy"
     />
 
     <bean id="verifikatorBo" class="com.neurix.simrs.transaksi.verifikator.bo.impl.VerifikatorBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:checkupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:rawatInapDao-ref="rawatInapDao"
     />
 
     <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -1331,18 +1331,25 @@
 
                             var warna = "";
                             var color = "";
+                            var disabled = "";
 
-                            if (diffDays < 10) {
+                            if(Math.abs(date1) > Math.abs(date2)){
+                                warna = '#ccc';
+                                color = '#fff';
+                                disabled = 'disabled';
+
+                            } else if (diffDays < 10) {
                                 warna = '#dd4b39';
-                                color = 'white';
+                                color = '#fff';
 
                             } else if (diffDays < 30) {
                                 warna = '#eea236';
-                                color = 'white';
+                                color = '#fff';
                             } else {
                                 warna = '#fff';
                                 color = '#333';
                             }
+
                             var idBar = item.idBarang;
                             var str = idBar.substring(8, 15);
                             var idBarang = idBar.replace(str, '*******');
@@ -1355,7 +1362,7 @@
                                     '<td align="center">' + qtyBiji + '</td>' +
                                     '<td>' +
                                     '<div class="input-group">' +
-                                    '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
+                                    '<input '+disabled+' class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
                                     '<div class="input-group-addon">' +
                                     '<span id=loading' + i + '></span> ' +
                                     '</div>' +

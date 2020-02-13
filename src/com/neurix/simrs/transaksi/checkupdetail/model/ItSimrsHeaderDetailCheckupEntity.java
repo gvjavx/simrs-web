@@ -28,6 +28,34 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private Date tglCekup;
     private String keteranganCekupUlang;
 
+    private String caraPasienPulang;
+    private String pendamping;
+    private String tempatTujuan;
+
+    public String getCaraPasienPulang() {
+        return caraPasienPulang;
+    }
+
+    public void setCaraPasienPulang(String caraPasienPulang) {
+        this.caraPasienPulang = caraPasienPulang;
+    }
+
+    public String getPendamping() {
+        return pendamping;
+    }
+
+    public void setPendamping(String pendamping) {
+        this.pendamping = pendamping;
+    }
+
+    public String getTempatTujuan() {
+        return tempatTujuan;
+    }
+
+    public void setTempatTujuan(String tempatTujuan) {
+        this.tempatTujuan = tempatTujuan;
+    }
+
     public Date getTglCekup() {
         return tglCekup;
     }

@@ -38,20 +38,20 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">root123456</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_10feb</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">postgres</prop>
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_10feb</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_zebra</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_new</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">postgres</prop>-->
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs13feb</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">postgres</prop>
+                <prop key="hibernate.connection.password">postgres</prop>
 
             </props>
         </property>
@@ -312,6 +312,9 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsSkorResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ImSimrsKategoriRencanaRawatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ImSimrsParameterRencanaRawatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsKategoriSkorRanapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsParameterSkorRanapEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ImSimrsSkorRanapEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Transactions SIMRS is HERE-->
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImSimrsTempObatGejalaEntity.hbm.xml</value>
@@ -345,6 +348,11 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ItSimrsResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/psikososial/hibernate/ItSimrsPsikosialEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/rencanarawat/hibernate/ItSimrsRencanaRawatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/riwayattindakan/hibernate/ItSimrsRiwayatTindakanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/rekonsiliasiobat/hibernate/ItSimrsRekonsiliasiObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/patrus/hibernate/ItSimrsPatrusEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/transfusi/hibernate/ItSImrsTranfusiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ItSimrsSkorRanapEntity.hbm.xml</value>
 
             </list>
         </property>

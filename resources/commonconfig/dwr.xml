@@ -387,6 +387,12 @@
           <param name="class" value="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"/>
       </create>
 
+      <!--Rawat Inap-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.rawatinap.action.RawatInapAction"/>
+      </create>
+
+      <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.Tindakan"/>
@@ -414,13 +420,28 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ResikoJatuhResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ItSImrsResikoJatuhEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsSkorResikoJatuhEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.resikojatuh.model.ImSimrsKategoriResikoJatuhEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsKategoriRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsParameterRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity"/>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsParameterSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap"/>
+
+      <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan"/>
+
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.PesertaResponse"/>
+      <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.RujukanResponse"/>
 
   </allow>
 

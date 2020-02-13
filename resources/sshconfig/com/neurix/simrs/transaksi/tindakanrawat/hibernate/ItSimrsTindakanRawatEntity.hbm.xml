@@ -54,11 +54,8 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="approveBpjsFlag">
-            <column name="approve_bpjs_flag" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="kategoriTindakanBpjs">
-            <column name="kategori_tindakan_bpjs" sql-type="varchar" length="1000" not-null="false" />
+        <property name="approveFlag">
+            <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
 
 

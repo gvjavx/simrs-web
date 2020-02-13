@@ -72,6 +72,7 @@ public class LabBoImpl implements LabBo {
                     lab.setCreatedWho(labEntity.getCreatedWho());
                     lab.setLastUpdate(labEntity.getLastUpdate());
                     lab.setLastUpdateWho(labEntity.getLastUpdateWho());
+                    lab.setTarif(labEntity.getTarif());
                     result.add(lab);
                 }
             }

@@ -76,6 +76,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setLastUpdate(obatDetailEntity.getLastUpdate());
                 transaksiObatDetail.setLastUpdateWho(obatDetailEntity.getLastUpdateWho());
                 transaksiObatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
+                transaksiObatDetail.setFlagVerifikasi(obatDetailEntity.getFlagVerifikasi());
 
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
@@ -799,6 +800,35 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
                         throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                     }
+                }
+            }
+
+            MtSimrsTransaksiObatDetailBatchEntity entity = new MtSimrsTransaksiObatDetailBatchEntity();
+            entity = batchEntities.get(0);
+
+            if(entity != null){
+
+                ImtSimrsTransaksiObatDetailEntity entities = new ImtSimrsTransaksiObatDetailEntity();
+
+                try {
+                    entities = transaksiObatDetailDao.getById("idTransaksiObatDetail",entity.getIdTransaksiObatDetail());
+
+                    if(entities != null){
+
+                        entities.setFlagVerifikasi("Y");
+                        entities.setLastUpdate(entity.getLastUpdate());
+                        entities.setLastUpdateWho(entity.getLastUpdateWho());
+
+                        try {
+                            transaksiObatDetailDao.updateAndSave(entities);
+                        }catch (HibernateException e){
+                            logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                            throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
+                        }
+                    }
+                }catch (HibernateException e){
+                    logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                    throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                 }
             }
         }

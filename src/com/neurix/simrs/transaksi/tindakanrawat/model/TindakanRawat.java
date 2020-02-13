@@ -28,23 +28,14 @@ public class TindakanRawat extends BaseModel {
 
     private String idKategoriTindakan;
 
-    private String approveBpjsFlag;
-    private String kategoriTindakanBpjs;
+    private String approveFlag;
 
-    public String getKategoriTindakanBpjs() {
-        return kategoriTindakanBpjs;
+    public String getApproveFlag() {
+        return approveFlag;
     }
 
-    public void setKategoriTindakanBpjs(String kategoriTindakanBpjs) {
-        this.kategoriTindakanBpjs = kategoriTindakanBpjs;
-    }
-
-    public String getApproveBpjsFlag() {
-        return approveBpjsFlag;
-    }
-
-    public void setApproveBpjsFlag(String approveBpjsFlag) {
-        this.approveBpjsFlag = approveBpjsFlag;
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
     }
 
     public String getIdKategoriTindakan() {

@@ -1562,8 +1562,8 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
         String feature = "";
         RujukanResponse rujukanResponse = new RujukanResponse();
         //Jenis Cari
-        //R = rumah sakit
-        //P = Pcare
+        //R = rumah sakit ----rumah sakit
+        //P = Pcare ----untuk klinik
         switch (jenisCari){
             case "R":
                 feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/"+noRujukan;

@@ -301,6 +301,30 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     }
 
+    public List<TransaksiObatDetail> getListResepPasien(String noResep){
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        transaksiObatDetail.setIdPermintaanResep(noResep);
+
+        if (transaksiObatDetail != null) {
+
+            if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
+                try {
+                    obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(transaksiObatDetail);
+                } catch (GeneralBOException e) {
+                    logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                    addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+                }
+            }
+        }
+
+        return obatDetailList;
+    }
+
     public String pembayaran() {
         logger.info("[TransaksiObatAction.savePembayaran] START >>>>>>>");
 
@@ -627,7 +651,6 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         try {
             transaksiObatBo.saveVerifikasiObat(batchEntities);
-
             response.setStatus(SUCCESS);
             response.setMessage("SUCCESS");
         } catch (GeneralBOException e) {

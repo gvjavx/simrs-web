@@ -770,7 +770,12 @@ public class EklaimBoImpl extends BpjsService implements EklaimBo {
                 } else {
                     String errorNo = metaData.getString("error_no");
                     logger.error("[EklaimBoImpl.kirimKeDataCenterPerSepEklaim] : " + errorNo + " : " + metaData.getString("message"));
+                    KlaimDataCenterResponse data = new KlaimDataCenterResponse();
+                    data.setMessage(metaData.getString("message"));
+                    data.setStatus(String.valueOf(metaData.getInt("code")));
+                    finalResponse.add(data);
                 }
+
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
