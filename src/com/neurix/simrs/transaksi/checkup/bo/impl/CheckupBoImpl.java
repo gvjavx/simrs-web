@@ -41,6 +41,9 @@ import com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.SkorResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -90,6 +93,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private PatrusDao patrusDao;
     private TranfusiDao tranfusiDao;
     private RekonsiliasiObatDao rekonsiliasiObatDao;
+    private RiwayatTindakanDao riwayatTindakanDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -393,7 +397,36 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
 
                             try {
+
                                 tindakanRawatDao.addAndSave(tindakanRawatEntity);
+
+                                if("bpjs".equalsIgnoreCase(bean.getJenisTransaksi())){
+
+                                    ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
+                                    riwayatTindakan.setIdRiwayatTindakan("RWT"+getNextIdRiwayatTindakan());
+                                    riwayatTindakan.setIdTindakan(tindakanRawatEntity.getIdTindakanRawat());
+                                    riwayatTindakan.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                                    riwayatTindakan.setTotalTarif(new BigDecimal(String.valueOf(tindakanRawatEntity.getTarifTotal())));
+                                    riwayatTindakan.setApproveBpjsFlag("Y");
+                                    riwayatTindakan.setKategoriTindakanBpjs("konsultasi");
+                                    riwayatTindakan.setKeterangan("tindakan");
+                                    riwayatTindakan.setJenisPasien(bean.getJenisTransaksi());
+                                    riwayatTindakan.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                                    riwayatTindakan.setFlagUpdateKlaim("Y");
+                                    riwayatTindakan.setCreatedWho(bean.getCreatedWho());
+                                    riwayatTindakan.setCreatedDate(bean.getCreatedDate());
+                                    riwayatTindakan.setLastUpdate(bean.getLastUpdate());
+                                    riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
+                                    riwayatTindakan.setFlag("Y");
+                                    riwayatTindakan.setAction("C");
+
+                                    try {
+                                        riwayatTindakanDao.addAndSave(riwayatTindakan);
+                                    }catch (HibernateException e){
+                                        logger.error("[CheckupBoImpl FOunf error]"+e.getMessage());
+                                    }
+
+                                }
                             } catch (HibernateException e){
                                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" +e.getMessage());
                                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat"+ e.getMessage());
@@ -1547,6 +1580,15 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return id;
     }
 
+    private String getNextIdRiwayatTindakan(){
+        String id = "";
+        try {
+            id = riwayatTindakanDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RiwayatTindakanBoImpl.getNextIdRiwayatTindakan] ERROR When create sequences", e);
+        }
+        return id;
+    }
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
@@ -1637,5 +1679,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setRekonsiliasiObatDao(RekonsiliasiObatDao rekonsiliasiObatDao) {
         this.rekonsiliasiObatDao = rekonsiliasiObatDao;
+    }
+
+    public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
+        this.riwayatTindakanDao = riwayatTindakanDao;
     }
 }

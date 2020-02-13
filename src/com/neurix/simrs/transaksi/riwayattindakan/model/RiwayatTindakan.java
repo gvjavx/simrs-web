@@ -23,6 +23,38 @@ public class RiwayatTindakan extends BaseModel {
     private String lastUpdateWho;
     private String idDetailCheckup;
 
+    private String branchId;
+    private String noCheckup;
+
+    private String tglTo;
+    private String tglForm;
+
+    private String flagUpdateKlaim;
+
+    public String getFlagUpdateKlaim() {
+        return flagUpdateKlaim;
+    }
+
+    public void setFlagUpdateKlaim(String flagUpdateKlaim) {
+        this.flagUpdateKlaim = flagUpdateKlaim;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
     public String getIdDetailCheckup() {
         return idDetailCheckup;
     }

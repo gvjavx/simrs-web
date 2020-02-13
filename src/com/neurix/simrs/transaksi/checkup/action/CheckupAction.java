@@ -39,6 +39,7 @@ import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
@@ -534,7 +535,7 @@ public class CheckupAction extends BaseMasterAction {
                 sepRequest.setTglRujukan(checkup.getTglRujukan());
                 sepRequest.setNoRujukan(checkup.getNoRujukan());
                 sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
-                sepRequest.setCatatan("test");
+                sepRequest.setCatatan("");
                 sepRequest.setDiagAwal("I63");
                 sepRequest.setPoliTujuan("IGD");
                 sepRequest.setPoliEksekutif("0");
@@ -551,13 +552,13 @@ public class CheckupAction extends BaseMasterAction {
                 sepRequest.setKdKabupatenLakaLantas("");
                 sepRequest.setNoSuratSkdp("000002");
                 sepRequest.setKodeDpjp("31661");
-                sepRequest.setNoTelp("081919999");
-                sepRequest.setUserPembuatSep("Coba Ws");
+                sepRequest.setNoTelp(getPasien.getNoTelp());
+                sepRequest.setUserPembuatSep(userLogin);
 
                 SepResponse response = new SepResponse();
 
                 try {
-                    response = bpjsBoProxy.insertSepBpjs(sepRequest, "RS01");
+                    response = bpjsBoProxy.insertSepBpjs(sepRequest, userArea);
                 } catch (Exception e) {
                     Long logId = null;
                     logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);

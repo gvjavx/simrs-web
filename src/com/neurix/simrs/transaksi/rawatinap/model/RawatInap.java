@@ -59,6 +59,35 @@ public class RawatInap {
     private String urlKtp;
     private String noSep;
 
+    private String branchId;
+
+    private boolean cekApprove;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public boolean isCekApprove() {
+        return cekApprove;
+    }
+
+    public void setCekApprove(boolean cekApprove) {
+        this.cekApprove = cekApprove;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getNoSep() {
         return noSep;
     }

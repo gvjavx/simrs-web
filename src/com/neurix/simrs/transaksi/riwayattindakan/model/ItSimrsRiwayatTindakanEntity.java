@@ -22,6 +22,16 @@ public class ItSimrsRiwayatTindakanEntity implements Serializable {
     private String lastUpdateWho;
     private String idDetailCheckup;
 
+    private String flagUpdateKlaim;
+
+    public String getFlagUpdateKlaim() {
+        return flagUpdateKlaim;
+    }
+
+    public void setFlagUpdateKlaim(String flagUpdateKlaim) {
+        this.flagUpdateKlaim = flagUpdateKlaim;
+    }
+
     public String getIdDetailCheckup() {
         return idDetailCheckup;
     }

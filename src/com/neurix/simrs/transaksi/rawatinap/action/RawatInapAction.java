@@ -7,6 +7,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -14,6 +15,7 @@ import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
 import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity;
@@ -28,6 +30,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -42,9 +45,18 @@ public class RawatInapAction extends BaseMasterAction {
     private CheckupBo checkupBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private RuanganBo ruanganBoProxy;
+    private RiwayatTindakanBo riwayatTindakanBoProxy;
 
     private String id;
     private String idResep;
+
+    public RiwayatTindakanBo getRiwayatTindakanBoProxy() {
+        return riwayatTindakanBoProxy;
+    }
+
+    public void setRiwayatTindakanBoProxy(RiwayatTindakanBo riwayatTindakanBoProxy) {
+        this.riwayatTindakanBoProxy = riwayatTindakanBoProxy;
+    }
 
     public void setRuanganBoProxy(RuanganBo ruanganBoProxy) {
         this.ruanganBoProxy = ruanganBoProxy;
@@ -142,14 +154,62 @@ public class RawatInapAction extends BaseMasterAction {
                         rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setNik(headerCheckup.getNoKtp());
                         rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
+                        rawatInap.setNoSep(headerCheckup.getNoSep());
 
                         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
                         rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
 
                         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-                        long millis = System.currentTimeMillis();
-                        java.util.Date dateToday = new java.util.Date(millis);
-                        String today = new SimpleDateFormat("dd-MM-yyyy").format(dateToday);
+
+                        try {
+                            riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(rawatInap.getIdDetailCheckup());
+                        }catch (GeneralBOException e){
+                            logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" +e);
+                        }
+
+                        if(riwayatTindakanList.isEmpty()){
+
+                            List<Ruangan> ruanganList = new ArrayList<>();
+                            Ruangan ruangan = new Ruangan();
+                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
+
+                            try {
+                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
+                            }catch (GeneralBOException e){
+                                logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" +e);
+                            }
+
+                            if(!ruanganList.isEmpty()){
+                                ruangan = ruanganList.get(0);
+
+                                if(ruanganList != null){
+
+                                    String user = CommonUtil.userLogin();
+                                    Timestamp now = new Timestamp(System.currentTimeMillis());
+
+                                    RiwayatTindakan tindakan = new RiwayatTindakan();
+                                    tindakan.setIdTindakan(ruangan.getIdRuangan());
+                                    tindakan.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan()+ " No. " +ruangan.getNoRuangan());
+                                    tindakan.setKeterangan("kamar");
+                                    tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
+                                    tindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+                                    tindakan.setJenisPasien(rawatInap.getIdJenisPeriksa());
+                                    tindakan.setAction("C");
+                                    tindakan.setFlag("Y");
+                                    tindakan.setCreatedDate(now);
+                                    tindakan.setCreatedWho(user);
+                                    tindakan.setLastUpdate(now);
+                                    tindakan.setLastUpdateWho(user);
+
+                                    try {
+                                        riwayatTindakanBoProxy.saveAdd(tindakan);
+                                    }catch (GeneralBOException e){
+                                        logger.error("[RawatInapAction] Found Error when save add riwayat tindakan "+e);
+                                    }
+                                }
+                            }
+
+                        }
 
                         setRawatInap(rawatInap);
 

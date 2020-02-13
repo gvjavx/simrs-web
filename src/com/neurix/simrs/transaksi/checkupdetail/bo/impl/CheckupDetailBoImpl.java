@@ -190,6 +190,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setAction(bean.getAction());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setCaraPasienPulang(bean.getCaraPasienPulang());
+            entity.setPendamping(bean.getPendamping());
+            entity.setTempatTujuan(bean.getTempatTujuan());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
