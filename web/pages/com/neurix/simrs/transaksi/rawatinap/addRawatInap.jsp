@@ -259,6 +259,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Monitoring</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-info" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
+                            <i class="fa fa-edit"></i> Form Observasi Cairan
+                        </button>
+                        <button class="btn btn-info" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
+                            <i class="fa fa-edit"></i> Form Observasi Vital Sign
+                        </button>
+                        <button class="btn btn-info" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
+                            <i class="fa fa-edit"></i> Form Pemberian Obat Parental
+                        </button>
+                        <button class="btn btn-info" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
+                            <i class="fa fa-edit"></i> Form Pemberian Obat Non Parental
+                        </button>
+                    </div>
+
                     <div class="box-header with-border" id="pos_dok">
                     </div>
                     <div class="box-header with-border">

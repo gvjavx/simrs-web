@@ -3,6 +3,9 @@ package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
+import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
+import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -32,6 +35,9 @@ public class RawatInapBoImpl implements RawatInapBo {
     private ParameterSkorRanapDao parameterSkorRanapDao;
     private MasterSkorRanapDao masterSkorRanapDao;
     private SkorRanapDao skorRanapDao;
+    private MonCairanDao monCairanDao;
+    private MonPemberianObatDao monPemberianObatDao;
+    private MonVitalSignDao monVitalSignDao;
 
     protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -265,6 +271,39 @@ public class RawatInapBoImpl implements RawatInapBo {
         return id;
     }
 
+    private String getNextMonCairan(){
+        String id = "";
+        try {
+            id = monCairanDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonCairan] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonCairan] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextMonPemberianObat(){
+        String id = "";
+        try {
+            id = monPemberianObatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextMonVitalSign(){
+        String id = "";
+        try {
+            id = monVitalSignDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
 
     public void setKategoriSkorRanapDao(KategoriSkorRanapDao kategoriSkorRanapDao) {
         this.kategoriSkorRanapDao = kategoriSkorRanapDao;
@@ -280,5 +319,17 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setSkorRanapDao(SkorRanapDao skorRanapDao) {
         this.skorRanapDao = skorRanapDao;
+    }
+
+    public void setMonCairanDao(MonCairanDao monCairanDao) {
+        this.monCairanDao = monCairanDao;
+    }
+
+    public void setMonPemberianObatDao(MonPemberianObatDao monPemberianObatDao) {
+        this.monPemberianObatDao = monPemberianObatDao;
+    }
+
+    public void setMonVitalSignDao(MonVitalSignDao monVitalSignDao) {
+        this.monVitalSignDao = monVitalSignDao;
     }
 }
