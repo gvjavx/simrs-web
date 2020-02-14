@@ -392,6 +392,11 @@
           <param name="class" value="com.neurix.simrs.transaksi.rawatinap.action.RawatInapAction"/>
       </create>
 
+      <!--Permintaan Gizi-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.permintaangizi.action.PermintaanGiziAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>

@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="gizi" namespace="/gizi" extends="struts-default, jasperreports-default, json-default">
+    <package name="ordergizi" namespace="/ordergizi" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,28 +69,19 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_gizi"
-                class="com.neurix.simrs.transaksi.ordergizi.action.OrderGiziAction" method="{1}">
+        <action name="*_ordergizi"
+                class="com.neurix.simrs.transaksi.permintaangizi.action.PermintaanGiziAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <!--<result name="search">/pages/com/neurix/simrs/master/pasien/searchRawatPasien.jsp</result>-->
-            <!--<result name="add">/pages/com/neurix/simrs/master/pasien/addRawatPasien.jsp</result>-->
-            <!--<result name="edit">/pages/com/neurix/simrs/master/pasien/editRawatPasien.jsp</result>-->
-            <!--<result name="delete">/pages/com/neurix/simrs/master/pasien/deletePasien.jsp</result>-->
+            <result name="search">/pages/com/neurix/simrs/transaksi/permintaangizi/searchPermintaanGizi.jsp</result>
 
-            <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->
+            <result name="print_barcode_gizi" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printBarcodeGizi.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
 
-
-
-
-
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
         </action>
-
     </package>
 </struts>

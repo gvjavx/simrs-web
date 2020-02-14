@@ -918,6 +918,8 @@
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
                             </div>
                             <div class="box-body">
+                                <div id="warn_rujukan"></div>
+                                <input type="hidden" id="status_rujukan">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -1325,15 +1327,42 @@
         if (noRujukan != '' && perujuk != '') {
             if (perujuk == 'puskesmas') {
                 jenisRujukan = "P";
-            } else if (perujuk == "rs") {
-                jenisRujukan == "R";
+            }else if (perujuk == 'rs') {
+                jenisRujukan = "R";
             }
+
             $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
             dwr.engine.setAsync(true);
-            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
+            CheckupAction.checkSuratRujukan(noRujukan, "R", {
                 callback: function (response) {
                     console.log(response);
-                    $('#btn-cek-rujukan').html('<i class="fa fa-search"></i> Check')
+                    var warnClass = "";
+                    var title = "";
+                    var msg = "";
+                    var icon = "";
+                    var val = "";
+
+                    if(response.status == "200"){
+                        val = "aktif";
+                        icon = "fa-info";
+                        title = "Info!";
+                        warnClass = "alert-success";
+                        msg = response.message;
+                    }else{
+                        val = "tidak ditemukan";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-warning";
+                        msg = response.message;
+                    }
+
+                    var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
+                        '<h4><i class="icon fa ' + icon + '"></i>' + title + '</h4>' + msg +
+                        '</div>';
+
+                    $('#status_rujukan').val(val);
+                    $('#warn_rujukan').html(warning);
+                    $('#btn-cek-rujukan').html('<i class="fa fa-search"></i> Check');
                 }
             });
         }
@@ -1382,7 +1411,6 @@
         dwr.engine.setAsync(true);
         CheckupAction.checkStatusBpjs(noBpjs, {
             callback: function (response) {
-                console.log(response);
                 var warnClass = "";
                 var title = "";
                 var msg = "";

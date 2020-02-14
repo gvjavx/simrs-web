@@ -47,6 +47,15 @@ public class RawatInapAction extends BaseMasterAction {
 
     private String id;
     private String idResep;
+    private String idDetail;
+
+    public String getIdDetail() {
+        return idDetail;
+    }
+
+    public void setIdDetail(String idDetail) {
+        this.idDetail = idDetail;
+    }
 
     public RiwayatTindakanBo getRiwayatTindakanBoProxy() {
         return riwayatTindakanBoProxy;
@@ -276,7 +285,13 @@ public class RawatInapAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[RawatInapAction.initForm] start process >>>");
 
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
         RawatInap rawatInap = new RawatInap();
+        rawatInap.setStTglTo(tglToday);
+        rawatInap.setStTglFrom(tglToday);
         setRawatInap(rawatInap);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -347,10 +362,25 @@ public class RawatInapAction extends BaseMasterAction {
         String id = getId();
         String jk = "";
 
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+
+        switch (branch){
+            case CommonConstant.BRANCH_RS01 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                break;
+            case CommonConstant.BRANCH_RS02 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                break;
+            case CommonConstant.BRANCH_RS03 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                break;
+        }
+
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
         reportParams.put("resepId", idResep);
-        reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
+        reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());
         reportParams.put("nama", headerCheckup.getNama());
         reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + headerCheckup.getStTglLahir().toString());
@@ -478,6 +508,43 @@ public class RawatInapAction extends BaseMasterAction {
         skorRanap.setGroupId(groupId);
 
         return rawatInapBo.getListSkorRanap(skorRanap);
+    }
+
+    public String printGelangPasien(){
+
+        String id = getId();
+
+        //get data from session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (RawatInap rawatInap : listOfResult) {
+                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+
+                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+                        reportParams.put("noCheckup",id);
+                        reportParams.put("idDetailCheckup",rawatInap.getIdDetailCheckup());
+                        reportParams.put("nama",headerCheckup.getNama());
+                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_gelang_pasien";
     }
 
 }

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.ordergizi.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.obatinap.dao.ObatInapDao;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.obatinap.model.ObatInap;
@@ -117,6 +118,44 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         logger.info("[OrderGiziBoImpl.saveEdit] End <<<<<<");
     }
 
+    @Override
+    public CheckResponse updateDiterimaFLag(OrderGizi bean) throws GeneralBOException {
+        logger.info("[OrderGiziBoImpl.updateDiterimaFLag] Start >>>>>>>");
+        CheckResponse response = new CheckResponse();
+        if (bean != null){
+
+            ItSimrsOrderGiziEntity orderGiziEntity = new ItSimrsOrderGiziEntity();
+            try {
+                orderGiziEntity = orderGiziDao.getById("idOrderGizi", bean.getIdOrderGizi());
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("Found Error when search order gizi "+e.getMessage());
+                logger.error("[OrderGiziBoImpl.updateDiterimaFLag] Error when getById order gizi ",e);
+                throw new GeneralBOException("[OrderGiziBoImpl.updateDiterimaFLag] Error when save edit order gizi "+e.getMessage());
+            }
+
+            if (bean != null) {
+
+                orderGiziEntity.setDiterimaFlag("Y");
+                orderGiziEntity.setLastUpdate(bean.getLastUpdate());
+                orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    orderGiziDao.updateAndSave(orderGiziEntity);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil mngkonfirmasi pesanan gizi...!");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMessage("Found Error when update order gizi "+e.getMessage());
+                    logger.error("[OrderGiziBoImpl.updateDiterimaFLag] Error when insert obat inap ", e);
+                    throw new GeneralBOException("[TindakanRawatBoImpl.updateDiterimaFLag] Error when edit order gizi " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[OrderGiziBoImpl.updateDiterimaFLag] End <<<<<<");
+        return response;
+    }
+
     public String getNextId(){
         logger.info("[OrderGiziBoImpl.getNextId] Start >>>>>>>");
 
@@ -177,7 +216,8 @@ public class OrderGiziBoImpl implements OrderGiziBo {
             orderGizi.setCreatedWho(entity.getCreatedWho());
             orderGizi.setLastUpdate(entity.getLastUpdate());
             orderGizi.setLastUpdateWho(entity.getLastUpdateWho());
-
+            orderGizi.setApproveFlag(entity.getApproveFlag());
+            orderGizi.setDiterimaFlag(entity.getDiterimaFlag());
 
             results.add(orderGizi);
         }

@@ -210,8 +210,14 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[RawatInapAction.initForm] start process >>>");
 
-        PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
-        setPeriksaRadiologi(periksaRadiologi);
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
+        PeriksaLab periksaLab = new PeriksaLab();
+        periksaLab.setStTglTo(tglToday);
+        periksaLab.setStTglFrom(tglToday);
+        setPeriksaLab(periksaLab);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");

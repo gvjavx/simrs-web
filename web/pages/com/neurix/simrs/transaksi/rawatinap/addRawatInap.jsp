@@ -219,33 +219,45 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
-                            <i class="fa fa-edit"></i> Form Resiko Dekubitus
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
-                            <i class="fa fa-edit"></i> Form Fungsional
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
-                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
-                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">
-                            <i class="fa fa-edit"></i> Form Seksual dan Reproduksi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">
-                            <i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">
-                            <i class="fa fa-edit"></i> Form Psikososial dan Ekonomi
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">
-                            <i class="fa fa-edit"></i> Form Spritual
-                        </button>
-                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">
-                            <i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul
-                        </button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
+                                        <i class="fa fa-edit"></i> Form Resiko Dekubitus
+                                    </button>
+                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
+                                        <i class="fa fa-edit"></i> Form Fungsional
+                                    </button>
+                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
+                                        <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
+                                        <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
+                                    </button>
+                                    <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">
+                                        <i class="fa fa-edit"></i> Form Seksual dan Reproduksi
+                                    </button>
+                                    <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">
+                                        <i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">
+                                    <i class="fa fa-edit"></i> Form Psikososial dan Ekonomi
+                                </button>
+                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">
+                                    <i class="fa fa-edit"></i> Form Spritual
+                                </button>
+                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">
+                                    <i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
@@ -410,14 +422,15 @@
                                 <td colspan="2" align="center">Pagi</td>
                                 <td colspan="2" align="center">Siang</td>
                                 <td colspan="2" align="center">Malam</td>
-                                <td align="center" rowspan="2">Action</td>
+                                <td align="center" rowspan="2" width="10%">Status</td>
+                                <td align="center" rowspan="2" width="18%">Action</td>
                             </tr>
                             <tr bgcolor="#90ee90">
                                 <td>Jenis</td>
                                 <td>Bentuk</td>
                                 <td>Jenis</td>
                                 <td>Bentuk</td>
-                                <td>Jenisi</td>
+                                <td>Jenis</td>
                                 <td>Bentuk</td>
                             </tr>
                             </thead>
@@ -2678,6 +2691,27 @@
                 $.each(data, function (i, item) {
                     var tanggal = item.createdDate;
                     var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                    var label = "";
+                    var btn = "";
+
+                    if(item.approveFlag == "Y"){
+                        btn = '<div class="input-group">' +
+                            '<input class="form-control" onchange="cekBarcode(this.value, \''+item.idOrderGizi+'\')">' +
+                            '<div class="input-group-addon">' +
+                            '<span></span>' +
+                            '</div>' +
+                            '</div>';
+                        label = '<label class="label label-info"> telah dikonfirmasi</label>';
+                    }else{
+                        btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.dietPagi + '\',\'' + item.bentukMakanPagi + '\',\'' + item.dietSiang + '\',\'' + item.bentukMakanSiang + '\',\'' + item.dietMalam + '\',\'' + item.bentukMakanMalam + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                        label = '<label class="label label-warning"> menunggu konfirmasi</label>'
+                    }
+
+                    if(item.diterimaFlag == "Y"){
+                        btn = '';
+                        label = '<label class="label label-success"> telah diterima</label>';
+                    }
+
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.dietPagi + "</td>" +
@@ -2686,13 +2720,26 @@
                             "<td>" + item.bentukMakanSiang + "</td>" +
                             "<td>" + item.dietMalam + "</td>" +
                             "<td>" + item.bentukMakanMalam + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.dietPagi + '\',\'' + item.bentukMakanPagi + '\',\'' + item.dietSiang + '\',\'' + item.bentukMakanSiang + '\',\'' + item.dietMalam + '\',\'' + item.bentukMakanMalam + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                            "<td>" + label + "</td>" +
+                            "<td align='center'>" + btn + "</td>" +
                             "</tr>"
                 });
             }
         });
 
         $('#body_diet').html(table);
+    }
+
+    function cekBarcode(value, idOrderGizi){
+        if(value != '' && idOrderGizi != ''){
+
+            if(value == idOrderGizi){
+                OrderGiziAction.updateDiterimaFlag(idOrderGizi, function (response) {
+                    console.log(response);
+                    listDiet();
+                })
+            }
+        }
     }
 
     function editDokter(id, idDokter) {
@@ -2750,19 +2797,6 @@
         $('#modal-diet').modal('show');
     }
 
-    //    function editObat(id, idobat, qty, stok, namaObat) {
-    ////        $('#obat_jenis_obat').attr("onchange","var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObatEdit(this);");
-    //        $('#load_obat, #warning_obat, #war_jenis_obat, #war_obat, #war_qty_obat').hide();
-    //        $('#jenis_form').hide();
-    //        $('#nama_form').hide();
-    //        $('#nama_obat_form').show();
-    //        $('#nama_obat').val(namaObat);
-    //        $('#ob_qty').val(qty);
-    //        $('#ob_stok').val(stok);
-    //        $('#set_id_obat').val(idobat);
-    //        $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
-    //        $('#modal-obat').modal('show');
-    //    }
     function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
         var qtyBox1 = "";
         var qtyLembar1 = "";

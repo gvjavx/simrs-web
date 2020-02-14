@@ -205,7 +205,7 @@
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
                                                 <s:if test='#row.keteranganSelesai == "Rujuk Rawat Inap"'>
-                                                    <label class="label label-info"> sudah diverifikasi</label>
+                                                    <label class="label label-info" style="margin-bottom: "> sudah diverifikasi</label>
                                                    <label class="label label-warning"> finalisasi di rawat inap</label>
 
                                                 </s:if>

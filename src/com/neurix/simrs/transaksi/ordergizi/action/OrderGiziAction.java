@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.ordergizi.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import org.apache.log4j.Logger;
@@ -170,6 +171,29 @@ public class OrderGiziAction extends BaseMasterAction {
 
         logger.info("[OrderGiziAction.editOrderGizi] end process >>>");
         return SUCCESS;
+    }
+
+    public CheckResponse updateDiterimaFlag(String idOrderGizi){
+
+        CheckResponse response = new CheckResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+
+        if(idOrderGizi != null && !"".equalsIgnoreCase(idOrderGizi)){
+            OrderGizi orderGizi = new OrderGizi();
+            orderGizi.setIdOrderGizi(idOrderGizi);
+            orderGizi.setLastUpdateWho(userLogin);
+            orderGizi.setLastUpdate(updateTime);
+
+            try {
+                response = orderGiziBo.updateDiterimaFLag(orderGizi);
+            }catch (GeneralBOException e){
+                logger.error("[FOund Error] "+e);
+            }
+        }
+        return response;
     }
 
 }

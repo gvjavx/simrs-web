@@ -524,29 +524,15 @@ public class CheckupDetailAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[CheckupDetailAction.initForm] start process >>>");
 
-        LocalDate today = LocalDate.now();
-        String stId = today.toString();
-
-        HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
         String userRoleLogin = CommonUtil.roleAsLogin();
         String idPelayanan   = CommonUtil.userPelayananIdLogin();
-        //Instant now = Instant.now();
-        //Instant yesterday = now.minus(1, ChronoUnit.DAYS);
-        //Instant tomorrow = now.plus(1,ChronoUnit.DAYS);
 
-
-        Calendar cal = Calendar.getInstance();
-
-        cal.add(Calendar.DATE, -1);
-        Date yesterday = new Date(cal.getTimeInMillis());
-
-        cal.add(Calendar.DATE, 1);
-        Date tomorrow = new Date(cal.getTimeInMillis());
-
-        String stYesterday = yesterday.toString();
-        String stTomorrow = tomorrow.toString();
-
-
+        HeaderDetailCheckup checkupdetail = new HeaderDetailCheckup();
+        checkupdetail.setStDateFrom(tglToday);
+        checkupdetail.setStDateTo(tglToday);
 
         if(CommonConstant.ROLE_ADMIN_RS.equalsIgnoreCase(userRoleLogin)){
             setEnabledPoli(true);
@@ -561,9 +547,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             setEnabledAddPasien(true);
         }
 
-
-//        checkupdetail.setStDateFrom(stYesterday);
-//        checkupdetail.setStDateTo(stTomorrow);
         setHeaderDetailCheckup(checkupdetail);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -1285,7 +1268,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             List<PermintaanResep> resepList = new ArrayList<>();
             PermintaanResep resep = new PermintaanResep();
             resep.setIdDetailCheckup(idDetail);
-            resep.setFlag("Y");
+//            resep.setFlag("Y");
 
             try {
                 resepList = permintaanResepBo.getByCriteria(resep);

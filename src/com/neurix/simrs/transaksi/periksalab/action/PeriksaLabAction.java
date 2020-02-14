@@ -202,7 +202,13 @@ public class PeriksaLabAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[PeriksaLabAction.initForm] start process >>>");
 
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
         PeriksaLab periksaLab = new PeriksaLab();
+        periksaLab.setStTglFrom(tglToday);
+        periksaLab.setStTglTo(tglToday);
         setPeriksaLab(periksaLab);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
