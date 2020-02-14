@@ -68,7 +68,18 @@
             <column name="keterangan" sql-type="varchar" length="1000"  />
         </property>
 
-
+        <property name="unitId">
+            <column name="branch_id" sql-type="varchar" length="10"  />
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="10"  />
+        </property>
+        <property name="posisiId">
+            <column name="position_id" sql-type="varchar" length="10"  />
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="10"  />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -86,6 +97,9 @@
         </property>
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+        <property name="flagPerbaikan">
+            <column name="flag_perbaikan" sql-type="varchar" length="1" not-null="false" />
         </property>
 
         <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"

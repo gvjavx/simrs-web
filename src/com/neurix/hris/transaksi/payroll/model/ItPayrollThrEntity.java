@@ -45,6 +45,15 @@ public class ItPayrollThrEntity implements Serializable {
     private BigDecimal pemondokan;
     private BigDecimal komunikasi;
     private BigDecimal totalRlab;
+    private BigDecimal pphThr;
+
+    public BigDecimal getPphThr() {
+        return pphThr;
+    }
+
+    public void setPphThr(BigDecimal pphThr) {
+        this.pphThr = pphThr;
+    }
 
     public BigDecimal getTotalRlab() {
         return totalRlab;

@@ -117,7 +117,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  pegawai.poin_lebih," +
                 "  branch.umr, \n" +
                 "pegawai.golongan_dapen_id, \n"+
-                "pegawai.masa_kerja_gol"+
+                "pegawai.masa_kerja_gol, \n"+
+                "pegawai.tgl_akhir_kontrak \n"+
                 "   FROM im_hris_pegawai pegawai\n" +
                 "LEFT JOIN it_hris_pegawai_position posisi\n" +
                 "  ON posisi.nip = pegawai.nip\n" +
@@ -187,6 +188,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             }
             result.setGolonganDapenId(row[34].toString());
             result.setMasaKerjaGol((Integer)row[35]);
+            if (row[36]!=null){
+                result.setTanggalAkhirKontrak((Date)row[36]);
+            }
             listOfResult.add(result);
         }
         return listOfResult;

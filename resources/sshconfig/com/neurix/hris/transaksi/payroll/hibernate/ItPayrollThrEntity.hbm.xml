@@ -61,6 +61,9 @@
         <property name="totalRlab">
             <column name="total_rlab" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
+        <property name="pphThr">
+            <column name="pph_thr" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
 
 
         <property name="flag">

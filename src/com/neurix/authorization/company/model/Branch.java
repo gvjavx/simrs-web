@@ -10,6 +10,7 @@ import java.math.BigDecimal;
  */
 public class Branch extends BaseModel implements Serializable, Comparable<Branch> {
     private String branchId;
+    private String alamatSurat;
     private String branchName;
     private String branchAddress;
     private String enabled;
@@ -34,6 +35,14 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
 
     public BigDecimal getMaxBpjsKs() {
         return maxBpjsKs;

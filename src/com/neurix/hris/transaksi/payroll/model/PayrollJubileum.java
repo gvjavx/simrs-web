@@ -15,30 +15,198 @@ import java.sql.Date;
  */
 
 public class PayrollJubileum extends BaseModel {
+
     private String jubileumId;
-    private BigDecimal gajiGolonganNilai;
-    private BigDecimal tunjanganUmkNilai;
-    private BigDecimal tunjanganStrukturalNilai;
-    private BigDecimal tunjanganPeralihanNilai;
-    private BigDecimal tunjanganJabStrukturalNilai;
-    private BigDecimal besarJubileumNilai;
+    private String payrollId;
+    private String nip;
+
+
     private BigDecimal totalJubileumNilai;
     private BigDecimal pphJubileumNilai;
     private BigDecimal nettoJubileumNilai;
 
-    private String gajiGolongan;
-    private String tunjanganUmk;
-    private String tunjanganStruktural;
-    private String tunjanganPeralihan;
-    private String tunjanganJabStruktural;
-    private String besarJubileum;
+    private BigDecimal gajiNilai;
+    private BigDecimal sankhusNilai;
+    private BigDecimal tunjanganjabatanNilai;
+    private BigDecimal tunjanganStrukturalNilai;
+    private BigDecimal tunjanganFungsionalNilai;
+    private BigDecimal tunjanganPeralihanNilai;
+    private BigDecimal tunjanganTambahanNilai;
+    private BigDecimal pemondokanNilai;
+    private BigDecimal komunikasiNilai;
+
+    private Date tanggalJubileumDate;
+    private String stTanggalJubileum;
+
+
     private String totalJubileum;
     private String pphJubileum;
     private String nettoJubileum;
-    private Date tanggalJubileumDate;
+
+    private String gaji;
+    private String sankhus;
+    private String tunjanganJabatan;
+    private String tunjanganStruktural;
+    private String tunjanganFungsional;
+    private String tunjanganPeralihan;
+    private String tunjanganTambahan;
+    private String pemondokan;
+    private String komunikasi;
+
+    private String keteranganEmas;
+    private String keteranganjubileum;
+
+    public String getKeteranganjubileum() {
+        return keteranganjubileum;
+    }
+
+    public void setKeteranganjubileum(String keteranganjubileum) {
+        this.keteranganjubileum = keteranganjubileum;
+    }
+
+    public String getGaji() {
+        return gaji;
+    }
+
+    public void setGaji(String gaji) {
+        this.gaji = gaji;
+    }
+
+    public BigDecimal getGajiNilai() {
+        return gajiNilai;
+    }
+
+    public void setGajiNilai(BigDecimal gajiNilai) {
+        this.gajiNilai = gajiNilai;
+    }
+
+    public String getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(String komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getKomunikasiNilai() {
+        return komunikasiNilai;
+    }
+
+    public void setKomunikasiNilai(BigDecimal komunikasiNilai) {
+        this.komunikasiNilai = komunikasiNilai;
+    }
+
+    public String getPayrollId() {
+        return payrollId;
+    }
+
+    public void setPayrollId(String payrollId) {
+        this.payrollId = payrollId;
+    }
+
+    public String getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(String pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getPemondokanNilai() {
+        return pemondokanNilai;
+    }
+
+    public void setPemondokanNilai(BigDecimal pemondokanNilai) {
+        this.pemondokanNilai = pemondokanNilai;
+    }
+
+    public String getSankhus() {
+        return sankhus;
+    }
+
+    public void setSankhus(String sankhus) {
+        this.sankhus = sankhus;
+    }
+
+    public BigDecimal getSankhusNilai() {
+        return sankhusNilai;
+    }
+
+    public void setSankhusNilai(BigDecimal sankhusNilai) {
+        this.sankhusNilai = sankhusNilai;
+    }
+
+    public String getStTanggalJubileum() {
+        return stTanggalJubileum;
+    }
+
+    public void setStTanggalJubileum(String stTanggalJubileum) {
+        this.stTanggalJubileum = stTanggalJubileum;
+    }
+
+    public String getTunjanganFungsional() {
+        return tunjanganFungsional;
+    }
+
+    public void setTunjanganFungsional(String tunjanganFungsional) {
+        this.tunjanganFungsional = tunjanganFungsional;
+    }
+
+    public BigDecimal getTunjanganFungsionalNilai() {
+        return tunjanganFungsionalNilai;
+    }
+
+    public void setTunjanganFungsionalNilai(BigDecimal tunjanganFungsionalNilai) {
+        this.tunjanganFungsionalNilai = tunjanganFungsionalNilai;
+    }
+
+    public String getTunjanganJabatan() {
+        return tunjanganJabatan;
+    }
+
+    public void setTunjanganJabatan(String tunjanganJabatan) {
+        this.tunjanganJabatan = tunjanganJabatan;
+    }
+
+    public BigDecimal getTunjanganjabatanNilai() {
+        return tunjanganjabatanNilai;
+    }
+
+    public void setTunjanganjabatanNilai(BigDecimal tunjanganjabatanNilai) {
+        this.tunjanganjabatanNilai = tunjanganjabatanNilai;
+    }
+
+    public String getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(String tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
+    public BigDecimal getTunjanganTambahanNilai() {
+        return tunjanganTambahanNilai;
+    }
+
+    public void setTunjanganTambahanNilai(BigDecimal tunjanganTambahanNilai) {
+        this.tunjanganTambahanNilai = tunjanganTambahanNilai;
+    }
+
+    private BigDecimal gajiGolonganNilai;
+    private BigDecimal tunjanganUmkNilai;
+    private BigDecimal tunjanganJabStrukturalNilai;
+    private BigDecimal besarJubileumNilai;
+
+    private BigDecimal peralihanNilai;
+
+    private String gajiGolongan;
+    private String tunjanganUmk;
+    private String tunjanganJabStruktural;
+    private String besarJubileum;
+
+    private String peralihan;
 
     //Tambahan
-    private String nip;
     private String tipePegawai;
     private String stTanggalPkwtAwal;
     private String stTanggalPkwtAkhir;
@@ -50,6 +218,29 @@ public class PayrollJubileum extends BaseModel {
     private String centangJubileum ;
 
     private String nama;
+    public String getPeralihan() {
+        return peralihan;
+    }
+
+    public void setPeralihan(String peralihan) {
+        this.peralihan = peralihan;
+    }
+
+    public BigDecimal getPeralihanNilai() {
+        return peralihanNilai;
+    }
+
+    public void setPeralihanNilai(BigDecimal peralihanNilai) {
+        this.peralihanNilai = peralihanNilai;
+    }
+
+    public String getKeteranganEmas() {
+        return keteranganEmas;
+    }
+
+    public void setKeteranganEmas(String keteranganEmas) {
+        this.keteranganEmas = keteranganEmas;
+    }
 
     public Date getTanggalJubileumDate() {
         return tanggalJubileumDate;

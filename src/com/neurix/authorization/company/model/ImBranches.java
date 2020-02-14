@@ -15,6 +15,16 @@ import java.util.Set;
 public class ImBranches implements Serializable {
     private ImBranchesPK primaryKey;
     private String branchName;
+    private String alamatSurat;
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
+
     private BigDecimal faktorKali;
     private BigDecimal multifikator;
     private String branchAddress;

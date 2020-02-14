@@ -76,12 +76,13 @@
                 var tahun = document.getElementById("tahunPayroll").value;
                 var thr = document.getElementById("flagThr").value;
                 var insentifTipe = document.getElementById("flagInsentif").value;
-                var thrTipe = document.getElementById("tipeThr").value;
-
+                var thrTipe = 'y';
                 var hasil = cekApprove(branch, bulan, tahun, thrTipe);
                 //alert(hasil);
                 if (branch != '' && bulan != '0' && tahun != '0') {
                     if(thr == 'Y'){
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
                         if(thrTipe != ''){
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
@@ -969,13 +970,13 @@
                                                           cssClass="form-control" value="N"/>
                                         </table>
                                     </td>
-                                    <td style="display: none" id="tempatTipeThr">
+                                    <%--<td style="display: none" id="tempatTipeThr">
                                         <table>
                                             <s:select list="#{'idulFitri':'Idul Fitri', 'natal' : 'Natal'}"
                                                       id="tipeThr" name="payroll.tipeThr"
                                                       headerKey="" headerValue="Pilih -" cssClass="form-control" />
                                         </table>
-                                    </td>
+                                    </td>--%>
                                 </tr>
 
                                 <tr>
@@ -2583,13 +2584,14 @@
     }
 
     window.changeThr = function (id) {
-        if($('#checkThr').is(":checked")){
+        document.getElementById("flagThr").value = "Y";
+        /*if($('#checkThr').is(":checked")){
             document.getElementById("flagThr").value = "Y";
             $('#tempatTipeThr').show();
         }else{
             $('#tempatTipeThr').hide();
             document.getElementById("flagThr").value = "N";
-        }
+        }*/
     }
 
     window.changePendidikan = function (id) {

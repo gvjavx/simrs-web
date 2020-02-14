@@ -31,6 +31,7 @@ public class Biodata extends BaseModel {
     private Date tanggalPensiun;
     private Date tanggalAktif;
     private Date tanggalMasuk;
+    private Date tanggalAkhirKontrak;
     private String tempatLahir;
     private Date TanggalAktif;
     private String stTanggalAktif;
@@ -110,6 +111,52 @@ public class Biodata extends BaseModel {
     private String golonganDapenId;
     private String stMasaKerjaGol;
     private int masaKerjaGolongan;
+
+
+    private String flagTunjSupervisi;
+    private String flagTunjLokasi;
+    private String flagTunjSiaga;
+    private String flagTunjProfesional;
+
+    public String getFlagTunjLokasi() {
+        return flagTunjLokasi;
+    }
+
+    public void setFlagTunjLokasi(String flagTunjLokasi) {
+        this.flagTunjLokasi = flagTunjLokasi;
+    }
+
+    public String getFlagTunjProfesional() {
+        return flagTunjProfesional;
+    }
+
+    public void setFlagTunjProfesional(String flagTunjProfesional) {
+        this.flagTunjProfesional = flagTunjProfesional;
+    }
+
+    public String getFlagTunjSiaga() {
+        return flagTunjSiaga;
+    }
+
+    public void setFlagTunjSiaga(String flagTunjSiaga) {
+        this.flagTunjSiaga = flagTunjSiaga;
+    }
+
+    public String getFlagTunjSupervisi() {
+        return flagTunjSupervisi;
+    }
+
+    public void setFlagTunjSupervisi(String flagTunjSupervisi) {
+        this.flagTunjSupervisi = flagTunjSupervisi;
+    }
+
+    public Date getTanggalAkhirKontrak() {
+        return tanggalAkhirKontrak;
+    }
+
+    public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
+        this.tanggalAkhirKontrak = tanggalAkhirKontrak;
+    }
 
     public int getMasaKerjaGolongan() {
         return masaKerjaGolongan;

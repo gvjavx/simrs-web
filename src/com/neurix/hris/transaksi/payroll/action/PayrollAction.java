@@ -3004,10 +3004,21 @@ public class PayrollAction extends BaseMasterAction{
             }catch( HibernateException e){
 
             }
-
-            reportParams.put("urlLogo", CommonConstant.LOGO_REPORT_PAYROLL);
+            String logo ="";
+            if (branchId.equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (branchId.equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (branchId.equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
             reportParams.put("branchId", branchId);
             reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("bulan", bulan);
             reportParams.put("tahun", tahun);
 

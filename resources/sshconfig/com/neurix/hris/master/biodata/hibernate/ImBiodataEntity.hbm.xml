@@ -200,6 +200,11 @@
             <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
         </property>
 
+        <property name="tanggalAkhirKontrak">
+            <column name="tgl_akhir_kontrak" sql-type="timestamp" not-null="false" />
+        </property>
+
+
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="provinsi"/>

@@ -3,55 +3,51 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollJubileumEntity" dynamic-update="true"
-           table="it_hris_payroll_jubileum" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollJasoprEntity" dynamic-update="true"
+           table="it_hris_payroll_jasopr" select-before-update="true" schema="public">
 
 
-        <id name="jubileumId">
-            <column name="jubileum_id" sql-type="varchar" length="10" not-null="true" />
+        <id name="jasoprId">
+            <column name="jasopr_id" sql-type="varchar" length="10" not-null="true" />
         </id>
-        <property name="nip">
-            <column name="nip" sql-type="varchar" length="20" not-null="true" />
-        </property>
+
         <property name="payrollId">
             <column name="payroll_id" sql-type="varchar" length="12" not-null="true" />
         </property>
-
-
-        <property name="total">
-            <column name="total_jubileum" sql-type="numeric" length="10" precision="2" not-null="false" />
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar" length="12" not-null="true" />
         </property>
-        <property name="pphJubileum">
-            <column name="pph_jubileum" sql-type="numeric" length="10" precision="2" not-null="false" />
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="12" not-null="true" />
         </property>
-        <property name="nettoJubileum">
-            <column name="netto_jubileum" sql-type="numeric" length="12" precision="2" not-null="false" />
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="12" not-null="true" />
         </property>
-        <property name="tanggalJubileum">
-            <column name="tanggal_jubileum" sql-type="date" not-null="false" />
+        <property name="totalThp">
+            <column name="total_thp" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-
-
-
         <property name="gaji">
             <column name="gaji" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
         <property name="sankhus">
-            <column name="sankhus" sql-type="numeric" length="15" precision="2" not-null="true" />
+            <column name="santunan_khusus" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganjabatan">
+        <property name="tunjJabatan">
             <column name="tunjangan_jabatan" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganStruktural">
+        <property name="tunjStruktural">
             <column name="tunjangan_struktural" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganFungsional">
+        <property name="tunjFungsional">
             <column name="tunjangan_fungsional" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganPeralihan">
+        <property name="tunjPeralihan">
             <column name="tunjangan_peralihan" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganTambahan">
+        <property name="tunjLain">
+            <column name="tunjangan_lain" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjTambahan">
             <column name="tunjangan_tambahan" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
         <property name="pemondokan">
@@ -60,14 +56,18 @@
         <property name="komunikasi">
             <column name="komunikasi" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-
-        <property name="keteranganEmas">
-            <column name="keterangan_emas" sql-type="varchar" length="20" not-null="true" />
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-        <property name="keteranganjubileum">
-            <column name="keterangan_jubilium" sql-type="varchar" length="100" not-null="true" />
+        <property name="totaljasopr">
+            <column name="total_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
-
+        <property name="pphJasopr">
+            <column name="pph_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="nettojasopr">
+            <column name="netto_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

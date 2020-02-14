@@ -373,6 +373,7 @@ public class BranchBoImpl implements BranchBo {
 
             resultBranch.setBranchId(imBranches.getPrimaryKey().getId());
             resultBranch.setBranchName(imBranches.getBranchName());
+            resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
             resultBranch.setBranchAddress(imBranches.getBranchAddress());
             resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
             resultBranch.setMultifikator(imBranches.getMultifikator());

@@ -13,6 +13,7 @@ import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.dao.PengalamanKerjaDao;
+import com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao;
 import com.neurix.hris.master.biodata.model.*;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
@@ -82,6 +83,7 @@ public class BiodataBoImpl implements BiodataBo {
 
     protected static transient Logger logger = Logger.getLogger(BiodataBoImpl.class);
     private BiodataDao biodataDao;
+    private TunjLainPegawaiDao tunjLainPegawaiDao;
     private PengalamanKerjaDao pengalamanKerjaDao;
     private RewardDao rewardDao;
     private StrukturJabatanDao strukturJabatanDao;
@@ -107,6 +109,14 @@ public class BiodataBoImpl implements BiodataBo {
     private PayrollDanaPensiunDao danaPensiunDao;
     private PayrollDao payrollDao;
     private PositionBagianDao positionBagianDao;
+
+    public TunjLainPegawaiDao getTunjLainPegawaiDao() {
+        return tunjLainPegawaiDao;
+    }
+
+    public void setTunjLainPegawaiDao(TunjLainPegawaiDao tunjLainPegawaiDao) {
+        this.tunjLainPegawaiDao = tunjLainPegawaiDao;
+    }
 
     public PelatihanJabatanUserDao getPelatihanJabatanUserDao() {
         return pelatihanJabatanUserDao;
@@ -625,6 +635,32 @@ public class BiodataBoImpl implements BiodataBo {
                 logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
             }
+
+
+            //save flag tunjangan2 jabatan
+            String idTunjLain = tunjLainPegawaiDao.getNextTunjLain();
+            ItTunjLainPegawaiEntity tunjanganentity = new ItTunjLainPegawaiEntity();
+            tunjanganentity.setTunjLainId(idTunjLain);
+            tunjanganentity.setNip(bean.getNip());
+            tunjanganentity.setFlagTunjSupervisi(bean.getFlagTunjSupervisi());
+            tunjanganentity.setFlagTunjLokasi(bean.getFlagTunjLokasi());
+            tunjanganentity.setFlagTunjSiaga(bean.getFlagTunjSiaga());
+            tunjanganentity.setFlagTunjProfesional(bean.getFlagTunjProfesional());
+
+            tunjanganentity.setFlag(bean.getFlag());
+            tunjanganentity.setAction(bean.getAction());
+            tunjanganentity.setCreatedWho(bean.getCreatedWho());
+            tunjanganentity.setLastUpdateWho(bean.getLastUpdateWho());
+            tunjanganentity.setCreatedDate(bean.getCreatedDate());
+            tunjanganentity.setLastUpdate(bean.getLastUpdate());
+            try {
+                // insert into database
+                tunjLainPegawaiDao.addAndSave(tunjanganentity);
+            } catch (HibernateException e) {
+                logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
+            }
+
 
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");

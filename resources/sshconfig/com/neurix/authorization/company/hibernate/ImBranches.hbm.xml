@@ -33,6 +33,9 @@
         <property name="branchAddress">
             <column name="branch_address" sql-type="varchar" length="1000"/>
         </property>
+        <property name="alamatSurat">
+            <column name="alamat_surat" sql-type="varchar" length="100"/>
+        </property>
         <property name="masaTanam">
             <column name="mt" sql-type="varchar" length="100"/>
         </property>

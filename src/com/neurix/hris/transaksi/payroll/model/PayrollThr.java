@@ -50,9 +50,27 @@ public class PayrollThr extends BaseModel {
     private String nip;
     private String totalThr;
     private String totalThrBersih;
+    private String pphThr;
 
     private BigDecimal totalThrNilaiBersih;
     private BigDecimal totalThrNilai;
+    private BigDecimal pphThrNilai;
+
+    public String getPphThr() {
+        return pphThr;
+    }
+
+    public void setPphThr(String pphThr) {
+        this.pphThr = pphThr;
+    }
+
+    public BigDecimal getPphThrNilai() {
+        return pphThrNilai;
+    }
+
+    public void setPphThrNilai(BigDecimal pphThrNilai) {
+        this.pphThrNilai = pphThrNilai;
+    }
 
     public String getTotalRlab() {
         return totalRlab;

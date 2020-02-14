@@ -1144,6 +1144,125 @@
                                         </table>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Supervisi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Lokasi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Siaga :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Profesional :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="profesional" class="checkZakat" disabled onchange="cekProfesional()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Direksi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="direksi" class="checkZakat" disabled onchange="cekDireksi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="direksi" class="checkZakat" onchange="cekDireksi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Komisaris :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="komisaris" class="checkZakat" disabled onchange="cekKomisaris()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="komisaris" class="checkZakat" onchange="cekKomisaris()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Komite Audit :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="koiteAudit" class="checkZakat" disabled onchange="cekKoiteAudit()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="koiteAudit" class="checkZakat" onchange="cekKoiteAudit()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
 
                                 <s:if test="isDelete()">
                                     <tr>
@@ -4297,6 +4416,64 @@
             $("#flagAktif").val("N");
         }
     }
+
+
+    window.cekSupervisi = function () {
+        if ($('#supervisi').is(":checked")) {
+            $("#flagTunjSupervisi").val("Y");
+        } else {
+            $("#flagTunjSupervisi").val("N");
+        }
+    }
+
+    window.cekLokasi = function () {
+        if ($('#lokasi').is(":checked")) {
+            $("#flagTunjLokasi").val("Y");
+        } else {
+            $("#flagTunjLokasi").val("N");
+        }
+    }
+
+    window.cekSiaga = function () {
+        if ($('#siaga').is(":checked")) {
+            $("#flagTunjSiaga").val("Y");
+        } else {
+            $("#flagTunjSiaga").val("N");
+        }
+    }
+    window.cekProfesional = function () {
+        if ($('#profesional').is(":checked")) {
+            $("#flagTunjProfesional").val("Y");
+        } else {
+            $("#flagTunjProfesional").val("N");
+        }
+    }
+
+    window.cekDireksi = function () {
+        if ($('#direksi').is(":checked")) {
+            $("#flagTunjDireksi").val("Y");
+        } else {
+            $("#flagTunjDireksi").val("N");
+        }
+    }
+
+    window.cekKomisaris = function () {
+        if ($('#komisaris').is(":checked")) {
+            $("#flagTunjKomisaris").val("Y");
+        } else {
+            $("#flagTunjKomisaris").val("N");
+        }
+    }
+    window.cekKoiteAudit = function () {
+        if ($('#koiteAudit').is(":checked")) {
+            $("#flagTunjKoiteAudit").val("Y");
+        } else {
+            $("#flagTunjKoiteAudit").val("N");
+        }
+    }
+
+
+
 
     window.listStatusKeluarga = function () {
         var gender = document.getElementById("gender").value;

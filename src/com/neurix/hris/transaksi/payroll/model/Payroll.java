@@ -2447,6 +2447,8 @@ public class Payroll extends BaseModel {
     }
 
     private Date tanggalAktif;
+    private Date tanggalAkhirKontrak;
+    private String stTanggalAkhirKontrak;
     private String stTanggalPayroll;
     private String stTanggalAktif;
     private String stTanggalAktifSekarang;
@@ -2470,6 +2472,22 @@ public class Payroll extends BaseModel {
     private int bulanInsentifMulai;
     private int bulanInsentifSampai;
     private int insentifTahun;
+
+    public String getStTanggalAkhirKontrak() {
+        return stTanggalAkhirKontrak;
+    }
+
+    public void setStTanggalAkhirKontrak(String stTanggalAkhirKontrak) {
+        this.stTanggalAkhirKontrak = stTanggalAkhirKontrak;
+    }
+
+    public Date getTanggalAkhirKontrak() {
+        return tanggalAkhirKontrak;
+    }
+
+    public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
+        this.tanggalAkhirKontrak = tanggalAkhirKontrak;
+    }
 
     public int getInsentifTahun() {
         return insentifTahun;

@@ -101,6 +101,7 @@ public class ItPayrollEntity implements Serializable {
     private String danaPensiun;
     private Date tanggalAktif;
     private Date tanggalPensiun;
+    private Date tanggalAkhirKontrak;
 
     private String flagThr;
     private String flagPendidikan;
@@ -224,6 +225,14 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal listrik;
     private BigDecimal iuranProfesi;
     private BigDecimal potonganLain;
+
+    public Date getTanggalAkhirKontrak() {
+        return tanggalAkhirKontrak;
+    }
+
+    public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
+        this.tanggalAkhirKontrak = tanggalAkhirKontrak;
+    }
 
     public BigDecimal getTambahanLain() {
         return tambahanLain;

@@ -38,6 +38,7 @@
           p:positionBagianDao-ref="positionBagianDao"
           p:smkHistoryGolonganDao-ref="historyGolonganDao"
           p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
+          p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
     />
 
     <bean id="biodataBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -91,5 +92,7 @@
     <bean id="historyGolonganDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryGolonganDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="pelatihanJabatanUserDao" class="com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tunjLainPegawaiDao" class="com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>
