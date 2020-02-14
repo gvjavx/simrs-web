@@ -281,7 +281,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         return "search_laporan_ikhitisar_buku_besar";
     }
 
-    public String searchReportIkhtisarSubBukuBesar() {
+    public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
 
         return "search_laporan_ikhitisar_sub_buku_besar";
@@ -416,12 +416,20 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         if (data.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
             titleReport="IKHTISAR HUTANG USAHA";
             reportId="RPT04";
+        }else if (data.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
+            titleReport="IKHTISAR PIUTANG USAHA";
+            reportId="RPT05";
+        }else if (data.getTipeLaporan().equalsIgnoreCase("uang_muka")){
+            titleReport="IKHTISAR UANG MUKA";
+            reportId="RPT06";
+        }else{
+            reportId="NOTHING";
         }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
-        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));

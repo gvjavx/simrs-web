@@ -122,18 +122,6 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Laporan Aging :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'piutang_usaha':'Piutang Usaha'}"
-                                                                  id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Periode :</small></label>
                                                 </td>
                                                 <td>

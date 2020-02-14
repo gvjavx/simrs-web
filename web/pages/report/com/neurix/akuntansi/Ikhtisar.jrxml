@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.1"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="58"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -17,14 +17,14 @@
 	<parameter name="reportParams.periodeTitle" class="java.lang.String"/>
 	<parameter name="reportParams.periode" class="java.lang.String"/>
 	<parameter name="reportParams.reportTitle" class="java.lang.String"/>
-	<parameter name="reportParams.cabangId" class="java.lang.String">
+	<parameter name="reportParams.branchId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.urlLogo" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
-	<parameter name="reportParams.tipeJurnal" class="java.lang.String">
+	<parameter name="reportParams.reportId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -112,20 +112,25 @@
     ) > 0 THEN 'D' ELSE NULL END END
   ) as currposisi,
   $P{reportParams.periode} as periode
-
 FROM
   (
     select
+      rekening_id,
       kode_rekening,
       nama_kode_rekening
     from
       im_akun_kode_rekening
     where
-      kode_rekening IN
-	  (
-        SELECT kode_rekening FROM im_akun_mapping_jurnal WHERE tipe_jurnal_id=$P{reportParams.tipeJurnal}
+      rekening_id IN (
+        SELECT
+          rekening_id
+        FROM
+          im_akun_report_detail
+        WHERE
+          report_id = $P{reportParams.reportId}
       )
     group by
+      rekening_id,
       kode_rekening,
       nama_kode_rekening
     order by
@@ -133,40 +138,42 @@ FROM
   ) a
   INNER JOIN (
     select
-      y.kode_rekening as kode_rekening,
+      y.rekening_id as rekening_id,
       y.master_id as nomor_master,
       z.nama as nama,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
       sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-      x.cabang_id
+      x.branch_id
     from
       t_jurnal x
       inner join t_jurnal_detail y on x.no_jurnal = y.no_jurnal
-      inner join m_master z on y.master_id = z.nomor_master
+      inner join im_akun_master z on y.master_id = z.nomor_master
     where
-      to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
-      and x.cabang_id=$P{reportParams.cabangId}
+      to_char(x.created_date, 'MM-yyyy') =  $P{reportParams.periode}
+      and x.branch_id =  $P{reportParams.branchId}
     group by
-      y.kode_rekening,
+      y.rekening_id,
       y.master_id,
       z.nama,
-      x.cabang_id
-  ) b ON b.kode_rekening = a.kode_rekening
+      x.branch_id
+  ) b ON b.rekening_id = a.rekening_id
   LEFT OUTER JOIN (
     select
-      kode_rekening,
-      nomor_master,
+      rekening_id,
+      master_id,
       jumlah_debit,
       jumlah_kredit,
       saldo,
       posisi
     from
-      t_ikhtisar_saldo
+      it_akun_saldo_akhir
     where
-      to_date(periode, 'MM-yyyy') = to_date('01-2010', 'MM-yyyy') - Interval '1 month' and cabang_id=$P{reportParams.cabangId}
-  ) c ON a.kode_rekening = c.kode_rekening
-  and c.nomor_master = b.nomor_master
-  ORDER BY koderekening]]>
+      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
+      and branch_id = $P{reportParams.branchId}
+  ) c ON a.rekening_id = c.rekening_id
+  and c.master_id = b.nomor_master
+ORDER BY
+  koderekening]]>
 	</queryString>
 	<field name="koderekening" class="java.lang.String"/>
 	<field name="namarekening" class="java.lang.String"/>
