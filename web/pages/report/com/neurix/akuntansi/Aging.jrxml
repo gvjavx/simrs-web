@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Aging" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="f9432a24-ee5d-45d2-a0d1-74b3397bc672">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="0.8264462809917354"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -17,9 +17,6 @@
 	<parameter name="reportParams.periodeTitle" class="java.lang.String"/>
 	<parameter name="reportParams.periode" class="java.lang.String"/>
 	<parameter name="reportParams.reportTitle" class="java.lang.String"/>
-	<parameter name="reportParams.query1" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="reportParams.cabangId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -27,6 +24,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
+	<parameter name="reportParams.query1" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT   *
 FROM    (
@@ -40,14 +38,15 @@ FROM    (
                                d.master_id                      AS mastergrp,
                                f.nilai_kurs                     AS kurs,
                                $P{reportParams.periode}        AS periode ,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah1,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah2,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah3,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah4,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah5,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah6,
-			(b.jumlah_debit-b.jumlah_kredit) AS jumlah7,
-                               f.nilai_kurs                     AS strKurs
+			0 AS jumlah1,
+			0 AS jumlah2,
+			0 AS jumlah3,
+			0 AS jumlah4,
+			0 AS jumlah5,
+			0 AS jumlah6,
+			0 AS jumlah7,
+			'' AS txtkurs
+
                     FROM       (
                                       SELECT *
                                       FROM   t_jurnal
@@ -115,7 +114,7 @@ ORDER BY mastergrp,
 	<field name="jumlah5" class="java.math.BigDecimal"/>
 	<field name="jumlah6" class="java.math.BigDecimal"/>
 	<field name="jumlah7" class="java.math.BigDecimal"/>
-	<field name="strkurs" class="java.math.BigDecimal"/>
+	<field name="txtkurs" class="java.lang.String"/>
 	<variable name="nomor" class="java.lang.Integer" resetType="Group" resetGroup="masterGrp" calculation="Count">
 		<variableExpression><![CDATA[$F{nonota}]]></variableExpression>
 	</variable>
@@ -264,7 +263,7 @@ ORDER BY mastergrp,
 		<variableExpression><![CDATA[$V{jumlahRPH}]]></variableExpression>
 	</variable>
 	<variable name="txtKurs" class="java.lang.String">
-		<variableExpression><![CDATA[$F{strkurs}]]></variableExpression>
+		<variableExpression><![CDATA[$F{txtkurs}]]></variableExpression>
 	</variable>
 	<variable name="kurs" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{matauang}.equalsIgnoreCase("USD")?$F{kurs}:null]]></variableExpression>
@@ -1525,30 +1524,6 @@ ORDER BY mastergrp,
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
-			<staticText>
-				<reportElement key="staticText-48" x="0" y="96" width="142" height="15" uuid="b10acce3-485c-470a-a95d-0c67ed351132"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[NB: Nilai Kurs 1 USD = Rp.]]></text>
-			</staticText>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-97" x="143" y="96" width="105" height="15" uuid="2fc16f58-e68b-4857-8b16-f39b8f120efa"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{txtKurs}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement key="staticText-51" x="34" y="36" width="87" height="17" uuid="243102f1-3a7b-407a-bd36-e5f629d724b6"/>
 				<box>

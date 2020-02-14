@@ -36,7 +36,7 @@
 
         function getReportURL(selectReport) {
             var reportId = selectReport.value;
-            document.reportForm.action= "/simrs" + reportId;
+            document.reportForm.action= "/simrs/laporanAkuntansi/" + reportId;
             document.reportForm.submit();
         };
 

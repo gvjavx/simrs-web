@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="eab8d28e-a176-4781-8e02-a8baf71eee9d">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.7715610000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="9"/>
+	<property name="ireport.y" value="93"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -16,7 +16,7 @@
 	<parameter name="reportParams.tanggal" class="java.lang.String"/>
 	<parameter name="reportParams.periodeTitle" class="java.lang.String"/>
 	<parameter name="reportParams.periode" class="java.lang.String"/>
-	<parameter name="reportParams.cabangId" class="java.lang.String">
+	<parameter name="reportParams.branchId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.urlLogo" class="java.lang.String">
@@ -27,41 +27,18 @@
 		<![CDATA[SELECT
   distinct a.nama_kode_rekening as namaRekening,
   a.kode_rekening as koderekening,
+  c.jumlah_debit as lastdebit,
+  c.jumlah_kredit as lastkredit,
+  c.saldo as lastsaldo,
+  c.posisi as lastposisi,
+  b.jumlah_debit as jumlahdebit,
+  b.jumlah_kredit as jumlahkredit,
+  $P{reportParams.periode} as periode,
+  CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END + CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END as currdebit,
+  CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END + CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END as currdebit,
+  CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END + CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END as currkredit,
   (
-    CASE WHEN length(a.kode_rekening) = 6 THEN c.jumlah_debit ELSE NULL END
-  ) as lastdebit,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN c.jumlah_kredit ELSE NULL END
-  ) as lastkredit,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN c.saldo ELSE NULL END
-  ) as lastsaldo,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN c.posisi ELSE NULL END
-  ) as lastposisi,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN b.jumlah_debit ELSE NULL END
-  ) as jumlahdebit,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN b.jumlah_kredit ELSE NULL END
-  ) as jumlahkredit,
-  '01-2010' as periode,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN (
-      CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END
-    ) + (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    ) ELSE NULL END
-  ) as currdebit,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN (
-      CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END
-    ) + (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) ELSE NULL END
-  ) as currkredit,
-  (
-    CASE WHEN length(a.kode_rekening) = 6 THEN CASE WHEN c.posisi = 'K' THEN abs(
+    CASE WHEN c.posisi = 'K' THEN abs(
       (
         (
           CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
@@ -81,10 +58,10 @@
       ) - (
         CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
       )
-    ) END ELSE NULL END
+    )  END
   ) as currsaldo,
   (
-    CASE WHEN length(a.kode_rekening) = 6 THEN CASE WHEN c.posisi = 'K' THEN CASE WHEN (
+    CASE WHEN c.posisi = 'K' THEN CASE WHEN (
       (
         CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
       ) + (
@@ -116,52 +93,59 @@
       )
     ) - (
       CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) > 0 THEN 'D' ELSE NULL END END ELSE NULL END
+    ) > 0 THEN 'D' ELSE NULL END END
   ) as currposisi
 FROM
   (
-    select
-      kode_rekening,
-      nama_kode_rekening
-    from
-      im_akun_kode_rekening
-    where
-      length(kode_rekening) >= 3
-      and length(kode_rekening) <= 6
-    group by
-      kode_rekening,
-      nama_kode_rekening
-    order by
-      kode_rekening
+    SELECT
+      rek.*
+    FROM
+      (
+        select
+          kode.kode_rekening,
+          kode.rekening_id,
+          kode.nama_kode_rekening
+        from
+          im_akun_kode_rekening kode
+          INNER JOIN im_akun_report_detail rd ON rd.rekening_id = kode.rekening_id
+        where
+          rd.report_id = 'RPT03'
+        group by
+          kode_rekening,
+          kode.nama_kode_rekening,
+          kode.rekening_id
+        order by
+          kode_rekening
+      ) rek
   ) a
   LEFT OUTER JOIN (
     select
-      substr(y.kode_rekening, 1, 6) as kode_rekening,
+      rekening_id as rekening_id,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
       sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-      x.cabang_id
+      x.branch_id
     from
       t_jurnal x
       inner join t_jurnal_detail y on x.no_jurnal = y.no_jurnal
     where
-      to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}  and
-      cabang_id = $P{reportParams.cabangId}
+      to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode} and
+      branch_id = $P{reportParams.branchId}
     group by
-      substr(y.kode_rekening, 1, 6),
-      cabang_id
-  ) b ON b.kode_rekening = a.kode_rekening
+      rekening_id,
+      branch_id
+  ) b ON b.rekening_id = a.rekening_id
   LEFT OUTER JOIN (
     select
-      kode_rekening,
+      rekening_id,
       jumlah_debit,
       jumlah_kredit,
       saldo,
       posisi
     from
-      t_kode_rekening_saldo
+      it_akun_saldo_akhir
     where
-      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and cabang_id= $P{reportParams.cabangId}
-  ) c ON a.kode_rekening = c.kode_rekening
+      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and branch_id= $P{reportParams.branchId}
+  ) c ON a.rekening_id = c.rekening_id
 order by
   a.kode_rekening]]>
 	</queryString>
@@ -210,7 +194,7 @@ order by
 		<variableExpression><![CDATA[( $V{SUM_last_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_kredit_1} ).add(( $V{SUM_jml_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_jml_kredit_1} ))]]></variableExpression>
 	</variable>
 	<variable name="SUM_last_saldo_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length()==6 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
 	( $F{lastposisi}.equalsIgnoreCase("D")  ?
 		$F{lastsaldo}
 		:
@@ -220,14 +204,14 @@ order by
 	BigDecimal.valueOf(0.0) )]]></variableExpression>
 	</variable>
 	<variable name="SUM_jml_debit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length()==6 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
 	$F{jumlahdebit}
 	:
 	BigDecimal.valueOf(0.0)
 )]]></variableExpression>
 	</variable>
 	<variable name="SUM_jml_kredit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length()==6 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
 	$F{jumlahkredit}
 	:
 	BigDecimal.valueOf(0.0)
@@ -237,7 +221,7 @@ order by
 		<variableExpression><![CDATA[( $V{SUM_last_saldo_2}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
 	</variable>
 	<variable name="SUM_currsaldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length()==6 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
 	( $F{currposisi}.equalsIgnoreCase("D")  ?
 		$F{currsaldo}
 		:
@@ -250,7 +234,7 @@ order by
 		<variableExpression><![CDATA[( $V{SUM_currsaldo_1}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
 	</variable>
 	<group name="rekening" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{koderekening}.substring(0,3)]]></groupExpression>
+		<groupExpression><![CDATA[( $F{koderekening}.length() - $F{koderekening}.replace(".", "").length() == 1 ? $F{koderekening}.substring(0,$F{koderekening}.length()) : $F{koderekening}.substring(0,$F{koderekening}.indexOf('.', $F{koderekening}.indexOf('.') + 1)))]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
@@ -617,7 +601,7 @@ order by
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="167" y="0" width="98" height="15" uuid="668f0c83-133f-4375-9a10-700ea8f5c9b1">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() > 3)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -632,7 +616,7 @@ order by
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="265" y="0" width="10" height="15" uuid="e3a41654-6bdb-4e0e-bf9c-4194d33ccd32">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() > 3)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -647,7 +631,7 @@ order by
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="275" y="0" width="92" height="15" uuid="3c5a7fd0-0657-47c0-9d74-0b0db4d1e739">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() > 3)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -662,7 +646,7 @@ order by
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="367" y="0" width="92" height="15" uuid="3f18b1f6-43de-4fa3-8b8a-c6fec63643ec">
-					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() > 3)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -682,7 +666,9 @@ order by
 				</graphicElement>
 			</line>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" x="459" y="0" width="98" height="15" uuid="e1d3bca6-ea6f-4b4c-93ad-1f0194d90097"/>
+				<reportElement key="textField" x="459" y="0" width="98" height="15" uuid="e1d3bca6-ea6f-4b4c-93ad-1f0194d90097">
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
+				</reportElement>
 				<box rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -692,10 +678,12 @@ order by
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{currsaldo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{currsaldo} == null ? BigDecimal.valueOf(0.0) : $F{currsaldo} )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="557" y="0" width="10" height="15" uuid="6ac2b887-115d-4731-97f9-e10d8c9ae6be"/>
+				<reportElement key="textField" x="557" y="0" width="10" height="15" uuid="6ac2b887-115d-4731-97f9-e10d8c9ae6be">
+					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() - $F{koderekening}.replace(".", "").length()> 1)]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

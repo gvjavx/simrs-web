@@ -32,11 +32,11 @@
             var unit    = document.getElementById("branchId").value;
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
-            var tipeLaporanIkhtisar = document.getElementById("tipeJurnalId").value;
+            var tipeLaporan = document.getElementById("tipeLaporanId").value;
 
             if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporanIkhtisar+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
+                var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -98,7 +98,7 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaMutasi_laporanAkuntansi.action" cssClass="form-horizontal">
-                                        <s:hidden name="tipeLaporan" value="neraca_mutasi"/>
+                                        <s:hidden name="laporanAkuntansi.tipeLaporan" id="tipeLaporanId"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -116,18 +116,6 @@
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Tipe Laporan Ikhtisar :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
-                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="laporanAkuntansi.tipeLaporan"
-                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>

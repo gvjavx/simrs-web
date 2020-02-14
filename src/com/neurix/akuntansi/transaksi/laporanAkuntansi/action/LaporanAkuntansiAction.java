@@ -302,7 +302,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
-        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -338,7 +338,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
-        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -375,7 +375,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
-        reportParams.put("cabangId", data.getUnit());
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -411,8 +411,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
+        String reportId="";
+
+        if (data.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
+            titleReport="IKHTISAR HUTANG USAHA";
+            reportId="RPT04";
+        }
 
         reportParams.put("reportTitle", titleReport);
+        reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
         reportParams.put("cabangId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
@@ -425,7 +432,6 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
-        reportParams.put("tipeJurnal",data.getTipeLaporan());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -450,24 +456,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
-        String titleReport="";
-        String query1="";
-        if (data.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
-            titleReport="AGING PIUTANG USAHA";
-            query1="kode_rekening='103.01.00.00'\n" +
-                    "         OR       kode_rekening='103.02.00.00' \n" +
-                    "         OR       kode_rekening='103.03.00.00'\n" +
-                    "         OR       kode_rekening='103.04.00.00' \n" +
-                    "         OR       kode_rekening='103.05.00.00' \n" +
-                    "         OR       kode_rekening='103.06.00.00' \n" +
-                    "         OR       kode_rekening='103.11.00.00' \n" +
-                    "         OR       kode_rekening='103.12.00.00' \n" +
-                    "         OR       kode_rekening='103.13.00.00'\n" +
-                    "         OR       kode_rekening='103.14.00.00' \n" +
-                    "         OR       kode_rekening='103.15.00.00'";
-        }
 
-        reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
         reportParams.put("cabangId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
@@ -480,7 +469,6 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
-        reportParams.put("query1",query1);
         try {
             preDownload();
         } catch (SQLException e) {
