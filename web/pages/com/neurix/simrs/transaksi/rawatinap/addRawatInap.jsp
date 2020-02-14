@@ -215,6 +215,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
@@ -260,8 +261,9 @@
                         </div>
                     </div>
 
+                    <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Monitoring</h3>
+                        <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-info" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
@@ -2717,7 +2719,7 @@
                         btn = '<div class="input-group">' +
                             '<input class="form-control" onchange="cekBarcode(this.value, \''+item.idOrderGizi+'\')">' +
                             '<div class="input-group-addon">' +
-                            '<span></span>' +
+                            '<span id="status'+item.idOrderGizi+'"></span>' +
                             '</div>' +
                             '</div>';
                         label = '<label class="label label-info"> telah dikonfirmasi</label>';
@@ -2727,7 +2729,12 @@
                     }
 
                     if(item.diterimaFlag == "Y"){
-                        btn = '';
+                        btn = '<div class="input-group">' +
+                            '<input class="form-control" value="'+item.idOrderGizi+'" disabled>' +
+                            '<div class="input-group-addon">' +
+                            '<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">'+
+                            '</div>' +
+                            '</div>';
                         label = '<label class="label label-success"> telah diterima</label>';
                     }
 
@@ -2739,7 +2746,7 @@
                             "<td>" + item.bentukMakanSiang + "</td>" +
                             "<td>" + item.dietMalam + "</td>" +
                             "<td>" + item.bentukMakanMalam + "</td>" +
-                            "<td>" + label + "</td>" +
+                            "<td style='vertical-align: center'>" + label + "</td>" +
                             "<td align='center'>" + btn + "</td>" +
                             "</tr>"
                 });
@@ -2750,14 +2757,28 @@
     }
 
     function cekBarcode(value, idOrderGizi){
+
         if(value != '' && idOrderGizi != ''){
 
             if(value == idOrderGizi){
-                OrderGiziAction.updateDiterimaFlag(idOrderGizi, function (response) {
-                    console.log(response);
-                    listDiet();
-                })
+                $('#status'+idOrderGizi).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+                setTimeout(function () {
+                    OrderGiziAction.updateDiterimaFlag(idOrderGizi, function (response) {
+                        if(response.status == "success"){
+                            listDiet();
+                        }else{
+                            $('#status' + idOrderGizi).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                        }
+                    });
+                },200);
+            }else{
+                $('#status'+idOrderGizi).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+                setTimeout(function () {
+                    $('#status' + idOrderGizi).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
+                },200);
             }
+        }else{
+            $('#status' + idOrderGizi).html('');
         }
     }
 

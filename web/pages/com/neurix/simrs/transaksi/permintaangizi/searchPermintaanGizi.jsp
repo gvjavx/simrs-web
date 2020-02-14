@@ -234,19 +234,16 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Tindakan Rawat Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Order Gizi Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tin">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_gizi">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_tin"></p>
+                    <p id="msg_gizi"></p>
                 </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_tin">
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_gizi">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    <p id="msg_tin2"></p>
-                </div>
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Order Gizi</h3>
+                    <p id="msg_gizi2"></p>
                 </div>
                 <div class="box-body">
                     <table class="table table-bordered table-striped" id="tabel_gizi">
@@ -264,7 +261,7 @@
                             <td>Bentuk</td>
                             <td>Jenis</td>
                             <td>Bentuk</td>
-                            <td>Jenisi</td>
+                            <td>Jenis</td>
                             <td>Bentuk</td>
                         </tr>
                         </thead>
@@ -327,11 +324,11 @@
                     }
 
                     if(item.approveFlag == "Y"){
-                        label = '<label class="label label-info"> dikirim</label>';
-                        btn = '<img onclick="printBarcodeGizi(\''+noCheckup+'\',\''+item.idOrderGizi+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">';
+                        label = '<label class="label label-info"> siap kirim</label>';
+                        btn = '<img onclick="printBarcodeGizi(\''+noCheckup+'\',\''+item.idOrderGizi+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;">';
                     }else{
                         label = '<label class="label label-warning"> menunggu</label>';
-                        btn = '<img onclick="saveApprove(\''+item.idOrderGizi+'\',\''+idRawatInap+'\',\''+noCheckup+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">';
+                        btn = '<img id="bot'+item.idOrderGizi+'" onclick="saveApprove(\''+item.idOrderGizi+'\',\''+idRawatInap+'\',\''+noCheckup+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-edit-25.png"/>" style="cursor: pointer;">';
                     }
 
                     if(item.diterimaFlag == "Y"){
@@ -355,9 +352,23 @@
     }
 
     function saveApprove(idOrder, idRawatInap, noCheckup){
-        PermintaanGiziAction.updateApproveFLag(idOrder, function (response) {
-            listOrderGizi(idRawatInap, noCheckup);
-        })
+        var url = '<s:url value="/pages/images/spinner.gif"/>';
+        $('#bot'+idOrder).attr('src',url).css('width', '30px', 'height', '40px');
+
+        setTimeout(function () {
+            PermintaanGiziAction.updateApproveFLag(idOrder, function (response) {
+                    if (response.status == "success") {
+                        $('#bot' + idOrder).attr('src', url).css('width', '', 'height', '');
+                        $('#success_gizi').show().fadeOut(5000);
+                        $('#msg_gizi2').text(response.message);
+                        listOrderGizi(idRawatInap, noCheckup);
+                    } else {
+                        $('#bot' + idOrder).attr('src', url).css('width', '', 'height', '');
+                        $('#warning_gizi').show().fadeOut(5000);
+                        $('#msg_gizi').text(response.message);
+                    }
+            });
+        },1000);
     }
 
     function printBarcodeGizi(noCheckup, idorderGizi) {
