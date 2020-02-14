@@ -22,6 +22,7 @@ public class ItSimrsMonPemberianObatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kategori;
 
     public String getId() {
         return id;
@@ -141,5 +142,13 @@ public class ItSimrsMonPemberianObatEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 }

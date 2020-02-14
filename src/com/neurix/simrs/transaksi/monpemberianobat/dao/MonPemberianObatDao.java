@@ -6,6 +6,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -27,13 +28,20 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
     public List<ItSimrsMonPemberianObatEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsMonPemberianObatEntity.class);
-        if (mapCriteria.get("id") != null)
+        if (mapCriteria.get("id") != null) {
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
-        if (mapCriteria.get("no_checkup") != null)
+        }
+        if (mapCriteria.get("no_checkup") != null) {
             criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
-        if (mapCriteria.get("id_detail_checkup") != null)
-            mapCriteria.get(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+        }
+        if (mapCriteria.get("id_detail_checkup") != null){
+            criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+        }
+        if (mapCriteria.get("kategori") != null) {
+            criteria.add(Restrictions.eq("kategori", mapCriteria.get("kategori").toString()));
+        }
 
+        criteria.addOrder(Order.desc("createdDate"));
         List<ItSimrsMonPemberianObatEntity> results = criteria.list();
         return results;
     }

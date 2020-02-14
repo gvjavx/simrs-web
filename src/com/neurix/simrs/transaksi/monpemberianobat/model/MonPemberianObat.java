@@ -23,6 +23,15 @@ public class MonPemberianObat {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String stDate;
+    private String kategori;
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getStDate() {
         return stDate;

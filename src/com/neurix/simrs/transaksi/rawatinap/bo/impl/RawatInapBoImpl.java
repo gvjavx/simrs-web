@@ -382,6 +382,8 @@ public class RawatInapBoImpl implements RawatInapBo {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         if (bean.getId() != null)
             hsCriteria.put("id", bean.getId());
+        if (bean.getKategori() != null)
+            hsCriteria.put("kategori", bean.getKategori());
 
         List<ItSimrsMonPemberianObatEntity> pemberianObatEntities = new ArrayList<>();
         try {
@@ -412,6 +414,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 monPemberianObat.setLastUpdate(entity.getLastUpdate());
                 monPemberianObat.setLastUpdateWho(entity.getLastUpdateWho());
                 monPemberianObat.setStDate(entity.getCreatedDate().toString());
+                monPemberianObat.setKategori(entity.getKategori());
                 monPemberianObats.add(monPemberianObat);
             }
         }

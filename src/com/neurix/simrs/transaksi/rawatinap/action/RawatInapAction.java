@@ -591,7 +591,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.saveMonCairan(monCairanEntity);
     }
 
-    public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String id){
+    public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String kategori, String id){
 
         MonPemberianObat monPemberianObat = new MonPemberianObat();
         if (!"".equalsIgnoreCase(noCheckup))
@@ -602,6 +602,10 @@ public class RawatInapAction extends BaseMasterAction {
 
         if (!"".equalsIgnoreCase(id))
             monPemberianObat.setId(id);
+
+        if (!"".equalsIgnoreCase(kategori)){
+            monPemberianObat.setKategori(kategori);
+        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
@@ -626,6 +630,7 @@ public class RawatInapAction extends BaseMasterAction {
             monPemberianObatEntity.setSkinTes(obj.getString("tes"));
             monPemberianObatEntity.setWaktu(obj.getString("waktu"));
             monPemberianObatEntity.setKeterangan(obj.getString("ket"));
+            monPemberianObatEntity.setKategori(obj.getString("kat"));
             monPemberianObatEntity.setFlag("Y");
             monPemberianObatEntity.setAction("C");
             monPemberianObatEntity.setCreatedDate(now);
