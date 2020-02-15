@@ -620,6 +620,7 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
+                                        <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
                                         <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-arrow-right"></i> Save Keterangan</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>

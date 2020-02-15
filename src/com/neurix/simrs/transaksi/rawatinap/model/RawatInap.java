@@ -64,6 +64,34 @@ public class RawatInap {
     private boolean cekApprove;
     private String klaimBpjsFlag;
 
+    private String idOrderGizi;
+    private String approveFlag;
+    private String diterimaFlag;
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getIdOrderGizi() {
+        return idOrderGizi;
+    }
+
+    public void setIdOrderGizi(String idOrderGizi) {
+        this.idOrderGizi = idOrderGizi;
+    }
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
     public String getKlaimBpjsFlag() {
         return klaimBpjsFlag;
     }

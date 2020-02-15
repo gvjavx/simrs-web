@@ -220,8 +220,18 @@ public class VerifikatorAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
+
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+        headerDetailCheckup.setStDateFrom(tglToday);
+        headerDetailCheckup.setStDateTo(tglToday);
+
         RawatInap rawatInap = new RawatInap();
+        rawatInap.setStTglFrom(tglToday);
+        rawatInap.setStTglTo(tglToday);
 
         setRawatInap(rawatInap);
         setHeaderDetailCheckup(headerDetailCheckup);

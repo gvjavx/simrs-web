@@ -529,11 +529,11 @@ public class CheckupAction extends BaseMasterAction {
                 SepRequest sepRequest = new SepRequest();
                 sepRequest.setNoKartu(getPasien.getNoBpjs());
                 sepRequest.setTglSep(dateToday);
-                sepRequest.setPpkPelayanan("1311R003");
-                sepRequest.setJnsPelayanan("2");
-                sepRequest.setKlsRawat("3");
-                sepRequest.setNoMr("123456");
-                sepRequest.setAsalRujukan("1");
+                sepRequest.setPpkPelayanan("1311R003");//cons id rumah sakit
+                sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
+                sepRequest.setKlsRawat("3");//kelas rawat dari bpjs
+                sepRequest.setNoMr(checkup.getIdPasien());//id pasien
+                sepRequest.setAsalRujukan("1");//
                 sepRequest.setTglRujukan(checkup.getTglRujukan());
                 sepRequest.setNoRujukan(checkup.getNoRujukan());
                 sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
@@ -614,8 +614,8 @@ public class CheckupAction extends BaseMasterAction {
                         klaimDetailRequest.setNomorKartu(getPasien.getNoKtp());
                         klaimDetailRequest.setTglMasuk(updateTime.toString());
                         klaimDetailRequest.setTglPulang(updateTime.toString());
-                        klaimDetailRequest.setJenisRawat("1");
-                        klaimDetailRequest.setKelasRawat("2");
+                        klaimDetailRequest.setJenisRawat("2");
+                        klaimDetailRequest.setKelasRawat("");
                         klaimDetailRequest.setAdlChronic("");
                         klaimDetailRequest.setIcuIndikator("");
                         klaimDetailRequest.setIcuLos("");

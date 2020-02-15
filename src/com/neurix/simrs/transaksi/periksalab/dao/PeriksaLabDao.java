@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
@@ -175,6 +176,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setNamaPasien(obj[4].toString());
                     dataLab.setLabName(obj[5].toString());
                     dataLab.setCreatedDate((Timestamp) obj[6]);
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dataLab.getCreatedDate());
+
+                    dataLab.setStCreatedDate(formatDate);
                     checkupList.add(dataLab);
                 }
             }
