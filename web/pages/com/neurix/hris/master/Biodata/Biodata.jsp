@@ -1537,36 +1537,75 @@
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanId" name="txtStdudyName">
+                            <%--<input type="text" class="form-control" id="pengalamanId" name="txtStdudyName">--%>
+                            <input type="text" class="form-control" id="pengalamanId">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Nama Perusahaan :</label>
                         <div class="col-sm-8">
-                            <select id="branchIdRiwayatKerja" name="branchId" class="form-control" onchange="cekPerusahaan()"></select>
+                            <s:action id="initComboBranch2" namespace="/admin/branch"
+                                      name="initComboBranch2_branch"/>
+                            <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
+                                      name="biodata.branchId" onchange="listDivisi();cekPerusahaanLain()"
+                                      listKey="branchId" listValue="branchName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
-
                     <div id="namaPerusahaanLain" class="form-group" style="display: none">
-                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain </label>
+                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPerusahaan">
+                            <input type="text" class="form-control" id="perusahaanLain">
                         </div>
                     </div>
-
-
+                    <div class="form-group" id="namaBidang">
+                        <label class="control-label col-sm-4" >Bidang : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboDivisi" namespace="/department"
+                                      name="searchDepartment2_department"/>
+                            <s:select list="#comboDivisi.listComboDepartment" id="departmentId"
+                                      name="biodata.departmentId" onchange="listPosisi(); cekBidangLain()"
+                                      listKey="departmentId" listValue="departmentName"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div id="namaBidangLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" for="gender">Nama Bidang Lain:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="bidangLain">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Jabatan : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanJabatan" >
+                            <s:action id="comboPosition" namespace="/admin/position"
+                                      name="searchPosition3_position"/>
+                            <s:select list="#comboPosition.listOfComboPosition" id="positionId"
+                                      name="biodata.positionId" onchange="cekPosisiLain()"
+                                      listKey="positionId" listValue="positionName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div id="namaJabatanLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" for="gender">Nama Jabatan Lain: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="jabatanLain">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tanggal / Tahun Diangkat: </label>
+                        <label class="control-label col-sm-4" >Tanggal Diangkat: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanTanggalMasuk">
+                            <input type="text" class="form-control" id="pengalamanTanggalMasuk" readonly="true" style="background-color: #fff;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tanggal Selesai: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="pengalamanTanggalKeluar" readonly="true" style="background-color: #fff;">
                         </div>
                     </div>
 
@@ -1574,26 +1613,24 @@
                         <label class="control-label col-sm-4" >Tipe Pegawai: </label>
                         <div class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
-                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawai"
+                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawaiId"
                                       listKey="tipePegawaiId" listValue="tipePegawaiName" cssClass="form-control"/>
-
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Golongan: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanGolonganName">
+                            <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                            <s:select list="#comboGolongan.listComboGolongan" id="pengalamanGolonganId1"
+                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Point: </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="pengalamanPoint">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Point Lebih: </label>
                         <div class="col-sm-8">
@@ -1611,7 +1648,23 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Grade SMK: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanGradeSmk">
+                            <s:select list="#{'BS':'BS','B/NG':'B/NG','B':'B','C':'C','K':'K','KS':'KS'}" id="pengalamanGradeSmk"
+                                      headerKey="-" headerValue="-" cssClass="form-control" />
+                            <%--<input type="text" class="form-control" id="pengalamanGradeSmk">--%>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Pjs: </label>
+                        <div class="col-sm-8">
+                            <s:select list="#{'Y':'Ya'}" id="pjsFlag1"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Jabatan Aktif?: </label>
+                        <div class="col-sm-8">
+                            <s:select list="#{'Y':'Ya'}" id="flagAktif1"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
                         </div>
                     </div>
 
@@ -2330,6 +2383,53 @@
 </html>
 
 <script>
+    window.cekPerusahaanLain = function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        if (branch=='0'){
+            $('#perusahaanLain').val("");
+            $('#namaPerusahaanLain').show();
+        }
+        else{
+            $('#perusahaanLain').val("");
+            $('#namaPerusahaanLain').hide();
+        }
+    };
+    window.cekBidangLain = function(){
+        var divisi = document.getElementById("departmentId").value;
+        if (divisi=='0'){
+            $('#bidangLain').val("");
+            $('#namaBidangLain').show();
+        }
+        else{
+            $('#bidangLain').val("");
+            $('#namaBidangLain').hide();
+        }
+    };
+    window.cekPosisiLain = function(){
+        var position = document.getElementById("positionId").value;
+//        alert(position);
+        if (position=='0'){
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').show();
+        }
+        else{
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').hide();
+        }
+    };
+    window.listDivisi= function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        $('#departmentId').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#departmentId').append($("<option></option>")
+                        .attr("value",item.departmentId)
+                        .text(item.departmentName));
+            });
+        });
+        listPosisi();
+
+    };
     function cek(){
         var home    = document.getElementById("home1").value;
         var person    = document.getElementById("person1").value;
@@ -3331,20 +3431,29 @@
             var url = $('#myFormPengalaman').attr('action');
             var data = $('#myFormPengalaman').serialize();
 
+
+//            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
+//            var jabatan = document.getElementById("pengalamanJabatan").value;
+//            var tipePegawaiName = $("#pengalamanTipePegawai option:selected").text();
+
             var id = document.getElementById("pengalamanId").value;
             var nip = document.getElementById("nip1").value;
-            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
-            var jabatan = document.getElementById("pengalamanJabatan").value;
-            var tanggalMasuk = document.getElementById("pengalamanTanggalMasuk").value;
-
-            var tipePegawai = document.getElementById("pengalamanTipePegawai").value;
-            var tipePegawaiName = $("#pengalamanTipePegawai option:selected").text();
-            var golonganName = document.getElementById("pengalamanGolonganName").value;
+            var branchId = document.getElementById("branchIdRiwayatKerja").value;
+            var divisiId = document.getElementById("departmentId").value;
+            var posisiId = document.getElementById("positionId").value;
+            var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
+            var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
+            var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
+            var golonganId = document.getElementById("pengalamanGolonganId1").value;
             var point = document.getElementById("pengalamanPoint").value;
             var pointLebih = document.getElementById("pengalamanPointLebih").value;
             var nilaiSmk = document.getElementById("pengalamanNilaiSmk").value;
             var gradeSmk = document.getElementById("pengalamanGradeSmk").value;
-            var branchId = document.getElementById("branchIdRiwayatKerja").value;
+            var pjsFlag = document.getElementById("pjsFlag1").value;
+            var aktifFlag = document.getElementById("flagAktif1").value;
+            var perusahaanLain = document.getElementById("perusahaanLain").value;
+            var bidangLain = document.getElementById("bidangLain").value;
+            var jabatanLain = document.getElementById("jabatanLain").value;
 
             if(branchId != 'lain'){
                 namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
@@ -3352,12 +3461,13 @@
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
-                if (namaPerusahaan == '' && jabatan == '' && tanggalMasuk == '' && tanggalKeluar == '') {
+                console.log('yayaya');
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar =='' && tipePegawaiId =='' &&golonganId =='' && point=='' && pointLebih =='' && nilaiSmk=='' &&gradeSmk=='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
                     if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                         dwr.engine.setAsync(false);
-                        BiodataAction.saveAddPengalaman(nip, namaPerusahaan, jabatan, tanggalMasuk, tanggalKeluar, function (listdata) {
+                        BiodataAction.saveAddPengalaman(nip, branchId, divisiId, posisiId, tanggal, tipePegawaiId, golonganId, point, pointLebih, nilaiSmk, gradeSmk, pjsFlag,   function (listdata) {
                             alert('Data Berhasil Disimpan');
                             $('#modal-pengalamanKerja').modal('hide');
                             $('#myFormPengalaman')[0].reset();
@@ -3379,30 +3489,122 @@
             </s:if>
             <s:else>
             if (url == 'addPengalamanKerja') {
-                if (namaPerusahaan == '' && tanggalMasuk != '') {
-                    alert('Nama Perusahaan dan Tahun Harus Diisi');
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId ==''|| point=='' && pointLebih =='' && nilaiSmk=='') {
+                    alert('Isi Field Terlebih Dahulu');
                 } else {
-                    if (confirm('Are you sure you want to save this Record?')) {
-                        dwr.engine.setAsync(false);
-                        BiodataAction.saveAddDataPengalamaKerja(nip, namaPerusahaan, jabatan, tanggalMasuk, tipePegawaiName, golonganName,
-                                point, pointLebih, nilaiSmk, gradeSmk, branchId, tipePegawai,  function (listdata) {
-                            alert('Data Successfully Added');
-                            $('#modal-pengalamanKerja').modal('hide');
-                            $('#myFormPengalaman')[0].reset();
-                            loadPengalamanKerja(nip);
-                        });
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId ==''|| point=='' || pointLebih =='' || nilaiSmk=='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+                        if(tanggalKeluar == ''){
+                            if(aktifFlag == 'N'){
+                                msg+="- Tanggal Selesai\n";
+                            }
+                        }else{
+                            if(tanggalKeluar.length <10){
+                                if(aktifFlag == 'N'){
+                                    msg2+="- Format Tanggal Selesai Salah\n";
+                                }
+                            }
+                        }
+                        if(point == ''){
+                            msg+="- Point\n";
+                        }
+                        if(pointLebih == ''){
+                            msg+="- Point Lebih\n";
+                        }
+                        if(nilaiSmk == ''){
+                            msg+="- Nilai Smk\n";
+                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
                     }
+                    else{
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                    golonganId, point, pointLebih, nilaiSmk, gradeSmk,pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,  function (listdata) {
+                                        alert('Data Successfully Added');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
+                        }
+                    }
+
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.saveEditPengalamanKerja(id, nip, namaPerusahaan, jabatan, tanggalMasuk, tipePegawaiName, golonganName,
-                            point, pointLebih, nilaiSmk, gradeSmk, branchId, tipePegawai, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-pengalamanKerja').modal('hide');
-                        $('#myFormPengalaman')[0].reset();
-                        loadPengalamanKerja(nip);
-                    });
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId == '' && point=='' && pointLebih =='' && nilaiSmk=='') {
+                    alert('Isi Field Terlebih Dahulu');
+                } else {
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tanggalKeluar ==''|| tipePegawaiId==''|| point=='' || pointLebih =='' || nilaiSmk=='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+                        if(tanggalKeluar == ''){
+                            msg+="- Tanggal Selesai\n";
+                        }else{
+                            if(tanggalKeluar.length <10){
+                                msg2+="- Format Tanggal Selesai Salah\n";
+                            }
+                        }
+                        if(point == ''){
+                            msg+="- Point\n";
+                        }
+                        if(pointLebih == ''){
+                            msg+="- Point Lebih\n";
+                        }
+                        if(nilaiSmk == ''){
+                            msg+="- Nilai Smk\n";
+                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    } else{
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                    golonganId, point, pointLebih, nilaiSmk, gradeSmk,perusahaanLain, bidangLain, jabatanLain, function (listdata) {
+                                        alert('Data Successfully Updated');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
+                        }
+                    }
                 }
             }
             </s:else>

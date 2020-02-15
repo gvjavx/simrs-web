@@ -42,6 +42,16 @@ public class ItPersonilPositionEntity implements Serializable {
     private ImDepartmentEntity imDepartmentEntity;
     private ImPosition imPosition ;
 
+    private Timestamp tanggalAktif;
+
+    public Timestamp getTanggalAktif() {
+        return tanggalAktif;
+    }
+
+    public void setTanggalAktif(Timestamp tanggalAktif) {
+        this.tanggalAktif = tanggalAktif;
+    }
+
     public String getDivisiId() {
         return divisiId;
     }

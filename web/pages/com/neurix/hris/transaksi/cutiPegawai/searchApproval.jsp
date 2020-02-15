@@ -88,7 +88,7 @@
     <section class="content-header">
         <h1>
             Cuti Pegawai
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <!-- Main content -->

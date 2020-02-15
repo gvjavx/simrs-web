@@ -89,7 +89,7 @@
     <section class="content-header">
         <h1>
             Dispensasi
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -257,7 +257,7 @@
                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="Unit1" name="ijinKeluar.unitId" readonly="true"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                         </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Ijin : </label>
@@ -266,7 +266,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Lama : </label>
+                        <label class="control-label col-sm-3" >Lama Ijin : </label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="LamaIjin1" name="nip">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Maksimal Ijin : </label>
                         <div class="col-sm-8">
                             <input readonly type="text" class="form-control nip" id="Lama1" name="nip">
                         </div>
@@ -404,6 +410,7 @@
                 var myDate = new Date(item.tanggalAwal);
                 var myDate1 = new Date(item.tanggalAkhir);
                 $('#Nip1').val(item.nip);
+                $('#LamaIjin1').val(item.lamaIjin);
                 $('#Name321').val(item.namaPegawai);
                 $('#TanggalAwal1').val((myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear());
                 $('#TanggalAkhir1').val((myDate1.getDate()) + ' - ' + ("0" + (myDate1.getMonth() + 1)).slice(-2) + ' - ' + myDate1.getFullYear());

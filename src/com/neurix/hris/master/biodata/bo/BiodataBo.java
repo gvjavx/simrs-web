@@ -68,11 +68,11 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
 
     List<PersonilPosition> getByCriteriaPersonilPosition(PersonilPosition searchBean) throws GeneralBOException;
 
-    public void addPengalamanKerja(PengalamanKerja bean) throws GeneralBOException;
+    public void addPengalamanKerja(HistoryJabatanPegawai bean) throws GeneralBOException;
     public void addReward(Reward bean) throws GeneralBOException;
     public void addSertifikat(Sertifikat bean) throws GeneralBOException;
     public void addPelatihan(PelatihanJabatanUser bean) throws GeneralBOException;
-    public void saveEditPengalamanKerja(PengalamanKerja bean) throws GeneralBOException;
+    public void saveEditPengalamanKerja(HistoryJabatanPegawai bean) throws GeneralBOException;
     public void saveEditReward(Reward bean) throws GeneralBOException;
     public void saveEditSertifikat(Sertifikat bean) throws GeneralBOException;
     public void saveEditPelatihan(PelatihanJabatanUser bean) throws GeneralBOException;
@@ -104,4 +104,5 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     List<Keluarga> listKeluarga(String nip);
     List<HistoryJabatanPegawai> listRiwayatPekerjaan(String nip);
     List<Study> listStudy(String nip);
+    public List<Biodata> getAllListOfPersonil(String query, String branchId) throws GeneralBOException;
 }

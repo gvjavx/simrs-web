@@ -51,6 +51,31 @@ public class Mutasi extends BaseModel {
     private boolean SK1 = false ;
     private boolean SK2 = false ;
 
+    private String statusName;
+
+    private String statusPromosi;
+    private String tanggalAktif;
+
+    public String getTanggalAktif() {
+        return tanggalAktif;
+    }
+
+    public void setTanggalAktif(String tanggalAktif) {
+        this.tanggalAktif = tanggalAktif;
+    }
+
+    public String getStatusPromosi() {
+        return statusPromosi;
+    }
+
+    public void setStatusPromosi(String statusPromosi) {
+        this.statusPromosi = statusPromosi;
+    }
+
+    public String getStatusName() {return statusName;}
+
+    public void setStatusName(String statusName) {this.statusName = statusName;}
+
     public String getTipeMutasi() {
         return tipeMutasi;
     }

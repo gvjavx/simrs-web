@@ -339,6 +339,12 @@ public class LemburBoImpl implements LemburBo {
                 Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalAkhir());
                 hsCriteria.put("tanggal_selesai", tanggalSelesai);
             }
+            if (searchBean.getApprovalFlag() !=null&& !"".equalsIgnoreCase(String.valueOf(searchBean.getApprovalFlag()))) {
+                if (searchBean.getApprovalFlag().equalsIgnoreCase("0")){
+                    searchBean.setApprovalFlag("0");
+                }
+                hsCriteria.put("approval_flag", searchBean.getApprovalFlag());
+            }
             hsCriteria.put("flag", "Y");
 
 
@@ -426,8 +432,12 @@ public class LemburBoImpl implements LemburBo {
                     if (("Y").equalsIgnoreCase(lemburEntity.getApprovalFlag())){
                         returnLembur.setLemburEdit(false);
                         returnLembur.setLemburApprove(true);
-                        returnLembur.setStTanggalAwal(df.format(lemburEntity.getTanggalAwalSetuju()));
-                        returnLembur.setStTanggalAkhir(df.format(lemburEntity.getTanggalAkhirSetuju()));
+                        if (lemburEntity.getTanggalAwalSetuju()!=null){
+                            returnLembur.setStTanggalAwal(df.format(lemburEntity.getTanggalAwalSetuju()));
+                        }
+                        if (lemburEntity.getTanggalAkhirSetuju()!=null){
+                            returnLembur.setStTanggalAkhir(df.format(lemburEntity.getTanggalAkhirSetuju()));
+                        }
                     }else if (("N").equalsIgnoreCase(lemburEntity.getApprovalFlag())){
                         returnLembur.setNotApprove(true);
                     }

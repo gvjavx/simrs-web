@@ -51,7 +51,7 @@ To change this template use File | Settings | File Templates.
     <section class="content-header">
         <h1>
             Mutasi
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
 
@@ -89,7 +89,7 @@ To change this template use File | Settings | File Templates.
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Name :</small></label>
+                                    <label class="control-label"><small>Nama :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -191,7 +191,7 @@ To change this template use File | Settings | File Templates.
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Position :</small></label>
+                                    <label class="control-label"><small>Posisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -202,6 +202,32 @@ To change this template use File | Settings | File Templates.
 
                                 </td>
                             </tr>
+
+
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Tanggal Efektif : </small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
+                                                         required="false"  cssStyle=""/>
+                                        </div>
+                                    </table>
+                                </td>
+                            </tr>
+                            <script>
+                                $('#tanggalEfektif').datepicker({
+                                    dateFormat: 'dd-mm-yy',
+                                    changeMonth: true,
+                                    changeYear: true,
+//            minDate: 0,
+                                });
+                            </script>
 
 
                         </table>
@@ -245,7 +271,7 @@ To change this template use File | Settings | File Templates.
 
                                         <s:set name="listOfSppd" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfSppd" class=" tableSppd table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_sppd.action" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_mutasi.action" id="row" pagesize="14" style="font-size:10">
 
                                             <display:column  title="Print">
                                                 <s:url var="urlPrint" namespace="/mutasi" action="printReportMutasi_mutasi" escapeAmp="false">
@@ -285,13 +311,14 @@ To change this template use File | Settings | File Templates.
                                             <display:column property="mutasiId" sortable="true" title="Mutasi ID"  />
                                             <display:column property="nip" sortable="true" title="NIP"  />
                                             <display:column property="nama" sortable="true" title="Nama Pegawai"  />
-                                            <display:column property="branchLamaName" sortable="true" title="Branch Lama"  />
+                                            <display:column property="branchLamaName" sortable="true" title="Unit Lama"  />
                                             <display:column property="divisiLamaName" sortable="true" title="Divisi Lama"  />
-                                            <display:column property="positionLamaName" sortable="true" title="Position Lama"  />
-                                            <display:column property="branchBaruName" sortable="true" title="Branch Baru"  />
+                                            <display:column property="positionLamaName" sortable="true" title="Posisi Lama"  />
+                                            <display:column property="branchBaruName" sortable="true" title="Unit Baru"  />
                                             <display:column property="divisiBaruName" sortable="true" title="Divisi Baru"  />
-                                            <display:column property="positionBaruName" sortable="true" title="Position Baru"  />
+                                            <display:column property="positionBaruName" sortable="true" title="Posisi Baru"  />
                                             <display:column property="stTanggalEfektif" sortable="true" title="Tanggal Efektif"  />
+                                            <display:column property="statusName" sortable="true" title="Status"  />
 
                                         </display:table>
                                     </td>

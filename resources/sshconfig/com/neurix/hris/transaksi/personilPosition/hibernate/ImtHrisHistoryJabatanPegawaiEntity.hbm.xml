@@ -6,15 +6,14 @@
     <class name="com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity" dynamic-update="true"
            table="imt_hris_history_jabatan_pegawai" select-before-update="true" schema="public">
 
-        <id name="historyJabatanPegawaiId">
+        <id name="historyJabatanId">
             <column name="history_jabatan_pegawai_id" sql-type="varchar" length="10" not-null="true" />
         </id>
-
         <property name="nip">
             <column name="nip" sql-type="varchar" length="20" not-null="true" />
         </property>
-        <property name="bidang">
-            <column name="bidang" sql-type="varchar" length="20" not-null="false" />
+        <property name="bidangName">
+            <column name="bidang_name" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="status">
             <column name="status" sql-type="varchar" length="100" />
@@ -26,10 +25,10 @@
             <column name="branch_name" sql-type="varchar" length="100" />
         </property>
         <property name="tahun">
-            <column name="tahun" sql-type="varchar" length="100" />
+            <column name="tahun" sql-type="varchar" length="10" />
         </property>
         <property name="pjsFlag">
-            <column name="pjs_flag" sql-type="varchar" length="3" />
+            <column name="pjs_flag" sql-type="varchar" length="1" />
         </property>
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="4" />
@@ -40,18 +39,17 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="3" />
         </property>
-        <property name="tanggalMutasiSk">
-            <column name="tanggal_sk_mutasi" sql-type="varchar" length="3" />
+        <property name="tanggalSkMutasi">
+            <column name="tanggal_sk_mutasi" sql-type="date"/>
         </property>
-        <property name="tipePegawai">
-            <column name="tipe_pegawai" sql-type="varchar" length="10" />
+        <property name="tipePegawaiName">
+            <column name="tipe_pegawai_name" sql-type="varchar" length="50" />
         </property>
         <property name="tipePegawaiId">
-            <column name="tipe_pegawai_id" sql-type="varchar" length="10" />
+            <column name="tipe_pegawai_id" sql-type="varchar" length="5" />
         </property>
-
-        <property name="golonganName">
-            <column name="golongan_name" sql-type="varchar" length="10" />
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="10" />
         </property>
         <property name="point">
             <column name="point" sql-type="varchar" length="10" />
@@ -65,8 +63,33 @@
         <property name="gradeSmk">
             <column name="grade_smk" sql-type="varchar" length="10" />
         </property>
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar" length="100" />
+        </property>
         <property name="tanggal">
-            <column name="tanggal" sql-type="varchar" length="10" />
+            <column name="tanggal" sql-type="varchar" length="20" />
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="bidangId">
+            <column name="bidang_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="divisiName">
+            <column name="divisi_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="bagianName">
+            <column name="bagian_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="perusahaanLain">
+            <column name="perusahaan_lain" sql-type="varchar" length="100" />
+        </property>
+        <property name="jabatanLain">
+            <column name="jabatan_lain" sql-type="varchar" length="100" />
+        </property>
+
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="varchar" length="20" />
         </property>
 
         <property name="flag">

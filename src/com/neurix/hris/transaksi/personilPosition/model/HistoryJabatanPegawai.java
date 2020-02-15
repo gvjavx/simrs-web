@@ -1,6 +1,11 @@
 package com.neurix.hris.transaksi.personilPosition.model;
 
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.model.BaseModel;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,30 +15,101 @@ import com.neurix.common.model.BaseModel;
  * To change this template use File | Settings | File Templates.
  */
 public class HistoryJabatanPegawai extends BaseModel {
-    private String historyJabatanPegawaiId;
+    private String historyJabatanId;
     private String nip;
-    private String bidang;
+    private String bidangName;
     private String status;
     private String positionName;
     private String branchName;
     private String tahun;
-    private String tanggal;
     private String pjsFlag;
+    private String branchId;
+    private String positionId;
+    private String divisiId;
+    private Date tanggalSkMutasi;
+    private String tipePegawaiName;
+    private String tipePegawaiId;
+    private String golonganId;
+    private String point;
+    private String pointLebih;
+    private BigDecimal nilaiSmk;
+    private String gradeSmk;
+    private String golonganName;
+    private String tanggal;
+    private String bagianId;
+    private String bidangId;
+    private String divisiName;
+    private String bagianName;
+    private String perusahaanLain;
+    private String jabatanLain;
 
-    public String getTanggal() {
-        return tanggal;
+    private ImPosition imPosition;
+
+    private String tanggalKeluar;
+    private String flagJabatanAktif;
+
+    public String getFlagJabatanAktif() {
+        return flagJabatanAktif;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public void setFlagJabatanAktif(String flagJabatanAktif) {
+        this.flagJabatanAktif = flagJabatanAktif;
     }
 
-    public String getBidang() {
-        return bidang;
+    public ImPosition getImPosition() {
+        return imPosition;
     }
 
-    public void setBidang(String bidang) {
-        this.bidang = bidang;
+    public void setImPosition(ImPosition imPosition) {
+        this.imPosition = imPosition;
+    }
+
+    public String getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(String tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getBagianName() {
+        return bagianName;
+    }
+
+    public void setBagianName(String bagianName) {
+        this.bagianName = bagianName;
+    }
+
+    public String getBidangId() {
+        return bidangId;
+    }
+
+    public void setBidangId(String bidangId) {
+        this.bidangId = bidangId;
+    }
+
+    public String getBidangName() {
+        return bidangName;
+    }
+
+    public void setBidangName(String bidangName) {
+        this.bidangName = bidangName;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
     public String getBranchName() {
@@ -44,12 +120,68 @@ public class HistoryJabatanPegawai extends BaseModel {
         this.branchName = branchName;
     }
 
-    public String getHistoryJabatanPegawaiId() {
-        return historyJabatanPegawaiId;
+    public String getDivisiId() {
+        return divisiId;
     }
 
-    public void setHistoryJabatanPegawaiId(String historyJabatanPegawaiId) {
-        this.historyJabatanPegawaiId = historyJabatanPegawaiId;
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getGolonganId() {
+        return golonganId;
+    }
+
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
+    }
+
+    public String getGolonganName() {
+        return golonganName;
+    }
+
+    public void setGolonganName(String golonganName) {
+        this.golonganName = golonganName;
+    }
+
+    public String getGradeSmk() {
+        return gradeSmk;
+    }
+
+    public void setGradeSmk(String gradeSmk) {
+        this.gradeSmk = gradeSmk;
+    }
+
+    public String getHistoryJabatanId() {
+        return historyJabatanId;
+    }
+
+    public void setHistoryJabatanId(String historyJabatanId) {
+        this.historyJabatanId = historyJabatanId;
+    }
+
+    public String getJabatanLain() {
+        return jabatanLain;
+    }
+
+    public void setJabatanLain(String jabatanLain) {
+        this.jabatanLain = jabatanLain;
+    }
+
+    public BigDecimal getNilaiSmk() {
+        return nilaiSmk;
+    }
+
+    public void setNilaiSmk(BigDecimal nilaiSmk) {
+        this.nilaiSmk = nilaiSmk;
     }
 
     public String getNip() {
@@ -60,6 +192,14 @@ public class HistoryJabatanPegawai extends BaseModel {
         this.nip = nip;
     }
 
+    public String getPerusahaanLain() {
+        return perusahaanLain;
+    }
+
+    public void setPerusahaanLain(String perusahaanLain) {
+        this.perusahaanLain = perusahaanLain;
+    }
+
     public String getPjsFlag() {
         return pjsFlag;
     }
@@ -68,12 +208,36 @@ public class HistoryJabatanPegawai extends BaseModel {
         this.pjsFlag = pjsFlag;
     }
 
+    public String getPoint() {
+        return point;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
+    }
+
+    public String getPointLebih() {
+        return pointLebih;
+    }
+
+    public void setPointLebih(String pointLebih) {
+        this.pointLebih = pointLebih;
+    }
+
     public String getPositionName() {
         return positionName;
     }
 
     public void setPositionName(String positionName) {
         this.positionName = positionName;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 
     public String getStatus() {
@@ -90,5 +254,37 @@ public class HistoryJabatanPegawai extends BaseModel {
 
     public void setTahun(String tahun) {
         this.tahun = tahun;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public Date getTanggalSkMutasi() {
+        return tanggalSkMutasi;
+    }
+
+    public void setTanggalSkMutasi(Date tanggalSkMutasi) {
+        this.tanggalSkMutasi = tanggalSkMutasi;
+    }
+
+    public String getTipePegawaiId() {
+        return tipePegawaiId;
+    }
+
+    public void setTipePegawaiId(String tipePegawaiId) {
+        this.tipePegawaiId = tipePegawaiId;
+    }
+
+    public String getTipePegawaiName() {
+        return tipePegawaiName;
+    }
+
+    public void setTipePegawaiName(String tipePegawaiName) {
+        this.tipePegawaiName = tipePegawaiName;
     }
 }

@@ -87,7 +87,7 @@
     <section class="content-header">
         <h1>
             Ijin Keluar Kantor
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -299,6 +299,17 @@
                         </div>
                     </div>
                 </form>
+                <center>
+                    <table id="showdata1" width="100%">
+                        <tr>
+                            <td align="center">
+                                <table style="width: 50%;" class="searchAnggotaTable table table-bordered">
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                </center>
             </div>
             <div class="modal-footer">
                 <a id="btnApprove" type="button" class="btn btn-default btn-primary"><i class="fa fa-check"></i> Approve</a>
@@ -347,6 +358,33 @@
 </html>
 
 <script type="application/javascript">
+
+    window.loadAnggota =  function(IjinKeluarId){
+        //alert(nip);
+        $('.searchAnggotaTable').find('tbody').remove();
+        $('.searchAnggotaTable').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+//        alert(IjinKeluarId);
+//        var ijinId = document.getElementById("IjinKeluarId1").value;
+        IjinKeluarAction.searchAnggota(IjinKeluarId,function(listdata) {
+            console.log(listdata);
+            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>No</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Nip</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                    "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                        '<td align="center">' + i+1 + '</td>' +
+                        '<td align="center">' + item.nip + '</td>' +
+                        '<td align="center">' + item.namaPegawai + '</td>' +
+                        "</tr>";
+            });
+            $('.searchAnggotaTable').append(tmp_table);
+        });
+    }
 
 
 
@@ -431,6 +469,10 @@
                     $('#btnNotApprove').show();
                     $('#btnApprove').show();
                 }
+
+                loadAnggota(IjinKeluarId);
+
+
             });
         });
     });

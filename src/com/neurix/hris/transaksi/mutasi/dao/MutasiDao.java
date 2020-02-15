@@ -4,6 +4,8 @@ package com.neurix.hris.transaksi.mutasi.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
 import com.neurix.hris.transaksi.mutasi.model.Mutasi;
+import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
+import com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -12,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +65,9 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }
             if (mapCriteria.get("position_baru_id")!=null) {
                 criteria.add(Restrictions.eq("positionBaruId", (String) mapCriteria.get("position_baru_id")));
+            }
+            if (mapCriteria.get("tanggal_efektif")!=null) {
+                criteria.add(Restrictions.eq("tanggalEfektif", mapCriteria.get("tanggal_efektif")));
             }
 
         }
@@ -199,14 +205,16 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }else{
                 mutasi.setDivisiLamaName("");
             }
-            mutasi.setPositionLamaName(rows[5].toString());
-
+            if(rows[5] != null){
+                mutasi.setPositionLamaName(rows[5].toString());
+            }else{
+                mutasi.setPositionLamaName("");
+            }
             if(rows[6] != null){
                 mutasi.setBranchBaruName(rows[6].toString());
             }else{
                 mutasi.setBranchBaruName("");
             }
-
             if(rows[7] != null){
                 mutasi.setDivisiBaruName(rows[7].toString());
             }else{
@@ -261,6 +269,76 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             listOfResult.add(mutasi);
         }
 
+        return listOfResult;
+    }
+
+    public String getTahun(String nip){
+        String result="";
+        String stTmp;
+        int temp=0;
+        String query ="select tahun from imt_hris_history_jabatan_pegawai where nip ='"+nip+"'";
+        List<String> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (String rows: results){
+            stTmp = rows;
+            if ( Integer.parseInt(stTmp) >= temp){
+                temp = Integer.parseInt(stTmp);
+            }
+        }
+        stTmp = String.valueOf(temp);
+        result = "01-01-"+stTmp;
+
+        return result;
+    }
+
+    public String getGolonganId(String nip){
+        String listOfResult;
+        String query ="select golongan_id from im_hris_pegawai where nip ='"+nip+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            listOfResult = results.toString();
+        }else {
+            listOfResult=null;
+        }
+        return listOfResult;
+
+    }
+    public String getTanggalAktif(String nip){
+        String listOfResult;
+        String query ="select tanggal_aktif from it_hris_pegawai_position where nip ='"+nip+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            listOfResult = dateFormat.format(results);
+        }else {
+            listOfResult=null;
+        }
+        return listOfResult;
+
+    }
+
+    public String getHistoryJabatanIdLama(String nip){
+        String listOfResult = "";
+
+        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
+                "where imt_hris_history_jabatan_pegawai.nip = '"+nip+"'\n" +
+                "order by imt_hris_history_jabatan_pegawai.created_date DESC\n" +
+                "limit 1";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            listOfResult = results.toString();
+        }else {
+            listOfResult=null;
+        }
         return listOfResult;
     }
 

@@ -46,7 +46,7 @@
     <section class="content-header">
         <h1>
             Lembur
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -147,6 +147,17 @@
                                                             <s:textfield id="loginTimestampTo" name="lembur.stTanggalAkhir" size="7" cssClass="form-control pull-right"
                                                                          required="false" cssStyle=""/>
                                                         </div>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Status Approval :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'0':'Menunggu Approve','Y':'Telah di Approve','N':'Tidak di Approve'}" id="statusAproval" name="lembur.approvalFlag"
+                                                                  headerKey="" headerValue="Semua Status" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>

@@ -37,4 +37,7 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     List<Object[]> findAllConfirmByIdAtasan(String nip, String flag) throws GeneralBOException;
 
     List<IjinKeluar> getByCriteriaForAbsensiIjinTidakMasuk(IjinKeluar bean, String tanggal);
+    public List getListDispensasiMasal(String unit);
+
+    public void saveAddDispensasiMasal(IjinKeluar bean);
 }

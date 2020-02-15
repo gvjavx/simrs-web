@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.ijinKeluar.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggotaEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -8,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,5 +50,33 @@ public class IjinKeluarAnggotaDao extends GenericDao<IjinKeluarAnggotaEntity, St
                 .list();
 
         return results;
+    }
+
+    public List<Biodata> getBranchDivisiPosisi(String nip) throws HibernateException {
+        List<Biodata> listOfResult = new ArrayList<Biodata>();
+
+
+
+        String query = "select distinct it_hris_pegawai_position.branch_id, im_position.department_id, it_hris_pegawai_position.position_id,im_position.bagian_id \n" +
+                "from it_hris_pegawai_position\n" +
+                "inner join im_position on it_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "where\n" +
+                "it_hris_pegawai_position.flag = 'Y'\n" +
+                "and nip = '"+nip+"'";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        Biodata biodata;
+        for(Object[] rows: results){
+            biodata = new Biodata();
+            biodata.setBranch(rows[0].toString());
+            biodata.setDivisi(rows[1].toString());
+            biodata.setPositionId(rows[2].toString());
+            biodata.setBagianId(rows[3].toString());
+            listOfResult.add(biodata);
+        }
+        return listOfResult;
     }
 }

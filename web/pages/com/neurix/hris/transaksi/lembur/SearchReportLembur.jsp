@@ -71,7 +71,7 @@
     <section class="content-header">
         <h1>
             Report Lembur
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
 
@@ -247,7 +247,7 @@
                                         </sj:dialog>
                                         <s:set name="listOfLembur" value="#session.listOfResultLembur" scope="request" />
                                         <display:table name="listOfLembur" class="tableLembur table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_lembur.action" export="true" id="row" pagesize="40" style="font-size:10">
+                                                       requestURI="paging_displaytag_laporan_lembur.action" export="true" id="row" pagesize="40" style="font-size:10">
                                             <display:column media="html" title="Cetak Surat" style="text-align:center;font-size:9">
                                                 <s:url var="urlCetakLembur" namespace="/absensi" action="printReportLembur_absensi" escapeAmp="false">
                                                     <s:param name="nip"><s:property value="#attr.row.nip" /></s:param>

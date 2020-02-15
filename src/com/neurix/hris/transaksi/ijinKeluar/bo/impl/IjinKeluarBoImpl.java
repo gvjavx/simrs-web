@@ -12,8 +12,10 @@ import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.golongan.dao.GolonganDao;
+import com.neurix.hris.master.golongan.model.Golongan;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.ijin.dao.IjinDao;
 import com.neurix.hris.master.ijin.model.Ijin;
@@ -21,6 +23,8 @@ import com.neurix.hris.master.ijin.model.ImIjinEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarAnggotaDao;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
@@ -76,7 +80,16 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
     private PositionDao positionDao;
     private GolonganDao golonganDao;
     private IjinDao ijinDao;
+    private AbsensiPegawaiDao absensiPegawaiDao;
     private String CLICK_ACTION = "TASK_IJIN";
+
+    public AbsensiPegawaiDao getAbsensiPegawaiDao() {
+        return absensiPegawaiDao;
+    }
+
+    public void setAbsensiPegawaiDao(AbsensiPegawaiDao absensiPegawaiDao) {
+        this.absensiPegawaiDao = absensiPegawaiDao;
+    }
 
     public IjinKeluarAnggotaDao getIjinKeluarAnggotaDao() {
         return ijinKeluarAnggotaDao;
@@ -410,6 +423,21 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
             imIjinKeluarEntity.setPositionId(bean.getPositionId());
             imIjinKeluarEntity.setGolonganId(bean.getGolonganId());
             imIjinKeluarEntity.setKeperluan(bean.getKeperluan());
+
+            //tambahan irfan
+            List<Biodata> resultBiodata = new ArrayList<>();
+            try{
+                resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(bean.getNip());
+                for (Biodata biodata: resultBiodata){
+                    imIjinKeluarEntity.setDivisiId(biodata.getDivisi());
+                    imIjinKeluarEntity.setBagianId(biodata.getBagianId());
+                }
+            }catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+            }
+
+
             Map hsCriteria2 =  new HashMap();
             hsCriteria2.put("position_id",bean.getPositionId());
             hsCriteria2.put("flag","Y");
@@ -456,6 +484,23 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                         ijinKeluarAnggotaEntity.setNip(ijinKeluar.getNip());
                         ijinKeluarAnggotaEntity.setNamaPegawai(ijinKeluar.getNamaPegawai());
                         ijinKeluarAnggotaEntity.setPositionId(ijinKeluar.getPositionId());
+                        ijinKeluarAnggotaEntity.setJamKembali(bean.getJamKembali());
+                        ijinKeluarAnggotaEntity.setJamKeluar(bean.getJamKeluar());
+                        ijinKeluarAnggotaEntity.setTanggal(bean.getTanggalAwal());
+
+                        //tambahan irfan
+//                        List<Biodata> hasilBiodata = new ArrayList<>();
+                        try{
+                            resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(ijinKeluar.getNip());
+                            for (Biodata biodata: resultBiodata){
+                                ijinKeluarAnggotaEntity.setBranchId(biodata.getBranch());
+                                ijinKeluarAnggotaEntity.setBidangId(biodata.getDivisi());
+                                ijinKeluarAnggotaEntity.setBagianId(biodata.getBagianId());
+                            }
+                        }catch (HibernateException e) {
+                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                        }
 
                         ijinKeluarAnggotaEntity.setFlag(bean.getFlag());
                         ijinKeluarAnggotaEntity.setAction(bean.getAction());
@@ -697,9 +742,18 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                                 }
                             }
                             java.sql.Date now =new java.sql.Date(System.currentTimeMillis());
-                            if (now.before(ijinKeluarEntity.getTanggalAwal())){
-                                returnIjinKeluar.setCanCancel(true);
+                            List<AbsensiPegawaiEntity>statusAbsensi = new ArrayList<>();
+                            try {
+                                statusAbsensi = absensiPegawaiDao.getListAbsensiByNipAndTanggal(ijinKeluarEntity.getNip(),ijinKeluarEntity.getTanggalAwal());
+                                if (statusAbsensi.size()==0){
+                                    returnIjinKeluar.setCanCancel(true);
+                                }
+                            }catch (HibernateException e) {
+                                logger.error("[IjinKeluarBoImpl.getSearchIjinKeluarByCriteria] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                             }
+
+
                             if (ijinKeluarEntity.getApprovalSdmId() != null) {
                                 returnIjinKeluar.setIjinKeluarApproveStatusSdm(true);
                             }
@@ -1179,5 +1233,109 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
             }
         }
         return listOfResult;
+    }
+    public List getListDispensasiMasal(String unit){
+        List<IjinKeluar> listOfResult = new ArrayList<>();
+        List<ItPersonilPositionEntity> biodataEntityList;
+        try{
+            biodataEntityList = ijinKeluarDao.getPegawaiDispensasiMasal(unit);
+            for (ItPersonilPositionEntity biodataLoop: biodataEntityList){
+                IjinKeluar returnIjinKeluar = new IjinKeluar();
+
+                String namaPegawai = ijinKeluarDao.getName(biodataLoop.getNip());
+                if (!namaPegawai.equalsIgnoreCase("")){
+                    returnIjinKeluar.setNip(biodataLoop.getNip());
+                    returnIjinKeluar.setNamaPegawai(namaPegawai);
+                    listOfResult.add(returnIjinKeluar);
+                }
+            }
+        }catch (HibernateException e) {
+            logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        return listOfResult;
+    }
+    public void saveAddDispensasiMasal(IjinKeluar bean){
+        String ijinKeluarId;
+        if (bean!=null){
+            try{
+                ijinKeluarId = ijinKeluarDao.getNextIjinKeluarId();
+            }catch (HibernateException e) {
+                logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            }
+
+            IjinKeluarEntity imIjinKeluarEntity = new IjinKeluarEntity();
+
+            imIjinKeluarEntity.setIjinKeluarId(ijinKeluarId);
+            imIjinKeluarEntity.setIjinId(bean.getIjinId());
+            imIjinKeluarEntity.setIjinName(bean.getIjinName());
+            imIjinKeluarEntity.setLamaIjin(bean.getLamaIjin());
+            imIjinKeluarEntity.setNip(bean.getNip());
+
+            String namaPegawai = ijinKeluarDao.getName(bean.getNip());
+
+            imIjinKeluarEntity.setNamaPegawai(namaPegawai);
+            imIjinKeluarEntity.setKeterangan(bean.getKeterangan());
+            imIjinKeluarEntity.setTanggalAwal(bean.getTanggalAwal());
+            imIjinKeluarEntity.setTanggalAkhir(bean.getTanggalAkhir());
+
+            imIjinKeluarEntity.setCreatedDate(bean.getCreatedDate());
+            imIjinKeluarEntity.setCreatedWho(bean.getCreatedWho());
+            imIjinKeluarEntity.setFlag(bean.getFlag());
+            imIjinKeluarEntity.setAction(bean.getAction());
+
+            //set data approval
+            imIjinKeluarEntity.setApprovalFlag(bean.getApprovalFlag());
+            imIjinKeluarEntity.setApprovalId(bean.getApprovalId());
+            imIjinKeluarEntity.setApprovalName(bean.getApprovalName());
+            imIjinKeluarEntity.setApprovalDate(bean.getApprovalDate());
+
+            imIjinKeluarEntity.setApprovalSdmFlag(bean.getApprovalSdmFlag());
+            imIjinKeluarEntity.setApprovalSdmId(bean.getApprovalSdmId());
+            imIjinKeluarEntity.setApprovalSdmName(bean.getApprovalSdmName());
+            imIjinKeluarEntity.setApprovalSdmDate(bean.getApprovalSdmDate());
+
+            //ambil Golongan Pegawai
+            List<Golongan> golonganPegawai = new ArrayList<>();
+            try{
+                golonganPegawai = golonganDao.getGolonganByNip(bean.getNip());
+                if (golonganPegawai.size()>0){
+                    for (Golongan golonganLoop: golonganPegawai){
+                        imIjinKeluarEntity.setGolonganId(golonganLoop.getGolonganId());
+                        imIjinKeluarEntity.setGolonganName(golonganLoop.getGolonganName());
+                    }
+                }
+            }catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+            }
+
+
+            imIjinKeluarEntity.setCancelFlag("N");
+
+            //set data perusahaan pegawai
+            List<Biodata> resultBiodata = new ArrayList<>();
+            try{
+                resultBiodata = ijinKeluarAnggotaDao.getBranchDivisiPosisi(bean.getNip());
+                for (Biodata biodata: resultBiodata){
+
+                    imIjinKeluarEntity.setUnitId(biodata.getBranch());
+                    imIjinKeluarEntity.setDivisiId(biodata.getDivisi());
+                    imIjinKeluarEntity.setBagianId(biodata.getBagianId());
+
+                    imIjinKeluarEntity.setPositionId(biodata.getPositionId());
+                    List<ImPosition> positionPegawai = positionDao.getPositionById(biodata.getPositionId());
+                    for (ImPosition positionLoop: positionPegawai){
+                        imIjinKeluarEntity.setPositionName(positionLoop.getPositionName());
+                    }
+                }
+            }catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+            }
+
+            ijinKeluarDao.addAndSave(imIjinKeluarEntity);
+        }
     }
 }

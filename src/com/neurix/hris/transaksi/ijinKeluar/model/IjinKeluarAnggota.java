@@ -22,6 +22,62 @@ public class IjinKeluarAnggota extends BaseModel {
     private String positionName;
     private String no;
 
+    private String branchId;
+    private String bidangId;
+    private String bagianId;
+
+    private Date tanggal;
+    private String jamKeluar;
+    private String jamKembali;
+
+    public String getJamKeluar() {
+        return jamKeluar;
+    }
+
+    public void setJamKeluar(String jamKeluar) {
+        this.jamKeluar = jamKeluar;
+    }
+
+    public String getJamKembali() {
+        return jamKembali;
+    }
+
+    public void setJamKembali(String jamKembali) {
+        this.jamKembali = jamKembali;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getBidangId() {
+        return bidangId;
+    }
+
+    public void setBidangId(String bidangId) {
+        this.bidangId = bidangId;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getPositionId() {
         return positionId;
     }

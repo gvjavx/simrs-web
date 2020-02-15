@@ -1,6 +1,7 @@
 package com.neurix.hris.master.golongan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.golongan.model.Golongan;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.golongan.model.ImGolonganHistoryEntity;
 import org.hibernate.Criteria;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +96,27 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
                 .addOrder(Order.asc("golonganId"))
                 .list();
         return results;
+    }
+    public List<Golongan> getGolonganByNip(String nip){
+        List<Golongan> listOfResult = new ArrayList<>();
+        String query ="select im_hris_golongan.golongan_id, im_hris_golongan.golongan_name\n" +
+                "from im_hris_golongan, im_hris_pegawai\n" +
+                "where im_hris_pegawai.golongan_id = im_hris_golongan.golongan_id\n" +
+                "and im_hris_pegawai.nip='"+nip+"'";
+
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        Golongan golongan;
+        for (Object[] row: results){
+            golongan = new Golongan();
+            golongan.setGolonganId(row[0].toString());
+            golongan.setGolonganName(row[1].toString());
+            listOfResult.add(golongan);
+        }
+        return listOfResult;
     }
 
 }

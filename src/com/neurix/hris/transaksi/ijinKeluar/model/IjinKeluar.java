@@ -75,6 +75,16 @@ public class IjinKeluar extends BaseModel {
     private String bagian;
     private String keperluanName;
 
+    private String checkedValue;
+
+    public String getCheckedValue() {
+        return checkedValue;
+    }
+
+    public void setCheckedValue(String checkedValue) {
+        this.checkedValue = checkedValue;
+    }
+
     public String getKeperluanName() {
         return keperluanName;
     }

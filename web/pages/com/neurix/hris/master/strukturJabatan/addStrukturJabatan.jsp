@@ -20,6 +20,9 @@
                         value: item.strukturJabatanId + "-" + item.level,
                         text : item.positionName
                     }));
+//                    alert(item.level);
+                    $('#levelAdd').val(item.level);
+//                    getPosisi(item.parentId);
                 });
 
             });
@@ -28,7 +31,7 @@
         function getPosisi(parentId){
             var strParent = parentId.split("-");
             $('#levelAdd').val(strParent[1]);
-            //alert(strParent[1]);
+            alert(strParent[1]);
         }
 
         function callSearch() {
