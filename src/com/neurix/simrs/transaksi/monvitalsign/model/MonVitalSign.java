@@ -22,6 +22,8 @@ public class MonVitalSign {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String stDate;
+    private Integer tb;
+    private Integer bb;
 
     public String getStDate() {
         return stDate;
@@ -141,5 +143,21 @@ public class MonVitalSign {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public Integer getTb() {
+        return tb;
+    }
+
+    public void setTb(Integer tb) {
+        this.tb = tb;
+    }
+
+    public Integer getBb() {
+        return bb;
+    }
+
+    public void setBb(Integer bb) {
+        this.bb = bb;
     }
 }

@@ -28,7 +28,7 @@ public class MonCairanDao extends GenericDao<ItSimrsMonCairanEntity, String> {
         if (mapCriteria.get("no_checkup") != null)
             criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
         if (mapCriteria.get("id_detail_checkup") != null)
-            mapCriteria.get(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+            criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
 
         List<ItSimrsMonCairanEntity> results = criteria.list();
         return results;
