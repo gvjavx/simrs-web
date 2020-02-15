@@ -3,14 +3,20 @@ package com.neurix.simrs.transaksi.ordergizi.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
+import com.neurix.simrs.master.dietgizi.model.DietGizi;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
+import groovy.lang.ObjectRange;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -74,42 +80,87 @@ public class OrderGiziAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveOrderGizi(String idRawatInap,String dietPagi, String bentukPagi, String dietSiang, String bentukSiang, String dietMalam, String bentukMalam){
+    public CheckResponse saveOrderGizi(String idRawatInap,String dietPagi, String dietSiang, String dietMalam){
         logger.info("[OrderGiziAction.saveOrderGizi] start process >>>");
+        CheckResponse response = new CheckResponse();
         try {
 
+            long millis = System.currentTimeMillis();
+            java.util.Date date = new java.util.Date(millis);
+            String tglToday = new SimpleDateFormat("yyyy-MM-dd").format(date);
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
+            BigDecimal tarifTotal = new BigDecimal(0);
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+            DietGiziBo dietGiziBo = (DietGiziBo) ctx.getBean("dietGiziBoProxy");
             OrderGizi orderGizi = new OrderGizi();
+
+            List<String> orderGiziList = new ArrayList<>();
+            orderGiziList.add(dietPagi);
+            orderGiziList.add(dietSiang);
+            orderGiziList.add(dietMalam);
+
+            List<DietGizi> giziList = new ArrayList<>();
+
+            Integer i = 0;
+            for (String diet: orderGiziList){
+                i++;
+                DietGizi dietGizi = new DietGizi();
+                dietGizi.setIdDietGizi(diet);
+
+                try {
+                    giziList = dietGiziBo.getByCriteria(dietGizi);
+                }catch (GeneralBOException e){
+                    logger.error("[OrderGiziAction] Found Error, "+e);
+                }
+
+                if(giziList.size() > 0){
+                    dietGizi = giziList.get(0);
+
+                    if(dietGizi != null){
+
+                        tarifTotal = tarifTotal.add(dietGizi.getTarif());
+
+                        if(i == 1){
+                            orderGizi.setDietPagi(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanPagi(dietGizi.getNamaDietGizi());
+                        }
+                        if(i == 2){
+                            orderGizi.setDietSiang(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanSiang(dietGizi.getNamaDietGizi());
+                        }
+                        if(i == 3){
+                            orderGizi.setDietMalam(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanMalam(dietGizi.getNamaDietGizi());
+                        }
+
+                    }
+                }
+            }
+
+
             orderGizi.setIdRawatInap(idRawatInap);
-            orderGizi.setDietPagi(dietPagi);
-            orderGizi.setBentukMakanPagi(bentukPagi);
-            orderGizi.setDietSiang(dietSiang);
-            orderGizi.setBentukMakanSiang(bentukSiang);
-            orderGizi.setDietMalam(dietMalam);
-            orderGizi.setBentukMakanMalam(bentukMalam);
             orderGizi.setCreatedWho(userLogin);
+            orderGizi.setTglOrder(Date.valueOf(tglToday));
             orderGizi.setLastUpdate(updateTime);
             orderGizi.setCreatedDate(updateTime);
             orderGizi.setLastUpdateWho(userLogin);
             orderGizi.setAction("C");
             orderGizi.setFlag("Y");
+            orderGizi.setTarifTotal(tarifTotal);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
-            orderGiziBo.saveAdd(orderGizi);
+            response = orderGiziBo.saveAdd(orderGizi);
 
         }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[OrderGiziAction.saveOrderGizi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Found Error :"+e.getMessage());
+            logger.error("[OrderGiziAction.saveOrderGizi] Error when adding item ," + "["+e+"] Found problem when saving add data, please inform to your admin.", e);
         }
 
         logger.info("[OrderGiziAction.saveOrderGizi] end process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public List<OrderGizi> listOrderGizi(String idRawatInap){
@@ -137,40 +188,84 @@ public class OrderGiziAction extends BaseMasterAction {
         }
     }
 
-    public String editOrderGizi(String idOrdeGizi, String idRawatInap,String dietPagi, String bentukPagi, String dietSiang, String bentukSiang, String dietMalam, String bentukMalam){
+    public CheckResponse editOrderGizi(String idOrdeGizi, String dietPagi, String dietSiang, String dietMalam){
         logger.info("[OrderGiziAction.editOrderGizi] start process >>>");
+        CheckResponse response = new CheckResponse();
         try {
 
+            long millis = System.currentTimeMillis();
+            java.util.Date date = new java.util.Date(millis);
+            String tglToday = new SimpleDateFormat("yyyy-MM-dd").format(date);
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
+            BigDecimal tarifTotal = new BigDecimal(0);
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+            DietGiziBo dietGiziBo = (DietGiziBo) ctx.getBean("dietGiziBoProxy");
+
+            List<String> orderGiziList = new ArrayList<>();
+            orderGiziList.add(dietPagi);
+            orderGiziList.add(dietSiang);
+            orderGiziList.add(dietMalam);
 
             OrderGizi orderGizi = new OrderGizi();
+
+            List<DietGizi> giziList = new ArrayList<>();
+
+            Integer i = 0;
+            for (String diet: orderGiziList){
+                i++;
+                DietGizi dietGizi = new DietGizi();
+                dietGizi.setIdDietGizi(diet);
+
+                try {
+                    giziList = dietGiziBo.getByCriteria(dietGizi);
+                }catch (GeneralBOException e){
+                    logger.error("[OrderGiziAction] Found Error, "+e);
+                }
+
+                if(giziList.size() > 0){
+                    dietGizi = giziList.get(0);
+
+                    if(dietGizi != null){
+
+                        tarifTotal = tarifTotal.add(dietGizi.getTarif());
+
+                        if(i == 1){
+                            orderGizi.setDietPagi(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanPagi(dietGizi.getNamaDietGizi());
+                        }
+                        if(i == 2){
+                            orderGizi.setDietSiang(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanSiang(dietGizi.getNamaDietGizi());
+                        }
+                        if(i == 3){
+                            orderGizi.setDietMalam(dietGizi.getIdDietGizi());
+                            orderGizi.setBentukMakanMalam(dietGizi.getNamaDietGizi());
+                        }
+
+                    }
+                }
+            }
+
+
             orderGizi.setIdOrderGizi(idOrdeGizi);
-            orderGizi.setIdRawatInap(idRawatInap);
-            orderGizi.setDietPagi(dietPagi);
-            orderGizi.setBentukMakanPagi(bentukPagi);
-            orderGizi.setDietSiang(dietSiang);
-            orderGizi.setBentukMakanSiang(bentukSiang);
-            orderGizi.setDietMalam(dietMalam);
-            orderGizi.setBentukMakanMalam(bentukMalam);
             orderGizi.setLastUpdate(updateTime);
             orderGizi.setLastUpdateWho(userLogin);
             orderGizi.setAction("U");
+            orderGizi.setTarifTotal(tarifTotal);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
-            orderGiziBo.saveEdit(orderGizi);
+            response = orderGiziBo.saveEdit(orderGizi);
 
         }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[OrderGiziAction.editOrderGizi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMessage("Foun Error when save edit order gizi :"+e.getMessage());
+            logger.error("[OrderGiziAction.editOrderGizi] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
         }
 
         logger.info("[OrderGiziAction.editOrderGizi] end process >>>");
-        return SUCCESS;
+        return response;
     }
 
     public CheckResponse updateDiterimaFlag(String idOrderGizi){
@@ -190,7 +285,7 @@ public class OrderGiziAction extends BaseMasterAction {
             try {
                 response = orderGiziBo.updateDiterimaFLag(orderGizi);
             }catch (GeneralBOException e){
-                logger.error("[FOund Error] "+e);
+                logger.error("[Found Error] "+e);
             }
         }
         return response;

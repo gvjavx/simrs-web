@@ -47,9 +47,9 @@ public class OrderGiziBoImpl implements OrderGiziBo {
     }
 
     @Override
-    public void saveAdd(OrderGizi bean) throws GeneralBOException {
+    public CheckResponse saveAdd(OrderGizi bean) throws GeneralBOException {
         logger.info("[OrderGiziBoImpl.saveAdd] Start >>>>>>>");
-
+        CheckResponse response = new CheckResponse();
         if (bean != null){
             String id = getNextId();
             if (id != null && !"".equalsIgnoreCase(id)) {
@@ -69,34 +69,45 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                 orderGiziEntity.setCreatedWho(bean.getCreatedWho());
                 orderGiziEntity.setLastUpdate(bean.getLastUpdate());
                 orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                orderGiziEntity.setTarifTotal(bean.getTarifTotal());
 
                 try {
                     orderGiziDao.addAndSave(orderGiziEntity);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil menyimpan data order gizi");
                 } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMessage("Foun Error, "+e.getMessage());
                     logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
                     throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when insert obat inap " + e.getMessage());
                 }
             }
         }
         logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
+        return response;
     }
 
     @Override
-    public void saveEdit(OrderGizi bean) throws GeneralBOException {
+    public CheckResponse saveEdit(OrderGizi bean) throws GeneralBOException {
         logger.info("[OrderGiziBoImpl.saveEdit] Start >>>>>>>");
+        CheckResponse response = new CheckResponse();
         if (bean != null){
 
             ItSimrsOrderGiziEntity orderGiziEntity = null;
             try {
                 orderGiziEntity = orderGiziDao.getById("idOrderGizi", bean.getIdOrderGizi());
+                response.setStatus("success");
+                response.setMessage("Berhasil mencari order gizi");
             } catch (HibernateException e){
-                logger.error("[TeamDokterBoImpl.saveEdit] Error when getById order gizi ",e);
-                throw new GeneralBOException("[TeamDokterBoImpl.savaaEdit] Error when save edit order gizi "+e.getMessage());
+                response.setStatus("error");
+                response.setMessage("Found error when dao gizi save update "+e.getMessage());
+                logger.error("[OrderGiziBoImpl.saveEdit] Error when insert obat inap ", e);
+                logger.error("[OrderGiziBoImpl.saveEdit] Error when getById order gizi ",e);
+                throw new GeneralBOException("[OrderGiziBoImpl.savaaEdit] Error when save edit order gizi "+e.getMessage());
             }
 
             if (bean != null) {
-                orderGiziEntity.setIdRawatInap(bean.getIdRawatInap());
-                orderGiziEntity.setTglOrder(bean.getTglOrder());
+
                 orderGiziEntity.setDietPagi(bean.getDietPagi());
                 orderGiziEntity.setBentukMakanPagi(bean.getBentukMakanPagi());
                 orderGiziEntity.setDietSiang(bean.getDietSiang());
@@ -106,16 +117,22 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                 orderGiziEntity.setAction(bean.getAction());
                 orderGiziEntity.setLastUpdate(bean.getLastUpdate());
                 orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                orderGiziEntity.setTarifTotal(bean.getTarifTotal());
 
                 try {
                     orderGiziDao.updateAndSave(orderGiziEntity);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil menyimpan order gizi");
                 } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMessage("Found error when dao gizi save update "+e.getMessage());
                     logger.error("[OrderGiziBoImpl.saveEdit] Error when insert obat inap ", e);
-                    throw new GeneralBOException("[TindakanRawatBoImpl.saveAdd] Error when edit order gizi " + e.getMessage());
+                    throw new GeneralBOException("[OrderGiziBoImpl.saveAdd] Error when edit order gizi " + e.getMessage());
                 }
             }
         }
         logger.info("[OrderGiziBoImpl.saveEdit] End <<<<<<");
+        return response;
     }
 
     @Override

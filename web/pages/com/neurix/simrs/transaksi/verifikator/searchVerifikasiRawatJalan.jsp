@@ -120,7 +120,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_verifikator.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_verifrawatjalan.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -185,7 +185,7 @@
                                 <td>Nama</td>
                                 <td>Alamat</td>
                                 <td>Status Periksa</td>
-                                <td>Status</td>
+                                <td >Status</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -198,16 +198,17 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="alamat"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td>
+                                    <td style="vertical-align: middle">
                                         <s:if test='#row.klaimBpjsFlag == "Y"'>
                                             <label class="label label-success"> sudah finasisasi</label>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
                                                 <s:if test='#row.keteranganSelesai == "Rujuk Rawat Inap"'>
-                                                    <label class="label label-info" style="margin-bottom: "> sudah diverifikasi</label>
-                                                   <label class="label label-warning"> finalisasi di rawat inap</label>
-
+                                                    <ul style="list-style-type: none">
+                                                        <li><span class="label label-info"> sudah diverifikasi</span></li>
+                                                        <li><span class="label label-warning"> finalisasi di rawat inap</span></li>
+                                                    </ul>
                                                 </s:if>
                                                 <s:else>
                                                     <label class="label label-info"> sudah diverifikasi</label>

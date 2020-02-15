@@ -8,7 +8,10 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -91,7 +94,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
-                                        <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
+                                        <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -201,7 +204,7 @@
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="namaRangan"/> [<s:property value="noRuangan"/>]</td>
-                                    <td>
+                                    <td style="vertical-align: middle">
                                         <s:if test='#row.approveFlag == "Y"'>
                                             <label class="label label-success"> telah dikonfirmasi</label>
                                         </s:if>
@@ -249,20 +252,12 @@
                     <table class="table table-bordered table-striped" id="tabel_gizi">
                         <thead>
                         <tr >
-                            <td rowspan="2">Tanggal</td>
-                            <td colspan="2" align="center">Pagi</td>
-                            <td colspan="2" align="center">Siang</td>
-                            <td colspan="2" align="center">Malam</td>
+                            <td>Tanggal Order</td>
+                            <td>Diet Pagi</td>
+                            <td>Diet Siang</td>
+                            <td>Diet Malam</td>
                             <td align="center" rowspan="2">Status</td>
                             <td align="center" rowspan="2">Action</td>
-                        </tr>
-                        <tr >
-                            <td>Jenis</td>
-                            <td>Bentuk</td>
-                            <td>Jenis</td>
-                            <td>Bentuk</td>
-                            <td>Jenis</td>
-                            <td>Bentuk</td>
                         </tr>
                         </thead>
                         <tbody id="body_gizi">
@@ -337,13 +332,10 @@
                     }
                     table +=    '<tr>' +
                                 '<td>'+tanggal+'</td>'+
-                                '<td>'+jenisPagi+'</td>'+
                                 '<td>'+bentukPagi+'</td>'+
-                                '<td>'+jenisSiang+'</td>'+
                                 '<td>'+bentukSiang+'</td>'+
-                                '<td>'+jenisMalam+'</td>'+
                                 '<td>'+bentukMalam+'</td>'+
-                                '<td>'+label+'</td>'+
+                                '<td style="vertical-align: middle" align="center">'+label+'</td>'+
                                 '<td align="center">'+btn+'</td>'+
                                 '</tr>'
                 });
@@ -358,17 +350,17 @@
         setTimeout(function () {
             PermintaanGiziAction.updateApproveFLag(idOrder, function (response) {
                     if (response.status == "success") {
-                        $('#bot' + idOrder).attr('src', url).css('width', '', 'height', '');
+                        $('#bot' + idOrder).removeAttr("src");
                         $('#success_gizi').show().fadeOut(5000);
                         $('#msg_gizi2').text(response.message);
                         listOrderGizi(idRawatInap, noCheckup);
                     } else {
-                        $('#bot' + idOrder).attr('src', url).css('width', '', 'height', '');
+                        $('#bot' + idOrder).removeAttr("src");
                         $('#warning_gizi').show().fadeOut(5000);
                         $('#msg_gizi').text(response.message);
                     }
             });
-        },1000);
+        },200);
     }
 
     function printBarcodeGizi(noCheckup, idorderGizi) {
@@ -384,6 +376,25 @@
             $('#modal-detail-pasien').modal('hide');
             $('#info_dialog').dialog('open');
         },500);
+    }
+
+    function listSelectRuangan(id) {
+        var idx = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+        var flag = false;
+        var option = "";
+        CheckupDetailAction.listRuangan(idKelas, flag, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                });
+                $('#ruangan_ruang').html(option);
+            } else {
+                $('#ruangan_ruang').html(option);;
+            }
+        });
+
     }
 
 

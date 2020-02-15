@@ -439,20 +439,12 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90" style="height: 20px">
-                                <td rowspan="2">Tanggal</td>
-                                <td colspan="2" align="center">Pagi</td>
-                                <td colspan="2" align="center">Siang</td>
-                                <td colspan="2" align="center">Malam</td>
-                                <td align="center" rowspan="2" width="10%">Status</td>
+                                <td >Tanggal</td>
+                                <td >Diet Pagi</td>
+                                <td >Diet Siang</td>
+                                <td >Diet Malam</td>
+                                <td align="center"width="10%">Status</td>
                                 <td align="center" rowspan="2" width="18%">Action</td>
-                            </tr>
-                            <tr bgcolor="#90ee90">
-                                <td>Jenis</td>
-                                <td>Bentuk</td>
-                                <td>Jenis</td>
-                                <td>Bentuk</td>
-                                <td>Jenis</td>
-                                <td>Bentuk</td>
                             </tr>
                             </thead>
                             <tbody id="body_diet">
@@ -997,10 +989,16 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">Jenis Diet Pagi</label>
+                        <label class="col-md-3" style="margin-top: 10px">Diet Pagi</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" id="diet_pagi"
-                                   oninput="var warn =$('#war_pagi1').is(':visible'); if (warn){$('#cor_pagi1').show().fadeOut(3000);$('#war_pagi1').hide()}">
+                            <%--<input type="text" class="form-control" id="diet_pagi"--%>
+                                   <%--oninput="var warn =$('#war_pagi1').is(':visible'); if (warn){$('#cor_pagi1').show().fadeOut(3000);$('#war_pagi1').hide()}">--%>
+                                <s:action id="comboDiet1" namespace="/rawatinap"
+                                          name="getComboBoxDietGizi_rawatinap"/>
+                            <s:select list="#comboDiet1.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="diet_pagi"
+                                      onchange="var warn =$('#war_pagi1').is(':visible'); if (warn){$('#cor_pagi1').show().fadeOut(3000);$('#war_pagi1').hide()}"
+                            headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
+
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_pagi1"><i
@@ -1009,24 +1007,27 @@
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Bentuk Diet Pagi</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<input type="text" class="form-control" style="margin-top: 7px" id="bentuk_pagi"--%>
+                                   <%--oninput="var warn =$('#war_pagi2').is(':visible'); if (warn){$('#cor_pagi2').show().fadeOut(3000);$('#war_pagi2').hide()}">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_pagi2"><i--%>
+                                    <%--class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_pagi2">--%>
+                                <%--<i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Pagi</label>
+                        <label class="col-md-3" style="margin-top: 10px">Diet Siang</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_pagi"
-                                   oninput="var warn =$('#war_pagi2').is(':visible'); if (warn){$('#cor_pagi2').show().fadeOut(3000);$('#war_pagi2').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_pagi2"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_pagi2">
-                                <i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Diet Siang</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" style="margin-top: 7px" id="diet_siang"
-                                   oninput="var warn =$('#war_siang1').is(':visible'); if (warn){$('#cor_siang1').show().fadeOut(3000);$('#war_siang1').hide()}">
+                            <%--<input type="text" class="form-control" style="margin-top: 7px" id="diet_siang"--%>
+                                   <%--oninput="var warn =$('#war_siang1').is(':visible'); if (warn){$('#cor_siang1').show().fadeOut(3000);$('#war_siang1').hide()}">--%>
+                                <s:select list="#comboDiet1.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="diet_siang"
+                                          onchange="var warn =$('#war_siang1').is(':visible'); if (warn){$('#cor_siang1').show().fadeOut(3000);$('#war_siang1').hide()}"
+                                          headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_siang1">
@@ -1035,24 +1036,27 @@
                                id="cor_siang1"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Bentuk Diet Siang</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<input type="text" class="form-control" style="margin-top: 7px" id="bentuk_siang"--%>
+                                   <%--oninput="var warn =$('#war_siang2').is(':visible'); if (warn){$('#cor_siang2').show().fadeOut(3000);$('#war_siang2').hide()}">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_siang2">--%>
+                                <%--<i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_siang2"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Siang</label>
+                        <label class="col-md-3" style="margin-top: 10px">Diet Malam</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_siang"
-                                   oninput="var warn =$('#war_siang2').is(':visible'); if (warn){$('#cor_siang2').show().fadeOut(3000);$('#war_siang2').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_siang2">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_siang2"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Diet Malam</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" style="margin-top: 7px" id="diet_malam"
-                                   oninput="var warn =$('#war_malam1').is(':visible'); if (warn){$('#cor_malam1').show().fadeOut(3000);$('#war_malam1').hide()}">
+                            <%--<input type="text" class="form-control" style="margin-top: 7px" id="diet_malam"--%>
+                                   <%--oninput="var warn =$('#war_malam1').is(':visible'); if (warn){$('#cor_malam1').show().fadeOut(3000);$('#war_malam1').hide()}">--%>
+                                <s:select list="#comboDiet1.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="diet_malam"
+                                          onchange="var warn =$('#war_malam1').is(':visible'); if (warn){$('#cor_malam1').show().fadeOut(3000);$('#war_malam1').hide()}"
+                                          headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_malam1">
@@ -1061,19 +1065,19 @@
                                id="cor_malam1"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Bentuk Diet Malam</label>
-                        <div class="col-md-7">
-                            <input type="text" class="form-control" style="margin-top: 7px" id="bentuk_malam"
-                                   oninput="var warn =$('#war_malam2').is(':visible'); if (warn){$('#cor_malam2').show().fadeOut(3000);$('#war_malam2').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_malam2">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_malam2"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Bentuk Diet Malam</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<input type="text" class="form-control" style="margin-top: 7px" id="bentuk_malam"--%>
+                                   <%--oninput="var warn =$('#war_malam2').is(':visible'); if (warn){$('#cor_malam2').show().fadeOut(3000);$('#war_malam2').hide()}">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_malam2">--%>
+                                <%--<i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_malam2"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
                 </div>
             </div>
@@ -1469,14 +1473,13 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-skor"> </span></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i>  <span id="label-skor"> </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                  <button type="button" class="btn btn-success" id="add_resiko" onclick="addResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')">
+                  <button type="button" style="margin-bottom: 10px" class="btn btn-success" id="add_resiko" onclick="addResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')">
                     <i class="fa fa-plus"></i> Add
                   </button>
-                  <table class="table table-bordered">
+                  <table class="table table-bordered ">
                     <thead>
                       <td>Asesmen</td>
                       <td>Skor</td>
@@ -1488,8 +1491,6 @@
                     </tbody>
                   </table>
                   <input type="hidden" id="kat_skor"/>
-
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
               <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1834,15 +1835,14 @@
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
                     });
+                    $('#tin_id_tindakan').html(option);
                 } else {
-                    option = option;
+                    $('#tin_id_tindakan').html(option);
                 }
             });
         } else {
-            option = option;
+            $('#tin_id_tindakan').html(option);
         }
-
-        $('#tin_id_tindakan').html(option);
     }
 
     function toContent() {
@@ -1903,9 +1903,9 @@
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
             $('#modal-lab').modal('show');
         } else if (select == 5) {
-            $('#diet_pagi, #bentuk_pagi, #diet_siang, #bentuk_siang, #diet_malam, #bentuk_malam').val('');
+            $('#diet_pagi, #diet_siang, #diet_malam').val('');
             $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
-            $('#load_diet, #warning_diet, #war_pagi1, #war_pagi2, #war_siang1, #war_siang2, #war_malam1, #war_malam2').hide();
+            $('#load_diet, #warning_diet, #war_pagi1, #war_siang1, #war_malam1').hide();
             $('#modal-diet').modal('show');
         } else if (select == 6) {
             $('#ob_id_obat').val('').trigger('change');
@@ -2045,6 +2045,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -2062,6 +2063,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -2641,20 +2643,23 @@
     function saveDiet(id) {
 
         var dietPagi = $('#diet_pagi').val();
-        var bentukPagi = $('#bentuk_pagi').val();
+        // var bentukPagi = $('#bentuk_pagi').val();
         var dietSiang = $('#diet_siang').val();
-        var bentukSiang = $('#bentuk_siang').val();
+        // var bentukSiang = $('#bentuk_siang').val();
         var dietMalam = $('#diet_malam').val();
-        var bentukMalam = $('#bentuk_malam').val();
+        // var bentukMalam = $('#bentuk_malam').val();
 
+        console.log(dietPagi);
+        console.log(dietSiang);
+        console.log(dietMalam);
 
-        if (dietPagi != '' && bentukPagi != '' && dietSiang != '' && bentukSiang != '' && dietMalam != '' && bentukMalam != '') {
+        if (dietPagi != '' && dietSiang != '' && dietMalam != '') {
             $('#save_diet').hide();
             $('#load_diet').show();
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                OrderGiziAction.editOrderGizi(id, idRawatInap, dietPagi, bentukPagi, dietSiang, bentukSiang, dietMalam, bentukMalam, function (response) {
+                OrderGiziAction.editOrderGizi(id, dietPagi, dietSiang, dietMalam, function (response) {
                     if (response == "success") {
                         dwr.engine.setAsync(false);
                         listDiet();
@@ -2664,11 +2669,11 @@
                     } else {
 
                     }
-                })
+                });
             } else {
                 dwr.engine.setAsync(true);
-                OrderGiziAction.saveOrderGizi(idRawatInap, dietPagi, bentukPagi, dietSiang, bentukSiang, dietMalam, bentukMalam, function (response) {
-                    if (response == "success") {
+                OrderGiziAction.saveOrderGizi(idRawatInap, dietPagi, dietSiang, dietMalam, function (response) {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listDiet();
                         $('#modal-diet').modal('hide');
@@ -2677,27 +2682,18 @@
                     } else {
 
                     }
-                })
+                });
             }
         } else {
             $('#warning_diet').show().fadeOut(5000);
             if (dietPagi == '') {
                 $('#war_pagi1').show();
             }
-            if (bentukPagi == '') {
-                $('#war_pagi2').show();
-            }
             if (dietSiang == '') {
                 $('#war_siang1').show();
             }
-            if (bentukSiang == '') {
-                $('#war_siang2').show();
-            }
             if (dietMalam == '') {
                 $('#war_malam1').show();
-            }
-            if (bentukMalam == '') {
-                $('#war_malam2').show();
             }
         }
     }
@@ -2740,13 +2736,10 @@
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.dietPagi + "</td>" +
                             "<td>" + item.bentukMakanPagi + "</td>" +
-                            "<td>" + item.dietSiang + "</td>" +
                             "<td>" + item.bentukMakanSiang + "</td>" +
-                            "<td>" + item.dietMalam + "</td>" +
                             "<td>" + item.bentukMakanMalam + "</td>" +
-                            "<td style='vertical-align: center'>" + label + "</td>" +
+                            "<td style='vertical-align: middle' >" + label + "</td>" +
                             "<td align='center'>" + btn + "</td>" +
                             "</tr>"
                 });
@@ -3665,7 +3658,7 @@
             callback : function (response) {
                 if(response.status == "success"){
                     $('#success_all').show().fadeOut(5000);
-                    $('#msg_all_suc').text(response.message);
+                    $('#msg_all_suc').text("Berhasil menyimpan semua tindakan...!");
                     $('#save_all').show();
                     $('#load_all').hide();
                 }else{

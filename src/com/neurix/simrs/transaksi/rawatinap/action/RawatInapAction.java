@@ -4,6 +4,8 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
+import com.neurix.simrs.master.dietgizi.model.DietGizi;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
@@ -21,6 +23,7 @@ import com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,10 +47,26 @@ public class RawatInapAction extends BaseMasterAction {
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private RuanganBo ruanganBoProxy;
     private RiwayatTindakanBo riwayatTindakanBoProxy;
+    private DietGiziBo dietGiziBoProxy;
 
     private String id;
     private String idResep;
     private String idDetail;
+
+    private List<DietGizi> listOfDietGizi = new ArrayList<>();
+
+
+    public void setDietGiziBoProxy(DietGiziBo dietGiziBoProxy) {
+        this.dietGiziBoProxy = dietGiziBoProxy;
+    }
+
+    public List<DietGizi> getListOfDietGizi() {
+        return listOfDietGizi;
+    }
+
+    public void setListOfDietGizi(List<DietGizi> listOfDietGizi) {
+        this.listOfDietGizi = listOfDietGizi;
+    }
 
     public String getIdDetail() {
         return idDetail;
@@ -546,5 +565,24 @@ public class RawatInapAction extends BaseMasterAction {
 
         return "print_gelang_pasien";
     }
+
+    public String getComboBoxDietGizi() {
+
+        List<DietGizi> dietGiziArrayList = new ArrayList<>();
+        DietGizi dietGizi = new DietGizi();
+        dietGizi.setBranchId(CommonUtil.userBranchLogin());
+        dietGizi.setFlag("Y");
+
+        try {
+            dietGiziArrayList = dietGiziBoProxy.getByCriteria(dietGizi);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.getComboBoxDietGizi] Error when get data for combo list of diet gizi", e);
+            addActionError(" Error when get data for combo list of diet gizi" + e.getMessage());
+        }
+
+        listOfDietGizi.addAll(dietGiziArrayList);
+        return SUCCESS;
+    }
+
 
 }

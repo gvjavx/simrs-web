@@ -13,6 +13,8 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -67,19 +69,19 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan"
-                                                  name="rawatInap.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2" theme="simple"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                  <%--name="getComboPelayanan_checkup"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initComboPoli.listOfPelayanan"--%>
+                                                  <%--name="rawatInap.idPelayanan" listKey="idPelayanan"--%>
+                                                  <%--listValue="namaPelayanan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -119,7 +121,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_verifikator.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_verifrawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -197,21 +199,13 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="alamat"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td>
+                                    <td style="vertical-align: middle">
                                         <s:if test='#row.klaimBpjsFlag == "Y"'>
                                             <label class="label label-success"> sudah finasisasi</label>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
-                                                <s:if test='#row.keteranganSelesai == "Rujuk Rawat Inap"'>
-                                                    <label class="label label-info"> sudah diverifikasi</label>
-                                                    <label class="label label-warning"> finalisasi di rawat inap</label>
-
-                                                </s:if>
-                                                <s:else>
-                                                    <label class="label label-info"> sudah diverifikasi</label>
-                                                </s:else>
-
+                                                <label class="label label-info"> sudah diverifikasi</label>
                                             </s:if>
                                             <s:elseif test='#row.cekApprove == true'>
                                                 <label class="label label-warning"> belum diverifikasi</label>
@@ -225,13 +219,9 @@
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
-                                                <s:if test='#row.keteranganSelesai == "Rujuk Rawat Inap"'>
-                                                </s:if>
-                                                <s:else>
                                                     <s:if test='#row.statusPeriksa == "3"'>
                                                         <img id="t_<s:property value="noCheckup"/>" onclick="finalClaim('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
                                                     </s:if>
-                                                </s:else>
                                             </s:if>
                                             <s:elseif test='#row.cekApprove == true'>
                                                 <img id="v_<s:property value="noCheckup"/>" onclick="detailTindakan('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
@@ -565,7 +555,6 @@
 
             VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, function (response) {
                 dataTindakan = response;
-                console.log(dataTindakan);
                 if (dataTindakan != null) {
                     $.each(dataTindakan, function (i, item) {
                         var tindakan    = "";
@@ -574,7 +563,7 @@
                         var onclick     = 'onclick="updateApproveFlag(\''+item.idRiwayatTindakan+'\',\''+i+'\')"';
 
                         var kategori =
-                            '<select class="form-control" id="kategori'+i+'">' +
+                            '<select class="form-control select2" id="kategori'+i+'">' +
                             '<option value="">[Select One]</option>'+
                             '<option value="prosedur_non_bedah">Prosedur Non Bedah</option>'+
                             '<option value="tenaga_ahli">Tenaga Ahli</option>'+
@@ -866,6 +855,27 @@
             }
 
         });
+    }
+
+    function listSelectRuangan(id) {
+        var idx = id.selectedIndex;
+        var idKelas = id.options[idx].value;
+        var flag = true;
+
+        var option = "";
+        CheckupDetailAction.listRuangan(idKelas, flag, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+        });
+
+        $('#kamar_detail').html(option);
+        $('#ruangan_ruang').html(option);
     }
 
 </script>

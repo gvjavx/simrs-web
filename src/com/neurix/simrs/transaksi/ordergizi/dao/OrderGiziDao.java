@@ -157,7 +157,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'";
+                    "AND a.flag = 'Y' ORDER BY g.created_date DESC";
 
             List<Object[]> results = new ArrayList<>();
 
