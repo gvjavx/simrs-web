@@ -1,7 +1,6 @@
 package com.neurix.simrs.transaksi.monpemberianobat.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
 import org.hibernate.Criteria;

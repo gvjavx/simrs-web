@@ -27,6 +27,9 @@ import com.neurix.simrs.transaksi.skorrawatinap.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -283,6 +286,8 @@ public class RawatInapBoImpl implements RawatInapBo {
                 monVitalSign.setLastUpdate(entity.getLastUpdate());
                 monVitalSign.setLastUpdateWho(entity.getLastUpdateWho());
                 monVitalSign.setStDate(entity.getCreatedDate().toString());
+                monVitalSign.setTb(entity.getTb());
+                monVitalSign.setBb(entity.getBb());
                 monVitalSigns.add(monVitalSign);
             }
         }
@@ -438,6 +443,21 @@ public class RawatInapBoImpl implements RawatInapBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public List<MonVitalSign> getListGraf(String id) {
+
+        List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(id);
+        if (monVitalSigns.size() > 0){
+            for (MonVitalSign monVitalSign : monVitalSigns){
+//                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+                SimpleDateFormat f = new SimpleDateFormat("MM/dd");
+                String stDate = f.format(monVitalSign.getCreatedDate());
+                monVitalSign.setStDate("tgl : "+stDate+", jam : "+monVitalSign.getJam());
+            }
+        }
+        return monVitalSigns;
     }
 
     @Override

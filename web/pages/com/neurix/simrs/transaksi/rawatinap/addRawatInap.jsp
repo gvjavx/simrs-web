@@ -48,6 +48,12 @@
     .btn{
       margin-top: 7px;
     }
+    #line-chart-tooltip{
+      z-index: 10000;
+    }
+    #line-chart{
+      width: 100%;
+    }
     </style>
 </head>
 
@@ -1467,6 +1473,7 @@
                       <td>Skor</td>
                       <td>Created By</td>
                       <td>Created</td>
+                      <td>Action</td>
                     </thead>
                     <tbody id="body-list-resiko">
 
@@ -1610,6 +1617,33 @@
                     <br>
                       <table class="table table-bordered">
                         <tbody id="body-view-asesmen">
+                        </tbody>
+                      </table>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+              <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+              </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-skor">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-view-skor"> </span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                      <div id="head-view-skor"></div>
+                    <br>
+                      <table class="table table-bordered">
+                        <tbody id="body-view-skor">
                         </tbody>
                       </table>
                     <br>
@@ -1804,11 +1838,29 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-pie-chart"></i> Graf Observasi Vital Sign </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
+                <div class="box-body" style="padding:50px;">
+                  <div id="line-chart" style="height: 300px"></div>
 
+                  <%-- <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <i class="fa fa-bar-chart-o"></i>
 
-                    <br>
+                      <h3 class="box-title">Line Chart</h3>
+
+                      <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                      </div>
+                    </div>
+                    <div class="box-body">
+                      <div id="line-chart" style="height: 300px; width:600px;"></div>
+                    </div>
+                    <!-- /.box-body-->
+                  </div> --%>
+                  <br/>
+                  <p style="margin-top:100px;"><i class="fa fa-circle" style="color:#3a4dc9"></i> Suhu  <i class="fa fa-circle" style="color:#eb4034"></i> Nadi  <i class="fa fa-circle" style="color:#6b6b6b"></i> Nafas</p>
+
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -3846,6 +3898,7 @@
               "<td>"+item.skor+"</td>"+
               "<td>"+item.createdWho+"</td>"+
               "<td>"+item.stDate+"</td>"+
+              "<td><button class='btn btn-primary' onclick=\"viewSkor('"+item.groupId+"')\">View</button></td>"+
               "</tr>";
             });
 
@@ -3969,6 +4022,7 @@
                 "<td>"+item.skor+"</td>"+
                 "<td>"+item.createdWho+"</td>"+
                 "<td>"+item.stDate+"</td>"+
+                "<td><button class='btn btn-primary' onclick=\"viewSkor('"+item.groupId+"')\">View</button></td>"+
                 "</tr>";
               });
 
@@ -4189,6 +4243,37 @@
       });
     }
 
+    function viewSkor(noGroup){
+      $("#modal-view-skor").modal("show");
+      var kat = $("#kat_skor").val();
+
+      dwr.engine.setAsync(true);
+      RawatInapAction.getKategoriSkorRanap(kat, function(kategori){
+        $("#label-view-skor").html("");
+        $("#label-view-skor").html(kategori.namaKategori);
+
+        RawatInapAction.getListViewSkorRanapByGrupId(noGroup, function(response){
+          if (response != null) {
+            var str = "";
+            var person = "";
+            $.each(response, function(i,item){
+              str += "<tr>"+
+                    "<td>"+item.namaParameter+"</td>"+
+                    "<td>"+item.skor+"</td>"+
+                    "<td>"+item.keterangan+"</td>"+
+                    "</tr>";
+
+              person = "<p>Diinput oleh : "+item.createdWho+"</p>"+
+                      "<p>Diinput pada : "+item.stDate+"</p>";
+            });
+
+            $("#head-view-skor").html(person);
+            $("#body-view-skor").html(str);
+          }
+        });
+      });
+    }
+
     function confirmSaveAllTindakan(){
         $('#modal-confirm-dialog').modal('show');
         $('#save_con').attr('onclick','saveAllTindakan()');
@@ -4302,7 +4387,7 @@
       // alert("klik");
       dwr.engine.setAsync(true);
       RawatInapAction.getListMonVitalSign("", idDetail, "", function(response){
-        // console.log(response);
+        console.log(response);
         var str = "";
         $.each(response, function(i, item) {
           str += "<tr>"+
@@ -4327,7 +4412,93 @@
     }
     function showGrafVitalSign(idDetail){
       $("#modal-graf-vital-sign").modal("show");
+
+      var suhu = [], nadi = [], nafas = [], label = [];
+      dwr.engine.setAsync(true);
+      RawatInapAction.getListGraf(idDetailCheckup, function(response){
+        console.log(response)
+        $.each(response, function(i, item){
+          suhu.push([i,item.suhu]);
+          nadi.push([i,item.nadi]);
+          nafas.push([i,item.nafas]);
+          label.push([i,item.stDate]);
+        });
+
+        /*
+       * LINE CHART
+       * ----------
+       */
+      //LINE randomly generated data
+
+      // var sin = [], cos = []
+      // for (var i = 0; i < 14; i += 0.5) {
+      //   sin.push([i, Math.sin(i)])
+      //   cos.push([i, Math.cos(i)])
+      // }
+      var line_data1 = {
+        data : suhu,
+        color: '#3a4dc9'
+      }
+      var line_data2 = {
+        data : nadi,
+        color: '#eb4034'
+      }
+      var line_data3 = {
+        data : nafas,
+        color: '#6b6b6b'
+      }
+      $.plot('#line-chart', [line_data1, line_data2, line_data3], {
+        grid  : {
+          hoverable  : true,
+          borderColor: '#f3f3f3',
+          borderWidth: 1,
+          tickColor  : '#f3f3f3'
+        },
+        series: {
+          shadowSize: 0,
+          lines     : {
+            show: true
+          },
+          points    : {
+            show: true
+          }
+        },
+        lines : {
+          fill : false,
+          color: ['#3c8dbc', '#f56954']
+        },
+        yaxis : {
+          show: true
+        },
+        xaxis : {
+          show: true,
+          ticks: label
+        }
+      })
+      //Initialize tooltip on hover
+      $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+        position: 'absolute',
+        display : 'none',
+        opacity : 0.8
+      }).appendTo('body')
+      $('#line-chart').bind('plothover', function (event, pos, item) {
+
+        if (item) {
+          var x = item.datapoint[0].toFixed(2),
+              y = item.datapoint[1].toFixed(2)
+
+          $('#line-chart-tooltip').html(parseInt(y))
+            .css({ top: item.pageY + 5, left: item.pageX + 5})
+            .fadeIn(200)
+        } else {
+          $('#line-chart-tooltip').hide()
+        }
+
+      })
+      /* END LINE CHART */
+      });
     }
+
     function saveVitalSign(noCheckup, idDetail){
       // alert("klik");
       var jsonrq = [];
