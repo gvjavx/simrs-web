@@ -22,6 +22,9 @@
           p:kategoriSkorRanapDao-ref="kategoriSkorRanapDao"
           p:masterSkorRanapDao-ref="masterSkorRanapDao"
           p:skorRanapDao-ref="skorRanapDao"
+          p:monCairanDao-ref="monCairanDao"
+          p:monPemberianObatDao-ref="monPemberianObatDao"
+          p:monVitalSignDao-ref="monVitalSignDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -54,6 +57,12 @@
     <bean id="masterSkorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="skorRanapDao" class="com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="monCairanDao" class="com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="monPemberianObatDao" class="com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="monVitalSignDao" class="com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

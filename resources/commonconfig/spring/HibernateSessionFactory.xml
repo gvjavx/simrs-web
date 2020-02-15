@@ -48,7 +48,7 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs13feb</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs18feb</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
@@ -353,6 +353,11 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/patrus/hibernate/ItSimrsPatrusEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transfusi/hibernate/ItSImrsTranfusiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ItSimrsSkorRanapEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/transaksi/moncairan/hibernate/ItSimrsMonCairanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/monpemberianobat/hibernate/ItSimrsMonPemberianObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/monvitalsign/hibernate/ItSimrsMonVitalSignEntity.hbm.xml</value>
+
 
             </list>
         </property>

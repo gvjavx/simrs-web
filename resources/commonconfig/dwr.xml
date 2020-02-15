@@ -435,6 +435,9 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.moncairan.model.MonCairan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan"/>
 
