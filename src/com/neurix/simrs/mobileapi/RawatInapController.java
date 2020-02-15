@@ -1,5 +1,6 @@
 package com.neurix.simrs.mobileapi;
 
+import com.google.gson.Gson;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
 import com.neurix.simrs.master.diagnosa.model.Diagnosa;
@@ -14,6 +15,8 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -48,6 +51,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<DiagnosaRawatMobile> listOfDiagnosaRawat = new ArrayList<>();
     private Collection<DokterTeamMobile> listOfDokterTeam = new ArrayList<>();
     private Collection<OrderGiziMobile> listOfOrderGizi = new ArrayList<>();
+    private Collection<MonCairanMobile> listOfMonCairanMobile = new ArrayList<>();
 
     private RawatInapMobile model = new RawatInapMobile();
 
@@ -85,6 +89,16 @@ public class RawatInapController implements ModelDriven<Object> {
 
     private String idKategoriTindakan;
     private String idDiagnosa;
+
+    private String jsonMonCairan;
+
+    public String getJsonMonCairan() {
+        return jsonMonCairan;
+    }
+
+    public void setJsonMonCairan(String jsonMonCairan) {
+        this.jsonMonCairan = jsonMonCairan;
+    }
 
     public TeamDokterBo getTeamDokterBoProxy() {
         return teamDokterBoProxy;
@@ -382,6 +396,30 @@ public class RawatInapController implements ModelDriven<Object> {
         this.rawatInapBoProxy = rawatInapBoProxy;
     }
 
+    public Collection<DokterTeamMobile> getListOfDokterTeam() {
+        return listOfDokterTeam;
+    }
+
+    public void setListOfDokterTeam(Collection<DokterTeamMobile> listOfDokterTeam) {
+        this.listOfDokterTeam = listOfDokterTeam;
+    }
+
+    public Collection<OrderGiziMobile> getListOfOrderGizi() {
+        return listOfOrderGizi;
+    }
+
+    public void setListOfOrderGizi(Collection<OrderGiziMobile> listOfOrderGizi) {
+        this.listOfOrderGizi = listOfOrderGizi;
+    }
+
+    public Collection<MonCairanMobile> getListOfMonCairanMobile() {
+        return listOfMonCairanMobile;
+    }
+
+    public void setListOfMonCairanMobile(Collection<MonCairanMobile> listOfMonCairanMobile) {
+        this.listOfMonCairanMobile = listOfMonCairanMobile;
+    }
+
     @Override
     public Object getModel() {
         switch (action){
@@ -399,6 +437,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfDokterTeam;
             case "getOrderGizi":
                 return listOfOrderGizi;
+            case "getMonCairan":
+                return listOfMonCairanMobile;
             default: return model;
         }
     }
@@ -407,6 +447,12 @@ public class RawatInapController implements ModelDriven<Object> {
         logger.info("[RawatInapontoller.create] start process POST / <<<");
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
+        MonCairanMobile addMonCairan = new MonCairanMobile();
+
+        if (jsonMonCairan != null && !jsonMonCairan.isEmpty()){
+            Gson g = new Gson();
+            addMonCairan = g.fromJson(jsonMonCairan, MonCairanMobile.class);
+        }
 
         if (action.equalsIgnoreCase("getSearchRawatInap")){
 
@@ -694,6 +740,53 @@ public class RawatInapController implements ModelDriven<Object> {
 
             OrderGizi orderGizi = new OrderGizi();
 
+        }
+
+        if (action.equalsIgnoreCase("getMonCairan")){
+            List<MonCairan> result = new ArrayList<>();
+
+            MonCairan monCairan = new MonCairan();
+            monCairan.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                result = rawatInapBoProxy.getListMonCairan(monCairan);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (MonCairan item : result){
+                    MonCairanMobile monCairanMobile = new MonCairanMobile();
+                    monCairanMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    monCairanMobile.setId(item.getId());
+                    monCairanMobile.setBalanceCairan(item.getBalanceCairan());
+                    monCairanMobile.setCekTambahanObat(item.getCekTambahanObat());
+                    monCairanMobile.setDari(item.getDari());
+                    monCairanMobile.setFlag(item.getFlag());
+                    monCairanMobile.setJamMulai(item.getJamMulai());
+                    monCairanMobile.setJamSelesai(item.getJamSelesai());
+                    monCairanMobile.setJamUkurBuang(item.getJamUkurBuang());
+                    monCairanMobile.setJumlah(item.getJumlah());
+                    monCairanMobile.setKeterangan(item.getKeterangan());
+                    monCairanMobile.setMacamCairan(item.getMacamCairan());
+                    monCairanMobile.setMelalui(item.getMelalui());
+                    monCairanMobile.setSisa(item.getSisa());
+                    monCairanMobile.setStDate(item.getStDate());
+                    monCairanMobile.setNoCheckup(item.getNoCheckup());
+                    monCairanMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
+                    monCairanMobile.setCreatedWho(item.getCreatedWho());
+                    monCairanMobile.setLastUpdate(item.getLastUpdate().toLocaleString());
+                    monCairanMobile.setLastUpdateWho(item.getLastUpdateWho());
+
+                    listOfMonCairanMobile.add(monCairanMobile);
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("saveAddMonCairan")){
+            ItSimrsMonCairanEntity itSimrsMonCairanEntity = new ItSimrsMonCairanEntity();
+            itSimrsMonCairanEntity.setBalanceCairan(addMonCairan.getBalanceCairan());
+            itSimrsMonCairanEntity.setCekTambahanObat(addMonCairan.getCekTambahanObat());
         }
 
 
