@@ -14,6 +14,7 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
@@ -46,6 +47,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<DiagnosaMobile> listOfDiagnosa = new ArrayList<>();
     private Collection<DiagnosaRawatMobile> listOfDiagnosaRawat = new ArrayList<>();
     private Collection<DokterTeamMobile> listOfDokterTeam = new ArrayList<>();
+    private Collection<OrderGiziMobile> listOfOrderGizi = new ArrayList<>();
 
     private RawatInapMobile model = new RawatInapMobile();
 
@@ -395,6 +397,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfTindakan;
             case "getDokterTeam":
                 return listOfDokterTeam;
+            case "getOrderGizi":
+                return listOfOrderGizi;
             default: return model;
         }
     }
@@ -683,6 +687,13 @@ public class RawatInapController implements ModelDriven<Object> {
                 }
 
             }
+        }
+
+        if (action.equalsIgnoreCase("getOrderGizi")){
+            List<OrderGizi> result = new ArrayList<>();
+
+            OrderGizi orderGizi = new OrderGizi();
+
         }
 
 
