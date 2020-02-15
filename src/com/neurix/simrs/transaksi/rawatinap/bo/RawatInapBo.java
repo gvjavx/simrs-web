@@ -35,4 +35,5 @@ public interface RawatInapBo {
     public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean);
     public List<Obat> getListObatParenteral(String idPelayanan);
     public List<Obat> getListObatNonParenteral(String idDetail, String kategori);
+    public List<MonVitalSign> getListGraf(String id);
 }

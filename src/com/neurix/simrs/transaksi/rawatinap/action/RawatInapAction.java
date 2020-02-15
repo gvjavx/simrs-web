@@ -522,6 +522,8 @@ public class RawatInapAction extends BaseMasterAction {
             monVitalSignEntity.setNafas(Integer.valueOf(obj.getString("nafas").toString()));
             monVitalSignEntity.setSuhu(Integer.valueOf(obj.getString("suhu").toString()));
             monVitalSignEntity.setTensi(Integer.valueOf(obj.getString("tensi").toString()));
+            monVitalSignEntity.setTb(Integer.valueOf(obj.getString("tb").toString()));
+            monVitalSignEntity.setBb(Integer.valueOf(obj.getString("bb").toString()));
 
             monVitalSignEntity.setFlag("Y");
             monVitalSignEntity.setAction("C");
@@ -655,6 +657,13 @@ public class RawatInapAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListObatNonParenteral(id, kategori);
+    }
+
+    public List<MonVitalSign> getListGraf(String idDetail){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        return rawatInapBo.getListGraf(idDetail);
     }
 
 }

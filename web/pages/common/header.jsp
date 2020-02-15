@@ -67,6 +67,10 @@ apply the skin class to the body tag so the changes take effect.
 <script type='text/javascript' src='<s:url value="/pages/plugins/chartjs/Chart.min.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/plugins/select2/select2.full.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/plugins/chartjs/chartjs-plugin-labels.min.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/plugins/flot/jquery.flot.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/plugins/flot/jquery.flot.resize.js"/>'></script>
+<%--<script type='text/javascript' src='<s:url value="/pages/plugins/flot/jquery.flot.canvas.js"/>'></script>--%>
+
 
 <!-- jQuery 2.2.3 -->
 <%--<script src="<s:url value="/pages/plugins/jQuery/jquery-2.2.3.min.js"/>"></script>--%>
