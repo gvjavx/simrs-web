@@ -157,6 +157,10 @@
             <filter-chain pattern="/mobileapi/rawatinap/*" filters="none" />
             <filter-chain pattern="/mobileapi/rawatinap/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/ruangan" filters="none" />
+            <filter-chain pattern="/mobileapi/ruangan/*" filters="none" />
+            <filter-chain pattern="/mobileapi/ruangan/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

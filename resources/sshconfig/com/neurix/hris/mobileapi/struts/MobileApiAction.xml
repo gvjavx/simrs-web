@@ -179,6 +179,9 @@
         <action name="rawatinap/*" class="com.neurix.simrs.mobileapi.RawatInapController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="ruangan/*" class="com.neurix.simrs.mobileapi.RuanganController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

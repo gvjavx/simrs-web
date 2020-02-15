@@ -1,20 +1,23 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.diagnosa.bo.DiagnosaBo;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
-import com.neurix.simrs.mobileapi.model.KategoriTindakanMobile;
-import com.neurix.simrs.mobileapi.model.RawatInapMobile;
-import com.neurix.simrs.mobileapi.model.TindakanMobile;
-import com.neurix.simrs.mobileapi.model.TindakanRawatMobile;
+import com.neurix.simrs.mobileapi.model.*;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
+import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.opensymphony.xwork2.ModelDriven;
@@ -40,6 +43,9 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<TindakanRawatMobile> listOfTindakanRawat = new ArrayList<>();
     private Collection<KategoriTindakanMobile> listOfKategoriTindakan = new ArrayList<>();
     private Collection<TindakanMobile> listOfTindakan = new ArrayList<>();
+    private Collection<DiagnosaMobile> listOfDiagnosa = new ArrayList<>();
+    private Collection<DiagnosaRawatMobile> listOfDiagnosaRawat = new ArrayList<>();
+    private Collection<DokterTeamMobile> listOfDokterTeam = new ArrayList<>();
 
     private RawatInapMobile model = new RawatInapMobile();
 
@@ -49,6 +55,9 @@ public class RawatInapController implements ModelDriven<Object> {
     private TindakanRawatBo tindakanRawatBoProxy;
     private KategoriTindakanBo kategoriTindakanBoProxy;
     private TindakanBo tindakanBoProxy;
+    private DiagnosaBo diagnosaBoProxy;
+    private DiagnosaRawatBo diagnosaRawatBoProxy;
+    private TeamDokterBo teamDokterBoProxy;
 
     private String idPasien;
     private String namaPasien;
@@ -73,6 +82,55 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idPelayanan;
 
     private String idKategoriTindakan;
+    private String idDiagnosa;
+
+    public TeamDokterBo getTeamDokterBoProxy() {
+        return teamDokterBoProxy;
+    }
+
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
+    public DiagnosaRawatBo getDiagnosaRawatBoProxy() {
+        return diagnosaRawatBoProxy;
+    }
+
+    public void setDiagnosaRawatBoProxy(DiagnosaRawatBo diagnosaRawatBoProxy) {
+        this.diagnosaRawatBoProxy = diagnosaRawatBoProxy;
+    }
+
+    public Collection<DiagnosaMobile> getListOfDiagnosa() {
+        return listOfDiagnosa;
+    }
+
+    public void setListOfDiagnosa(Collection<DiagnosaMobile> listOfDiagnosa) {
+        this.listOfDiagnosa = listOfDiagnosa;
+    }
+
+    public Collection<DiagnosaRawatMobile> getListOfDiagnosaRawat() {
+        return listOfDiagnosaRawat;
+    }
+
+    public void setListOfDiagnosaRawat(Collection<DiagnosaRawatMobile> listOfDiagnosaRawat) {
+        this.listOfDiagnosaRawat = listOfDiagnosaRawat;
+    }
+
+    public DiagnosaBo getDiagnosaBoProxy() {
+        return diagnosaBoProxy;
+    }
+
+    public void setDiagnosaBoProxy(DiagnosaBo diagnosaBoProxy) {
+        this.diagnosaBoProxy = diagnosaBoProxy;
+    }
 
     public String getIdTindakanRawat() {
         return idTindakanRawat;
@@ -329,10 +387,14 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfRawatInap;
             case "getTindakanRawat":
                 return listOfTindakanRawat;
+            case "getDiagnosaRawat":
+                return listOfDiagnosaRawat;
             case "getKategoriTindakan":
                 return listOfKategoriTindakan;
             case "getTindakan":
                 return listOfTindakan;
+            case "getDokterTeam":
+                return listOfDokterTeam;
             default: return model;
         }
     }
@@ -474,7 +536,6 @@ public class RawatInapController implements ModelDriven<Object> {
             for (TindakanRawat item : result) {
                 TindakanRawatMobile tindakanRawatMobile = new TindakanRawatMobile();
                 tindakanRawatMobile.setAction(item.getAction());
-                tindakanRawatMobile.setApproveBpjsFlag(item.getApproveBpjsFlag());
                 tindakanRawatMobile.setCreatedDate(item.getStCreatedDate());
                 tindakanRawatMobile.setCreatedWho(item.getCreatedWho());
                 tindakanRawatMobile.setFlag(item.getFlag());
@@ -487,13 +548,65 @@ public class RawatInapController implements ModelDriven<Object> {
                 tindakanRawatMobile.setNamaDokter(item.getNamaDokter());
                 tindakanRawatMobile.setNamaPerawat(item.getNamaPerawat());
                 tindakanRawatMobile.setNamaTindakan(item.getNamaTindakan());
-                tindakanRawatMobile.setKategoriTindakanBpjs(item.getKategoriTindakanBpjs());
                 tindakanRawatMobile.setQty(item.getQty().toString());
-                tindakanRawatMobile.setTarifTotal(item.getTarif().toString());
+                tindakanRawatMobile.setTarifTotal(item.getTarifTotal().toString());
                 tindakanRawatMobile.setTarif(item.getTarif().toString());
                 tindakanRawatMobile.setLastUpdate(item.getLastUpdate().toLocaleString());
 
                 listOfTindakanRawat.add(tindakanRawatMobile);
+            }
+        }
+
+        if (action.equalsIgnoreCase("getDiagnosaRawat")){
+            List<DiagnosaRawat> result = new ArrayList<>();
+
+            DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+            diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                result = diagnosaRawatBoProxy.getByCriteria(diagnosaRawat);
+            } catch (GeneralBOException e ){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (DiagnosaRawat item : result){
+                    DiagnosaRawatMobile diagnosaRawatMobile = new DiagnosaRawatMobile();
+                    diagnosaRawatMobile.setIdDiagnosaRawat(item.getIdDiagnosaRawat());
+                    diagnosaRawatMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    diagnosaRawatMobile.setIdDiagnosa(item.getIdDiagnosa());
+                    diagnosaRawatMobile.setJenisDiagnosa(item.getJenisDiagnosa());
+                    diagnosaRawatMobile.setKeteranganDiagnosa(item.getKeteranganDiagnosa());
+                    diagnosaRawatMobile.setFlag(item.getFlag());
+                    diagnosaRawatMobile.setAction(item.getAction());
+                    diagnosaRawatMobile.setCreatedDate(item.getStCreatedDate());
+                    diagnosaRawatMobile.setCreatedWho(item.getCreatedWho());
+                    diagnosaRawatMobile.setLastUpdate(item.getStLastUpdate());
+                    diagnosaRawatMobile.setLastUpdateWho(item.getLastUpdateWho());
+
+                    listOfDiagnosaRawat.add(diagnosaRawatMobile);
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getDiagnosa")){
+            List<Diagnosa> result = new ArrayList<>();
+
+            Diagnosa diagnosa = new Diagnosa();
+            diagnosa.setIdDiagnosa(idDiagnosa);
+
+            try {
+                result = diagnosaBoProxy.getByCriteria(diagnosa);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (Diagnosa item : result){
+                    DiagnosaMobile diagnosaMobile = new DiagnosaMobile();
+                    diagnosaMobile.setIdDiagnosa(item.getIdDiagnosa());
+                    diagnosaMobile.setDescOfDiagnosa(item.getDescOfDiagnosa());
+                }
             }
         }
 
@@ -505,6 +618,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = kategoriTindakanBoProxy.getByCriteria(kategoriTindakan);
             } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
             if (result.size() > 0) {
@@ -544,6 +658,33 @@ public class RawatInapController implements ModelDriven<Object> {
                 }
             }
         }
+
+        if (action.equalsIgnoreCase("getDokterTeam")){
+            List<DokterTeam> result = new ArrayList<>();
+
+            DokterTeam dokterTeam = new DokterTeam();
+            dokterTeam.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                result = teamDokterBoProxy.getByCriteria(dokterTeam);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (DokterTeam item : result) {
+                    DokterTeamMobile dokterTeamMobile = new DokterTeamMobile();
+                    dokterTeamMobile.setIdDokter(item.getIdDokter());
+                    dokterTeamMobile.setNamaDokter(item.getNamaDokter());
+                    dokterTeamMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+
+                    listOfDokterTeam.add(dokterTeamMobile);
+
+                }
+
+            }
+        }
+
 
         if (action.equalsIgnoreCase("saveAddTindakanRawat")){
             TindakanRawat tindakanRawat = new TindakanRawat();

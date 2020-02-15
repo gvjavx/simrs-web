@@ -11,6 +11,9 @@
           p:diagnosaDao-ref="diagnosaDao"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+    p:diagnosaBoProxy-ref="diagnosaBoProxy" />
+
     <bean id="diagnosaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="diagnosaBo">
         <property name="interceptorNames">

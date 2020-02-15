@@ -71,7 +71,17 @@ public class TransaksiApotekController implements ModelDriven<Object> {
     private String jsonObatVerifikasi;
     private String jsonTransaksiObatDetail;
 
+    private String username;
+
     private String action;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getIdObat() {
         return idObat;
@@ -535,6 +545,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                     batchEntity.setFlag("C");
                     batchEntity.setLastUpdate(time);
                     batchEntity.setCreatedDate(time);
+                    batchEntity.setCreatedWho(username);
+                    batchEntity.setLastUpdateWho(username);
 
                     batchEntities.add(batchEntity);
                 }
@@ -552,6 +564,10 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
             TransaksiObatDetail beanTransaksiObat = new TransaksiObatDetail();
             beanTransaksiObat.setIdApprovalObat(idApprovalObat);
+            beanTransaksiObat.setLastUpdateWho(username);
+            beanTransaksiObat.setCreatedWho(username);
+            beanTransaksiObat.setCreatedDate(time);
+            beanTransaksiObat.setLastUpdate(time);
 
             try {
                 transaksiObatBoProxy.saveApproveResepPoli(beanTransaksiObat);
