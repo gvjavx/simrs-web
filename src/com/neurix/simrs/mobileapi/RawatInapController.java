@@ -11,6 +11,7 @@ import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.mobileapi.model.*;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
@@ -54,6 +55,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<MonCairanMobile> listOfMonCairanMobile = new ArrayList<>();
 
     private RawatInapMobile model = new RawatInapMobile();
+    private CrudResponse crudResponse;
 
     private RawatInapBo rawatInapBoProxy;
     private CheckupBo checkupBoProxy;
@@ -787,6 +789,34 @@ public class RawatInapController implements ModelDriven<Object> {
             ItSimrsMonCairanEntity itSimrsMonCairanEntity = new ItSimrsMonCairanEntity();
             itSimrsMonCairanEntity.setBalanceCairan(addMonCairan.getBalanceCairan());
             itSimrsMonCairanEntity.setCekTambahanObat(addMonCairan.getCekTambahanObat());
+            itSimrsMonCairanEntity.setIdDetailCheckup(addMonCairan.getIdDetailCheckup());
+            itSimrsMonCairanEntity.setJamMulai(addMonCairan.getJamMulai());
+            itSimrsMonCairanEntity.setJamSelesai(addMonCairan.getJamSelesai());
+            itSimrsMonCairanEntity.setJamUkurBuang(addMonCairan.getJamUkurBuang());
+            itSimrsMonCairanEntity.setJumlah(addMonCairan.getJumlah());
+            itSimrsMonCairanEntity.setDari(addMonCairan.getDari());
+            itSimrsMonCairanEntity.setKeterangan(addMonCairan.getKeterangan());
+            itSimrsMonCairanEntity.setMacamCairan(addMonCairan.getMacamCairan());
+            itSimrsMonCairanEntity.setMelalui(addMonCairan.getMelalui());
+            itSimrsMonCairanEntity.setNoCheckup(addMonCairan.getNoCheckup());
+            itSimrsMonCairanEntity.setSisa(addMonCairan.getSisa());
+
+
+            itSimrsMonCairanEntity.setAction("C");
+            itSimrsMonCairanEntity.setFlag("Y");
+            itSimrsMonCairanEntity.setCreatedDate(now);
+            itSimrsMonCairanEntity.setCreatedWho(addMonCairan.getCreatedWho());
+            itSimrsMonCairanEntity.setLastUpdate(now);
+            itSimrsMonCairanEntity.setLastUpdateWho(addMonCairan.getLastUpdateWho());
+
+            try {
+                crudResponse = rawatInapBoProxy.saveMonCairan(itSimrsMonCairanEntity);
+                if (crudResponse.getStatus().equalsIgnoreCase("Success")){
+                    model.setMessage("Success");
+                } else model.setMessage("Error");
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
         }
 
 
