@@ -186,5 +186,9 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanVendorAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatInapAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatJalanAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/permintaangizi/struts/PermintaanGiziAction.xml"/>
+
+
+
 
 </struts>

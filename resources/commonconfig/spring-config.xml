@@ -165,6 +165,8 @@
     <import resource="sshconfig/com/neurix/simrs/master/kategorilab/spring/KategoriLabBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/lab/spring/LabBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/labdetail/spring/LabDetailBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/dietgizi/spring/DietGiziBean.xml"/>
+
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaanresep/spring/PermintaanResepBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/obatpoli/spring/ObatPoliBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/transaksiobat/spring/TransaksiObatBean.xml"/>
@@ -173,6 +175,8 @@
     <import resource="sshconfig/com/neurix/simrs/bpjs/vclaim/spring/BpjsBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/bpjs/aplicare/spring/AplicareBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/bpjs/eklaim/spring/EklaimBean.xml"/>
+
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikator/spring/VerifikatorBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/riwayattindakan/spring/RiwayatTindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/permintaangizi/spring/PermintaanGiziBean.xml"/>
 </beans>

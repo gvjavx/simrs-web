@@ -64,6 +64,17 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String approveFlag;
 
+    private String stCreatedDate;
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
     public String getApproveFlag() {
         return approveFlag;
     }

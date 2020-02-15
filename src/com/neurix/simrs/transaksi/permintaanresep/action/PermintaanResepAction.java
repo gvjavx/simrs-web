@@ -118,7 +118,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
         PermintaanResep permintaanResep = new PermintaanResep();
         permintaanResep.setIdDetailCheckup(IdChekupDetail);
-        permintaanResep.setFlag("Y");
+//        permintaanResep.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
@@ -145,7 +145,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdApprovalObat(idApprovalObat);
-        transaksiObatDetail.setFlag("Y");
+//        transaksiObatDetail.setFlag("Y");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");

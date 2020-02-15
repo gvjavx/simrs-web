@@ -20,6 +20,9 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
+import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
@@ -51,6 +54,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private HeaderCheckupDao headerCheckupDao;
     private TindakanRawatDao tindakanRawatDao;
     private PeriksaLabDao periksaLabDao;
+    private PermintaanResepDao permintaanResepDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -558,6 +562,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         CheckResponse response = new CheckResponse();
         if(bean != null){
 
+            String cek1 = "";
+            String cek2 = "";
+            String cek3 = "";
+
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(bean.getIdDetailCheckup());
             List<ItSimrsTindakanRawatEntity> entityTindakanList = getListEntityTindakanRawat(tindakanRawat);
@@ -579,6 +587,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         throw new GeneralBOException("[TindakanRawatBoImpl.updateFlagApproveTindakan] Error when update approve flag " + e.getMessage());
                     }
                 }
+            }else{
+                cek1 = "N";
             }
 
             PeriksaLab periksaLab = new PeriksaLab();
@@ -602,6 +612,23 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
                     }
                 }
+            }else{
+                cek2 = "N";
+            }
+
+            PermintaanResep permintaanResep = new PermintaanResep();
+            permintaanResep.setIdDetailCheckup(bean.getIdDetailCheckup());
+            List<ImSimrsPermintaanResepEntity> resepEntities = getListEntityResep(permintaanResep);
+            if(resepEntities.size() > 0){
+                response.setStatus("success");
+                response.setMessage("Berhasil mencari resep");
+            }else{
+               cek3 = "Y";
+            }
+
+            if(cek1.equalsIgnoreCase("N") && cek2.equalsIgnoreCase("N") && cek3.equalsIgnoreCase("N")){
+                response.setStatus("error");
+                response.setMessage("Tidak ada tindakan yang dilakukan, periksa lab, dan tidak ada order resep");
             }
         }
         logger.info("[CheckupDetailBoImpl.saveApproveAllTindakanRawatJalan] END <<<<<<<<");
@@ -660,6 +687,43 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return periksaLabEntities;
     }
 
+    private List<ImSimrsPermintaanResepEntity> getListEntityResep(PermintaanResep bean) throws GeneralBOException {
+        logger.info("[PermintaanResepBoImpl.getListEntityResep] START >>>>>>>");
+
+        List<ImSimrsPermintaanResepEntity> permintaanResepEntityList = new ArrayList<>();
+
+        if (bean != null) {
+
+            Map hsCriteria = new HashMap();
+
+            if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())) {
+                hsCriteria.put("id_permintaan_resep", bean.getIdPermintaanResep());
+            }
+            if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
+                hsCriteria.put("id_pasien", bean.getIdPasien());
+            }
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())) {
+                hsCriteria.put("id_approval_obat", bean.getIdApprovalObat());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                hsCriteria.put("flag", bean.getFlag());
+            }
+
+            try {
+                permintaanResepEntityList = permintaanResepDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityResep] ERROR when get data permintaan resep entity by criteria. ", e);
+            }
+        }
+
+        logger.info("[PermintaanResepBoImpl.getListEntityResep] END <<<<<<<");
+        return permintaanResepEntityList;
+    }
+
     private String getNextDetailCheckupId(){
         String id = "";
         try {
@@ -715,5 +779,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setPeriksaLabDao(PeriksaLabDao periksaLabDao) {
         this.periksaLabDao = periksaLabDao;
+    }
+
+    public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
+        this.permintaanResepDao = permintaanResepDao;
     }
 }
