@@ -1,6 +1,5 @@
 package com.neurix.simrs.transaksi.skorrawatinap.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**

@@ -3665,6 +3665,7 @@
         }
       });
     }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

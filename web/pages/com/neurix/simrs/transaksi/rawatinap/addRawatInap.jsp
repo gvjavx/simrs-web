@@ -2343,6 +2343,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-edukasi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Edukasi Pasien Dan Keluarga Terintregasi </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap14')">
+                        <i class="fa fa-plus"></i> Add Header Edukasi
+                    </button>
+                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap15')">
+                        <i class="fa fa-plus"></i> Add Parameter Edukasi
+                    </button>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <td>Asesmen</td>
+                        <td>Created Who</td>
+                        <td>Created Date</td>
+                        <td>Action</td>
+                        </thead>
+                        <tbody id="list-body-header-edukasi">
+
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <td>Asesmen</td>
+                        <td>Created Who</td>
+                        <td>Created Date</td>
+                        <td>Action</td>
+                        </thead>
+                        <tbody id="list-body-edukasi">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mask"></div>
 <script type='text/javascript'>
@@ -4884,7 +4933,185 @@
         alert(response.msg);
       }
     });
-  }
+  };
+
+
+    function showFormEdukasi(){
+        $("#modal-edukasi").modal("show");
+
+        dwr.engine.setAsync(true);
+        RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, "inap14", function(response){
+            if(response.length > 0){
+                var strhead = "";
+                $.each(response, function(i, itemHeader){
+                    strhead += "<tr>"+
+                        "<td>"+itemHeader.namaKategori+"</td>"+
+                        "<td>"+itemHeader.createdWho+"</td>"+
+                        "<td>"+itemHeader.stDate+"</td>"+
+                        "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+itemHeader.groupId+"')\">View</button></td>"+
+                        "</tr>";
+                });
+            }
+
+            RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, "inap15", function(bodyresponse){
+                if(response.length > 0){
+                    var strbody = "";
+                    $.each(bodyresponse, function(i, itemBody){
+                        strbody += "<tr>"+
+                            "<td>"+itemBody.namaKategori+"</td>"+
+                            "<td>"+itemBody.createdWho+"</td>"+
+                            "<td>"+itemBody.stDate+"</td>"+
+                            "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+itemBody.groupId+"')\">View</button></td>"+
+                            "</tr>";
+                    });
+                }
+
+                $("#list-body-header-edukasi").html(strhead);
+                $("#list-body-edukasi").html(strbody);
+            });
+        });
+    };
+
+    function addFormEdukasi(kategori){
+
+        $("#btn-save-edukasi").html("");
+        $("#btn-save-edukasi").html("<button class='btn btn-success' onclick=\"saveFormEdukasi('"+kategori+"')\"></button>");
+        dwr.engine.setAsync(true);
+        RawatInapAction.getListParameterByKategori(noCheckup, idDetailCheckup, kategori, function(response){
+
+            var str = "";
+            if (response != null){
+                var n = 0;
+                $.each(response, function (i, item) {
+                    n = i;
+                    var upline = "";
+                    if (item.namaParameter.length > 25) {
+                        upline ="<div class='form-group'>" +
+                            "<div class='row'>"+
+                            "<div class='col-md-8'>"+
+                            "<label>"+item.namaParameter+"</label>"+
+                            "</div>"+
+                            "<div class='col-md-4'>";
+                    } else {
+                        upline ="<div class='form-group'>" +
+                            "<div class='row'>"+
+                            "<div class='col-md-4'>"+
+                            "<label>"+item.namaParameter+"</label>"+
+                            "</div>"+
+                            "<div class='col-md-8'>";
+                    }
+
+                    var opt = "";
+                    RawatInapAction.getListSkorRanapByParam(item.idParameter, function(skors){
+
+                        var up_select = "<select class='form-control' id='val_rsk_"+i+"' onchange=\"showOtherInput(this.id)\">";
+                        // var other_text = "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none'/>";
+                        if (skors.length > 0) {
+                            $.each(skors, function(i, itemSkor){
+                                opt += "<option value="+itemSkor.ketSkor+">"+itemSkor.namaSkor+"</option>";
+                            });
+                        } else {
+                            if (item.type == "date") {
+                                opt = "<input type='date' class='form-control' id='val_rsk_"+i+"'>";
+                            } else if (item.type == "number"){
+                                opt = "<input type='number' class='form-control' id='val_rsk_"+i+"'>";
+                            } else {
+                                opt = "<input type='text' class='form-control' id='val_rsk_"+i+"'>";
+                            }
+                        }
+
+
+                        // console.log(skors);
+
+                        var down_select = "</select>";
+                        var downline = "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
+                            "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
+                            "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none' placeholder='sebutkan ...'/>"+
+                            "</div>" +
+                            "</div>"+
+                            "<hr style='color:#b0b0b0;'/>"+
+                            "</div>";
+                        // "<div class='box-header with-border' style='margin-bottom: 7px;'></div>";
+
+                        if (skors.length > 0) {
+                            str += upline+up_select+opt+down_select+downline;
+                        } else {
+                            str += upline+opt+downline;
+                        }
+
+                        $("#ind_edukasi").val(n);
+                        $("#body_edukasi").html(str);
+                    });
+                });
+            };
+        });
+    }
+
+    function saveFormEdukasi(kategori){
+
+        var jsonrq = [];
+        var ind = $("#ind_edukasi").val();
+
+        for (i = 0; i <= ind; i++){
+
+            var id_rsk = $("#id_rsk_"+i+"").val();
+
+            var nilai = "";
+            if ($("#val_rsk_"+i+"").is("select")) {
+                nilai = $("#val_rsk_"+i+" option:selected").text();
+            } else {
+                nilai = $("#val_rsk_"+i+"").val();
+            }
+
+            var name_rsk = $("#name_rsk_"+i+"").val();
+            var ket_rsk = "";
+            var val_rsk = "0";
+
+            if (nilai.toLowerCase() == "lain") {
+                ket_rsk = $("#ot_val_rsk_"+i+"").val();
+            } else {
+                ket_rsk = nilai;
+            }
+
+            jsonrq.push({'id':id_rsk, 'val':val_rsk, 'name':name_rsk, 'ket':ket_rsk});
+        }
+        var jsonstr = JSON.stringify(jsonrq);
+        dwr.engine.setAsync(true);
+        RawatInapAction.saveSkorRanapByKategori(noCheckup, idDetailCheckup, kategori, jsonstr, function(response){
+            if (response.status == "success") {
+                alert("sukses");
+
+                RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, kategori, function(response){
+                    if (response != null) {
+                        var str = "";
+                        $.each(response, function(i, item){
+                            str += "<tr>"+
+                                "<td>"+item.namaKategori+"</td>"+
+                                "<td>"+item.createdWho+"</td>"+
+                                "<td>"+item.stDate+"</td>"+
+                                "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\">View</button></td>"+
+                                "</tr>";
+                        });
+
+                        if(kategori == "inap14"){
+                            $("#list-body-header-edukasi").html("");
+                            $("#list-body-header-edukasi").html(str);
+                        } else {
+                            $("#list-body-edukasi").html("");
+                            $("#list-body-edukasi").html(str);
+                        }
+
+                        $("#modal-add-edukasi").modal("hide");
+                    }
+                    // console.log(response);
+                });
+
+            } else {
+                alert(response.msg);
+            }
+        });
+
+    }
 
 </script>
 
