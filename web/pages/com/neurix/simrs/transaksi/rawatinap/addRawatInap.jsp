@@ -225,6 +225,18 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
                     <div class="box-body">
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap10')">
+                            <i class="fa fa-edit"></i> Form Riwayat Kesehatan
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap11')">
+                            <i class="fa fa-edit"></i> Form Keadaan Umum
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap12')">
+                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap13')">
+                            <i class="fa fa-edit"></i> Form Asesmen Nyeri
+                        </button>
                         <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
                             <i class="fa fa-edit"></i> Form Resiko Dekubitus
                         </button>
@@ -1455,7 +1467,7 @@
 
 
 <div class="modal fade" id="modal-resiko">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1471,8 +1483,8 @@
                     <thead>
                       <td>Asesmen</td>
                       <td>Skor</td>
-                      <td>Created By</td>
-                      <td>Created</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                       <td>Action</td>
                     </thead>
                     <tbody id="body-list-resiko">
@@ -1530,7 +1542,7 @@
 </div>
 
 <div class="modal fade" id="modal-asesmen">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1545,8 +1557,8 @@
                   <table class="table table-bordered">
                     <thead>
                       <td>Asesmen</td>
-                      <td>Created By</td>
-                      <td>Created</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                       <td>Action</td>
                     </thead>
                     <tbody id="body-list-asesmen">
@@ -1705,8 +1717,8 @@
                       <td>tensi</td>
                       <td>bb</td>
                       <td>tb</td>
-                      <td>Insert By</td>
-                      <td>Insert Date</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                     </thead>
                     <tbody id="body-list-vital-sign">
 
@@ -1735,7 +1747,17 @@
                     <br>
                       <div class="form-group">
                         <div class="row">
-                          <div class="col-md-1">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="mvs_date"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-3">
                             <label>Jam</label>
                           </div>
                           <div class="col-md-2">
@@ -1889,7 +1911,7 @@
                       <i class="fa fa-pie-chart"></i> View Graf
                     </button> --%>
                   </div>
-                  <table class="table table-bordered">
+                  <table class="table table-bordered" style="font-size:11px;">
                     <thead>
                       <td>tgl</td>
                       <td>macam cairan</td>
@@ -1903,7 +1925,7 @@
                       <td>dari</td>
                       <td>balance cairan</td>
                       <td>keterangan</td>
-                      <td>insert by</td>
+                      <td>Created Who</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -1933,6 +1955,16 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="mcr_date">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4">
                             <label>Macam Cairan</label>
                           </div>
                           <div class="col-md-8">
@@ -1955,8 +1987,8 @@
                           <div class="col-md-4">
                             <label>Jumlah (dalam botol)</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_jumlah">
+                          <div class="col-md-4">
+                            <input type="number" name="" value="" class="form-control" id="mcr_jumlah">
                           </div>
                         </div>
                       </div>
@@ -1966,11 +1998,11 @@
                           </div>
                           <div class="col-md-4">
                             <label>Jam mulai</label>
-                            <input type="text" name="" value="" class="form-control" id="mcr_mulai">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_mulai">
                           </div>
                           <div class="col-md-4">
                             <label>Jam selesai</label>
-                            <input type="text" name="" value="" class="form-control" id="mcr_selesai">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_selesai">
                           </div>
                         </div>
                       </div>
@@ -1979,8 +2011,11 @@
                           <div class="col-md-4">
                             <label>Cek tambahan obat</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_cek">
+                          <div class="col-md-4">
+                            <select class="form-control" name="" id="mcr_cek">
+                              <option value="Ya">Ya</option>
+                              <option value="Tidak">Tidak</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -1990,7 +2025,7 @@
                             <label>Sisa</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="text" name="" value="" class="form-control" id="mcr_sisa">
+                            <input type="number" name="" value="" class="form-control" id="mcr_sisa">
                           </div>
                         </div>
                       </div>
@@ -1999,8 +2034,8 @@
                           <div class="col-md-4">
                             <label>Jam ukur buang</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_buang">
+                          <div class="col-md-4">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_buang">
                           </div>
                         </div>
                       </div>
@@ -2024,8 +2059,8 @@
                           <div class="col-md-4">
                             <label>Balance Cairan</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_balance">
+                          <div class="col-md-4">
+                            <input type="number" name="" value="" class="form-control" id="mcr_balance">
                           </div>
                         </div>
                       </div>
@@ -2113,6 +2148,16 @@
                     <br>
                       <div class="form-group">
                         <div class="row">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="nonpar_date"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
                           <div class="col-md-4">
                             <label>Obat</label>
                           </div>
@@ -2196,6 +2241,16 @@
             <div class="modal-body">
                 <div class="box">
                     <br>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="par_date"/>
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
@@ -2297,9 +2352,34 @@
     var idRawatInap     = $('#id_rawat_inap').val();
     var idPasien        = $('#id_pasien').val();
     var noCheckup       = $('#no_checkup').val();
+    var today           = new Date();
+    var month           = ""+(today.getMonth()+1);
+    var day             = ""+today.getDate();
+
+    if (month.length < 2) {
+      month = "0"+month;
+    }
+    if (day.length < 2) {
+      day = "0"+day;
+    }
+    var date = today.getFullYear()+"-"+month+"-"+day;
+    // console.log(date);
+
+    function titleCase(string) {
+        var sentence = string.toLowerCase().split(" ");
+        for(var i = 0; i< sentence.length; i++){
+           sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+        // document.write(sentence.join(" "));
+        return sentence;
+     }
 
     $(document).ready(function () {
         $('#rawat_inap').addClass('active');
+        $("#mcr_mulai").timepicker();
+        $("#mcr_selesai").timepicker();
+        $("#mcr_buang").timepicker();
+        $(".date").val(date);
         listDokter();
         listTindakan();
         listDiagnosa();
@@ -3919,6 +3999,12 @@
         var str = "";
         if (response != null){
                 var n = 0;
+                var dateupline = "<div class='form-group'>"+
+                                "<div class='row'>"+
+                                "<div class='col-md-4'><label>Created Date</label></div>"+
+                                "<div class='col-md-4'><input type='date' class='form-control' id='val_rsk_date' /></div>"
+                                "</div>"+
+                                "</div>";
                 $.each(response, function (i, item) {
                     n = i;
                     var upline = "";
@@ -4111,6 +4197,8 @@
                           } else {
                             if (item.type == "date") {
                               opt = "<input type='date' class='form-control' id='val_rsk_"+i+"'>";
+                            } else if (item.type == "number"){
+                              opt = "<input type='number' class='form-control' id='val_rsk_"+i+"'>";
                             } else {
                               opt = "<input type='text' class='form-control' id='val_rsk_"+i+"'>";
                             }
@@ -4667,8 +4755,8 @@
                     "<td>Skin Tes</td>"+
                     "<td>Waktu</td>"+
                     "<td>Keterangan</td>"+
-                    "<td>Insert By</td>"+
-                    "<td>Insert Date</td>"+
+                    "<td>Created Who</td>"+
+                    "<td>Created Date</td>"+
                     "</tr>";
         } else {
 
@@ -4688,8 +4776,8 @@
                     "<td>Dosis</td>"+
                     "<td>Waktu</td>"+
                     "<td>Keterangan</td>"+
-                    "<td>Insert By</td>"+
-                    "<td>Insert Date</td>"+
+                    "<td>Created Who</td>"+
+                    "<td>Created Date</td>"+
                     "</tr>";;
         }
 

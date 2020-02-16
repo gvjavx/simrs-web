@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     skorRanap.setCreatedWho(skorRanapEntity.getCreatedWho());
                     skorRanap.setLastUpdate(skorRanapEntity.getLastUpdate());
                     skorRanap.setLastUpdateWho(skorRanapEntity.getLastUpdateWho());
-                    skorRanap.setStDate(skorRanapEntity.getCreatedDate().toString());
+                    skorRanap.setStDate(stringDate(skorRanapEntity.getCreatedDate()));
                     skorRanaps.add(skorRanap);
                 }
             }
@@ -284,7 +285,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 monVitalSign.setCreatedWho(entity.getCreatedWho());
                 monVitalSign.setLastUpdate(entity.getLastUpdate());
                 monVitalSign.setLastUpdateWho(entity.getLastUpdateWho());
-                monVitalSign.setStDate(entity.getCreatedDate().toString());
+                monVitalSign.setStDate(stringDate(entity.getCreatedDate()));
                 monVitalSign.setTb(entity.getTb());
                 monVitalSign.setBb(entity.getBb());
                 monVitalSigns.add(monVitalSign);
@@ -353,7 +354,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 monCairan.setCreatedWho(entity.getCreatedWho());
                 monCairan.setLastUpdate(entity.getLastUpdate());
                 monCairan.setLastUpdateWho(entity.getLastUpdateWho());
-                monCairan.setStDate(entity.getCreatedDate().toString());
+                monCairan.setStDate(stringDate(entity.getCreatedDate()));
                 monCairans.add(monCairan);
             }
         }
@@ -418,7 +419,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 monPemberianObat.setCreatedWho(entity.getCreatedWho());
                 monPemberianObat.setLastUpdate(entity.getLastUpdate());
                 monPemberianObat.setLastUpdateWho(entity.getLastUpdateWho());
-                monPemberianObat.setStDate(entity.getCreatedDate().toString());
+                monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                 monPemberianObat.setKategori(entity.getKategori());
                 monPemberianObats.add(monPemberianObat);
             }
@@ -457,6 +458,11 @@ public class RawatInapBoImpl implements RawatInapBo {
             }
         }
         return monVitalSigns;
+    }
+
+    private String stringDate(Timestamp datetime){
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        return f.format(datetime);
     }
 
     @Override
