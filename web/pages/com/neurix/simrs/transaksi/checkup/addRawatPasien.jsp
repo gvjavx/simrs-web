@@ -1531,19 +1531,13 @@
 
     function viewDetailRekamMedic(noCheckup){
       $("#modal-detail-rekam-medic").modal("show");
-      // var str = "<tr><td>TPPRI</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','tppri')\">View</button></td></tr>"+
-      //           "<tr><td>IGD</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','igd')\">View</button></td></tr>"+
-      //           "<tr><td>Rawat Inap</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','ri')\">View</button></td></tr>"+
-      //           "<tr><td>Monitoring</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','mon')\">View</button></td></tr>";
-      // $("#list-body-rekam-medic").html(str);
     }
 
     function viewDetailRekamMedicByKategori(kategori){
-      console.log(kategori);
-      var str = "";
       if (kategori == "ri") {
         CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
           // console.log(response);
+          var str = "";
           $.each(response, function(i, item) {
             str += "<tr>"+
                   "<td>"+item.namaKategori+"</td>"+
@@ -1554,12 +1548,23 @@
           $("#list-body-rekam-medic").html(str);
         });
       } else {
-        str = "<tr><td>TPPRI</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','tppri')\">View</button></td></tr>"+
-                  "<tr><td>IGD</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','igd')\">View</button></td></tr>"+
-                  "<tr><td>Rawat Inap</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','ri')\">View</button></td></tr>"+
-                  "<tr><td>Monitoring</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','mon')\">View</button></td></tr>";
         $("#list-body-rekam-medic").html("");
-        $("#list-body-rekam-medic").html(str);
+        if (kategori == "mon") {
+
+          str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          $("#list-body-rekam-medic").html(str);
+
+        } else if (kategori == "tppri") {
+
+        } else if (ketegori == "igd") {
+          str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+        }
       }
     }
 
@@ -1731,7 +1736,6 @@
             $("#intansi_perujuk").attr("disabled", true);
             $("#intansi_perujuk").removeAttr("placeholder");
         }
-
     }
 
     function showAdmisiPasien() {
