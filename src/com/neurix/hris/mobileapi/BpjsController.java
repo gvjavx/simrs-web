@@ -169,6 +169,7 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         }
         for (PoliResponse poliResponse : poliResponseList){
             logger.info(poliResponse.getNamaPoliBpjs());
+            logger.info(poliResponse.getKodePoliBpjs());
         }
     }
     public void listTindakan(String key){

@@ -314,6 +314,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
         detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+        detailCheckupEntity.setNoSep(bean.getNoSep());
+        detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 
         try {
             checkupDetailDao.addAndSave(detailCheckupEntity);

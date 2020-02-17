@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.checkupdetail.model;
 import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -74,6 +75,16 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String caraPasienPulang;
     private String pendamping;
     private String tempatTujuan;
+
+    private BigDecimal tarifBpjs;
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
 
     public String getCaraPasienPulang() {
         return caraPasienPulang;

@@ -30,8 +30,17 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if (mapCriteria.get("not_poli") != null){
                 criteria.add(Restrictions.ne("notPoli", mapCriteria.get("not_poli").toString()));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag",  mapCriteria.get("flag").toString()));
+            }
+            if(mapCriteria.get("tipe_pelayanan") != null){
+                criteria.add(Restrictions.eq("tipePelayanan",  mapCriteria.get("tipe_pelayanan").toString()));
+            }
+            if(mapCriteria.get("branch_id") != null){
+                criteria.add(Restrictions.eq("branchId",  mapCriteria.get("branch_id").toString()));
+            }
         }
-        criteria.add(Restrictions.eq("flag", "Y"));
+
         List<ImSimrsPelayananEntity> result = criteria.list();
         return result;
     }

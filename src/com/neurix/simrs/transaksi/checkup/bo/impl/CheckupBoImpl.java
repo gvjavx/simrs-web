@@ -210,6 +210,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
             headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
             headerCheckup.setTarifBpjs(headerList.getTarifBpjs());
+            headerCheckup.setNoRujukan(headerList.getNoRujukan());
+            headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
+            headerCheckup.setTglRujukan(headerList.getNoRujukan());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             try {
@@ -301,7 +304,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setUrlDocRujuk(bean.getUrlDocRujuk());
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
-            headerEntity.setNoSep(bean.getNoSep());
             headerEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
             headerEntity.setKetRujukan(bean.getKetPerujuk());
             headerEntity.setKetKeyakinan(bean.getKetKeyakinan());
@@ -309,9 +311,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setBahasa(bean.getBahasa());
             headerEntity.setAlatBantu(bean.getAlatBantu());
             headerEntity.setGangguanLain(bean.getGangguanLain());
-            headerEntity.setTarifBpjs(bean.getTarifBpjs());
             headerEntity.setNoRujukan(bean.getNoRujukan());
             headerEntity.setNoPpkRujukan(bean.getNoPpkRujukan());
+
             if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
                 headerEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
             }
@@ -340,6 +342,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+                detailCheckupEntity.setNoSep(bean.getNoSep());
+                detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 
                 try {
                     checkupDetailDao.addAndSave(detailCheckupEntity);

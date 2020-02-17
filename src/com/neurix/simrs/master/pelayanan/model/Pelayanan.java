@@ -20,6 +20,25 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String lastUpdateWho;
     private String notPoli;
 
+    private String tipePelayanan;
+    private String branchId;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getNotPoli() {
         return notPoli;
     }
