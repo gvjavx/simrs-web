@@ -4,6 +4,8 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
+import com.neurix.simrs.master.dietgizi.model.DietGizi;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.obat.model.Obat;
@@ -28,6 +30,7 @@ import com.neurix.simrs.transaksi.skorrawatinap.model.SkorRanap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,9 +54,34 @@ public class RawatInapAction extends BaseMasterAction {
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private RuanganBo ruanganBoProxy;
     private RiwayatTindakanBo riwayatTindakanBoProxy;
+    private DietGiziBo dietGiziBoProxy;
 
     private String id;
     private String idResep;
+    private String idDetail;
+
+    private List<DietGizi> listOfDietGizi = new ArrayList<>();
+
+
+    public void setDietGiziBoProxy(DietGiziBo dietGiziBoProxy) {
+        this.dietGiziBoProxy = dietGiziBoProxy;
+    }
+
+    public List<DietGizi> getListOfDietGizi() {
+        return listOfDietGizi;
+    }
+
+    public void setListOfDietGizi(List<DietGizi> listOfDietGizi) {
+        this.listOfDietGizi = listOfDietGizi;
+    }
+
+    public String getIdDetail() {
+        return idDetail;
+    }
+
+    public void setIdDetail(String idDetail) {
+        this.idDetail = idDetail;
+    }
 
     public RiwayatTindakanBo getRiwayatTindakanBoProxy() {
         return riwayatTindakanBoProxy;
@@ -280,7 +308,13 @@ public class RawatInapAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[RawatInapAction.initForm] start process >>>");
 
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
         RawatInap rawatInap = new RawatInap();
+        rawatInap.setStTglTo(tglToday);
+        rawatInap.setStTglFrom(tglToday);
         setRawatInap(rawatInap);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -351,10 +385,25 @@ public class RawatInapAction extends BaseMasterAction {
         String id = getId();
         String jk = "";
 
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+
+        switch (branch){
+            case CommonConstant.BRANCH_RS01 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                break;
+            case CommonConstant.BRANCH_RS02 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                break;
+            case CommonConstant.BRANCH_RS03 :
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                break;
+        }
+
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
         reportParams.put("resepId", idResep);
-        reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
+        reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());
         reportParams.put("nama", headerCheckup.getNama());
         reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + headerCheckup.getStTglLahir().toString());
@@ -662,5 +711,61 @@ public class RawatInapAction extends BaseMasterAction {
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListGraf(idDetail);
     }
+
+    public String printGelangPasien(){
+
+        String id = getId();
+
+        //get data from session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (RawatInap rawatInap : listOfResult) {
+                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+
+                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+                        reportParams.put("noCheckup",id);
+                        reportParams.put("idDetailCheckup",rawatInap.getIdDetailCheckup());
+                        reportParams.put("nama",headerCheckup.getNama());
+                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_gelang_pasien";
+    }
+
+    public String getComboBoxDietGizi() {
+
+        List<DietGizi> dietGiziArrayList = new ArrayList<>();
+        DietGizi dietGizi = new DietGizi();
+        dietGizi.setBranchId(CommonUtil.userBranchLogin());
+        dietGizi.setFlag("Y");
+
+        try {
+            dietGiziArrayList = dietGiziBoProxy.getByCriteria(dietGizi);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.getComboBoxDietGizi] Error when get data for combo list of diet gizi", e);
+            addActionError(" Error when get data for combo list of diet gizi" + e.getMessage());
+        }
+
+        listOfDietGizi.addAll(dietGiziArrayList);
+        return SUCCESS;
+    }
+
 
 }

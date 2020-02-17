@@ -187,6 +187,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                 } else {
                                     jalan = alamatLengkap;
                                 }
+
+                                headerDetailCheckup.setKecamatan(objDesa[1].toString());
+
                             }
                         }
                     }

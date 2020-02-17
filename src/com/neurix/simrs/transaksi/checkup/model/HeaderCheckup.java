@@ -87,6 +87,25 @@ public class HeaderCheckup {
 
     private String admisi;
 
+    private String kelasPasien;
+    private String noMr;
+
+    public String getKelasPasien() {
+        return kelasPasien;
+    }
+
+    public void setKelasPasien(String kelasPasien) {
+        this.kelasPasien = kelasPasien;
+    }
+
+    public String getNoMr() {
+        return noMr;
+    }
+
+    public void setNoMr(String noMr) {
+        this.noMr = noMr;
+    }
+
     public String getAdmisi() {
         return admisi;
     }

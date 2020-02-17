@@ -527,16 +527,16 @@ public class CheckupAction extends BaseMasterAction {
                 SepRequest sepRequest = new SepRequest();
                 sepRequest.setNoKartu(getPasien.getNoBpjs());
                 sepRequest.setTglSep(dateToday);
-                sepRequest.setPpkPelayanan("1311R003");
-                sepRequest.setJnsPelayanan("2");
-                sepRequest.setKlsRawat("3");
-                sepRequest.setNoMr("123456");
-                sepRequest.setAsalRujukan("1");
+                sepRequest.setPpkPelayanan("1311R003");//cons id rumah sakit
+                sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
+                sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
+                sepRequest.setNoMr(checkup.getIdPasien());//id pasien
+                sepRequest.setAsalRujukan("1");//
                 sepRequest.setTglRujukan(checkup.getTglRujukan());
                 sepRequest.setNoRujukan(checkup.getNoRujukan());
                 sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
                 sepRequest.setCatatan("");
-                sepRequest.setDiagAwal("I63");
+                sepRequest.setDiagAwal(checkup.getDiagnosa());
                 sepRequest.setPoliTujuan("IGD");
                 sepRequest.setPoliEksekutif("0");
                 sepRequest.setCob("0");
@@ -612,8 +612,8 @@ public class CheckupAction extends BaseMasterAction {
                         klaimDetailRequest.setNomorKartu(getPasien.getNoKtp());
                         klaimDetailRequest.setTglMasuk(updateTime.toString());
                         klaimDetailRequest.setTglPulang(updateTime.toString());
-                        klaimDetailRequest.setJenisRawat("1");
-                        klaimDetailRequest.setKelasRawat("2");
+                        klaimDetailRequest.setJenisRawat("2");
+                        klaimDetailRequest.setKelasRawat(checkup.getKelasPasien());
                         klaimDetailRequest.setAdlChronic("");
                         klaimDetailRequest.setIcuIndikator("");
                         klaimDetailRequest.setIcuLos("");
@@ -706,9 +706,12 @@ public class CheckupAction extends BaseMasterAction {
                                     }
                                 }
 
+                                //======START SET TARIF BPJS=========
+
                                 checkup.setTarifBpjs(tarifCbg);
-                                // update tarif cbg
-//                                updateInsertTarifBpjs(noCheckup, tarifCbg);
+
+                                //======END SET TARIF BPJS=========
+
 
                                 // jika ada special cmg maka proses grouping stage 2
                                 if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
@@ -895,10 +898,14 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public String getComboPelayanan() {
+
         List<Pelayanan> pelayananList = new ArrayList<>();
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("rawat_jalan");
+        pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            pelayananList = pelayananBoProxy.getListAllPelayanan();
+            pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());

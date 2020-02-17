@@ -18,6 +18,25 @@ public class ImSimrsPelayananEntity implements Serializable {
     private String isPoli;
     private String isEksekutif;
 
+    private String tipePelayanan;
+    private String branchId;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getIsPoli() {
         return isPoli;
     }

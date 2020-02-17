@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.ordergizi.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -23,6 +24,34 @@ public class ItSimrsOrderGiziEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String approveFlag;
+    private String diterimaFlag;
+
+    private BigDecimal tarifTotal;
+
+    public BigDecimal getTarifTotal() {
+        return tarifTotal;
+    }
+
+    public void setTarifTotal(BigDecimal tarifTotal) {
+        this.tarifTotal = tarifTotal;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getIdOrderGizi() {
         return idOrderGizi;

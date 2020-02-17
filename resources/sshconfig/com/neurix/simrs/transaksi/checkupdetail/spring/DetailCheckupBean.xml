@@ -25,6 +25,7 @@
           p:headerCheckupDao-ref="headerCheckupDao"
           p:tindakanRawatDao-ref="tindakanRawatDao"
           p:periksaLabDao-ref="periksaLabDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

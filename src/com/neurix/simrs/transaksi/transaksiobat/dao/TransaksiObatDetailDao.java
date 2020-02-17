@@ -110,7 +110,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "\tbranch_id \n" +
                 "\tFROM mt_simrs_approval_transaksi_obat \n" +
                 "\tWHERE tipe_permintaan = '001' \n" +
-                "\tAND flag = 'Y'\n" +
+//                "\tAND flag = 'Y'\n" +
                 ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
                 "WHERE tod.flag LIKE :flag \n" +

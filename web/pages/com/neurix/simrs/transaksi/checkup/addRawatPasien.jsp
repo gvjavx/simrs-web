@@ -759,78 +759,6 @@
                                 </div>
                             </div>
 
-                                <%--<div class="box-header with-border"></div>--%>
-                                <%--<div class="box-header with-border">--%>
-                                <%--<h3 class="box-title"><i class="fa fa-user"></i> Pre-Admisi Untuk Pasien</h3>--%>
-                                <%--</div>--%>
-                                <%--<div class="box-body">--%>
-                                <%--<br>--%>
-                                <%--&lt;%&ndash; <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> &ndash;%&gt;--%>
-                                <%--<div class="row">--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"--%>
-                                <%--cssClass="form-control"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<br>--%>
-                                <%--<div class="row">--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<s:select list="#{'Y':'Ya'}" id="bantuanBahasa"--%>
-                                <%--onchange="changeBahasa(this)"--%>
-                                <%--cssStyle="width:20%;"--%>
-                                <%--headerKey="N" headerValue="Tidak"--%>
-                                <%--cssClass="form-control" name="headerCheckup.bantuanBahasa"/>--%>
-                                <%--<s:textfield id="bahasa" name="headerCheckup.bahasa"--%>
-                                <%--cssClass="form-control" placeholder="bahasa lain"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<br>--%>
-                                <%--<div class="row">--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"--%>
-                                <%--cssClass="form-control" />--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<br>--%>
-                                <%--<div class="row">--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<s:textfield id="alatBantu" name="headerCheckup.alatBantu"--%>
-                                <%--cssClass="form-control" />--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<br>--%>
-                                <%--<div class="row">--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                <%--<s:textfield id="alergi" cssClass="form-control"--%>
-                                <%--name="headerCheckup.alergi"--%>
-                                <%--/>--%>
-                                <%--&lt;%&ndash; <div class="input-group-addon btn btn-success"--%>
-                                <%--onclick="addAlergi()" style="background-color: green;color:#fff;">--%>
-                                <%--<span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> &ndash;%&gt;--%>
-                                <%--&lt;%&ndash; </div> &ndash;%&gt;--%>
-                                <%--<div id="new_alergi">--%>
-
-                                <%--</div>--%>
-                                <%--&lt;%&ndash; <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> &ndash;%&gt;--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Kunjungan</h3>
@@ -871,14 +799,6 @@
                                                         class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
-                                            <%--<s:action id="initComboPenjamin" namespace="/checkup"--%>
-                                            <%--name="getComboJenisPeriksaPasien_checkup"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px"--%>
-                                            <%--list="#initComboPenjamin.listOfJenisPriksaPasien"--%>
-                                            <%--name="headerCheckup.idJenisPeriksaPasien"--%>
-                                            <%--listKey="idJenisPeriksaPasien" listValue="keterangan"--%>
-                                            <%--headerKey="" headerValue="[Select one]" onchange="$(this).css('border','')"--%>
-                                            <%--cssClass="form-control"/>--%>
                                     </div>
 
                                     <div class="col-md-6">
@@ -918,6 +838,8 @@
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
                             </div>
                             <div class="box-body">
+                                <div id="warn_rujukan"></div>
+                                <input type="hidden" id="status_rujukan">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -931,8 +853,6 @@
                                                         id="perujuk"
                                                         headerKey="" headerValue="[Select one]"
                                                         cssClass="form-control"/>
-                                                    <%--<s:textfield name="headerCheckup.rujuk"--%>
-                                                    <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -1006,8 +926,6 @@
                                     <div class="col-md-12">
                                     <div class="form-group">
                                         <a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
-                                            <%--<a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
-                                            <%--<a class="btn btn-primary"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
                                     </div>
                                     <div class="form-group" style="margin-top: 20px">
                                         <i class="fa fa-square" style="color: #286090"></i> Belum diisi
@@ -1016,6 +934,11 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <%--from bpjs--%>
+                            <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
+                            <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
+
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">
@@ -1326,15 +1249,42 @@
         if (noRujukan != '' && perujuk != '') {
             if (perujuk == 'puskesmas') {
                 jenisRujukan = "P";
-            } else if (perujuk == "rs") {
-                jenisRujukan == "R";
+            }else if (perujuk == 'rs') {
+                jenisRujukan = "R";
             }
+
             $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
             dwr.engine.setAsync(true);
-            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
+            CheckupAction.checkSuratRujukan(noRujukan, "R", {
                 callback: function (response) {
                     console.log(response);
-                    $('#btn-cek-rujukan').html('<i class="fa fa-search"></i> Check')
+                    var warnClass = "";
+                    var title = "";
+                    var msg = "";
+                    var icon = "";
+                    var val = "";
+
+                    if(response.status == "200"){
+                        val = "aktif";
+                        icon = "fa-info";
+                        title = "Info!";
+                        warnClass = "alert-success";
+                        msg = response.message;
+                    }else{
+                        val = "tidak ditemukan";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-warning";
+                        msg = response.message;
+                    }
+
+                    var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
+                        '<h4><i class="icon fa ' + icon + '"></i>' + title + '</h4>' + msg +
+                        '</div>';
+
+                    $('#status_rujukan').val(val);
+                    $('#warn_rujukan').html(warning);
+                    $('#btn-cek-rujukan').html('<i class="fa fa-search"></i> Check');
                 }
             });
         }
@@ -1391,6 +1341,10 @@
                 var val = "";
 
                 if (response.keteranganStatusPeserta == "AKTIF") {
+
+                    $('#kelas_pasien').val(response.kodeKelas);
+                    $('#no_mr').val(response.noMr);
+
                     val = "aktif";
                     icon = "fa-info";
                     title = "Info!";

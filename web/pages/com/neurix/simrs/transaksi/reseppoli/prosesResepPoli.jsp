@@ -405,6 +405,7 @@
                 <div class="row">
                     <div class="col-md-4"><i class="fa fa-square" style="color: #eea236"></i> Expired Date Kurang dari 30 hari</div>
                     <div class="col-md-4"><i class="fa fa-square" style="color: #dd4b39"></i> Expired Date Kurang dari 10 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #ccc"></i> Expired Date Telah Habis</div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -787,23 +788,24 @@
 
     function confirm(){
 
-        var data = $('#tabel_list_obat').tableToJSON();
+        // var data = $('#tabel_list_obat').tableToJSON();
         var cek = 0;
 
-        $.each(data, function (i, item) {
-            var qtyApp = data[i]["Qty Approve"];
-            if (qtyApp == ""){
-                qtyApp = 0;
-            }
-            cek = parseInt(cek) + parseInt(qtyApp);
-        });
+        // $.each(data, function (i, item) {
+        //     var qtyApp = data[i]["Qty Approve"];
+        //     if (qtyApp == ""){
+        //         qtyApp = 0;
+        //     }
+        //     cek = parseInt(cek) + parseInt(qtyApp);
+        // });
 
-        if(cek > 0){
-            $('#confirm_dialog').dialog('open');
-        }else{
-            $('#warning_list_obat').show().fadeOut(5000);
-        }
-        console.log(cek);
+        $('#confirm_dialog').dialog('open');
+        // if(cek > 0){
+        //     $('#confirm_dialog').dialog('open');
+        // }else{
+        //     $('#warning_list_obat').show().fadeOut(5000);
+        // }
+        // console.log(cek);
 
     }
 

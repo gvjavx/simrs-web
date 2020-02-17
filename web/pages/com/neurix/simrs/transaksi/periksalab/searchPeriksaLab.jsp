@@ -100,7 +100,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="periksaLab.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="periksaLab.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -177,7 +177,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
-                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>

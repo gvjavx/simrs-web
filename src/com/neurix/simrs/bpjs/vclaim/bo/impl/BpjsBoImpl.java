@@ -1590,7 +1590,10 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     if (myResponseCheck.isNull("response")) {
                         JSONObject response = myResponseCheck.getJSONObject("metaData");
                         logger.error("[BPJSBoImpl.caraRujukanBerdasarNomorBpjs] : " + response.getString("message"));
+                        rujukanResponse.setStatus(response.getString("code"));
+                        rujukanResponse.setMessage(response.getString("message"));
                     } else {
+                        JSONObject responseStatus = myResponseCheck.getJSONObject("metaData");
                         JSONObject response = myResponseCheck.getJSONObject("response");
                         JSONObject rujukan = response.getJSONObject("rujukan");
 
@@ -1739,6 +1742,9 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                         }
 
                         rujukanResponse.setTglKunjungan(rujukan.getString("tglKunjungan"));
+
+                        rujukanResponse.setStatus(responseStatus.getString("code"));
+                        rujukanResponse.setMessage(responseStatus.getString("message"));
                     }
                 } catch (IOException | JSONException |GeneralSecurityException e) {
                     e.printStackTrace();

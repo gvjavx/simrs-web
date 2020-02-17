@@ -217,6 +217,7 @@
                                         <s:a href="%{add_rawat_inap}">
                                             <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
+                                        <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -231,6 +232,10 @@
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    function printGelangPasien(noCheckup) {
+        window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
+    }
 
     function listSelectRuangan(id){
         var idx     = id.selectedIndex;
