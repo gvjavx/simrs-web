@@ -217,7 +217,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 Timestamp lastUpdate = (Timestamp) obj[2];
                 Long time = lastUpdate.getTime();
                 Date date = new Date(time);
-                alertPasien.setStTgl(date.toString());
+                alertPasien.setStTglKeluar(date.toString());
             }
         }
 
@@ -230,14 +230,22 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             branchId = "%";
         }
 
-        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
-                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
-                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
-                "INNER JOIN (SELECT * FROM it_simrs_diagnosa_rawat WHERE jenis_diagnosa = '1') diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
-                "WHERE ck.no_checkup = :noCheckup \n" +
+        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.created_date, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien \n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup \n" +
+                "INNER JOIN ( \n" +
+                "SELECT a.* FROM it_simrs_diagnosa_rawat a \n" +
+                "INNER JOIN ( \n" +
+                "SELECT id_detail_checkup,  \n" +
+                "MAX(created_date) as created_date  \n" +
+                "FROM it_simrs_diagnosa_rawat \n" +
+                "GROUP BY id_detail_checkup \n" +
+                ") b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date \n" +
+                ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup \n" +
+                "WHERE ck.no_checkup LIKE :noCheckup \n" +
                 "AND ck.branch_id LIKE :branchId \n" +
-                "ORDER BY hdc.last_update DESC\n" +
-                "LIMIT 1\n";
+                "ORDER BY hdc.last_update DESC \n" +
+                "LIMIT 1";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
@@ -249,17 +257,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
             alertPasien.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
             alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
-            alertPasien.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            alertPasien.setNoCheckup(obj[4] == null ? "" : obj[4].toString());
 
-            if (obj[2] != null){
-                Timestamp lastUpdate = (Timestamp) obj[2];
-                Long time = lastUpdate.getTime();
-                Date date = new Date(time);
-                alertPasien.setStTgl(date.toString());
+            if (obj[3] != null){
+                Timestamp createdDate = (Timestamp) obj[2];
+                Timestamp lastUpdate = (Timestamp) obj[3];
+
+                Long createdDateTime = createdDate.getTime();
+                Long lastUpdateTime = lastUpdate.getTime();
+
+                alertPasien.setStTglMasuk(timeToStringDate(createdDateTime));
+                alertPasien.setStTglMasuk(timeToStringDate(lastUpdateTime));
             }
         }
 
         return alertPasien;
+    }
+
+    private String timeToStringDate(Long time){
+        Date date = new Date(time);
+        return date.toString();
     }
 
     public String getNextSeq(){

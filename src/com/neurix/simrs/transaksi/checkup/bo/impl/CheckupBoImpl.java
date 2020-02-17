@@ -936,9 +936,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     alertPasien.setDiagnosa(alertPasienDiagnosa.getDiagnosa());
                 }
 
-                Long time = headerChekupEntity.getTglKeluar().getTime();
-                Date date = new Date(time);
-                alertPasien.setStTgl(date.toString());
+                alertPasien.setStTglMasuk(alertPasienDiagnosa.getStTglMasuk());
+                alertPasien.setStTglKeluar(alertPasienDiagnosa.getStTglKeluar());
                 alertPasienList.add(alertPasien);
             }
         }

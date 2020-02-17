@@ -213,11 +213,8 @@ public class RawatInapAction extends BaseMasterAction {
                                     }
                                 }
                             }
-
                         }
-
                         setRawatInap(rawatInap);
-
                         break;
                     }
                 }
