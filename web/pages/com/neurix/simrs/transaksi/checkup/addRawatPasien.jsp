@@ -1177,6 +1177,7 @@
                       <tbody id="list-body-rekam-medic">
                       </tbody>
                     </table>
+                    <input type="hidden" id="rm-no-checkup" name="" value="">
                     <!-- /.tab-pane -->
                   </div>
                   <!-- /.tab-content -->
@@ -1530,6 +1531,8 @@
     }
 
     function viewDetailRekamMedic(noCheckup){
+      console.log("viewDetailRekamMedic ==> klik");
+      $("#rm-no-checkup").val(noCheckup);
       $("#modal-detail-rekam-medic").modal("show");
     }
 
@@ -1557,13 +1560,15 @@
                     "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
           $("#list-body-rekam-medic").html(str);
 
-        } else if (kategori == "tppri") {
-
-        } else if (ketegori == "igd") {
+        } else if (kategori == "igd") {
           str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
                     "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+                    "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          $("#list-body-rekam-medic").html(str);
+        } else {
+
         }
       }
     }
