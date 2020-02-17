@@ -1062,9 +1062,10 @@
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
                         <thead>
                         <td>No Checkup</td>
-                        <%--<td>Nama Pasien</td>--%>
                         <td>Diagnosa Terakhir</td>
+                        <td>Tanggal Masuk</td>
                         <td>Tanggal Keluar</td>
+                        <td>View Details RM</td>
                         </thead>
                         <tbody id="body-rekam-medic">
                         </tbody>
@@ -1419,7 +1420,7 @@
 
                 namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
                 diagnosa = response.diagnosa;
-                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTgl)) + "</strong>";
+                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTglKeluar)) + "</strong>";
 
                 if (response.listOfAlergi != null) {
                     $.each(response.listOfAlergi, function (i, item) {
@@ -1454,7 +1455,8 @@
                 var noCheckup = "";
                 var dignosa = "";
                 var tanggal = "";
-                var dateFormat = "";
+                var dateFormatMasuk = "";
+                var dateFormatKeluar = "";
 
                 if(item.noCheckup != null){
                     noCheckup = item.noCheckup;
@@ -1462,14 +1464,18 @@
                 if(item.diagnosa != null){
                     dignosa = item.diagnosa;
                 }
-                if(item.stTgl != null){
-                    tanggal = item.stTgl;
-                    dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                if(item.stTglMasuk != null && item.stTglKeluar != null){
+                    tanggalMasuk = item.stTglMasuk;
+                    tanggalKeluar = item.stTglKeluar;
+                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
+                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
                 }
                 table += "<tr>" +
                         "<td>" + noCheckup + "</td>" +
                         "<td>" + dignosa + "</td>" +
-                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + dateFormatMasuk + "</td>" +
+                        "<td>" + dateFormatKeluar + "</td>" +
+                        "<td><button class=\"btn btn-primary\">View</button></td>" +
                         "</tr>";
 
                 namaPasien = item.namaPasien;

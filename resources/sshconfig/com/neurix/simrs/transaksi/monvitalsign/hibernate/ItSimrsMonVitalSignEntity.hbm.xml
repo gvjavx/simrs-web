@@ -32,6 +32,12 @@
         <property name="tensi">
             <column name="tensi" sql-type="integer" not-null="false"/>
         </property>
+        <property name="tb">
+            <column name="tb" sql-type="integer" not-null="false"/>
+        </property>
+        <property name="bb">
+            <column name="bb" sql-type="integer" not-null="false"/>
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

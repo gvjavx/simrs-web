@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 12/02/20.
  */
-public class ItSimrsMonVitalSignEntity implements Serializable {
+public class MonVitalSign {
     private String id;
     private String noCheckup;
     private String idDetailCheckup;
@@ -21,8 +21,17 @@ public class ItSimrsMonVitalSignEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String stDate;
     private Integer tb;
     private Integer bb;
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
 
     public String getId() {
         return id;

@@ -1,19 +1,18 @@
-package com.neurix.simrs.transaksi.monpemberianobat.model;
+package com.neurix.simrs.transaksi.pengkajian.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Created by reza on 12/02/20.
+ * Created by reza on 14/02/20.
  */
-public class ItSimrsMonPemberianObatEntity implements Serializable {
+public class ItSimrsPengkajianEntity implements Serializable{
+
     private String id;
-    private String namaObat;
-    private String dosis;
-    private String caraPemberian;
-    private String skinTes;
-    private String waktu;
-    private String keterangan;
+    private String idParameter;
+    private String namaParameter;
+    private String type;
+    private String nilai;
     private String noCheckup;
     private String idDetailCheckup;
     private String flag;
@@ -22,7 +21,6 @@ public class ItSimrsMonPemberianObatEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String kategori;
 
     public String getId() {
         return id;
@@ -32,52 +30,36 @@ public class ItSimrsMonPemberianObatEntity implements Serializable {
         this.id = id;
     }
 
-    public String getNamaObat() {
-        return namaObat;
+    public String getIdParameter() {
+        return idParameter;
     }
 
-    public void setNamaObat(String namaObat) {
-        this.namaObat = namaObat;
+    public void setIdParameter(String idParameter) {
+        this.idParameter = idParameter;
     }
 
-    public String getDosis() {
-        return dosis;
+    public String getNamaParameter() {
+        return namaParameter;
     }
 
-    public void setDosis(String dosis) {
-        this.dosis = dosis;
+    public void setNamaParameter(String namaParameter) {
+        this.namaParameter = namaParameter;
     }
 
-    public String getCaraPemberian() {
-        return caraPemberian;
+    public String getType() {
+        return type;
     }
 
-    public void setCaraPemberian(String caraPemberian) {
-        this.caraPemberian = caraPemberian;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getSkinTes() {
-        return skinTes;
+    public String getNilai() {
+        return nilai;
     }
 
-    public void setSkinTes(String skinTes) {
-        this.skinTes = skinTes;
-    }
-
-    public String getWaktu() {
-        return waktu;
-    }
-
-    public void setWaktu(String waktu) {
-        this.waktu = waktu;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
+    public void setNilai(String nilai) {
+        this.nilai = nilai;
     }
 
     public String getNoCheckup() {
@@ -142,13 +124,5 @@ public class ItSimrsMonPemberianObatEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getKategori() {
-        return kategori;
-    }
-
-    public void setKategori(String kategori) {
-        this.kategori = kategori;
     }
 }

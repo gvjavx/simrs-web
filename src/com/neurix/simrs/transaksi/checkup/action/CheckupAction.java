@@ -1807,4 +1807,18 @@ public class CheckupAction extends BaseMasterAction {
 
         return response;
     }
+
+    public List<HeaderCheckup> getListAntriaPasien(String branch, String poli){
+        List<HeaderCheckup> result = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            result = checkupBo.getListAntrian(branch, poli);
+        }catch (GeneralBOException e){
+            logger.error("Foun Error"+e);
+        }
+
+        return result;
+    }
 }

@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 12/02/20.
  */
-public class ItSimrsMonCairanEntity implements Serializable {
+public class MonCairan {
 
     private String id;
     private String macamCairan;
@@ -28,6 +28,23 @@ public class ItSimrsMonCairanEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String sisa;
+    private String stDate;
+
+    public String getSisa() {
+        return sisa;
+    }
+
+    public void setSisa(String sisa) {
+        this.sisa = sisa;
+    }
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
 
     public String getId() {
         return id;
@@ -179,13 +196,5 @@ public class ItSimrsMonCairanEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getSisa() {
-        return sisa;
-    }
-
-    public void setSisa(String sisa) {
-        this.sisa = sisa;
     }
 }

@@ -17,6 +17,9 @@
         <property name="idDetailCheckup">
             <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
         </property>
+        <property name="namaObat">
+            <column name="nama_obat" sql-type="varchar" length="100" not-null="false"/>
+        </property>
         <property name="dosis">
             <column name="dosis" sql-type="varchar" length="10" not-null="false"/>
         </property>
@@ -28,6 +31,9 @@
         </property>
         <property name="waktu">
             <column name="waktu" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="kategori">
+            <column name="kategori" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
