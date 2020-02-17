@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
 
     <script type='text/javascript' src='<s:url value="/dwr/engine.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,7 +44,9 @@
         <nav class="navbar navbar-static-top" style="background-color: #30d196">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand"><b><i class="fa fa-bars"></i> DAFTAR ANTRIAN</b></a>
+                    <a class="navbar-brand">
+                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 35px; width: 110px; margin-top: -8px">
+                    </a>
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -56,32 +58,25 @@
             <!-- Main content -->
             <section class="content">
                 <div class="box box-success" style="border-top-color: #50d4a3">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">DAFTAR ANTRIAN PASIEN</h3>
-                    </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-4">
-
-                            </div>
-                            <div class="col-md-8">
+                            <div class="col-md-5">
+                                <div class="box-header with-border">
+                                    <h5 class="box-title">PASIEN PERIKSA</h5>
+                                </div>
+                                <div class="box-header with-border"></div>
                                 <table class="table table-striped">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <p>MUHAMMAD SODIQ</p>
-                                                    <p>PROBOLINGGO</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td>PROBOLINGGO</td>
-                                    </tr>
+                                    <tbody id="body_periksa">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="box-header with-border">
+                                    <h5 class="box-title">DAFTAR ANTRIAN PASIEN</h5>
+                                </div>
+                                <div class="box-header with-border"></div>
+                                <table class="table table-striped">
+                                    <tbody id="body_antrian">
                                     </tbody>
                                 </table>
                             </div>
@@ -123,16 +118,45 @@
 <script>
 
     $(document).ready(function () {
-
+        cekListAntrian();
     });
 
-    // function cekListObat() {
-    //     setInterval(function () {
-    //         TransaksiObatAction.getListResepPasien("RSP00000040", function (response) {
-    //             console.log(response);
-    //         });
-    //     },100);
-    // }
+    function cekListAntrian() {
+        setInterval(function () {
+            var tableAntrian = "";
+            CheckupAction.getListAntriaPasien("RS01",null, function (response) {
+                if(response.length > 0){
+                    $.each(response, function (i, item) {
+                        tableAntrian += '<tr>' +
+                            '<td>'+item.namaPelayanan+'</td>'+
+                            '<td><i class="fa fa-user"></i> '+item.nama+'</td>'+
+                            '<td>'+item.namaDesa+'</td>'+
+                            '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
+                            '</tr>';
+                    });
+                    $('#body_antrian').html(tableAntrian);
+                }else{
+                    $('#body_antrian').html("");
+                }
+            });
+
+            var tablePeriksa = "";
+            CheckupAction.getListPeriksaPasien("RS01",null, function (response) {
+                if(response.length > 0){
+                    $.each(response, function (i, item) {
+                        tablePeriksa += '<tr>' +
+                            '<td>'+item.namaPelayanan+'</td>'+
+                            '<td><i class="fa fa-user"></i> '+item.nama+'</td>'+
+                            '<td style="vertical-align: middle"><label class="label label-success"> Periksa</label></td>' +
+                            '</tr>';
+                    });
+                    $('#body_periksa').html(tablePeriksa);
+                }else{
+                    $('#body_periksa').html("");
+                }
+            });
+        },1000);
+    }
 </script>
 </body>
 </html>

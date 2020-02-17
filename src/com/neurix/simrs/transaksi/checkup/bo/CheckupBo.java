@@ -55,4 +55,5 @@ public interface CheckupBo {
     public String getNextHeaderId();
 
     public List<HeaderCheckup> getListAntrian(String branch, String poli) throws GeneralBOException;
+    public List<HeaderCheckup> getListPeriksa(String branch, String poli) throws GeneralBOException;
 }

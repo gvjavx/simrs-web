@@ -1821,4 +1821,18 @@ public class CheckupAction extends BaseMasterAction {
 
         return result;
     }
+
+    public List<HeaderCheckup> getListPeriksaPasien(String branch, String poli){
+        List<HeaderCheckup> result = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            result = checkupBo.getListPeriksa(branch, poli);
+        }catch (GeneralBOException e){
+            logger.error("Foun Error"+e);
+        }
+
+        return result;
+    }
 }
