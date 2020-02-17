@@ -118,7 +118,7 @@
 <script>
 
     $(document).ready(function () {
-        cekListAntrian();
+        // cekListAntrian();
     });
 
     function cekListAntrian() {
