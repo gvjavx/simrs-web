@@ -53,4 +53,6 @@ public interface CheckupBo {
 
     HeaderCheckup completeBpjs(String nomorBpjs,String unitId);
     public String getNextHeaderId();
+
+    public List<HeaderCheckup> getListAntrian(String branch, String poli) throws GeneralBOException;
 }
