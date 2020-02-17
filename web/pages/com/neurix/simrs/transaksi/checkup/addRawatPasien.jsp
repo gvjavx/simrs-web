@@ -52,6 +52,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -1153,6 +1154,47 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-detail-rekam-medic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Custom Tabs -->
+                <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <table class="table">
+                      <tbody id="list-body-rekam-medic">
+                      </tbody>
+                    </table>
+                    <!-- /.tab-pane -->
+                  </div>
+                  <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
@@ -1450,7 +1492,7 @@
         var namaPasien = "";
 
         CheckupAction.listRekamMedic(idPasien, function (response) {
-            console.log(response);
+            // console.log(response);
             $.each(response, function (i, item) {
                 var noCheckup = "";
                 var dignosa = "";
@@ -1473,9 +1515,9 @@
                 table += "<tr>" +
                         "<td>" + noCheckup + "</td>" +
                         "<td>" + dignosa + "</td>" +
-                        "<td>" + dateFormatMasuk + "</td>" +
-                        "<td>" + dateFormatKeluar + "</td>" +
-                        "<td><button class=\"btn btn-primary\">View</button></td>" +
+                        "<td align='center'>" + dateFormatMasuk + "</td>" +
+                        "<td align='center'>" + dateFormatKeluar + "</td>" +
+                        "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
                         "</tr>";
 
                 namaPasien = item.namaPasien;
@@ -1485,6 +1527,40 @@
             $('#nama_medik').html(namaPasien);
             $("#body-rekam-medic").html(table);
         });
+    }
+
+    function viewDetailRekamMedic(noCheckup){
+      $("#modal-detail-rekam-medic").modal("show");
+      // var str = "<tr><td>TPPRI</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','tppri')\">View</button></td></tr>"+
+      //           "<tr><td>IGD</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','igd')\">View</button></td></tr>"+
+      //           "<tr><td>Rawat Inap</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','ri')\">View</button></td></tr>"+
+      //           "<tr><td>Monitoring</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','mon')\">View</button></td></tr>";
+      // $("#list-body-rekam-medic").html(str);
+    }
+
+    function viewDetailRekamMedicByKategori(kategori){
+      console.log(kategori);
+      var str = "";
+      if (kategori == "ri") {
+        CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
+          // console.log(response);
+          $.each(response, function(i, item) {
+            str += "<tr>"+
+                  "<td>"+item.namaKategori+"</td>"+
+                  "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
+                  "</tr>";
+          });
+          $("#list-body-rekam-medic").html("");
+          $("#list-body-rekam-medic").html(str);
+        });
+      } else {
+        str = "<tr><td>TPPRI</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','tppri')\">View</button></td></tr>"+
+                  "<tr><td>IGD</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','igd')\">View</button></td></tr>"+
+                  "<tr><td>Rawat Inap</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','ri')\">View</button></td></tr>"+
+                  "<tr><td>Monitoring</td><td><button class='btn btn-primary' onclick=\"showDetailRm('"+noCheckup+"','mon')\">View</button></td></tr>";
+        $("#list-body-rekam-medic").html("");
+        $("#list-body-rekam-medic").html(str);
+      }
     }
 
     function closeAlert() {

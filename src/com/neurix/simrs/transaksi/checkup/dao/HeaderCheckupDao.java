@@ -267,7 +267,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 Long lastUpdateTime = lastUpdate.getTime();
 
                 alertPasien.setStTglMasuk(timeToStringDate(createdDateTime));
-                alertPasien.setStTglMasuk(timeToStringDate(lastUpdateTime));
+                alertPasien.setStTglKeluar(timeToStringDate(lastUpdateTime));
             }
         }
 

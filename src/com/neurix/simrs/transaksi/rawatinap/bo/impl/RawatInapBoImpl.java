@@ -460,6 +460,13 @@ public class RawatInapBoImpl implements RawatInapBo {
         return monVitalSigns;
     }
 
+    @Override
+    public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head) {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("head", head);
+        return kategoriSkorRanapDao.getByCriteria(hsCriteria);
+    }
+
     private String stringDate(Timestamp datetime){
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         return f.format(datetime);

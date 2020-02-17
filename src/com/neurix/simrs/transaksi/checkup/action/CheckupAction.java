@@ -36,6 +36,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
@@ -1806,5 +1807,11 @@ public class CheckupAction extends BaseMasterAction {
         checkupBo.saveTranfusi(tranfusiEntity);
 
         return response;
+    }
+
+    public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        return rawatInapBo.getListKategoriSkorRanapByHead(head);
     }
 }
