@@ -36,6 +36,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
@@ -1822,17 +1823,23 @@ public class CheckupAction extends BaseMasterAction {
         return result;
     }
 
-    public List<HeaderCheckup> getListPeriksaPasien(String branch, String poli){
+    public List<HeaderCheckup> getListPeriksaPasien(String branch, String poli) {
         List<HeaderCheckup> result = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         try {
             result = checkupBo.getListPeriksa(branch, poli);
-        }catch (GeneralBOException e){
-            logger.error("Foun Error"+e);
+        } catch (GeneralBOException e) {
+            logger.error("Foun Error" + e);
         }
 
         return result;
+    }
+
+    public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        return rawatInapBo.getListKategoriSkorRanapByHead(head);
     }
 }

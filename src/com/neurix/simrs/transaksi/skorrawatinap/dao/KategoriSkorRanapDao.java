@@ -27,6 +27,8 @@ public class KategoriSkorRanapDao extends GenericDao<ImSimrsKategoriSkorRanapEnt
 
         if (mapCriteria.get("id_kategori") != null)
             criteria.add(Restrictions.eq("idKategori", mapCriteria.get("id_kategori").toString()));
+        if (mapCriteria.get("head") != null)
+            criteria.add(Restrictions.eq("head", mapCriteria.get("head").toString()));
 
         List<ImSimrsKategoriSkorRanapEntity> results = criteria.list();
         return results;

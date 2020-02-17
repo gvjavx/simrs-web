@@ -496,7 +496,6 @@
                             noRuangan = item.noRuangan;
                         }
 
-
                         table += "<tr>" +
                                 "<td>" + pelayanan + "</td>" +
                                 "<td>" + item.statusPeriksa + "</td>" +
