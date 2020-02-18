@@ -401,17 +401,41 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return results;
     }
 
-    public BigInteger sumOfTindakanByNoCheckup(String noCheckup){
+//    public BigInteger sumOfTindakanByNoCheckup(String noCheckup){
+//
+//        String SQL = "SELECT ck.no_checkup, SUM(tin.tarif_total) as total_tarif\n" +
+//                "FROM it_simrs_header_checkup ck\n" +
+//                "INNER JOIN it_simrs_header_detail_checkup dc ON dc.no_checkup = ck.no_checkup\n" +
+//                "INNER JOIN (SELECT * FROM it_simrs_tindakan_rawat WHERE flag = 'Y') tin ON tin.id_detail_checkup = dc.id_detail_checkup\n" +
+//                "WHERE ck.no_checkup = :noCheckup\n" +
+//                "GROUP BY ck.no_checkup";
+//
+//        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+//                .setParameter("noCheckup", noCheckup)
+//                .list();
+//
+//        BigInteger result = new BigInteger(String.valueOf(0));
+//        if (results.size() > 0){
+//            for (Object[] obj : results){
+//                if (obj[1] != null){
+//                    result = new BigInteger(obj[1].toString());
+//                }
+//            }
+//        }
+//
+//        return result;
+//    }
 
-        String SQL = "SELECT ck.no_checkup, SUM(tin.tarif_total) as total_tarif\n" +
-                "FROM it_simrs_header_checkup ck\n" +
-                "INNER JOIN it_simrs_header_detail_checkup dc ON dc.no_checkup = ck.no_checkup\n" +
-                "INNER JOIN (SELECT * FROM it_simrs_tindakan_rawat WHERE flag = 'Y') tin ON tin.id_detail_checkup = dc.id_detail_checkup\n" +
-                "WHERE ck.no_checkup = :noCheckup\n" +
-                "GROUP BY ck.no_checkup";
+    public BigInteger sumOfTindakanByNoCheckup(String idDetailCheckup){
+
+        String SQL = "SELECT SUM(a.tarif_total) as tota_tarif \n" +
+                "FROM it_simrs_tindakan_rawat a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "WHERE b.id_detail_checkup LIKE :idDetail\n" +
+                "GROUP BY b.id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("noCheckup", noCheckup)
+                .setParameter("idDetail", idDetailCheckup)
                 .list();
 
         BigInteger result = new BigInteger(String.valueOf(0));

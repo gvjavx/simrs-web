@@ -467,6 +467,29 @@ public class RawatInapBoImpl implements RawatInapBo {
         return kategoriSkorRanapDao.getByCriteria(hsCriteria);
     }
 
+    @Override
+    public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException {
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        if(bean != null){
+            List<ItSimrsRawatInapEntity> list = getListEntityByCriteria(bean);
+            if(list.size() > 0){
+                RawatInap rawatInap;
+                for (ItSimrsRawatInapEntity entity: list){
+                    rawatInap = new RawatInap();
+                    rawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    rawatInap.setIdRawatInap(entity.getIdRawatInap());
+                    rawatInap.setNoCheckup(entity.getNoCheckup());
+                    rawatInap.setIdRuangan(entity.getIdRuangan());
+                    rawatInap.setNamaRangan(entity.getNamaRangan());
+                    rawatInap.setTglMasuk(entity.getTglMasuk());
+                    rawatInap.setTglKeluar(entity.getTglKeluar());
+                    rawatInapList.add(rawatInap);
+                }
+            }
+        }
+        return rawatInapList;
+    }
+
     private String stringDate(Timestamp datetime){
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         return f.format(datetime);

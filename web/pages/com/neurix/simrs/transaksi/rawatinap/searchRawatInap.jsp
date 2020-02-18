@@ -197,7 +197,7 @@
                                 <td>No Checkup</td>
                                 <td>ID Pasien</td>
                                 <td>Nama</td>
-                                <td>Alamat</td>
+                                <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -208,7 +208,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="namaDesa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">

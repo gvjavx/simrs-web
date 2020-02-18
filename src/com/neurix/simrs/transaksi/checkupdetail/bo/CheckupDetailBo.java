@@ -23,7 +23,7 @@ public interface CheckupDetailBo {
 
     public void saveAdd(HeaderDetailCheckup bean) throws GeneralBOException;
 
-    public BigInteger getSumOfTindakanByNoCheckup(String noCheckup) throws GeneralBOException;
+    public BigInteger getSumOfTindakanByNoCheckup(String idDetailCheckup) throws GeneralBOException;
 
     public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
 }

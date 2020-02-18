@@ -17,6 +17,9 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
+import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
+import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
@@ -55,6 +58,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private TindakanRawatDao tindakanRawatDao;
     private PeriksaLabDao periksaLabDao;
     private PermintaanResepDao permintaanResepDao;
+    private OrderGiziDao orderGiziDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -133,6 +137,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setCreatedWho(entity.getCreatedWho());
             detailCheckup.setLastUpdate(entity.getLastUpdate());
             detailCheckup.setLastUpdateWho(entity.getLastUpdateWho());
+            detailCheckup.setTarifBpjs(entity.getTarifBpjs());
+            detailCheckup.setNoSep(entity.getNoSep());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())){
                 StatusPasien statusPasien = new StatusPasien();
@@ -542,13 +548,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public BigInteger getSumOfTindakanByNoCheckup(String noCheckup) throws GeneralBOException {
+    public BigInteger getSumOfTindakanByNoCheckup(String idDetailCheckup) throws GeneralBOException {
         logger.info("[CheckupDetailBoImpl.getSumOfTindakanByNoCheckup] Start >>>>>>>>");
 
         BigInteger result = new BigInteger(String.valueOf(0));
 
         try {
-            result = checkupDetailDao.sumOfTindakanByNoCheckup(noCheckup);
+            result = checkupDetailDao.sumOfTindakanByNoCheckup(idDetailCheckup);
         } catch (HibernateException e){
             logger.error("[CheckupDetailBoImpl.updateRuanganInap] Error ",e);
             throw new GeneralBOException("[CheckupDetailBoImpl.updateRuanganInap] Error "+e.getMessage());
@@ -567,6 +573,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             String cek1 = "";
             String cek2 = "";
             String cek3 = "";
+            String cek4 = "";
 
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -625,10 +632,42 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 response.setStatus("success");
                 response.setMessage("Berhasil mencari resep");
             }else{
-               cek3 = "Y";
+               cek3 = "N";
             }
 
-            if(cek1.equalsIgnoreCase("N") && cek2.equalsIgnoreCase("N") && cek3.equalsIgnoreCase("N")){
+            RawatInap rawatInap = new RawatInap();
+            rawatInap.setIdDetailCheckup(bean.getIdDetailCheckup());
+            List<ItSimrsRawatInapEntity> rawatInapList = getListEntityRawatInap(rawatInap);
+            ItSimrsRawatInapEntity rawatInapEntity = new ItSimrsRawatInapEntity();
+            if(rawatInapList.size() > 0){
+
+                rawatInapEntity = rawatInapList.get(0);
+
+                if(rawatInapEntity != null){
+
+                    List<ItSimrsOrderGiziEntity> giziEntityList = new ArrayList<>();
+
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("id_rawat_inap", rawatInapEntity.getIdRawatInap());
+                    try {
+                        giziEntityList = orderGiziDao.getByCriteria(hsCriteria);
+                    }catch (HibernateException e){
+                        logger.error("[Found Error] search gizi"+e.getMessage());
+                    }
+
+                    if(giziEntityList.size() > 0){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil mencari gizi");
+                    }else{
+                        cek4 = "N";
+                    }
+                }
+
+            }else{
+               cek4 = "N";
+            }
+
+            if("N".equalsIgnoreCase(cek1) && "N".equalsIgnoreCase(cek2) && "N".equalsIgnoreCase(cek3) && "N".equalsIgnoreCase(cek4)){
                 response.setStatus("error");
                 response.setMessage("Tidak ada tindakan yang dilakukan, periksa lab, dan tidak ada order resep");
             }
@@ -785,5 +824,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
         this.permintaanResepDao = permintaanResepDao;
+    }
+
+    public void setOrderGiziDao(OrderGiziDao orderGiziDao) {
+        this.orderGiziDao = orderGiziDao;
     }
 }

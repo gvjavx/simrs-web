@@ -77,6 +77,15 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String tempatTujuan;
 
     private BigDecimal tarifBpjs;
+    private BigDecimal tarifTindakan;
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
 
     public BigDecimal getTarifBpjs() {
         return tarifBpjs;

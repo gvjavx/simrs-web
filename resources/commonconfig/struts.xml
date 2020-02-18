@@ -188,7 +188,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatJalanAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaangizi/struts/PermintaanGiziAction.xml"/>
 
-
+    <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/struts/KasirRawatInapAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/KasirRawatJalanAction.xml"/>
 
 
 </struts>

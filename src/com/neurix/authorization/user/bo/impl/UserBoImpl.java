@@ -582,12 +582,15 @@ public class UserBoImpl implements UserBo {
                                 menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
                             menuNameString = "<li id=\"permintaan_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }
-                        else{
+                        }else if (menuName.equalsIgnoreCase("Pembayaran")) {
+                            menuNameString = "<li id=\"pembayaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
+                        }else{
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
                         }
                     }else{
+
                         //sodiq 17-12-2019, dicomment agar tidak benrantakan di sidebar
+
 //                        if(i > 0){
 //                            itemMenuTmp = (List) listdownMenu.get(i - 1);
 //                            if(!itemMenuTmp.get(2).equals("2")){

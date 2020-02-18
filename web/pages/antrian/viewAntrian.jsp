@@ -34,6 +34,21 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+        .spin {
+            -webkit-animation: rotation 1s infinite linear;
+        }
+
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(359deg);
+            }
+        }
+    </style>
+
 </head>
 
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
@@ -45,8 +60,27 @@
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand">
-                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 35px; width: 110px; margin-top: -8px">
+                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/sayap-logo-nmu.png"/>" style="cursor: pointer; height: 48px; width: 55px; margin-top: -15px">
+                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>" style="cursor: pointer; height: 23px; width: 23px; margin-top: -30px; margin-left: 28px">
                     </a>
+                </div>
+                <div class="collapse navbar-collapse pull-left">
+                    <ul class="nav navbar-nav">
+                        <li style="color: white; margin-top: 6px; margin-left: -10px; padding-bottom: -2px">
+                            <span> RS. GATOEL</span><br>
+                            <span> PT. NUSANTARA MEDIKA UTAMA</span>
+                        </li>
+                        <li style="margin-left: 100px; color: white;">
+                            <h3>DAFTAR ANTRIAN PASIEN RS GATOEL KOTA MOJOKERTO</h3>
+                        </li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 35px; width: 110px; margin-top: 9px">
+                        </li>
+                    </ul>
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -62,7 +96,7 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="box-header with-border">
-                                    <h5 class="box-title">PASIEN PERIKSA</h5>
+                                    <h5 class="box-title"><i class="fa fa-user-md"></i> PASIEN PERIKSA</h5>
                                 </div>
                                 <div class="box-header with-border"></div>
                                 <table class="table table-striped">
@@ -72,7 +106,7 @@
                             </div>
                             <div class="col-md-7">
                                 <div class="box-header with-border">
-                                    <h5 class="box-title">DAFTAR ANTRIAN PASIEN</h5>
+                                    <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN PASIEN</h5>
                                 </div>
                                 <div class="box-header with-border"></div>
                                 <table class="table table-striped">
@@ -118,7 +152,7 @@
 <script>
 
     $(document).ready(function () {
-        // cekListAntrian();
+        cekListAntrian();
     });
 
     function cekListAntrian() {
@@ -126,14 +160,17 @@
             var tableAntrian = "";
             CheckupAction.getListAntriaPasien("RS01",null, function (response) {
                 if(response.length > 0){
+
                     $.each(response, function (i, item) {
                         tableAntrian += '<tr>' +
-                            '<td>'+item.namaPelayanan+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama+'</td>'+
-                            '<td>'+item.namaDesa+'</td>'+
+                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+                            '<td>'+item.namaDesa.toUpperCase()+'</td>'+
                             '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
                             '</tr>';
                     });
+
+
                     $('#body_antrian').html(tableAntrian);
                 }else{
                     $('#body_antrian').html("");
@@ -145,8 +182,8 @@
                 if(response.length > 0){
                     $.each(response, function (i, item) {
                         tablePeriksa += '<tr>' +
-                            '<td>'+item.namaPelayanan+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama+'</td>'+
+                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td style="vertical-align: middle"><label class="label label-success"> Periksa</label></td>' +
                             '</tr>';
                     });

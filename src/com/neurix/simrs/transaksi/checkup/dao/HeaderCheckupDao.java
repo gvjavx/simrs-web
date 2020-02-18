@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -70,7 +71,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
                     "ranap.no_ruangan,\n" +
-                    "detail.id_detail_checkup\n" +
+                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -101,6 +102,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
                 headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
                 headerDetailCheckup.setIdDetailCheckup(obj[7].toString());
+                headerDetailCheckup.setNoSep(obj[8] == null ? "" : obj[9].toString());
+                if(obj[9] != null){
+                    headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
+                }
                 return headerDetailCheckup;
             }
         }
@@ -299,6 +304,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "WHERE b.status_periksa = '0'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
                 "AND b.id_pelayanan LIKE :poliId \n" +
+                "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
         List<Object[]> result = new ArrayList<>();
