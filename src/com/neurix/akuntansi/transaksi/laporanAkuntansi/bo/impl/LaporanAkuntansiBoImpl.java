@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl;
 
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ItLaporanAkuntansiEntity;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.authorization.position.dao.PositionDao;
@@ -154,6 +155,17 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         return nama;
     }
 
+    @Override
+    public List<Aging> getAging(String branch, String periode, String masterId,String tipeAging,String reportId) throws GeneralBOException {
+        List<Aging> agingList = new ArrayList<>();
+        try {
+            agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,tipeAging,reportId);
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return agingList;
+    }
 
     @Override
     public List<LaporanAkuntansi> getAll() throws GeneralBOException {

@@ -334,6 +334,8 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

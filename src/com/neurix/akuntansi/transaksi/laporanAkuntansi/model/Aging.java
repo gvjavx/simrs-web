@@ -27,6 +27,7 @@ public class Aging implements Serializable {
 
     private String strKurs;
 
+    private String rekeningId;
     private String namaGeneralManager;
     private String nipGeneralManager;
     private String namaManagerKeuangan;
@@ -36,6 +37,14 @@ public class Aging implements Serializable {
     private String tanggal;
 
     private String grup;
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
 
     public String getKodeRekening() {
         return kodeRekening;

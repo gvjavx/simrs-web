@@ -102,7 +102,6 @@ public class CommonConstant {
     //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
     public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
     public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
-    public final static String RS01 = "RS01.png";
     //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 

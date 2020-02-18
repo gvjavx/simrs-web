@@ -56,6 +56,7 @@ public class BranchBoImpl implements BranchBo {
                 resultBranch.setAction(imBranches.getAction());
                 resultBranch.setFlag(imBranches.getFlag());
                 resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+                resultBranch.setLogoName(imBranches.getLogoName());
 
                 listOfResultBranch.add(resultBranch);
             }
@@ -135,6 +136,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setEnabled(imBranches.getEnabled());
                     resultBranch.setAreaId(imBranches.getAreaId());
                     resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+                    resultBranch.setLogoName(imBranches.getLogoName());
 
                     listOfResultBranch.add(resultBranch);
                 }
@@ -173,6 +175,7 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setLastUpdate(branch.getLastUpdate());
             imBranches.setAction(branch.getAction());
             imBranches.setAreaId(branch.getAreaId());
+            imBranches.setLogoName(branch.getLogoName());
             imBranches.setFlag("Y");
 
             String branchId = branch.getBranchId();
@@ -388,6 +391,7 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setAction(imBranches.getAction());
             resultBranch.setFlag(imBranches.getFlag());
             resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+            resultBranch.setLogoName(imBranches.getLogoName());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");

@@ -33,6 +33,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private LaporanAkuntansi laporanAkuntansi;
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
+    List<Aging> myList = new ArrayList<>() ;
+
+    public List<Aging> getMyList() {
+        return myList;
+    }
+
+    public void setMyList(List<Aging> myList) {
+        this.myList = myList;
+    }
 
     public JRBeanCollectionDataSource getDataPrint() {
         return dataPrint;
@@ -301,7 +310,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
-        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
@@ -337,7 +346,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
-        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
@@ -374,7 +383,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
 
-        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
@@ -421,14 +430,14 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             reportId="RPT05";
         }else if (data.getTipeLaporan().equalsIgnoreCase("uang_muka")){
             titleReport="IKHTISAR UANG MUKA";
-            reportId="RPT06";
+
         }else{
             reportId="NOTHING";
         }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
-        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
+        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
@@ -461,39 +470,204 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        LaporanAkuntansi data = getLaporanAkuntansi();
-        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
-        Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
+        LaporanAkuntansi dataLaporan = getLaporanAkuntansi();
+        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(dataLaporan.getUnit());
+        Branch branch = branchBo.getBranchById(dataLaporan.getUnit(),"Y");
+        String periode =dataLaporan.getBulan()+"-"+dataLaporan.getTahun();
+        String titleReport="";
+        String reportId="";
 
-        reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+CommonConstant.RS01);
-        reportParams.put("cabangId", data.getUnit());
-        reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
-        Date now = new Date();
-        reportParams.put("tanggal", CommonUtil.convertDateToString(now));
-        reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
-        reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
-        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
-        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
-        reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
-        reportParams.put("kota",branch.getBranchName());
-        reportParams.put("alamatSurat",branch.getAlamatSurat());
-        try {
-            preDownload();
-        } catch (SQLException e) {
-            Long logId = null;
-            try {
-                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportAging");
-            } catch (GeneralBOException e1) {
-                logger.error("[LaporanAkuntansiAction.printReportAging] Error when downloading ,", e1);
-            }
-            logger.error("[LaporanAkuntansiAction.printReportAging] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
+            titleReport="AGING HUTANG USAHA";
+            reportId="RPT07";
         }
-        logger.info("[LaporanAkuntansiAction.printReportAging] end process <<<");
-        return "print_report_akuntansi_aging";
+        List<Aging> agingList = laporanAkuntansiBo.getAging(dataLaporan.getUnit(),periode,dataLaporan.getMasterId(),dataLaporan.getTipeLaporan(),reportId);
+        List<Aging> listOfAgingTemp = new ArrayList<>();
+
+        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
+        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
+        String jumlahTanggalTemp="";
+
+        String periodeTitle[] = periode.split("-");
+
+        if(Integer.parseInt(periodeTitle[0]) % 4 == 0){
+            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(periodeTitle[0])];
+        }else{
+            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(periodeTitle[0])];
+        }
+
+        if(agingList.size()>0){
+            Aging listAgingTempLast=null;
+            Aging listAgingTempNewRecord=null;
+            listOfAgingTemp=new ArrayList();
+
+            for (Aging objMod : agingList){
+                if(cekIsObjectIsDoubel(objMod,listOfAgingTemp)){
+                    listAgingTempLast=getSameItem(objMod,listOfAgingTemp);
+
+                    //Cache baru dibuka untuk menampung data aging yang baru
+                    listAgingTempNewRecord = new Aging();
+                    listAgingTempNewRecord.setNoNota(listAgingTempLast.getNoNota());
+                    listAgingTempNewRecord.setTglJurnal(listAgingTempLast.getTglJurnal());
+                    listAgingTempNewRecord.setKurs(objMod.getKurs());
+                    listAgingTempNewRecord.setMataUang(listAgingTempLast.getMataUang());
+                    //
+                    listAgingTempNewRecord.setTotal(objMod.getTotal().add(listAgingTempLast.getTotal()));
+                    listAgingTempNewRecord.setMasterId(listAgingTempLast.getMasterId());
+                    listAgingTempNewRecord.setNamaMaster(listAgingTempLast.getNamaMaster());
+                    listAgingTempNewRecord.setPeriode(getPeriode());
+
+                    //hapus record yang lama
+                    listOfAgingTemp.remove(listAgingTempLast);
+
+                    //tambahkan record yang baru
+                    listOfAgingTemp.add(listAgingTempNewRecord);
+                }else{
+                    listOfAgingTemp.add(objMod);
+                }
+            }
+        }else{
+            return ERROR;
+        }
+
+        if(listOfAgingTemp.size()>0){
+            myList=new ArrayList();
+            for(Aging data:listOfAgingTemp){
+                data.setTotal(data.getTotal().abs());
+                data.setJumlah1(new BigDecimal(0));
+                data.setJumlah2(new BigDecimal(0));
+                data.setJumlah3(new BigDecimal(0));
+                data.setJumlah4(new BigDecimal(0));
+                data.setJumlah5(new BigDecimal(0));
+                data.setJumlah6(new BigDecimal(0));
+                data.setJumlah7(new BigDecimal(0));
+
+                //Tentukan posisi umur aging.
+                //Yaitu dengan mengammbil periode sedang berjalan (tanggal aging di cetak) dan periode tanggal dari jurnal tersebut
+                int agingPosition=0;
+                String periodeJurnal =CommonUtil.convertDateToString(data.getTglJurnal());
+                String periodeJurnalArrTemp[]= periodeJurnal.split("-");
+
+                Integer tglCetak = Integer.parseInt(jumlahTanggalTemp);
+                Integer tglJurnal =Integer.parseInt(periodeJurnalArrTemp[0]);
+                Integer blnCetak = Integer.parseInt(periodeTitle[1]);
+                Integer blnJurnal =Integer.parseInt(periodeJurnalArrTemp[1]);
+                Integer thnCetak = Integer.parseInt(periodeTitle[0]);
+                Integer thnJurnal =Integer.parseInt(periodeJurnalArrTemp[2]);
+
+                if(thnCetak > thnJurnal){
+                    agingPosition=(((thnCetak-thnJurnal)*12)-blnJurnal)+blnCetak;
+                    if(tglCetak > tglJurnal) agingPosition+=1;
+                }else{
+                    agingPosition=blnCetak-blnJurnal;
+                    if(tglCetak > tglJurnal) agingPosition+=1;
+                }
+
+                //umur 0 s/d 1 bulan
+                if(agingPosition<=1){
+                    data.setJumlah1(data.getTotal().abs());
+                }
+                //umur 1 s/d 2 bulan
+                else if(agingPosition<=2 && agingPosition>1){
+                    data.setJumlah2(data.getTotal().abs());
+                }
+                //umur 2 s/d 3 bulan
+                else if(agingPosition<=3 && agingPosition>2){
+                    data.setJumlah3(data.getTotal().abs());
+                }
+                //umur 3 s/d 6 bulan
+                else if(agingPosition<=6 && agingPosition>3){
+                    data.setJumlah4(data.getTotal().abs());
+                }
+                //umur 6 s/d 12 bulan
+                else if(agingPosition<=12 && agingPosition>6){
+                    data.setJumlah5(data.getTotal().abs());
+                }
+                //umur 1 s/d 2 tahun
+                else if(agingPosition<=24 && agingPosition>12){
+                    data.setJumlah6(data.getTotal().abs());
+                }
+                //umur > 2 tahun
+                else{
+                    data.setJumlah7(data.getTotal().abs());
+                }
+
+                data.setStrKurs(getMataUangKurs("033"));
+                if(data.getTotal().doubleValue()!=0){
+                    myList.add(data);
+                }
+            }
+        }else{
+            return ERROR;
+        }
+
+        //JIka list yang akan dicetak di report tidak ada, maka tidak usah dilanjutkan ke pencetakan report
+        if(myList.size()>0){
+            List<Aging> forReport = new ArrayList<>();
+
+            myList.addAll(forReport);
+            reportParams.put("reportTitle", titleReport);
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+            reportParams.put("cabangId", dataLaporan.getUnit());
+            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(dataLaporan.getBulan())+" "+dataLaporan.getTahun());
+            Date now = new Date();
+            reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+            reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
+            reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
+            reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
+            reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
+            reportParams.put("periode",periode);
+            reportParams.put("kota",branch.getBranchName());
+            reportParams.put("alamatSurat",branch.getAlamatSurat());
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                Long logId = null;
+                try {
+                    logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportAging");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LaporanAkuntansiAction.printReportAging] Error when downloading ,", e1);
+                }
+                logger.error("[LaporanAkuntansiAction.printReportAging] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+            }
+            logger.info("[LaporanAkuntansiAction.printReportAging] end process <<<");
+            return "print_report_akuntansi_aging";
+        }else{
+            return "print_report_akuntansi_aging";
+        }
+
+
+
     }
 
+    public boolean cekIsObjectIsDoubel(Aging data, List<Aging> listData){
+        //cek ada yg no nota sama ato tidak, jika ada yg sama return true, else false
+        boolean flag = false;
+        Aging aging=null;
+        for (int i = 0; i < listData.size() && !flag; i++){
+            aging = listData.get(i);
+            if (aging.getNoNota().equalsIgnoreCase(data.getNoNota()) && data.getMataUang().equalsIgnoreCase(aging.getMataUang())){
+                flag = true;
+            }
+        }
+        return flag;
+    }
 
+    private Aging getSameItem(Aging record, List<Aging> listData){
+        boolean flag = false;
+        Aging dataReturn = null;
+        for (int i = 0; i < listData.size() && !flag; i++){
+            dataReturn = listData.get(i);
+            if (dataReturn.getNoNota().equalsIgnoreCase(record.getNoNota())&& dataReturn.getMataUang().equalsIgnoreCase(record.getMataUang())){
+                flag = true;
+            }
+        }
+        return dataReturn;
+    }
+    private String getMataUangKurs(String mataUangId) {
+        return "0";
+    }
     public String paging(){
         return SUCCESS;
     }

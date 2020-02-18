@@ -99,7 +99,7 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReport_laporanAkuntansi.action" cssClass="form-horizontal">
-                                        <s:hidden name="tipeLaporan" value="neraca_mutasi"/>
+                                        <s:hidden id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">

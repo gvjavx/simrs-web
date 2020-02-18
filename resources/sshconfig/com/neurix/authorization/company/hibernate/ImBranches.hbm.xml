@@ -93,6 +93,9 @@
         <property name="alamatSurat">
             <column name="alamat_surat" sql-type="varchar" length="100"/>
         </property>
+        <property name="logoName">
+            <column name="logo_name" sql-type="varchar" length="100"/>
+        </property>
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>
                 <column name="branch_id"/>

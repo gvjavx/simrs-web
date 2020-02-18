@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="eab8d28e-a176-4781-8e02-a8baf71eee9d">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.7715610000000017"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="93"/>
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="300"/>
+	<property name="ireport.y" value="48"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -23,21 +23,42 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
+	<parameter name="reportParams.reportName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   distinct a.nama_kode_rekening as namaRekening,
   a.kode_rekening as koderekening,
-  c.jumlah_debit as lastdebit,
-  c.jumlah_kredit as lastkredit,
-  c.saldo as lastsaldo,
-  c.posisi as lastposisi,
-  b.jumlah_debit as jumlahdebit,
-  b.jumlah_kredit as jumlahkredit,
-  $P{reportParams.periode} as periode,
-  CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END + CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END as currdebit,
-  CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END + CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END as currdebit,
-  CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END + CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END as currkredit,
-  (
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE c.jumlah_debit END as lastdebit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE c.jumlah_kredit END as lastkredit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE c.saldo END as lastsaldo,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN NULL ELSE c.posisi END as lastposisi,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE b.jumlah_debit END as jumlahdebit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE b.jumlah_kredit END as jumlahkredit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE (
+    CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END + CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
+  ) END as currdebit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE (
+    CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END + CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
+  ) END as currkredit,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN 0 ELSE (
     CASE WHEN c.posisi = 'K' THEN abs(
       (
         (
@@ -58,9 +79,11 @@
       ) - (
         CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
       )
-    )  END
-  ) as currsaldo,
-  (
+    ) END
+  ) END as currsaldo,
+  CASE WHEN length(a.kode_rekening) - length(
+    replace(a.kode_rekening, '.', '')
+  ) / length('.') = 1 THEN NULL ELSE (
     CASE WHEN c.posisi = 'K' THEN CASE WHEN (
       (
         CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
@@ -94,7 +117,7 @@
     ) - (
       CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
     ) > 0 THEN 'D' ELSE NULL END END
-  ) as currposisi
+  ) END as currposisi
 FROM
   (
     SELECT
@@ -110,6 +133,7 @@ FROM
           INNER JOIN im_akun_report_detail rd ON rd.rekening_id = kode.rekening_id
         where
           rd.report_id = 'RPT03'
+          AND rd.flag = 'Y'
         group by
           kode_rekening,
           kode.nama_kode_rekening,
@@ -120,19 +144,39 @@ FROM
   ) a
   LEFT OUTER JOIN (
     select
-      rekening_id as rekening_id,
-      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-      x.branch_id
+      jurnal.*,
+      kr.rekening_id
     from
-      t_jurnal x
-      inner join t_jurnal_detail y on x.no_jurnal = y.no_jurnal
-    where
-      to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode} and
-      branch_id = $P{reportParams.branchId}
-    group by
-      rekening_id,
-      branch_id
+      (
+        select
+          concat(
+            split_part(kr.kode_rekening, '.', 1),
+            '.',
+            split_part(kr.kode_rekening, '.', 2),
+            '.',
+            split_part(kr.kode_rekening, '.', 3)
+          ) AS kode_rekening,
+          sum(y.jumlah_debit * x.kurs) as jumlah_debit,
+          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
+          x.branch_id
+        from
+          it_akun_jurnal x
+          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+          INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id
+        where
+          to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
+          and branch_id = $P{reportParams.branchId}
+        group by
+          branch_id,
+          concat(
+            split_part(kr.kode_rekening, '.', 1),
+            '.',
+            split_part(kr.kode_rekening, '.', 2),
+            '.',
+            split_part(kr.kode_rekening, '.', 3)
+          )
+      ) jurnal
+      INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening
   ) b ON b.rekening_id = a.rekening_id
   LEFT OUTER JOIN (
     select
@@ -144,10 +188,12 @@ FROM
     from
       it_akun_saldo_akhir
     where
-      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month' and branch_id= $P{reportParams.branchId}
+      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
+      and branch_id = $P{reportParams.branchId}
   ) c ON a.rekening_id = c.rekening_id
 order by
-  a.kode_rekening]]>
+  a.kode_rekening
+]]>
 	</queryString>
 	<field name="namarekening" class="java.lang.String"/>
 	<field name="koderekening" class="java.lang.String"/>
@@ -157,10 +203,6 @@ order by
 	<field name="lastposisi" class="java.lang.String"/>
 	<field name="jumlahdebit" class="java.math.BigDecimal"/>
 	<field name="jumlahkredit" class="java.math.BigDecimal"/>
-	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
-	</field>
 	<field name="currdebit" class="java.math.BigDecimal"/>
 	<field name="currkredit" class="java.math.BigDecimal"/>
 	<field name="currsaldo" class="java.math.BigDecimal"/>
@@ -194,7 +236,7 @@ order by
 		<variableExpression><![CDATA[( $V{SUM_last_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_kredit_1} ).add(( $V{SUM_jml_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_jml_kredit_1} ))]]></variableExpression>
 	</variable>
 	<variable name="SUM_last_saldo_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()>1 ?
 	( $F{lastposisi}.equalsIgnoreCase("D")  ?
 		$F{lastsaldo}
 		:
@@ -204,14 +246,14 @@ order by
 	BigDecimal.valueOf(0.0) )]]></variableExpression>
 	</variable>
 	<variable name="SUM_jml_debit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()>1 ?
 	$F{jumlahdebit}
 	:
 	BigDecimal.valueOf(0.0)
 )]]></variableExpression>
 	</variable>
 	<variable name="SUM_jml_kredit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()>1 ?
 	$F{jumlahkredit}
 	:
 	BigDecimal.valueOf(0.0)
@@ -221,7 +263,7 @@ order by
 		<variableExpression><![CDATA[( $V{SUM_last_saldo_2}.compareTo(BigDecimal.valueOf(0.0)) < 0 ? "K" : "D")]]></variableExpression>
 	</variable>
 	<variable name="SUM_currsaldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()==2 ?
+		<variableExpression><![CDATA[(  $F{koderekening}.length() - $F{koderekening}.replace(".", "").length()>1 ?
 	( $F{currposisi}.equalsIgnoreCase("D")  ?
 		$F{currsaldo}
 		:
@@ -340,9 +382,9 @@ order by
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="81" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-1" x="159" y="48" width="242" height="15" uuid="427a7b15-18d0-41f9-a932-b2e24ce800a5"/>
+				<reportElement key="staticText-1" x="159" y="3" width="242" height="15" uuid="427a7b15-18d0-41f9-a932-b2e24ce800a5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -350,25 +392,34 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[IKHTISAR BUKU BESAR PER BUKU BANTU]]></text>
 			</staticText>
-			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-6" x="463" y="53" width="100" height="13" uuid="a49a3a09-b2f6-4510-93be-3221f382552f"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-7" x="463" y="40" width="88" height="13" uuid="ebd2e11a-2d9f-44db-af93-53e30bc09f78"/>
+				<reportElement key="textField-13" x="175" y="14" width="210" height="21" uuid="02e80e88-8e48-45eb-a9ff-2d41cf3ad43d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periode : "+ $P{reportParams.periodeTitle}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="512" y="-13" width="55" height="55" uuid="5606a71b-90c7-477c-b291-9bce5da8d297"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"Nama Report   : " + $P{reportParams.reportName}+"\n"+
+"Periode       : " + $P{reportParams.periodeTitle}+"\n"+
+"Unit          : " + $P{reportParams.kota},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="407" y="-3" width="88" height="13" uuid="5f83397e-2a44-4068-99b9-ab31df96d1a0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -376,25 +427,12 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report" pattern="HH:mm:ss" isBlankWhenNull="false">
-				<reportElement key="textField-8" x="463" y="66" width="100" height="13" uuid="afed816f-81c0-413d-a48a-7f15a765e6bb"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="416" y="40" width="100" height="13" uuid="875a08a5-06c3-4cfc-8584-04e9cd033710"/>
+				<reportElement key="textField-9" x="359" y="-3" width="100" height="13" uuid="1eabdd73-5faf-4b92-8adb-293ff26579e7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -402,12 +440,12 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-10" x="416" y="53" width="100" height="13" uuid="894dab76-6d45-40a9-b8dd-4de8415ed8fa"/>
+				<reportElement key="textField-10" x="359" y="9" width="100" height="13" uuid="532f1d0e-b48a-41e7-9b7f-36d56a5c87d3"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -415,12 +453,12 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-11" x="416" y="66" width="100" height="13" uuid="abf1d897-7738-400b-af28-b2f8d039d6ee"/>
+			<textField evaluationTime="Report" pattern="dd-MM-yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="405" y="9" width="100" height="13" uuid="fa7915b5-49df-4396-9e00-53590512e3a3"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -428,12 +466,25 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="405" y="22" width="100" height="13" uuid="cdbbe0c1-27e7-4565-a71d-c32f2453d725"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-12" x="534" y="40" width="29" height="13" uuid="45212a47-a2f1-45e4-9223-b6fab7b47a3f"/>
+				<reportElement key="textField-12" x="476" y="-3" width="29" height="13" uuid="8795d1a0-93c6-427a-851e-42cea490b781"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -441,25 +492,29 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="175" y="59" width="210" height="21" uuid="02e80e88-8e48-45eb-a9ff-2d41cf3ad43d"/>
+				<reportElement key="textField-11" x="359" y="22" width="100" height="13" uuid="18987604-6af9-4c5f-8d86-67a159e4f80e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Periode : "+ $P{reportParams.periodeTitle}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="0" y="-17" width="95" height="50" uuid="e002f8d9-1d66-409c-a036-1ccd5062ce52"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement key="staticText-10" x="99" y="7" width="469" height="15" uuid="76659f67-87e7-4ca5-8b54-ba240a1024cb"/>
+				<reportElement key="staticText-10" x="0" y="24" width="214" height="15" uuid="e905b939-3e88-4e08-a3d3-e792d23bd5e9"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -467,12 +522,12 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="101" y="22" width="463" height="18" uuid="f58ff48a-b417-4e3d-a93d-813ca7a17c33"/>
+				<reportElement key="textField-13" x="2" y="38" width="208" height="18" uuid="a7d1c367-ce96-494e-8750-7c5c19f0d710"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -480,14 +535,10 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11" isBold="false" pdfFontName="Helvetica"/>
+					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["UNIT : " + $P{reportParams.kota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Unit : " + $P{reportParams.kota}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="1" y="1" width="95" height="50" uuid="3be636a2-22b5-4f63-a611-222db78eeff3"/>
-				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
-			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -516,7 +567,7 @@ order by
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[saldo Bulan Lalu]]></text>
+				<text><![CDATA[Saldo Bulan Lalu]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-14" mode="Transparent" x="275" y="2" width="92" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="af78e6ea-65fe-4e22-834a-872adbe71667"/>
@@ -542,7 +593,7 @@ order by
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[kredit]]></text>
+				<text><![CDATA[Kredit]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-16" mode="Transparent" x="459" y="2" width="108" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="91d982bf-c324-4b4c-9e74-224342f0e6a3"/>
@@ -555,7 +606,7 @@ order by
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[saldo Akhir]]></text>
+				<text><![CDATA[Saldo Akhir]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-2" x="0" y="1" width="567" height="1" uuid="31ab4e5f-2786-480c-9307-febaf0b4e4fe"/>
@@ -980,19 +1031,6 @@ order by
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-18" x="373" y="71" width="178" height="18" uuid="52852ee9-e92d-4b16-97ad-3dce60977807"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.alamatSurat} + ", " + $P{reportParams.tanggal}]]></textFieldExpression>
-			</textField>
 		</band>
 	</summary>
 </jasperReport>
