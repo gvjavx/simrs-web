@@ -1122,9 +1122,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.getListRencanaRawat] Start >>>>>>>>");
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("no_checkup", noCheckup);
-        hsCriteria.put("id_detail_checkup", idDetail);
-        hsCriteria.put("id_kategori", kategori);
+        if (!"".equalsIgnoreCase(noCheckup))
+            hsCriteria.put("no_checkup", noCheckup);
+        if (!"".equalsIgnoreCase(idDetail))
+            hsCriteria.put("id_detail_checkup", idDetail);
+        if (!"".equalsIgnoreCase(kategori))
+            hsCriteria.put("id_kategori", kategori);
 
         List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = rencanaRawatDao.getByCriteria(hsCriteria);
         if (rencanaRawatEntities.size() == 0){

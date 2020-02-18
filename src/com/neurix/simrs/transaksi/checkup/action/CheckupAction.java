@@ -1382,15 +1382,17 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
-        LocalDate now = LocalDate.now();
-        LocalDate birthDay = null;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        birthDay = LocalDate.parse(tglLahir, formatter);
-
         Integer umur = new Integer(0);
-        if ((birthDay != null) && (now != null)) {
-            umur = new Integer(Period.between(birthDay, now).getYears());
+        if (!"".equalsIgnoreCase(tglLahir)){
+            LocalDate now = LocalDate.now();
+            LocalDate birthDay = null;
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            birthDay = LocalDate.parse(tglLahir, formatter);
+
+            if ((birthDay != null) && (now != null)) {
+                umur = new Integer(Period.between(birthDay, now).getYears());
+            }
         }
 
         ResikoJatuh resikoJatuh = new ResikoJatuh();

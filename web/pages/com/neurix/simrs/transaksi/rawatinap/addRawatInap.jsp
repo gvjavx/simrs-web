@@ -4588,7 +4588,7 @@
 
       var suhu = [], nadi = [], nafas = [], label = [];
       dwr.engine.setAsync(true);
-      RawatInapAction.getListGraf(idDetailCheckup, function(response){
+      RawatInapAction.getListGraf(idDetailCheckup, "", function(response){
         console.log(response)
         $.each(response, function(i, item){
           suhu.push([i,item.suhu]);
@@ -4601,52 +4601,16 @@
        * LINE CHART
        * ----------
        */
-      //LINE randomly generated data
+      var line_data1 = { data : suhu, color: '#3a4dc9' }
+      var line_data2 = { data : nadi, color: '#eb4034' }
+      var line_data3 = { data : nafas, color: '#6b6b6b' }
 
-      // var sin = [], cos = []
-      // for (var i = 0; i < 14; i += 0.5) {
-      //   sin.push([i, Math.sin(i)])
-      //   cos.push([i, Math.cos(i)])
-      // }
-      var line_data1 = {
-        data : suhu,
-        color: '#3a4dc9'
-      }
-      var line_data2 = {
-        data : nadi,
-        color: '#eb4034'
-      }
-      var line_data3 = {
-        data : nafas,
-        color: '#6b6b6b'
-      }
       $.plot('#line-chart', [line_data1, line_data2, line_data3], {
-        grid  : {
-          hoverable  : true,
-          borderColor: '#f3f3f3',
-          borderWidth: 1,
-          tickColor  : '#f3f3f3'
-        },
-        series: {
-          shadowSize: 0,
-          lines     : {
-            show: true
-          },
-          points    : {
-            show: true
-          }
-        },
-        lines : {
-          fill : false,
-          color: ['#3c8dbc', '#f56954']
-        },
-        yaxis : {
-          show: true
-        },
-        xaxis : {
-          show: true,
-          ticks: label
-        }
+        grid  : { hoverable  : true, borderColor: '#f3f3f3', borderWidth: 1, tickColor  : '#f3f3f3'},
+        series: { shadowSize: 0, lines : { show: true }, points : { show: true } },
+        lines : { fill : false, color: ['#3c8dbc', '#f56954'] },
+        yaxis : { show: true },
+        xaxis : { show: true, ticks: label }
       })
       //Initialize tooltip on hover
       $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
@@ -4666,7 +4630,6 @@
         } else {
           $('#line-chart-tooltip').hide()
         }
-
       })
       /* END LINE CHART */
       });

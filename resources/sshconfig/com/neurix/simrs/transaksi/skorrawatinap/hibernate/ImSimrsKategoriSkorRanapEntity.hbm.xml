@@ -35,5 +35,8 @@
         <property name="head">
             <column name="head" sql-type="varchar" length="10" not-null="false" />
         </property>
+        <property name="type">
+            <column name="type" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

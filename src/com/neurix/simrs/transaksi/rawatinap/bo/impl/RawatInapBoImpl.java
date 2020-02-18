@@ -446,9 +446,9 @@ public class RawatInapBoImpl implements RawatInapBo {
     }
 
     @Override
-    public List<MonVitalSign> getListGraf(String id) {
+    public List<MonVitalSign> getListGraf(MonVitalSign bean) {
 
-        List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(id);
+        List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(bean);
         if (monVitalSigns.size() > 0){
             for (MonVitalSign monVitalSign : monVitalSigns){
 //                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
