@@ -1164,6 +1164,8 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
             </div>
             <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs">
@@ -1172,14 +1174,14 @@
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
                   </ul>
-                  <div class="tab-content">
-                    <table class="table">
+                  <div class="tab-content" id="list-body-rekam-medic">
+                    <%-- <table class="table">
                       <tbody id="list-body-rekam-medic">
                       </tbody>
-                    </table>
-                    <input type="hidden" id="rm-no-checkup" name="" value="">
+                    </table> --%>
                     <!-- /.tab-pane -->
                   </div>
+                  <input type="hidden" name="" id="rm-no-checkup">
                   <!-- /.tab-content -->
                 </div>
                 <!-- nav-tabs-custom -->
@@ -1488,6 +1490,7 @@
     }
 
     function initRekamMedic() {
+      console.log("initRekamMedic ==> klik");
         var idPasien = $("#id_pasien").val();
         var table = "";
         var namaPasien = "";
@@ -1532,11 +1535,27 @@
 
     function viewDetailRekamMedic(noCheckup){
       console.log("viewDetailRekamMedic ==> klik");
+      var str = "";
+      CheckupAction.getDataCheckupPasien(noCheckup, function(response){
+        var item = response;
+        str = "<div class=\"row\">"+
+              "<div class='col-md-3'>"+item.namaPasien+"</div>"+
+              "<div class='col-md-7'>"+
+              "<p> Diagnosa terakhir : "+item.diagnosa+"</p>"+
+              "<p> Tanggal Masuk : "+item.stTglMasuk+"</p>"+
+              "<p> Tiagnosa Keluar : "+item.stTglKeluar+"</p>"+
+              "</div>"+
+              "</div>";
+        $("#head-detail-rm").html(str);
+      });
+
       $("#rm-no-checkup").val(noCheckup);
+      console.log(noCheckup);
       $("#modal-detail-rekam-medic").modal("show");
     }
 
     function viewDetailRekamMedicByKategori(kategori){
+      var noCheckup =   $("#rm-no-checkup").val();
       if (kategori == "ri") {
         CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
           // console.log(response);
@@ -1552,24 +1571,114 @@
         });
       } else {
         $("#list-body-rekam-medic").html("");
-        if (kategori == "mon") {
 
-          str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+        var par = [];
+        var str = "";
+        if (kategori == "mon") {
+          par.push({'label': "Observasi Cairan", 'kat': "cairan"},
+                   {'label': "Observasi Vital Sign", 'kat':"vitalsign"},
+                   {'label': "Observasi pemberian obat parenteral", 'kat':"parenteral"},
+                   {'label': "Observasi pemberian obat nonparenteral", 'kat':"nonparenteral"}
+                  );
+
+          $.each(par, function(i, item) {
+            str += "<div class='row'>"+
+                    "<div class='col-md-8'>"+item.label+"</div>"+
+                    "<div class='col-md-4 pill-right'><button class=\"btn btn-primary\" onclick=\"showDetailMonitoringRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> View</button></div>"+
+                    "</div>"+
+                    "<table class=\"table table-stripped\">"+
+                    "<div id=\"body-mon-rm-"+i+"\"></div>"
+                    "</table>";
+            // str += "<div class=\"box box-default collapsed-box\">"+
+            //           "<div class=\"box-header with-border\">"+
+            //             "<h3 class=\"box-title\">"+item.label+"</h3>"+
+            //             "<div class=\"box-tools pull-right\">"+
+            //               "<button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\" onclick=\"showDetailMonitoringRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"><i class=\"fa fa-plus\"></i></button>"+
+            //               // "<button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-remove\"></i></button>"+
+            //             "</div>"+
+            //           "</div>"+
+            //           "<div class=\"box-body\" style=\"display: none;\">"+
+            //           "</div>"+
+            //           "<div class=\"box-footer\" style=\"display: none;\">"+
+            //           "</div>"+
+            //         "</div>"+
+            //         "<table id=\"body-mon-rm-"+i+"\" class=\"table table-stripped\">"+
+            //         "</table>";
+          });
+
           $("#list-body-rekam-medic").html(str);
+
+          // str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+          //           "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+          //           "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+          //           "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          // $("#list-body-rekam-medic").html(str);
 
         } else if (kategori == "igd") {
-          str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                    "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-          $("#list-body-rekam-medic").html(str);
+          // str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+          //           "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+          //           "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+          //           "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          //           "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          // $("#list-body-rekam-medic").html(str);
         } else {
 
         }
+      }
+    }
+
+    function showDetailMonitoringRm(id, noCheckup, kategori){
+      console.log("showDetailMonitoringRm ==> klik");
+      console.log(id+"-"+noCheckup+"-"+kategori);
+
+      var str = "";
+      var headstr = "";
+      var upthead = "<thead>";
+      var downthead = "</thead>";
+      var uptbody = "<tbody>";
+      var downtbody = "</tbody>";
+      if (kategori == "cairan") {
+        RawatInapAction.getListMonCairan(noCheckup, "", "", function(response){
+          console.log(response);
+          if (response.length > 0) {
+
+            strhead = upthead +
+                      "<tr>"+
+                      "<td>tgl</td>"+
+                      "<td>Macam Cairan</td>"+
+                      "<td>Melalui</td>"+
+                      "<td>jumlah</td>"+
+                      "<td>Jam Mulai</td>"+
+                      "<td>Jam Selesai</td>"+
+                      "<td>Cek Tambahan Obat</td>"+
+                      "<td>Sisa</td>"+
+                      "<td>Jam Ukur Buang</td>"+
+                      "<td>Dari</td>"+
+                      "<td>Balance Cairan</td>"+
+                      "<td>Keterangan</td>"+
+                      "<td>Created Who</td>"+
+                      "</tr>" + downthead;
+
+            $.each(response, function(i, item) {
+              str += "<tr>"+
+                    "<td>"+item.stDate+"</td>"+
+                    "<td>"+item.macamCairan+"</td>"+
+                    "<td>"+item.melalui+"</td>"+
+                    "<td>"+item.jumlah+"</td>"+
+                    "<td>"+item.jamMulai+"</td>"+
+                    "<td>"+item.jamSelesai+"</td>"+
+                    "<td>"+item.cekTambahanObat+"</td>"+
+                    "<td>"+item.sisa+"</td>"+
+                    "<td>"+item.jamUkurBuang+"</td>"+
+                    "<td>"+item.dari+"</td>"+
+                    "<td>"+item.balanceCairan+"</td>"+
+                    "<td>"+item.keterangan+"</td>"+
+                    "<td>"+item.createdWho+"</td>"+
+                    "</tr>";
+            });
+          }
+          $("#body-"+id+"").html(headstr+uptbody+str+downtbody);
+        });
       }
     }
 

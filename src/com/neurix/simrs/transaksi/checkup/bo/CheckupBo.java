@@ -30,7 +30,7 @@ public interface CheckupBo {
     public void saveEditAlergi(CheckupAlergi bean) throws GeneralBOException;
     public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) throws GeneralBOException;
     public AlertPasien getAlertPasien(String idPasien, String branchId) throws GeneralBOException;
-    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException;
+    public List<AlertPasien> listOfRekamMedic(HeaderCheckup bean) throws GeneralBOException;
     public ItSimrsPemeriksaanFisikEntity getEntityPemeriksaanFisikByNoCheckup(String noCheckup) throws GeneralBOException;
     public void savePemeriksaanFisik(PemeriksaanFisik bean) throws GeneralBOException;
     public ResikoJatuhResponse getResikojatuh(ResikoJatuh bean) throws GeneralBOException;

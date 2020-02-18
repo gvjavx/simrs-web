@@ -1204,11 +1204,14 @@ public class CheckupAction extends BaseMasterAction {
 
         List<AlertPasien> alertPasienList = new ArrayList<>();
 
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setIdPasien(idPasien);
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         try {
-            alertPasienList = checkupBo.listOfRekamMedic(idPasien);
+            alertPasienList = checkupBo.listOfRekamMedic(headerCheckup);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.getListRekamMedic] ERROR " + e.getMessage());
         }
@@ -1813,5 +1816,19 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListKategoriSkorRanapByHead(head);
+    }
+
+    public AlertPasien getDataCheckupPasien(String noCheckup){
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        List<AlertPasien> alertPasienList = checkupBo.listOfRekamMedic(headerCheckup);
+        if (alertPasienList.size() > 0){
+            return alertPasienList.get(0);
+        }
+        return new AlertPasien();
     }
 }

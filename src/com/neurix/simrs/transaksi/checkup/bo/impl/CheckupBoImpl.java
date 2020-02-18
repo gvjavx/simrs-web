@@ -904,13 +904,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException {
+    public List<AlertPasien> listOfRekamMedic(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.listOfRekamMedic] Start >>>>>>>>");
 
         List<ItSimrsHeaderChekupEntity> headerChekupEntities = null;
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pasien", idPasien);
-        hsCriteria.put("tgl_keluar_not_null", "Y");
+        if (bean.getNoCheckup() != null){
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        } else {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+            hsCriteria.put("tgl_keluar_not_null", "Y");
+        }
 
         try {
             headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
