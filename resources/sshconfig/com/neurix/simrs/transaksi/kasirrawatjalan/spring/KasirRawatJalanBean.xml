@@ -9,6 +9,7 @@
     />
 
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
     />
 
     <bean id="kasirRawatJalanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -26,7 +27,7 @@
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
-                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListAllTindakan">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>

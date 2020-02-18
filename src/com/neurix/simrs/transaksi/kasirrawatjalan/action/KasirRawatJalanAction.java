@@ -5,8 +5,12 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -105,6 +109,27 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         logger.info("[KasirRawatJalanAction.initForm] end process <<<");
         return "search";
+    }
+
+    public List<RiwayatTindakan> getListTindakanRawat(String idDetail) {
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            List<RiwayatTindakan> result = new ArrayList<>();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+            RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+            tindakanRawat.setIdDetailCheckup(idDetail);
+            tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                riwayatTindakanList = kasirRawatJalanBo.getListAllTindakan(tindakanRawat);
+            } catch (GeneralBOException e) {
+                logger.error("[VerifikatorAction.getListTindakanRawat] Error when get data tindakan rawat ", e);
+            }
+        }
+        return riwayatTindakanList;
+
     }
 
     @Override

@@ -102,7 +102,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
                 headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
                 headerDetailCheckup.setIdDetailCheckup(obj[7].toString());
-                headerDetailCheckup.setNoSep(obj[8] == null ? "" : obj[9].toString());
+                headerDetailCheckup.setNoSep(obj[8] == null ? "" : obj[8].toString());
                 if(obj[9] != null){
                     headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
                 }

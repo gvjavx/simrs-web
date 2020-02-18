@@ -59,6 +59,7 @@ import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Or;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.json.JSONException;
@@ -488,6 +489,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
 
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
 
@@ -497,10 +500,10 @@ public class CheckupDetailAction extends BaseMasterAction {
             logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
         }
 
-        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+        BigInteger tarifTindakan = new BigInteger(String.valueOf(0));
 
         try {
-            totalTarif = checkupDetailBo.getSumOfTindakanByNoCheckup(idDetailCheckup);
+            tarifTindakan = checkupDetailBo.getSumOfTindakanByNoCheckup(idDetailCheckup);
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
         }
@@ -512,6 +515,27 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 BigDecimal tarifResep = new BigDecimal(String.valueOf(0));
                 BigDecimal tarifLab = new BigDecimal(String.valueOf(0));
+                BigDecimal tarifGizi = new BigDecimal(String.valueOf(0));
+
+
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setNoCheckup(detailCheckup.getNoCheckup());
+                List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+
+                try {
+                    headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+                } catch (GeneralBOException e) {
+                    logger.error("Gound Error" + e.getMessage());
+                }
+
+                if (headerCheckupList.size() > 0) {
+
+                    headerCheckup = headerCheckupList.get(0);
+
+                    if (headerCheckup != null) {
+                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+                    }
+                }
 
                 List<PeriksaLab> periksaLabList = new ArrayList<>();
                 PeriksaLab periksaLab = new PeriksaLab();
@@ -525,34 +549,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
 
                 if (periksaLabList.size() > 0) {
+
                     for (PeriksaLab entity : periksaLabList) {
 
-                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-                        RiwayatTindakan tindakan = new RiwayatTindakan();
-                        tindakan.setIdTindakan(entity.getIdPeriksaLab());
+                        List<Lab> labList = new ArrayList<>();
+                        Lab lab = new Lab();
+                        lab.setIdLab(entity.getIdLab());
 
                         try {
-                            riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
-                        } catch (HibernateException e) {
-                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                            labList = labBo.getByCriteria(lab);
+                        } catch (GeneralBOException e) {
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tarif tindakan :" + e.getMessage());
                         }
 
-                        if (riwayatTindakanList.isEmpty()) {
-                            List<Lab> labList = new ArrayList<>();
-                            Lab lab = new Lab();
-                            lab.setIdLab(entity.getIdLab());
-
-                            try {
-                                labList = labBo.getByCriteria(lab);
-                            } catch (GeneralBOException e) {
-                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tarif tindakan :" + e.getMessage());
-                            }
-
-                            if (labList.size() > 0) {
-                                lab = labList.get(0);
-                                if (lab != null) {
-                                    tarifLab = tarifLab.add(lab.getTarif());
-                                }
+                        if (labList.size() > 0) {
+                            lab = labList.get(0);
+                            if (lab != null) {
+                                tarifLab = tarifLab.add(lab.getTarif());
                             }
                         }
                     }
@@ -571,40 +584,61 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if (resepList.size() > 0) {
                     for (PermintaanResep entity : resepList) {
 
-                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-                        RiwayatTindakan tindakan = new RiwayatTindakan();
-                        tindakan.setIdTindakan(entity.getIdPermintaanResep());
+                        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+                        TransaksiObatDetail detail = new TransaksiObatDetail();
+                        detail.setIdPermintaanResep(entity.getIdPermintaanResep());
 
                         try {
-                            riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
-                        } catch (HibernateException e) {
-                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                            obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(detail);
+                        } catch (GeneralBOException e) {
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
                         }
 
-                        if (riwayatTindakanList.isEmpty()) {
+                        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+                        tarifResep = tarifResep.add(new BigDecimal(hitungTotalResep));
+                    }
+                }
 
-                            List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
-                            TransaksiObatDetail detail = new TransaksiObatDetail();
-                            detail.setIdPermintaanResep(entity.getIdPermintaanResep());
+                RawatInap rawatInap = new RawatInap();
+                rawatInap.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                List<RawatInap> rawatInapList = new ArrayList<>();
 
-                            try {
-                                obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(detail);
-                            } catch (HibernateException e) {
-                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                try {
+                    rawatInapList = rawatInapBo.getByCriteria(rawatInap);
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error" + e.getMessage());
+                }
+
+                if (rawatInapList.size() > 0) {
+
+                    rawatInap = rawatInapList.get(0);
+                    if (rawatInap != null) {
+
+                        OrderGizi orderGizi = new OrderGizi();
+                        orderGizi.setIdRawatInap(rawatInap.getIdRawatInap());
+                        List<OrderGizi> giziList = new ArrayList<>();
+
+                        try {
+                            giziList = orderGiziBo.getByCriteria(orderGizi);
+                        } catch (GeneralBOException e) {
+                            logger.error("Found Error " + e.getMessage());
+                        }
+
+                        if (giziList.size() > 0) {
+
+                            for (OrderGizi gizi : giziList) {
+                                tarifGizi = tarifGizi.add(gizi.getTarifTotal());
                             }
-
-                            BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
-                            tarifResep = tarifResep.add(new BigDecimal(hitungTotalResep));
                         }
                     }
                 }
 
-                BigDecimal totalTindakan = tarifLab.add(tarifResep).add(new BigDecimal(totalTarif));
+                BigDecimal totalTarifTindakan = tarifLab.add(tarifResep).add(new BigDecimal(tarifTindakan)).add(tarifGizi);
 
                 //=======START HITUNG TARIF TINDAKAN==========================
 
                 detailCheckup.setTarifBpjs(detailCheckup.getTarifBpjs());
-                detailCheckup.setTarifTindakan(totalTindakan);
+                detailCheckup.setTarifTindakan(totalTarifTindakan);
 
                 //=======END HITUNG TARIF TINDAKAN==========================
             }
@@ -2222,6 +2256,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setCreatedDate(updateTime);
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
+                        riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);
@@ -2285,6 +2320,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setCreatedDate(updateTime);
                                 riwayatTindakan.setLastUpdate(updateTime);
                                 riwayatTindakan.setLastUpdateWho(user);
+                                riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
 
                                 try {
                                     riwayatTindakanBo.saveAdd(riwayatTindakan);
@@ -2348,6 +2384,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setCreatedDate(updateTime);
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
+                        riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);
@@ -2362,17 +2399,17 @@ public class CheckupDetailAction extends BaseMasterAction {
             rawatInap.setIdDetailCheckup(idDetail);
             List<RawatInap> rawatInapList = new ArrayList<>();
 
-            try{
+            try {
                 rawatInapList = rawatInapBo.getByCriteria(rawatInap);
-            }catch (GeneralBOException e){
-                logger.error("Found Error"+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
             }
 
-            if(rawatInapList.size() > 0){
+            if (rawatInapList.size() > 0) {
 
                 rawatInap = rawatInapList.get(0);
 
-                if(rawatInap != null){
+                if (rawatInap != null) {
 
                     OrderGizi orderGizi = new OrderGizi();
                     orderGizi.setIdRawatInap(rawatInap.getIdRawatInap());
@@ -2380,13 +2417,13 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     try {
                         giziList = orderGiziBo.getByCriteria(orderGizi);
-                    }catch (GeneralBOException e){
-                        logger.error("Found Error"+e.getMessage());
+                    } catch (GeneralBOException e) {
+                        logger.error("Found Error" + e.getMessage());
                     }
 
-                    if(giziList.size() > 0){
+                    if (giziList.size() > 0) {
 
-                        for (OrderGizi gizi: giziList){
+                        for (OrderGizi gizi : giziList) {
 
                             List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
                             RiwayatTindakan tindakan = new RiwayatTindakan();
@@ -2413,6 +2450,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setCreatedDate(updateTime);
                                 riwayatTindakan.setLastUpdate(updateTime);
                                 riwayatTindakan.setLastUpdateWho(user);
+                                riwayatTindakan.setTanggalTindakan(gizi.getCreatedDate());
 
                                 try {
                                     riwayatTindakanBo.saveAdd(riwayatTindakan);

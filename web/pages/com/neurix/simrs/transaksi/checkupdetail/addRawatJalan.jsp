@@ -78,13 +78,16 @@
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
-                                    <tr>
-                                        <td width="45%"><b>No SEP</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="headerDetailCheckup.noSep"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                        <tr>
+                                            <td width="45%"><b>No SEP</b></td>
+                                            <td style="vertical-align: middle;">
+                                                <table>
+                                                    <s:label cssClass="label label-success" name="headerDetailCheckup.noSep"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -1467,8 +1470,9 @@
     }
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
-            if (response.jenisTransaksi == "bpjs") {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+            console.log(response);
+            if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 

@@ -1,4 +1,41 @@
 package com.neurix.simrs.transaksi.kasirrawatinap.bo.impl;
 
-public class KasirRawatInapBoImpl {
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.kasirrawatinap.bo.KasirRawatInapBo;
+import com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class KasirRawatInapBoImpl implements KasirRawatInapBo {
+
+    private static transient Logger logger = Logger.getLogger(KasirRawatInapBoImpl.class);
+    private RiwayatTindakanDao riwayatTindakanDao;
+
+    public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
+        this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    @Override
+    public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException {
+        logger.info("[KasirRawatInapBoImpl.getListAllTindakan] START process <<<");
+        List<RiwayatTindakan> result = new ArrayList<>();
+        if(bean != null){
+            try {
+                result = riwayatTindakanDao.getListTindakan(bean);
+            }catch (HibernateException e){
+                logger.error("[KasirRawatInapBoImpl.getListAllTindakan] Error when save update data flag approve tindakan rawat ", e);
+            }
+        }
+        logger.info("[KasirRawatInapBoImpl.getListAllTindakan] END process <<<");
+        return result;
+    }
 }

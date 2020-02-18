@@ -108,7 +108,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "dt.status_periksa,\n" +
                     "st.keterangan,\n" +
                     "dt.keterangan_selesai,\n" +
-                    "hd.klaim_bpjs_flag\n" +
+                    "dt.klaim_bpjs_flag, dt.status_bayar\n" +
                     "FROM \n" +
                     "it_simrs_header_checkup hd\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
@@ -170,6 +170,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
                     headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+                    headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
@@ -188,12 +189,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                     jalan = alamatLengkap;
                                 }
 
-                                headerDetailCheckup.setKecamatan(objDesa[1].toString());
+                                headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+                                headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
 
                             }
                         }
                     }
 
+                    headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
                     headerDetailCheckup.setAlamat(jalan);
                     checkupList.add(headerDetailCheckup);
                 }
@@ -250,32 +253,57 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
 
 
-            String SQL = "SELECT \n" +
-                    "b.id_detail_checkup, \n" +
-                    "a.no_checkup, \n" +
-                    "a.id_pasien,\n" +
-                    "a.nama,\n" +
-                    "a.jalan,\n" +
-                    "b.created_date,\n" +
-                    "a.desa_id,\n" +
-                    "b.status_periksa,\n" +
-                    "c.keterangan,\n" +
-                    "b.keterangan_selesai,\n" +
-                    "a.klaim_bpjs_flag\n" +
-                    "FROM it_simrs_header_checkup a\n" +
-                    "INNER JOIN (\n" +
-                    "SELECT no_checkup, tgl_antrian, id_detail_checkup, status_periksa, id_pelayanan, created_date, keterangan_selesai,\n" +
-                    "rank() OVER (PARTITION BY no_checkup ORDER BY created_date ASC) as rank\n" +
-                    "FROM it_simrs_header_detail_checkup\n" +
-                    ") b ON a.no_checkup = b.no_checkup \n" +
-                    "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
-                    "WHERE a.branch_id LIKE :branchId \n" +
-                    "AND b.id_pelayanan LIKE :idPelayanan \n" +
-                    "AND a.id_pasien LIKE :idPasien \n" +
-                    "AND a.nama LIKE :nama \n" +
-                    "AND a.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                    "AND b.status_periksa LIKE :status\n" +
-                    "AND b.rank = 1\n";
+//            String SQL = "SELECT \n" +
+//                    "b.id_detail_checkup, \n" +
+//                    "a.no_checkup, \n" +
+//                    "a.id_pasien,\n" +
+//                    "a.nama,\n" +
+//                    "a.jalan,\n" +
+//                    "b.created_date,\n" +
+//                    "a.desa_id,\n" +
+//                    "b.status_periksa,\n" +
+//                    "c.keterangan,\n" +
+//                    "b.keterangan_selesai,\n" +
+//                    "b.klaim_bpjs_flag\n" +
+//                    "FROM it_simrs_header_checkup a\n" +
+//                    "INNER JOIN (\n" +
+//                    "SELECT no_checkup, tgl_antrian, id_detail_checkup, status_periksa, id_pelayanan, created_date, keterangan_selesai,\n" +
+//                    "rank() OVER (PARTITION BY no_checkup ORDER BY created_date ASC) as rank\n" +
+//                    "FROM it_simrs_header_detail_checkup\n" +
+//                    ") b ON a.no_checkup = b.no_checkup \n" +
+//                    "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
+//                    "WHERE a.branch_id LIKE :branchId \n" +
+//                    "AND b.id_pelayanan LIKE :idPelayanan \n" +
+//                    "AND a.id_pasien LIKE :idPasien \n" +
+//                    "AND a.nama LIKE :nama \n" +
+//                    "AND a.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+//                    "AND b.status_periksa LIKE :status\n" +
+//                    "AND b.rank = 1\n";
+            String SQL = "\n" +
+                    "SELECT \n" +
+                    "dt.id_detail_checkup,\n" +
+                    "hd.no_checkup,\n" +
+                    "hd.id_pasien,\n" +
+                    "hd.nama,\n" +
+                    "hd.jalan,\n" +
+                    "hd.created_date,\n" +
+                    "hd.desa_id,\n" +
+                    "dt.status_periksa,\n" +
+                    "st.keterangan,\n" +
+                    "dt.keterangan_selesai,\n" +
+                    "dt.klaim_bpjs_flag, dt.status_bayar\n" +
+                    "FROM \n" +
+                    "it_simrs_header_checkup hd\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
+                    "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
+                    "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "WHERE ri.id_detail_checkup is null\n" +
+                    "AND hd.branch_id LIKE :branchId \n" +
+                    "AND hd.id_pasien LIKE :idPasien \n" +
+                    "AND hd.nama LIKE :nama \n" +
+                    "AND dt.id_pelayanan LIKE :idPelayanan \n" +
+                    "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
+                    "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
@@ -428,7 +456,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
     public BigInteger sumOfTindakanByNoCheckup(String idDetailCheckup){
 
-        String SQL = "SELECT SUM(a.tarif_total) as tota_tarif \n" +
+        String SQL = "SELECT b.id_detail_checkup, SUM(a.tarif_total) as total_tarif \n" +
                 "FROM it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "WHERE b.id_detail_checkup LIKE :idDetail\n" +

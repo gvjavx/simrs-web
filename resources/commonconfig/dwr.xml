@@ -382,7 +382,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"/>
       </create>
 
-      <!--Permintaan Vendor-->
+      <!--Verificator-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"/>
       </create>
@@ -395,6 +395,16 @@
       <!--Permintaan Gizi-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.permintaangizi.action.PermintaanGiziAction"/>
+      </create>
+
+      <!--Kasir Rawat Jalan-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction"/>
+      </create>
+
+      <!--Kasir Rawat Inap-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"/>
       </create>
 
       <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>

@@ -1,15 +1,16 @@
 package com.neurix.simrs.transaksi.kasirrawatinap.action;
 
 import com.neurix.common.action.BaseMasterAction;
-import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.kasirrawatinap.bo.KasirRawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -110,6 +111,29 @@ public class KasirRawatInapAction extends BaseMasterAction {
         logger.info("[KasirRawatInapAction.initForm] end process <<<");
 
         return "search";
+    }
+
+    public List<RiwayatTindakan> getListTindakanRawat(String idDetail) {
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            List<RiwayatTindakan> result = new ArrayList<>();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            KasirRawatInapBo kasirRawatInapBo = (KasirRawatInapBo) ctx.getBean("kasirRawatInapBoProxy");
+
+            RiwayatTindakan tindakanRawat = new RiwayatTindakan();
+            tindakanRawat.setIdDetailCheckup(idDetail);
+            tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                riwayatTindakanList = kasirRawatInapBo.getListAllTindakan(tindakanRawat);
+            } catch (GeneralBOException e) {
+                logger.error("[VerifikatorAction.getListTindakanRawat] Error when get data tindakan rawat ", e);
+            }
+        }
+
+        return riwayatTindakanList;
+
     }
 
     @Override

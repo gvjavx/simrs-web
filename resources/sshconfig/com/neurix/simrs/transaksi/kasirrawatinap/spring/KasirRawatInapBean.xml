@@ -5,9 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="kasirRawatInapAction" class="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"
+          p:rawatInapBoProxy-ref="rawatInapBoProxy"
     />
 
     <bean id="kasirRawatInapBo" class="com.neurix.simrs.transaksi.kasirrawatinap.bo.impl.KasirRawatInapBoImpl"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
     />
 
     <bean id="kasirRawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -25,7 +27,7 @@
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
-                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListAllTindakan">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
