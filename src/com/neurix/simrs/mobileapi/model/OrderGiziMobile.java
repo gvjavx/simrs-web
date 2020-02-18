@@ -11,7 +11,7 @@ public class OrderGiziMobile {
 
     private String idOrderGizi;
     private String idRawatInap;
-    private String tglOrder;
+    private String  tglOrder;
     private String dietPagi;
     private String bentukMakanPagi;
     private String dietSiang;
@@ -24,6 +24,8 @@ public class OrderGiziMobile {
     private String createdWho;
     private String lastUpdate;
     private String lastUpdateWho;
+    private String approveFlag;
+    private String diterimaFlag;
 
     public String getIdOrderGizi() {
         return idOrderGizi;
@@ -43,10 +45,6 @@ public class OrderGiziMobile {
 
     public String getTglOrder() {
         return tglOrder;
-    }
-
-    public void setTglOrder(String tglOrder) {
-        this.tglOrder = tglOrder;
     }
 
     public String getDietPagi() {
@@ -117,6 +115,10 @@ public class OrderGiziMobile {
         return createdDate;
     }
 
+    public void setTglOrder(String tglOrder) {
+        this.tglOrder = tglOrder;
+    }
+
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
@@ -143,5 +145,21 @@ public class OrderGiziMobile {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
     }
 }

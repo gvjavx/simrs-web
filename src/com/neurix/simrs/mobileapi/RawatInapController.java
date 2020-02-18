@@ -8,16 +8,23 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.mobileapi.model.*;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
+import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
+import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
+import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -53,6 +60,9 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<DokterTeamMobile> listOfDokterTeam = new ArrayList<>();
     private Collection<OrderGiziMobile> listOfOrderGizi = new ArrayList<>();
     private Collection<MonCairanMobile> listOfMonCairanMobile = new ArrayList<>();
+    private Collection<ObatMobile> listOfObatParenteral = new ArrayList<>();
+    private Collection<MonVitalSignMobile> listOfMonVitalSign = new ArrayList<>();
+    private Collection<MonPemberianObatMobile> listOfMonPemberianObat = new ArrayList<>();
 
     private RawatInapMobile model = new RawatInapMobile();
     private CrudResponse crudResponse;
@@ -66,6 +76,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private DiagnosaBo diagnosaBoProxy;
     private DiagnosaRawatBo diagnosaRawatBoProxy;
     private TeamDokterBo teamDokterBoProxy;
+    private OrderGiziBo orderGiziBoProxy;
 
     private String idPasien;
     private String namaPasien;
@@ -92,7 +103,94 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idKategoriTindakan;
     private String idDiagnosa;
 
+    private String idRawatInap;
+    private String idOrderGizi;
+
+    private String kategori;
+
     private String jsonMonCairan;
+    private String jsonMonVitalSign;
+    private String jsonMonPemberianObat;
+
+    public Collection<MonPemberianObatMobile> getListOfMonPemberianObat() {
+        return listOfMonPemberianObat;
+    }
+
+    public void setListOfMonPemberianObat(Collection<MonPemberianObatMobile> listOfMonPemberianObat) {
+        this.listOfMonPemberianObat = listOfMonPemberianObat;
+    }
+
+    public String getJsonMonPemberianObat() {
+        return jsonMonPemberianObat;
+    }
+
+    public void setJsonMonPemberianObat(String jsonMonPemberianObat) {
+        this.jsonMonPemberianObat = jsonMonPemberianObat;
+    }
+
+    public Collection<ObatMobile> getListOfObatParenteral() {
+        return listOfObatParenteral;
+    }
+
+    public Collection<MonVitalSignMobile> getListOfMonVitalSign() {
+        return listOfMonVitalSign;
+    }
+
+    public void setListOfMonVitalSign(Collection<MonVitalSignMobile> listOfMonVitalSign) {
+        this.listOfMonVitalSign = listOfMonVitalSign;
+    }
+
+    public String getJsonMonVitalSign() {
+        return jsonMonVitalSign;
+    }
+
+    public void setJsonMonVitalSign(String jsonMonVitalSign) {
+        this.jsonMonVitalSign = jsonMonVitalSign;
+    }
+
+    public void setListOfObatParenteral(Collection<ObatMobile> listOfObatParenteral) {
+        this.listOfObatParenteral = listOfObatParenteral;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
+
+    public String getIdOrderGizi() {
+        return idOrderGizi;
+    }
+
+    public void setIdOrderGizi(String idOrderGizi) {
+        this.idOrderGizi = idOrderGizi;
+    }
+
+    public OrderGiziBo getOrderGiziBoProxy() {
+        return orderGiziBoProxy;
+    }
+
+    public void setOrderGiziBoProxy(OrderGiziBo orderGiziBoProxy) {
+        this.orderGiziBoProxy = orderGiziBoProxy;
+    }
+
+    public CrudResponse getCrudResponse() {
+        return crudResponse;
+    }
+
+    public void setCrudResponse(CrudResponse crudResponse) {
+        this.crudResponse = crudResponse;
+    }
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
 
     public String getJsonMonCairan() {
         return jsonMonCairan;
@@ -441,6 +539,14 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfOrderGizi;
             case "getMonCairan":
                 return listOfMonCairanMobile;
+            case "getListObatParenteral":
+                return listOfObatParenteral;
+            case "getListObatNonParenteral":
+                return  listOfObatParenteral;
+            case "getMonVitalSign":
+                return listOfMonVitalSign;
+            case "getListPemberianObat":
+                return listOfMonPemberianObat;
             default: return model;
         }
     }
@@ -450,10 +556,22 @@ public class RawatInapController implements ModelDriven<Object> {
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         MonCairanMobile addMonCairan = new MonCairanMobile();
+        MonVitalSignMobile addMonVitalSign = new MonVitalSignMobile();
+        MonPemberianObatMobile addMonPemberianObat = new MonPemberianObatMobile();
 
         if (jsonMonCairan != null && !jsonMonCairan.isEmpty()){
             Gson g = new Gson();
             addMonCairan = g.fromJson(jsonMonCairan, MonCairanMobile.class);
+        }
+
+        if (jsonMonVitalSign != null && !jsonMonVitalSign.isEmpty()){
+            Gson g = new Gson();
+            addMonVitalSign = g.fromJson(jsonMonVitalSign, MonVitalSignMobile.class);
+        }
+
+        if (jsonMonPemberianObat != null && !jsonMonPemberianObat.isEmpty()){
+            Gson g = new Gson();
+            addMonPemberianObat = g.fromJson(jsonMonPemberianObat, MonPemberianObatMobile.class);
         }
 
         if (action.equalsIgnoreCase("getSearchRawatInap")){
@@ -741,7 +859,163 @@ public class RawatInapController implements ModelDriven<Object> {
             List<OrderGizi> result = new ArrayList<>();
 
             OrderGizi orderGizi = new OrderGizi();
+            orderGizi.setIdRawatInap(idRawatInap);
 
+            try {
+                result = orderGiziBoProxy.getByCriteria(orderGizi);
+            } catch (GeneralBOException e) {
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (OrderGizi item : result){
+                    OrderGiziMobile orderGiziMobile = new OrderGiziMobile();
+                    orderGiziMobile.setIdOrderGizi(item.getIdOrderGizi());
+                    orderGiziMobile.setDietPagi(item.getDietPagi());
+                    orderGiziMobile.setBentukMakanPagi(item.getBentukMakanPagi());
+                    orderGiziMobile.setDietSiang(item.getDietSiang());
+                    orderGiziMobile.setBentukMakanSiang(item.getBentukMakanSiang());
+                    orderGiziMobile.setDietMalam(item.getDietMalam());
+                    orderGiziMobile.setBentukMakanMalam(item.getBentukMakanMalam());
+                    orderGiziMobile.setIdOrderGizi(item.getIdOrderGizi());
+                    orderGiziMobile.setIdRawatInap(item.getIdRawatInap());
+                    orderGiziMobile.setApproveFlag(item.getApproveFlag());
+                    orderGiziMobile.setDiterimaFlag(item.getDiterimaFlag());
+
+                    if (item.getTglOrder() != null) {
+                        orderGiziMobile.setTglOrder(item.getTglOrder().toString());
+                    }
+
+                    listOfOrderGizi.add(orderGiziMobile);
+                }
+            }
+
+        }
+
+        if  (action.equalsIgnoreCase("updateDiterimaFlagGizi")){
+            CheckResponse checkResponse;
+
+            OrderGizi orderGizi = new OrderGizi();
+            orderGizi.setIdOrderGizi(idOrderGizi);
+
+            try {
+                checkResponse = orderGiziBoProxy.updateDiterimaFLag(orderGizi);
+                if (checkResponse.getStatus().equalsIgnoreCase("Success")){
+                    model.setMessage("Success");
+                }
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if(action.equalsIgnoreCase("getMonVitalSign")){
+            List<MonVitalSign> result = new ArrayList<>();
+
+            MonVitalSign monVitalSign = new MonVitalSign();
+            monVitalSign.setIdDetailCheckup(idDetailCheckup);
+
+            try {
+                result = rawatInapBoProxy.getListMonVitalSign(monVitalSign);
+            }catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (MonVitalSign item : result){
+                    MonVitalSignMobile monVitalSignMobile = new MonVitalSignMobile();
+                    monVitalSignMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    monVitalSignMobile.setId(item.getId());
+                    monVitalSignMobile.setJam(item.getJam().toString());
+                    monVitalSignMobile.setNadi(item.getNadi().toString());
+                    monVitalSignMobile.setNafas(item.getNafas().toString());
+                    monVitalSignMobile.setBb(item.getBb().toString());
+                    monVitalSignMobile.setTb(item.getTb().toString());
+                    monVitalSignMobile.setTensi(item.getTensi().toString());
+                    monVitalSignMobile.setStDate(item.getStDate());
+                    monVitalSignMobile.setSuhu(item.getSuhu().toString());
+                    monVitalSignMobile.setCreatedWho(item.getCreatedWho());
+
+                    listOfMonVitalSign.add(monVitalSignMobile);
+
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getListObatParenteral")){
+            List<Obat> result = new ArrayList<>();
+
+            try{
+                result = rawatInapBoProxy.getListObatParenteral(idPelayanan);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (Obat item : result){
+                    ObatMobile obatMobile = new ObatMobile();
+                    obatMobile.setNamaObat(item.getNamaObat());
+                    obatMobile.setIdObat(item.getIdObat());
+
+                    listOfObatParenteral.add(obatMobile);
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getListObatNonParenteral")){
+            List<Obat> result = new ArrayList<>();
+
+            try{
+                result = rawatInapBoProxy.getListObatNonParenteral(idDetailCheckup, "%");
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (Obat item : result){
+                    ObatMobile obatMobile = new ObatMobile();
+                    obatMobile.setNamaObat(item.getNamaObat());
+                    obatMobile.setIdObat(item.getIdObat());
+
+                    listOfObatParenteral.add(obatMobile);
+                }
+            }
+        }
+
+        if  (action.equalsIgnoreCase("getListPemberianObat")){
+            List<MonPemberianObat> result = new ArrayList<>();
+
+            MonPemberianObat monPemberianObat = new MonPemberianObat();
+            monPemberianObat.setIdDetailCheckup(idDetailCheckup);
+            monPemberianObat.setKategori(kategori);
+
+            try {
+                result = rawatInapBoProxy.getListPemberianObat(monPemberianObat);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (MonPemberianObat item : result){
+                    MonPemberianObatMobile monPemberianObatMobile = new MonPemberianObatMobile();
+                    monPemberianObatMobile.setId(item.getId());
+                    monPemberianObatMobile.setNoCheckup(item.getNoCheckup());
+                    monPemberianObatMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    monPemberianObatMobile.setNamaObat(item.getNamaObat());
+                    monPemberianObatMobile.setCaraPemberian(item.getCaraPemberian());
+                    monPemberianObatMobile.setDosis(item.getDosis());
+                    monPemberianObatMobile.setSkinTes(item.getSkinTes());
+                    monPemberianObatMobile.setWaktu(item.getWaktu());
+                    monPemberianObatMobile.setKeterangan(item.getKeterangan());
+                    monPemberianObatMobile.setFlag(item.getFlag());
+                    monPemberianObatMobile.setAction(item.getAction());
+                    monPemberianObatMobile.setStDate(item.getStDate());
+                    monPemberianObatMobile.setCreatedWho(item.getCreatedWho());
+                    monPemberianObatMobile.setLastUpdateWho(item.getLastUpdateWho());
+                    monPemberianObatMobile.setKategori(item.getKategori());
+
+                    listOfMonPemberianObat.add(monPemberianObatMobile);
+                }
+            }
         }
 
         if (action.equalsIgnoreCase("getMonCairan")){
@@ -785,6 +1059,35 @@ public class RawatInapController implements ModelDriven<Object> {
             }
         }
 
+        if (action.equalsIgnoreCase("saveMonPemberianObat")){
+            ItSimrsMonPemberianObatEntity itSimrsMonPemberianObatEntity = new ItSimrsMonPemberianObatEntity();
+            itSimrsMonPemberianObatEntity.setNoCheckup(addMonPemberianObat.getNoCheckup());
+            itSimrsMonPemberianObatEntity.setIdDetailCheckup(addMonPemberianObat.getIdDetailCheckup());
+            itSimrsMonPemberianObatEntity.setNamaObat(addMonPemberianObat.getNamaObat());
+            itSimrsMonPemberianObatEntity.setCaraPemberian(addMonPemberianObat.getCaraPemberian());
+            itSimrsMonPemberianObatEntity.setDosis(addMonPemberianObat.getDosis());
+            itSimrsMonPemberianObatEntity.setSkinTes(addMonPemberianObat.getSkinTes());
+            itSimrsMonPemberianObatEntity.setWaktu(addMonPemberianObat.getWaktu());
+            itSimrsMonPemberianObatEntity.setKeterangan(addMonPemberianObat.getKeterangan());
+            itSimrsMonPemberianObatEntity.setKategori(addMonPemberianObat.getKategori());
+
+            itSimrsMonPemberianObatEntity.setFlag("Y");
+            itSimrsMonPemberianObatEntity.setAction("C");
+            itSimrsMonPemberianObatEntity.setCreatedDate(now);
+            itSimrsMonPemberianObatEntity.setCreatedWho(addMonPemberianObat.getCreatedWho());
+            itSimrsMonPemberianObatEntity.setLastUpdate(now);
+            itSimrsMonPemberianObatEntity.setLastUpdateWho(addMonPemberianObat.getLastUpdateWho());
+
+            try {
+                crudResponse = rawatInapBoProxy.saveMonPemberianObat(itSimrsMonPemberianObatEntity);
+                if (crudResponse.getStatus().equalsIgnoreCase("success")){
+                    model.setMessage("Success");
+                } else model.setMessage(crudResponse.getMsg());
+            } catch (GeneralBOException e) {
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+        }
+
         if (action.equalsIgnoreCase("saveAddMonCairan")){
             ItSimrsMonCairanEntity itSimrsMonCairanEntity = new ItSimrsMonCairanEntity();
             itSimrsMonCairanEntity.setBalanceCairan(addMonCairan.getBalanceCairan());
@@ -801,7 +1104,6 @@ public class RawatInapController implements ModelDriven<Object> {
             itSimrsMonCairanEntity.setNoCheckup(addMonCairan.getNoCheckup());
             itSimrsMonCairanEntity.setSisa(addMonCairan.getSisa());
 
-
             itSimrsMonCairanEntity.setAction("C");
             itSimrsMonCairanEntity.setFlag("Y");
             itSimrsMonCairanEntity.setCreatedDate(now);
@@ -813,12 +1115,40 @@ public class RawatInapController implements ModelDriven<Object> {
                 crudResponse = rawatInapBoProxy.saveMonCairan(itSimrsMonCairanEntity);
                 if (crudResponse.getStatus().equalsIgnoreCase("Success")){
                     model.setMessage("Success");
-                } else model.setMessage("Error");
+                } else model.setMessage(crudResponse.getMsg());
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
 
+        if  (action.equalsIgnoreCase("saveMonVitalSign")){
+            ItSimrsMonVitalSignEntity itSimrsMonVitalSignEntity = new ItSimrsMonVitalSignEntity();
+            itSimrsMonVitalSignEntity.setIdDetailCheckup(addMonVitalSign.getIdDetailCheckup());
+            itSimrsMonVitalSignEntity.setJam(Integer.valueOf(addMonVitalSign.getJam()));
+            itSimrsMonVitalSignEntity.setNadi(Integer.valueOf(addMonVitalSign.getNadi()));
+            itSimrsMonVitalSignEntity.setNafas(Integer.valueOf(addMonVitalSign.getNafas()));
+            itSimrsMonVitalSignEntity.setSuhu(Integer.valueOf(addMonVitalSign.getSuhu()));
+            itSimrsMonVitalSignEntity.setBb(Integer.valueOf(addMonVitalSign.getBb()));
+            itSimrsMonVitalSignEntity.setTb(Integer.valueOf(addMonVitalSign.getTb()));
+            itSimrsMonVitalSignEntity.setTensi(Integer.valueOf(addMonVitalSign.getTensi()));
+
+            itSimrsMonVitalSignEntity.setAction("C");
+            itSimrsMonVitalSignEntity.setFlag("Y");
+            itSimrsMonVitalSignEntity.setCreatedDate(now);
+            itSimrsMonVitalSignEntity.setCreatedWho(addMonVitalSign.getCreatedWho());
+            itSimrsMonVitalSignEntity.setLastUpdate(now);
+            itSimrsMonVitalSignEntity.setLastUpdateWho(addMonVitalSign.getLastUpdateWho());
+
+            try {
+                crudResponse = rawatInapBoProxy.saveMonVitalSign(itSimrsMonVitalSignEntity);
+                if (crudResponse.getStatus().equalsIgnoreCase("Success")){
+                    model.setMessage("Success");
+                } else model.setMessage(crudResponse.getMsg());
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+
+            }
+        }
 
         if (action.equalsIgnoreCase("saveAddTindakanRawat")){
             TindakanRawat tindakanRawat = new TindakanRawat();
