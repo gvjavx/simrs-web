@@ -54,45 +54,45 @@
                 }
                 if (item.tipeNotifId == "TN23"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Training</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 } else if (item.typeNotif == "TN22"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-warning'>Medical Record</span> "+item.note+""+
                             "</a>"+
                             "</li>";
 
                 } else if (item.tipeNotifId == "TI"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>SPPD</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN33"){
                     tmp_data_approve += "<li>"+
-                        "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                         "<span class='label label-success'>Absensi</span> "+item.note+""+
                         "</a>"+
                         "</li>";
                 }else if (item.tipeNotifId == "TN44"){
                     tmp_data_approve += "<li>"+
-                        "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                         "<span class='label label-success'>Indisipliner</span> "+item.note+""+
                         "</a>"+
                         "</li>";
                 }else if (item.tipeNotifId == "TN55"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Dispensasi</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }
                 else if (item.tipeNotifId == "TN66"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Cuti Pegawai</span> "+item.note+""+
                             "</a>"+
                             "</a>"+
@@ -100,19 +100,19 @@
                             "</li>";
                 }else if (item.tipeNotifId == "TN77"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Lembur</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN88"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Ijin Keluar Kantor</span> "+item.note+""+
                             "</a>"+
                             "</li>";
                 }else if (item.tipeNotifId == "TN99"){
                     tmp_data_approve += "<li>"+
-                            "<a href='/hris/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                            "<a href='/simrs/notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
                             "<span class='label label-success'>Rekruitmen Pabrik</span> "+item.note+""+
                             "</a>"+
                             "</li>";

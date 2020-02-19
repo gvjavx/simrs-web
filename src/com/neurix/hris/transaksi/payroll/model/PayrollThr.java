@@ -23,6 +23,7 @@ public class PayrollThr extends BaseModel {
     private String tunjanganStrategis; //tunjangan fungsional
     private String tunjanganPeralihan;
     private String tunjanganPph;
+    private String thp;
 
     private BigDecimal gajiGolonganNilai;
     private BigDecimal tunjanganUmkNilai; //sankhus
@@ -31,6 +32,7 @@ public class PayrollThr extends BaseModel {
     private BigDecimal tunjanganStrategisNilai; //tunjangan fungsional nilai
     private BigDecimal tunjanganPeralihanNilai;
     private BigDecimal tunjanganPphNilai;
+    private BigDecimal thpNilai;
 
     //tambahan irfan
     private String tunjanganLain;
@@ -55,6 +57,22 @@ public class PayrollThr extends BaseModel {
     private BigDecimal totalThrNilaiBersih;
     private BigDecimal totalThrNilai;
     private BigDecimal pphThrNilai;
+
+    public String getThp() {
+        return thp;
+    }
+
+    public void setThp(String thp) {
+        this.thp = thp;
+    }
+
+    public BigDecimal getThpNilai() {
+        return thpNilai;
+    }
+
+    public void setThpNilai(BigDecimal thpNilai) {
+        this.thpNilai = thpNilai;
+    }
 
     public String getPphThr() {
         return pphThr;

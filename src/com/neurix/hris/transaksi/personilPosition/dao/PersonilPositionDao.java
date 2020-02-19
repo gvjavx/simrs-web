@@ -180,5 +180,51 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
 
         return Integer.parseInt(stKelompok.replace("KL",""));
     }
+    public String getBagianId(String nip){
+        String result = "";
+        String query = "select\n" +
+                "\tim_hris_position_bagian.bagian_id\n" +
+                "from\n" +
+                "\tim_hris_position_bagian, it_hris_pegawai_position, im_position\n" +
+                "where\n" +
+                "\tit_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "and\n" +
+                "\tit_hris_pegawai_position.nip = '"+nip+"'\n" +
+                "and\n" +
+                "\tim_position.bagian_id = im_hris_position_bagian.bagian_id";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
+    }
+
+    public String getNipKabid(String bagianId){
+        String result = "";
+
+        String query ="select\n" +
+                "\tit_hris_pegawai_position.nip\n" +
+                "from\n" +
+                "\tit_hris_pegawai_position, im_position\n" +
+                "where\n" +
+                "\tit_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "and\n" +
+                "\tim_position.bagian_id = '"+bagianId+"'\n" +
+                "and\n" +
+                "\tkelompok_id = 'KL03'\n" +
+                "and\n" +
+                "\tit_hris_pegawai_position.flag ='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
+    }
 
 }

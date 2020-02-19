@@ -528,4 +528,19 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
+    public List<Position> searchPositionBiodataSysHistory(String divisiId) throws GeneralBOException {
+        List<ImPosition> posisiList = null;
+        List<Position> positions = new ArrayList<>();
+
+        posisiList = positionDao.getDataPosisiBiodataHistory(divisiId);
+        if (posisiList != null) {
+            for (ImPosition imPosition : posisiList) {
+                Position position1 = new Position();
+                position1.setPositionId(imPosition.getPositionId());
+                position1.setPositionName(imPosition.getPositionName());
+                positions.add(position1);
+            }
+        }
+        return positions;
+    }
 }

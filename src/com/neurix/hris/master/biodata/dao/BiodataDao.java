@@ -490,6 +490,29 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
         return listOfResult;
     }
+    public List<ImBiodataEntity> getPegawaiJubilium6bulan(String tanggalSekarang,String tanggal6Bulan) throws HibernateException {
+        List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT pegawai.nip,pegawai.nama_pegawai ,pegawai.tanggal_aktif\n" +
+                "FROM \n" +
+                "\t( SELECT * FROM im_hris_pegawai ) pegawai LEFT JOIN\n" +
+                "\t( SELECT * FROM it_hris_pegawai_position ) posisi ON pegawai.nip=posisi.nip\n" +
+                "WHERE\n" +
+                "\tpegawai.flag='Y' AND pegawai.tanggal_aktif<='"+tanggal6Bulan+"' AND pegawai.tanggal_aktif>='"+tanggalSekarang+"' AND posisi.flag='Y'";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImBiodataEntity imBiodataEntity= new ImBiodataEntity();
+            imBiodataEntity.setNip((String) row[0]);
+            imBiodataEntity.setNamaPegawai((String) row[1]);
+            imBiodataEntity.setTanggalAktif((Date) row[2]);
+
+            listOfResult.add(imBiodataEntity);
+        }
+        return listOfResult;
+    }
 
     //digunakan untuk SMK
     public List<ImBiodataEntity> getDataBiodata(String keyword){

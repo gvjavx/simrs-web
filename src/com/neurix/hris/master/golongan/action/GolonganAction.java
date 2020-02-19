@@ -31,10 +31,19 @@ public class GolonganAction extends BaseMasterAction{
     private List<Golongan> listComboGolongan = new ArrayList<Golongan>();
     private List<GolonganDapen> listComboGolonganDapen = new ArrayList<GolonganDapen>();
     private List<GolonganPkwt> listComboGolonganPkwt = new ArrayList<GolonganPkwt>();
+    private List<GolonganPkwt> listComboGolonganPkwtHistory = new ArrayList<GolonganPkwt>();
     private GolonganDapenBo golonganDapenBoProxy;
     private GolonganDapen golonganDapen;
     private GolonganPkwtBo golonganPkwtBoProxy;
     private GolonganPkwt golonganPkwt;
+
+    public List<GolonganPkwt> getListComboGolonganPkwtHistory() {
+        return listComboGolonganPkwtHistory;
+    }
+
+    public void setListComboGolonganPkwtHistory(List<GolonganPkwt> listComboGolonganPkwtHistory) {
+        this.listComboGolonganPkwtHistory = listComboGolonganPkwtHistory;
+    }
 
     public GolonganPkwt getGolonganPkwt() {
         return golonganPkwt;
@@ -188,6 +197,31 @@ public class GolonganAction extends BaseMasterAction{
         }
 
         listComboGolonganPkwt.addAll(listOfSearchGolongan);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+    public String initComboGolonganPkwtHistory() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        GolonganPkwt searchGolongan = new GolonganPkwt();
+        List<GolonganPkwt> listOfSearchGolongan = new ArrayList();
+        searchGolongan.setFlag("Y");
+        try {
+            listOfSearchGolongan = golonganPkwtBoProxy.getByCriteria(searchGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganPkwtBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.search] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listComboGolonganPkwtHistory.addAll(listOfSearchGolongan);
         logger.info("[BranchAction.search] end process <<<");
 
         return SUCCESS;

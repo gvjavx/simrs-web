@@ -537,6 +537,29 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.searchPositionBiodata] End process >>>");
         return listOfSearchPosition;
     }
+    public List<Position> searchPositionBiodataHistory(String divisiId) {
+        logger.info("[PositionAction.searchPositionBiodata] start process >>>");
+
+        List<Position> listOfSearchPosition = new ArrayList();
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+            listOfSearchPosition = positionBo.searchPositionBiodataSysHistory(divisiId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.searchPositionBiodata] Error when saving error,", e1);
+            }
+            logger.error("[PositionAction.searchPositionBiodata] Error when searching position by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        logger.info("[PositionAction.searchPositionBiodata] End process >>>");
+        return listOfSearchPosition;
+    }
 
     public List<Position> searchPosition2(String branchId) {
         logger.info("[PositionAction.search] start process >>>");

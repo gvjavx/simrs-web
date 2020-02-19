@@ -1548,7 +1548,7 @@
                             <s:action id="initComboBranch2" namespace="/admin/branch"
                                       name="initComboBranch2_branch"/>
                             <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
-                                      name="biodata.branchId" onchange="listDivisi();cekPerusahaanLain()"
+                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>
@@ -1565,7 +1565,7 @@
                             <s:action id="comboDivisi" namespace="/department"
                                       name="searchDepartment2_department"/>
                             <s:select list="#comboDivisi.listComboDepartment" id="departmentId"
-                                      name="biodata.departmentId" onchange="listPosisi(); cekBidangLain()"
+                                      name="biodata.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
                                       listKey="departmentId" listValue="departmentName"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control"/>
@@ -1582,7 +1582,7 @@
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position"
                                       name="searchPosition3_position"/>
-                            <s:select list="#comboPosition.listOfComboPosition" id="positionId"
+                            <s:select list="#comboPosition.listOfComboPosition" id="positionId3"
                                       name="biodata.positionId" onchange="cekPosisiLain()"
                                       listKey="positionId" listValue="positionName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
@@ -1613,44 +1613,21 @@
                         <label class="control-label col-sm-4" >Tipe Pegawai: </label>
                         <div class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
-                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawaiId"
+                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawaiId" onchange="changePegawaiHistory(this.value)"
                                       listKey="tipePegawaiId" listValue="tipePegawaiName" cssClass="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Golongan: </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-8" id="golonganHistory1Group">
                             <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                             <s:select list="#comboGolongan.listComboGolongan" id="pengalamanGolonganId1"
                                       listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Point: </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPoint">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Point Lebih: </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPointLebih">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai SMK: </label>
-                        <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" class="form-control" id="pengalamanNilaiSmk">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Grade SMK: </label>
-                        <div class="col-sm-8">
-                            <s:select list="#{'BS':'BS','B/NG':'B/NG','B':'B','C':'C','K':'K','KS':'KS'}" id="pengalamanGradeSmk"
-                                      headerKey="-" headerValue="-" cssClass="form-control" />
-                            <%--<input type="text" class="form-control" id="pengalamanGradeSmk">--%>
+                        <div class="col-sm-8" id="golonganHistory2Group">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwtHistory_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwtHistory" id="golonganHistory3" name="biodata.golongan"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -2406,7 +2383,7 @@
         }
     };
     window.cekPosisiLain = function(){
-        var position = document.getElementById("positionId").value;
+        var position = document.getElementById("positionId3").value;
 //        alert(position);
         if (position=='0'){
             $('#jabatanLain').val("");
@@ -2428,6 +2405,19 @@
             });
         });
         listPosisi();
+
+    };
+    window.listDivisiHistory= function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        $('#departmentId').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#departmentId').append($("<option></option>")
+                        .attr("value",item.departmentId)
+                        .text(item.departmentName));
+            });
+        });
+        listPosisiHistory();
 
     };
     function cek(){
@@ -2452,6 +2442,20 @@
         PositionAction.searchPositionBiodata(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#positionId1').append($("<option></option>")
+                        .attr("value", item.positionId)
+                        .text(item.positionName));
+            });
+        });
+    }
+    window.listPosisiHistory = function (branch, divisi) {
+        var branch = document.getElementById("branch1").value;
+        var divisi = document.getElementById("divisi1").value;
+        $('#positionId3').append($("<option></option>")
+                .attr("value", '')
+                .text(''));
+        PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
+            $.each(listdata, function (i, item) {
+                $('#positionId3').append($("<option></option>")
                         .attr("value", item.positionId)
                         .text(item.positionName));
             });
@@ -2494,6 +2498,15 @@
 //            $('#golongan1').prop('disabled', 'true');
             $('#point').prop('disabled', 'true');
             $('#danaPensiun').prop('disabled', 'true');
+        }
+    }
+    window.changePegawaiHistory = function (id) {
+        if (id == "TP01") {
+            $('#golonganHistory1Group').show();
+            $('#golonganHistory2Group').hide();
+        } else {
+            $('#golonganHistory1Group').hide();
+            $('#golonganHistory2Group').show();
         }
     }
 
@@ -2682,8 +2695,6 @@
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai SMK</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Grade SMK</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -2696,8 +2707,6 @@
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai SMK</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Grade SMK</th>" +
                         "</tr></thead>";
                 </s:else>
 
@@ -2712,8 +2721,6 @@
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
-                            '<td align="center">' + toFixed(item.nilaiSmk , 2)+ '</td>' +
-                            '<td align="center">' + item.gradeSmk + '</td>' +
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -2734,9 +2741,6 @@
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
-                            '<td align="center">' + toFixed(item.nilaiSmk , 2)+ '</td>' +
-                            '<td align="center">' + item.gradeSmk + '</td>' +
-
                             "</tr>";
                     </s:else>
                 });
@@ -3440,15 +3444,16 @@
             var nip = document.getElementById("nip1").value;
             var branchId = document.getElementById("branchIdRiwayatKerja").value;
             var divisiId = document.getElementById("departmentId").value;
-            var posisiId = document.getElementById("positionId").value;
+            var posisiId = document.getElementById("positionId3").value;
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
-            var golonganId = document.getElementById("pengalamanGolonganId1").value;
-            var point = document.getElementById("pengalamanPoint").value;
-            var pointLebih = document.getElementById("pengalamanPointLebih").value;
-            var nilaiSmk = document.getElementById("pengalamanNilaiSmk").value;
-            var gradeSmk = document.getElementById("pengalamanGradeSmk").value;
+            if(tipePegawaiId=="TP01"){
+                var golonganId = document.getElementById("pengalamanGolonganId1").value;
+            }
+            if(tipePegawaiId=="TP03"){
+                var golonganId = document.getElementById("golonganHistory3").value;
+            }
             var pjsFlag = document.getElementById("pjsFlag1").value;
             var aktifFlag = document.getElementById("flagAktif1").value;
             var perusahaanLain = document.getElementById("perusahaanLain").value;
@@ -3462,12 +3467,12 @@
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
                 console.log('yayaya');
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar =='' && tipePegawaiId =='' &&golonganId =='' && point=='' && pointLebih =='' && nilaiSmk=='' &&gradeSmk=='') {
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar =='' && tipePegawaiId =='' &&golonganId =='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
                     if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                         dwr.engine.setAsync(false);
-                        BiodataAction.saveAddPengalaman(nip, branchId, divisiId, posisiId, tanggal, tipePegawaiId, golonganId, point, pointLebih, nilaiSmk, gradeSmk, pjsFlag,   function (listdata) {
+                        BiodataAction.saveAddPengalaman(nip, branchId, divisiId, posisiId, tanggal, tipePegawaiId, golonganId, pjsFlag,   function (listdata) {
                             alert('Data Berhasil Disimpan');
                             $('#modal-pengalamanKerja').modal('hide');
                             $('#myFormPengalaman')[0].reset();
@@ -3489,12 +3494,12 @@
             </s:if>
             <s:else>
             if (url == 'addPengalamanKerja') {
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId ==''|| point=='' && pointLebih =='' && nilaiSmk=='') {
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId =='') {
                     alert('Isi Field Terlebih Dahulu');
                 } else {
                     var msg ="Field:  \n";
                     var msg2 ="";
-                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId ==''|| point=='' || pointLebih =='' || nilaiSmk=='') {
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
                         if(branchId == ''){
                             msg+="- Nama Perusahaan\n";
                         }
@@ -3522,15 +3527,6 @@
                                 }
                             }
                         }
-                        if(point == ''){
-                            msg+="- Point\n";
-                        }
-                        if(pointLebih == ''){
-                            msg+="- Point Lebih\n";
-                        }
-                        if(nilaiSmk == ''){
-                            msg+="- Nilai Smk\n";
-                        }
                         if(tipePegawaiId ==''){
                             msg+="- Tipe Pegawai\n";
                         }
@@ -3540,7 +3536,7 @@
                         if (confirm('Are you sure you want to save this Record?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, point, pointLebih, nilaiSmk, gradeSmk,pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,  function (listdata) {
+                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,  function (listdata) {
                                         alert('Data Successfully Added');
                                         $('#modal-pengalamanKerja').modal('hide');
                                         $('#myFormPengalaman')[0].reset();
@@ -3983,6 +3979,8 @@
 
         $('#btnAddPengalamanKerja').click(function () {
             $('#myFormPengalaman')[0].reset();
+            $('#pengalamanGolonganId1').show();
+            $('#golonganHistory2Group').hide();
             cekPerusahaan();
             $('#modal-pengalamanKerja').modal('show');
             $('#myFormPengalaman').attr('action', 'addPengalamanKerja');
@@ -4043,16 +4041,26 @@
             <s:else>
             BiodataAction.searchDataEditPengalamanKerja(id, function (listdata) {
                 $('#branchIdRiwayatKerja').val(listdata.branchId).change();
+                $('#positionId3').val(listdata.posisiId).change();
+                $('#departmentId').val(listdata.divisiId).change();
                 $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
                 $('#pengalamanJabatan').val(listdata.jabatan);
                 $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
-                $('#pengalamanTipePegawai').val(listdata.tipePegawaiId).change();
+                $('#pengalamanTanggalKeluar').val(listdata.stTtahunMasuk);
+                $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
+                $('#flagAktif1').val(listdata.flagJabatanAktif).change();
+                if(listdata.tipePegawaiId == "TP01"){
+                    $('#pengalamanGolonganId1').val(listdata.golonganId).change();
+                    $('#golonganHistory1Group').show();
+                    $('#golonganHistory2Group').hide();
+                }
+                if(listdata.tipePegawaiId == "TP03"){
+                    $('#golonganHistory3').val(listdata.golonganId).change();
+                    $('#golonganHistory1Group').hide();
+                    $('#golonganHistory2Group').show();
+                }
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
-                $('#pengalamanPoint').val(listdata.point);
-                $('#pengalamanPointLebih').val(listdata.pointLebih);
-                $('#pengalamanNilaiSmk').val(listdata.nilaiSmk);
-                $('#pengalamanGradeSmk').val(listdata.gradeSmk);
             });
             </s:else>
 
@@ -4526,6 +4534,12 @@
         });
 
         $('#pengalamanTanggalMasuk').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0"
+        });
+        $('#pengalamanTanggalKeluar').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,

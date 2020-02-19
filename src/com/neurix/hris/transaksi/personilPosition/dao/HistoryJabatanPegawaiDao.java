@@ -264,5 +264,14 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
         }
         return listOfResult;
     }
+    public List<ImtHrisHistoryJabatanPegawaiEntity> getDataHistoryForThp(String nip) throws HibernateException {
+        List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("nip", nip))
+                .addOrder(Order.asc("tahun"))
+                .addOrder(Order.asc("tanggal"))
+                .list();
+        return results;
+    }
     
 }

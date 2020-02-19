@@ -183,14 +183,14 @@
         <property name="flagPayroll">
             <column name="flag_payroll" sql-type="varchar" length="1" not-null="false" />
         </property>
-        <property name="flagRapel">
-            <column name="flag_rapel" sql-type="varchar" length="1" not-null="false" />
+        <property name="flagCutiPanjang">
+            <column name="flag_cuti_panjang" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flagThr">
             <column name="flag_thr" sql-type="varchar" length="1" not-null="false" />
         </property>
-        <property name="flagPendidikan">
-            <column name="flag_pendidikan" sql-type="varchar" length="1" not-null="false" />
+        <property name="flagCutiTahunan">
+            <column name="flag_cuti_tahunan" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flagJasprod">
             <column name="flag_jasprod" sql-type="varchar" length="1" not-null="false" />

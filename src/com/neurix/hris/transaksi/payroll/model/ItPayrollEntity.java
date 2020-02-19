@@ -226,6 +226,26 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal iuranProfesi;
     private BigDecimal potonganLain;
 
+    //flag baru
+    private String flagCutiTahunan;
+    private String flagCutiPanjang;
+
+    public String getFlagCutiPanjang() {
+        return flagCutiPanjang;
+    }
+
+    public void setFlagCutiPanjang(String flagCutiPanjang) {
+        this.flagCutiPanjang = flagCutiPanjang;
+    }
+
+    public String getFlagCutiTahunan() {
+        return flagCutiTahunan;
+    }
+
+    public void setFlagCutiTahunan(String flagCutiTahunan) {
+        this.flagCutiTahunan = flagCutiTahunan;
+    }
+
     public Date getTanggalAkhirKontrak() {
         return tanggalAkhirKontrak;
     }

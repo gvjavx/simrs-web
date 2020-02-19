@@ -1490,7 +1490,17 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                     notifikasiList.add(notifSelf);
 
-                    if (kelompok>4) {
+                    Notifikasi notifAtasan = new Notifikasi();
+                    notifAtasan.setNip(itCutiPegawaiEntity.getNip());
+                    notifAtasan.setNoRequest(bean.getCutiPegawaiId());
+                    notifAtasan.setTipeNotifId("umum");
+                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
+                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " +CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
+                    notifAtasan.setCreatedWho(itCutiPegawaiEntity.getNip());
+                    notifAtasan.setTo("kabid");
+
+                    notifikasiList.add(notifAtasan);
+                    /*if (kelompok>4) {
                         //Send notif ke kabid
                         Notifikasi notifAtasan = new Notifikasi();
                         notifAtasan.setNip(itCutiPegawaiEntity.getNip());
@@ -1516,7 +1526,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifKabag.setTo("kabag");
 
                         notifikasiList.add(notifKabag);
-                    }
+                    }*/
 
                     if (!"".equalsIgnoreCase(itCutiPegawaiEntity.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan

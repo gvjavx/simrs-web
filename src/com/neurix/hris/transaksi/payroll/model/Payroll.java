@@ -107,6 +107,27 @@ public class Payroll extends BaseModel {
     private BigDecimal iuranProfesiNilai;
     private BigDecimal potonganLainNilai;
 
+
+    //flag tambahan irfan
+    private String flagCutiTahunan;
+    private String flagCutiPanjang;
+
+    public String getFlagCutiPanjang() {
+        return flagCutiPanjang;
+    }
+
+    public void setFlagCutiPanjang(String flagCutiPanjang) {
+        this.flagCutiPanjang = flagCutiPanjang;
+    }
+
+    public String getFlagCutiTahunan() {
+        return flagCutiTahunan;
+    }
+
+    public void setFlagCutiTahunan(String flagCutiTahunan) {
+        this.flagCutiTahunan = flagCutiTahunan;
+    }
+
     public String getTambahanLain() {
         return tambahanLain;
     }

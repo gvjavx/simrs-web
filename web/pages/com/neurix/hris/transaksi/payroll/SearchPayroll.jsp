@@ -204,8 +204,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel',
-                                        'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
+                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'CP':'Cuti Panjang', 'CT':'Cuti Tahunan',
+                                        'JP':'Jasa Operassional', 'JB':'PMP', 'PN':'SHT', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
                                                   cssClass="form-control" />
                                     </table>
 
@@ -363,8 +363,8 @@
                                             <display:column media="html" title="THR">
                                                 <img border="0" src="<s:property value="#attr.row.flagThr"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Pendidikan">
-                                                <img border="0" src="<s:property value="#attr.row.flagPendidikan"/>" >
+                                            <display:column media="html" title="Cuti Tahunan">
+                                                <img border="0" src="<s:property value="#attr.row.flagCutiTahunan"/>" >
                                             </display:column>
                                             <display:column media="html" title="Jasprod">
                                                 <img border="0" src="<s:property value="#attr.row.flagJasprod"/>" >
@@ -372,8 +372,8 @@
                                             <display:column media="html" title="Jubileum">
                                                 <img border="0" src="<s:property value="#attr.row.flagJubileum"/>" >
                                             </display:column>
-                                            <display:column media="html" title="Rapel">
-                                                <img border="0" src="<s:property value="#attr.row.flagRapel"/>" >
+                                            <display:column media="html" title="Cuti Panjang">
+                                                <img border="0" src="<s:property value="#attr.row.flagCutiPanjang"/>" >
                                             </display:column>
                                             <display:column media="html" title="Pensiun">
                                                 <img border="0" src="<s:property value="#attr.row.flagPensiun"/>" >

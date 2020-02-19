@@ -17,6 +17,8 @@ import com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao;
 import com.neurix.hris.master.biodata.model.*;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
+import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.keluarga.dao.KeluargaDao;
 import com.neurix.hris.master.keluarga.model.ImKeluargaEntity;
 import com.neurix.hris.master.keluarga.model.ImKeluargaPK;
@@ -109,6 +111,15 @@ public class BiodataBoImpl implements BiodataBo {
     private PayrollDanaPensiunDao danaPensiunDao;
     private PayrollDao payrollDao;
     private PositionBagianDao positionBagianDao;
+    private GolonganPkwtDao golonganPkwtDao;
+
+    public GolonganPkwtDao getGolonganPkwtDao() {
+        return golonganPkwtDao;
+    }
+
+    public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
+        this.golonganPkwtDao = golonganPkwtDao;
+    }
 
     public TunjLainPegawaiDao getTunjLainPegawaiDao() {
         return tunjLainPegawaiDao;
@@ -642,10 +653,26 @@ public class BiodataBoImpl implements BiodataBo {
             ItTunjLainPegawaiEntity tunjanganentity = new ItTunjLainPegawaiEntity();
             tunjanganentity.setTunjLainId(idTunjLain);
             tunjanganentity.setNip(bean.getNip());
-            tunjanganentity.setFlagTunjSupervisi(bean.getFlagTunjSupervisi());
-            tunjanganentity.setFlagTunjLokasi(bean.getFlagTunjLokasi());
-            tunjanganentity.setFlagTunjSiaga(bean.getFlagTunjSiaga());
-            tunjanganentity.setFlagTunjProfesional(bean.getFlagTunjProfesional());
+            if (!bean.getFlagTunjSupervisi().equalsIgnoreCase("")){
+                tunjanganentity.setFlagTunjSupervisi("Y");
+            }else{
+                tunjanganentity.setFlagTunjSupervisi("N");
+            }
+            if (!bean.getFlagTunjLokasi().equalsIgnoreCase("")){
+                tunjanganentity.setFlagTunjLokasi("Y");
+            }else{
+                tunjanganentity.setFlagTunjLokasi("N");
+            }
+            if (!bean.getFlagTunjSiaga().equalsIgnoreCase("")){
+                tunjanganentity.setFlagTunjSiaga("Y");
+            }else{
+                tunjanganentity.setFlagTunjSiaga("N");
+            }
+            if (!bean.getFlagTunjProfesional().equalsIgnoreCase("")){
+                tunjanganentity.setFlagTunjProfesional("Y");
+            }else{
+                tunjanganentity.setFlagTunjProfesional("N");
+            }
 
             tunjanganentity.setFlag(bean.getFlag());
             tunjanganentity.setAction(bean.getAction());
@@ -2252,7 +2279,8 @@ public class BiodataBoImpl implements BiodataBo {
             ImtHrisHistoryJabatanPegawaiEntity historyJabatan = new ImtHrisHistoryJabatanPegawaiEntity();
             String pengalamanId;
             List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
-            String branchName, positionname, divisiName, golonganName, tipePegawaiName;
+            String branchName, positionname, divisiName, tipePegawaiName;
+            String golonganName="";
             try {
                 // Generating ID, get from postgre sequence
                 pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
@@ -2276,7 +2304,18 @@ public class BiodataBoImpl implements BiodataBo {
                 }
                 if(bean.getGolonganId()!= null){
                     if (!bean.getGolonganId().equalsIgnoreCase("")){
-                        golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
+                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP01")){
+                            golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
+                        }
+                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP03")){
+                            List<ImGolonganPkwtEntity> golonganPkwtEntities = new ArrayList<>();
+                            golonganPkwtEntities = golonganPkwtDao.getGolonganById(bean.getGolonganId());
+                            if (golonganPkwtEntities.size()>0){
+                                for (ImGolonganPkwtEntity golonganPkwtLoop: golonganPkwtEntities){
+                                    golonganName = golonganPkwtLoop.getGolonganPkwtName();
+                                }
+                            }
+                        }
                     }else {
                         golonganName = null;
                     }
@@ -2332,18 +2371,7 @@ public class BiodataBoImpl implements BiodataBo {
             }else{
                 tahun = bean.getTahun();
             }
-
             historyJabatan.setTahun(tahun);
-            historyJabatan.setGradeSmk(bean.getGradeSmk());
-            historyJabatan.setPoint(bean.getPoint());
-            historyJabatan.setPointLebih(bean.getPointLebih());
-
-            if(bean.getNilaiSmk() != null){
-                historyJabatan.setNilaiSmk(bean.getNilaiSmk());
-            }else{
-                historyJabatan.setNilaiSmk(BigDecimal.valueOf(0));
-            }
-
             try {
                 // insert into database
                 historyJabatanPegawaiDao.addAndSave(historyJabatan);
@@ -2521,6 +2549,7 @@ public class BiodataBoImpl implements BiodataBo {
             }
             pengalamanKerja.setJabatan(searchPengalamanKerja.getPositionName());
             pengalamanKerja.setStTtahunMasuk(searchPengalamanKerja.getTanggal());
+            pengalamanKerja.setStTahunKeluar(searchPengalamanKerja.getTanggalKeluar());
 
             if(searchPengalamanKerja.getTipePegawaiId() != null && !searchPengalamanKerja.getTipePegawaiId().equalsIgnoreCase("")){
                 pengalamanKerja.setTipePegawaiId(searchPengalamanKerja.getTipePegawaiId());
@@ -2528,16 +2557,6 @@ public class BiodataBoImpl implements BiodataBo {
             }else{
                 pengalamanKerja.setTipePegawaiId("-");
             }
-
-//            if (searchPengalamanKerja.getTahun()!=null){
-//                if (!searchPengalamanKerja.getTahun().equalsIgnoreCase("")){
-//                    String tahun = searchPengalamanKerja.getTahun();
-//                    if(tahun.length() > 4){
-//                        String strTahun[] = tahun.split("-");
-//                        tahun = strTahun[2];
-//                    }
-//                }
-//            }
             if (searchPengalamanKerja.getDivisiId()!=null){
                 if (!searchPengalamanKerja.getDivisiId().equalsIgnoreCase("")){
                     pengalamanKerja.setDivisiId(searchPengalamanKerja.getDivisiId());
@@ -2560,8 +2579,6 @@ public class BiodataBoImpl implements BiodataBo {
             pengalamanKerja.setPositionName(searchPengalamanKerja.getPositionName());
             pengalamanKerja.setGolonganId(searchPengalamanKerja.getGolonganId());
             pengalamanKerja.setGolonganName(searchPengalamanKerja.getGolonganName());
-            pengalamanKerja.setPoint(searchPengalamanKerja.getPoint());
-            pengalamanKerja.setPointLebih(searchPengalamanKerja.getPointLebih());
             pengalamanKerja.setTanggalMasuk(searchPengalamanKerja.getTanggal());
             pengalamanKerja.setTanggalKeluar(searchPengalamanKerja.getTanggalKeluar());
             if (searchPengalamanKerja.getTanggalKeluar()!=null){
@@ -2575,12 +2592,6 @@ public class BiodataBoImpl implements BiodataBo {
             else {
                 pengalamanKerja.setFlagJabatanAktif("N");
             }
-            if(searchPengalamanKerja.getNilaiSmk() !=null){
-                pengalamanKerja.setNilaiSmk(searchPengalamanKerja.getNilaiSmk() + "");
-            }else{
-                pengalamanKerja.setNilaiSmk("0");
-            }
-            pengalamanKerja.setGradeSmk(searchPengalamanKerja.getGradeSmk());
             pengalamanKerja.setPjsFlag(searchPengalamanKerja.getPjsFlag());
 
         }
@@ -2713,25 +2724,7 @@ public class BiodataBoImpl implements BiodataBo {
                 if(historyLoop.getGolonganName() != null && !historyLoop.getGolonganName().equalsIgnoreCase("")){
                     golongan = historyLoop.getGolonganName();
                 }
-
-                if(historyLoop.getPoint() != null && !historyLoop.getPoint().equalsIgnoreCase("")){
-                    gandul = historyLoop.getPoint();
-                }
-                pengalamanKerja.setGolonganName(golongan + " / " + gandul);
-
-                if(historyLoop.getNilaiSmk() != null){
-                    pengalamanKerja.setNilaiSmk(historyLoop.getNilaiSmk() + "");
-                }else{
-                    pengalamanKerja.setNilaiSmk("0");
-                }
-
-
-                if(historyLoop.getGradeSmk() != null && !historyLoop.getGradeSmk().equalsIgnoreCase("")){
-                    pengalamanKerja.setGradeSmk(historyLoop.getGradeSmk());
-                }else{
-                    pengalamanKerja.setGradeSmk("-");
-                }
-
+                pengalamanKerja.setGolonganName(golongan);
                 pengalamanKerjas.add(pengalamanKerja);
             }
         }

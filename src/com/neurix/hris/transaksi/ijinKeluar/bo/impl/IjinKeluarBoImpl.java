@@ -1078,7 +1078,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
                     notifikasiList.add(notifSelf);
 
-                    if (kelompok>6){
+                    /*if (kelompok>6){
                         //Send notif ke kabag
                         Notifikasi notifKabag= new Notifikasi();
                         notifKabag.setNip(itIjinKeluarEntity.getNip());
@@ -1090,7 +1090,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                         notifKabag.setTo("kabag");
 
                         notifikasiList.add(notifKabag);
-                    }
+                    }*/
 
                 }else {
                     String msg="";

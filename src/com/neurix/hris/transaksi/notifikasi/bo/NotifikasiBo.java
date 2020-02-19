@@ -25,6 +25,8 @@ import java.util.List;
 public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     public void saveDelete(Notifikasi bean) throws GeneralBOException;
 
+    List<Notifikasi> getByCriteriaForNotif(Notifikasi searchBean) throws GeneralBOException;
+
     public List<Notifikasi> getComboNotifikasiWithCriteria(String query) throws GeneralBOException;
 
     void SendNotifPlt(String nip, String id, String tipeNotifName, String note, String createdWho, String pengganti);
@@ -74,4 +76,6 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<PersonilPosition> daftarKabag(String nip);
 
     List<PersonilPosition> daftarKabid(String nip);
+    public String getKabid(String nip);
+    public List<Notifikasi> getJubilium();
 }

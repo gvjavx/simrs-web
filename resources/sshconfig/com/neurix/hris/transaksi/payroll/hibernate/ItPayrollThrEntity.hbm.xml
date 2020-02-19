@@ -64,6 +64,9 @@
         <property name="pphThr">
             <column name="pph_thr" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
+        <property name="thp">
+            <column name="thp" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
 
 
         <property name="flag">

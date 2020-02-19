@@ -2982,8 +2982,8 @@ public class PayrollAction extends BaseMasterAction{
         if(tipe.equalsIgnoreCase("PR")){
             hasil = "success_print_report_branch_payroll";
             reportParams.put("titleReport", "Slip Gaji");
-        }else if(tipe.equalsIgnoreCase("PD")){
-            hasil = "success_print_report_payroll_pendidikan_branch";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            hasil = "success_print_report_payroll_Cuti_tahunan_branch";
         }else if(tipe.equalsIgnoreCase("T")){
             hasil = "success_print_report_payroll_thr_branch";
         }else if(tipe.equalsIgnoreCase("IN")){
@@ -2992,9 +2992,9 @@ public class PayrollAction extends BaseMasterAction{
         }else if(tipe.equalsIgnoreCase("JP")){
             reportParams.put("titleReport", "Slip Jasa Produksi");
             hasil = "success_print_report_payroll_jasprod_branch";
-        }else if(tipe.equalsIgnoreCase("R")){
+        }else if(tipe.equalsIgnoreCase("CP")){
             reportParams.put("titleReport", "Slip Rapel");
-            hasil = "success_print_report_payroll_rapel_branch";
+            hasil = "success_print_report_payroll_Cuti_panjang_branch";
         }
         if (branchId != null) {
             try{

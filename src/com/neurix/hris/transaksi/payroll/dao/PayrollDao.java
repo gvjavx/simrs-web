@@ -423,10 +423,10 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             tipeWhere = "and payroll.flag_payroll = 'Y' ";
         }else if(tipe.equalsIgnoreCase("T")){
             tipeWhere = "and payroll.flag_thr = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("PD")){
-            tipeWhere = "and payroll.flag_pendidikan = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("R")){
-            tipeWhere = "and payroll.flag_rapel= 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and payroll.flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and payroll.flag_cuti_tahunan= 'Y' ";
         }else if(tipe.equalsIgnoreCase("JP")){
             tipeWhere = "and payroll.flag_jasprod = 'Y' ";
         }else if(tipe.equalsIgnoreCase("JB")){
@@ -449,8 +449,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  payroll.branch_id,\n" +
                 "  payroll.flag_payroll,\n" +
                 "  payroll.flag_thr,\n" +
-                "  payroll.flag_pendidikan,\n" +
-                "  payroll.flag_rapel,\n" +
+                "  payroll.flag_cuti_tahunan,\n" +
+                "  payroll.flag_cuti_panjang,\n" +
                 "  payroll.flag_jasprod,\n" +
                 "  payroll.flag_jubileum,\n" +
                 "  payroll.flag_pensiun,\n" +
@@ -473,8 +473,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "         payroll.branch_id,\n" +
                 "         payroll.flag_payroll,\n" +
                 "         payroll.flag_thr,\n" +
-                "         payroll.flag_pendidikan,\n" +
-                "         payroll.flag_rapel,\n" +
+                "         payroll.flag_cuti_tahunan,\n" +
+                "         payroll.flag_cuti_panjang,\n" +
                 "         payroll.flag_jasprod,\n" +
                 "         payroll.flag_jubileum,\n" +
                 "         payroll.flag_pensiun,\n" +
@@ -498,8 +498,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setBranchId((String) row[8]);
             result.setFlagPayroll((String) row[9]);
             result.setFlagThr((String) row[10]);
-            result.setFlagPendidikan((String) row[11]);
-            result.setFlagRapel((String) row[12]);
+            result.setFlagCutiTahunan((String) row[11]);
+            result.setFlagCutiPanjang((String) row[12]);
             result.setFlagJasprod((String) row[13]);
             result.setFlagJubileum((String) row[14]);
             result.setFlagPensiun((String) row[15]);
@@ -927,10 +927,10 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             tipeWhere = "flagPayroll";
         }else if(tipe.equalsIgnoreCase("T")){
             tipeWhere = "flagThr";
-        }else if(tipe.equalsIgnoreCase("PD")){
-            tipeWhere = "flagPendidikan";
-        }else if(tipe.equalsIgnoreCase("R")){
-            tipeWhere = "flagRapel";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "flagCutiTahunan";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "flagCutiPanjang";
         }else if(tipe.equalsIgnoreCase("JP")){
             tipeWhere = "flagJasprod";
         }else if(tipe.equalsIgnoreCase("JB")){

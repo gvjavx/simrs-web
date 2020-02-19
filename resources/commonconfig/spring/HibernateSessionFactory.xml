@@ -204,8 +204,11 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPphEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJasprodEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJasoprEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollCutiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollPtkpEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollInsentifEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/hris/master/payrollBajuDinas/hibernate/ImPayrollBajuDinasEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollAirListrik/hibernate/ImPayrollAirListrikEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganUmk/hibernate/ImPayrollTunjanganUmkEntity.hbm.xml</value>
@@ -217,7 +220,7 @@
 
                 <value>sshconfig/com/neurix/hris/master/branchTunjangan/hibernate/ImBranchTunjanganHistoryEntity.hbm.xml</value>
 
-                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>
+                <!--<value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/imPayrolInsentifNilaiSmkEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPotonganLainEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPensiunEntity.hbm.xml</value>
