@@ -191,5 +191,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/struts/KasirRawatInapAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/KasirRawatJalanAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/transaksi/monitorruangan/struts/MonitorRuanganAction.xml"/>
 
 </struts>

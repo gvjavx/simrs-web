@@ -834,6 +834,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <s:if test='tipe == "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
@@ -917,6 +919,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </s:if>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
