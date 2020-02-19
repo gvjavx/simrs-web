@@ -1175,7 +1175,7 @@
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                    <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
@@ -1538,17 +1538,23 @@
 
     function viewDetailRekamMedic(noCheckup){
       console.log("viewDetailRekamMedic ==> klik");
+      var urlImg = $("#img_ktp").val();
+      <%--var surl = "<s:url value='/pages/images/unknown-person.png'>";--%>
       var str = "";
       CheckupAction.getDataCheckupPasien(noCheckup, function(response){
         var item = response;
-        str = "<div class=\"row\">"+
-              "<div class='col-md-3'>"+item.namaPasien+"</div>"+
-              "<div class='col-md-7'>"+
-              "<p> Diagnosa terakhir : "+item.diagnosa+"</p>"+
-              "<p> Tanggal Masuk : "+item.stTglMasuk+"</p>"+
-              "<p> Tiagnosa Keluar : "+item.stTglKeluar+"</p>"+
+        str = "<p style='font-weight:bold'>"+item.namaPasien+"</p><div class=\"row\">"+
+              "<div class='col-md-3'><img src='/simrs/pages/images/nobody_m.original.jpg' style='width:100%;max-height:150px'/></div>"+
+              "<div class='col-md-6'>"+
+              "<table class='table table-bordered table-striped' style='font-size:12px'><tbody>"+
+              "<tr><td>Diagnosa terakhir :</td><td>"+item.diagnosa+"</td></tr>"+
+              "<tr><td>Tanggal Masuk :</td><td>"+item.stTglMasuk+"</td></tr>"+
+              "<tr><td>Tiagnosa Keluar :</td><td>"+item.stTglKeluar+"</td></tr>"+
+              "</tbody></table>"+
               "</div>"+
               "</div>";
+        $("#list-body-rekam-medic").html("");
+//        $("#tab_1").attr("class","active");
         $("#head-detail-rm").html("");
         $("#head-detail-rm").html(str);
       });
@@ -1632,10 +1638,12 @@
       console.log("showDetailMonitoringRm ==> klik");
       console.log(id+"-"+noCheckup+"-"+kategori);
 
+      $("#"+id+"").hide();
+
       var str = "";
       var headstr = "";
       var tablehead = "<table class='table table-bordered table-striped' style='font-size:11px;margin-top:10px;'>";
-      var tabledown = "</table>";
+      var tabledown = "</table><hr/>";
       var upthead = "<thead style='font-weight: bold;'>";
       var downthead = "</thead>";
       var uptbody = "<tbody>";
@@ -1680,6 +1688,12 @@
                     "</tr>";
             });
             $("#body-"+id+"").html(tablehead+strhead+uptbody+str+downtbody+tabledown);
+          } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
           }
         });
       }
@@ -1767,6 +1781,13 @@
               })
             /* END LINE CHART */
             });
+          } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
+
           }
         });
       } if (kategori == "parenteral") {
@@ -1798,7 +1819,13 @@
                       "</tr>";
           });
           $("#body-"+id+"").html(tablehead+strhead+uptbody+str+downtbody+tabledown);
-        }
+        } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
+          }
         });
       }
       if (kategori == "nonparenteral") {
@@ -1826,7 +1853,13 @@
                       "</tr>";
             });
             $("#body-"+id+"").html(tablehead+strhead+uptbody+str+downtbody+tabledown);
-        }
+        } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
+          }
       });
     }
     }
@@ -1889,13 +1922,22 @@
             });
           }
           $("#body-"+id+"").html(table+"<hr/>");
-      }
+      } else {
+            $("#"+id+"").show();
+            $("#"+id+"").removeAttr("class");
+            $("#"+id+"").removeAttr("onclick");
+            $("#"+id+"").attr("class", "btn btn-secondary");
+            $("#"+id+"").html("Tidak Ada Rekam Medic");
+        }
         // console.log(response);
       });
     }
 
     function viewDetailSkorRm(groupId, type, id){
       console.log("viewDetailSkorRm ==> "+groupId+"-"+type+"-"+id);
+      $("#"+id+"").removeAttr("class");
+      $("#"+id+"").removeAttr("onclick");
+      $("#"+id+"").attr("class","btn btn-secondary");
 
       var tablehead = "<p>Detail :</p><table class='table table-bordered table-striped' style='font-size:11px;margin-top:10px;'>";
       var tabledown = "</table>";
@@ -1939,7 +1981,7 @@
       if (kategori == "fisik"){
         CheckupAction.getPemeriksaanFisikByNoCheckup(noCheckup, function(response){
           // console.log(response);
-            if(response != null){
+            if(response.id != null){
 
                 head = "<table class='table table-bordered table-striped' width='60%' style='font-size:11px;margin-top:10px;'><tbody>"+
                           "<tr><td>Created Who</td><td>"+response.createdWho+"</td></tr>"+
@@ -1968,12 +2010,18 @@
                   str += "<tr><td>"+item.label+"</td><td>"+item.nilai+"</td></tr>";
                 });
                 $("#body-"+id+"").html(head+tbodyhead+str+tbodybottom+"<hr/>");
+            } else {
+                $("#"+id+"").show();
+                $("#"+id+"").removeAttr("class");
+                $("#"+id+"").removeAttr("onclick");
+                $("#"+id+"").attr("class", "btn btn-secondary");
+                $("#"+id+"").html("Tidak Ada Rekam Medic");
             }
         });
       }
       if (kategori == "psikososial"){
         CheckupAction.getPsikososial(noCheckup, function (response) {
-            if(response != null){
+            if(response.id != null){
                 head = "<table class='table table-bordered table-striped' width='60%' style='font-size:11px;margin-top:10px;'><tbody>"+
                           "<tr><td>Created Who</td><td>"+response.createdWho+"</td></tr>"+
                           "<tr><td>Created Date</td><td>"+response.createdDate+"</td></tr>"+
@@ -1997,6 +2045,12 @@
                 str += "<tr><td>"+item.label+"</td><td>"+item.nilai+"</td></tr>";
               });
               $("#body-"+id+"").html(head+tbodyhead+str+tbodybottom+"<hr/>");
+            } else {
+                $("#"+id+"").show();
+                $("#"+id+"").removeAttr("class");
+                $("#"+id+"").removeAttr("onclick");
+                $("#"+id+"").attr("class", "btn btn-secondary");
+                $("#"+id+"").html("Tidak Ada Rekam Medic");
             }
         });
       }
@@ -2004,31 +2058,45 @@
         CheckupAction.getListResikoJatuh(noCheckup, "", function(response){
           console.log(response);
           if (response.status == "success"){
-            var createdDate = "";
-            var createdWho = "";
-            var sumSkor = 0;
+              if (response.resikoJatuhEntityList[0].id != null){
+                  var createdDate = "";
+                  var createdWho = "";
+                  var sumSkor = 0;
 
-            $.each(response.resikoJatuhEntityList, function (i, item) {
-              str += "<tr><td>"+item.namaParameter+"</td><td>"+item.skor+"</td></tr>";
-              sumSkor += item.skor;
-              createdWho  = item.createdWho;
-              createdDate = item.createdDate;
-            });
+                  $.each(response.resikoJatuhEntityList, function (i, item) {
+                      str += "<tr><td>"+item.namaParameter+"</td><td>"+item.skor+"</td></tr>";
+                      sumSkor += item.skor;
+                      createdWho  = item.createdWho;
+                      createdDate = item.createdDate;
+                  });
 
-            head = "<table class='table table-bordered table-striped' width='60%' style='font-size:11px;margin-top:10px;'><tbody>"+
+                  head = "<table class='table table-bordered table-striped' width='60%' style='font-size:11px;margin-top:10px;'><tbody>"+
                       "<tr><td>Created Who</td><td>"+createdWho+"</td></tr>"+
                       "<tr><td>Created Date</td><td>"+createdDate+"</td></tr>"+
                       "</tbody></table>";
 
-            str += "<tr style='font-weight:bold;'><td>Total Skor</td><td>"+sumSkor+"</td></tr>";
-            $("#body-"+id+"").html(head+tbodyhead+str+tbodybottom+"<hr/>");
+                  str += "<tr style='font-weight:bold;'><td>Total Skor</td><td>"+sumSkor+"</td></tr>";
+                  $("#body-"+id+"").html(head+tbodyhead+str+tbodybottom+"<hr/>");
+              } else {
+                  $("#"+id+"").show();
+                  $("#"+id+"").removeAttr("class");
+                  $("#"+id+"").removeAttr("onclick");
+                  $("#"+id+"").attr("class", "btn btn-secondary");
+                  $("#"+id+"").html("Tidak Ada Rekam Medic");
+              }
+          } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
           }
         });
       }
       if (kategori == "rencana") {
           CheckupAction.getListRencanaRawat(noCheckup, "", "rigd", function(response){
             console.log(response);
-            if (response.length > 0) {
+            if (response[0].idRencana != null) {
 
               $.each(response, function (i, item) {
                 var upline = "<tr><td>"+item.namaParameter+"</td><td align='center'>";
@@ -2048,12 +2116,18 @@
                         "</tbody></table>";
 
               $("#body-"+id+"").html(head+tbodyhead+str+tbodybottom+"<hr/>");
+            } else {
+                $("#"+id+"").show();
+                $("#"+id+"").removeAttr("class");
+                $("#"+id+"").removeAttr("onclick");
+                $("#"+id+"").attr("class", "btn btn-secondary");
+                $("#"+id+"").html("Tidak Ada Rekam Medic");
             }
           });
       }
       if (kategori == "rekonsiliasi") {
         CheckupAction.getListRekonsiliasiObat(noCheckup, function (response) {
-          if (response != null) {
+          if (response.length > 0) {
             head = "<table class='table table-bordered table-striped' style='font-size:11px;margin-top:10px;'>"+
                   "<thead>"+
                   "<tr>"+
@@ -2080,6 +2154,12 @@
             });
             str += "</tbody></table>";
             $("#body-"+id+"").html(head+str);
+          } else {
+              $("#"+id+"").show();
+              $("#"+id+"").removeAttr("class");
+              $("#"+id+"").removeAttr("onclick");
+              $("#"+id+"").attr("class", "btn btn-secondary");
+              $("#"+id+"").html("Tidak Ada Rekam Medic");
           }
         });
       }
