@@ -424,6 +424,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
                                     riwayatTindakan.setFlag("Y");
                                     riwayatTindakan.setAction("C");
+                                    riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
 
                                     try {
                                         riwayatTindakanDao.addAndSave(riwayatTindakan);

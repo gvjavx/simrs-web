@@ -231,7 +231,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Tindakan Rawat Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Jalan Pasien</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
@@ -300,9 +300,9 @@
                     <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
                         <thead>
                         <tr bgcolor="#90ee90">
-                            <td width="8%" align="center">Detail</td>
+                            <td width="20%">Tanggal</td>
                             <td>Nama Tindakan</td>
-                            <td align="center">Total Tarif (Rp.)</td>
+                            <td align="center" width="20%">Total Tarif (Rp.)</td>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
@@ -417,12 +417,15 @@
 
             KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
                 dataTindakan = response;
+                console.log(response);
                 if (dataTindakan != null) {
+                    var total = 0;
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
                         var tarif    = "";
                         var kategori = ""
                         var btn = "";
+                        var tgl = "";
 
 
                         if (item.namaTindakan != null && item.namaTindakan !=  '') {
@@ -435,6 +438,11 @@
 
                         if(item.totalTarif != null && item.totalTarif != ''){
                             tarif = item.totalTarif;
+                            total = (parseInt(total) + parseInt(tarif));
+                        }
+
+                        if(item.stTglTindakan != null){
+                            tgl = item.stTglTindakan;
                         }
 
                         if(item.keterangan == "resep"){
@@ -442,13 +450,14 @@
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
-                            "<td align='center'>"+btn+"</td>" +
+                            "<td >"+tgl+"</td>" +
                             "<td>" + tindakan + "</td>" +
                             "<td align='right' style='padding-right: 20px'>" +formatRupiah(tarif) + "</td>" +
                             "</tr>";
-
                         jenisPasien = item.jenisPasien;
                     });
+
+                    table = table + '<tr><td colspan="2">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
                 }
             });
 
@@ -496,38 +505,6 @@
         // var tes = '<table><thead><td>TES</td></thead></table>';
         //
         // tes.insertBefore($('#tabel_tindakan_fin tbody tr:nth(' + rowIndex + ')'));
-    }
-
-    function confirmSaveFinalClaim(idCheckup){
-        var data = $('#tabel_tindakan_fin').tableToJSON();
-        if(data.length > 0){
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick','saveFinalClaim(\''+idCheckup+'\')');
-        }else{
-            $('#msg_fin').text("Tidak ada data tindakan dalam tabel...!");
-            $('#warning_fin').show().fadeOut(5000);
-        }
-    }
-
-    function saveFinalClaim(idCheckup){
-        $('#modal-confirm-dialog').modal('hide');
-        $('#save_fin').hide();
-        $('#load_fin').show();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.finalClaim(idCheckup, function (response) {
-            if(response.status == "200"){
-                $('#load_fin').hide();
-                $('#save_fin').show();
-                $('#modal-final-claim').modal('hide');
-                $('#info_dialog').dialog('open');
-            }else{
-                $('#load_fin').hide();
-                $('#save_fin').show();
-                $('#msg_fin').text(response.message);
-                $('#warning_fin').show().fadeOut(5000);
-            }
-
-        });
     }
 
 </script>

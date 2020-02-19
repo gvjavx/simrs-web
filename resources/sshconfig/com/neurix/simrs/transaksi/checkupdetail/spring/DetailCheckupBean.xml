@@ -27,6 +27,8 @@
           p:periksaLabDao-ref="periksaLabDao"
           p:permintaanResepDao-ref="permintaanResepDao"
           p:orderGiziDao-ref="orderGiziDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

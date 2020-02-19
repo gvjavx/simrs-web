@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
+import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
@@ -13,6 +15,11 @@ import java.util.List;
 public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
+    private RawatInapDao rawatInapDao;
+
+    public void setRawatInapDao(RawatInapDao rawatInapDao) {
+        this.rawatInapDao = rawatInapDao;
+    }
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;

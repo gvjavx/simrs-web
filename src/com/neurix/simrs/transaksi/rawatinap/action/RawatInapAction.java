@@ -233,6 +233,7 @@ public class RawatInapAction extends BaseMasterAction {
                                     tindakan.setCreatedWho(user);
                                     tindakan.setLastUpdate(now);
                                     tindakan.setLastUpdateWho(user);
+                                    tindakan.setTanggalTindakan(now);
 
                                     try {
                                         riwayatTindakanBoProxy.saveAdd(tindakan);

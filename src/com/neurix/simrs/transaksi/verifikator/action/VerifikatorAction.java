@@ -317,6 +317,7 @@ public class VerifikatorAction extends BaseMasterAction {
         }
 
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
         if (!detailCheckupList.isEmpty()) {
             headerDetailCheckup = detailCheckupList.get(0);
 
@@ -343,7 +344,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                         //search detail tindakan dari eklaim
                         try {
-                            klaimResponse = eklaimBo.detailPerKlaimEklaim(checkup.getNoSep(), unitId);
+                            klaimResponse = eklaimBo.detailPerKlaimEklaim(headerDetailCheckup.getNoSep(), unitId);
                         } catch (GeneralBOException e) {
                             logger.error("[VerifikatorAction.saveApproveTindakan] Error When Get Header Checkup Data", e);
                         }
@@ -536,13 +537,10 @@ public class VerifikatorAction extends BaseMasterAction {
                             }
                         }
 
+                        Timestamp time = new Timestamp(System.currentTimeMillis());
                         KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
-                        long millis = System.currentTimeMillis();
-                        java.util.Date date = new java.util.Date(millis);
-                        String tglMasuk = new SimpleDateFormat("yyyy-MM-dd").format(checkup.getCreatedDate());
-                        String tglKeluar = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                        klaimDetailRequest.setTglMasuk(tglMasuk);
-                        klaimDetailRequest.setTglPulang(tglKeluar);
+                        klaimDetailRequest.setTglMasuk(checkup.getCreatedDate().toString());
+                        klaimDetailRequest.setTglPulang(time.toString());
                         klaimDetailRequest.setNomorSep(klaimResponse.getNomorSep());
                         klaimDetailRequest.setNomorKartu(klaimResponse.getNomorKartu());
                         klaimDetailRequest.setJenisRawat(klaimResponse.getJenisRawat().toString());
@@ -611,7 +609,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                                 //groper setelah update tarif tindakan
                                 try {
-                                    grouping1Response = eklaimBo.groupingStage1Eklaim(checkup.getNoSep(), unitId);
+                                    grouping1Response = eklaimBo.groupingStage1Eklaim(headerDetailCheckup.getNoSep(), unitId);
                                 } catch (GeneralBOException e) {
                                     logger.error("[CheckupAction.saveAdd] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
                                     response.setStatus("error");
@@ -625,7 +623,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
                                         Grouping2Response grouping2Response = new Grouping2Response();
                                         try {
-                                            grouping2Response = eklaimBo.groupingStage2Eklaim(checkup.getNoSep(), specialCmgResponse.getCode(), unitId);
+                                            grouping2Response = eklaimBo.groupingStage2Eklaim(headerDetailCheckup.getNoSep(), specialCmgResponse.getCode(), unitId);
                                         } catch (GeneralBOException e) {
                                             logger.error("[CheckupAction.saveAdd] Error when adding item ,Found problem when saving add data, please inform to your admin.", e);
                                             response.setStatus("error");
@@ -645,7 +643,7 @@ public class VerifikatorAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse finalClaim(String noCheckup) {
+    public CheckResponse finalClaim(String idDetailCheckup) {
         logger.info("[VerifikatorAction.finalClaim] START process <<<");
 
         CheckResponse response = new CheckResponse();
@@ -657,24 +655,23 @@ public class VerifikatorAction extends BaseMasterAction {
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
 
-        HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
+        HeaderDetailCheckup detail = new HeaderDetailCheckup();
+        detail.setIdDetailCheckup(idDetailCheckup);
 
-        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
 
         try {
-            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+            detailCheckupList = checkupDetailBo.getByCriteria(detail);
         } catch (GeneralBOException e) {
             logger.error("[VerifikatorAction.finalClaim] Error When Get Header Checkup Data", e);
         }
 
-        HeaderCheckup checkup = new HeaderCheckup();
-        if (!headerCheckupList.isEmpty()) {
-            checkup = headerCheckupList.get(0);
-            if (checkup != null) {
+        if (!detailCheckupList.isEmpty()) {
+            detail = detailCheckupList.get(0);
+            if (detail != null) {
 
                 try {
-                    response = eklaimBo.finalisasiClaimEklaim(checkup.getNoSep(), "123456", unitId);
+                    response = eklaimBo.finalisasiClaimEklaim(detail.getNoSep(), "123456", unitId);
                 } catch (GeneralBOException e) {
                     logger.error("[VerifikatorAction.finalClaim] Error When final claim", e);
                 }
@@ -684,15 +681,13 @@ public class VerifikatorAction extends BaseMasterAction {
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                    HeaderCheckup header = new HeaderCheckup();
-                    header.setNoCheckup(checkup.getNoCheckup());
-                    header.setLastUpdateWho(userLogin);
-                    header.setLastUpdate(updateTime);
-
-                    CheckResponse response1 = new CheckResponse();
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    detailCheckup.setIdDetailCheckup(detail.getIdDetailCheckup());
+                    detailCheckup.setLastUpdateWho(userLogin);
+                    detailCheckup.setLastUpdate(updateTime);
 
                     try {
-                        response1 = verifikatorBo.updateKlaimBpjsFlag(header);
+                        response = verifikatorBo.updateKlaimBpjsFlag(detailCheckup);
                     }catch (HibernateException e){
                         logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
                     }
@@ -765,11 +760,11 @@ public class VerifikatorAction extends BaseMasterAction {
 
                         CheckResponse response = new CheckResponse();
 
-                        try {
-                            response = verifikatorBo.updateKlaimBpjsFlag(header);
-                        }catch (HibernateException e){
-                            logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
-                        }
+//                        try {
+//                            response = verifikatorBo.updateKlaimBpjsFlag(header);
+//                        }catch (HibernateException e){
+//                            logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+//                        }
 
                         if(response != null){
                             dataCenterResponse.setStatus(response.getStatus());

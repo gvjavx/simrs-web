@@ -1,5 +1,9 @@
 package com.neurix.simrs.transaksi.checkup.action;
 
+import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Area;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -957,12 +961,13 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public List<HeaderCheckup> listDataPasien(String noCheckup) {
+    public List<HeaderCheckup> listDataPasien(String noCheckup, String idDetailCheckup) {
         logger.info("[CheckupAction.listDataPasien] start process >>>");
 
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         HeaderCheckup headerCheckup = new HeaderCheckup();
         headerCheckup.setNoCheckup(noCheckup);
+        headerCheckup.setIdDetailCheckup(idDetailCheckup);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
@@ -975,6 +980,7 @@ public class CheckupAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.listDataPasien] end process >>>");
         return headerCheckupList;
+
     }
 
     public DiagnosaRawat getDiagnosaRawatPasien(String idDetail) {
@@ -1868,5 +1874,82 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListKategoriSkorRanapByHead(head);
+    }
+
+    public List<Area> getListComboArea(){
+        List<Area> areaList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AreaBo areaBo = (AreaBo) ctx.getBean("areaBoProxy");
+        Area area = new Area();
+        area.setFlag("Y");
+
+        try {
+            areaList = areaBo.getByCriteria(area);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error" + e);
+        }
+        return areaList;
+    }
+
+    public List<Branch> getListComboBranch(String areaId){
+        List<Branch> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch.setAreaId(areaId);
+        branch.setFlag("Y");
+
+        try {
+            branchList = branchBo.getByCriteria(branch);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error" + e);
+        }
+        return branchList;
+    }
+
+    public List<Pelayanan> getListComboPelayanan(String branchId){
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setBranchId(branchId);
+        pelayanan.setFlag("Y");
+        pelayanan.setTipePelayanan("rawat_jalan");
+
+        try {
+            pelayananList = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error" + e);
+        }
+        return pelayananList;
+    }
+
+    public Branch getDataBranch(String branchId){
+        List<Branch> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch.setBranchId(branchId);
+        branch.setFlag("Y");
+
+        try {
+            branchList = branchBo.getByCriteria(branch);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error" + e);
+        }
+
+        if(branchList.size() > 0){
+           branch = branchList.get(0);
+        }
+
+        if("RS01".equalsIgnoreCase(branchId)){
+            branch.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS01);
+        }else if("RS02".equalsIgnoreCase(branchId)){
+            branch.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS02);
+        }else if("RS03".equalsIgnoreCase(branchId)){
+            branch.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.LOGO_RS03);
+        }
+
+        return branch;
     }
 }

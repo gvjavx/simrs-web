@@ -13,4 +13,5 @@ import java.util.List;
 public interface AreaBo extends BaseMasterBo<Area> {
     public Area getAreaById(String areaId, String flag) throws GeneralBOException;
     public List<Area> getComboAreaWithCriteria(String query) throws GeneralBOException;
+    public List<Area> getByCriteria(Area bean) throws GeneralBOException;
 }

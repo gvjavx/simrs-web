@@ -417,6 +417,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.obat.model.Obat"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatinap.model.ObatInap"/>
       <convert converter="bean" match="com.neurix.simrs.master.lab.model.Lab"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.Pelayanan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLab"/>
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>

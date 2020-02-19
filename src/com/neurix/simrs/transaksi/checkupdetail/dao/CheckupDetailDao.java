@@ -291,7 +291,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "dt.status_periksa,\n" +
                     "st.keterangan,\n" +
                     "dt.keterangan_selesai,\n" +
-                    "dt.klaim_bpjs_flag, dt.status_bayar\n" +
+                    "dt.klaim_bpjs_flag, dt.status_bayar, dt.no_sep\n" +
                     "FROM \n" +
                     "it_simrs_header_checkup hd\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
@@ -308,8 +308,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND CAST(b.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(b.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')"+
-                        "\n ORDER BY b.tgl_antrian ASC";
+                SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')"+
+                        "\n ORDER BY dt.tgl_antrian ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -324,7 +324,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             } else {
 
-                SQL = SQL + "\n  ORDER BY b.tgl_antrian ASC";
+                SQL = SQL + "\n  ORDER BY dt.tgl_antrian ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -353,6 +353,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
                     headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+                    headerDetailCheckup.setNoSep(obj[12] == null ? "" : obj[12].toString());
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
@@ -370,6 +371,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                 } else {
                                     jalan = alamatLengkap;
                                 }
+
+                                headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+                                headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
+
                             }
                         }
                     }

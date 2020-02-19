@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printGelangPasien" language="groovy" pageWidth="90" pageHeight="952" columnWidth="50" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a5ab152-c524-4ad6-b41f-7f1dddf50e80">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.43449656960503197"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="44"/>
 	<parameter name="reportParams.noCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>
 	<parameter name="reportParams.ruang" class="java.lang.String"/>

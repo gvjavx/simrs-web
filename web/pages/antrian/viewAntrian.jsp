@@ -47,6 +47,55 @@
                 -webkit-transform: rotate(359deg);
             }
         }
+        .btn-trans{
+            background-color: #404040;
+            width: 100px;
+            height: 130px;
+            border-radius: 10px;
+            opacity: 0.9;
+            /*padding-right: 20px;
+            padding-left: 20px;*/
+            padding: 6px;
+            float: left;
+            margin: 5px;
+            border: 1px solid #f7f7f7;
+            font-size: 12px;
+            text-align: center;
+            color : #fff;
+        }
+
+        .btn-green{
+            background-color: green;
+        }
+        .btn-red{
+            background-color: red;
+        }
+        .btn-yellow{
+            background-color: yellow;
+        }
+        .btn-orange{
+            background-color: orange;
+        }
+        .btn-default{
+            background-color: green;
+            color:#fff;
+        }
+        .btn-transparent{
+            background-color: transparent;
+            color:#fff;
+        }
+
+        .btn-white:hover{
+            color:#fff;
+        }
+
+        .btn-trans:active{
+            background-color: #2caaea;
+        }
+
+        .btn-trans:visited{
+            background-color: #2caaea;
+        }
     </style>
 
 </head>
@@ -67,18 +116,18 @@
                 <div class="collapse navbar-collapse pull-left">
                     <ul class="nav navbar-nav">
                         <li style="color: white; margin-top: 6px; margin-left: -10px; padding-bottom: -2px">
-                            <span> RS. GATOEL</span><br>
+                            <span id="nav_branch_id"></span><br>
                             <span> PT. NUSANTARA MEDIKA UTAMA</span>
                         </li>
-                        <li style="margin-left: 100px; color: white;">
-                            <h3>DAFTAR ANTRIAN PASIEN RS GATOEL KOTA MOJOKERTO</h3>
+                        <li style="margin-left: 50px; color: white;">
+                            <h3 id="nav_judul"></h3>
                         </li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse pull-right">
                     <ul class="nav navbar-nav">
                         <li>
-                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/RS01.png"/>" style="cursor: pointer; height: 35px; width: 110px; margin-top: 9px">
+                            <span id="nav_logo_branch"></span>
                         </li>
                     </ul>
                 </div>
@@ -118,6 +167,39 @@
                     </div>
                     <!-- /.box-body -->
                 </div>
+                <%--<div class="box box-default">--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-12" style="display:inline;">--%>
+                            <%--<div class="btn-wrapper">--%>
+                                <%--<div id="id__box" class="btn-trans btn-white" data-target="#detailalat" data-toggle="modal"   >--%>
+                                    <%--<b>Mawar</b>--%>
+                                    <%--<i id="icon_" class="icon-volume fa" >&nbsp;</i>--%>
+                                    <%--<div title="Klik untuk info detail" onClick="cek_event('')" style="text-align:left; cursor:pointer; font-size:11px; border-top:solid 2px #fff;">--%>
+                                        <%--<table align="center" id="id_"--%>
+                                               <%--style="width:80px; border-radius:5px; margin-top:2px;">--%>
+                                            <%--<td id="id__dc" colspan="2" align="center" style="border:solid 0px red; " >--%>
+                                                <%--<img style="background-color:transparent; height:65px;" class="" src="<s:url value="/pages/images/logo-poli.png"/>">--%>
+                                            <%--</td>--%>
+                                            <%--<tr class="hiddenx">--%>
+                                                <%--<td colspan="2" style="border:solid 0px #fff;">--%>
+                                                    <%--<center>&nbsp;<b id="id__s"></b></center>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
+                                            <%--<tr class="hidden" style="display: none;">--%>
+                                                <%--<td>&nbsp;</td>--%>
+                                                <%--<td> : <b id="id__i">0</b></td>--%>
+                                            <%--</tr>--%>
+                                            <%--<tr class="hidden" style="display: none;">--%>
+                                                <%--<td>&nbsp;</td>--%>
+                                                <%--<td> : <b id="id__v">0</b></td>--%>
+                                            <%--</tr>--%>
+                                        <%--</table>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <!-- /.box -->
             </section>
             <!-- /.content -->
@@ -156,9 +238,28 @@
     });
 
     function cekListAntrian() {
+        var urlString = window.location;
+        var url = new URL(urlString);
+        var branch = url.searchParams.get("branch");
+        var poli = url.searchParams.get("poli");
+
+
+        var branchId = null;
+        var poliId = null;
+
+        if(branch != ''){
+            branchId = branch;
+        }
+
+        if(poli != ''){
+            poliId = poli;
+        }
+
+        detailBranch(branchId);
+
         setInterval(function () {
             var tableAntrian = "";
-            CheckupAction.getListAntriaPasien("RS01",null, function (response) {
+            CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
 
                     $.each(response, function (i, item) {
@@ -178,7 +279,7 @@
             });
 
             var tablePeriksa = "";
-            CheckupAction.getListPeriksaPasien("RS01",null, function (response) {
+            CheckupAction.getListPeriksaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
                     $.each(response, function (i, item) {
                         tablePeriksa += '<tr>' +
@@ -194,6 +295,17 @@
             });
         },1000);
     }
+
+    function detailBranch(branch) {
+        CheckupAction.getDataBranch(branch, function (response) {
+            if(response != null){
+                $('#nav_branch_id').text(response.branchName.toUpperCase());
+                $('#nav_judul').text("DAFTAR ANTRIAN PASIEN " +response.branchName.toUpperCase()+ " "+response.branchAddress.toUpperCase())
+                $('#nav_logo_branch').html('<img border="0" class="hvr-grow" src="'+response.logoBranch+'" style="cursor: pointer; height: 35px; width: 110px; margin-top: 9px">');
+            }
+        });
+    }
+
 </script>
 </body>
 </html>

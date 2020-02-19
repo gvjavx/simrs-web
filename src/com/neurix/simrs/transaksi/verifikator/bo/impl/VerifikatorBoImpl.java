@@ -8,6 +8,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
@@ -95,14 +96,14 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     }
 
     @Override
-    public CheckResponse updateKlaimBpjsFlag(HeaderCheckup bean) throws GeneralBOException {
+    public CheckResponse updateKlaimBpjsFlag(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.updateKlaimBpjsFlag] START process <<<");
         CheckResponse response = new CheckResponse();
         if(bean != null){
 
-            ItSimrsHeaderChekupEntity entity = new ItSimrsHeaderChekupEntity();
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
             try {
-                entity = checkupDao.getById("noCheckup", bean.getNoCheckup());
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
             }catch (HibernateException e){
                 logger.error("[VerifikatorBoImpl.updateKlaimBpjsFlag] Error when update data flag approve tindakan rawat ", e);
             }
@@ -115,7 +116,7 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
 
                 try {
-                    checkupDao.updateAndSave(entity);
+                    checkupDetailDao.updateAndSave(entity);
                     response.setStatus("200");
                     response.setMessage("Berhasil mengubah flag bpjs flag klaim!");
                 }catch (HibernateException e){

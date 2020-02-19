@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 
 import java.util.List;

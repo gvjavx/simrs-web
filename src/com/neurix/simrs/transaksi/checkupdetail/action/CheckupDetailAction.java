@@ -565,7 +565,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         if (labList.size() > 0) {
                             lab = labList.get(0);
                             if (lab != null) {
-                                tarifLab = tarifLab.add(lab.getTarif());
+
+                                BigDecimal tariff = new BigDecimal(String.valueOf(0));
+                                if(lab.getTarif() != null){
+                                    tariff = lab.getTarif();
+                                }
+
+                                tarifLab = tarifLab.add(tariff);
                             }
                         }
                     }
@@ -627,7 +633,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         if (giziList.size() > 0) {
 
                             for (OrderGizi gizi : giziList) {
-                                tarifGizi = tarifGizi.add(gizi.getTarifTotal());
+
+                                BigDecimal tariff = new BigDecimal(String.valueOf(0));
+                                if(gizi.getTarifTotal() != null){
+                                    tariff = gizi.getTarifTotal();
+                                }
+
+                                tarifGizi = tarifGizi.add(tariff);
                             }
                         }
                     }
@@ -1533,6 +1545,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                     //=====START SET TARIF BPJS DARI E-KLAIM====
 
                                                     headerDetailCheckup.setTarifBpjs(tarifCbg);
+                                                    headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
 
                                                     //=====END SET TARIF BPJS DARI E-KLAIM=====
 
@@ -1561,6 +1574,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         }
 
+                        Tindakan tindakan = new Tindakan();
+                        tindakan.setIdTindakan("03");
+
+                        List<Tindakan> tindakans = new ArrayList<>();
+                        tindakans.add(tindakan);
+
+                        headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                         headerDetailCheckup.setNoCheckup(noCheckup);
                         headerDetailCheckup.setIdPelayanan(pelayanan.getIdPelayanan());
                         headerDetailCheckup.setIdRuangan(kamar);
@@ -1571,6 +1591,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setLastUpdateWho(user);
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
+                        headerDetailCheckup.setTindakanList(tindakans);
 
                         try {
                             checkupDetailBo.saveAdd(headerDetailCheckup);

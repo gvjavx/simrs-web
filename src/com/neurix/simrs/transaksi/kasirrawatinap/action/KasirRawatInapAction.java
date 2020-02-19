@@ -22,6 +22,11 @@ public class KasirRawatInapAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(KasirRawatInapAction.class);
     private RawatInap rawatInap;
     private RawatInapBo rawatInapBoProxy;
+    private KasirRawatInapBo kasirRawatInapBoProxy;
+
+    public void setKasirRawatInapBoProxy(KasirRawatInapBo kasirRawatInapBoProxy) {
+        this.kasirRawatInapBoProxy = kasirRawatInapBoProxy;
+    }
 
     public void setRawatInapBoProxy(RawatInapBo rawatInapBoProxy) {
         this.rawatInapBoProxy = rawatInapBoProxy;
@@ -70,10 +75,11 @@ public class KasirRawatInapAction extends BaseMasterAction {
         logger.info("[KasirRawatInapAction.search] start process >>>");
 
         RawatInap rawatInap = getRawatInap();
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
         List<RawatInap> listOfRawatInap = new ArrayList();
 
         try {
-            listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);
+            listOfRawatInap = kasirRawatInapBoProxy.getListRawatInap(rawatInap);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[KasirRawatInapAction.save] Error when searching rawat inap by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);

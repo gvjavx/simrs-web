@@ -235,6 +235,7 @@ public class OrderGiziBoImpl implements OrderGiziBo {
             orderGizi.setLastUpdateWho(entity.getLastUpdateWho());
             orderGizi.setApproveFlag(entity.getApproveFlag());
             orderGizi.setDiterimaFlag(entity.getDiterimaFlag());
+            orderGizi.setTarifTotal(entity.getTarifTotal());
 
             results.add(orderGizi);
         }

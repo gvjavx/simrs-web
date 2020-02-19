@@ -6,10 +6,12 @@
 
     <bean id="kasirRawatInapAction" class="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
+          p:kasirRawatInapBoProxy-ref="kasirRawatInapBoProxy"
     />
 
     <bean id="kasirRawatInapBo" class="com.neurix.simrs.transaksi.kasirrawatinap.bo.impl.KasirRawatInapBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:rawatInapDao-ref="rawatInapDao"
     />
 
     <bean id="kasirRawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

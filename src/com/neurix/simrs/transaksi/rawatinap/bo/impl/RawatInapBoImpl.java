@@ -68,8 +68,9 @@ public class RawatInapBoImpl implements RawatInapBo {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-
-        hsCriteria.put("flag", "Y");
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            hsCriteria.put("flag", bean.getFlag());
+        }
 
         try {
             entityList = rawatInapDao.getByCriteria(hsCriteria);

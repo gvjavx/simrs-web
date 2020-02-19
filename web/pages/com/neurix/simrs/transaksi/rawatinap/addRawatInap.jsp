@@ -94,13 +94,15 @@
                                     <s:hidden id="id_rawat_inap" name="rawatInap.idRawatInap"/>
                                     <s:hidden id="id_pasien" name="rawatInap.idPasien"/>
                                     <s:hidden id="id_jenis_pasien" name="rawatInap.idJenisPeriksa"/>
-                                    <tr>
-                                        <td width="45%"><b>No SEP</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="rawatInap.noSep"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                                        <tr>
+                                            <td width="45%"><b>No SEP</b></td>
+                                            <td style="vertical-align: middle;">
+                                                <table>
+                                                    <s:label cssClass="label label-success" name="rawatInap.noSep"></s:label></table>
+                                            </td>
+                                        </tr> 
+                                    </s:if>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -154,13 +156,13 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Poli</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="rawatInap.namaPelayanan"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <%--<tr>--%>
+                                        <%--<td><b>Poli</b></td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<s:label name="rawatInap.namaPelayanan"></s:label></table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -2467,8 +2469,8 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
-            if (response.jenisTransaksi == "bpjs") {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+            if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
@@ -2754,6 +2756,7 @@
         var data = [];
         var dokter = "";
         TeamDokterAction.listDokter(idDetailCheckup, function (response) {
+            console.log(response)
             data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
@@ -2794,6 +2797,7 @@
         var idDokter = $('#tin_id_dokter').val();
         var idPerawat = 1;
         var qty = $('#tin_qty').val();
+        console.log(qty);
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
 
