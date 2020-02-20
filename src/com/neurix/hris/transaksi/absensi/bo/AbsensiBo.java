@@ -40,11 +40,11 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     List<AbsensiPegawai> getByCriteriaForRekapLembur(AbsensiPegawai searchBean) throws GeneralBOException;
 
     List<MesinAbsensi> getByCriteriaMesin(MesinAbsensi searchBean) throws GeneralBOException;
-    List<AbsensiPegawai> cariAbseniSys(String nip, String tanggal) throws GeneralBOException;
+    public List<AbsensiPegawai> cariAbseniSys(String nip, String tanggal, String statusabsensi) throws GeneralBOException;
 
     List getDataFromMesin() throws Exception;
 
-    List<MesinAbsensi> inquiry(String tanggal,Boolean awalTanggal) throws Exception;
+    List<MesinAbsensi> inquiry(String tanggal,Boolean awalTanggal, String statusPegawai) throws Exception;
 
     List<PegawaiTambahanAbsensi> inquiryTambahan(String tanggal, Boolean awalTanggal) throws Exception;
 

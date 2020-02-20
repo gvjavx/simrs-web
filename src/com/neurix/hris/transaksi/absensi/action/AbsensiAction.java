@@ -59,10 +59,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 
 /**
@@ -216,7 +213,7 @@ public class AbsensiAction extends BaseMasterAction {
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal);
+                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal,"");
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -295,6 +292,49 @@ public class AbsensiAction extends BaseMasterAction {
         }
         return "init_delete";
     }
+    public String editAbsensi() {
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
+        AbsensiPegawai searchAbsensi = new AbsensiPegawai();
+        searchAbsensi.setAbsensiPegawaiId(getId());
+        searchAbsensi.setFlag(getFlag());
+        absensiPegawaiList = absensiBoProxy.getByCriteria(searchAbsensi);
+        for (AbsensiPegawai absensiPegawai : absensiPegawaiList){
+            setAbsensiPegawai(absensiPegawai);
+        }
+        return "init_edit";
+    }
+    public String saveEdit(){
+        logger.info("[AbsensiAction.saveEdit] start process >>>");
+        try {
+
+            AbsensiPegawai deleteAbsensiPegawai = getAbsensiPegawai();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deleteAbsensiPegawai.setLastUpdate(updateTime);
+            deleteAbsensiPegawai.setLastUpdateWho(userLogin);
+            deleteAbsensiPegawai.setAction("U");
+            deleteAbsensiPegawai.setFlag("Y");
+
+            absensiBoProxy.saveEdit(deleteAbsensiPegawai);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.saveDelete");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.saveDelete] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[AbsensiAction.saveDelete] Error when editing item absensi," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[AbsensiAction.saveDelete] end process <<<");
+
+        return "success_save_edit";
+    }
     public String saveDelete(){
         logger.info("[AbsensiAction.saveDelete] start process >>>");
         try {
@@ -327,6 +367,7 @@ public class AbsensiAction extends BaseMasterAction {
 
         return "success_save_delete";
     }
+
     @Override
     public String view() {
         List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
@@ -2178,7 +2219,11 @@ public class AbsensiAction extends BaseMasterAction {
         reportParams.put("nip", getNip());
         reportParams.put("nama", nama);
         reportParams.put("posisi", posisi);
-        reportParams.put("golongan", golongan.replace("Golongan ",""));
+        if (golongan!=null){
+            reportParams.put("golongan", golongan.replace("Golongan ",""));
+        }else{
+            reportParams.put("golongan", "-");
+        }
         reportParams.put("date", stDate);
 
         try {
@@ -2200,7 +2245,7 @@ public class AbsensiAction extends BaseMasterAction {
         return "success_print_report_lembur";
     }
 
-    public String printReportRekapitulasiLembur() {
+    public String printReportRekapitulasiLembur() throws ParseException {
         logger.info("[ReportAction.printReportRekapitulasiLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
         List<AbsensiPegawai> listDataAbsensi = new ArrayList();
@@ -2413,7 +2458,8 @@ public class AbsensiAction extends BaseMasterAction {
                     tmp.setStBiayaLemburPerjam("");
                     tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur),"###,###"));
                     forReport.add(tmp);
-                    jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
+                    jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;
+                    jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
                     jJumlahJamSeluruhnya=(double)0;jJamKerja15=(double)0;jJamKerja20=(double)0;jJumlahJamKerja=(double)0;jJamlibur20=(double)0;jJamlibur30=(double)0;jJamlibur40=(double)0;jJumlahLibur=(double)0;jJumlahJamLemburPerhitungan=(double)0;jJumlahUpahLembur=(double)0;
                 }
                 tmp = new AbsensiPegawai();
@@ -2435,19 +2481,21 @@ public class AbsensiAction extends BaseMasterAction {
                 bagianPegawai = absensiPegawai.getBagian();
             }
             forReport.add(absensiPegawai);
-            jJumlahJamSeluruhnya+=Double.valueOf(absensiPegawai.getStLamaLembur());
-            jJamKerja15+=Double.valueOf(absensiPegawai.getStHariKerja15());
-            jJamKerja20+=Double.valueOf(absensiPegawai.getStHariKerja20());
-            jJumlahJamKerja+=Double.valueOf(absensiPegawai.getsJumlahHariKerja());
-            jJamlibur20+=Double.valueOf(absensiPegawai.getStHariLibur20());
-            jJamlibur30+=Double.valueOf(absensiPegawai.getStHariLibur30());
-            jJamlibur40+=Double.valueOf(absensiPegawai.getStHariLibur40());
-            jJumlahLibur+=Double.valueOf(absensiPegawai.getsJumlahHariLibur());
-            jJumlahJamLemburPerhitungan+=Double.valueOf(absensiPegawai.getStJamLembur());
-            jJumlahUpahLembur+=Double.valueOf(absensiPegawai.getStBiayaLembur().replace(",",""));
+            NumberFormat nf = NumberFormat.getInstance(Locale.US);
+            jJumlahJamSeluruhnya+=nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();
+            jJamKerja15+=nf.parse(absensiPegawai.getStHariKerja15()).doubleValue();
+            jJamKerja20+=nf.parse(absensiPegawai.getStHariKerja20()).doubleValue();
+            jJumlahJamKerja+=nf.parse(absensiPegawai.getsJumlahHariKerja()).doubleValue();
+            jJamlibur20+=nf.parse(absensiPegawai.getStHariLibur20()).doubleValue();
+            jJamlibur30+=nf.parse(absensiPegawai.getStHariLibur30()).doubleValue();
+            jJamlibur40+=nf.parse(absensiPegawai.getStHariLibur40()).doubleValue();
+            jJumlahLibur+=nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue();
+            jJumlahJamLemburPerhitungan+=nf.parse(absensiPegawai.getStJamLembur()).doubleValue();
+            jJumlahUpahLembur+=nf.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
             a++;
         }
-        jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
+        jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;
+        jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
         AbsensiPegawai tmp = new AbsensiPegawai();
         tmp.setNo("");
         tmp.setNip("JUMLAH");
@@ -3021,23 +3069,12 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[AbsensiAction.refreshAbsensi] end process <<<");
         return status;
     }
-    public String getDataFromMesin(String stTanggalAwal,String stTanggalAkhir) throws Exception {
+    public String getDataFromMesin() throws Exception {
         logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
         String status="00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-/*        Date startDate = CommonUtil.convertToDate(stTanggalAwal);
-        Date endDate = CommonUtil.convertToDate(stTanggalAkhir);
-        Calendar start = Calendar.getInstance();
-        start.setTime(startDate);
-        Calendar end = Calendar.getInstance();
-        end.setTime(endDate);
-        end.add(Calendar.DATE,1);
-        java.util.Date date;
-        for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {*/
         try {
-                /*DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                String tanggal = df.format(date);*/
             absensiBo.getDataFromMesin();
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -3050,7 +3087,6 @@ public class AbsensiAction extends BaseMasterAction {
             logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
-//        }
         return status;
     }
     public void inquiry() throws Exception {
@@ -3082,7 +3118,7 @@ public class AbsensiAction extends BaseMasterAction {
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal);
+                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal, absen.getCekPegawaiStatus());
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3157,14 +3193,14 @@ public class AbsensiAction extends BaseMasterAction {
 
         return pegawaiTambahanAbsensiList;
     }
-    public List<AbsensiPegawai> cariAbseni(String nip, String tanggal) throws Exception {
+    public List<AbsensiPegawai> cariAbseni(String nip, String tanggal, String statusabsensi) throws Exception {
         logger.info("[AbsensiAction.inquiry] start process >>>");
         List<AbsensiPegawai> absensiPegawai= new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
         try {
-            absensiPegawai = absensiBo.cariAbseniSys(nip, tanggal);
+            absensiPegawai = absensiBo.cariAbseniSys(nip, tanggal, statusabsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

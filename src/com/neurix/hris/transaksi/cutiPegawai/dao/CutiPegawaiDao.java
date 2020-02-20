@@ -618,10 +618,12 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         String query ="select position_id from it_hris_pegawai_position where nip ='"+nip+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
-        if (results.toString().equalsIgnoreCase("00")||results.toString().equalsIgnoreCase("01")||results.toString().equalsIgnoreCase("02")){
-            result = "ya";
-        }else {
-            result="tidak";
+        if (results !=null){
+            if (results.toString().equalsIgnoreCase("00")||results.toString().equalsIgnoreCase("01")||results.toString().equalsIgnoreCase("02")){
+                result = "ya";
+            }else {
+                result="tidak";
+            }
         }
         return result;
     }
@@ -677,6 +679,18 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public String getTanggalPensiun(String nip){
         String result="";
         String query ="select tanggal_pensiun from im_hris_pegawai where nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="-";
+        }
+        return result;
+    }
+    public String getUnitByNip(String nip){
+        String result="";
+        String query ="select branch_id from it_hris_pegawai_position where nip = '"+nip+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

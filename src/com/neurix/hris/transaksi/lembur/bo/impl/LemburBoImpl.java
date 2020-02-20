@@ -789,7 +789,7 @@ public class LemburBoImpl implements LemburBo {
             notifAtasan.setTipeNotifName(("Lembur"));
             notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
             notifAtasan.setCreatedWho(bean.getNip());
-            notifAtasan.setTo("kabag");
+            notifAtasan.setTo("atasan");
 
             notifikasiList.add(notifAtasan);
         }

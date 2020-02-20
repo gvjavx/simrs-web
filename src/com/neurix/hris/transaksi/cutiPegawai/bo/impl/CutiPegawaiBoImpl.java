@@ -1144,80 +1144,83 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
         for (ImBiodataEntity imBiodataEntity:biodataEntityList){
-            CutiPegawai result = getSisaCuti(imBiodataEntity.getNip());
-            result.setNamaPegawai(imBiodataEntity.getNamaPegawai());
-            result.setNip(imBiodataEntity.getNip());
-            result.setTanggalAktif(imBiodataEntity.getTanggalAktif());
-            if(imBiodataEntity.getTanggalAktif() != null){
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                String stringTanggal  = dateFormat.format(imBiodataEntity.getTanggalAktif());
-                result.setStTanggalAktif(stringTanggal);
+            String statusUnit = cutiPegawaiDao.getUnitByNip(imBiodataEntity.getNip());
+            if (unit.equalsIgnoreCase(statusUnit)){
+                CutiPegawai result = getSisaCuti(imBiodataEntity.getNip());
+                result.setNamaPegawai(imBiodataEntity.getNamaPegawai());
+                result.setNip(imBiodataEntity.getNip());
                 result.setTanggalAktif(imBiodataEntity.getTanggalAktif());
-            }else{
-                result.setStTanggalAktif("");
-            }
-
-            if (result.getSisaCutiTahunan()!=null){
-                if (Integer.parseInt(result.getSisaCutiTahunan())<0){
-                    result.setSetelahResetCutiTahunan(BigInteger.valueOf(12+Integer.parseInt(result.getSisaCutiTahunan())));
+                if(imBiodataEntity.getTanggalAktif() != null){
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    String stringTanggal  = dateFormat.format(imBiodataEntity.getTanggalAktif());
+                    result.setStTanggalAktif(stringTanggal);
+                    result.setTanggalAktif(imBiodataEntity.getTanggalAktif());
                 }else{
+                    result.setStTanggalAktif("");
+                }
+
+                if (result.getSisaCutiTahunan()!=null){
+                    if (Integer.parseInt(result.getSisaCutiTahunan())<0){
+                        result.setSetelahResetCutiTahunan(BigInteger.valueOf(12+Integer.parseInt(result.getSisaCutiTahunan())));
+                    }else{
+                        result.setSetelahResetCutiTahunan(BigInteger.valueOf(12));
+                    }
+                }else{
+                    //tambahan irfan
+                    result.setSisaCutiTahunan("0");
+                    //
                     result.setSetelahResetCutiTahunan(BigInteger.valueOf(12));
                 }
-            }else{
-                //tambahan irfan
-                result.setSisaCutiTahunan("0");
-                //
-                result.setSetelahResetCutiTahunan(BigInteger.valueOf(12));
-            }
 
-            if (result.getSisaCutiPanjang()!=null){
-                if (imBiodataEntity.getGolongan()!=null){
-                    if (!("").equalsIgnoreCase(imBiodataEntity.getGolongan())){
-                        List<ImCutiPanjangEntity> cutiPanjangEntityList;
-                        cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
-                        for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
-                            if (Integer.parseInt(result.getSisaCutiTahunan())<0){
-                                result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
-                            }else{
-                                result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()));
+                if (result.getSisaCutiPanjang()!=null){
+                    if (imBiodataEntity.getGolongan()!=null){
+                        if (!("").equalsIgnoreCase(imBiodataEntity.getGolongan())){
+                            List<ImCutiPanjangEntity> cutiPanjangEntityList;
+                            cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
+                            for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
+                                if (Integer.parseInt(result.getSisaCutiTahunan())<0){
+                                    result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
+                                }else{
+                                    result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()));
 //                            if(Integer.parseInt(result.getSisaCutiTahunan())<12){
 //                                result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()-(12-Integer.parseInt(result.getSisaCutiTahunan()))));
 //                            }else{
 //                            }
+                                }
                             }
                         }
                     }
                 }
-            }
-            //tambahan irfan
-            else{
-                result.setSisaCutiPanjang("0");
-                List<ImCutiPanjangEntity> cutiPanjangEntityList;
-                cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
-                for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
-                    if (Integer.parseInt(result.getSisaCutiTahunan())<0){
-                        result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
-                    }else{
-                        result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()));
+                //tambahan irfan
+                else{
+                    result.setSisaCutiPanjang("0");
+                    List<ImCutiPanjangEntity> cutiPanjangEntityList;
+                    cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
+                    for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
+                        if (Integer.parseInt(result.getSisaCutiTahunan())<0){
+                            result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
+                        }else{
+                            result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()));
+                        }
                     }
                 }
-            }
-            //
-            try {
-                tahun = cutiPanjangDao.cekResetCutiPanjang(result.getNip());
-            }catch (HibernateException e) {
-                logger.error("[UserBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
-            }
-            Calendar now = Calendar.getInstance();
-            String currentYear = String.valueOf( now.get(Calendar.YEAR));
+                //
+                try {
+                    tahun = cutiPanjangDao.cekResetCutiPanjang(result.getNip());
+                }catch (HibernateException e) {
+                    logger.error("[UserBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+                }
+                Calendar now = Calendar.getInstance();
+                String currentYear = String.valueOf( now.get(Calendar.YEAR));
 
-            if (tahun == null){
-                listCutiPegawai.add(result);
-            }
-            else{
-                if(!tahun.equalsIgnoreCase(currentYear)){
+                if (tahun == null){
                     listCutiPegawai.add(result);
+                }
+                else{
+                    if(!tahun.equalsIgnoreCase(currentYear)){
+                        listCutiPegawai.add(result);
+                    }
                 }
             }
 //            Map hsCriteria = new HashMap();

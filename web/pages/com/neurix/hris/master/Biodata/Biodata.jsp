@@ -770,7 +770,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
+                                        <label class="control-label"><small>Status Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -790,18 +790,18 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Status Pegawai * :</small></label>
+                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'KNS' : 'Karyawan Non Staf', 'KS':'Karyawan Staf'}"
+                                                <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai" disabled="true"
                                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'KNS' : 'Karyawan Non Staf', 'KS':'Karyawan Staf'}"
+                                                <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai"
                                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>

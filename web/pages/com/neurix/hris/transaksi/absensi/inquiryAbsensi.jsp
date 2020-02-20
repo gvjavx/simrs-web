@@ -166,7 +166,7 @@
     <section class="content-header">
         <h1>
             Inquiry Absensi
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <section class="content">
@@ -201,6 +201,17 @@
                                                         <s:textfield id="tanggal2" name="absensiPegawai.stTanggalAkhir" cssClass="form-control pull-right"
                                                                      required="false" size="7"  cssStyle=""/>
                                                     </div>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Status Pegawai :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'Y':'Pegawai Shift','N':'Pegawai Kantor'}" id="statusPegawai" name="absensiPegawai.cekPegawaiStatus"
+                                                              headerKey="" headerValue="Semua Pegawai" cssClass="form-control" />
                                                 </table>
                                             </td>
                                         </tr>
