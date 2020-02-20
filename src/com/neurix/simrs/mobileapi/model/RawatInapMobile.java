@@ -58,6 +58,16 @@ public class RawatInapMobile {
 
     private String message;
 
+    private String noSep;
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
     public String getMessage() {
         return message;
     }

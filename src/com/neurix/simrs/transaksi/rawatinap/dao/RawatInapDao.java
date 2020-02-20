@@ -255,8 +255,10 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
-                    rawatInap.setNoSep(obj[16].toString());
+                    if  (obj[16] != null){
+                        rawatInap.setNoSep(obj[16].toString());
 
+                    }
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
                         if (!objDesaList.isEmpty()){

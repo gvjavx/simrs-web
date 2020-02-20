@@ -188,6 +188,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 antrian.setJamAkhir(item.getJamAkhir());
                 antrian.setNoAntrian(item.getNoAntrian());
                 antrian.setNoCheckupOnline(item.getNoCheckupOnline());
+                antrian.setNoCheckup(item.getNoCheckup());
+                antianOnline.setIdDetailCheckup(item.getIdDetailCheckup());
+                antrian.setTglCheckup(item.getTglCheckup());
 
                 listOfAntrianOnline.add(antrian);
             }

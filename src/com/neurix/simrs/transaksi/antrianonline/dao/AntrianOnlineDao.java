@@ -110,7 +110,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
 
         List<AntianOnline> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<>();
-        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update, a.branch_id, e.branch_name \n" +
+        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update, a.branch_id, e.branch_name, a.no_checkup, a.id_detail_checkup, a.flag_periksa \n" +
                 "FROM it_simrs_antian_online a \n" +
                 "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
@@ -140,6 +140,9 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             result.setLastUpdate((Timestamp) row[10]);
             result.setBranchId((String) row[11]);
             result.setBranchName((String) row[12]);
+            result.setNoCheckup((String) row[13]);
+            result.setIdDetailCheckup((String) row[14]);
+            result.setFlagPeriksa((String) row[15]);
             result.setNoAntrian(Integer.toString(counter));
             result.setJumlahAntrian(String.valueOf(results.size()));
             counter++;

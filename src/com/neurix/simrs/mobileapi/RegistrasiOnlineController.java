@@ -347,7 +347,6 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
                 }
             }
 
-
             model.setNama(result.getNama());
             model.setNoCheckupOnline(result.getNoCheckupOnline());
             model.setNoKtp(result.getNoKtp());

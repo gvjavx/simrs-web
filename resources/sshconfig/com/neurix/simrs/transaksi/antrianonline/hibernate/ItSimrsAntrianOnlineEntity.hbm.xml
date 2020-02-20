@@ -50,6 +50,15 @@
         <property name="tglCheckup">
             <column name="tgl_checkup" sql-type="date" not-null="false" />
         </property>
+        <property name="flagPeriksa">
+            <column name="flag_periksa" sql-type="varchar" length="1" />
+        </property>
+        <property name="noCheckup">
+            <column name="no_checkup" sql-type="varchar" length="30" />
+        </property>
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" />
+        </property>
 
 
     </class>

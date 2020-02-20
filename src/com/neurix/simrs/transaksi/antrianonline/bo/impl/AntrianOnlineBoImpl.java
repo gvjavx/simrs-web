@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.antrianonline.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
@@ -150,5 +151,48 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
         logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] End >>>>>>>");
 
         return result;
+    }
+
+    @Override
+    public CrudResponse updateScanFlag(String noCheckupOnline, String noCheckup, String idDetailCheckup) throws GeneralBOException {
+        logger.info("[AntrianOnlineBoImpl.updateScanFlag] Start >>>>>>>");
+        List<ItSimrsAntianOnlineEntity> result = new ArrayList<>();
+        CrudResponse crudResponse = new CrudResponse();
+
+        Map hsCriteria = new HashMap();
+
+        if (!noCheckupOnline.isEmpty() && noCheckupOnline != null){
+            hsCriteria.put("noCheckupOnline", noCheckupOnline);
+        }
+
+
+        try{
+            result = antrianOnlineDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            crudResponse.setMsg("Scan Gagal");
+            crudResponse.setStatus("Failed");
+            logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria "+e.getMessage());
+            throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Update Scan Flag");
+        }
+
+        result.get(0).setNoCheckup(noCheckup);
+        result.get(0).setIdDetailCheckup(idDetailCheckup);
+
+        try {
+            antrianOnlineDao.updateAndSave(result.get(0));
+            crudResponse.setMsg("Scan QR Code Antrian Online Berhasil");
+            crudResponse.setStatus("Success");
+        } catch (HibernateException e){
+            crudResponse.setMsg("Scan Gagal");
+            crudResponse.setStatus("Failed");
+            logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria "+e.getMessage());
+            throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Update Scan Flag");
+        }
+
+
+
+        logger.info("[AntrianOnlineBoImpl.updateScanFlag] Start >>>>>>>");
+
+        return crudResponse;
     }
 }

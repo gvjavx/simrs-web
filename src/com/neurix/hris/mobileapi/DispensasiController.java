@@ -94,6 +94,7 @@ public class DispensasiController implements ModelDriven<Object> {
         logger.info("[DispensasiController.update] end process POST /pengajuancuti/{id} <<<");
 
         Dispensasi result = new Dispensasi();
+        listOfDispensasi = new ArrayList<>();
         result.setActionError("");
 
         try {

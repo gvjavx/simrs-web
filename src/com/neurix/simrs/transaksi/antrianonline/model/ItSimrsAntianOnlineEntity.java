@@ -20,6 +20,33 @@ public class ItSimrsAntianOnlineEntity implements Serializable {
     private String jamAkhir;
     private Date tglCheckup;
     private String branchId;
+    private String flagPeriksa;
+    private String noCheckup;
+    private String idDetailCheckup;
+
+    public String getFlagPeriksa() {
+        return flagPeriksa;
+    }
+
+    public void setFlagPeriksa(String flagPeriksa) {
+        this.flagPeriksa = flagPeriksa;
+    }
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public String getJamAwal() {
         return jamAwal;

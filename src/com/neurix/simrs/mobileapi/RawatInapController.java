@@ -610,6 +610,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     rawatInapMobile.setIdKelas(item.getIdKelas());
                     rawatInapMobile.setAlamat(item.getAlamat());
                     rawatInapMobile.setNamaRangan(item.getNamaRangan());
+                    rawatInapMobile.setNoSep(item.getNoSep());
 
                     listOfRawatInap.add(rawatInapMobile);
                 }
@@ -666,6 +667,7 @@ public class RawatInapController implements ModelDriven<Object> {
             model.setIdJenisPeriksa(headerCheckups.get(0).getIdJenisPeriksaPasien());
             model.setNik(headerCheckups.get(0).getNoKtp());
             model.setUrlKtp(headerCheckups.get(0).getUrlKtp());
+            model.setNoSep(result.get(0).getNoSep());
 
             if (headerCheckups.get(0).getJenisKelamin() != null){
                 switch (headerCheckups.get(0).getJenisKelamin()){

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class LemburController implements ModelDriven<Object> {
+public class    LemburController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(LemburController.class);
     private List<Lembur> listOfLembur = new ArrayList<>();
     private Lembur model = new Lembur();
@@ -238,7 +238,7 @@ public class LemburController implements ModelDriven<Object> {
         } else {
             result.setMessage("Permohonan siap diajukan");
         }
-
+        model = result;
         listOfLembur.add(result);
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/tanggal");
         return "success";
@@ -386,7 +386,7 @@ public class LemburController implements ModelDriven<Object> {
     }
     @Override
     public Object getModel() {
-        return listOfLembur != null ? listOfLembur: model;
+        return listOfLembur.size() > 0 ? listOfLembur: model;
     }
 
     public String getIdLembur() {
