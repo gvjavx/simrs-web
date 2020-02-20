@@ -35,12 +35,14 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
+
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
@@ -1340,6 +1342,7 @@ public class CheckupAction extends BaseMasterAction {
         return response;
     }
 
+
     public ItSimrsPemeriksaanFisikEntity getPemeriksaanFisikByNoCheckup(String noCheckup) {
         logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] START process <<<");
         ItSimrsPemeriksaanFisikEntity pemeriksaanFisikEntity = new ItSimrsPemeriksaanFisikEntity();
@@ -1349,6 +1352,7 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             pemeriksaanFisikEntity = checkupBo.getEntityPemeriksaanFisikByNoCheckup(noCheckup);
+
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR " + e.getMessage());
             addActionError("[CheckupAction.getPemeriksaanFisikByNoCheckup] ERROR " + e.getMessage());
@@ -1356,6 +1360,7 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.getPemeriksaanFisikByNoCheckup] END process <<<");
         return pemeriksaanFisikEntity;
     }
+
 
     public String savePemeriksaanFisik(String jsonParam) throws JSONException {
         logger.info("[CheckupAction.savePemeriksaanFisik] START process <<<");
@@ -1394,6 +1399,7 @@ public class CheckupAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
 
         try {
             checkupBo.savePemeriksaanFisik(pemeriksaanFisik);

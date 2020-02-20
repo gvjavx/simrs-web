@@ -71,4 +71,5 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
         return pelayananList;
     }
+
 }

@@ -721,6 +721,78 @@
                             </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-user"></i> Pre-Admisi Untuk Pasien</h3>
+                            </div>
+                            <div class="box-body">
+                                <br>
+                                <%-- <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> --%>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"
+                                                         cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>
+                                        <div class="col-md-8">
+                                            <s:select list="#{'Y':'Ya'}" id="bantuanBahasa"
+                                            onchange="changeBahasa(this)"
+                                            cssStyle="width:20%;"
+                                            headerKey="N" headerValue="Tidak"
+                                            cssClass="form-control" name="headerCheckup.bantuanBahasa"/>
+                                            <s:textfield id="bahasa" name="headerCheckup.bahasa"
+                                                         cssClass="form-control" placeholder="bahasa lain"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"
+                                                         cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="alatBantu" name="headerCheckup.alatBantu"
+                                                         cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>
+                                        <div class="col-md-8">
+                                            <s:textfield id="alergi" cssClass="form-control" 
+                                            name="headerCheckup.alergi"
+                                            />
+                                            <%-- <div class="input-group-addon btn btn-success"
+                                                    onclick="addAlergi()" style="background-color: green;color:#fff;">
+                                            <span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> --%>
+                                            <%-- </div> --%>
+                                            <div id="new_alergi">
+
+                                            </div>
+                                            <%-- <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> --%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Penanggung Jawab</h3>
                             </div>
                             <div class="box-body">
@@ -1202,6 +1274,8 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
+        $("#bahasa").val("indonesia");
+        $("#bahasa").attr("readOnly","true");
         $('#pendaftaran').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {
@@ -1611,6 +1685,33 @@
         }
     });
 
+    function changePlaceHolder(n){
+
+        var idx = n.selectedIndex;
+        var perujuk = n.options[idx].value;
+
+        if (perujuk == "dokter"){
+            $("#intansi_perujuk").attr("placeholder","nama dokter");
+        }
+        if (perujuk == "puskesmas"){
+            $("#intansi_perujuk").attr("placeholder","nama puskesmas");
+        }
+        if (perujuk == "rs"){
+            $("#intansi_perujuk").attr("placeholder","nama rumah sakit");
+        }
+        if (perujuk == "bidan"){
+            $("#intansi_perujuk").attr("placeholder","nama bidan");
+        }
+        if (perujuk == "polisi"){
+            $("#intansi_perujuk").attr("placeholder","nama instansi");
+        }
+        if (perujuk == "sendiri"){
+            $("#intansi_perujuk").attr("disabled","true");
+            $("#intansi_perujuk").removeAttr("placeholder");
+        }
+
+    }
+
 
 </script>
 <script type='text/javascript'>
@@ -1719,6 +1820,7 @@
         }
     });
 
+
     function changePlaceHolder(n) {
 
         var idx = n.selectedIndex;
@@ -1765,6 +1867,7 @@
     }
 
     var listAlergi = [];
+
     function addAlergi(alergi) {
         listAlergi.push({"alergi": alergi});
     }

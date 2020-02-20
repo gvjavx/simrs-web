@@ -8,6 +8,12 @@
     <!--<bean id="jenisObatAction" class="com.neurix.simrs.master.jenisobat.action.JenisObatAction"-->
           <!--p:jenisObatBoProxy-ref="jenisObatBoProxy"/>-->
 
+    <bean id="permintaanObatController" class="com.neurix.simrs.mobileapi.PermintaanObatController"
+    p:obatBoProxy-ref="obatBo"/>
+
+    <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.PermintaanObatController"
+          p:obatBoProxy-ref="obatBo"/>
+
     <bean id="obatBo" class="com.neurix.simrs.master.obat.bo.impl.ObatBoImpl"
           p:obatDao-ref="obatDao"
           p:jenisObatDao-ref="jenisObatDao"

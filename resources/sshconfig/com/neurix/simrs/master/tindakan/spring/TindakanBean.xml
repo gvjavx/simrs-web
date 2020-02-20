@@ -11,6 +11,10 @@
         p:tindakanDao-ref="tindakanDao"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:tindakanBoProxy-ref="tindakanBoProxy"
+    />
+
     <bean id="tindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="tindakanBo">
         <property name="interceptorNames">

@@ -10,6 +10,10 @@
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
     />
 
+    <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.TransaksiApotekController"
+          p:transaksiObatBoProxy-ref="transaksiObatBo"
+    />
+
     <bean id="transaksiObatBo" class="com.neurix.simrs.transaksi.transaksiobat.bo.impl.TransaksiObatBoImpl"
           p:obatDao-ref="obatDao"
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"

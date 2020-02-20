@@ -6,6 +6,7 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.ExpoPushNotif;
 import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
@@ -365,6 +366,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             notifAtasan.setNote("Data Dari User : " + imBiodataEntity.getNamaPegawai() + " Menunggu di Approve");
             notifAtasan.setCreatedWho(bean.getNip());
             notifAtasan.setTo("atasan");
+            notifAtasan.setOs(bean.getOs());
 
             notifikasiList.add(notifAtasan);
         }
@@ -574,18 +576,35 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                                         for (ItNotifikasiFcmEntity entity : notifikasiFcm){
                                             if(entity.getUserId().equals(atasanNip)){
-                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION);
+                                                String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), noteMobile, bean.getOs());
+                                                logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
                                                 break;
                                             }
                                         }
                                         if (cutiPegawaiPltList.size()!=0){
                                             for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                                                 if (entity.getUserId().equals(plt)) {
-                                                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_ACTION);
+                                                    String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, bean.getOs());
+                                                    logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
                                                     break;
                                                 }
                                             }
                                         }
+
+//                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//                                            if(entity.getUserId().equals(atasanNip)){
+//                                                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), noteMobile, CLICK_ACTION);
+//                                                break;
+//                                            }
+//                                        }
+//                                        if (cutiPegawaiPltList.size()!=0){
+//                                            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
+//                                                if (entity.getUserId().equals(plt)) {
+//                                                    FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, CLICK_ACTION);
+//                                                    break;
+//                                                }
+//                                            }
+//                                        }
                                     }
                                 }
                             }

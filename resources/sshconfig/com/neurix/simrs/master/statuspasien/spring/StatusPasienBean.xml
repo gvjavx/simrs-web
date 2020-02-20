@@ -11,6 +11,10 @@
           p:statusPasienDao-ref="statusPasienDao"
     />
 
+    <bean id="statusPasienController" class="com.neurix.simrs.mobileapi.StatusPasienController"
+        p:statusPasienBoProxy-ref="statusPasienBoProxy"
+    />
+
     <bean id="statusPasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="statusPasienBo">
         <property name="interceptorNames">

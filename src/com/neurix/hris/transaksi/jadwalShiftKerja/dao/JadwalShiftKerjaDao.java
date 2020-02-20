@@ -163,7 +163,10 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tpl.nama_pelayanan,\n" +
                 "\tjd.tanggal,\n" +
                 "\tsh.jam_awal,\n" +
-                "\tsh.jam_akhir\n" +
+                "\tsh.jam_akhir,\n" +
+                "\tjd.branch_id,\n" +
+                "\tbr.branch_name,\n" +
+                "\tdk.kuota\n" +
                 "FROM \n" +
                 "\tim_simrs_dokter dk\n" +
                 "\tINNER JOIN im_simrs_dokter_spesialis ds ON ds.id_dokter = dk.id_dokter\n" +
@@ -177,6 +180,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tINNER JOIN it_hris_pegawai_position pp ON pp.nip=pg.nip\n" +
                 "\tINNER JOIN im_position ps ON ps.position_id=pp.position_id\n" +
                 "\tINNER JOIN im_hris_kelompok_position kp ON kp.kelompok_id=ps.kelompok_id\n" +
+                "\tINNER JOIN im_branches br ON br.branch_id=jd.branch_id\n" +
                 "WHERE \n" +
                 "\tdk.flag='Y'\n" +
                 "\tAND ds.flag='Y'\n" +
@@ -207,6 +211,9 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setTanggal((Date) row[6]);
             result.setJamAwal((String) row[7]);
             result.setJamAkhir((String) row[8]);
+            result.setBranchId((String) row[9]);
+            result.setBranchName((String) row[10]);
+            result.setKuota((String) row[11]);
             listOfResult.add(result);
         }
         return listOfResult;

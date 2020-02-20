@@ -235,6 +235,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setIdPermintaanResep(obj[0].toString());
                 permintaanResep.setIdDetailCheckup(obj[1].toString());
                 permintaanResep.setNamaPasien(obj[2].toString());
+                permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setStatus(statusName);
                 permintaanResep.setFlag(flag);
                 permintaanResep.setIdApprovalObat(obj[4].toString());

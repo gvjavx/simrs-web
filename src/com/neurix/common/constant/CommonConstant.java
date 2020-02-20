@@ -129,7 +129,6 @@ public class CommonConstant {
     public final static String CS_LOGIN = "CUSTOMER_SERVICE";
 
     public final static String HGU = "HGU";
-    public final static String URL_IMG = "/simrs/images";
 
     //BPJS
     public final static String APP_NAME = "simrs";
@@ -164,6 +163,17 @@ public class CommonConstant {
     public final static String BRANCH_RS03 = "RS03";
 
     public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
+
+    public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN="/pages/upload/image/pasien/";
+
+    public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT="/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
+    public final static String RESOURCE_DOCUMENT_APB="/opt/tomcat/webapps/mnt/documents/simrs/";
+    public final static String RESOURCE_IMAGE_APB="/opt/tomcat/webapps/mnt/images/simrs/";
+    public final static String IMAGE_TYPE=".jpg";
+    public final static String DOC_TYPE = ".pdf";
+
+    public final static String URL_IMG="/images/";
+    public final static String URL_DOC="/documents/";
 
 
 }

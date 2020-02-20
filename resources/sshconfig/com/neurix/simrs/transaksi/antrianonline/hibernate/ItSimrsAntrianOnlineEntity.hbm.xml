@@ -38,6 +38,27 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="jamAwal">
+            <column name="jam_awal" sql-type="varchar" length="50" not-null="false" />
+        </property>
+        <property name="jamAkhir">
+            <column name="jam_akhir" sql-type="varchar" length="50" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="tglCheckup">
+            <column name="tgl_checkup" sql-type="date" not-null="false" />
+        </property>
+        <property name="flagPeriksa">
+            <column name="flag_periksa" sql-type="varchar" length="1" />
+        </property>
+        <property name="noCheckup">
+            <column name="no_checkup" sql-type="varchar" length="30" />
+        </property>
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" />
+        </property>
 
 
     </class>

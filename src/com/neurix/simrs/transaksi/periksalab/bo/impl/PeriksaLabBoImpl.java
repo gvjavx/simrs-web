@@ -706,4 +706,5 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
     public void setPeriksaRadiologiDao(PeriksaRadiologiDao periksaRadiologiDao) {
         this.periksaRadiologiDao = periksaRadiologiDao;
     }
+
 }

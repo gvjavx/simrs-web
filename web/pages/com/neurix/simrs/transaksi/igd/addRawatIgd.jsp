@@ -215,6 +215,67 @@
                         <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
                     </div>
                     <div class="box-body">
+
+
+                        <button class="btn btn-primary" onclick="showModalCheckFisik('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
+                        </button>
+
+                        <button class="btn btn-primary" onclick="showModalPsikosial('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Psikosial
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>','<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')">
+                            <i class="fa fa-edit"></i> Form Rencana Keperawatan
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Resiko Jatuh
+                        </button>
+
+                        <button class="btn btn-primary" onclick="showModalRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.tglLahir"/>')">
+                            <i class="fa fa-edit"></i> Form Rekonsiliasi Obat
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Tranfusi
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')">
+                            <i class="fa fa-edit"></i> Form Patrus
+                        </button>
+
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">--%>
+                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                            <%--Silahkan cek kembali data inputan!--%>
+                        <%--</div>--%>
+                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">--%>
+                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                            <%--Data berhasil disimpan!--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">Tinggi</label>--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<s:textfield id="tinggi" name="headerDetailCheckup.tinggi"--%>
+                                                     <%--cssClass="form-control" type="number"/>--%>
+                                        <%--<div class="input-group-addon btn btn-success">--%>
+                                            <%--cm--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label style="margin-top: 7px">Berat</label>--%>
+                                    <%--<div class="input-group date">--%>
+                                        <%--<s:textfield id="berat" name="headerDetailCheckup.berat"--%>
+                                                     <%--cssClass="form-control" type="number"/>--%>
+                                        <%--<div class="input-group-addon btn btn-success">--%>
+                                            <%--Kg--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+=======
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan cek kembali data inputan!
@@ -266,6 +327,7 @@
                                 </div>
                             </div>
                         </div>
+>>>>>>> sodiq/editor
                         <%--<div class="form-group">--%>
                         <%--<br>--%>
 
@@ -1409,10 +1471,573 @@
                 </h4>
             </div>
             <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">tinggi badan</label>
+                            <input type="number" name="" id="tb" class="form-control" placeholder="cm">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">berat badan</label>
+                            <input type="number" name="" id="bb" class="form-control" placeholder="Kg">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">nadi</label>
+                            <input type="number" name="" id="nadi" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">resp rate</label>
+                            <input type="number" name="" id="rr" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">tknn darah</label>
+                            <input type="number" name="" id="td" class="form-control">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label style="font-size: 11px;">suhu</label>
+
+                            <input type="number" name="" id="suhu" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+
+                        <div class="col-md-4">
+                            <label>Kepala</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="kepala" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Mata</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="mata" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Leher/Spine</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="leher" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorak" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak Cor</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorakchor" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Thorak Pulmo</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="thorakpulmo" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Abdomen</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="abdomen" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Extrimitas</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="extrimitas" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_fisik">
+                    <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_fisik">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_fisik"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="close_fisik"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_fisik" onclick="savePemeriksaanFisik('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_fisik"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-resiko-jatuh">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Resiko Jatuh</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan..!
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    Data berhasil diupdate..!
+                </div>
+                <div class="box">
+                    <br>
+                    <input type="hidden" id="id-kat-jatuh" class="form form-control"/>
+                    <div class="form-group">
+                        Kategori : <span id="label-kat-resiko-jatuh"></span>
+                        <br>
+                        <div class="row" id="body_resiko_jatuh">
+                        </div>
+                        <br>
+                        Skor : <span id="sum-resiko-jatuh"></span>
+                    </div>
+                    <input type="hidden" id="ind_resiko_jatuh" class="form form-control"/>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_resiko">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_resiko"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResikoJatuh('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resiko"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rencana">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rencana Awal Rawat <div id="label-rencana"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row" id="body_rencana">
+                        </div>
+                    </div>
+                    <input type="hidden" id="ind_rencana" class="form form-control"/>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_rencana">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_rencana">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_rencana"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_rencana" onclick="saveRencanaRawat('<s:property value="headerDetailCheckup.noCheckup"/>', '<s:property value="headerDetailCheckup.idDetailCheckup"/>','rigd')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_rencana"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-psikososial">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Data Psikososial</h4>
+            </div>
+            <div class="modal-body">
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+                        <%--<input type="hidden" id="id_psikososial"/>--%>
+                        <div class="col-md-4">
+                            <label>Komunikasi</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="komunikasi" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Kemampuan Bicara</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="kemampuanBicara" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Konsep Diri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="konsepDiri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Pernah Dirawat</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="pernahDirawat" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tahun Tentang Sakitnya</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="tahuTentangSakitNya" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Obat Dari Rumah</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="obatDariRumah" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="nyeri" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Intensitas Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="number" name="" id="intensitasNyeri" max="10" min="0" class="form-control">
+                            <%-- <input type="text" name="" id="intensitasNyeri" class="form-control"> --%>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Jenis Intensitas Nyeri</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="number" name="" id="jenisIntensitasNyeri" max="10" min="0" class="form-control">
+                            <%-- <input type="text" name="" id="jenisIntensitasNyeri" class="form-control"> --%>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Numeric Rating Scale</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="numericRatingScale" class="form-control">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Wong Baker Pain Scale</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="wongBakerPainScale" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_psikososial">
+                    <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                    <p>Data Berhasil Tersimpan</p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_psikososial">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="error_ket_psikososial"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="close_psikososial"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_psikososial" onclick="saveDataPsikososial('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_psikososial"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rekonsiliasi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekonsiliasi Obat <div id="label-rencana"> </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div>
+                              <div class="col-md-4">
+                                  <label>nama obat</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="namaObatRekon" class="form-control">
+                               </div>
+                               <div class="col-md-4">
+                                   <label>Bentuk Sediaan</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="bentukSediaanRekon" class="form-control">
+                               </div>
+
+                               <div class="col-md-4">
+                                   <label>Dosis</label>
+                               </div>
+                               <div class="col-md-5">
+                                   <input type="text" name="" id="dosisRekon" class="form-control">
+                               </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" id="satuanRekon">
+                                      <option value="mg">mg</option>
+                                      <option value="mL">mL</option>
+                                      <option value="mcg">mcg</option>
+                                      <option value="unit">unit</option>
+                                    </select>
+                                </div>
+
+                               <div class="col-md-4">
+                                   <label>Frekuensi</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="frekuensiRekon" class="form-control">
+                               </div>
+                               <div class="col-md-4">
+                                   <label>Rute</label>
+                               </div>
+                               <div class="col-md-8">
+                                   <input type="text" name="" id="ruteRekon" class="form-control">
+                               </div>
+                               <div class="col-md-8">
+                                   <label>Permintaan Obat yang Diberikan Saat Masuk</label>
+                               </div>
+                               <div class="col-md-4">
+                                 <select class="form-control" id="obatMasukRekon">
+                                   <option value="Y">Ya</option>
+                                   <option value="N">Tidak</option>
+                                 </select>
+                               </div>
+                               <div class="col-md-8">
+                                   <label>Obat dari Rumah dianjutkan saat pulang</label>
+                               </div>
+                               <div class="col-md-4">
+                                 <select class="form-control" id="obatRumahRekon">
+                                   <option value="Y">Ya</option>
+                                   <option value="N">Tidak</option>
+                                 </select>
+                               </div>
+                            </div>
+                        </div>
+                        <button type="button" style="float: right" class="btn btn-success" id="save_rekon" onclick="saveRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                        </button>
+                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_rekon"><i
+                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </button>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_rekon">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_rekon">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_rekon"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>nama obat</td>
+                        <td>bentuk sediaan</td>
+                        <td>dosis</td>
+                        <td>frekuensi</td>
+                        <td>rute</td>
+                        <td>Permintaan Obat yang diberikan saat masuk</td>
+                        <td>Obat dari rumah dilanjutkan saat pulang</td>
+                        </thead>
+                        <tbody id="body_rekon">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-patrus">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Patrus </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label >Katerangan Patrus</label>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="inp_patrus">
+                                    <option value="Lahir Hidup">Lahir Hidup</option>
+                                    <option value="Lahir Mati">Lahir Mati</option>
+                                    <option value="Lahir < 2500 gram">Lahir < 2500 gram</option>
+                                    <option value="Abortus">Abortus</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success" id="save_patrus" onclick="saveDataPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                    Add & Save
+                                </button>
+                                <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_patrus"><i
+                                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_patrus">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_patrus">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_patrus"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Keterangan Patrus</td>
+                        </thead>
+                        <tbody id="body_patrus">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-tranfusi">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Tranfus </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                              <select class="form-control" id="name_tranfusi">
+                                  <option value="Whole Blood">Whole Blood</option>
+                                  <option value="Packed Red Cells">Packed Red Cells</option>
+                                  <option value="Liquid Plasma">Liquid Plasma</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <input type="number" class="form-control" id="cc_tranfusi" placeholder="CC"/>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success" id="save_tranfusi" onclick="saveTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                    Add & Save
+                                </button>
+                            </div>
+                        </div>
+                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_tranfusi"><i
+                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </button>
+                    </div>
+                    <br>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_tranfusi">
+                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <p>Data Berhasil Tersimpan</p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_tranfusi">
+                        <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                        <p id="error_ket_tranfusi"></p>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <td>Keterangan Tranfusi</td>
+                        <td>CC</td>
+                        <td>tanggal</td>
+                        </thead>
+                        <tbody id="body_tranfusi">
+                        </tbody>
+                    </table>
+                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
+
+>>>>>>> sodiq/editor
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+=======
                 <h4 class="text-center">Do you want save this record?</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+>>>>>>> sodiq/editor
                 </button>
                 <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
             </div>
@@ -3029,6 +3654,130 @@
         } else {
             $('#warning_penunjang').show().fadeOut(5000);
         }
+    }
+    
+    function showModalCheckFisik(noCheckup){
+
+        $("#save_fisik").show();
+        $("#load_fisik").hide();
+        $("#close_fisik").show();
+        $("#success_save_fisik").hide();
+        $("#error_save_fisik").hide();
+        $("#error_ket_fisik").html("");
+
+        $("#modal-fisik").modal("show");
+
+        dwr.engine.setAsync(true);
+        CheckupAction.getPemeriksaanFisikByNoCheckup(noCheckup, function(response){
+            if(response != null){
+
+                var item = response;
+                $("#tb").val(item.tinggiBadan)
+                $("#bb").val(item.beratBadan)
+                $("#nadi").val(item.nadi)
+                $("#rr").val(item.respirationRate)
+                $("#td").val(item.tekananDarah)
+                $("#suhu").val(item.suhu)
+
+                $("#kepala").val(item.kepala)
+                $("#mata").val(item.mata)
+                $("#leher").val(item.leher)
+                $("#thorak").val(item.thorak)
+                $("#thorakchor").val(item.thorakChor)
+                $("#thorakpulmo").val(item.thorakPulmo)
+                $("#abdomen").val(item.abdoman)
+                $("#extrimitas").val(item.extrimitas)
+//                console.log(response);
+            }
+        });
+
+    }
+
+    function savePemeriksaanFisik(noCheckup) {
+
+//        alert(noCheckup);
+        $("#save_fisik").hide();
+        $("#load_fisik").show();
+        $("#close_fisik").hide();
+
+        var jsonrq = [];
+        jsonrq.push({
+            'nocheckup': noCheckup,
+            'tb': $("#tb").val(),
+            'bb': $("#bb").val(),
+            'nadi': $("#nadi").val(),
+            'rr': $("#rr").val(),
+            'td': $("#td").val(),
+            'suhu': $("#suhu").val(),
+            'kepala': $("#kepala").val(),
+            'mata': $("#mata").val(),
+            'leher': $("#leher").val(),
+            'thorak': $("#thorak").val(),
+            'thorakchor': $("#thorakchor").val(),
+            'thorakpulmo': $("#thorakpulmo").val(),
+            'abdomen': $("#abdomen").val(),
+            'extrimitas': $("#extrimitas").val()
+        });
+
+        var jsonstr = JSON.stringify(jsonrq);
+
+        dwr.engine.setAsync(true);
+        CheckupAction.savePemeriksaanFisik(jsonstr, function(response){
+            if(response != null){
+                if(response == "success"){
+                    $("#close_fisik").show();
+                    $("#load_fisik").hide();
+                    $("#success_save_fisik").show();
+                    $("#error_save_fisik").hide();
+                } else {
+                    $("#load_fisik").hide();
+                    $("#close_fisik").show();
+                    $("#success_save_fisik").hide();
+                    $("#error_save_fisik").show();
+                    $("#error_ket_fisik").html(response);
+                }
+            }
+        });
+    }
+
+    function showModalResikoJatuh(noCheckup, tgl) {
+        $("#modal-resiko-jatuh").modal("show");
+
+        var str = "";
+        dwr.engine.setAsync(true);
+        CheckupAction.getListResikoJatuh(noCheckup, tgl, function(response){
+            if(response != null){
+//                console.log(response)
+                if(response.status == "success"){
+                    $.each(response.resikoJatuhEntityList, function (i, item) {
+                        var topline = "";
+                        topline = "<div class='col-md-4'>"+
+                                "<label>"+item.namaParameter+"</label>"+
+                                "</div>"+
+                                "<div class='col-md-8'>"+
+                                "<select class='form-control'>";
+
+                                var skor = "";
+                                CheckupAction.getListResikoJatuh(item.idParameter, function(skors){
+                                    $.each(skors, function (n, itemSkor) {
+                                        skor += "<option value="+itemSkor.skor+">"+itemSkor.namaSkor+"</option>";
+                                    });
+
+
+                                    var bottomline = "";
+                                    bottomline = "</select>"+
+                                        "</div>";
+
+                                    str += topline+skor+bottomline;
+                                    console.log(str);
+                                    $("#body_resiko_jatuh").html(str);
+                                });
+                    });
+
+                }
+            }
+        });
+
     }
 
     function resetAll() {

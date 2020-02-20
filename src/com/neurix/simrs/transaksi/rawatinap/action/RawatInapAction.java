@@ -534,6 +534,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListSkorRanap(skorRanap);
     }
 
+
     public String printGelangPasien(){
 
         String id = getId();

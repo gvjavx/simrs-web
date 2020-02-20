@@ -14,6 +14,8 @@
 
     <bean id="lemburAction" class="com.neurix.hris.transaksi.lembur.action.LemburAction"
           p:lemburBoProxy-ref="lemburBoProxy" />
+    <bean id="ijinFormLemburController" class="com.neurix.hris.mobileapi.LemburFormController"
+          p:lemburBoProxy-ref="lemburBoProxy" />
 
     <bean id="lemburBo" class="com.neurix.hris.transaksi.lembur.bo.impl.LemburBoImpl"
           p:lemburDao-ref="lemburDao"

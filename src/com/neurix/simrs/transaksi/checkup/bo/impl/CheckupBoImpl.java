@@ -41,6 +41,7 @@ import com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.SkorResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -305,6 +306,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setUrlDocRujuk(bean.getUrlDocRujuk());
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setNoSep(bean.getNoSep());
+
+
             headerEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
             headerEntity.setKetRujukan(bean.getKetPerujuk());
             headerEntity.setKetKeyakinan(bean.getKetKeyakinan());
@@ -1578,6 +1582,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
         return id;
     }
+
 
     private String getIdTranfusi(){
         String id = "";

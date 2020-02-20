@@ -5,9 +5,7 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.mobileapi.model.LoginMobile;
-import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
-import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiFcmDao;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.ValidationAwareSupport;
@@ -30,6 +28,10 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     private LoginMobile model = new LoginMobile();
     private String id;
     private String tokenFcm;
+    private String tokenExpo;
+    private String os;
+    private String username;
+    private String password;
 
     public void setNotifikasiFcmBoProxy(NotifikasiFcmBo notifikasiFcmBoProxy) {
         this.notifikasiFcmBoProxy = notifikasiFcmBoProxy;
@@ -43,8 +45,8 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
     public HttpHeaders create() {
         logger.info("[TaskAsmudController.create] start process POST /loginmobile >>>");
 
-        String userId = model.getUserId();
-        String rawPassword = model.getPassword();
+        String userId = username;
+        String rawPassword = password;
 
         //checking if other device used this userId, if found then throws error
         boolean isFound = false;
@@ -114,6 +116,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         //add into body is tokenId
 
                         model.setTokenId(sessionId);
+                        model.setUserId(userDetailsLogin.getUserId());
                         model.setUserName(userDetailsLogin.getUserNameDetail());
                         model.setAreaId(userDetailsLogin.getAreaId());
                         model.setAreaName(userDetailsLogin.getAreaName());
@@ -122,6 +125,8 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setPositionId(userDetailsLogin.getPositionId());
                         model.setPositionName(userDetailsLogin.getPositionName());
                         model.setJenisKelamin(userDetailsLogin.getJenisKelamin());
+                        model.setPhotoUrl(userDetailsLogin.getPhotoUserUrl());
+                        model.setIdPelayanan(userDetailsLogin.getIdPleyanan());
 
                         String roleId="";
                         String roleName="";
@@ -134,11 +139,12 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setRoleId(roleId);
                         model.setRoleName(roleName);
 
-
                         NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
                         notifikasiFcm.setUserId(model.getUserId());
                         notifikasiFcm.setUserName(model.getUserName());
                         notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
+                        notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
+                        notifikasiFcm.setOs(os == null ? "" : os);
                         notifikasiFcm.setLastUpdateWho(model.getUserName());
                         notifikasiFcm.setCreatedWho(model.getUserName());
                         try {
@@ -154,27 +160,28 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                             throw new GeneralBOException(e);
                         }
                     } else {
-
+                        model.setActionMessage("Unable to create token, please call your admin to handle it.");
                         logger.info("Unable to create token, please call your admin to handle it.");
                         throw new GeneralBOException("Unable to create token, please call your admin to handle it.");
 
                     }
 
                 } else {
-
+                    model.setActionMessage("Incorrect password, please right password or call your admin to handle it.");
                     logger.info("Incorrect password, please right password or call your admin to handle it.");
                     throw new GeneralBOException("Incorrect password, please right password or call your admin to handle it.");
 
                 }
 
             } else {
-
+                model.setActionMessage("No found this user at database system, please call your admin to handle it.");
                 logger.info("No found this user at database system, please call your admin to handle it.");
                 throw new GeneralBOException("No found this user at database system, please call your admin to handle it.");
 
             }
 
         } else {
+            model.setActionMessage("Found this user is still using apps with other device, please call your admin to handle it.");
             logger.info("Found this user is still using apps with other device, please call your admin to handle it.");
             throw new GeneralBOException("Found this user is still using apps with other device, please call your admin to handle it.");
         }
@@ -286,5 +293,37 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
 
     public void setTokenFcm(String tokenFcm) {
         this.tokenFcm = tokenFcm;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getTokenExpo() {
+        return tokenExpo;
+    }
+
+    public void setTokenExpo(String tokenExpo) {
+        this.tokenExpo = tokenExpo;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
     }
 }

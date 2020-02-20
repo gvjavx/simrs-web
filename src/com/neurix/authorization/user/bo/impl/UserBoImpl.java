@@ -1472,7 +1472,8 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setCompanyName(companyName);
             userDetailsLogin.setAreaId(areaId);
             userDetailsLogin.setAreaName(areaName);
-            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+//            userDetailsLogin.setJenisKelamin(biodata.getGender());
 
         }
 

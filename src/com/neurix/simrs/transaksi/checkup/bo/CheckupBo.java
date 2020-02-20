@@ -35,6 +35,7 @@ public interface CheckupBo {
     public void savePemeriksaanFisik(PemeriksaanFisik bean) throws GeneralBOException;
     public ResikoJatuhResponse getResikojatuh(ResikoJatuh bean) throws GeneralBOException;
     public List<ImSimrsSkorResikoJatuhEntity> getListSkorResikoByIdParameter(String id) throws GeneralBOException;
+
     public List<ItSimrsRencanaRawatEntity> getListRencanaRawat(String noCheckup, String idDetail, String kategori) throws GeneralBOException;
     public void saveRencanaRawat(String noCheckup, String idDetail, List<ItSimrsRencanaRawatEntity> rencanaRawats) throws GeneralBOException;
     public void saveResikoJatuh(String noCheckup, List<ItSImrsResikoJatuhEntity> resikoJatuhList) throws GeneralBOException;

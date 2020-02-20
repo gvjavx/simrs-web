@@ -30,8 +30,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             if (mapCriteria.get("id_ruangan")!=null) {
                 criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
             }
-            if (mapCriteria.get("nama_rangan")!=null) {
-                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String)mapCriteria.get("nama_rangan") + "%"));
+            if (mapCriteria.get("nama_ruangan")!=null) {
+                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String)mapCriteria.get("nama_ruangan") + "%"));
             }
             if (mapCriteria.get("no_ruangan")!=null) {
                 criteria.add(Restrictions.eq("noRuangan", (String) mapCriteria.get("no_ruangan")));

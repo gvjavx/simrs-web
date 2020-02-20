@@ -13,6 +13,17 @@ public class ItNotifikasiFcmEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private String tokenExpo;
+    private String os;
+
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
 
     public String getUserId() {
         return userId;
@@ -84,5 +95,13 @@ public class ItNotifikasiFcmEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getTokenExpo() {
+        return tokenExpo;
+    }
+
+    public void setTokenExpo(String tokenExpo) {
+        this.tokenExpo = tokenExpo;
     }
 }
