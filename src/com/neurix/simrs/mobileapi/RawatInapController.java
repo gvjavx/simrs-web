@@ -547,6 +547,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfMonVitalSign;
             case "getListPemberianObat":
                 return listOfMonPemberianObat;
+            case "getListGraf":
+                return listOfMonVitalSign;
             default: return model;
         }
     }
@@ -1059,6 +1061,30 @@ public class RawatInapController implements ModelDriven<Object> {
                     listOfMonCairanMobile.add(monCairanMobile);
                 }
             }
+        }
+
+        if  (action.equalsIgnoreCase("getListGraf")){
+            List<MonVitalSign> result = new ArrayList<>();
+
+            try {
+                result = rawatInapBoProxy.getListGraf(idDetailCheckup);
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0){
+                for (MonVitalSign item : result){
+                    MonVitalSignMobile monVitalSignMobile = new MonVitalSignMobile();
+                    monVitalSignMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
+                    monVitalSignMobile.setJam(item.getJam().toString());
+                    monVitalSignMobile.setNafas(item.getNafas().toString());
+                    monVitalSignMobile.setNadi(item.getNadi().toString());
+
+                    listOfMonVitalSign.add(monVitalSignMobile);
+                }
+            }
+
+
         }
 
         if (action.equalsIgnoreCase("saveMonPemberianObat")){
