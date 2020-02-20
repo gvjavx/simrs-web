@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="smkSkalaPointPrestasiAction" class="com.neurix.hris.master.smkSkalaPointPrestasi.action.SmkSkalaPointPrestasiAction"
+          p:smkSkalaPointPrestasiBoProxy-ref="smkSkalaPointPrestasiBoProxy" />
+
+    <bean id="smkSkalaPointPrestasiBo" class="com.neurix.hris.master.smkSkalaPointPrestasi.bo.impl.SmkSkalaPointPrestasiBoImpl"
+          p:smkSkalaPointPrestasiDao-ref="smkSkalaPointPrestasiDao" />
+
+    <bean id="smkSkalaPointPrestasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="smkSkalaPointPrestasiBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="smkSkalaPointPrestasiDao" class="com.neurix.hris.master.smkSkalaPointPrestasi.dao.SmkSkalaPointPrestasiDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

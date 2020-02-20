@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="smk" namespace="/smk" extends="struts-default, jasperreports-default, json-default">
+
+        <result-types>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
+            <result-type name="json" class="org.apache.struts2.json.JSONResult" />
+        </result-types>
+
+        <interceptors>
+            <interceptor name="sessionCheckInterceptor"
+                         class="com.neurix.common.interceptor.SessionCheckInterceptor" />
+
+            <interceptor-stack name="ivelinStack">
+                <interceptor-ref name="sessionCheckInterceptor" />
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse,initForm,printInvoice</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">_,d-\d+?-[sop],6578706f7274</param>
+                </interceptor-ref>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                </interceptor-ref>
+                <interceptor-ref name="basicStack"/>
+
+            </interceptor-stack>
+
+            <interceptor-stack name="defaultStack">
+                <interceptor-ref name="sessionCheckInterceptor"/>
+                <interceptor-ref name="params">
+                    <!--
+                       Excludes the jQuery no-cache _ parameter and
+                       the Displaytag d-#-X parameter(s)
+                    -->
+                    <param name="excludeParams">
+                        _,d-\d+?-[sop],6578706f7274
+                    </param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="sessionexpired" type="redirectAction">
+                <param name="actionName">loginUser</param>
+                <param name="namespace">/</param>
+                <param name="redirectSession">true</param>
+            </result>
+            <result name="global_error" type="httpheader">
+                <param name="status">500</param>
+                <param name="headers.message">${exception}</param>
+            </result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="global_error" />
+            <exception-mapping exception="java.lang.Error" result="global_error" />
+            <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
+        </global-exception-mappings>
+
+        <action name="*_smk"
+                class="com.neurix.hris.transaksi.smk.action.SmkAction" method="{1}">
+            <interceptor-ref name="ivelinStack" />
+            <result name="input">/pages/com/neurix/hris/transaksi/smk/SearchSmk.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/smk/SearchSmk.jsp</result>
+
+            <result name="error">/pages/com/neurix/hris/transaksi/smk/addSmk.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/transaksi/smk/addSmk.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/transaksi/smk/addSmk.jsp</result>
+
+            <result name="success_save_delete">/pages/com/neurix/hris/transaksi/smk/deleteSmk.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/transaksi/smk/deleteSmk.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/transaksi/smk/editSmk.jsp</result>
+            <result name="init_view">/pages/com/neurix/hris/transaksi/smk/viewSmk.jsp</result>
+            <result name="init_add_nilai_aspek">/pages/com/neurix/hris/transaksi/smk/modalAddNilaiAspek.jsp</result>
+            <result name="init_edit_sdm">/pages/com/neurix/hris/transaksi/smk/editSmkSdm.jsp</result>
+            <result name="init_edit_Aspek">/pages/com/neurix/hris/transaksi/smk/editAspekSmk.jsp</result>
+            <result name="init_edit_AspekA">/pages/com/neurix/hris/transaksi/smk/editAspekASmk.jsp</result>
+            <result name="init_edit_AspekSubA">/pages/com/neurix/hris/transaksi/smk/editAspekSubASmk.jsp</result>
+            <result name="init_edit_Aspek_peristiwa">/pages/com/neurix/hris/transaksi/smk/modalShowPeristiwa.jsp</result>
+            <result name="init_edit_Aspek_peristiwa_add">/pages/com/neurix/hris/transaksi/smk/modalAddPeristiwa.jsp</result>
+            <result name="init_add_nilai_a">/pages/com/neurix/hris/transaksi/smk/modalAddAspekA.jsp</result>
+            <result name="init_add_nilai_sub_a">/pages/com/neurix/hris/transaksi/smk/modalAddSubAspekA.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/transaksi/smk/editSmk.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/transaksi/smk/editSmk.jsp</result>
+            <result name="report_smk">/pages/com/neurix/hris/transaksi/smk/SearchReportSmk.jsp</result>
+
+            <result name="success_print_report_smk" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/smk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="success_print_report_smk_kns" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/smk_kns.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="success_print_report_smk_new" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/smkReportNew.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="success_print_view_report_smk" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/ReportSuratSmk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="report_smk_periode" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/reportSmk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <!--<result name="error" type="httpheader">-->
+            <!--<param name="status">504</param>-->
+            <!--<param name="headers.message">${actionErrors}</param>-->
+            <!--</result>-->
+        </action>
+
+
+        <action name="paging_displaytag_smk"
+                class="com.neurix.hris.transaksi.smk.action.SmkAction" method="paging">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/hris/transaksi/smk/SearchSmk.jsp</result>
+        </action>
+
+    </package>
+</struts>

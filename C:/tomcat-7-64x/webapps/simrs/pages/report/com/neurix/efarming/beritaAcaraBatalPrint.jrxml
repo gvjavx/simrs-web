@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="beritaAcaraBatalPrint" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="97aaed94-7f54-4259-9b83-05f2edca6d0e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<subDataset name="dataset1" uuid="0d0ed4b5-ef3f-483a-a02c-27693a01dae2"/>
+	<parameter name="reportParams.noKontrak" class="java.lang.String"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.keyCode" class="java.lang.String"/>
+	<parameter name="reportParams.mantanName" class="java.lang.String"/>
+	<parameter name="reportParams.manQCName" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.noBeritaAcara" class="java.lang.String"/>
+	<parameter name="reportParams.tanggalBatal" class="java.sql.Timestamp"/>
+	<parameter name="reportParams.mantanId" class="java.lang.String"/>
+	<parameter name="reportParams.manQCId" class="java.lang.String"/>
+	<parameter name="reportParams.lokasiKebun" class="java.lang.String"/>
+	<parameter name="reportParams.kategori" class="java.lang.String"/>
+	<parameter name="reportParams.luasKebun" class="java.math.BigDecimal"/>
+	<parameter name="reportParams.pabrikGulaName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+no_kontrak,
+nama_kebun,
+no_berita_acara,
+ketua_kelompok_id,
+ketua_kelompok_name
+from
+it_ptpnx_kontrak_permohonan_lahan
+where
+no_kontrak = $P{reportParams.noKontrak}]]>
+	</queryString>
+	<field name="no_kontrak" class="java.lang.String"/>
+	<field name="nama_kebun" class="java.lang.String"/>
+	<field name="no_berita_acara" class="java.lang.String"/>
+	<field name="ketua_kelompok_id" class="java.lang.String"/>
+	<field name="ketua_kelompok_name" class="java.lang.String"/>
+	<variable name="SumOfLahan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="228" splitType="Stretch">
+			<staticText>
+				<reportElement x="221" y="50" width="90" height="17" uuid="81280f02-5af3-4b3c-b0d5-ef53244697b6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BERITA ACARA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="97" width="177" height="15" uuid="e43125f1-28bb-455c-b80f-1c244aa4979f"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Perihal : Pembatalan Kontrak]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="67" width="148" height="14" uuid="4d90b289-6a9f-4ef8-b17c-a66559326889"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.noBeritaAcara}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="43" width="201" height="20" uuid="79d31f8d-b2f1-460d-8dae-9d821eefc7d4"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="393" y="20" width="59" height="19" uuid="e5a4c962-1302-4611-a7f1-5ac07f9654d4"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="451" y="20" width="100" height="19" uuid="fc929774-be0d-4798-b729-4d7d5dae9af8"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="411" y="0" width="167" height="20" uuid="885ccae2-5384-4e94-b085-e8f8dca7ac58">
+					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[$P{reportParams.keyCode}]]></propertyExpression>
+				</reportElement>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.keyCode}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<image>
+				<reportElement x="3" y="2" width="94" height="39" uuid="05e3cb87-c3df-40b0-80db-c2c63987c766"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="91" y="128" width="99" height="16" uuid="00e695a0-39f1-44b1-a224-92b572918162"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tanggalBatal}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="208" y="66" width="115" height="1" uuid="ae0ce7ee-c036-4211-96c5-6b28d526e566"/>
+			</line>
+			<staticText>
+				<reportElement x="24" y="128" width="59" height="16" uuid="aba5a876-22e2-42da-806a-5d08a8fdc12f"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[Pada tanggal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="128" width="256" height="16" uuid="61723b1c-5f6b-4e58-8556-81a0db5a6c5c"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[, telah disepakati bersama antara kedua belah pihak yaitu : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="156" width="12" height="16" uuid="e011b2df-a8d9-44f8-b05f-2d333dc0a4bc"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[1. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="176" width="12" height="16" uuid="b9cdf91f-d1e6-4222-8614-ba35c018969c"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="156" width="115" height="16" uuid="f749e9d8-d853-4207-8dbf-fca9b7002445"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.mantanName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="176" width="115" height="16" uuid="71f1390c-df16-48d7-979a-8d93bb7dbe7b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.manQCName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="169" y="156" width="345" height="16" uuid="74a086f9-0f60-490e-8f4c-267f295c9dd2"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[selaku Manager Tanaman selanjutnya disebut sebagai PIHAK I dengan PN =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="176" width="323" height="16" uuid="5996e6cf-ffe0-4efa-814d-7143a10375c6"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[selaku Manager QC selanjutnya disebut sebagai PIHAK II dengan PN =]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="491" y="176" width="42" height="16" uuid="2962a44d-80af-4bd0-bb79-28b74d419659"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.manQCId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="207" width="532" height="16" uuid="07ecfcfc-0912-46b1-8bd3-c766ca1317b8"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[Para PIHAK telah menyetujui permohonan pembatalan kontrak seperti pada keterangan berikut perihal surat ini]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="514" y="156" width="42" height="16" uuid="7e5e17a9-a3c3-46c9-b83e-1cf0cb3ac29d"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.mantanId}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="8" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="137" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="3" width="86" height="16" uuid="3efcb85a-c780-4377-ae39-4ed5d2b53a02"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No.Kontrak :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="35" width="86" height="16" uuid="3122edcf-c533-4ffe-b2fc-bba1aa3494d5"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lokasi Kebun :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="51" width="86" height="16" uuid="fa9a4eb9-bc70-4a3e-919f-680efdfe1988"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No.Ketua Petani :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="67" width="86" height="16" uuid="d40cb07f-55ba-4c2a-8e38-307f4939a652"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Ketua Petani :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="83" width="86" height="16" uuid="cad6da59-94b9-4319-a857-6fda049b7ab4"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kategori :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="206" y="3" width="115" height="16" uuid="649c79c5-29a5-4fad-805f-55dfcc00050f"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_kontrak}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="206" y="35" width="345" height="16" uuid="1b6f4b3c-8287-454b-91df-74eb02272c0d"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.lokasiKebun}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="206" y="51" width="115" height="16" uuid="1e45568d-4547-44a1-9f16-e1619429c1bf"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ketua_kelompok_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="206" y="67" width="115" height="16" uuid="6733d4a9-d6a9-4ad2-bc3a-ed9b4dfc78c2"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ketua_kelompok_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="206" y="83" width="115" height="16" uuid="a064e2cd-f82c-45d1-890d-5295c1f409da"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.kategori}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement x="206" y="99" width="115" height="16" uuid="50070528-2b81-4ec0-80b6-2b5e5e38b694"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.luasKebun}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="99" width="86" height="16" uuid="4e4e0497-9899-4d3a-b35e-e101729c9fa8"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Luasan (Ha.) :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="206" y="115" width="115" height="16" uuid="1392a26a-54bb-4f0c-8604-0eed2eac773c"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pabrikGulaName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="115" width="86" height="16" uuid="64e3fd04-8bfc-4f67-a00f-10f9ea6bb356"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pabrik Gula :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="206" y="19" width="115" height="16" uuid="68b748a1-04f0-4013-baa1-8b12117fc79a"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_kebun}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="19" width="86" height="16" uuid="66d45b07-44e0-4c50-b0f9-74c2ae2b6faa"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Kebun :]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="263" splitType="Stretch">
+			<staticText>
+				<reportElement x="136" y="145" width="100" height="16" uuid="42752b26-0b5f-4a55-9b82-b9a0f05be8ca"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PIHAK I]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="121" y="214" width="128" height="15" uuid="7a33260a-bbed-4d45-a442-61f2284619b3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.mantanName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="120" y="215" width="128" height="1" uuid="cd24b82c-c8c1-478f-bc34-2b98131eb6c6"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="328" y="144" width="98" height="16" uuid="a59f30bf-376f-459d-9b90-339a2f4a599d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PIHAK II]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="314" y="215" width="138" height="14" uuid="16d06a64-9d1c-460b-8aa7-1521a4a7a0cf"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.manQCName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="313" y="215" width="139" height="1" uuid="4766d0a1-a0cc-438d-83a6-e1c935bca2d9"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="22" y="15" width="534" height="16" uuid="2bdc6309-536a-4724-9b29-d38be515c8a9"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[PIHAK II tidak merasa keberatan atas permohonan PIHAK I, dengan keadaan sebenarnya bahwa kredit belum diberikan dan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="31" width="453" height="16" uuid="6c923253-d7ba-447c-aa5a-9cfe91a34e4a"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[tanggung jawab kebenaran data petak tersebut dalam e-Farming menjadi perhatian PIHAK I.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="47" width="453" height="16" uuid="2d9ea3a8-c990-4dce-bb2e-04b1f1a8c49a"/>
+				<textElement>
+					<font fontName="Calibri" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Demikian berita acara ini dibuat tanpa ada paksaan dari pihak manapun.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="361" y="77" width="91" height="16" uuid="af07a622-cc87-4ac2-9fdf-02fbf37c9045"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pabrikGulaName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="77" width="10" height="16" uuid="2ef272cc-40d6-438a-8547-8b3ea30a10aa"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<text><![CDATA[,]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="460" y="77" width="95" height="16" uuid="9534f432-c7ec-4435-ae12-be849623ab7c"/>
+				<textElement>
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tanggalBatal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -2,6 +2,8 @@ package com.neurix.hris.transaksi.payroll.bo;
 
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.payroll.model.*;
 
@@ -24,6 +26,9 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public List<PayrollInsentif> getSearchInsentif(Payroll bean) throws GeneralBOException;
     public List<Payroll> getCsvPajak(Payroll bean) throws GeneralBOException;
     public Payroll getDetailEditSys(String payrollId) throws GeneralBOException;
+
+    ItPayrollEntity getPayrollById(String payrollId) throws GeneralBOException;
+
     public List<Payroll> getDataView(Payroll bean) throws GeneralBOException;
     public List<Payroll> dataAddPayroll(Payroll bean) throws GeneralBOException;
     public List<AbsensiPegawai> dataAbsensiLembur(AbsensiPegawai bean) throws GeneralBOException;
@@ -117,4 +122,20 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public PayrollRapel rapelJumlahBulan(String bulan, String tahun, String unit) throws GeneralBOException;
 
     public String cekTunjanganInsentif(int bulanMulai, int bulanSampai, int tahun, String branchId) throws GeneralBOException;
+
+    List<Payroll> searchReportEsptSys(String tahun, String unit) throws GeneralBOException;
+
+    List<PayrollPendapatanPphDTO> searchReportPendapatanPph(String tahun, String unit) throws GeneralBOException;
+
+    void saveEditPayrollPphSessionDataUsingPayrollId(Payroll payroll) throws GeneralBOException;
+
+    void saveEditDataTambahanD(Payroll payroll) throws GeneralBOException;
+    public BigDecimal getSkalaGaji(String golonganId);
+    public ImPayrollTunjanganJabatanStrukturalEntity getTunjanganJabatanStrukturalSimRs(String kelompokId);
+    public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId);
+    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId);
+
+    public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, BigDecimal minBpjs, BigDecimal maxBpjs, BigDecimal percent);
+
+    public List<PayrollTunjanganLain> getDetailEditTunjLainSys(String payrollId) throws GeneralBOException;
 }

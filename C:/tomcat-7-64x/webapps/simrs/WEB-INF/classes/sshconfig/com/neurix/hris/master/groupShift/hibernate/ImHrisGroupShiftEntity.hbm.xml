@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.master.groupShift.model.ImHrisGroupShift" table="im_hris_group_shift" dynamic-update="true" select-before-update="true" schema="public">
+
+        <id name="groupShiftId">
+            <column name="group_shift_id" sql-type="varchar" length="20" not-null="true"/>
+        </id>
+        <property name="groupShiftName">
+            <column name="group_shift_name" sql-type="varchar" length="1000"/>
+        </property>
+        <property name="groupId">
+            <column name="group_id" sql-type="varchar" length="5"/>
+        </property>
+        <property name="shiftId">
+            <column name="shift_id" sql-type="varchar" length="5"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createDateWho">
+            <column name="create_date_who" sql-type="varchar"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar"/>
+        </property>
+
+        <many-to-one name="imHrisGroupEntity" class="com.neurix.hris.master.group.model.ImHrisGroupEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="group_id"/>
+        </many-to-one>
+        <many-to-one name="imHrisShiftEntity" class="com.neurix.hris.master.shift.model.ImHrisShiftEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="shift_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

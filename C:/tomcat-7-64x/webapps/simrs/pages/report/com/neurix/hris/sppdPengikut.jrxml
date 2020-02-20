@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sppdPengikut" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e278c3fb-d563-41be-859b-66b0faac1159">
+	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.noSppd" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  sppd.sppd_id AS sppdId,
+  sppd.tugas_sppd,
+  sppd.no_surat,
+  sppd.dinas,
+  person.person_id,
+  person.person_name,
+  person.branch_id,
+  branch.branch_name,
+  person.divisi_id,
+  person.position_id,
+  posisi.position_name,
+  person.berangkat_via,
+  person.pulang_via,
+  person.berangkat_via,
+  person.pulang_via,
+  kota2.kota_name as berangkat_dari,
+  kota1.kota_name as tujuan_ke,
+  person.tipe_person,
+  person.penginapan,
+  divisi.department_name,
+  to_char(person.tanggal_berangkat, 'dd-MM-yyyy') AS tanggal_berangkat,
+  to_char(person.tanggal_kembali, 'dd-MM-yyyy') AS tanggal_kembali,
+  CASE
+    WHEN person.pejabat_sementara IS NULL THEN '-'
+    ELSE person.pejabat_sementara
+  END AS pejabat_sementara
+FROM it_hris_sppd sppd
+LEFT JOIN it_hris_sppd_person person
+  ON person.sppd_id = sppd.sppd_id
+LEFT JOIN im_hris_kota kota1
+  ON person.tujuan_ke = kota1.kota_id
+LEFT JOIN im_hris_kota kota2
+  ON person.berangkat_dari = kota2.kota_id
+LEFT JOIN im_branches branch
+  ON person.branch_id = branch.branch_id
+LEFT JOIN im_position posisi
+  ON person.position_id = posisi.position_id
+LEFT JOIN im_hris_department divisi
+  ON person.divisi_id = divisi.department_id
+where
+	sppd.sppd_id = $P{reportParams.noSppd}
+	and person.approval_sdm_id is not null
+	and person.approval_sdm_flag = 'Y'
+	and person.tipe_person = 'Anggota']]>
+	</queryString>
+	<field name="sppdid" class="java.lang.String"/>
+	<field name="tugas_sppd" class="java.lang.String"/>
+	<field name="no_surat" class="java.lang.String"/>
+	<field name="dinas" class="java.lang.String"/>
+	<field name="person_id" class="java.lang.String"/>
+	<field name="person_name" class="java.lang.String"/>
+	<field name="branch_id" class="java.lang.String"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="divisi_id" class="java.lang.String"/>
+	<field name="position_id" class="java.lang.String"/>
+	<field name="position_name" class="java.lang.String"/>
+	<field name="berangkat_via" class="java.lang.String"/>
+	<field name="pulang_via" class="java.lang.String"/>
+	<field name="berangkat_dari" class="java.lang.String"/>
+	<field name="tujuan_ke" class="java.lang.String"/>
+	<field name="tipe_person" class="java.lang.String"/>
+	<field name="penginapan" class="java.lang.String"/>
+	<field name="department_name" class="java.lang.String"/>
+	<field name="tanggal_berangkat" class="java.lang.String"/>
+	<field name="tanggal_kembali" class="java.lang.String"/>
+	<field name="pejabat_sementara" class="java.lang.String"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="107" height="20" uuid="a143af53-8018-4631-adf1-c65d40eef4ea"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{person_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="0" width="239" height="20" uuid="c6f44d3f-4d96-46a1-9513-273cc7b92764"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

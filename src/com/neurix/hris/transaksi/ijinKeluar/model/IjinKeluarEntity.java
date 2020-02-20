@@ -54,6 +54,25 @@ public class IjinKeluarEntity implements Serializable {
     private String lastUpdateWho;
     private BigInteger jumlahCuti;
 
+    private String divisiId;
+    private String bagianId;
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
     public String getKeperluan() {
         return keperluan;
     }

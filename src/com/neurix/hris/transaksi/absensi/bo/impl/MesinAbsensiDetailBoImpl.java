@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.absensi.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.absensi.bo.MesinAbsensiDetailBo;
 import com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDetailDao;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetail;
@@ -9,10 +10,9 @@ import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetailEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.zip.DataFormatException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -179,10 +179,15 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
             // creating object entity serializable
             MesinAbsensiDetailEntity itMesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
 
-            itMesinAbsensiDetailEntity.setMesinAbsensiDetailId(bean.getMesinAbsensiDetailId());
+            itMesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
             itMesinAbsensiDetailEntity.setPin(bean.getPin());
             itMesinAbsensiDetailEntity.setStatus(bean.getStatus());
-            itMesinAbsensiDetailEntity.setScanDate(bean.getScanDate());
+            Date scanDate = CommonUtil.convertStringToDate(bean.getStScanDate());
+            String scanDateFinal = scanDate+" "+bean.getJam()+":00.0";
+
+
+
+            itMesinAbsensiDetailEntity.setScanDate(Timestamp.valueOf(scanDateFinal));
             itMesinAbsensiDetailEntity.setVerifyMode(bean.getVerifyMode());
             itMesinAbsensiDetailEntity.setWorkCode(bean.getWorkCode());
 

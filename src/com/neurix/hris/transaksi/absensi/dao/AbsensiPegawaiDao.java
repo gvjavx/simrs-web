@@ -228,6 +228,7 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 .add(Restrictions.le("tanggal", akhir))
                 .add(Restrictions.ge("tanggal", awal))
                 .add(Restrictions.eq("lembur", "Y"))
+                .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("tanggal"))
                 .list();
 
@@ -267,6 +268,15 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 .list();
         return results;
     }
+    public List<AbsensiPegawaiEntity> cariAbsensiSysStatusAbsensi(String nip, java.util.Date tgl1, java.util.Date tgl2, String statusAbsensi) throws HibernateException {
+        List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.le("tanggal", tgl2))
+                .add(Restrictions.ge("tanggal", tgl1))
+                .add(Restrictions.eq("statusAbsensi", statusAbsensi))
+                .list();
+        return results;
+    }
     //digunakan pada absensi
     public List<AbsensiPegawaiEntity> searchDetailLembur(String nip,Date tgl) throws HibernateException {
         List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
@@ -290,6 +300,19 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 .add(Restrictions.ge("tanggal", tglAwal))
                 .add(Restrictions.le("tanggal", tglAkhir))
                 .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("tanggal"))
+                .list();
+        return results;
+    }
+
+    //digunakan untuk get data absensi triwulan
+    public List<AbsensiPegawaiEntity> getDataForAbsensiTriwulan(String nip, Date tglAwal, Date tglAkhir) throws HibernateException {
+        List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.ge("tanggal", tglAwal))
+                .add(Restrictions.le("tanggal", tglAkhir))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.ne("tipeHari","hari_libur"))
                 .addOrder(Order.asc("tanggal"))
                 .list();
 

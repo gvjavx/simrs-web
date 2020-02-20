@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.ijinKeluar.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -362,5 +364,31 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             }
         }
         return listOfResult;
+    }
+    public List<ItPersonilPositionEntity> getPegawaiDispensasiMasal(String unit) throws HibernateException {
+        List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("flag","Y"))
+                .add(Restrictions.eq("branchId",unit))
+                .add(Restrictions.ne("positionId","00"))
+                .add(Restrictions.ne("positionId","01"))
+                .add(Restrictions.ne("positionId","02"))
+                .list();
+        return results;
+    }
+
+    public String getName(String nip){
+        String result="";
+        String query="select nama_pegawai\n" +
+                "from im_hris_pegawai\n" +
+                "where nip = '"+nip+"'\n" +
+                "and flag = 'Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
     }
 }

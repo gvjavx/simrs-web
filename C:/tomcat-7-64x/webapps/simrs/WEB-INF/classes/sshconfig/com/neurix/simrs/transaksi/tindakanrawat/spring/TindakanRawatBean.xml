@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="tindakanRawatAction" class="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"
+        p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+    />
+
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+    />
+
+    <bean id="tindakanRawatBo" class="com.neurix.simrs.transaksi.tindakanrawat.bo.impl.TindakanRawatBoImpl"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:dokterDao-ref="dokterDao"
+          p:tindakanDao-ref="tindakanDao"
+    />
+
+    <bean id="tindakanRawatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="tindakanRawatBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionTindakanRawatInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionTindakanRawatInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="updateDetailCheckup">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="tindakanRawatDao" class="com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

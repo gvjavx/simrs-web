@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollRapelPendidikanEntity" dynamic-update="true"
+           table="it_hris_payroll_rapel_pendidikan" select-before-update="true" schema="public">
+
+
+        <id name="rapelPendidikanId">
+            <column name="rapel_pendidikan_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="payrollPendidikanId">
+            <column name="payroll_pendidikan_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="payrollRapelId">
+            <column name="payroll_rapel_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+
+        <property name="pendidikanGajiGolonganNilaiBaru">
+            <column name="gaji_golongan_baru" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="pendidikanUmkNilaiBaru">
+            <column name="tunjangan_umk_baru" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="pendidikanPeralihanNilaiBaru">
+            <column name="tunjangan_peralihan_baru" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="pendidikanStrukturalNilaiBaru">
+            <column name="tunjangan_struktural_baru" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="pendidikanJabStrukturalNilaiBaru">
+            <column name="tunjangan_jabatan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanStrategisNilaiBaru">
+            <column name="tunjangan_strategis" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanAirListrikNilaiBaru">
+            <column name="tunjangan_air_listrik" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanKompensasiNilaiBaru">
+            <column name="tunjangan_kompensasi" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanGajiGolonganNilaiSelisihBaru">
+            <column name="selisih_gaji_dasar" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanUmkNilaiSelisihBaru">
+            <column name="selisih_tunjangan_umk" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanPeralihanNilaiSelisihBaru">
+            <column name="selisih_tunjangan_peralihan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanStrukturalNilaiSelisihBaru">
+            <column name="selisih_tunjangan_struktural" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanJabStrukturalNilaiSelisihBaru">
+            <column name="selisih_tunjangan_jabatan_struktural" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanStrategisNilaiSelisihBaru">
+            <column name="selisih_tunjangan_strategis" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanAirListrikNilaiSelisihBaru">
+            <column name="selisih_tunjangan_air_listrik" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="totalRapelNilaiSelisih">
+            <column name="total_selisih_pendidikan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pendidikanKompensasiNilaiSelisihBaru">
+            <column name="selisih_tunjangan_kompensasi" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+        <property name="totalRapelNilaiSelisihBaru">
+            <column name="rapel_pendidikan_final" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="bulanAktif">
+            <column name="bulan_aktif" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="payrollPendidikanEntity" class="com.neurix.hris.transaksi.payroll.model.ItPayrollPendidikanEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="payroll_pendidikan_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

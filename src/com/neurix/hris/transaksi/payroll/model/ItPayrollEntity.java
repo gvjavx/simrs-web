@@ -68,11 +68,9 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal tunjanganAirListrik;
     private BigDecimal tunjanganPengobatan;
     private BigDecimal tunjanganPerumahan;
-    private BigDecimal tunjanganPph;
     private BigDecimal potPph;
     private BigDecimal potPphLain;
     private BigDecimal tunjanganBajuDinas;
-    private BigDecimal tunjanganLain;
     private BigDecimal tunjanganLembur;
     private BigDecimal tunjanganPeralihan;
 
@@ -103,6 +101,7 @@ public class ItPayrollEntity implements Serializable {
     private String danaPensiun;
     private Date tanggalAktif;
     private Date tanggalPensiun;
+    private Date tanggalAkhirKontrak;
 
     private String flagThr;
     private String flagPendidikan;
@@ -168,6 +167,388 @@ public class ItPayrollEntity implements Serializable {
     private String smkHuruf;
     private double smkAngka;
     private BigDecimal insentifDiterima;
+
+    private Integer masaKerjaBulan;
+
+    private BigDecimal iuranJkmJkk;
+
+    //tambahan irfan
+    //data pegawai
+    private int masaKerjaGol;
+    private String golonganDapenId;
+    private String golonganDapenName;
+
+    //tunjangan - tunjangan
+    private BigDecimal tambahanLain;
+    private BigDecimal tunjanganLain;
+    private BigDecimal tunjanganDapen;
+    private BigDecimal tunjanganTambahan;
+    private BigDecimal tunjanganPph;
+    private BigDecimal tunjanganBpjsKs;
+    private BigDecimal tunjanganBpjsTk;
+    private BigDecimal tunjanganSosialLain;
+    private BigDecimal pemondokan;
+    private BigDecimal komunikasi;
+
+
+    //tunjangan RLAB
+
+    private BigDecimal tunjanganRumah;
+    private BigDecimal tunjanganListrik;
+    private BigDecimal tunjanganAir;
+    private BigDecimal tunjanganBBM;
+    private BigDecimal totalRlab;
+
+    //iuran Pensiun
+    private BigDecimal iuranDapenPeg;
+    private BigDecimal iuranDapenPersh;
+
+    //iuran bpjs
+    private BigDecimal iuranBpjsTkKary;
+    private BigDecimal iuranBpjsTkPers;
+    private BigDecimal iuranBpjsKsKary;
+    private BigDecimal iuranBpjsKsPers;
+
+    //iuran ypks
+    private BigDecimal iuranYpks;
+
+    //potongan rincian C
+    private BigDecimal totalPotonganLain;
+    private BigDecimal gajiKotor;
+    private BigDecimal kopkar;
+    private BigDecimal iuranSp;
+    private BigDecimal iuranPiikb;
+    private BigDecimal bankBri;
+    private BigDecimal bankMandiri;
+    private BigDecimal infaq;
+    private BigDecimal PerkesDanObat;
+    private BigDecimal listrik;
+    private BigDecimal iuranProfesi;
+    private BigDecimal potonganLain;
+
+    //flag baru
+    private String flagCutiTahunan;
+    private String flagCutiPanjang;
+
+    public String getFlagCutiPanjang() {
+        return flagCutiPanjang;
+    }
+
+    public void setFlagCutiPanjang(String flagCutiPanjang) {
+        this.flagCutiPanjang = flagCutiPanjang;
+    }
+
+    public String getFlagCutiTahunan() {
+        return flagCutiTahunan;
+    }
+
+    public void setFlagCutiTahunan(String flagCutiTahunan) {
+        this.flagCutiTahunan = flagCutiTahunan;
+    }
+
+    public Date getTanggalAkhirKontrak() {
+        return tanggalAkhirKontrak;
+    }
+
+    public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
+        this.tanggalAkhirKontrak = tanggalAkhirKontrak;
+    }
+
+    public BigDecimal getTambahanLain() {
+        return tambahanLain;
+    }
+
+    public void setTambahanLain(BigDecimal tambahanLain) {
+        this.tambahanLain = tambahanLain;
+    }
+
+    public BigDecimal getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(BigDecimal komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(BigDecimal pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getBankBri() {
+        return bankBri;
+    }
+
+    public void setBankBri(BigDecimal bankBri) {
+        this.bankBri = bankBri;
+    }
+
+    public BigDecimal getBankMandiri() {
+        return bankMandiri;
+    }
+
+    public void setBankMandiri(BigDecimal bankMandiri) {
+        this.bankMandiri = bankMandiri;
+    }
+
+    public BigDecimal getGajiKotor() {
+        return gajiKotor;
+    }
+
+    public void setGajiKotor(BigDecimal gajiKotor) {
+        this.gajiKotor = gajiKotor;
+    }
+
+    public String getGolonganDapenName() {
+        return golonganDapenName;
+    }
+
+    public void setGolonganDapenName(String golonganDapenName) {
+        this.golonganDapenName = golonganDapenName;
+    }
+
+    public BigDecimal getInfaq() {
+        return infaq;
+    }
+
+    public void setInfaq(BigDecimal infaq) {
+        this.infaq = infaq;
+    }
+
+    public BigDecimal getIuranBpjsKsKary() {
+        return iuranBpjsKsKary;
+    }
+
+    public void setIuranBpjsKsKary(BigDecimal iuranBpjsKsKary) {
+        this.iuranBpjsKsKary = iuranBpjsKsKary;
+    }
+
+    public BigDecimal getIuranBpjsKsPers() {
+        return iuranBpjsKsPers;
+    }
+
+    public void setIuranBpjsKsPers(BigDecimal iuranBpjsKsPers) {
+        this.iuranBpjsKsPers = iuranBpjsKsPers;
+    }
+
+    public BigDecimal getIuranBpjsTkKary() {
+        return iuranBpjsTkKary;
+    }
+
+    public void setIuranBpjsTkKary(BigDecimal iuranBpjsTkKary) {
+        this.iuranBpjsTkKary = iuranBpjsTkKary;
+    }
+
+    public BigDecimal getIuranBpjsTkPers() {
+        return iuranBpjsTkPers;
+    }
+
+    public void setIuranBpjsTkPers(BigDecimal iuranBpjsTkPers) {
+        this.iuranBpjsTkPers = iuranBpjsTkPers;
+    }
+
+    public BigDecimal getIuranDapenPeg() {
+        return iuranDapenPeg;
+    }
+
+    public void setIuranDapenPeg(BigDecimal iuranDapenPeg) {
+        this.iuranDapenPeg = iuranDapenPeg;
+    }
+
+    public BigDecimal getIuranDapenPersh() {
+        return iuranDapenPersh;
+    }
+
+    public void setIuranDapenPersh(BigDecimal iuranDapenPersh) {
+        this.iuranDapenPersh = iuranDapenPersh;
+    }
+
+    public BigDecimal getIuranPiikb() {
+        return iuranPiikb;
+    }
+
+    public void setIuranPiikb(BigDecimal iuranPiikb) {
+        this.iuranPiikb = iuranPiikb;
+    }
+
+    public BigDecimal getIuranProfesi() {
+        return iuranProfesi;
+    }
+
+    public void setIuranProfesi(BigDecimal iuranProfesi) {
+        this.iuranProfesi = iuranProfesi;
+    }
+
+    public BigDecimal getIuranSp() {
+        return iuranSp;
+    }
+
+    public void setIuranSp(BigDecimal iuranSp) {
+        this.iuranSp = iuranSp;
+    }
+
+    public BigDecimal getIuranYpks() {
+        return iuranYpks;
+    }
+
+    public void setIuranYpks(BigDecimal iuranYpks) {
+        this.iuranYpks = iuranYpks;
+    }
+
+    public BigDecimal getKopkar() {
+        return kopkar;
+    }
+
+    public void setKopkar(BigDecimal kopkar) {
+        this.kopkar = kopkar;
+    }
+
+    public BigDecimal getListrik() {
+        return listrik;
+    }
+
+    public void setListrik(BigDecimal listrik) {
+        this.listrik = listrik;
+    }
+
+    public BigDecimal getPerkesDanObat() {
+        return PerkesDanObat;
+    }
+
+    public void setPerkesDanObat(BigDecimal perkesDanObat) {
+        PerkesDanObat = perkesDanObat;
+    }
+
+    public BigDecimal getPotonganLain() {
+        return potonganLain;
+    }
+
+    public void setPotonganLain(BigDecimal potonganLain) {
+        this.potonganLain = potonganLain;
+    }
+
+    public BigDecimal getTotalPotonganLain() {
+        return totalPotonganLain;
+    }
+
+    public void setTotalPotonganLain(BigDecimal totalPotonganLain) {
+        this.totalPotonganLain = totalPotonganLain;
+    }
+
+    public BigDecimal getTotalRlab() {
+        return totalRlab;
+    }
+
+    public void setTotalRlab(BigDecimal totalRlab) {
+        this.totalRlab = totalRlab;
+    }
+
+    public BigDecimal getTunjanganAir() {
+        return tunjanganAir;
+    }
+
+    public void setTunjanganAir(BigDecimal tunjanganAir) {
+        this.tunjanganAir = tunjanganAir;
+    }
+
+    public BigDecimal getTunjanganBBM() {
+        return tunjanganBBM;
+    }
+
+    public void setTunjanganBBM(BigDecimal tunjanganBBM) {
+        this.tunjanganBBM = tunjanganBBM;
+    }
+
+    public BigDecimal getTunjanganBpjsKs() {
+        return tunjanganBpjsKs;
+    }
+
+    public void setTunjanganBpjsKs(BigDecimal tunjanganBpjsKs) {
+        this.tunjanganBpjsKs = tunjanganBpjsKs;
+    }
+
+    public BigDecimal getTunjanganBpjsTk() {
+        return tunjanganBpjsTk;
+    }
+
+    public void setTunjanganBpjsTk(BigDecimal tunjanganBpjsTk) {
+        this.tunjanganBpjsTk = tunjanganBpjsTk;
+    }
+
+    public BigDecimal getTunjanganDapen() {
+        return tunjanganDapen;
+    }
+
+    public void setTunjanganDapen(BigDecimal tunjanganDapen) {
+        this.tunjanganDapen = tunjanganDapen;
+    }
+
+    public BigDecimal getTunjanganListrik() {
+        return tunjanganListrik;
+    }
+
+    public void setTunjanganListrik(BigDecimal tunjanganListrik) {
+        this.tunjanganListrik = tunjanganListrik;
+    }
+
+    public BigDecimal getTunjanganRumah() {
+        return tunjanganRumah;
+    }
+
+    public void setTunjanganRumah(BigDecimal tunjanganRumah) {
+        this.tunjanganRumah = tunjanganRumah;
+    }
+
+    public BigDecimal getTunjanganSosialLain() {
+        return tunjanganSosialLain;
+    }
+
+    public void setTunjanganSosialLain(BigDecimal tunjanganSosialLain) {
+        this.tunjanganSosialLain = tunjanganSosialLain;
+    }
+
+    public BigDecimal getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(BigDecimal tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
+    public String getGolonganDapenId() {
+        return golonganDapenId;
+    }
+
+    public void setGolonganDapenId(String golonganDapenId) {
+        this.golonganDapenId = golonganDapenId;
+    }
+
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
+    }
+
+    public BigDecimal getIuranJkmJkk() {
+        return iuranJkmJkk;
+    }
+
+    public void setIuranJkmJkk(BigDecimal iuranJkmJkk) {
+        this.iuranJkmJkk = iuranJkmJkk;
+    }
+
+    public Integer getMasaKerjaBulan() {
+        return masaKerjaBulan;
+    }
+
+    public void setMasaKerjaBulan(Integer masaKerjaBulan) {
+        this.masaKerjaBulan = masaKerjaBulan;
+    }
 
     public BigDecimal getPphGajiRapel() {
         return pphGajiRapel;

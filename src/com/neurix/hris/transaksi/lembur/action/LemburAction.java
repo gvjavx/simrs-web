@@ -427,13 +427,22 @@ public class LemburAction extends BaseMasterAction {
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         java.sql.Date dateStart = CommonUtil.convertToDate(lembur.getStTanggalAwal());
         java.sql.Date dateEnd = CommonUtil.convertToDate(lembur.getStTanggalAkhir());
-        if (lembur.getLamaJam()>20){
-            if (lembur.getLamaJam()>100){
-                lembur.setLamaJam(lembur.getLamaJam()/100);
-            }else{
-                lembur.setLamaJam(lembur.getLamaJam()/10);
-            }
+        String sLamaJam="";
+//        if (lembur.getLamaJam()>20){
+//            if (lembur.getLamaJam()>100){
+//                lembur.setLamaJam(lembur.getLamaJam()/100);
+//            }else{
+//                lembur.setLamaJam(lembur.getLamaJam()/10);
+//            }
+//        }
+        try{
+            sLamaJam = calcJamLembur(lembur.getNip(), lembur.getStTanggalAwal(),lembur.getStTanggalAkhir(),lembur.getJamAwal(),lembur.getJamAkhir());
+
+        }catch (ParseException e) {
+            logger.error("[lemburAction.saveAdd] Error when saving error,", e);
+            return ERROR;
         }
+        lembur.setLamaJam(Double.parseDouble(sLamaJam));
         lembur.setTanggalAwal(dateStart);
         lembur.setTanggalAkhir(dateEnd);
         lembur.setCreatedWho(userLogin);

@@ -18,6 +18,8 @@ public class MesinAbsensiDetail extends BaseModel {
     private String pin;
     private String status;
     private Timestamp scanDate;
+    private Date dateScanDate;
+    private String stScanDate;
     private String verifyMode;
     private String workCode;
 
@@ -34,6 +36,31 @@ public class MesinAbsensiDetail extends BaseModel {
     private String stTanggalSelesai;
     private Date tanggalDari;
     private Date tanggalSelesai;
+    private String jam;
+
+    public Date getDateScanDate() {
+        return dateScanDate;
+    }
+
+    public void setDateScanDate(Date dateScanDate) {
+        this.dateScanDate = dateScanDate;
+    }
+
+    public String getStScanDate() {
+        return stScanDate;
+    }
+
+    public void setStScanDate(String stScanDate) {
+        this.stScanDate = stScanDate;
+    }
+
+    public String getJam() {
+        return jam;
+    }
+
+    public void setJam(String jam) {
+        this.jam = jam;
+    }
 
     public Date getTanggalDari() {
         return tanggalDari;

@@ -141,4 +141,27 @@ public List<ImCutiPanjangEntity> getListCutiPanjang(Map mapCriteria) throws Hibe
                 .list();
         return results;
     }
+
+    public String cekResetCutiPanjang(String nip){
+        String listOfResult="";
+        String query= "select distinct on(nip) nip, tanggal_dari, keterangan from it_hris_cuti_pegawai\n" +
+                "where keterangan ilike 'RESET PANJANG'\n" +
+                "and nip ='"+nip+"'";
+
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+
+        if (results.size()>0){
+            for (Object[] rows: results){
+                String[] tahun = rows[1].toString().split("-");
+                listOfResult = tahun[0];
+            }
+        }
+        else{
+            listOfResult=null;
+        }
+        return listOfResult;
+    }
+
 }

@@ -2,6 +2,8 @@ package com.neurix.hris.transaksi.payroll.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: gondok
@@ -15,6 +17,152 @@ public class PayrollBpjs extends BaseModel {
     private double bpjsKesehatanPersen;
     private double bpjsPensiunPersen;
     private double bpjsJhtPersen;
+
+    //tambahan irfan
+    private Double iuranBpjsKsKaryPersen;
+    private Double iuranBpjsKsPersPersen;
+    private Double iuranBpjsTkKaryPersen;
+    private Double iuranBpjsTkPersPersen;
+    private BigDecimal minBpjsKs;
+    private BigDecimal maxBpjsKs;
+    private BigDecimal minBpjsTk;
+    private BigDecimal MaxBpjsTk;
+    private String iuranBpjsKsKary;
+    private String iuranBpjsKsPers;
+    private String iuranBpjsTkKary;
+    private String iuranBpjsTkPers;
+    private BigDecimal iuranBpjsKsKaryNilai;
+    private BigDecimal iuranBpjsKsPersNilai;
+    private BigDecimal iuranBpjsTkKaryNilai;
+    private BigDecimal iuranBpjsTkPersNilai;
+
+    public String getIuranBpjsKsKary() {
+        return iuranBpjsKsKary;
+    }
+
+    public void setIuranBpjsKsKary(String iuranBpjsKsKary) {
+        this.iuranBpjsKsKary = iuranBpjsKsKary;
+    }
+
+    public BigDecimal getIuranBpjsKsKaryNilai() {
+        return iuranBpjsKsKaryNilai;
+    }
+
+    public void setIuranBpjsKsKaryNilai(BigDecimal iuranBpjsKsKaryNilai) {
+        this.iuranBpjsKsKaryNilai = iuranBpjsKsKaryNilai;
+    }
+
+    public Double getIuranBpjsKsKaryPersen() {
+        return iuranBpjsKsKaryPersen;
+    }
+
+    public void setIuranBpjsKsKaryPersen(Double iuranBpjsKsKaryPersen) {
+        this.iuranBpjsKsKaryPersen = iuranBpjsKsKaryPersen;
+    }
+
+    public String getIuranBpjsKsPers() {
+        return iuranBpjsKsPers;
+    }
+
+    public void setIuranBpjsKsPers(String iuranBpjsKsPers) {
+        this.iuranBpjsKsPers = iuranBpjsKsPers;
+    }
+
+    public BigDecimal getIuranBpjsKsPersNilai() {
+        return iuranBpjsKsPersNilai;
+    }
+
+    public void setIuranBpjsKsPersNilai(BigDecimal iuranBpjsKsPersNilai) {
+        this.iuranBpjsKsPersNilai = iuranBpjsKsPersNilai;
+    }
+
+    public Double getIuranBpjsKsPersPersen() {
+        return iuranBpjsKsPersPersen;
+    }
+
+    public void setIuranBpjsKsPersPersen(Double iuranBpjsKsPersPersen) {
+        this.iuranBpjsKsPersPersen = iuranBpjsKsPersPersen;
+    }
+
+    public String getIuranBpjsTkKary() {
+        return iuranBpjsTkKary;
+    }
+
+    public void setIuranBpjsTkKary(String iuranBpjsTkKary) {
+        this.iuranBpjsTkKary = iuranBpjsTkKary;
+    }
+
+    public BigDecimal getIuranBpjsTkKaryNilai() {
+        return iuranBpjsTkKaryNilai;
+    }
+
+    public void setIuranBpjsTkKaryNilai(BigDecimal iuranBpjsTkKaryNilai) {
+        this.iuranBpjsTkKaryNilai = iuranBpjsTkKaryNilai;
+    }
+
+    public Double getIuranBpjsTkKaryPersen() {
+        return iuranBpjsTkKaryPersen;
+    }
+
+    public void setIuranBpjsTkKaryPersen(Double iuranBpjsTkKaryPersen) {
+        this.iuranBpjsTkKaryPersen = iuranBpjsTkKaryPersen;
+    }
+
+    public String getIuranBpjsTkPers() {
+        return iuranBpjsTkPers;
+    }
+
+    public void setIuranBpjsTkPers(String iuranBpjsTkPers) {
+        this.iuranBpjsTkPers = iuranBpjsTkPers;
+    }
+
+    public BigDecimal getIuranBpjsTkPersNilai() {
+        return iuranBpjsTkPersNilai;
+    }
+
+    public void setIuranBpjsTkPersNilai(BigDecimal iuranBpjsTkPersNilai) {
+        this.iuranBpjsTkPersNilai = iuranBpjsTkPersNilai;
+    }
+
+    public Double getIuranBpjsTkPersPersen() {
+        return iuranBpjsTkPersPersen;
+    }
+
+    public void setIuranBpjsTkPersPersen(Double iuranBpjsTkPersPersen) {
+        this.iuranBpjsTkPersPersen = iuranBpjsTkPersPersen;
+    }
+
+    public BigDecimal getMaxBpjsKs() {
+        return maxBpjsKs;
+    }
+
+    public void setMaxBpjsKs(BigDecimal maxBpjsKs) {
+        this.maxBpjsKs = maxBpjsKs;
+    }
+
+    public BigDecimal getMaxBpjsTk() {
+        return MaxBpjsTk;
+    }
+
+    public void setMaxBpjsTk(BigDecimal maxBpjsTk) {
+        MaxBpjsTk = maxBpjsTk;
+    }
+
+    public BigDecimal getMinBpjsKs() {
+        return minBpjsKs;
+    }
+
+    public void setMinBpjsKs(BigDecimal minBpjsKs) {
+        this.minBpjsKs = minBpjsKs;
+    }
+
+    public BigDecimal getMinBpjsTk() {
+        return minBpjsTk;
+    }
+
+    public void setMinBpjsTk(BigDecimal minBpjsTk) {
+        this.minBpjsTk = minBpjsTk;
+    }
 
     public String getBpjsId() {
         return bpjsId;

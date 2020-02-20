@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.user.model.ItUserSessionLog" table="it_user_session_log" dynamic-update="true"
+           select-before-update="true" schema="public">
+        <id name="id" column="id" type="java.lang.Long" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">seq_user_session_log</param>
+            </generator>
+        </id>
+        <property name="sessionId">
+            <column name="session_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="userName">
+            <column name="user_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="loginTimestamp">
+            <column name="login_timestamp" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="logoutTimestamp">
+            <column name="logout_timestamp" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="companyName">
+            <column name="company_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="areaName">
+            <column name="area_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="ipAddress">
+            <column name="ip_address" sql-type="varchar" length="100"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

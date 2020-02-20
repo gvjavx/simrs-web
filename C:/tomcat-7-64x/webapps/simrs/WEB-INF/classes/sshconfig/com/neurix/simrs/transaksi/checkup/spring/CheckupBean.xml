@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+          p:diagnosaBoProxy-ref="diagnosaBoProxy"
+          p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
+    />
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
+
+
+
+    <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:provinsiDao-ref="provinsiDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+          p:checkupAlergiDao-ref="checkupAlergiDao"
+          p:branchDao-ref="branchDao"
+          p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:pemeriksaanFisikDao-ref="pemeriksaanFisikDao"
+          p:kategoriResikoJatuhDao-ref="kategoriResikoJatuhDao"
+          p:parameterResikoJatuhDao-ref="parameterResikoJatuhDao"
+          p:skorResikoJatuhDao-ref="skorResikoJatuhDao"
+          p:resikoJatuhDao-ref="resikoJatuhDao"
+          p:psikososialDao-ref="psikososialDao"
+          p:kategoriRencanaRawatDao-ref="kategoriRencanaRawatDao"
+          p:parameterRencanaRawatDao-ref="parameterRencanaRawatDao"
+          p:rencanaRawatDao-ref="rencanaRawatDao"
+          p:rekonsiliasiObatDao-ref="rekonsiliasiObatDao"
+          p:patrusDao-ref="patrusDao"
+          p:tranfusiDao-ref="tranfusiDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+    />
+
+    <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="checkupBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionHeaderCheckupInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionHeaderCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="headerCheckupDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="checkupAlergiDao" class="com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pemeriksaanFisikDao" class="com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kategoriResikoJatuhDao" class="com.neurix.simrs.transaksi.resikojatuh.dao.KategoriResikoJatuhDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="parameterResikoJatuhDao" class="com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="skorResikoJatuhDao" class="com.neurix.simrs.transaksi.resikojatuh.dao.SkorResikoJatuhDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="resikoJatuhDao" class="com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="rencanaRawatDao" class="com.neurix.simrs.transaksi.rencanarawat.dao.RencanaRawatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="parameterRencanaRawatDao" class="com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kategoriRencanaRawatDao" class="com.neurix.simrs.transaksi.rencanarawat.dao.KategoriRencanaRawatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="psikososialDao" class="com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="patrusDao" class="com.neurix.simrs.transaksi.patrus.dao.PatrusDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tranfusiDao" class="com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="rekonsiliasiObatDao" class="com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

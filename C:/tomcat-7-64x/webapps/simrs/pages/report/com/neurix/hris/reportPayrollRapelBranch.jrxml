@@ -1,0 +1,2782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayrollRapel" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee0d66cc-260a-484b-ac19-a0da26a29de7">
+	<property name="ireport.zoom" value="0.9090909090909384"/>
+	<property name="ireport.x" value="30"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.payrollId" class="java.lang.String"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.branchId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+	pegawai.nip,
+	pegawai.nama_pegawai,
+	data_detail.jumlah_bulan,
+	rapel.total_rapel_insentif,
+	rapel.total_rapel_thr,
+	rapel.total_rapel_pendidikan,
+	rapel.total_rapel_bulan,
+	rapel.total_rapel_lembur,
+	rapel.pph_rapel,
+	payroll.pph_gaji,
+	rapel.tunjangan_pph,
+	rapel.total_rapel_final,
+	rapel.rapel_bersih,
+rapel.rapel_id,
+	rapel.payroll_id,
+	rapel.gaji_golongan_lama as bulan_gaji_golongan_lama,
+	rapel.tunjangan_struktural_lama as bulan_tunjangan_struktural_lama,
+	rapel.tunjangan_jabatan_struktural_lama as bulan_tunjangan_jabatan_struktural_lama,
+	rapel.tunjangan_air_listrik_lama as bulan_tunjangan_air_listrik_lama ,
+	rapel.tunjangan_umk_lama as bulan_tunjangan_umk_lama ,
+	rapel.tunjangan_perumahan_lama as bulan_tunjangan_perumahan_lama,
+
+	rapel.gaji_golongan_baru as bulan_gaji_golongan_baru,
+	rapel.tunjangan_struktural_baru as bulan_tunjangan_struktural_baru,
+	rapel.tunjangan_jabatan_struktural_baru as bulan_tunjangan_jabatan_struktural_baru,
+	rapel.tunjangan_air_listrik_baru as bulan_tunjangan_air_listrik_baru ,
+	rapel.tunjangan_umk_baru as bulan_tunjangan_umk_baru ,
+	rapel.tunjangan_perumahan_baru as bulan_tunjangan_perumahan_baru,
+	CASE WHEN pendidikan.gaji_golongan_baru is null THEN 0 else pendidikan.gaji_golongan_baru end as pendidikan_gaji_golongan_baru,
+	CASE WHEN pendidikan.tunjangan_umk_baru is null THEN 0 else pendidikan.tunjangan_umk_baru end as pendidikan_tunjangan_umk_baru,
+	CASE WHEN pendidikan.tunjangan_struktural_baru is null THEN 0 else pendidikan.tunjangan_struktural_baru end as pendidikan_tunjangan_struktural_baru,
+	CASE WHEN pendidikan.tunjangan_jabatan_struktural is null THEN 0 else pendidikan.tunjangan_jabatan_struktural end as pendidikan_tunjangan_jabatan_struktural_baru,
+	CASE WHEN pendidikan.tunjangan_strategis is null THEN 0 else pendidikan.tunjangan_strategis end as pendidikan_tunjangan_strategis_baru,
+	CASE WHEN pendidikan.tunjangan_air_listrik is null THEN 0 else pendidikan.tunjangan_air_listrik end as pendidikan_tunjangan_air_listrik_baru,
+	CASE WHEN pendidikan.tunjangan_peralihan_baru is null THEN 0 else pendidikan.tunjangan_peralihan_baru end as pendidikan_tunjangan_peralihan_baru,
+	CASE WHEN pendidikan.tunjangan_kompensasi is null THEN 0 else pendidikan.tunjangan_kompensasi end as pendidikan_tunjangan_kompensasi,
+	CASE WHEN pendidikan.selisih_tunjangan_kompensasi is null THEN 0 else pendidikan.selisih_tunjangan_kompensasi end as pendidikan_selisih_tunjangan_kompensasi,
+	CASE WHEN pendidikan.selisih_gaji_dasar is null THEN 0 else pendidikan.selisih_gaji_dasar end as pendidikan_selisih_gaji_dasar,
+	CASE WHEN pendidikan.selisih_tunjangan_umk is null THEN 0 else pendidikan.selisih_tunjangan_umk end as pendidikan_selisih_tunjangan_umk,
+	CASE WHEN pendidikan.selisih_tunjangan_struktural is null THEN 0 else pendidikan.selisih_tunjangan_struktural end as pendidikan_selisih_tunjangan_struktural,
+	CASE WHEN pendidikan.selisih_tunjangan_jabatan_struktural is null THEN 0 else pendidikan.selisih_tunjangan_jabatan_struktural end as pendidikan_selisih_tunjangan_jabatan_struktural,
+	CASE WHEN pendidikan.selisih_tunjangan_strategis is null THEN 0 else pendidikan.selisih_tunjangan_strategis end as pendidikan_selisih_tunjangan_strategis,
+	CASE WHEN pendidikan.selisih_tunjangan_air_listrik is null THEN 0 else pendidikan.selisih_tunjangan_air_listrik end as pendidikan_selisih_tunjangan_air_listrik,
+	CASE WHEN pendidikan.selisih_tunjangan_peralihan is null THEN 0 else pendidikan.selisih_tunjangan_peralihan end as pendidikan_selisih_tunjangan_peralihan,
+	CASE WHEN pendidikan_lama.tunjangan_umk is null THEN 0 else pendidikan_lama.tunjangan_umk end as pendidikan_lama_tunjangan_umk,
+	CASE WHEN pendidikan_lama.tunjangan_struktural is null THEN 0 else pendidikan_lama.tunjangan_struktural end as pendidikan_lama_tunjangan_struktural,
+	CASE WHEN pendidikan_lama.tunjangan_jabatan_struktural is null THEN 0 else pendidikan_lama.tunjangan_jabatan_struktural end as pendidikan_lama_tunjangan_jabatan_struktural,
+	CASE WHEN pendidikan_lama.tunjangan_strategis is null THEN 0 else pendidikan_lama.tunjangan_strategis end as pendidikan_lama_tunjangan_strategis,
+	CASE WHEN pendidikan_lama.tunjangan_air_listrik is null THEN 0 else pendidikan_lama.tunjangan_air_listrik end as pendidikan_lama_tunjangan_air_listrik,
+	CASE WHEN pendidikan_lama.gaji_golongan is null THEN 0 else pendidikan_lama.gaji_golongan end as pendidikan_lama_gaji_golongan,
+	CASE WHEN pendidikan_lama.tunjangan_kompensasi is null THEN 0 else pendidikan_lama.tunjangan_kompensasi end as pendidikan_lama_tunjangan_kompensasi,
+	CASE WHEN pendidikan_lama.tunjangan_peralihan is null THEN 0 else pendidikan_lama.tunjangan_peralihan end as pendidikan_lama_tunjangan_peralihan,
+	CASE WHEN pendidikan_lama.bulan_aktif is null THEN 0 else pendidikan_lama.bulan_aktif end as pendidikan_lama_bulan_aktif,
+
+	CASE WHEN thr.gaji_golongan_baru is null THEN 0 else thr.gaji_golongan_baru end as thr_gaji_golongan_baru,
+	CASE WHEN thr.tunjangan_umk_baru is null THEN 0 else thr.tunjangan_umk_baru end as thr_tunjangan_umk_baru,
+	CASE WHEN thr.tunjangan_struktural_baru is null THEN 0 else thr.tunjangan_struktural_baru end as thr_tunjangan_struktural_baru,
+	CASE WHEN thr.tunjangan_strategis is null THEN 0 else thr.tunjangan_strategis end as thr_tunjangan_strategis_baru,
+	CASE WHEN thr.tunjangan_jabatan_struktural is null THEN 0 else thr.tunjangan_jabatan_struktural end as thr_tunjangan_jabatan_struktural_baru,
+	CASE WHEN thr.tunjangan_peralihan_baru is null THEN 0 else thr.tunjangan_peralihan_baru end as thr_tunjangan_peralihan_baru,
+
+	CASE WHEN thr_lama.tunjangan_umk is null THEN 0 else thr_lama.tunjangan_umk end as thr_lama_tunjangan_umk,
+	CASE WHEN thr_lama.tunjangan_struktural is null THEN 0 else thr_lama.tunjangan_struktural end as thr_lama_tunjangan_struktural,
+	CASE WHEN thr_lama.tunjangan_jabatan_struktural is null THEN 0 else thr_lama.tunjangan_jabatan_struktural end as thr_lama_tunjangan_jabatan_struktural,
+	CASE WHEN thr_lama.tunjangan_strategis is null THEN 0 else thr_lama.tunjangan_strategis end as thr_lama_tunjangan_strategis,
+	CASE WHEN thr_lama.gaji_golongan is null THEN 0 else thr_lama.gaji_golongan end as thr_lama_gaji_golongan,
+	CASE WHEN thr_lama.tunjangan_peralihan is null THEN 0 else thr_lama.tunjangan_peralihan end as thr_lama_tunjangan_peralihan,
+	CASE WHEN thr_lama.bulan_aktif is null THEN 0 else thr_lama.bulan_aktif end as thr_lama_bulan_aktif,
+
+	CASE WHEN thr.selisih_gaji_golongan is null THEN 0 else thr.selisih_gaji_golongan end as thr_selisih_gaji_golongan,
+	CASE WHEN thr.selisih_tunjangan_umk is null THEN 0 else thr.selisih_tunjangan_umk end as thr_selisih_tunjangan_umk,
+	CASE WHEN thr.selisih_tunjangan_struktural is null THEN 0 else thr.selisih_tunjangan_struktural end as thr_selisih_tunjangan_struktural,
+	CASE WHEN thr.selisih_tunjangan_strategis is null THEN 0 else thr.selisih_tunjangan_strategis end as thr_selisih_tunjangan_strategis,
+	CASE WHEN thr.selisih_tunjangan_jabatan_struktural is null THEN 0 else thr.selisih_tunjangan_jabatan_struktural end as thr_selisih_tunjangan_jabatan_struktural,
+	CASE WHEN thr.selisih_tunjangan_peralihan is null THEN 0 else thr.selisih_tunjangan_peralihan end as thr_selisih_tunjangan_peralihan,
+
+	CASE WHEN lembur.jam_lembur is null THEN 0 else lembur.jam_lembur end as lembur_jam_lembur,
+	CASE WHEN lembur.biaya_lembur_lama is null THEN 0 else lembur.biaya_lembur_lama end as lembur_biaya_lembur_lama,
+	CASE WHEN lembur.gaji_golongan_baru is null THEN 0 else lembur.gaji_golongan_baru end as lembur_gaji_golongan_baru,
+	CASE WHEN lembur.tunjangan_peralihan_baru is null THEN 0 else lembur.tunjangan_peralihan_baru end as lembur_tunjangan_peralihan_baru,
+	CASE WHEN lembur.tunjangan_umk_baru is null THEN 0 else lembur.tunjangan_umk_baru end as lembur_tunjangan_umk_baru,
+	CASE WHEN lembur.faktor_pengali is null THEN 0 else lembur.faktor_pengali end as lembur_faktor_pengali,
+	CASE WHEN lembur.biaya_lembur_baru is null THEN 0 else lembur.biaya_lembur_baru end as lembur_biaya_lembur_baru,
+	CASE WHEN lembur.biaya_lembur_lama is null THEN 0 else lembur.biaya_lembur_lama end as lembur_biaya_lembur_lama,
+	CASE WHEN lembur.selisih_biaya_lembur_baru is null THEN 0 else lembur.selisih_biaya_lembur_baru end as lembur_selisih_biaya_lembur_baru,
+
+	CASE WHEN insentif.gaji_golongan_baru is null THEN 0 else insentif.gaji_golongan_baru end as insentif_gaji_golongan_baru,
+	CASE WHEN insentif.tunjangan_umk_baru is null THEN 0 else insentif.tunjangan_umk_baru end as insentif_tunjangan_umk_baru,
+	CASE WHEN insentif.tunjangan_struktural_baru is null THEN 0 else insentif.tunjangan_struktural_baru end as insentif_tunjangan_struktural_baru,
+	CASE WHEN insentif.tunjangan_peralihan_baru is null THEN 0 else insentif.tunjangan_peralihan_baru end as insentif_tunjangan_peralihan_baru,
+	CASE WHEN insentif.tunjangan_strategis_baru is null THEN 0 else insentif.tunjangan_strategis_baru end as insentif_tunjangan_strategis_baru,
+	CASE WHEN insentif.tunjangan_jabatan_struktural is null THEN 0 else insentif.tunjangan_jabatan_struktural end as insentif_tunjangan_jabatan_struktural_baru,
+	CASE WHEN insentif.bruto_baru is null THEN 0 else insentif.bruto_baru end as insentif_bruto_baru,
+	CASE WHEN insentif.potongan_insentif is null THEN 0 else insentif.potongan_insentif end as insentif_potongan_insentif,
+	CASE WHEN insentif.potongan_insentif_individu_baru is null THEN 0 else insentif.potongan_insentif_individu_baru end as insentif_potongan_insentif_individu_baru,
+	CASE WHEN insentif.masa_kerja is null THEN 0 else insentif.masa_kerja end as insentif_masa_kerja,
+	CASE WHEN insentif.smk_standart is null THEN 0 else insentif.smk_standart end as insentif_smk_standart,
+	CASE WHEN insentif.jumlah_insentif_baru is null THEN 0 else insentif.jumlah_insentif_baru end as insentif_jumlah_insentif_baru,
+	CASE WHEN insentif.jumlah_insentif_lama is null THEN 0 else insentif.jumlah_insentif_lama end as insentif_jumlah_insentif_lama,
+	CASE WHEN insentif.total_rapel_insentif is null THEN 0 else insentif.total_rapel_insentif end as insentif_total_rapel_insentif,
+	CASE WHEN insentif.jumlah_insentif_baru is null THEN 0 else insentif.jumlah_insentif_baru end as insentif_insentif_yang_diterima,
+
+	CASE WHEN insentif_lama.jumlah_insentif is null THEN 0 else insentif_lama.jumlah_insentif end as insentif_lama_jumlah_insentif,
+	CASE WHEN insentif_lama.jumlah_pph is null THEN 0 else insentif_lama.jumlah_pph end as insentif_lama_jumlah_pph,
+	CASE WHEN insentif_lama.gaji_golongan is null THEN 0 else insentif_lama.gaji_golongan end as insentif_lama_gaji_golongan,
+	CASE WHEN insentif_lama.tunjangan_umk is null THEN 0 else insentif_lama.tunjangan_umk end as insentif_lama_tunjangan_umk,
+	CASE WHEN insentif_lama.tunjangan_struktural is null THEN 0 else insentif_lama.tunjangan_struktural end as insentif_lama_tunjangan_struktural,
+	CASE WHEN insentif_lama.tunjangan_peralihan is null THEN 0 else insentif_lama.tunjangan_peralihan end as insentif_lama_tunjangan_peralihan,
+	CASE WHEN insentif_lama.tunjangan_jab_struktural is null THEN 0 else insentif_lama.tunjangan_jab_struktural end as insentif_lama_tunjangan_jab_struktrual,
+	CASE WHEN insentif_lama.tunjangan_strategis is null THEN 0 else insentif_lama.tunjangan_strategis end as insentif_lama_tunjangan_strategis,
+	CASE WHEN insentif_lama.jumlah_bruto is null THEN 0 else insentif_lama.jumlah_bruto end as insentif_lama_jumlah_bruto,
+	CASE WHEN insentif_lama.masa_kerja is null THEN 0 else insentif_lama.masa_kerja end as insentif_lama_masa_kerja,
+	CASE WHEN insentif_lama.potongan_insentif is null THEN 0 else insentif_lama.potongan_insentif end as insentif_lama_potongan_insentif,
+	CASE WHEN insentif_lama.potongan_insentif_individu is null THEN 0 else insentif_lama.potongan_insentif_individu end as insentif_lama_potongan_insentif_individu,
+	CASE WHEN insentif_lama.smk_standart is null THEN 0 else insentif_lama.smk_standart end as insentif_lama_potongan_smk_standart,
+	CASE WHEN insentif_lama.smk_angka is null THEN 0 else insentif_lama.smk_angka end as insentif_lama_potongan_smk_angka,
+	CASE WHEN insentif_lama.insentif_yang_diterima is null THEN 0 else insentif_lama.insentif_yang_diterima end as insentif_lama_insentif_yang_diterima,
+
+	rapel_detail.*,
+	rapel_detail_juli.gaji_golongan_baru as rapel_juli_gadas_baru ,
+	rapel_detail_juli.gaji_golongan_lama as rapel_juli_gadas_lama ,
+	rapel_detail_juli.gaji_golongan as rapel_juli_gadas ,
+	rapel_detail_juli.umk_baru as rapel_juli_umk_baru ,
+	rapel_detail_juli.umk_lama as rapel_juli_umk_lama ,
+	rapel_detail_juli.umk as rapel_juli_umk ,
+	rapel_detail_juli.struktural_baru as rapel_juli_struktural_baru ,
+	rapel_detail_juli.struktural_lama as rapel_juli_struktural_lama ,
+	rapel_detail_juli.struktural as rapel_juli_struktural ,
+	rapel_detail_juli.jab_struktural_baru as rapel_juli_jab_struktural_baru ,
+	rapel_detail_juli.jab_struktural_lama as rapel_juli_jab_struktural_lama ,
+	rapel_detail_juli.jab_struktural as rapel_juli_jab_struktural ,
+	rapel_detail_juli.strategis_baru as rapel_juli_strategis_baru ,
+	rapel_detail_juli.strategis_lama as rapel_juli_strategis_lama ,
+	rapel_detail_juli.strategis as rapel_juli_strategis ,
+	rapel_detail_juli.air_listrik_baru as rapel_juli_air_listrik_baru ,
+	rapel_detail_juli.air_listrik_lama as rapel_juli_air_listrik_lama ,
+	rapel_detail_juli.air_listrik as rapel_juli_air_listrik ,
+	rapel_detail_juli.perumahan_baru as rapel_juli_perumahan_baru ,
+	rapel_detail_juli.perumahan_lama as rapel_juli_perumahan_lama ,
+	rapel_detail_juli.perumahan as rapel_juli_perumahan ,
+	rapel_detail_juli.peralihan_baru as rapel_juli_peralihan_baru ,
+	rapel_detail_juli.peralihan_lama as rapel_juli_peralihan_lama ,
+	rapel_detail_juli.peralihan as rapel_juli_peralihan ,
+	payroll.tahun ,
+	CASE WHEN golongan.golongan_name is null THEN '-' else golongan.golongan_name end as golongan_name,
+	payroll.point as point_golongan,
+	CASE WHEN golongan_lama.golongan_name is null THEN '-' else golongan_lama.golongan_name end as golongan_lama,
+	rapel_detail.point_lama as point_golongan_lama,
+	position.position_name
+from
+	it_hris_payroll_rapel rapel
+	left join it_hris_payroll payroll on payroll.payroll_id = rapel.payroll_id
+	left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
+	left join im_hris_golongan golongan on golongan.golongan_id = pegawai.golongan_id
+	left join it_hris_pegawai_position posisi on posisi.nip = payroll.nip
+	left join im_position position on position.position_id = posisi.position_id
+	left join it_hris_payroll_rapel_pendidikan pendidikan on pendidikan.payroll_rapel_id = rapel.rapel_id and pendidikan.flag = 'Y'
+	left join it_hris_payroll_pendidikan pendidikan_lama on pendidikan_lama.pendidikan_id = pendidikan.payroll_pendidikan_id
+	left join it_hris_payroll_rapel_thr thr on thr.payroll_rapel_id = rapel.rapel_id
+	left join it_hris_payroll_thr thr_lama on thr_lama.thr_id = thr.payroll_thr_id
+	left join (select
+			payroll.payroll_id,
+			payroll.nip,
+			payroll.nama,
+			payroll.golongan_name,
+			payroll.status_keluarga,
+			payroll.jumlah_anak,
+			pegawai.point,
+			rapel.rapel_id,
+			sum(rapelLembur.jam_lembur) as jam_lembur,
+			sum(rapelLembur.biaya_lembur_lama) as biaya_lembur_lama,
+			rapelLembur.gaji_golongan_baru,
+			rapelLembur.tunjangan_umk_baru,
+			rapelLembur.tunjangan_peralihan_baru,
+			rapelLembur.faktor_pengali,
+			sum(rapelLembur.biaya_lembur_baru) as biaya_lembur_baru,
+			sum(rapelLembur.selisih_biaya_lembur_baru) as selisih_biaya_lembur_baru
+		from
+			it_hris_payroll payroll
+			left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
+			left join it_hris_payroll_rapel rapel on rapel.payroll_id = payroll.payroll_id
+			left join it_hris_payroll_rapel_lembur rapelLembur on rapelLembur.rapel_id = rapel.rapel_id
+		where
+			payroll.flag_rapel = 'Y'
+		group by
+			payroll.payroll_id,
+			payroll.nip,
+			payroll.nama,
+			payroll.golongan_name,
+			payroll.status_keluarga,
+			payroll.jumlah_anak,
+			pegawai.point,
+			rapel.rapel_id,
+			rapelLembur.gaji_golongan_baru,
+			rapelLembur.tunjangan_umk_baru,
+			rapelLembur.tunjangan_peralihan_baru,
+			rapelLembur.faktor_pengali) lembur on lembur.nip = pegawai.nip
+	left join it_hris_payroll_rapel_insentif insentif on insentif.payroll_rapel_id = rapel.rapel_id
+	left join it_hris_payroll_insentif insentif_lama on insentif_lama.insentif_id = insentif.payroll_insentif_id
+	left join it_hris_payroll_rapel_detail rapel_detail on rapel_detail.rapel_id = rapel.rapel_id and rapel_detail.bulan IN ('05')
+	left join im_hris_golongan golongan_lama on golongan_lama.golongan_id = rapel_detail.golongan_id_lama
+	left join it_hris_payroll_rapel_detail rapel_detail_juli on rapel_detail_juli.rapel_id = rapel.rapel_id and rapel_detail_juli.bulan IN ('07')
+	left join (
+		select
+			rapel_id,
+			count (rapel_id) as jumlah_bulan
+		from
+			it_hris_payroll_rapel_detail
+		where
+			bulan != '06'
+		group by
+			rapel_id
+		) as data_detail on data_detail.rapel_id = rapel.rapel_id
+where
+	payroll.branch_id = $P{reportParams.branchId}]]>
+	</queryString>
+	<field name="nip" class="java.lang.String"/>
+	<field name="nama_pegawai" class="java.lang.String"/>
+	<field name="jumlah_bulan" class="java.lang.Long"/>
+	<field name="total_rapel_insentif" class="java.math.BigDecimal"/>
+	<field name="total_rapel_thr" class="java.math.BigDecimal"/>
+	<field name="total_rapel_pendidikan" class="java.math.BigDecimal"/>
+	<field name="total_rapel_bulan" class="java.math.BigDecimal"/>
+	<field name="total_rapel_lembur" class="java.math.BigDecimal"/>
+	<field name="pph_rapel" class="java.math.BigDecimal"/>
+	<field name="pph_gaji" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pph" class="java.math.BigDecimal"/>
+	<field name="total_rapel_final" class="java.math.BigDecimal"/>
+	<field name="rapel_bersih" class="java.math.BigDecimal"/>
+	<field name="rapel_id" class="java.lang.String"/>
+	<field name="payroll_id" class="java.lang.String"/>
+	<field name="bulan_gaji_golongan_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_struktural_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_jabatan_struktural_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_air_listrik_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_umk_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_perumahan_lama" class="java.math.BigDecimal"/>
+	<field name="bulan_gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_jabatan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_air_listrik_baru" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_umk_baru" class="java.math.BigDecimal"/>
+	<field name="bulan_tunjangan_perumahan_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_umk_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_jabatan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_strategis_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_air_listrik_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="pendidikan_tunjangan_kompensasi" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_kompensasi" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_gaji_dasar" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_air_listrik" class="java.math.BigDecimal"/>
+	<field name="pendidikan_selisih_tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_air_listrik" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_gaji_golongan" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_kompensasi" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="pendidikan_lama_bulan_aktif" class="java.lang.Integer"/>
+	<field name="thr_gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="thr_tunjangan_umk_baru" class="java.math.BigDecimal"/>
+	<field name="thr_tunjangan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="thr_tunjangan_strategis_baru" class="java.math.BigDecimal"/>
+	<field name="thr_tunjangan_jabatan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="thr_tunjangan_peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="thr_lama_tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="thr_lama_tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="thr_lama_tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="thr_lama_tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="thr_lama_gaji_golongan" class="java.math.BigDecimal"/>
+	<field name="thr_lama_tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="thr_lama_bulan_aktif" class="java.lang.Integer"/>
+	<field name="thr_selisih_gaji_golongan" class="java.math.BigDecimal"/>
+	<field name="thr_selisih_tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="thr_selisih_tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="thr_selisih_tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="thr_selisih_tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="thr_selisih_tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="lembur_jam_lembur" class="java.math.BigDecimal"/>
+	<field name="lembur_biaya_lembur_lama" class="java.math.BigDecimal"/>
+	<field name="lembur_gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="lembur_tunjangan_peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="lembur_tunjangan_umk_baru" class="java.math.BigDecimal"/>
+	<field name="lembur_faktor_pengali" class="java.math.BigDecimal"/>
+	<field name="lembur_biaya_lembur_baru" class="java.math.BigDecimal"/>
+	<field name="lembur_selisih_biaya_lembur_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_tunjangan_umk_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_tunjangan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_tunjangan_peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_tunjangan_strategis_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_tunjangan_jabatan_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_bruto_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_potongan_insentif" class="java.math.BigDecimal"/>
+	<field name="insentif_potongan_insentif_individu_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_masa_kerja" class="java.lang.Integer"/>
+	<field name="insentif_smk_standart" class="java.math.BigDecimal"/>
+	<field name="insentif_jumlah_insentif_baru" class="java.math.BigDecimal"/>
+	<field name="insentif_jumlah_insentif_lama" class="java.math.BigDecimal"/>
+	<field name="insentif_total_rapel_insentif" class="java.math.BigDecimal"/>
+	<field name="insentif_insentif_yang_diterima" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_jumlah_insentif" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_jumlah_pph" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_gaji_golongan" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_tunjangan_jab_struktrual" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_jumlah_bruto" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_masa_kerja" class="java.lang.Integer"/>
+	<field name="insentif_lama_potongan_insentif" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_potongan_insentif_individu" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_potongan_smk_standart" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_potongan_smk_angka" class="java.math.BigDecimal"/>
+	<field name="insentif_lama_insentif_yang_diterima" class="java.math.BigDecimal"/>
+	<field name="rapel_detail_id" class="java.lang.String"/>
+	<field name="gaji_golongan_baru" class="java.math.BigDecimal"/>
+	<field name="gaji_golongan_lama" class="java.math.BigDecimal"/>
+	<field name="gaji_golongan" class="java.math.BigDecimal"/>
+	<field name="umk_baru" class="java.math.BigDecimal"/>
+	<field name="umk_lama" class="java.math.BigDecimal"/>
+	<field name="umk" class="java.math.BigDecimal"/>
+	<field name="struktural_baru" class="java.math.BigDecimal"/>
+	<field name="struktural_lama" class="java.math.BigDecimal"/>
+	<field name="struktural" class="java.math.BigDecimal"/>
+	<field name="jab_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="jab_struktural_lama" class="java.math.BigDecimal"/>
+	<field name="jab_struktural" class="java.math.BigDecimal"/>
+	<field name="strategis_baru" class="java.math.BigDecimal"/>
+	<field name="strategis_lama" class="java.math.BigDecimal"/>
+	<field name="strategis" class="java.math.BigDecimal"/>
+	<field name="air_listrik_baru" class="java.math.BigDecimal"/>
+	<field name="air_listrik_lama" class="java.math.BigDecimal"/>
+	<field name="air_listrik" class="java.math.BigDecimal"/>
+	<field name="perumahan_baru" class="java.math.BigDecimal"/>
+	<field name="perumahan_lama" class="java.math.BigDecimal"/>
+	<field name="perumahan" class="java.math.BigDecimal"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="golongan_id" class="java.lang.String"/>
+	<field name="point_lebih" class="java.lang.String"/>
+	<field name="point" class="java.lang.String"/>
+	<field name="golongan_id_lama" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="point_lama" class="java.lang.String"/>
+	<field name="point_lebih_lama" class="java.lang.String"/>
+	<field name="bulan" class="java.lang.String"/>
+	<field name="tahun" class="java.lang.String"/>
+	<field name="peralihan_lama" class="java.math.BigDecimal"/>
+	<field name="peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="peralihan" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_gadas_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_gadas_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_gadas" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_umk_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_umk_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_umk" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_struktural_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_struktural" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_jab_struktural_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_jab_struktural_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_jab_struktural" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_strategis_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_strategis_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_strategis" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_air_listrik_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_air_listrik_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_air_listrik" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_perumahan_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_perumahan_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_perumahan" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_peralihan_baru" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_peralihan_lama" class="java.math.BigDecimal"/>
+	<field name="rapel_juli_peralihan" class="java.math.BigDecimal"/>
+	<field name="golongan_name" class="java.lang.String"/>
+	<field name="point_golongan" class="java.lang.Integer"/>
+	<field name="golongan_lama" class="java.lang.String"/>
+	<field name="point_golongan_lama" class="java.lang.String"/>
+	<field name="position_name" class="java.lang.String"/>
+	<variable name="jumlahRapel" class="java.math.BigDecimal" incrementType="Column">
+		<variableExpression><![CDATA[$F{bulan_gaji_golongan_lama} + $F{bulan_tunjangan_struktural_lama}]]></variableExpression>
+	</variable>
+	<pageHeader>
+		<band height="54" splitType="Stretch">
+			<image>
+				<reportElement x="728" y="-13" width="74" height="66" uuid="958551bc-6bde-4f2a-b889-1303c2674a7a"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"Payroll id " + $P{reportParams.payrollId},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="315" y="3" width="167" height="32" uuid="af235657-a7ad-497b-abbf-efdd95f60a8e"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Slip Gaji Rapel]]></text>
+			</staticText>
+			<image>
+				<reportElement x="3" y="3" width="95" height="50" uuid="ab823a6a-f6e9-44cc-a606-5e9db2f2b4f9"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="498" splitType="Stretch">
+			<staticText>
+				<reportElement x="96" y="40" width="4" height="11" uuid="c7bb8ae9-7554-4b91-8938-21c223915981"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="29" width="90" height="11" uuid="b8f108d4-6ee8-481d-ad45-c7849539c35b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="18" width="202" height="11" uuid="24809728-16ea-47ed-9710-e539a7694ed0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_pegawai}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="96" y="7" width="4" height="11" uuid="cad7abe7-e2a2-44d7-ae39-780472b30fba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="40" width="90" height="11" uuid="d7103adf-5ef2-4e5e-bcff-51e268e5471e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Golongan Lama]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="29" width="205" height="11" uuid="dddfc2d1-a26f-4aa0-8f55-d39616c8979e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="7" width="90" height="11" uuid="66cbdaeb-8286-4b49-9adf-d19078cb86cb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nip]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="7" width="202" height="11" uuid="b3d07473-56f4-4810-97c7-e8e7e920def7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nip}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="96" y="29" width="4" height="11" uuid="410315be-b934-4612-b3f0-1e098f62b89d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="51" width="66" height="11" uuid="aaee71b5-70e8-4949-b053-d21a6b72c3d7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{golongan_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="18" width="90" height="11" uuid="2303f613-c544-4181-8e26-8c33212cb1c3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="18" width="4" height="11" uuid="ec552461-5b49-4592-8669-36188f3f760d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="51" width="90" height="11" uuid="27ab0cdd-7d7d-4e19-9d05-dd4579655035"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Golongan Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="51" width="4" height="11" uuid="441b2be6-7fb8-4395-979d-e1792631d972"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="167" y="439" width="47" height="22" backcolor="#CCCCCC" uuid="437c3cb7-7f6d-4781-9798-e55f65fe5d14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="263" y="439" width="46" height="22" backcolor="#CCCCCC" uuid="7079283c-16ee-4792-881e-1a8c0a8ac4aa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="116" y="439" width="51" height="22" backcolor="#CCCCCC" uuid="f96fc8d4-2a5f-4052-8550-267594753ba1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="439" width="47" height="22" backcolor="#CCCCCC" uuid="9cf740c2-e95e-4947-8aa1-4a9792eb2207"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="439" width="50" height="22" backcolor="#CCCCCC" uuid="3ff5f551-9734-4fc9-b63d-7f416ec0f4d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jab. Struktural ]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="310" y="415" width="49" height="11" uuid="46faff6b-bec6-43f1-add9-59cd22278dca"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="359" y="415" width="45" height="11" uuid="4206a860-2401-4b23-ac63-4f528d980b4e"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_air_listrik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="264" y="415" width="46" height="11" uuid="d5a0323b-5bd2-4880-a6fd-004f9ef6656d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="415" width="50" height="11" uuid="f12f0150-4cc8-4c32-beb1-58437e0555c7"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_jabatan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="415" width="47" height="11" uuid="a3e4882e-195a-4bb3-9462-9d6cce89ffa6"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="415" width="51" height="11" uuid="f8014c0a-3e05-4c22-925c-24a740b002f6"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="415" width="47" height="11" uuid="db726a7b-c667-42bf-817d-6146b4cba7f2"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_gaji_dasar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="393" width="47" height="11" uuid="9a6a8c4e-f098-43c3-9f55-ac746cd8359a"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_gaji_golongan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="393" width="51" height="11" uuid="2d929650-a1a2-4e14-865d-cbf3e9ed31b0"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="393" width="47" height="11" uuid="1f99729e-7199-4c51-97fd-df46463f2d56"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="393" width="50" height="11" uuid="8930c9f6-f697-4398-9fb3-b57e00c89f91"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_jabatan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="264" y="393" width="46" height="11" uuid="56879c93-6dd9-4680-873d-d4787633b86d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_strategis_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="359" y="393" width="45" height="11" uuid="0aa2b36d-5843-42ef-b8e5-fb2b4dadf788"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_air_listrik_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="310" y="393" width="49" height="11" uuid="cb2f1136-ab73-4bc9-adec-1322b3dd8b8c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="404" width="47" height="11" uuid="83c180d4-d035-4a30-8b73-8c101df1e251"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_gaji_golongan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="404" width="51" height="11" uuid="fe6b5967-72a9-4d54-b0bd-36bfef880b2b"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="404" width="47" height="11" uuid="cb47ad6e-974f-432e-aef0-47194decbd13"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="404" width="50" height="11" uuid="73399810-64f2-4306-8d55-47fb02e79bf9"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_jabatan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="264" y="404" width="46" height="11" uuid="73da02ef-0c5e-435d-b387-d04057595d3d"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="359" y="404" width="45" height="11" uuid="820a5bb1-3e59-4187-b606-ee4ebb0428fd"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_air_listrik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="310" y="404" width="49" height="11" uuid="1fe4bf95-72b1-4ce6-97bd-fd4857cd4465"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="309" y="439" width="49" height="22" backcolor="#CCCCCC" uuid="1ffe2740-445e-467c-b7ab-ba20b56d7621"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="461" width="47" height="11" uuid="74efa01a-24f6-4325-b8be-276eb39c7e6f"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_gaji_golongan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="461" width="51" height="11" uuid="1e4cd138-01ce-41fd-803e-bed270232a6d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_tunjangan_umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="461" width="47" height="11" uuid="db16bbf9-d65b-45ac-aeb0-ccbe879e5550"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_tunjangan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="461" width="50" height="11" uuid="0405698a-88dd-417a-8f11-f1f4203eda48"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_tunjangan_jabatan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="263" y="461" width="46" height="11" uuid="3a606f7f-7999-42c7-bf1e-6b8ae069f213"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_tunjangan_strategis_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="309" y="461" width="49" height="11" uuid="21f47d6c-0155-4569-b5a7-98f87ded9e91"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_tunjangan_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="472" width="47" height="11" uuid="eaeb857d-1b17-4019-9340-de4d3ca6798b"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_gaji_golongan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="472" width="51" height="11" uuid="9f9a1f77-56eb-48a7-8fad-13b8572ef8a6"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="472" width="47" height="11" uuid="3fcce754-776a-4ecc-ae3b-f73a20160e16"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="472" width="50" height="11" uuid="1a8c7861-f266-4b92-ac3c-a6b4ede29d2a"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_tunjangan_jabatan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="263" y="472" width="46" height="11" uuid="c8f8d9c1-392c-4477-b95a-47ce2a0a605f"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="309" y="472" width="49" height="11" uuid="d8615099-c225-4e67-8c2d-fa34518fbd94"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="483" width="47" height="11" uuid="c2cede91-4401-4368-bda3-5500fa7e2b23"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_gaji_golongan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="483" width="51" height="11" uuid="a5096f5b-1306-4334-99a1-07b88faba68e"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="483" width="47" height="11" uuid="b8497042-f14e-4140-8cbd-03e5e9d179a6"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="483" width="50" height="11" uuid="8ec6f6e8-6f69-45be-b531-4220a057528b"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_tunjangan_jabatan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="263" y="483" width="46" height="11" uuid="5ef6a312-d1e4-483e-9c59-672cb5576d33"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="309" y="483" width="49" height="11" uuid="2b4423db-0b8d-4265-934c-8cc5945827b4"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="342" width="46" height="11" uuid="1355f3af-d438-4ec0-91aa-12ab1fdf8b83"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_jam_lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="306" y="342" width="62" height="11" uuid="e8724419-8d70-4b1d-bd7d-03d6ae535890"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_biaya_lembur_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="342" width="47" height="11" uuid="886a7ce7-67d9-41ca-87e6-4996f23012b0"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_gaji_golongan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="342" width="47" height="11" uuid="2f4c8819-15a8-42a5-8693-21357704c6cf"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_tunjangan_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="260" y="342" width="46" height="11" uuid="8c147877-01c9-4bd1-ad47-119babb58a7c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_faktor_pengali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="342" width="51" height="11" uuid="76ce460c-f6e0-432f-a4a5-c332d542ca05"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_tunjangan_umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="119" width="47" height="11" uuid="5f182d0f-cf0a-4008-bf6f-7c166f4e2ce1"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_gaji_golongan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="115" y="119" width="51" height="11" uuid="1475a83c-42b0-462c-acfd-1ebc5a15cfc4"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_tunjangan_umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="209" y="119" width="46" height="11" uuid="c02a649a-b751-460e-8bac-4ec9e8f95708"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_tunjangan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="255" y="119" width="46" height="11" uuid="d064df93-372e-4e20-97f2-8999cbf73fef"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_tunjangan_jabatan_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="166" y="119" width="43" height="11" uuid="c823d36d-d236-433c-a289-e88f4ce3cf79"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_tunjangan_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="301" y="119" width="49" height="11" uuid="8ac8c943-0fa0-4050-a39c-4586536e503c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_tunjangan_strategis_baru}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="116" y="371" width="51" height="22" backcolor="#CCCCCC" uuid="d7e760b8-d36e-487c-b41c-328cd8dd38c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="371" width="49" height="22" backcolor="#CCCCCC" uuid="d830e7d4-4789-41f4-8c9f-e0b8a6a80868"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="264" y="371" width="46" height="22" backcolor="#CCCCCC" uuid="4cde7cc2-dab0-4dfc-be7c-5fb16ef69e28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="371" width="50" height="22" backcolor="#CCCCCC" uuid="86da2b3d-8a1f-4326-af6c-9d665d251e58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jab. Struktural ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="371" width="47" height="22" backcolor="#CCCCCC" uuid="b56293d1-2673-46f6-980f-01beb8fa644f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="167" y="371" width="47" height="22" backcolor="#CCCCCC" uuid="bd236bc5-0edf-47af-a0e0-798076088041"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="359" y="371" width="45" height="22" backcolor="#CCCCCC" uuid="2ed6affc-58a8-4f4d-a706-45ff1f001f91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Air Listrik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="320" width="47" height="22" backcolor="#CCCCCC" uuid="30f40bb6-d87e-46cc-b296-8019669c6690"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="167" y="320" width="47" height="22" backcolor="#CCCCCC" uuid="d8b0e181-d0c9-4a99-94be-6f2c0e411abf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="116" y="320" width="51" height="22" backcolor="#CCCCCC" uuid="eee4ae41-7ceb-48f2-a0b1-9ea383572cf1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="320" width="46" height="22" backcolor="#CCCCCC" uuid="9e429b48-61f2-41b4-a4c6-2720a17c1d7f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jam Lembur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="260" y="320" width="46" height="22" backcolor="#CCCCCC" uuid="b15540e6-824f-4b26-9e1c-ba4c51f57e2b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Faktor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="306" y="320" width="62" height="22" backcolor="#CCCCCC" uuid="4bfb0703-7935-47b4-81e4-0e66d41ac556"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Biaya Lembur Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="97" width="46" height="22" backcolor="#CCCCCC" uuid="6d001fda-3206-4fb5-b19b-6b9a8b79fb97"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="166" y="97" width="43" height="22" backcolor="#CCCCCC" uuid="dc8217b7-0947-4c08-bd2d-490bf955efbe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="115" y="97" width="51" height="22" backcolor="#CCCCCC" uuid="556e5f48-8e45-48de-b2de-e281081c7167"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="301" y="97" width="49" height="22" backcolor="#CCCCCC" uuid="6312b845-fe51-4ead-9386-9c86e9d457fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="209" y="97" width="46" height="22" backcolor="#CCCCCC" uuid="48600bae-d94a-4ba6-897c-639a767cfce5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="255" y="97" width="46" height="22" backcolor="#CCCCCC" uuid="bbb5f716-c999-494e-94db-0f0ec6303239"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jab. Struktural ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="202" width="58" height="11" uuid="c627ac56-6da9-4fbc-8d5f-69b351c769ed"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="169" width="58" height="22" backcolor="#CCCCCC" uuid="dbba562e-6cce-41c0-a883-f8b9a5864bc9"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Bulan Jan - Jun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="191" width="58" height="11" uuid="9f53bf15-5bb5-459f-800c-24076e5a6271"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="213" width="58" height="11" uuid="70a63f9c-291b-4f37-816b-4d5aff212e57"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="115" y="169" width="51" height="22" backcolor="#CCCCCC" uuid="75d20dde-d500-4683-ad95-e95c2d5f14e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="315" y="169" width="49" height="22" backcolor="#CCCCCC" uuid="63d34c1b-275b-40bf-9983-62424b3f3f13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="269" y="169" width="46" height="22" backcolor="#CCCCCC" uuid="fbac8a05-019a-4cc2-99f2-2f5aa9e91362"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="169" width="56" height="22" backcolor="#CCCCCC" uuid="6b56c82c-19b2-407e-846e-b37603d5a9be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jab. Struktural ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="169" width="47" height="22" backcolor="#CCCCCC" uuid="cf25538c-5d4d-46e3-9770-b6c8d700af80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="166" y="169" width="49" height="22" backcolor="#CCCCCC" uuid="ed995c74-4d7e-455f-b73f-b671b3e6e877"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="364" y="169" width="45" height="22" backcolor="#CCCCCC" uuid="65931112-4f74-4f8a-8cea-bd47c8ead752"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Air Listrik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="409" y="169" width="52" height="22" backcolor="#CCCCCC" uuid="894bc406-8c55-4f6e-8798-2cc5a5bcc4ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Perumahan]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="202" width="47" height="11" uuid="52db18fc-b874-461f-8123-7a92b4308fe5"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="213" width="47" height="11" uuid="fa27f8f7-2b76-4158-80f4-c12ff455d850"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="191" width="47" height="11" uuid="9e38d3a7-4285-463c-be70-cb6c112f77b2"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="115" y="191" width="51" height="11" uuid="9749088a-4448-49d9-be66-4495b3ceb3ad"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="115" y="202" width="51" height="11" uuid="2204074b-38b9-4a6e-936e-4b3dec3f3546"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{umk_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="115" y="213" width="51" height="11" uuid="99790fba-40f7-4729-8fdc-b7088f91d7f5"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="166" y="191" width="49" height="11" uuid="2f7626bc-0ce4-449c-bfbb-e643053dfa8a"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="166" y="202" width="49" height="11" uuid="5536b5b2-4a45-4e08-9578-03353009ac40"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{struktural_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="166" y="213" width="49" height="11" uuid="251af1c6-67b7-4179-a7b3-0f9833a344ee"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="191" width="56" height="11" uuid="6c1b9932-8e64-4316-8de0-d1a626ed54f8"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jab_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="202" width="56" height="11" uuid="4ecd589b-4ed4-4e5a-a4f4-c802aa4102c5"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jab_struktural_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="213" width="56" height="11" uuid="78ee2289-9fb8-42c7-8722-1b1b1852986f"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jab_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="269" y="191" width="46" height="11" uuid="9af9e15c-f839-45fe-b14f-3f28c38697c4"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{strategis_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="269" y="202" width="46" height="11" uuid="e859a2d7-96a4-4c66-9e3a-0fab13f24449"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{strategis_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="269" y="213" width="46" height="11" uuid="728c395d-2826-4071-91d7-4d1d5bd132fc"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="364" y="191" width="45" height="11" uuid="51274f19-62b9-4805-a337-9ef8a7370165"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{air_listrik_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="364" y="202" width="45" height="11" uuid="625dae7e-e237-4f0f-8e32-555b64ac18fe"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{air_listrik_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="364" y="213" width="45" height="11" uuid="c733bb52-1378-4d1d-bc77-64c2bfefa01a"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{air_listrik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="409" y="191" width="52" height="11" uuid="6199f169-a569-4ab1-b724-2bf24e034d8e"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perumahan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="409" y="202" width="52" height="11" uuid="c1ffc29d-8c6a-479c-be96-a92b1ec1e7e6"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perumahan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="409" y="213" width="52" height="11" uuid="6502a581-b9c9-4d1b-aeef-117064898977"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="315" y="202" width="49" height="11" uuid="7f20b123-29b9-4390-a834-62906dab4b9f"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peralihan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="315" y="191" width="49" height="11" uuid="e70da2b6-2b7b-482f-a0f2-8565794553ac"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="315" y="213" width="49" height="11" uuid="335477c5-40b3-4463-880e-573464e178fa"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="130" width="47" height="11" uuid="95f4b0be-0aa0-4c39-b0f2-f18a414c43c1"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_gaji_golongan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="115" y="130" width="51" height="11" uuid="cea1e53f-7282-4bbb-a097-ea0d5a447b57"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="209" y="130" width="46" height="11" uuid="0f9606e3-8a3c-450e-9579-f32d01962f10"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="255" y="130" width="46" height="11" uuid="6d70a313-be1f-4213-a2f8-293e915d39c4"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_tunjangan_jab_struktrual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="166" y="130" width="43" height="11" uuid="3406c2c5-4046-4d8d-94c9-da3b06c4bd97"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="301" y="130" width="49" height="11" uuid="06f5f167-bd4a-4167-8933-9f7d1334d378"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="167" y="245" width="48" height="22" backcolor="#CCCCCC" uuid="f4dd3f65-f62a-462a-bca5-7a8b2667fdb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="245" width="47" height="22" backcolor="#CCCCCC" uuid="602c66bc-8a33-4f6d-974e-5940bfd0b025"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Gaji Golongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="116" y="245" width="51" height="22" backcolor="#CCCCCC" uuid="1b6b611c-4771-4a7f-9bc8-3a7d65042cb7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umk ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="260" y="245" width="46" height="22" backcolor="#CCCCCC" uuid="e4acfb2f-c783-47ec-a74a-2d29e38f475c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="214" y="245" width="46" height="22" backcolor="#CCCCCC" uuid="a0d98aa5-ffa0-4dbe-b315-1d7387687f24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jab. Struktural ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="355" y="245" width="45" height="22" backcolor="#CCCCCC" uuid="f61a93a0-1cbd-45be-b992-5d703b124c10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Air Listrik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="245" width="52" height="22" backcolor="#CCCCCC" uuid="2c0b59ef-b291-4821-b6c0-c92393d062bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Perumahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="306" y="245" width="49" height="22" backcolor="#CCCCCC" uuid="5aaddd9c-f72b-4ba6-b7dd-54eb36571a80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Peralihan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="2" width="799" height="1" uuid="28f0a953-3d87-4103-b05b-e971d76c4ff0"/>
+			</line>
+			<staticText>
+				<reportElement x="11" y="267" width="58" height="11" uuid="8a38b7da-d5ac-498b-9b66-c61ba94677e5"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="245" width="58" height="22" backcolor="#CCCCCC" uuid="4b0ed55e-76d8-4e42-9a55-a8f89963f49e"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Juli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="289" width="58" height="11" uuid="f58b8bb9-ada4-48f3-8b2b-3bc426b58dad"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="278" width="58" height="11" uuid="7e42524d-fa12-458e-8864-e2dcec52b6c5"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="439" width="58" height="22" backcolor="#CCCCCC" uuid="e0c99bad-6e12-43bb-b357-d27c68132a68"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel THR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="461" width="58" height="11" uuid="c2c25134-00da-41c0-9222-75eac1388e52"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="472" width="58" height="11" uuid="95793f96-096d-4777-baea-fed7e1c79f3a"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="483" width="58" height="11" uuid="63ec8423-8bfe-4ef2-bca4-27f4185e822c"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="415" width="58" height="11" uuid="f27d6025-a772-4748-b4eb-63857c0477d1"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="393" width="58" height="11" uuid="e9bcd38f-a6b7-41ff-829b-5deba0baa4ec"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="404" width="58" height="11" uuid="6b65bc8a-7c3d-437d-b64b-1c8a3c5f19be"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="371" width="58" height="22" backcolor="#CCCCCC" uuid="f584803a-e431-4a82-94e1-29c37f07d8da"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Pendidikan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="91" width="799" height="1" uuid="4d5ecf83-8088-43a0-b785-9a9ed80b3ee1"/>
+			</line>
+			<staticText>
+				<reportElement x="11" y="342" width="58" height="11" uuid="5c304269-b59e-45a1-8c99-325493f90b58"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="320" width="58" height="22" backcolor="#CCCCCC" uuid="34e63409-0b99-4dc7-8cc6-0263207681c2"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Lembur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="141" width="58" height="11" uuid="6ba76582-9aa6-440b-b2eb-3953659da833"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Selisih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="130" width="58" height="11" uuid="3a873b7e-7254-4f94-802a-d2688e33db18"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="97" width="58" height="22" backcolor="#CCCCCC" uuid="4c6d18df-6385-4137-894f-beab181063d6"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Insentif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="119" width="58" height="11" uuid="e2d401c0-9dae-4fc2-9edc-6ebbd0eee6f7"/>
+				<box>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Baru]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="461" y="169" width="52" height="22" backcolor="#CCCCCC" uuid="c81e8022-587a-4a7c-b88c-f5835aa34858"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="461" y="191" width="52" height="11" uuid="07989fe2-b5fe-452a-a76a-400584694fa3"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan_baru} + $F{umk_baru} + $F{struktural_baru} + $F{jab_struktural_baru} + $F{strategis_baru} + $F{peralihan_baru} + $F{air_listrik_baru} + +  $F{perumahan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="461" y="202" width="52" height="11" uuid="08cb5b38-56fe-4d04-b6a0-5bf4f9ccbcae"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan_lama} + $F{umk_lama} + $F{struktural_lama} + $F{jab_struktural_lama} + $F{strategis_lama} + $F{peralihan_lama} + $F{air_listrik_lama}  +  $F{perumahan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="461" y="213" width="52" height="11" uuid="35976077-897b-4260-8cb1-49b244847905"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_golongan} + $F{umk} + $F{struktural} + $F{jab_struktural} + $F{strategis} + $F{peralihan} + $F{air_listrik}  +  $F{perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="267" width="47" height="11" uuid="a7a297de-986c-41fb-91aa-09f6ce687657"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="278" width="47" height="11" uuid="d66900a2-376f-4b8b-98c5-81e1bdff92b8"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="69" y="289" width="47" height="11" uuid="d9bdc748-d660-47e1-af41-7a66250200a1"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="267" width="51" height="11" uuid="573353b0-1332-4e60-b610-bc5ce66017f3"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_umk_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="278" width="51" height="11" uuid="d1150b09-af67-4f62-a014-0bf1dd6f1b19"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_umk_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="116" y="289" width="51" height="11" uuid="ea137786-db23-406d-94d3-6df25a101077"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="267" width="48" height="11" uuid="e65e6078-9abb-47d1-a562-4585aca10933"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="278" width="48" height="11" uuid="30f1ddb8-3f9d-4993-8f82-04d1186859a4"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_struktural_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="167" y="289" width="48" height="11" uuid="bcc033d4-f661-484b-8dce-004d3a6cef68"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="267" width="46" height="11" uuid="6b4d11af-c37d-44f0-97fb-f8bd11e5bb93"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_jab_struktural_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="278" width="46" height="11" uuid="658139c5-6a8b-4efb-b474-ac983a4af357"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_jab_struktural_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="214" y="289" width="46" height="11" uuid="035dbc74-c6bf-4571-82b6-a58b5f28aa98"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_jab_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="260" y="267" width="46" height="11" uuid="d697af1e-251f-4d18-9266-45c01a472bb0"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_strategis_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="260" y="278" width="46" height="11" uuid="c76a0804-c854-48ed-b7fc-1dba066de8d4"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_strategis_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="260" y="289" width="46" height="11" uuid="8e691074-b57f-470e-9f68-bde4d4c46673"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="306" y="267" width="49" height="11" uuid="f4a27fe2-c2b4-4db2-acd0-ac4d4c550b38"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="306" y="278" width="49" height="11" uuid="361c4f9e-73b2-413d-8df0-9b67803cae0a"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_peralihan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="306" y="289" width="49" height="11" uuid="86d419fb-8d34-41ef-b2a5-a4f0ec6f8464"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="355" y="267" width="45" height="11" uuid="0e39a12d-c6d3-4ab4-b60f-f366a814ff56"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_air_listrik_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="355" y="278" width="45" height="11" uuid="d6e9a942-db2d-4c61-8625-ec9639299c1a"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_air_listrik_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="355" y="289" width="45" height="11" uuid="c19c84ca-e52c-40fd-9a46-e2e7b81cdffc"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_air_listrik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="400" y="267" width="52" height="11" uuid="8e13c14e-3155-4c82-a3df-8112b89eaafa"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_perumahan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="400" y="278" width="52" height="11" uuid="a755a5d7-1534-4cbd-a327-7920acdf3ed0"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_perumahan_lama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="400" y="289" width="52" height="11" uuid="b8af5d11-dacc-4863-9215-0f071b5b3d06"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_perumahan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="452" y="245" width="52" height="22" backcolor="#CCCCCC" uuid="87fa0f90-55a0-47aa-86aa-5cb444370fac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="452" y="267" width="52" height="11" uuid="a58e6d02-e150-4620-8ad7-58ebec88c7f4"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas_baru} + $F{rapel_juli_umk_baru} + $F{rapel_juli_struktural_baru} +  $F{rapel_juli_jab_struktural_baru} + $F{rapel_juli_strategis_baru} + $F{rapel_juli_peralihan_baru} + $F{rapel_juli_air_listrik_baru} + $F{rapel_juli_perumahan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="452" y="278" width="52" height="11" uuid="6c00f53e-aa32-4f68-90e7-b91744ac4daf"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas_lama} + $F{rapel_juli_umk_lama} + $F{rapel_juli_struktural_lama} + $F{rapel_juli_jab_struktural_lama} + $F{rapel_juli_strategis_lama} + $F{rapel_juli_peralihan_lama} + $F{rapel_juli_air_listrik_lama} + $F{rapel_juli_perumahan_lama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="439" width="52" height="22" backcolor="#CCCCCC" uuid="5ba02c6a-59fd-4aca-8710-b89d2f7145f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="358" y="461" width="52" height="11" uuid="974c1955-888a-4107-ac49-09abe14b516c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_gaji_golongan_baru} + $F{thr_tunjangan_umk_baru} + $F{thr_tunjangan_struktural_baru} + $F{thr_tunjangan_jabatan_struktural_baru}+ $F{thr_tunjangan_strategis_baru} + $F{thr_tunjangan_peralihan_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="358" y="472" width="52" height="11" uuid="d9ed03e9-7895-4598-ad74-795a4bc11aa4"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_gaji_golongan} + $F{thr_lama_tunjangan_umk} + $F{thr_lama_tunjangan_struktural} + $F{thr_lama_tunjangan_jabatan_struktural} + $F{thr_lama_tunjangan_strategis} + $F{thr_lama_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="358" y="483" width="52" height="11" uuid="d38514d0-3281-4a4a-8f3e-870ad5367c5e"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_selisih_gaji_golongan} + $F{thr_selisih_tunjangan_umk} + $F{thr_selisih_tunjangan_struktural} + $F{thr_selisih_tunjangan_jabatan_struktural} + $F{thr_selisih_tunjangan_strategis} + $F{thr_selisih_tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="456" y="393" width="52" height="11" uuid="c6677942-1c18-41df-baf2-9d5c99ef9618"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_gaji_golongan_baru} + $F{pendidikan_tunjangan_umk_baru} + $F{pendidikan_tunjangan_struktural_baru} + $F{pendidikan_tunjangan_jabatan_struktural_baru} + $F{pendidikan_tunjangan_strategis_baru}  + $F{pendidikan_tunjangan_peralihan_baru} + $F{pendidikan_tunjangan_air_listrik_baru} + $F{pendidikan_tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="456" y="404" width="52" height="11" uuid="90ad8715-51e5-4aa3-a754-f037e13be351"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_gaji_golongan} + $F{pendidikan_lama_tunjangan_umk} + $F{pendidikan_lama_tunjangan_struktural} + $F{pendidikan_lama_tunjangan_jabatan_struktural} + $F{pendidikan_lama_tunjangan_strategis} + $F{pendidikan_lama_tunjangan_peralihan} +  $F{pendidikan_lama_tunjangan_air_listrik} + $F{pendidikan_lama_tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="456" y="371" width="52" height="22" backcolor="#CCCCCC" uuid="067d9bf0-ae37-43be-93a5-61528a2ff9da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="456" y="415" width="52" height="11" uuid="1e2409d2-b538-4127-b1f3-232b85ec79ea"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_gaji_dasar} + $F{pendidikan_selisih_tunjangan_umk} + $F{pendidikan_selisih_tunjangan_struktural} +  $F{pendidikan_selisih_tunjangan_jabatan_struktural}+ $F{pendidikan_selisih_tunjangan_strategis} +  $F{pendidikan_selisih_tunjangan_peralihan} +  $F{pendidikan_selisih_tunjangan_air_listrik}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="368" y="320" width="62" height="22" backcolor="#CCCCCC" uuid="69b6b7ed-f145-4973-b0c6-50ac52330aef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Biaya Lembur Lama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="430" y="320" width="47" height="22" backcolor="#CCCCCC" uuid="ae409286-9ba6-4f98-8644-c228830eb0f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Lembur]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="368" y="342" width="62" height="11" uuid="957abf75-1d14-4467-99de-6a11be771986"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lembur_biaya_lembur_lama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="97" width="49" height="22" backcolor="#CCCCCC" uuid="d1234739-8423-4769-9b10-2bbc505ebea7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bruto]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="350" y="119" width="49" height="11" uuid="0c309598-4361-41d6-b7d2-19dff46dab77"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_bruto_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="350" y="130" width="49" height="11" uuid="a2959bbb-d54d-4e70-b658-958902a8506c"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_jumlah_bruto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="399" y="97" width="48" height="22" backcolor="#CCCCCC" uuid="6646e5c4-1b49-4a22-9af7-3da0e1f225d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Masa Kerja (Bulan)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="130" width="48" height="11" uuid="7cb914ed-81bc-4a84-9daa-14bbb5e8573b"/>
+				<box rightPadding="0">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_masa_kerja}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="119" width="48" height="11" uuid="6eeb9e33-d022-4dc5-bc11-08dd8803db3a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_masa_kerja}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="447" y="97" width="29" height="22" backcolor="#CCCCCC" uuid="aacddfa8-64f9-4f5a-b65d-7e01dc35df2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pot Insentif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="476" y="97" width="35" height="22" backcolor="#CCCCCC" uuid="05a8d52a-8f6b-425c-8079-10a66d475043"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SMK Standart]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="511" y="97" width="35" height="22" backcolor="#CCCCCC" uuid="fc189902-c69f-4c34-9ee4-92b168af6473"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SMK Angka]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="546" y="97" width="57" height="22" backcolor="#CCCCCC" uuid="cce7af81-576f-463c-b7f1-18153728489c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pot. Insentif individu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="603" y="97" width="54" height="22" backcolor="#CCCCCC" uuid="8dbeed1f-a5b6-478a-9192-53c2cac12185"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Insentif Diterima]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="447" y="130" width="29" height="11" uuid="741cb3ab-2b4e-4274-bbd1-943f7c2f8317"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_potongan_insentif}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="447" y="119" width="29" height="11" uuid="6cc0b9fb-d933-431a-bdc9-7fbcff8c5fff"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_potongan_insentif}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="476" y="119" width="35" height="11" uuid="880c40ff-0eb4-408f-8b76-2e465f80633d"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_smk_standart}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="476" y="130" width="35" height="11" uuid="9c27cdd3-25d4-4d41-8bbb-577e2ed94b92"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_potongan_smk_standart}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="511" y="119" width="35" height="11" uuid="06ba5388-2157-4221-9ca1-75594929ba06"/>
+				<box rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_potongan_smk_angka}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="511" y="130" width="35" height="11" uuid="f303bdb9-7fbd-4183-b6c6-03694241e52f"/>
+				<box rightPadding="0">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_potongan_smk_angka}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="546" y="130" width="57" height="11" uuid="bf29dcad-fd16-4293-85a8-a67f757e77b4"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_potongan_insentif_individu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="546" y="119" width="57" height="11" uuid="fc8dc14a-50de-4b63-bffb-a09c430b1f19"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_potongan_insentif_individu_baru}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="603" y="130" width="54" height="11" uuid="6b555a8f-3849-4d0a-9fac-bbafbccfc566"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_lama_insentif_yang_diterima}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="603" y="119" width="54" height="11" uuid="36940476-f55e-4936-b1d5-f6e27834ecea"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{insentif_insentif_yang_diterima}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="141" width="534" height="11" backcolor="#CCCCCC" uuid="0b081c06-dbb8-4926-bfa8-18b9ad8e2630"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="415" width="90" height="11" uuid="ac74522a-6800-4b8b-8bbe-9fcc4ba5c0c4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Bulan (Jan - Jun)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="426" width="90" height="11" uuid="9bb9c108-4526-43dd-8ebe-4b7da30a5b27"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Bulan (Juli)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="404" width="90" height="11" uuid="498ab63e-6a82-4181-9847-1c67a0925bd4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Insentif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="437" width="90" height="11" uuid="25e6c021-f889-483e-bd65-b9df7c13cafa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Lembur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="448" width="90" height="11" uuid="16b98776-e55a-4957-859d-f45d4f5d008b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Pendidikan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="459" width="90" height="11" uuid="c02b3953-73d6-4331-a42f-b4fcdb935c52"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel THR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="404" width="4" height="11" uuid="6e5869cb-d197-45e1-abe7-ab8e70bdb18a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="415" width="4" height="11" uuid="53263d53-34d9-4090-a251-b1a5669d4a7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="426" width="4" height="11" uuid="2410da08-85ed-4deb-a5ac-445cb3ac0232"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="437" width="4" height="11" uuid="12f22f5f-2509-4cdd-80d6-bc21f39564ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="448" width="4" height="11" uuid="b6f57431-3190-4045-9bcc-e1577a18c7c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="459" width="4" height="11" uuid="3bc7d27c-7ecc-4772-b2b7-ae0df13df4ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="404" width="46" height="11" uuid="f65e9b86-3499-4064-9518-88bb86293cbf"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_insentif}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="415" width="46" height="11" uuid="5ebf1683-daac-4700-8dbd-37e344114f22"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{gaji_golongan} + $F{umk} + $F{struktural} + $F{jab_struktural} + $F{strategis} + $F{peralihan} + $F{air_listrik}  +  $F{perumahan} )*  $F{jumlah_bulan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="426" width="46" height="11" uuid="452a1c4c-8888-4e3c-a075-d6e0463e0b6c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas} + $F{rapel_juli_umk} + $F{rapel_juli_struktural} + $F{rapel_juli_jab_struktural} + $F{rapel_juli_strategis} + $F{rapel_juli_peralihan} + $F{rapel_juli_air_listrik} + $F{rapel_juli_perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="437" width="46" height="11" uuid="6b14be54-c2a1-457d-82ce-b914c1f19bff"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="459" width="46" height="11" uuid="1fb896f3-a171-4bb5-908e-f15bf5de82a2"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_thr}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="635" y="480" width="143" height="1" uuid="ae97483e-3118-4c65-bfe4-dbf33797389a"/>
+			</line>
+			<staticText>
+				<reportElement x="635" y="481" width="90" height="11" uuid="c9ff8427-125d-44b0-8c2d-7015413cc070"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bruto Rapel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="480" width="4" height="11" uuid="24f015a3-05ea-4d2b-91ff-b258c95a6ccf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="469" width="90" height="11" uuid="3649eee1-8216-4c99-814c-77d447924aa0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Pph]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="603" y="18" width="54" height="11" uuid="f19b0a73-af81-402e-bd4c-3716eb17273c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Potongan Pph]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="657" y="18" width="4" height="11" uuid="52aa49fd-49ff-473f-a7c3-abe68ef5d523"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="603" y="29" width="132" height="1" uuid="6b3a8a2d-c144-478e-b895-cd1c2870a2e9"/>
+			</line>
+			<staticText>
+				<reportElement x="603" y="32" width="54" height="11" uuid="4de5c495-3603-4fc3-9a55-8cdf240703f3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rapel Bersih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="657" y="32" width="4" height="11" uuid="260c4da6-42e9-4380-90c7-01bc930088e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="657" y="7" width="4" height="11" uuid="983cde59-ee42-471a-ad7f-4d4eb2f558b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="603" y="7" width="54" height="11" uuid="08ea0cd5-7c05-4bc1-80dd-785b488e49b1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bruto Rapel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="745" y="23" width="17" height="11" uuid="27c75c7d-f621-4d3c-af8b-79d9a95bf39a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="661" y="17" width="74" height="13" uuid="b3edc833-e8d9-488d-b8a7-48c9ad5cd3f1"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pph_rapel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="725" y="469" width="4" height="11" uuid="c018db98-46ab-45ee-b7a3-a4707097e8a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="779" y="474" width="17" height="11" uuid="51b749a3-e93b-4a0b-974d-3f4e8efafc07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[+]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="469" width="46" height="11" uuid="55dc3e13-33d9-4cdf-9fad-41febe60e668"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_pph}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="661" y="32" width="74" height="11" uuid="949bee0a-21f2-43e1-bd28-7bb9ca04503c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_bersih}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="40" width="66" height="11" uuid="f57174d1-e0df-496d-a25c-1fb7255a2be6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{golongan_lama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="165" y="51" width="15" height="11" uuid="88720cd4-62a0-4ed8-ae2e-940020a83c47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="40" width="15" height="11" uuid="6493dee8-12f8-4632-b7c7-f4b37763d0fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="40" width="23" height="11" uuid="7305f996-527d-40a5-9229-96bcc02ebf3f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{point_golongan_lama}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="51" width="23" height="12" uuid="b10655dc-a1b2-41a8-8c92-278485ec5878"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{point_golongan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="508" y="371" width="29" height="22" backcolor="#CCCCCC" uuid="afe8814c-3d2b-43b8-acd7-840f2d7b648d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bulan Aktif]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="507" y="393" width="30" height="11" uuid="585149ee-dbc3-401a-9d46-9061cf081ea2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_bulan_aktif}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="507" y="404" width="30" height="11" uuid="10a34c41-3f3c-4299-8701-36086bd4c1c2"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_bulan_aktif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="537" y="371" width="57" height="22" backcolor="#CCCCCC" uuid="622d0cb6-9170-46ed-8530-72155bdab3b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah Rapel]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="537" y="393" width="57" height="11" uuid="e5c4df95-996b-4a0c-9f31-459e3dd8b1b4"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{pendidikan_gaji_golongan_baru} + $F{pendidikan_tunjangan_umk_baru} + $F{pendidikan_tunjangan_struktural_baru} + $F{pendidikan_tunjangan_jabatan_struktural_baru} + $F{pendidikan_tunjangan_strategis_baru}  + $F{pendidikan_tunjangan_peralihan_baru} + $F{pendidikan_tunjangan_air_listrik_baru} + $F{pendidikan_tunjangan_kompensasi}) * $F{pendidikan_lama_bulan_aktif} / 12]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="537" y="404" width="57" height="11" uuid="6edf4ba9-6356-4e16-8f5f-46b3321b4d66"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{pendidikan_lama_gaji_golongan} + $F{pendidikan_lama_tunjangan_umk} + $F{pendidikan_lama_tunjangan_struktural} + $F{pendidikan_lama_tunjangan_jabatan_struktural} + $F{pendidikan_lama_tunjangan_strategis} + $F{pendidikan_lama_tunjangan_peralihan} +  $F{pendidikan_lama_tunjangan_air_listrik} + $F{pendidikan_lama_tunjangan_kompensasi}) * $F{pendidikan_lama_bulan_aktif} /12]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="448" width="46" height="11" uuid="d5760ba3-4d86-432b-84bd-41ca22f01529"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_pendidikan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="729" y="480" width="46" height="11" uuid="2e96bbbd-a6aa-48c3-be00-066c1a75bd65"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_final}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="661" y="7" width="74" height="11" uuid="22938344-5bd2-4016-9527-b64f83b0a310"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_final}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="513" y="169" width="47" height="22" backcolor="#CCCCCC" uuid="4593e9e8-dc0d-4d41-8831-6b1ac19ab7f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah Bulan]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="512" y="191" width="48" height="22" uuid="6aba8acc-2bc2-45b0-a7fc-544ae2ad00ca"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlah_bulan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="404" y="371" width="52" height="22" backcolor="#CCCCCC" uuid="c4721fef-c6f1-4a06-a79b-29a1b54dac51"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kompensasi]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="404" y="393" width="52" height="11" uuid="38c3a2c9-0fc2-482a-8baf-4041049b501c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="404" y="404" width="52" height="11" uuid="c967faf6-73dd-4fa7-8b83-25347f2bad6f"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_lama_tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="404" y="415" width="52" height="11" uuid="924dfaea-3ea4-424e-92e1-42bee9e4f47c"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendidikan_selisih_tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="410" y="439" width="29" height="22" backcolor="#CCCCCC" uuid="56dca9be-92ff-420d-b77d-8e2c5b3fbb33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bulan Aktif]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="461" width="30" height="11" uuid="7b3784e5-0b12-4f1a-91ad-9bb54f4d35c5"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_bulan_aktif}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="472" width="30" height="11" uuid="457405eb-1e7c-4679-b51b-3d5d162cf7fd"/>
+				<box>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thr_lama_bulan_aktif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="438" y="439" width="68" height="22" backcolor="#CCCCCC" uuid="95cae4ec-b117-4fe9-9d17-0163710cde2f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jumlah Rapel]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="440" y="472" width="66" height="11" uuid="84119dd2-6732-4f7e-89d9-236f0928caba"/>
+				<box rightPadding="3">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{thr_lama_gaji_golongan} + $F{thr_lama_tunjangan_umk} + $F{thr_lama_tunjangan_struktural} + $F{thr_lama_tunjangan_jabatan_struktural} + $F{thr_lama_tunjangan_strategis} + $F{thr_lama_tunjangan_peralihan}) * $F{thr_lama_bulan_aktif} /12]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="440" y="461" width="66" height="11" uuid="44b2c643-8e66-4ae6-a48e-dd1d138fbe00"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{thr_gaji_golongan_baru} + $F{thr_tunjangan_umk_baru} + $F{thr_tunjangan_struktural_baru} + $F{thr_tunjangan_jabatan_struktural_baru}+ $F{thr_tunjangan_strategis_baru} + $F{thr_tunjangan_peralihan_baru}) * $F{thr_lama_bulan_aktif} / 12]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="440" y="483" width="66" height="11" uuid="c2dab626-88ac-4ddb-964e-e98f452458a9"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_thr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="537" y="415" width="57" height="11" uuid="858e1008-e231-44f6-a303-926a79a5ff1d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_pendidikan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="431" y="342" width="46" height="11" uuid="35451cef-d5dd-43ed-8a87-3790dcb6ef65"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="452" y="289" width="52" height="11" uuid="d5539710-71a6-4568-93bd-0ad484f592f3"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rapel_juli_gadas} + $F{rapel_juli_umk} + $F{rapel_juli_struktural} + $F{rapel_juli_jab_struktural} + $F{rapel_juli_strategis} + $F{rapel_juli_peralihan} + $F{rapel_juli_air_listrik} + $F{rapel_juli_perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="511" y="213" width="49" height="11" uuid="033e1d7c-c846-46f2-9a12-6646d0830852"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{gaji_golongan} + $F{umk} + $F{struktural} + $F{jab_struktural} + $F{strategis} + $F{peralihan} + $F{air_listrik}  +  $F{perumahan} )*  $F{jumlah_bulan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="603" y="141" width="54" height="11" uuid="3b159759-030f-4ab9-973d-023f19466455"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rapel_insentif}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -13,6 +13,9 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class ImBranches implements Serializable {
+    private ImBranchesPK primaryKey;
+    private String branchName;
+    private String alamatSurat;
 
     private String statusPabrik;
     private String mt;
@@ -33,6 +36,101 @@ public class ImBranches implements Serializable {
     private String eklaimAddress; //example : "http://192.168.1.1/"
     private String keyEklaim;
 
+    private BigDecimal faktorKali;
+    private BigDecimal multifikator;
+    private String branchAddress;
+    private Timestamp createdDate;
+    private String createdWho;
+    private Timestamp lastUpdate;
+    private String lastUpdateWho;
+    private String flag;
+    private String enabled;
+    private String action;
+
+
+    private String periodeGajiAktif;
+    private String lemburGajiAwal;
+    private String lemburGajiAkhir;
+    private BigDecimal minBpjsKs;
+    private BigDecimal maxBpjsKs;
+    private BigDecimal minBpjsTk;
+    private BigDecimal maxBpjsTk;
+    private BigDecimal percentKsKary;
+    private BigDecimal percentKsPers;
+    private BigDecimal percentTkKary;
+    private BigDecimal percentTkPers;
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
+
+    public BigDecimal getMaxBpjsKs() {
+        return maxBpjsKs;
+    }
+
+    public void setMaxBpjsKs(BigDecimal maxBpjsKs) {
+        this.maxBpjsKs = maxBpjsKs;
+    }
+
+    public BigDecimal getMaxBpjsTk() {
+        return maxBpjsTk;
+    }
+
+    public void setMaxBpjsTk(BigDecimal maxBpjsTk) {
+        this.maxBpjsTk = maxBpjsTk;
+    }
+
+    public BigDecimal getMinBpjsKs() {
+        return minBpjsKs;
+    }
+
+    public void setMinBpjsKs(BigDecimal minBpjsKs) {
+        this.minBpjsKs = minBpjsKs;
+    }
+
+    public BigDecimal getMinBpjsTk() {
+        return minBpjsTk;
+    }
+
+    public void setMinBpjsTk(BigDecimal minBpjsTk) {
+        this.minBpjsTk = minBpjsTk;
+    }
+
+    public BigDecimal getPercentKsKary() {
+        return percentKsKary;
+    }
+
+    public void setPercentKsKary(BigDecimal percentKsKary) {
+        this.percentKsKary = percentKsKary;
+    }
+
+    public BigDecimal getPercentKsPers() {
+        return percentKsPers;
+    }
+
+    public void setPercentKsPers(BigDecimal percentKsPers) {
+        this.percentKsPers = percentKsPers;
+    }
+
+    public BigDecimal getPercentTkKary() {
+        return percentTkKary;
+    }
+
+    public void setPercentTkKary(BigDecimal percentTkKary) {
+        this.percentTkKary = percentTkKary;
+    }
+
+    public BigDecimal getPercentTkPers() {
+        return percentTkPers;
+    }
+
+    public void setPercentTkPers(BigDecimal percentTkPers) {
+        this.percentTkPers = percentTkPers;
+    }
     public String getKeyEklaim() {
         return keyEklaim;
     }
@@ -49,20 +147,6 @@ public class ImBranches implements Serializable {
         this.eklaimAddress = eklaimAddress;
     }
 
-    public String getMt() {
-        return mt;
-    }
-
-    public void setMt(String mt) {
-        this.mt = mt;
-    }
-    public String getStatusPabrik() {
-        return statusPabrik;
-    }
-
-    public void setStatusPabrik(String statusPabrik) {
-        this.statusPabrik = statusPabrik;
-    }
     public String getConstId() {
         return constId;
     }
@@ -109,6 +193,46 @@ public class ImBranches implements Serializable {
 
     public void setAreaId(String areaId) {
         this.areaId = areaId;
+    }
+
+
+    public String getPeriodeGajiAktif() {
+        return periodeGajiAktif;
+    }
+
+    public void setPeriodeGajiAktif(String periodeGajiAktif) {
+        this.periodeGajiAktif = periodeGajiAktif;
+    }
+
+    public String getLemburGajiAwal() {
+        return lemburGajiAwal;
+    }
+
+    public void setLemburGajiAwal(String lemburGajiAwal) {
+        this.lemburGajiAwal = lemburGajiAwal;
+    }
+
+    public String getLemburGajiAkhir() {
+        return lemburGajiAkhir;
+    }
+
+    public void setLemburGajiAkhir(String lemburGajiAkhir) {
+        this.lemburGajiAkhir = lemburGajiAkhir;
+    }
+
+    public String getMt() {
+        return mt;
+    }
+
+    public void setMt(String mt) {
+        this.mt = mt;
+    }
+    public String getStatusPabrik() {
+        return statusPabrik;
+    }
+
+    public void setStatusPabrik(String statusPabrik) {
+        this.statusPabrik = statusPabrik;
     }
 
     public String getStrBiayaJasprod() {
@@ -175,7 +299,6 @@ public class ImBranches implements Serializable {
         this.faktorJubileum = faktorJubileum;
     }
 
-    private BigDecimal faktorKali;
 
     public BigDecimal getFaktorKali() {
         return faktorKali;
@@ -185,7 +308,6 @@ public class ImBranches implements Serializable {
         this.faktorKali = faktorKali;
     }
 
-    private BigDecimal multifikator;
 
     public BigDecimal getMultifikator() {
         return multifikator;
@@ -195,7 +317,6 @@ public class ImBranches implements Serializable {
         this.multifikator = multifikator;
     }
 
-    private ImBranchesPK primaryKey;
 
     public ImBranchesPK getPrimaryKey() {
         return primaryKey;
@@ -205,7 +326,6 @@ public class ImBranches implements Serializable {
         this.primaryKey = primaryKey;
     }
 
-    private String branchName;
 
     public String getBranchName() {
         return branchName;
@@ -215,7 +335,6 @@ public class ImBranches implements Serializable {
         this.branchName = branchName;
     }
 
-    private String branchAddress;
 
     public String getBranchAddress() {
         return branchAddress;
@@ -225,7 +344,6 @@ public class ImBranches implements Serializable {
         this.branchAddress = branchAddress;
     }
 
-    private Timestamp createdDate;
 
     public Timestamp getCreatedDate() {
         return createdDate;
@@ -235,7 +353,6 @@ public class ImBranches implements Serializable {
         this.createdDate = createdDate;
     }
 
-    private String createdWho;
 
     public String getCreatedWho() {
         return createdWho;
@@ -245,7 +362,6 @@ public class ImBranches implements Serializable {
         this.createdWho = createdWho;
     }
 
-    private Timestamp lastUpdate;
 
     public Timestamp getLastUpdate() {
         return lastUpdate;
@@ -255,7 +371,6 @@ public class ImBranches implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    private String lastUpdateWho;
 
     public String getLastUpdateWho() {
         return lastUpdateWho;
@@ -265,8 +380,6 @@ public class ImBranches implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    private String flag;
-    private String enabled;
 
     public String getEnabled() {
         return enabled;
@@ -284,7 +397,6 @@ public class ImBranches implements Serializable {
         this.flag = flag;
     }
 
-    private String action;
 
     public String getAction() {
         return action;

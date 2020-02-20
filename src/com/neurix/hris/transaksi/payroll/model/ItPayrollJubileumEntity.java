@@ -15,20 +15,27 @@ import java.sql.Timestamp;
  */
 
 public class ItPayrollJubileumEntity implements Serializable {
+    private String nip;
     private String jubileumId;
     private String payrollId;
-    private BigDecimal gajiGolongan;
-    private BigDecimal tunjanganUmk;
-    private BigDecimal tunjanganStruktural;
-    private BigDecimal tunjanganPeralihan;
-    private BigDecimal tunjanganJabStruktural;
-    private BigDecimal pphJubileum;
-
 
     private BigDecimal total;
-    private BigDecimal grandTotal;
+    private BigDecimal pphJubileum;
     private BigDecimal nettoJubileum;
     private Date tanggalJubileum;
+
+    private BigDecimal gaji;
+    private BigDecimal sankhus;
+    private BigDecimal tunjanganjabatan;
+    private BigDecimal tunjanganStruktural;
+    private BigDecimal tunjanganFungsional;
+    private BigDecimal tunjanganPeralihan;
+    private BigDecimal tunjanganTambahan;
+    private BigDecimal pemondokan;
+    private BigDecimal komunikasi;
+    private String keteranganEmas;
+    private String keteranganjubileum;
+
 
     private String flag;
     private String action;
@@ -36,6 +43,98 @@ public class ItPayrollJubileumEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getKeteranganjubileum() {
+        return keteranganjubileum;
+    }
+
+    public void setKeteranganjubileum(String keteranganjubileum) {
+        this.keteranganjubileum = keteranganjubileum;
+    }
+
+    public BigDecimal getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(BigDecimal tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
+    public BigDecimal getGaji() {
+        return gaji;
+    }
+
+    public void setGaji(BigDecimal gaji) {
+        this.gaji = gaji;
+    }
+
+    public BigDecimal getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(BigDecimal komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(BigDecimal pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getSankhus() {
+        return sankhus;
+    }
+
+    public void setSankhus(BigDecimal sankhus) {
+        this.sankhus = sankhus;
+    }
+
+    public BigDecimal getTunjanganFungsional() {
+        return tunjanganFungsional;
+    }
+
+    public void setTunjanganFungsional(BigDecimal tunjanganFungsional) {
+        this.tunjanganFungsional = tunjanganFungsional;
+    }
+
+    public BigDecimal getTunjanganjabatan() {
+        return tunjanganjabatan;
+    }
+
+    public void setTunjanganjabatan(BigDecimal tunjanganjabatan) {
+        this.tunjanganjabatan = tunjanganjabatan;
+    }
+    private BigDecimal tunjanganJabStruktural;
+    private BigDecimal gajiGolongan;
+    private BigDecimal tunjanganUmk;
+    private BigDecimal peralihan;
+    private BigDecimal grandTotal;
+    public BigDecimal getPeralihan() {
+        return peralihan;
+    }
+
+    public void setPeralihan(BigDecimal peralihan) {
+        this.peralihan = peralihan;
+    }
+
+    public String getKeteranganEmas() {
+        return keteranganEmas;
+    }
+
+    public void setKeteranganEmas(String keteranganEmas) {
+        this.keteranganEmas = keteranganEmas;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public Date getTanggalJubileum() {
         return tanggalJubileum;

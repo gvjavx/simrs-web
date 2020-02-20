@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.medicalKacamata.model.ItMedicalKacamataEntity" dynamic-update="true"
+           table="it_hris_medical_kacamata" select-before-update="true" schema="public">
+
+
+        <id name="medicalKacamataId">
+            <column name="medical_kacamata_id" sql-type="varchar" length="3" not-null="true" />
+        </id>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="100"  />
+        </property>
+        <property name="tipePembayaran">
+            <column name="tipe_pembayaran" sql-type="varchar" length="100"  />
+        </property>
+        <property name="tanggalPembayaran">
+            <column name="tanggal_pembayaran" sql-type="date" length="100"  />
+        </property>
+        <property name="biaya">
+            <column name="biaya" sql-type="numeric" precision="2" length="10"  />
+        </property>
+        <property name="tanggalBerakhir">
+            <column name="tanggal_berakhir" sql-type="date" length="100"  />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="100"  />
+        </property>
+        <property name="bidangId">
+            <column name="bidang_id" sql-type="varchar" length="100"  />
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="100"  />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="bidang_id"/>
+        </many-to-one>
+
+        <many-to-one name="imPositionBagianEntity" class="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="bagian_id"/>
+        </many-to-one>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_id"/>
+        </many-to-one>
+
+        <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="nip"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

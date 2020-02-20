@@ -45,6 +45,9 @@ public class CutiPegawai extends BaseModel {
     private String divisiId;
     private String unitId;
     private String posisiId;
+    private String bagianId;
+
+
     private String cutiName;
     private String closed;
     private String tmpApprove;
@@ -82,6 +85,23 @@ public class CutiPegawai extends BaseModel {
     private String no;
     private Date tanggalAktif;
     private String stTanggalAktif;
+    private String flagPerbaikan;
+
+    public String getFlagPerbaikan() {
+        return flagPerbaikan;
+    }
+
+    public void setFlagPerbaikan(String flagPerbaikan) {
+        this.flagPerbaikan = flagPerbaikan;
+    }
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
 
     private String channelId;
     private String os;

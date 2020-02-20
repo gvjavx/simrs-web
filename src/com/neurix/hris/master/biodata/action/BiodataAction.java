@@ -47,6 +47,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -608,7 +609,12 @@ public class BiodataAction extends BaseMasterAction{
                 try {
 
                     Biodata editBiodata = getBiodata();
-
+                    String golonganId = editBiodata.getGolongan().replace(",","");
+                    editBiodata.setGolongan(golonganId);
+                    editBiodata.setGolonganId(golonganId);
+                    String golonganId2 = editBiodata.getGolongan().replace(" ","");
+                    editBiodata.setGolongan(golonganId2);
+                    editBiodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -683,6 +689,12 @@ public class BiodataAction extends BaseMasterAction{
                 //add
                 try {
                     Biodata biodata = getBiodata();
+                    String golonganId = biodata.getGolongan().replace(",","");
+                    biodata.setGolongan(golonganId);
+                    biodata.setGolonganId(golonganId);
+                    String golonganId2 = biodata.getGolongan().replace(" ","");
+                    biodata.setGolongan(golonganId2);
+                    biodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -2143,42 +2155,57 @@ public class BiodataAction extends BaseMasterAction{
         session.setAttribute("listSertifikat", listSertifikat);
     }
 
-    public String saveAddDataPengalamaKerja(String nip, String namaPerusahaan, String jabatan, String tanggalMasuk, String tipePegawai, String golonganName,
-                                            String point, String pointLebih, String nilaiSmk, String gradeSmk, String branchId, String tipePegawaiId){
+    public String saveAddDataPengalamaKerja(String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
+                                            String tipePegawaiId, String golonganId,String pjsFlag, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif){
         logger.info("[BiodataAction.saveAdd] start process >>>");
 
         try {
-            PengalamanKerja pengalamanKerja = new PengalamanKerja();
-            pengalamanKerja.setNip(nip);
-            pengalamanKerja.setNamaPerusahaan(namaPerusahaan);
-            pengalamanKerja.setJabatan(jabatan);
-            pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
-            pengalamanKerja.setBranchId(branchId);
+            HistoryJabatanPegawai historyJabatanPegawai = new HistoryJabatanPegawai();
+            historyJabatanPegawai.setNip(nip);
 
-            pengalamanKerja.setTipePegawai(tipePegawai);
-            pengalamanKerja.setTipePegawaiId(tipePegawaiId);
-            pengalamanKerja.setGolonganName(golonganName);
-            pengalamanKerja.setPoint(point);
-            pengalamanKerja.setPointLebih(pointLebih);
+            historyJabatanPegawai.setBranchId(branchId);
+            if (branchId.equalsIgnoreCase("0")){
+                if (perusahaanLain!=null){
+                    historyJabatanPegawai.setBranchName(perusahaanLain);
+                }
+            }
 
-            pengalamanKerja.setNilaiSmk(nilaiSmk);
-            pengalamanKerja.setGradeSmk(gradeSmk);
+            historyJabatanPegawai.setDivisiId(divisiId);
+            if (divisiId.equalsIgnoreCase("0")){
+                if (bidangLain!=null){
+                    historyJabatanPegawai.setDivisiName(bidangLain);
+                }
+            }
+
+            historyJabatanPegawai.setPositionId(positionId);
+            if (positionId.equalsIgnoreCase("0")){
+                if (jabatanLain!=null){
+                    historyJabatanPegawai.setPositionName(jabatanLain);
+                }
+            }
+
+            historyJabatanPegawai.setTanggal(tanggal);
+            historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
+            historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);
+            historyJabatanPegawai.setGolonganId(golonganId);
+            historyJabatanPegawai.setPjsFlag(pjsFlag);
+            historyJabatanPegawai.setFlagJabatanAktif(flagAktif);
 
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
 
-            pengalamanKerja.setCreatedWho(userLogin);
-            pengalamanKerja.setLastUpdate(updateTime);
-            pengalamanKerja.setCreatedDate(updateTime);
-            pengalamanKerja.setLastUpdateWho(userLogin);
-            pengalamanKerja.setAction("C");
-            pengalamanKerja.setFlag("Y");
+            historyJabatanPegawai.setCreatedWho(userLogin);
+            historyJabatanPegawai.setLastUpdate(updateTime);
+            historyJabatanPegawai.setCreatedDate(updateTime);
+            historyJabatanPegawai.setLastUpdateWho(userLogin);
+            historyJabatanPegawai.setAction("C");
+            historyJabatanPegawai.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
-            userBo.addPengalamanKerja(pengalamanKerja);
+            userBo.addPengalamanKerja(historyJabatanPegawai);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2368,43 +2395,61 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public String saveEditPengalamanKerja(String id, String nip, String namaPerusahaan, String jabatan, String tanggalMasuk, String tipePegawai, String golonganName,
-                                          String point, String pointLebih, String nilaiSmk, String gradeSmk, String branchId, String tipePegawaiId){
+    public String saveEditPengalamanKerja(String id,String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
+                                          String tipePegawaiId, String golonganId, String point, String pointLebih, String nilaiSmk,
+                                          String gradeSmk, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif){
         logger.info("[PengalamanKerjaAction.saveEdit] start process >>>");
         try {
 
             PengalamanKerja pengalamanKerja = new PengalamanKerja();
-            pengalamanKerja.setPengalamanId(id);
-            pengalamanKerja.setNip(nip);
-            pengalamanKerja.setNamaPerusahaan(namaPerusahaan);
-            pengalamanKerja.setJabatan(jabatan);
-            pengalamanKerja.setStTtahunMasuk(tanggalMasuk);
-            pengalamanKerja.setBranchId(branchId);
+            HistoryJabatanPegawai historyJabatanPegawai = new HistoryJabatanPegawai();
 
-            pengalamanKerja.setTipePegawai(tipePegawai);
-            pengalamanKerja.setTipePegawaiId(tipePegawaiId);
-            pengalamanKerja.setGolonganName(golonganName);
-            pengalamanKerja.setPoint(point);
-            pengalamanKerja.setPointLebih(pointLebih);
+            historyJabatanPegawai.setHistoryJabatanId(id);
+            historyJabatanPegawai.setNip(nip);
+            historyJabatanPegawai.setBranchId(branchId);
+            if (branchId.equalsIgnoreCase("0")){
+                if (perusahaanLain!=null){
+                    historyJabatanPegawai.setBranchName(perusahaanLain);
+                }
+            }
 
-            pengalamanKerja.setNilaiSmk(nilaiSmk);
-            pengalamanKerja.setGradeSmk(gradeSmk);
+            historyJabatanPegawai.setDivisiId(divisiId);
+            if (divisiId.equalsIgnoreCase("0")){
+                if (bidangLain!=null){
+                    historyJabatanPegawai.setDivisiName(bidangLain);
+                }
+            }
+
+            historyJabatanPegawai.setPositionId(positionId);
+            if (positionId.equalsIgnoreCase("0")){
+                if (jabatanLain!=null){
+                    historyJabatanPegawai.setPositionName(jabatanLain);
+                }
+            }
+            historyJabatanPegawai.setTanggal(tanggal);
+            historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
+            historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);
+            historyJabatanPegawai.setGolonganId(golonganId);
+            historyJabatanPegawai.setPoint(point);
+            historyJabatanPegawai.setPointLebih(pointLebih);
+            historyJabatanPegawai.setNilaiSmk(BigDecimal.valueOf(Double.parseDouble(nilaiSmk)));
+            historyJabatanPegawai.setGradeSmk(gradeSmk);
 
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
 
-            pengalamanKerja.setCreatedWho(userLogin);
-            pengalamanKerja.setLastUpdate(updateTime);
-            pengalamanKerja.setCreatedDate(updateTime);
-            pengalamanKerja.setLastUpdateWho(userLogin);
-            pengalamanKerja.setAction("C");
-            pengalamanKerja.setFlag("Y");
+            historyJabatanPegawai.setCreatedWho(userLogin);
+            historyJabatanPegawai.setLastUpdate(updateTime);
+            historyJabatanPegawai.setCreatedDate(updateTime);
+            historyJabatanPegawai.setLastUpdateWho(userLogin);
+            historyJabatanPegawai.setAction("C");
+            historyJabatanPegawai.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
-            userBo.saveEditPengalamanKerja(pengalamanKerja);
+            userBo.saveEditPengalamanKerja(historyJabatanPegawai);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

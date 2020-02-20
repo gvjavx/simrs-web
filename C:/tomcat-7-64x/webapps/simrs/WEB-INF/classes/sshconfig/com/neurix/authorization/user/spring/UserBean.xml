@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="sppdController" class="com.neurix.hris.mobileapi.SppdController"
+          p:userBoProxy-ref="userBoProxy"/>
+
+    <bean id="userAction" class="com.neurix.authorization.user.action.UserLoginAction"
+          p:userBoProxy-ref="userBoProxy"/>
+
+    <bean id="loginMobileController" class="com.neurix.hris.mobileapi.LoginMobileController"
+          p:userBoProxy-ref="userBoProxy"
+        p:notifikasiFcmBoProxy-ref="notifikasiFcmBoProxy"/>
+
+    <bean id="userMasterAct" class="com.neurix.authorization.user.action.UserAction"
+          p:userBoProxy-ref="userBoProxy"
+          p:roleBoProxy-ref="roleBoProxy"
+          p:areaBoProxy-ref="areaBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+          p:positionBoProxy-ref="positionBoProxy"  />
+
+    <bean id="userBo" class="com.neurix.authorization.user.bo.impl.UserBoImpl"
+          p:userDao-ref="userDao"
+          p:userRoleDao-ref="userRoleDao"
+          p:errorLogDao-ref="errorLogDao"
+          p:areasBranchesUsersDao-ref="areaBranchUserDao"
+          p:roleDao-ref="roleDao"
+          p:areaDao-ref="areaDao"
+          p:branchDao-ref="branchDao"
+          p:companyDao-ref="companyDao"
+          p:userSessionLogDao-ref="userSessionLogDao"
+          p:personilPositionDao-ref="personilPositionDao4"
+          p:positionDao-ref="positionDao"
+          p:biodataDao-ref="biodataDao"
+    />
+
+    <bean id="userBoProxy"
+          class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="userBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getUserByUsername">readOnly</prop>
+                <prop key="insertUserSessionLog">PROPAGATION_REQUIRED</prop>
+                <prop key="retrievePhotoUser">readOnly</prop>
+                <prop key="updateUserSessionLog">PROPAGATION_REQUIRED</prop>
+                <prop key="getMenuUser">readOnly</prop>
+                <prop key="getComboUserWithCriteria">readOnly</prop>
+                <prop key="getErrorLogByCriteria">readOnly</prop>
+                <prop key="getUserSessionLogByCriteria">readOnly</prop>
+                <prop key="saveEditPassword">PROPAGATION_REQUIRED</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveDelete">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getUserSameBranchByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="userDao" class="com.neurix.authorization.user.dao.UserDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+    <bean id="userRoleDao" class="com.neurix.authorization.user.dao.UserRoleDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+    <bean id="userSessionLogDao" class="com.neurix.authorization.user.dao.UserSessionLogDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+    <bean id="errorLogDao" class="com.neurix.authorization.user.dao.ErrorLogDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+    <bean id="personilPositionDao4" class="com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+
+</beans>

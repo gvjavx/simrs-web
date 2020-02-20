@@ -17,20 +17,34 @@ public class PayrollThr extends BaseModel {
     private String payrollId;
 
     private String gajiGolongan;
-    private String tunjanganUmk;
+    private String tunjanganUmk; //sankhus
     private String tunjanganStruktural;
-    private String tunjanganJabatanStruktural;
-    private String tunjanganStrategis;
+    private String tunjanganJabatanStruktural; //tunjangan jabatan
+    private String tunjanganStrategis; //tunjangan fungsional
     private String tunjanganPeralihan;
     private String tunjanganPph;
+    private String thp;
 
     private BigDecimal gajiGolonganNilai;
-    private BigDecimal tunjanganUmkNilai;
+    private BigDecimal tunjanganUmkNilai; //sankhus
     private BigDecimal tunjanganStrukturalNilai;
-    private BigDecimal tunjanganJabatanStrukturalNilai;
-    private BigDecimal tunjanganStrategisNilai;
+    private BigDecimal tunjanganJabatanStrukturalNilai; //tunjangan jabatan
+    private BigDecimal tunjanganStrategisNilai; //tunjangan fungsional nilai
     private BigDecimal tunjanganPeralihanNilai;
     private BigDecimal tunjanganPphNilai;
+    private BigDecimal thpNilai;
+
+    //tambahan irfan
+    private String tunjanganLain;
+    private BigDecimal tunjanganLainNilai;
+    private String tunjanganTambahan;
+    private BigDecimal tunjanganTambahanNilai;
+    private String pemondokan;
+    private BigDecimal pemondokanNilai;
+    private String komunikasi;
+    private BigDecimal komunikasiNilai;
+    private String totalRlab;
+    private BigDecimal totalRlabNilai;
 
     private int bulanAktif;
 
@@ -38,9 +52,123 @@ public class PayrollThr extends BaseModel {
     private String nip;
     private String totalThr;
     private String totalThrBersih;
+    private String pphThr;
 
     private BigDecimal totalThrNilaiBersih;
     private BigDecimal totalThrNilai;
+    private BigDecimal pphThrNilai;
+
+    public String getThp() {
+        return thp;
+    }
+
+    public void setThp(String thp) {
+        this.thp = thp;
+    }
+
+    public BigDecimal getThpNilai() {
+        return thpNilai;
+    }
+
+    public void setThpNilai(BigDecimal thpNilai) {
+        this.thpNilai = thpNilai;
+    }
+
+    public String getPphThr() {
+        return pphThr;
+    }
+
+    public void setPphThr(String pphThr) {
+        this.pphThr = pphThr;
+    }
+
+    public BigDecimal getPphThrNilai() {
+        return pphThrNilai;
+    }
+
+    public void setPphThrNilai(BigDecimal pphThrNilai) {
+        this.pphThrNilai = pphThrNilai;
+    }
+
+    public String getTotalRlab() {
+        return totalRlab;
+    }
+
+    public void setTotalRlab(String totalRlab) {
+        this.totalRlab = totalRlab;
+    }
+
+    public BigDecimal getTotalRlabNilai() {
+        return totalRlabNilai;
+    }
+
+    public void setTotalRlabNilai(BigDecimal totalRlabNilai) {
+        this.totalRlabNilai = totalRlabNilai;
+    }
+
+    public String getKomunikasi() {
+        return komunikasi;
+    }
+
+    public void setKomunikasi(String komunikasi) {
+        this.komunikasi = komunikasi;
+    }
+
+    public BigDecimal getKomunikasiNilai() {
+        return komunikasiNilai;
+    }
+
+    public void setKomunikasiNilai(BigDecimal komunikasiNilai) {
+        this.komunikasiNilai = komunikasiNilai;
+    }
+
+    public String getPemondokan() {
+        return pemondokan;
+    }
+
+    public void setPemondokan(String pemondokan) {
+        this.pemondokan = pemondokan;
+    }
+
+    public BigDecimal getPemondokanNilai() {
+        return pemondokanNilai;
+    }
+
+    public void setPemondokanNilai(BigDecimal pemondokanNilai) {
+        this.pemondokanNilai = pemondokanNilai;
+    }
+
+    public String getTunjanganLain() {
+        return tunjanganLain;
+    }
+
+    public void setTunjanganLain(String tunjanganLain) {
+        this.tunjanganLain = tunjanganLain;
+    }
+
+    public BigDecimal getTunjanganLainNilai() {
+        return tunjanganLainNilai;
+    }
+
+    public void setTunjanganLainNilai(BigDecimal tunjanganLainNilai) {
+        this.tunjanganLainNilai = tunjanganLainNilai;
+    }
+
+    public String getTunjanganTambahan() {
+        return tunjanganTambahan;
+    }
+
+    public void setTunjanganTambahan(String tunjanganTambahan) {
+        this.tunjanganTambahan = tunjanganTambahan;
+    }
+
+    public BigDecimal getTunjanganTambahanNilai() {
+        return tunjanganTambahanNilai;
+    }
+
+    public void setTunjanganTambahanNilai(BigDecimal tunjanganTambahanNilai) {
+        this.tunjanganTambahanNilai = tunjanganTambahanNilai;
+    }
 
     public int getBulanAktif() {
         return bulanAktif;

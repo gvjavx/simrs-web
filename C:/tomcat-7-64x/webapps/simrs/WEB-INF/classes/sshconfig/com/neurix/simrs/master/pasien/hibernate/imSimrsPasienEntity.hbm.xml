@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity" dynamic-update="true"
+           table="im_simrs_pasien" select-before-update="true" schema="public">
+
+
+        <id name="idPasien">
+            <column name="id_pasien" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="nama">
+            <column name="nama" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="jenisKelamin">
+            <column name="jenis_kelamin" sql-type="varchar" length="1"/>
+        </property>
+
+        <property name="noKtp">
+            <column name="no_ktp" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="noBpjs">
+            <column name="no_bpjs" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="tempatLahir">
+            <column name="tempat_lahir" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="tglLahir">
+            <column name="tgl_lahir" sql-type="date"/>
+        </property>
+
+        <property name="desaId">
+            <column name="desa_id" sql-type="long" length="100"/>
+        </property>
+
+        <property name="jalan">
+            <column name="jalan" sql-type="varchar" length="1000"/>
+        </property>
+
+        <property name="suku">
+            <column name="suku" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="agama">
+            <column name="agama" sql-type="varchar" length="50"/>
+        </property>
+
+        <property name="profesi">
+            <column name="profesi" sql-type="varchar" length="50"/>
+        </property>
+
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="50"/>
+        </property>
+
+        <property name="urlKtp">
+            <column name="url_ktp" sql-type="varchar" length="100"/>
+        </property>
+
+        <property name="email">
+            <column name="email" sql-type="varchar" length="50"/>
+        </property>
+
+        <property name="password">
+            <column name="password" sql-type="varchar" length="30"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

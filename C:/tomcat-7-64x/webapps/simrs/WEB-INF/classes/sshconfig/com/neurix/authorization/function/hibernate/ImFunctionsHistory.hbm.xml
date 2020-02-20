@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.function.model.ImFunctionsHistory" table="im_functions_history" schema="public">
+
+        <id name="id" column="id" type="java.lang.Long" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">seq_func_history</param>
+            </generator>
+        </id>
+
+        <property name="funcId" column="func_id"/>
+        <property name="funcName" column="func_name"/>
+        <property name="url" column="url"/>
+        <property name="parent" column="parent"/>
+        <property name="funcLevel" column="func_level"/>
+        <property name="createdDate" column="created_date"/>
+        <property name="createdWho" column="created_who"/>
+        <property name="lastUpdate" column="last_update"/>
+        <property name="lastUpdateWho" column="last_update_who"/>
+        <property name="flag" column="flag"/>
+        <property name="action" column="action"/>
+        <property name="menu" column="menu"/>
+    </class>
+</hibernate-mapping>

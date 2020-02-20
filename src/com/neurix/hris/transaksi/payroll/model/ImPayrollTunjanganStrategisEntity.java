@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class ImPayrollTunjanganStrategisEntity implements Serializable {
     private String tunjStrategisId ;
     private String positionId ;
+    private String golonganId ;
     private BigDecimal nilai ;
 
     private String flag;
@@ -24,6 +25,14 @@ public class ImPayrollTunjanganStrategisEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getGolonganId() {
+        return golonganId;
+    }
+
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
+    }
 
     public String getAction() {
         return action;

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity" dynamic-update="true"
+           table="it_simrs_data_psikososial" select-before-update="true" schema="public">
+
+
+        <id name="id">
+            <column name="id" sql-type="varchar" length="30" not-null="true" />
+        </id>
+        <property name="noCheckup">
+            <column name="no_checkup" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="kemampuanBicara">
+            <column name="kemampuan_bicara" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="tahuTentangSakitNya">
+            <column name="tahu_tentang_sakitnya" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="konsepDiri">
+            <column name="konsep_diri" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="pernahDirawat">
+            <column name="pernah_dirawat" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="obatDariRumah">
+            <column name="obat_dari_rumah" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="nyeri">
+            <column name="nyeri" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="jenisIntensitasNyeri">
+            <column name="jenis_intensitas_nyeri" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="numericRatingScale">
+            <column name="numerik_rating_scale" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="wongBakerPainScale">
+            <column name="wong_baker_pain_scale" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="intensitasNyeri">
+            <column name="intensitas_nyeri" sql-type="integer" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+
+    </class>
+</hibernate-mapping>

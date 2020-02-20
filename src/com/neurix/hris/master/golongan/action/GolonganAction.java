@@ -6,6 +6,10 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.golongan.bo.GolonganBo;
 import com.neurix.hris.master.golongan.model.Golongan;
+import com.neurix.hris.master.golonganDapen.bo.GolonganDapenBo;
+import com.neurix.hris.master.golonganDapen.model.GolonganDapen;
+import com.neurix.hris.master.golonganPkwt.bo.GolonganPkwtBo;
+import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -24,8 +28,70 @@ public class GolonganAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(GolonganAction.class);
     private GolonganBo golonganBoProxy;
     private Golongan golongan;
-
     private List<Golongan> listComboGolongan = new ArrayList<Golongan>();
+    private List<GolonganDapen> listComboGolonganDapen = new ArrayList<GolonganDapen>();
+    private List<GolonganPkwt> listComboGolonganPkwt = new ArrayList<GolonganPkwt>();
+    private List<GolonganPkwt> listComboGolonganPkwtHistory = new ArrayList<GolonganPkwt>();
+    private GolonganDapenBo golonganDapenBoProxy;
+    private GolonganDapen golonganDapen;
+    private GolonganPkwtBo golonganPkwtBoProxy;
+    private GolonganPkwt golonganPkwt;
+
+    public List<GolonganPkwt> getListComboGolonganPkwtHistory() {
+        return listComboGolonganPkwtHistory;
+    }
+
+    public void setListComboGolonganPkwtHistory(List<GolonganPkwt> listComboGolonganPkwtHistory) {
+        this.listComboGolonganPkwtHistory = listComboGolonganPkwtHistory;
+    }
+
+    public GolonganPkwt getGolonganPkwt() {
+        return golonganPkwt;
+    }
+
+    public void setGolonganPkwt(GolonganPkwt golonganPkwt) {
+        this.golonganPkwt = golonganPkwt;
+    }
+
+    public GolonganPkwtBo getGolonganPkwtBoProxy() {
+        return golonganPkwtBoProxy;
+    }
+
+    public void setGolonganPkwtBoProxy(GolonganPkwtBo golonganPkwtBoProxy) {
+        this.golonganPkwtBoProxy = golonganPkwtBoProxy;
+    }
+
+    public List<GolonganPkwt> getListComboGolonganPkwt() {
+        return listComboGolonganPkwt;
+    }
+
+    public void setListComboGolonganPkwt(List<GolonganPkwt> listComboGolonganPkwt) {
+        this.listComboGolonganPkwt = listComboGolonganPkwt;
+    }
+
+    public GolonganDapen getGolonganDapen() {
+        return golonganDapen;
+    }
+
+    public void setGolonganDapen(GolonganDapen golonganDapen) {
+        this.golonganDapen = golonganDapen;
+    }
+
+    public GolonganDapenBo getGolonganDapenBoProxy() {
+        return golonganDapenBoProxy;
+    }
+
+    public void setGolonganDapenBoProxy(GolonganDapenBo golonganDapenBoProxy) {
+        this.golonganDapenBoProxy = golonganDapenBoProxy;
+    }
+
+    public List<GolonganDapen> getListComboGolonganDapen() {
+        return listComboGolonganDapen;
+    }
+
+    public void setListComboGolonganDapen(List<GolonganDapen> listComboGolonganDapen) {
+        this.listComboGolonganDapen = listComboGolonganDapen;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -80,6 +146,82 @@ public class GolonganAction extends BaseMasterAction{
         }
 
         listComboGolongan.addAll(listOfSearchGolongan);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+    public String initComboGolonganDapen() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        GolonganDapen searchGolongan = new GolonganDapen();
+        List<GolonganDapen> listOfSearchGolonganDapen = new ArrayList();
+        searchGolongan.setFlag("Y");
+        try {
+            listOfSearchGolonganDapen = golonganDapenBoProxy.getByCriteria(searchGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganDapenBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.search] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listComboGolonganDapen.addAll(listOfSearchGolonganDapen);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
+    public String initComboGolonganPkwt() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        GolonganPkwt searchGolongan = new GolonganPkwt();
+        List<GolonganPkwt> listOfSearchGolongan = new ArrayList();
+        searchGolongan.setFlag("Y");
+        try {
+            listOfSearchGolongan = golonganPkwtBoProxy.getByCriteria(searchGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganPkwtBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.search] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listComboGolonganPkwt.addAll(listOfSearchGolongan);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+    public String initComboGolonganPkwtHistory() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        GolonganPkwt searchGolongan = new GolonganPkwt();
+        List<GolonganPkwt> listOfSearchGolongan = new ArrayList();
+        searchGolongan.setFlag("Y");
+        try {
+            listOfSearchGolongan = golonganPkwtBoProxy.getByCriteria(searchGolongan);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = golonganPkwtBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.search] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listComboGolonganPkwtHistory.addAll(listOfSearchGolongan);
         logger.info("[BranchAction.search] end process <<<");
 
         return SUCCESS;

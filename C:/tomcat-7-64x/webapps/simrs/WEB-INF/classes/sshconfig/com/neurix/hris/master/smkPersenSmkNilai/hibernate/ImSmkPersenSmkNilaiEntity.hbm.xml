@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.smkPersenSmkNilai.model.ImSmkPersenSmkNilaiEntity" dynamic-update="true"
+           table="im_hris_smk_persen_smk_nilai" select-before-update="true" schema="public">
+
+
+        <id name="smkNilaiId">
+            <column name="persen_smk_nilai_id" sql-type="varchar" length="6" not-null="true" />
+        </id>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="nama">
+            <column name="nama" sql-type="varchar" length="100" not-null="true" />
+        </property>
+
+        <property name="nilaiAtas">
+            <column name="nilai_atas" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="nilaiBawah">
+            <column name="nilai_bawah" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="nilai">
+            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

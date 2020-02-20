@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.sppd.model.ItSppdTanggalEntity" dynamic-update="true"
+           table="it_hris_sppd_tanggal" select-before-update="true" schema="public">
+
+
+        <id name="idSppdTanggal">
+            <column name="id_sppd_tanggal" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="sppdPersonId">
+            <column name="sppd_person_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="sppdTanggal">
+            <column name="sppd_tanggal" sql-type="date" not-null="false" />
+        </property>
+        <property name="sppdTanggalApprove">
+            <column name="sppd_tanggal_approve" sql-type="varchar" length="1" not-null="true" />
+        </property>
+
+        <property name="hargaTiketBerangkat">
+            <column name="harga_tiket_berangkat" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="hargaTiketKembali">
+            <column name="harga_tiket_kembali" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="transportLokal">
+            <column name="transport_lokal" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="transportTujuan">
+            <column name="transport_tujuan" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="transportKembali">
+            <column name="transport_kembali" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="biayaTransportLainnya">
+            <column name="biaya_transport_lainnya" sql-type="numeric" length="15" precision="2" />
+        </property>
+        <property name="biayaMakan">
+            <column name="biaya_makan" sql-type="numeric" length="15" precision="2"  />
+        </property>
+        <property name="biayaLain">
+            <column name="biaya_lain" sql-type="numeric" length="15" precision="2" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

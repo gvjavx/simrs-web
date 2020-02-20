@@ -428,6 +428,36 @@ public class BranchAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public String initComboBranch2() {
+        logger.info("[BranchAction.search] start process >>>");
+
+        Branch searchBranch = new Branch();
+        List<Branch> listOfSearchBranch = new ArrayList();
+        searchBranch.setFlag("Y");
+        try {
+            listOfSearchBranch = branchBoProxy.getByCriteria(searchBranch);
+            Branch lain = new Branch();
+            lain.setBranchId("0");
+            lain.setBranchName("Perusahaan Lain");
+            listOfSearchBranch.add(lain);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = branchBoProxy.saveErrorMessage(e.getMessage(), "BranchBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[BranchAction.search] Error when saving error,", e1);
+            }
+            logger.error("[BranchAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return "failure";
+        }
+
+        listOfComboBranch.addAll(listOfSearchBranch);
+        logger.info("[BranchAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
     public List<Branch> getDataBranch () {
         logger.info("[BranchAction.search] start process >>>");
 
@@ -453,29 +483,6 @@ public class BranchAction extends BaseMasterAction {
         logger.info("[BranchAction.search] end process <<<");
 
         return listOfSearchBranch;
-    }
-
-    public List<Branch> getListComboBranch(String areaId){
-        logger.info("[UserAction.getListComboBranch] start process >>>");
-
-        List<Branch> branchList = new ArrayList<>();
-
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-
-        Branch branch = new Branch();
-        branch.setAreaId(areaId);
-
-        try {
-            branchList = branchBo.getByCriteria(branch);
-        }catch (GeneralBOException e){
-            logger.error("[UserAction.getListComboBranch] Error when get data branch name ," + "Found problem when searching data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-        }
-
-        logger.info("[UserAction.getListComboBranch] end process <<<");
-        return branchList;
-
     }
 
 }

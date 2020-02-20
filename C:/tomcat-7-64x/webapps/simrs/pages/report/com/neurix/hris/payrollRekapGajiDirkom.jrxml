@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="986" leftMargin="11" rightMargin="11" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
+	<property name="ireport.zoom" value="1.2100000000000066"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.branchId" class="java.lang.String"/>
+	<parameter name="reportParams.periodeBulan" class="java.lang.String"/>
+	<parameter name="reportParams.periodeTahun" class="java.lang.String"/>
+	<parameter name="reportParams.statusPegawai" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+	posisi.bagian_id,
+	bagian.nama_bagian,
+	count (posisiPegawai.nip) as jumlah_orang,
+	sum(payroll.gaji_golongan) as gaji_dasar,
+	sum(payroll.tunjangan_umk) as tunjangan_umk,
+	sum(payroll.tunjangan_struktural) as tunjangan_struktural,
+	sum(payroll.tunjangan_peralihan) as tunjangan_peralihan,
+	sum(payroll.tunjangan_jabatan_struktural) as tunjangan_jabatan_struktural,
+	sum(payroll.tunjangan_strategis) as tunjangan_strategis,
+	sum(payroll.kompensasi) as tunjangan_kompensasi,
+	sum(payroll.tunjangan_transport) as tunjangan_transport,
+	sum(payroll.tunjangan_air_listrik) as tunjangan_air_listrik,
+	sum(payroll.tunjangan_pengobatan) as tunjangan_pengobatan,
+	sum(payroll.tunjangan_perumahan) as tunjangan_perumahan,
+	sum(payroll.tunjangan_pph) as tunjangan_pph,
+	sum(payroll.tunjangan_lembur) as tunjangan_lembur,
+	sum(payroll.tunjangan_lain) as tunjangan_lain,
+	sum(payroll.total_a) as penghasilan_kotor
+from
+	im_position posisi
+	left join it_hris_payroll payroll on payroll.position_id = posisi.position_id
+	left join it_hris_pegawai_position posisiPegawai on posisiPegawai.nip = payroll.nip
+	left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
+	left join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id
+where
+	posisiPegawai.branch_id = $P{reportParams.branchId}
+	and pegawai.status_pegawai = $P{reportParams.statusPegawai}
+	and pegawai.flag ='Y'
+	and posisiPegawai.flag ='Y'
+	and payroll.bulan = $P{reportParams.periodeBulan}
+	and payroll.tahun = $P{reportParams.periodeTahun}
+	and payroll.flag_payroll = 'Y'
+	and posisi.bagian_id in ('PB010', 'PB023')
+group by
+	posisi.bagian_id,
+	bagian.nama_bagian
+order by
+	posisi.bagian_id]]>
+	</queryString>
+	<field name="bagian_id" class="java.lang.String"/>
+	<field name="nama_bagian" class="java.lang.String"/>
+	<field name="jumlah_orang" class="java.lang.Long"/>
+	<field name="gaji_dasar" class="java.math.BigDecimal"/>
+	<field name="tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="tunjangan_kompensasi" class="java.math.BigDecimal"/>
+	<field name="tunjangan_transport" class="java.math.BigDecimal"/>
+	<field name="tunjangan_air_listrik" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pengobatan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_perumahan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pph" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lembur" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lain" class="java.math.BigDecimal"/>
+	<field name="penghasilan_kotor" class="java.math.BigDecimal"/>
+	<variable name="org" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{jumlah_orang}]]></variableExpression>
+	</variable>
+	<variable name="gaji_dasar" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gaji_dasar}]]></variableExpression>
+	</variable>
+	<variable name="umk" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_umk}]]></variableExpression>
+	</variable>
+	<variable name="peralihan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_peralihan}]]></variableExpression>
+	</variable>
+	<variable name="struktural" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_struktural}]]></variableExpression>
+	</variable>
+	<variable name="jabStruktural" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_jabatan_struktural}]]></variableExpression>
+	</variable>
+	<variable name="strategis" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_strategis}]]></variableExpression>
+	</variable>
+	<variable name="kompensasi" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_kompensasi}]]></variableExpression>
+	</variable>
+	<variable name="transport" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_transport}]]></variableExpression>
+	</variable>
+	<variable name="listrikAir" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_air_listrik}]]></variableExpression>
+	</variable>
+	<variable name="Pengobatan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_pengobatan}]]></variableExpression>
+	</variable>
+	<variable name="perumahan" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_perumahan}]]></variableExpression>
+	</variable>
+	<variable name="pph" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_pph}]]></variableExpression>
+	</variable>
+	<variable name="lembur" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_lembur}]]></variableExpression>
+	</variable>
+	<variable name="lain" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_lain}]]></variableExpression>
+	</variable>
+	<variable name="kotor" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{penghasilan_kotor}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="86" splitType="Stretch">
+			<textField>
+				<reportElement x="197" y="39" width="616" height="20" uuid="5bfdc8fc-59c4-42b5-8579-5cc62b1605f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="9" width="95" height="50" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="899" y="0" width="69" height="70" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"periode : ",
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="10" y="61" width="187" height="20" uuid="d0bb7042-51fe-4206-8d1d-29c5553124a9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="47">
+			<staticText>
+				<reportElement x="0" y="0" width="115" height="40" uuid="aa9c71ad-a34c-42e1-8d54-36c94a420c70"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Bagian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="0" width="26" height="40" uuid="dbe01261-ebf0-454a-be6d-a5a97dc78fd4"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Org]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="0" width="56" height="40" uuid="8cd3e1a1-0be5-45ca-b2b5-d9f34f3953be"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gaji Dasar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="197" y="0" width="56" height="40" uuid="8bbf463f-3e53-42d6-89ed-124637db648f"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan UMK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="0" width="56" height="40" uuid="8b205b2a-88ba-4dc0-b3f0-c462ee8071ed"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="365" y="0" width="56" height="40" uuid="d4a3ed97-06ef-4f6d-bf36-b7316e6dbb28"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Jab. Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="0" width="56" height="40" uuid="8e34e525-c1e5-4a18-b657-518f40f2f28a"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Strategis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="0" width="56" height="40" uuid="15706db1-f649-4065-becf-69399d61bb0c"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Kompens.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="533" y="0" width="56" height="40" uuid="b53f5873-401c-4a70-b0b2-eedca45046f7"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Transport]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="589" y="0" width="56" height="40" uuid="678c3a45-1654-49eb-93c5-a902daf40bc2"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Listrik/Air]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="645" y="0" width="56" height="40" uuid="796cd938-cc5e-4a91-b5e9-639b45869bcb"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="813" y="0" width="56" height="40" uuid="25df80fb-7d63-4169-b7e8-38142595575c"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Perumahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="757" y="0" width="56" height="40" uuid="ab8259fa-b253-481a-9b46-260e58cc0db2"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan PPH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="701" y="0" width="56" height="40" uuid="570477b2-721d-4fae-bed2-72beeec83f85"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Lain Lain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="925" y="0" width="61" height="40" uuid="45c2aa0d-5a04-408e-b058-3c9878efcdbb"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Penghasilan Kotor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="0" width="56" height="40" uuid="cea25ddf-3692-452b-be79-963c5307c689"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="869" y="0" width="56" height="40" uuid="0f2dd5a0-1db9-48df-b058-da8f908066ea"/>
+				<box bottomPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunjangan Lembur]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="115" height="20" uuid="a411ac57-aa12-4a76-851c-740998512c83"/>
+				<box leftPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_bagian}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="115" y="0" width="26" height="20" uuid="197e3b66-9946-4ccc-a68f-8007a07f1d2f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlah_orang}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="141" y="0" width="56" height="20" uuid="25bef709-04cd-4d1b-9900-3655e07e9c85"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_dasar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="197" y="0" width="56" height="20" uuid="415d3bbc-e551-49d8-bf56-ef9995d6ba9c"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="309" y="0" width="56" height="20" uuid="5f4c61e5-90dc-495d-97d3-27e82e0eb0bf"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="365" y="0" width="56" height="20" uuid="39a7f585-b058-4950-8882-892499c59230"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_jabatan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="421" y="0" width="56" height="20" uuid="abe87e5b-7787-491b-826d-4e0d8285153a"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="477" y="0" width="56" height="20" uuid="0d0c2674-026f-45bb-aaee-f6d43c45a7df"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_kompensasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="533" y="0" width="56" height="20" uuid="a321fe9a-2181-4ca2-80d5-64c9d311f57f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_transport}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="589" y="0" width="56" height="20" uuid="bd2e1e9b-16da-482b-b549-0ea1d63aea0b"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_air_listrik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="645" y="0" width="56" height="20" uuid="a7a8fc21-b97c-49ff-9395-502139c726c6"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_pengobatan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="813" y="0" width="56" height="20" uuid="b4ea3c2c-076b-484f-a54e-836d087ba9cf"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="757" y="0" width="56" height="20" uuid="e030de0d-88d5-43ac-b4b0-c927ecbb32c5"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_pph}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="869" y="0" width="56" height="20" uuid="1ee5e305-5f81-4f32-9fe7-a9b78e025e4f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="701" y="0" width="56" height="20" uuid="73f5b241-426f-498f-8cde-b33bbfaefc3b"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_lain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="925" y="0" width="61" height="20" uuid="a0aeef83-f412-4e7d-980d-4de6af82ac74"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{penghasilan_kotor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="253" y="0" width="56" height="20" uuid="964269f4-b6d0-4628-af23-fdccac6154ee"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="26">
+			<textField>
+				<reportElement x="115" y="6" width="26" height="20" uuid="200b0541-1479-494d-a080-dc442a15334f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{org}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="141" y="6" width="56" height="20" uuid="68292e57-6ecc-49e5-b286-544b48984331"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{gaji_dasar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="197" y="6" width="56" height="20" uuid="6009e4b8-7456-4c76-9acd-f6c5da70db75"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{umk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="253" y="6" width="56" height="20" uuid="5dad9813-2db8-4380-aa28-1a0797ab1776"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="309" y="6" width="56" height="20" uuid="e1d7b0a7-d004-4f63-bb11-e816b296689e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="365" y="6" width="56" height="20" uuid="0ac07852-9791-46d0-8a10-5bf54988736f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{jabStruktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="421" y="6" width="56" height="20" uuid="fe7a77a4-e2df-48b5-bb30-7cfb5f8d5fe2"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{strategis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="477" y="6" width="56" height="20" uuid="556deb24-5e17-42d3-8c5e-05ddb85c51f8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{kompensasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="533" y="6" width="56" height="20" uuid="645d9692-4ed7-4f3a-9573-cdd2e7691db6"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{transport}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="589" y="6" width="56" height="20" uuid="7336286e-76b8-494a-bd29-c2b319dd6d68"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{listrikAir}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="645" y="6" width="56" height="20" uuid="f47f644a-c35c-4a8b-9b49-d28f7d6a240c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Pengobatan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="813" y="6" width="56" height="20" uuid="18ef8261-b4c8-4ae1-8447-01ae42a42eb9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{perumahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="757" y="6" width="56" height="20" uuid="3c096513-fde9-4fe2-b3ba-a37a8a39bfa9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pph}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="869" y="6" width="56" height="20" uuid="96218386-bb27-4127-9446-89c90cc4e762"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="701" y="6" width="56" height="20" uuid="719d166e-c2fa-4946-8c43-badb577cbe36"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{lain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="925" y="6" width="61" height="20" uuid="4c8ce396-890a-4d6f-a61e-04e6941a8891"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{kotor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="6" width="115" height="20" uuid="d62e097a-40b6-4695-ae1a-9f12919860bf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

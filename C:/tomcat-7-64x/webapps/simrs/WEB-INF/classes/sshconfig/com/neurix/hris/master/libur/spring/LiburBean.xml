@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="liburAction" class="com.neurix.hris.master.libur.action.LiburAction"
+          p:liburBoProxy-ref="liburBoProxy" />
+
+    <bean id="liburBo" class="com.neurix.hris.master.libur.bo.impl.LiburBoImpl"
+          p:liburDao-ref="liburDao" />
+
+    <bean id="liburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="liburBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="liburDao" class="com.neurix.hris.master.libur.dao.LiburDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

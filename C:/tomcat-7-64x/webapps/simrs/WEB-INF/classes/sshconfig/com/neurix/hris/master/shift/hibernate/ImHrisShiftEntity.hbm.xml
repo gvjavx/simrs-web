@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.master.shift.model.ImHrisShiftEntity" table="im_hris_shift" dynamic-update="true" select-before-update="true" schema="public">
+
+        <id name="shiftId">
+            <column name="shift_id" sql-type="varchar" length="5" not-null="true"/>
+        </id>
+
+        <property name="shiftName">
+            <column name="shift_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="jamAwal">
+            <column name="jam_awal" sql-type="varchar" length="10"/>
+        </property>
+        <property name="jamAkhir">
+            <column name="jam_akhir" sql-type="varchar" length="10"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createDateWho">
+            <column name="create_date_who" sql-type="varchar"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar"/>
+        </property>
+        <property name="idBranch">
+            <column name="branch_id" sql-type="varchar" length="4"/>
+        </property>
+        <property name="kelompokPositionId">
+            <column name="kelompok_position_id" sql-type="varchar" length="10"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

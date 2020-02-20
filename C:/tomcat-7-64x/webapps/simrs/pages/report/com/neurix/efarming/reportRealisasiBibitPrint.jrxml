@@ -1,0 +1,1937 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportRealisasBibitiPrint" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="97aaed94-7f54-4259-9b83-05f2edca6d0e">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.background.image.properties" value="true,true,0.25,18,476,0,0,558,255"/>
+	<subDataset name="dataset1" uuid="0d0ed4b5-ef3f-483a-a02c-27693a01dae2"/>
+	<parameter name="reportParams.tahunTanam" class="java.lang.String"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.keyCode" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.musimTanam1" class="java.lang.String"/>
+	<parameter name="reportParams.musimTanam2" class="java.lang.String"/>
+	<parameter name="reportParams.musimTanam3" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[
+select
+a.*,
+total_luas_bibit_musim_tanam_1_kbd_pg + total_luas_bibit_musim_tanam_1_kbd_jasa as luas_musim_1_kbd,
+total_luas_bibit_musim_tanam_1_kbi_pg + total_luas_bibit_musim_tanam_1_kbi_jasa as luas_musim_1_kbi,
+total_luas_bibit_musim_tanam_1_kbn_pg + total_luas_bibit_musim_tanam_1_kbn_puslit as luas_musim_1_kbn,
+total_luas_bibit_musim_tanam_2_kbd_pg + total_luas_bibit_musim_tanam_2_kbd_jasa as luas_musim_2_kbd,
+total_luas_bibit_musim_tanam_2_kbi_pg + total_luas_bibit_musim_tanam_2_kbi_jasa as luas_musim_2_kbi,
+total_luas_bibit_musim_tanam_2_kbn_pg + total_luas_bibit_musim_tanam_2_kbn_puslit as luas_musim_2_kbn,
+total_luas_bibit_musim_tanam_3_kbd_pg + total_luas_bibit_musim_tanam_3_kbd_jasa as luas_musim_3_kbd,
+total_luas_bibit_musim_tanam_3_kbi_pg + total_luas_bibit_musim_tanam_3_kbi_jasa as luas_musim_3_kbi,
+total_luas_bibit_musim_tanam_3_kbn_pg + total_luas_bibit_musim_tanam_3_kbn_puslit as luas_musim_3_kbn
+from
+(
+select
+unit.branch_name as pabrik_gula,
+case when bibit_tahun_tanam.total_luas is null then 0 else bibit_tahun_tanam.total_luas end as total_luas_bibit_tahun_tanam,
+case when bibit_musim_tanam_1_kbd_pg.total_luas is null then 0 else bibit_musim_tanam_1_kbd_pg.total_luas end as total_luas_bibit_musim_tanam_1_kbd_pg,
+case when bibit_musim_tanam_1_kbd_jasa.total_luas is null then 0 else bibit_musim_tanam_1_kbd_jasa.total_luas end as total_luas_bibit_musim_tanam_1_kbd_jasa,
+case when bibit_musim_tanam_1_kbi_pg.total_luas is null then 0 else bibit_musim_tanam_1_kbi_pg.total_luas end as total_luas_bibit_musim_tanam_1_kbi_pg,
+case when bibit_musim_tanam_1_kbi_jasa.total_luas is null then 0 else bibit_musim_tanam_1_kbi_jasa.total_luas end as total_luas_bibit_musim_tanam_1_kbi_jasa,
+case when bibit_musim_tanam_1_kbn_pg.total_luas is null then 0 else bibit_musim_tanam_1_kbn_pg.total_luas end as total_luas_bibit_musim_tanam_1_kbn_pg,
+case when bibit_musim_tanam_1_kbn_puslit.total_luas is null then 0 else bibit_musim_tanam_1_kbn_puslit.total_luas end as total_luas_bibit_musim_tanam_1_kbn_puslit,
+case when bibit_musim_tanam_2_kbd_pg.total_luas is null then 0 else bibit_musim_tanam_2_kbd_pg.total_luas end as total_luas_bibit_musim_tanam_2_kbd_pg,
+case when bibit_musim_tanam_2_kbd_jasa.total_luas is null then 0 else bibit_musim_tanam_2_kbd_jasa.total_luas end as total_luas_bibit_musim_tanam_2_kbd_jasa,
+case when bibit_musim_tanam_2_kbi_pg.total_luas is null then 0 else bibit_musim_tanam_2_kbi_pg.total_luas end as total_luas_bibit_musim_tanam_2_kbi_pg,
+case when bibit_musim_tanam_2_kbi_jasa.total_luas is null then 0 else bibit_musim_tanam_2_kbi_jasa.total_luas end as total_luas_bibit_musim_tanam_2_kbi_jasa,
+case when bibit_musim_tanam_2_kbn_pg.total_luas is null then 0 else bibit_musim_tanam_2_kbn_pg.total_luas end as total_luas_bibit_musim_tanam_2_kbn_pg,
+case when bibit_musim_tanam_2_kbn_puslit.total_luas is null then 0 else bibit_musim_tanam_2_kbn_puslit.total_luas end as total_luas_bibit_musim_tanam_2_kbn_puslit,
+case when bibit_musim_tanam_3_kbd_pg.total_luas is null then 0 else bibit_musim_tanam_3_kbd_pg.total_luas end as total_luas_bibit_musim_tanam_3_kbd_pg,
+case when bibit_musim_tanam_3_kbd_jasa.total_luas is null then 0 else bibit_musim_tanam_3_kbd_jasa.total_luas end as total_luas_bibit_musim_tanam_3_kbd_jasa,
+case when bibit_musim_tanam_3_kbi_pg.total_luas is null then 0 else bibit_musim_tanam_3_kbi_pg.total_luas end as total_luas_bibit_musim_tanam_3_kbi_pg,
+case when bibit_musim_tanam_3_kbi_jasa.total_luas is null then 0 else bibit_musim_tanam_3_kbi_jasa.total_luas end as total_luas_bibit_musim_tanam_3_kbi_jasa,
+case when bibit_musim_tanam_3_kbn_pg.total_luas is null then 0 else bibit_musim_tanam_3_kbn_pg.total_luas end as total_luas_bibit_musim_tanam_3_kbn_pg,
+case when bibit_musim_tanam_3_kbn_puslit.total_luas is null then 0 else bibit_musim_tanam_3_kbn_puslit.total_luas end as total_luas_bibit_musim_tanam_3_kbn_puslit
+from
+im_branches unit
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tanam = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_tahun_tanam on bibit_tahun_tanam.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('7','8')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbd_pg on bibit_musim_tanam_1_kbd_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '9'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbd_jasa on bibit_musim_tanam_1_kbd_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('4','5')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbi_pg on bibit_musim_tanam_1_kbi_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '6'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbi_jasa on bibit_musim_tanam_1_kbi_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '3'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbn_pg on bibit_musim_tanam_1_kbn_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam1}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '1'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_1_kbn_puslit on bibit_musim_tanam_1_kbn_puslit.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('7','8')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbd_pg on bibit_musim_tanam_2_kbd_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '9'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbd_jasa on bibit_musim_tanam_2_kbd_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('4','5')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbi_pg on bibit_musim_tanam_2_kbi_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '6'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbi_jasa on bibit_musim_tanam_2_kbi_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '3'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbn_pg on bibit_musim_tanam_2_kbn_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam2}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '1'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_2_kbn_puslit on bibit_musim_tanam_2_kbn_puslit.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('7','8')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbd_pg on bibit_musim_tanam_3_kbd_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '9'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbd_jasa on bibit_musim_tanam_3_kbd_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id in ('4','5')
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbi_pg on bibit_musim_tanam_3_kbi_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '6'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbi_jasa on bibit_musim_tanam_3_kbi_jasa.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '3'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbn_pg on bibit_musim_tanam_3_kbn_pg.pabrik_gula = unit.branch_id
+left outer join
+(
+	select
+	a.pabrik_gula,
+	a.pabrik_gula_name,
+	sum(a.luas_petak) as total_luas
+	from
+	(
+	select
+	kontrak.permohonan_id as no_permohonan,
+	kontrak.no_kontrak as no_kontrak,
+	accept.lahan_id as kode_petak,
+	kontrak.pabrik_gula as pabrik_gula,
+	unit.branch_name as pabrik_gula_name,
+	kontrak.masa_tanam as masa_tanam,
+	accept.luas_poligon as luas_petak
+	from
+	it_ptpnx_kontrak_permohonan_lahan kontrak
+	inner join it_ptpnx_accept_permohonan_lahan accept on kontrak.permohonan_id = accept.permohonan_id
+	inner join im_branches unit on unit.branch_id = kontrak.pabrik_gula
+	inner join im_ptpnx_kategori kategori on kategori.kategori_id = kontrak.kategori_id
+	where kontrak.pabrik_gula like '%'
+	and kontrak.flag = 'Y'
+	and kontrak.masa_tebang = $P{reportParams.musimTanam3}
+	and kategori.tipe_kategori = 'bibit'
+	and kategori.kategori_id = '1'
+	and kontrak.status = '6'
+	) a
+	group by pabrik_gula,pabrik_gula_name
+) bibit_musim_tanam_3_kbn_puslit on bibit_musim_tanam_3_kbn_puslit.pabrik_gula = unit.branch_id
+where
+unit.branch_id !='KD01'
+order by unit.branch_id
+)a]]>
+	</queryString>
+	<field name="pabrik_gula" class="java.lang.String"/>
+	<field name="total_luas_bibit_tahun_tanam" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbd_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbd_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbi_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbi_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbn_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_1_kbn_puslit" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbd_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbd_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbi_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbi_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbn_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_2_kbn_puslit" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbd_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbd_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbi_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbi_jasa" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbn_pg" class="java.math.BigDecimal"/>
+	<field name="total_luas_bibit_musim_tanam_3_kbn_puslit" class="java.math.BigDecimal"/>
+	<field name="luas_musim_1_kbd" class="java.math.BigDecimal"/>
+	<field name="luas_musim_1_kbi" class="java.math.BigDecimal"/>
+	<field name="luas_musim_1_kbn" class="java.math.BigDecimal"/>
+	<field name="luas_musim_2_kbd" class="java.math.BigDecimal"/>
+	<field name="luas_musim_2_kbi" class="java.math.BigDecimal"/>
+	<field name="luas_musim_2_kbn" class="java.math.BigDecimal"/>
+	<field name="luas_musim_3_kbd" class="java.math.BigDecimal"/>
+	<field name="luas_musim_3_kbi" class="java.math.BigDecimal"/>
+	<field name="luas_musim_3_kbn" class="java.math.BigDecimal"/>
+	<variable name="SumOTahunTanam" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_tahun_tanam}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBDPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbd_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBDJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbd_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBIPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbi_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBIJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbi_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBNPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbn_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam1KBNPUSLIT" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbn_puslit}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBDPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbd_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBDJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbd_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBIPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbi_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBIJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbi_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBNPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbn_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam2KBNPUSLIT" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbn_puslit}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBDPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbd_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBDJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbd_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBIPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbi_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBIJASA" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbi_jasa}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBNPG" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbn_pg}]]></variableExpression>
+	</variable>
+	<variable name="sumOfMusimTanam3KBNPUSLIT" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbn_puslit}]]></variableExpression>
+	</variable>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="71" splitType="Stretch">
+			<staticText>
+				<reportElement x="290" y="44" width="82" height="13" uuid="81280f02-5af3-4b3c-b0d5-ef53244697b6"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[Tahun Tanam :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="372" y="44" width="99" height="13" forecolor="#000000" uuid="4391037b-206b-4a6a-8302-6f0f51ccefef"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tahunTanam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="23" width="287" height="20" uuid="79d31f8d-b2f1-460d-8dae-9d821eefc7d4"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="688" y="28" width="59" height="19" uuid="e5a4c962-1302-4611-a7f1-5ac07f9654d4"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="746" y="28" width="56" height="19" uuid="fc929774-be0d-4798-b729-4d7d5dae9af8"/>
+				<textElement>
+					<font fontName="Calibri" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="662" y="4" width="140" height="20" uuid="885ccae2-5384-4e94-b085-e8f8dca7ac58">
+					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[$P{reportParams.keyCode}]]></propertyExpression>
+				</reportElement>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.keyCode}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<textField>
+				<reportElement x="698" y="43" width="56" height="20" uuid="19a2645a-4c66-4cb0-844b-3295957a5be5"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="754" y="43" width="41" height="20" uuid="2c016405-a0bb-4bf9-ae0c-a87df4b22769"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="4" width="94" height="39" uuid="05e3cb87-c3df-40b0-80db-c2c63987c766"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="-13" y="0" width="74" height="94" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="6c043848-e197-41fb-a8ac-08435af6df82"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="109" y="20" width="709" height="21" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="63a855c8-a168-4b2f-bf9e-e842837c7c25"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Musim Tanam]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="61" y="0" width="757" height="20" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="952fc7fe-ba36-4a4e-b4a2-284621a6210b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Bibit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="61" y="20" width="48" height="21" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="8cc60dc2-2f65-4879-8403-3c777cfcf7a3"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TahunTanam]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="61" y="41" width="48" height="53" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="a72e0690-ea79-4982-8024-d36651a0eca9"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tahunTanam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="109" y="41" width="239" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="81d72073-9c25-42ad-92b8-d5c2002138dd"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.musimTanam1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="348" y="41" width="235" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="b1b13bae-1947-4be4-8da5-d481a124575d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.musimTanam2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="583" y="41" width="235" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="4a77d52f-4fb0-41d3-976f-39815b6a09e9"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.musimTanam3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="109" y="59" width="89" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="7e104bdc-853a-4231-86aa-89e6060f59d0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="109" y="76" width="44" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="6fe40640-9ca9-4cd8-aee8-dad943d19f64"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="153" y="76" width="45" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="3ece0987-dde8-448b-8944-da5eb1af0ae0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="236" y="76" width="43" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="5d6f7a99-7eda-4d05-b941-6598c0cda3db"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="198" y="59" width="81" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="57c663d8-8e32-45e6-8480-786e23227914"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="198" y="76" width="38" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="3da0d11a-73b8-45de-b694-e021134e09b4"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="279" y="59" width="69" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="b1b045c2-e041-4c6b-a6c9-b62d1cbe2fae"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="279" y="76" width="32" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="d15b3271-3bb3-448b-82c4-8810184aef19"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="311" y="76" width="37" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="5a8c9b0e-0435-472a-97d7-5078cc8f7741"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PUSLIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="392" y="76" width="45" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="bd77013c-bcb9-4be9-b171-05d01c73a070"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="437" y="59" width="81" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="bc1b7a99-1705-403b-81cc-0da0f3bc8aca"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="437" y="76" width="38" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="83a45a85-564f-4c8c-aaae-d0f30358cd9b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="59" width="89" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="1650944f-d300-43ff-92cc-4787a0ef63b3"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="76" width="44" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="b726672e-7ccb-4755-b558-5200ed6964cc"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="549" y="76" width="34" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="ea3a56c6-b43b-4ef5-b8ca-580b5a4bd024"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PUSLIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="518" y="76" width="31" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="adc7b1b6-d4ed-48d9-b76f-4e140e983adc"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="475" y="76" width="43" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="2a490bdb-72f3-4846-9c87-9de19b4e7dc0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="518" y="59" width="65" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="3b345e73-8bcc-49e3-8eca-e6532e51a16f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="583" y="76" width="44" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="d83e7717-3054-4a51-93e2-11107e475b74"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="627" y="76" width="45" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="3628250b-5940-4a3e-89e3-d205648f3b4e"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="710" y="76" width="43" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="6aba1902-233c-4cbf-9c49-11af2bcc0cde"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[JASA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="753" y="59" width="65" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="6d64e806-2cc9-4c34-8d84-c593c2e0e376"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="583" y="59" width="89" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="d90d5011-0948-4cd0-b5d0-0e58cdf6f14a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="784" y="76" width="34" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="203a0ef8-0b70-4c39-b436-aabcd0f1d858"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PUSLIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="753" y="76" width="31" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="db7ada17-e739-4de9-aab7-02092c159755"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="672" y="76" width="38" height="18" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="9d6b8a12-df0e-4cec-a082-abb0edefe938"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="672" y="59" width="81" height="17" isPrintWhenDetailOverflows="true" backcolor="#FFFF99" uuid="7dd80ce3-b688-4b50-a2fb-0ffa50183b4b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="7" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[KBI]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="-13" y="0" width="74" height="13" isPrintWhenDetailOverflows="true" uuid="7121c56a-77bc-41ce-972c-cc621b4c7ef4"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pabrik_gula}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="61" y="0" width="48" height="13" isPrintWhenDetailOverflows="true" uuid="28465e2d-21b0-4277-a0a5-854ab1453f28"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph leftIndent="3" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_tahun_tanam}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="153" y="0" width="45" height="13" isPrintWhenDetailOverflows="true" uuid="aea6f09c-74c8-45ce-ad6d-0fae7f9b2a8c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbd_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="109" y="0" width="44" height="13" isPrintWhenDetailOverflows="true" uuid="65b8ed1b-fdbd-41cc-9672-2527edea67b8"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph leftIndent="3" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbd_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="198" y="0" width="38" height="13" isPrintWhenDetailOverflows="true" uuid="c549f187-69f7-4443-b13a-cfa3d877b46e"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbi_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="236" y="0" width="43" height="13" isPrintWhenDetailOverflows="true" uuid="d14e2e15-6016-487a-b854-26907647f45f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbi_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="279" y="0" width="32" height="13" isPrintWhenDetailOverflows="true" uuid="12c1e7fe-7bec-49d4-ac99-c7fd6db9f328"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbn_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="311" y="0" width="37" height="13" isPrintWhenDetailOverflows="true" uuid="b3656366-62a2-4b69-aed7-e8fa17fd0499"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_1_kbn_puslit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="348" y="0" width="44" height="13" isPrintWhenDetailOverflows="true" uuid="9a429449-be3c-4feb-ac3a-610e4ad85d8a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbd_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="392" y="0" width="45" height="13" isPrintWhenDetailOverflows="true" uuid="bacb56b1-7c03-4eca-b8ed-d6306f1a4bb0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbd_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="437" y="0" width="38" height="13" isPrintWhenDetailOverflows="true" uuid="4e26aabf-cbb5-4445-8731-99fa789822cf"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbi_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="0" width="43" height="13" isPrintWhenDetailOverflows="true" uuid="1cdbd591-5bd2-47b0-ab75-1f94986c1836"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbi_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="518" y="0" width="31" height="13" isPrintWhenDetailOverflows="true" uuid="9d7f9cc9-ff78-45f4-941f-cd953bf18d0b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbn_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="549" y="0" width="34" height="13" isPrintWhenDetailOverflows="true" uuid="771cf94d-f1ba-4d49-8797-8f4d51d1f415"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_2_kbn_puslit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="583" y="0" width="44" height="13" isPrintWhenDetailOverflows="true" uuid="1a6fd3f5-6343-42a4-a760-c98052190224"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbd_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="627" y="0" width="45" height="13" isPrintWhenDetailOverflows="true" uuid="cb9c73d3-5bdf-4f20-88f0-c2a28bfc8037"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbd_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="672" y="0" width="38" height="13" isPrintWhenDetailOverflows="true" uuid="a9aac3f4-7dd9-434f-a366-de2ad19a9ff3"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbi_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="710" y="0" width="43" height="13" isPrintWhenDetailOverflows="true" uuid="96644b81-d778-402d-8ccb-4a0531246a63"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbi_jasa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="753" y="0" width="31" height="13" isPrintWhenDetailOverflows="true" uuid="f0d47d00-a8a9-43e3-81ed-a44730ac401c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbn_pg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="784" y="0" width="34" height="13" isPrintWhenDetailOverflows="true" uuid="218ad675-971b-498d-ae06-3518bc9b61af"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isStrikeThrough="false"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_luas_bibit_musim_tanam_3_kbn_puslit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="199" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="-13" y="0" width="74" height="11" backcolor="#CCCCCC" uuid="9d823185-4699-4d93-93d9-44c6c8d9238f"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PTPNX Total :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="61" y="0" width="48" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="59b3c3c1-7854-415e-8748-db94a19826b5"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SumOTahunTanam}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="109" y="0" width="44" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="d104a5bc-9b2a-4903-83fa-77b5e64e4807"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBDPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="153" y="0" width="45" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="70b195cf-a27a-4391-8a6f-35fa9015fb29"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBDJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="198" y="0" width="38" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="3537b2fc-9ffb-4c13-97e2-cc3aacf7480a"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBIPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="279" y="0" width="32" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="7c40779e-2d3a-4783-a4b6-564c0eaf765e"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBNPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="236" y="0" width="43" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="bf46eb80-dd4d-45be-aa31-c2b69c3a2b16"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBIJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="348" y="0" width="44" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="3f1d4e4d-75ba-4a57-ae01-c332b0b92e4a"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBDPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="311" y="0" width="37" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="7dfbdbb9-96ac-4601-a9c8-6adb42402623"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam1KBNPUSLIT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="437" y="0" width="38" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="48cafc6a-f09a-4cf5-8483-6fff1b4854d3"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBIPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="392" y="0" width="45" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="9c322ebd-93dc-453e-a9b6-52dd21771d2e"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBDJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="475" y="0" width="43" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="1589ac10-e8ce-4109-bad1-bca45a829186"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBIJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="518" y="0" width="31" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="7e707fef-ca33-4155-9bd8-0b669b38c17d"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBNPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="549" y="0" width="34" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="b0dcb14a-2aa1-4ce2-8bb2-1cea1d395ba5"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam2KBNPUSLIT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="583" y="0" width="44" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="dfbdad6a-f336-43c4-8717-4739037011a5"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBDPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="627" y="0" width="45" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="a1d3c22a-1224-48ef-84c7-2783b1c0f815"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBDJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="672" y="0" width="38" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="f92164ec-d53a-4a06-b762-6440d4d3bf56"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBIPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="710" y="0" width="43" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="e8bff266-44f6-437b-a132-0b9bce4da9f9"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBIJASA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="753" y="0" width="31" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="c5c87e94-536d-46a2-827f-613746b4058b"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBNPG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="784" y="0" width="34" height="11" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="c748a437-302a-4b26-b063-38e956b84b30"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="7" isBold="true"/>
+					<paragraph rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumOfMusimTanam3KBNPUSLIT}]]></textFieldExpression>
+			</textField>
+			<barChart>
+				<chart>
+					<reportElement x="17" y="28" width="767" height="158" uuid="75935358-e3e2-47ef-b16f-720d2618df46"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBD-" + $P{reportParams.musimTanam1}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_1_kbd}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBI-" + $P{reportParams.musimTanam1}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_1_kbi}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBN-" + $P{reportParams.musimTanam1}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_1_kbn}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBD-"+$P{reportParams.musimTanam2}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_2_kbd}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBI-"+$P{reportParams.musimTanam2}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_2_kbi}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBN-"+$P{reportParams.musimTanam2}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_2_kbn}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBD-"+$P{reportParams.musimTanam3}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_3_kbd}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBI-"+$P{reportParams.musimTanam3}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_3_kbi}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["KBN-"+$P{reportParams.musimTanam3}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{pabrik_gula}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{luas_musim_3_kbn}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

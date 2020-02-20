@@ -3705,11 +3705,11 @@ public class SmkBoImpl implements SmkBo {
             if(historyJabatan.size() > 0){
                 for(ImtHrisHistoryJabatanPegawaiEntity historyLoop : historyJabatan){
                     jumlahLoop++;
-                    if(historyLoop.getTanggalMutasiSk() != null ){
+                    if(historyLoop.getTanggalSkMutasi() != null ){
                         if(jumlahLoop == 1){
-                            tmpHasil = historyLoop.getTanggalMutasiSk().getMonth() + 1 ;
+                            tmpHasil = historyLoop.getTanggalSkMutasi().getMonth() + 1 ;
                         }else{
-                            tmpHasil = (historyLoop.getTanggalMutasiSk().getMonth() + 1) - tmpBulan;
+                            tmpHasil = (historyLoop.getTanggalSkMutasi().getMonth() + 1) - tmpBulan;
                         }
                         tmpBulan += tmpHasil;
                     }

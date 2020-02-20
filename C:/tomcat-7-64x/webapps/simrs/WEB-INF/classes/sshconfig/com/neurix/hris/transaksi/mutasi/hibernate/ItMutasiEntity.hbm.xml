@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity" dynamic-update="true"
+           table="it_hris_mutasi_jabatan" select-before-update="true" schema="public">
+
+
+        <id name="mutasiId">
+            <column name="mutasi_id" sql-type="varchar" length="11" not-null="true" />
+        </id>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="true" />
+        </property>
+        <property name="divisiLamaId">
+            <column name="divisi_lama_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="branchLamaId">
+            <column name="branch_lama_id" sql-type="varchar" length="5"  />
+        </property>
+        <property name="positionLamaId">
+            <column name="position_lama_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="divisiBaruId">
+            <column name="divisi_baru_id" sql-type="varchar" length="5"  />
+        </property>
+        <property name="branchBaruId">
+            <column name="branch_baru_id" sql-type="varchar" length="5"  />
+        </property>
+        <property name="positionBaruId">
+            <column name="position_baru_id" sql-type="varchar" length="5"   />
+        </property>
+        <property name="tanggalEfektif">
+            <column name="tanggal_efektif" sql-type="date" not-null="false" />
+        </property>
+        <property name="pjs">
+            <column name="pjs" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="menggantikanNip">
+            <column name="menggantikan_nip" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="tipeMutasi">
+            <column name="tipe" sql-type="varchar" length="10" not-null="false" />
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="nip"/>
+        </many-to-one>
+        <many-to-one name="imBranchesLama" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_lama_id"/>
+        </many-to-one>
+        <many-to-one name="imBranchesBaru" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_baru_id"/>
+        </many-to-one>
+        <many-to-one name="imDepartmentEntityLama" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="divisi_lama_id"/>
+        </many-to-one>
+        <many-to-one name="imDepartmentEntityBaru" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="divisi_baru_id"/>
+        </many-to-one>
+        <many-to-one name="imPositionLama" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_lama_id"/>
+        </many-to-one>
+        <many-to-one name="imPositionBaru" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_baru_id"/>
+        </many-to-one>
+
+
+    </class>
+</hibernate-mapping>

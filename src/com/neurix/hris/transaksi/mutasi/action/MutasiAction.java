@@ -6,6 +6,8 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.displaytag.LongDateWrapper;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.transaksi.mutasi.bo.MutasiBo;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiDocEntity;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
@@ -24,9 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -344,7 +344,12 @@ public class MutasiAction extends BaseMasterAction{
         logger.info("[MutasiAction.search] start process >>>");
 
         Mutasi searchMutasi = getMutasi();
+
         List<Mutasi> listOfsearchMutasi = new ArrayList();
+
+        if (searchMutasi.getStTanggalEfektif() != null && !"".equalsIgnoreCase(searchMutasi.getStTanggalEfektif())) {
+            searchMutasi.setTanggalEfektif(CommonUtil.convertToTimestamp(searchMutasi.getStTanggalEfektif()));
+        }
 
         try {
             listOfsearchMutasi = mutasiBoProxy.getByCriteria(searchMutasi);
@@ -470,13 +475,13 @@ public class MutasiAction extends BaseMasterAction{
         return SUCCESS;
     }
 
-    public String searchMutasiKualifikasi() {
+    /*public String searchMutasiKualifikasi() {
         logger.info("[MutasiAction.search] start process >>>");
 
         Mutasi searchMutasi = getMutasi();
         searchMutasi.setFlag("Y");
         List<Mutasi> listOfsearchMutasi = new ArrayList();
-
+        List<Mutasi> finalSearchMutasi = new ArrayList();
         try {
             listOfsearchMutasi = mutasiBoProxy.getKualifikasi(searchMutasi);
         } catch (GeneralBOException e) {
@@ -491,13 +496,35 @@ public class MutasiAction extends BaseMasterAction{
             addActionError("Error, " + e + ", please inform to your admin" );
             return ERROR;
         }
+
+        if (listOfsearchMutasi.size()!=0){
+            Comparator<Mutasi> comparator = new Comparator<Mutasi>() {
+                @Override
+                public int compare(Mutasi left, Mutasi right) {
+                    String awal =left.getNip().replace("-","");
+                    String akhir =right.getNip().replace("-","");
+                    Long angka1 = Long.parseLong(awal);
+                    Long angka2 = Long.parseLong(akhir);
+                    return (int) (angka1-angka2);
+                }
+            };
+            Collections.sort(listOfsearchMutasi, comparator);
+            String nip="";
+            for (Mutasi mutasi:listOfsearchMutasi){
+                if (!mutasi.getNip().equalsIgnoreCase(nip)){
+                    finalSearchMutasi.add(mutasi);
+                    nip=mutasi.getNip();
+                }
+            }
+        }
+
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfKualifikasi");
-        session.setAttribute("listOfKualifikasi", listOfsearchMutasi);
+        session.setAttribute("listOfKualifikasi", finalSearchMutasi);
 
         return "input_kualifikasi";
-    }
+    }*/
 
     @Override
     public String initForm() {
@@ -628,7 +655,17 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setPositionLamaName(positionLamaName);
                 mutasi.setPjsLama(pjsLama);
 
-                mutasi.setPenggantiNip(menggantikanId);
+                if (menggantikanId!=null){
+                    if (!menggantikanId.equalsIgnoreCase("-")){
+                        mutasi.setPenggantiNip(menggantikanId);
+                    }
+                    else {
+                        mutasi.setPenggantiNip("-");
+                    }
+                }else{
+                    mutasi.setPenggantiNip("-");
+
+                }
                 mutasi.setPenggantiNama(menggantikanNama);
                 mutasi.setBranchBaruId(branchBaruId);
                 mutasi.setBranchBaruName(branchBaruName);
@@ -639,6 +676,21 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setPjs(pjsBaru);
 
                 mutasi.setStatus(status);
+
+                if (status!=""){
+                    if ("M".equalsIgnoreCase(status)){
+                        mutasi.setStatusName("Move");
+                    }
+                    else if ("R".equalsIgnoreCase(status)){
+                        mutasi.setStatusName("Resign");
+                    }
+                    else if ("P".equalsIgnoreCase(status)){
+                        mutasi.setStatusName("Pensiun");
+                    }
+                    else{
+                        mutasi.setStatusName("Move Holding");
+                    }
+                }
 
                 //HttpSession session = ServletActionContext.getRequest().getSession();
                 mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
@@ -904,5 +956,30 @@ public class MutasiAction extends BaseMasterAction{
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public List initComboPersonil(String query, String branchId) {
+        logger.info("[MedicalRecordAction.initComboPersonil] start process >>>");
+
+        List<Biodata> listOfUser = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        try {
+            listOfUser = biodataBo.getListOfPersonil(query,branchId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = biodataBo.saveErrorMessage(e.getMessage(), "DesaBo.getComboDesaWithCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[MedicalRecordAction.initComboPersonil] Error when saving error,", e1);
+            }
+            logger.error("[MedicalRecordAction.initComboPersonil] Error when ," + "[" + logId + "] Found problem when retrieving combo data, please inform to your admin.", e);
+        }
+
+        logger.info("[MedicalRecordAction.initComboPersonil] end process <<<");
+
+        return listOfUser;
     }
 }
