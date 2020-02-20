@@ -40,6 +40,7 @@ public class MonitorRuanganAction extends BaseMasterAction {
     private TransaksiObatBo transaksiObatBoProxy;
     private RawatInapBo rawatInapBoProxy;
     private OrderGiziBo orderGiziBoProxy;
+    private Ruangan ruangan;
 
     public static Logger getLogger() {
         return logger;
@@ -291,6 +292,17 @@ public class MonitorRuanganAction extends BaseMasterAction {
 
     }
 
+    @Override
+    public String initForm() {
+
+        Ruangan ruangan = new Ruangan();
+        setRuangan(ruangan);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        return "search";
+
+    }
+
 
     public void setMonitorRuanganBoProxy(MonitorRuanganBo monitorRuanganBoProxy) {
         this.monitorRuanganBoProxy = monitorRuanganBoProxy;
@@ -328,9 +340,13 @@ public class MonitorRuanganAction extends BaseMasterAction {
         this.orderGiziBoProxy = orderGiziBoProxy;
     }
 
-    @Override
-    public String initForm() {
-        return null;
+
+    public Ruangan getRuangan() {
+        return ruangan;
+    }
+
+    public void setRuangan(Ruangan ruangan) {
+        this.ruangan = ruangan;
     }
 
     @Override

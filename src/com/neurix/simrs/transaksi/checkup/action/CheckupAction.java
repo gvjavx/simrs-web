@@ -27,6 +27,7 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
@@ -1951,5 +1952,12 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return branch;
+    }
+
+
+    public RegistrasiOnline getListDetailAntrianOnline(String noCheckup){
+        RegistrasiOnline registrasiOnline = new RegistrasiOnline();
+
+        return  registrasiOnline;
     }
 }

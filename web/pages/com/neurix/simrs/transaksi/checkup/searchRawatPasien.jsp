@@ -44,7 +44,21 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group date">
+                                    <input class="form-control" id="id_antrian" placeholder="Antrian Online"
+                                           onchange="saveAntrian()">
+                                    <div class="input-group-btn" onclick="saveAntrian()">
+                                        <button class="btn btn-success" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
+                                        <button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -419,6 +433,92 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-antrian">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>No Checkup Online</b></td>
+                                    <td><span id="an_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="an_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ID Pasien</b></td>
+                                    <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="an_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="an_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><span id="an_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Agama</b></td>
+                                    <td><span id="an_agama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Suku</b></td>
+                                    <td><span id="an_suku"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="an_alamat"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="an_provinsi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="an_kabupaten"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="an_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="an_desa"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type='text/javascript'>
     function detail_pasien(idCheckup) {
         var table = "";
@@ -537,6 +637,12 @@
             window.location.href = 'finspot:FingerspotVer;'+url;
         }
     });
+
+
+    function  saveAntrian() {
+        var noAntrian = $('#id_antrian').val();
+        $('#modal-antrian').modal({show:true, backdrop:'static'});
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
