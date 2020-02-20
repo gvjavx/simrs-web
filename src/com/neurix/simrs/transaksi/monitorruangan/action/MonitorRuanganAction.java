@@ -75,7 +75,8 @@ public class MonitorRuanganAction extends BaseMasterAction {
     public String search() {
 
         List<Ruangan> ruanganList = new ArrayList<>();
-        Ruangan ruangan = new Ruangan();
+        Ruangan ruangan = getRuangan();
+
         try {
             ruanganList = monitorRuanganBoProxy.getListRuangan(ruangan);
         } catch (GeneralBOException e) {
@@ -92,8 +93,9 @@ public class MonitorRuanganAction extends BaseMasterAction {
                 ruangan1 = new Ruangan();
 
                 if (ruang.getIdDetailCheckup() != null && !"".equalsIgnoreCase(ruang.getIdDetailCheckup())) {
+
                     HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-                    detailCheckup.setIdDetailCheckup(ruangan.getIdDetailCheckup());
+                    detailCheckup.setIdDetailCheckup(ruang.getIdDetailCheckup());
 
                     List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
 

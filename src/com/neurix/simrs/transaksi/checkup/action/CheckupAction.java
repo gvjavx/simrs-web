@@ -1955,7 +1955,7 @@ public class CheckupAction extends BaseMasterAction {
     }
 
 
-    public RegistrasiOnline getListDetailAntrianOnline(String noCheckup){
+    public RegistrasiOnline getDetailAntrianOnline(String noCheckup){
         RegistrasiOnline registrasiOnline = new RegistrasiOnline();
 
         return  registrasiOnline;

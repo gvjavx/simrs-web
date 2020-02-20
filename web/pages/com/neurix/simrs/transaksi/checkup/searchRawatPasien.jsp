@@ -504,6 +504,18 @@
                                     <td><b>Desa</b></td>
                                     <td><span id="an_desa"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Tanggal Daftar</b></td>
+                                    <td><span id="an_tgl_daftar"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tujuan Poli</b></td>
+                                    <td><span id="an_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Dokter</b></td>
+                                    <td><span id="an_dokter"></span></td>
+                                </tr>
                             </table>
                         </div>
 
@@ -642,6 +654,25 @@
     function  saveAntrian() {
         var noAntrian = $('#id_antrian').val();
         $('#modal-antrian').modal({show:true, backdrop:'static'});
+        // if(noAntrian != ''){
+        //     CheckupAction.getDetailAntrianOnline(noAntrian, function (response) {
+        //         if(response != null){
+        //             $('#modal-antrian').modal({show:true, backdrop:'static'});
+        //             $('#an_no_checkup').text(response.noCheckupOnline);
+        //             $('#an_id_pasien').text(response.idPasien);
+        //             $('#an_nama').text(response.idPasien);
+        //             $('#an_jenis_kelamin').text(response.idPasien);
+        //             $('#an_tgl').text(response.idPasien);
+        //             $('#an_agama').text(response.idPasien);
+        //             $('#an_suku').text(response.idPasien);
+        //             $('#an_alamat').text(response.idPasien);
+        //             $('#an_alamat').text(response.idPasien);
+        //             $('#an_alamat').text(response.idPasien);
+        //         }else{
+        //
+        //         }
+        //     });
+        // }
     }
 </script>
 
