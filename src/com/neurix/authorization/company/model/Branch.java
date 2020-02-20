@@ -25,6 +25,16 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private int maxJamIjinKeluar;
     private String areaId;
 
+    private String logoBranch;
+
+    public String getLogoBranch() {
+        return logoBranch;
+    }
+
+    public void setLogoBranch(String logoBranch) {
+        this.logoBranch = logoBranch;
+    }
+
     public String getAreaId() {
         return areaId;
     }

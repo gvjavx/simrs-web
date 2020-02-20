@@ -137,6 +137,7 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
             }
             else {
 
+
                 String token = request.getHeader("tokenId");
                 if (token != null) {
 

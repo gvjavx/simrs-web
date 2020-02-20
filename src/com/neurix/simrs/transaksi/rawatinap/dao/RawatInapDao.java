@@ -39,8 +39,10 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             if (mapCriteria.get("id_ruangan") != null){
                 criteria.add(Restrictions.eq("idRuangan", mapCriteria.get("id_ruangan").toString()));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
+            }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         List<ItSimrsRawatInapEntity> result = criteria.list();
         return result;
     }
@@ -257,7 +259,6 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setIdKelas(obj[15].toString());
                     if  (obj[16] != null){
                         rawatInap.setNoSep(obj[16].toString());
-
                     }
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -371,7 +372,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "a.no_sep, a.klaim_bpjs_flag\n" +
+                    "b.no_sep, b.klaim_bpjs_flag, b.status_bayar\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -491,8 +492,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
-                    rawatInap.setNoSep(obj[16].toString());
+                    rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
                     rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
+                    rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -510,6 +512,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                                 } else {
                                     jalan = alamatLengkap;
                                 }
+
+                                rawatInap.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+                                rawatInap.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
                             }
                         }
                     }

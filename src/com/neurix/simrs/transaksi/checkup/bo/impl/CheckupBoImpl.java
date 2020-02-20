@@ -207,12 +207,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setHubunganKeluarga(headerList.getHubunganKeluarga());
             headerCheckup.setRujuk(headerList.getRujuk());
             headerCheckup.setJenisKunjungan(headerList.getJenisKunjungan());
-            headerCheckup.setNoSep(headerList.getNoSep());
             headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
             headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
-            headerCheckup.setTarifBpjs(headerList.getTarifBpjs());
+            headerCheckup.setNoRujukan(headerList.getNoRujukan());
+            headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
+            headerCheckup.setTglRujukan(headerList.getNoRujukan());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
             try {
                 headerDetailCheckup = headerCheckupDao.getLastPoliAndStatus(headerList.getNoCheckup());
             } catch (HibernateException e){
@@ -227,6 +229,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerCheckup.setNamaRuangan(headerDetailCheckup.getNamaRuangan());
                 headerCheckup.setNoRuangan(headerDetailCheckup.getNoRuangan());
                 headerCheckup.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
+                headerCheckup.setNoSep(headerDetailCheckup.getNoSep());
+                headerCheckup.setTarifBpjs(headerDetailCheckup.getTarifBpjs());
 
                 DokterTeam dokterTeam = new DokterTeam();
                 dokterTeam.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
@@ -304,6 +308,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setTinggi(bean.getTinggi());
             headerEntity.setNoSep(bean.getNoSep());
 
+
             headerEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
             headerEntity.setKetRujukan(bean.getKetPerujuk());
             headerEntity.setKetKeyakinan(bean.getKetKeyakinan());
@@ -311,9 +316,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setBahasa(bean.getBahasa());
             headerEntity.setAlatBantu(bean.getAlatBantu());
             headerEntity.setGangguanLain(bean.getGangguanLain());
-            headerEntity.setTarifBpjs(bean.getTarifBpjs());
             headerEntity.setNoRujukan(bean.getNoRujukan());
             headerEntity.setNoPpkRujukan(bean.getNoPpkRujukan());
+
             if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
                 headerEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
             }
@@ -342,6 +347,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+                detailCheckupEntity.setNoSep(bean.getNoSep());
+                detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 
                 try {
                     checkupDetailDao.addAndSave(detailCheckupEntity);
@@ -421,6 +428,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
                                     riwayatTindakan.setFlag("Y");
                                     riwayatTindakan.setAction("C");
+                                    riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
 
                                     try {
                                         riwayatTindakanDao.addAndSave(riwayatTindakan);
@@ -429,6 +437,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     }
 
                                 }
+
                             } catch (HibernateException e){
                                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" +e.getMessage());
                                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat"+ e.getMessage());
@@ -665,6 +674,32 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             throw new GeneralBOException("[CheckupBoImpl.getNextHeaderId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListAntrian(String branch, String poli) throws GeneralBOException {
+        List<HeaderCheckup> result = new ArrayList<>();
+
+        try {
+            result = headerCheckupDao.getListAntrianPasien(branch, poli);
+        }catch (HibernateException e){
+            logger.error("[Found Error when search list antrian pasien] "+e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListPeriksa(String branch, String poli) throws GeneralBOException {
+        List<HeaderCheckup> result = new ArrayList<>();
+
+        try {
+            result = headerCheckupDao.getListPeriksaPasien(branch, poli);
+        }catch (HibernateException e){
+            logger.error("[Found Error when search list antrian pasien] "+e);
+        }
+
+        return result;
     }
 
     private String getNextDetailCheckupId(){
@@ -938,9 +973,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     alertPasien.setDiagnosa(alertPasienDiagnosa.getDiagnosa());
                 }
 
-                Long time = headerChekupEntity.getTglKeluar().getTime();
-                Date date = new Date(time);
-                alertPasien.setStTgl(date.toString());
+                alertPasien.setStTglMasuk(alertPasienDiagnosa.getStTglMasuk());
+                alertPasien.setStTglKeluar(alertPasienDiagnosa.getStTglKeluar());
                 alertPasienList.add(alertPasien);
             }
         }

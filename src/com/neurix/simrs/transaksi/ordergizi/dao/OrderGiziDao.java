@@ -157,14 +157,14 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y' ORDER BY g.created_date DESC";
+                    "AND a.flag = 'Y' \n";
 
             List<Object[]> results = new ArrayList<>();
 
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
-                        "\n ORDER BY b.tgl_antrian ASC";
+                SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n" +
+                        "ORDER BY g.created_date ASC";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -185,8 +185,8 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
 
                 if(!"".equalsIgnoreCase(bean.getStTglFrom())){
 
-                    SQL = SQL + "\n AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy')" +
-                            "\n ORDER BY b.tgl_antrian ASC";
+                    SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n" +
+                            "ORDER BY g.created_date ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -203,8 +203,8 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .list();
                 }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
 
-                    SQL = SQL + "\n AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" +
-                            "\n ORDER BY b.tgl_antrian ASC";
+                    SQL = SQL + "AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n" +
+                            "ORDER BY g.created_date ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -221,7 +221,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .list();
                 }else{
 
-                    SQL = SQL + "\n  ORDER BY b.tgl_antrian ASC";
+                    SQL = SQL + "ORDER BY g.created_date ASC";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -260,7 +260,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
-                    rawatInap.setNoSep(obj[16].toString());
+                    rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
                     rawatInap.setIdRawatInap(obj[17].toString());
                     rawatInap.setIdOrderGizi(obj[18].toString());
                     rawatInap.setApproveFlag(obj[19] == null ? "" : obj[19].toString());

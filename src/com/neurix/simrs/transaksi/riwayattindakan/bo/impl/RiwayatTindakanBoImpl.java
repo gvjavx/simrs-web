@@ -49,6 +49,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     riwayatTindakan.setLastUpdate(entity.getLastUpdate());
                     riwayatTindakan.setLastUpdateWho(entity.getLastUpdateWho());
                     riwayatTindakan.setFlagUpdateKlaim(entity.getFlagUpdateKlaim());
+                    riwayatTindakan.setTanggalTindakan(entity.getTanggalTindakan());
                     result.add(riwayatTindakan);
                 }
             }
@@ -75,6 +76,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setTanggalTindakan(bean.getTanggalTindakan());
 
             try {
                 riwayatTindakanDao.addAndSave(entity);

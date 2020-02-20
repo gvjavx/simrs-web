@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -31,6 +32,34 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String caraPasienPulang;
     private String pendamping;
     private String tempatTujuan;
+
+    private String noSep;
+    private BigDecimal tarifBpjs;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
 
     public String getCaraPasienPulang() {
         return caraPasienPulang;

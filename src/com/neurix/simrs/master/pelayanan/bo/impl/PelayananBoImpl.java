@@ -83,4 +83,57 @@ public class PelayananBoImpl implements PelayananBo{
 
         return listApotek;
     }
+
+    @Override
+    public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
+        List<Pelayanan> result = new ArrayList<>();
+
+        if(bean != null){
+
+            Map hsCriteria = new HashMap();
+
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+            }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
+            if (bean.getTipePelayanan() != null && !"".equalsIgnoreCase(bean.getTipePelayanan())){
+                hsCriteria.put("tipe_pelayanan", bean.getTipePelayanan());
+            }
+
+            hsCriteria.put("flag","Y");
+
+            List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
+
+            try {
+                entityList = pelayananDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[PelayananBoImpl.getByCriteria] Error get pelayanan data "+e.getMessage());
+            }
+
+            if (!entityList.isEmpty()){
+                Pelayanan pelayanan;
+                for (ImSimrsPelayananEntity entity : entityList){
+                    pelayanan = new Pelayanan();
+                    pelayanan.setIdPelayanan(entity.getIdPelayanan());
+                    pelayanan.setNamaPelayanan(entity.getNamaPelayanan());
+                    pelayanan.setAction(entity.getAction());
+                    pelayanan.setFlag(entity.getFlag());
+                    pelayanan.setCreatedDate(entity.getCreatedDate());
+                    pelayanan.setCreatedWho(entity.getCreatedWho());
+                    pelayanan.setLastUpdate(entity.getLastUpdate());
+                    pelayanan.setLastUpdateWho(entity.getLastUpdateWho());
+                    pelayanan.setTipePelayanan(entity.getTipePelayanan());
+                    pelayanan.setNotPoli(entity.getIsPoli());
+                    pelayanan.setBranchId(entity.getBranchId());
+                    result.add(pelayanan);
+                }
+            }
+        }
+
+        logger.info("[PelayananBoImpl.getByCriteria] End <<<<<<");
+        return result;
+    }
 }

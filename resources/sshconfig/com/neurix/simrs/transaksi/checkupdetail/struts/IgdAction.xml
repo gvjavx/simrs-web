@@ -77,6 +77,13 @@
             <result name="init_add">/pages/com/neurix/simrs/transaksi/igd/addRawatIgd.jsp</result>
             <result name="init_daftar">/pages/com/neurix/simrs/transaksi/igd/addPendaftaranIgd.jsp</result>
 
+            <result name="print_resep" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

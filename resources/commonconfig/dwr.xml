@@ -382,7 +382,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"/>
       </create>
 
-      <!--Permintaan Vendor-->
+      <!--Verificator-->
       <create creator="new">
           <param name="class" value="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"/>
       </create>
@@ -397,6 +397,16 @@
           <param name="class" value="com.neurix.simrs.transaksi.permintaangizi.action.PermintaanGiziAction"/>
       </create>
 
+      <!--Kasir Rawat Jalan-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction"/>
+      </create>
+
+      <!--Kasir Rawat Inap-->
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"/>
+      </create>
+
       <convert converter="bean" match="com.neurix.simrs.bpjs.eklaim.model.KlaimDataCenterResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
@@ -407,6 +417,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.obat.model.Obat"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.obatinap.model.ObatInap"/>
       <convert converter="bean" match="com.neurix.simrs.master.lab.model.Lab"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.Pelayanan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLab"/>
       <convert converter="bean" match="com.neurix.simrs.master.labdetail.model.LabDetail"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail"/>

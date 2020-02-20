@@ -52,6 +52,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
     <script type='text/javascript'>
 
         function confirm() {
@@ -905,6 +906,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <s:if test='tipe == "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
@@ -988,6 +991,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </s:if>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
@@ -1134,9 +1138,10 @@
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
                         <thead>
                         <td>No Checkup</td>
-                        <%--<td>Nama Pasien</td>--%>
                         <td>Diagnosa Terakhir</td>
+                        <td>Tanggal Masuk</td>
                         <td>Tanggal Keluar</td>
+                        <td>View Details RM</td>
                         </thead>
                         <tbody id="body-rekam-medic">
                         </tbody>
@@ -1224,6 +1229,48 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-detail-rekam-medic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Custom Tabs -->
+                <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
+                    <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <table class="table">
+                      <tbody id="list-body-rekam-medic">
+                      </tbody>
+                    </table>
+                    <input type="hidden" id="rm-no-checkup" name="" value="">
+                    <!-- /.tab-pane -->
+                  </div>
+                  <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     $(document).ready(function () {
@@ -1493,7 +1540,7 @@
 
                 namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
                 diagnosa = response.diagnosa;
-                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTgl)) + "</strong>";
+                tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" +  $.datepicker.formatDate('dd-mm-yy', new Date(response.stTglKeluar)) + "</strong>";
 
                 if (response.listOfAlergi != null) {
                     $.each(response.listOfAlergi, function (i, item) {
@@ -1523,12 +1570,13 @@
         var namaPasien = "";
 
         CheckupAction.listRekamMedic(idPasien, function (response) {
-            console.log(response);
+            // console.log(response);
             $.each(response, function (i, item) {
                 var noCheckup = "";
                 var dignosa = "";
                 var tanggal = "";
-                var dateFormat = "";
+                var dateFormatMasuk = "";
+                var dateFormatKeluar = "";
 
                 if(item.noCheckup != null){
                     noCheckup = item.noCheckup;
@@ -1536,14 +1584,18 @@
                 if(item.diagnosa != null){
                     dignosa = item.diagnosa;
                 }
-                if(item.stTgl != null){
-                    tanggal = item.stTgl;
-                    dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                if(item.stTglMasuk != null && item.stTglKeluar != null){
+                    tanggalMasuk = item.stTglMasuk;
+                    tanggalKeluar = item.stTglKeluar;
+                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
+                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
                 }
                 table += "<tr>" +
                         "<td>" + noCheckup + "</td>" +
                         "<td>" + dignosa + "</td>" +
-                        "<td>" + dateFormat + "</td>" +
+                        "<td align='center'>" + dateFormatMasuk + "</td>" +
+                        "<td align='center'>" + dateFormatKeluar + "</td>" +
+                        "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
                         "</tr>";
 
                 namaPasien = item.namaPasien;
@@ -1553,6 +1605,49 @@
             $('#nama_medik').html(namaPasien);
             $("#body-rekam-medic").html(table);
         });
+    }
+
+    function viewDetailRekamMedic(noCheckup){
+      console.log("viewDetailRekamMedic ==> klik");
+      $("#rm-no-checkup").val(noCheckup);
+      $("#modal-detail-rekam-medic").modal("show");
+    }
+
+    function viewDetailRekamMedicByKategori(kategori){
+      if (kategori == "ri") {
+        CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
+          // console.log(response);
+          var str = "";
+          $.each(response, function(i, item) {
+            str += "<tr>"+
+                  "<td>"+item.namaKategori+"</td>"+
+                  "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
+                  "</tr>";
+          });
+          $("#list-body-rekam-medic").html("");
+          $("#list-body-rekam-medic").html(str);
+        });
+      } else {
+        $("#list-body-rekam-medic").html("");
+        if (kategori == "mon") {
+
+          str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          $("#list-body-rekam-medic").html(str);
+
+        } else if (kategori == "igd") {
+          str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+                    "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+          $("#list-body-rekam-medic").html(str);
+        } else {
+
+        }
+      }
     }
 
     function closeAlert() {
@@ -1751,7 +1846,6 @@
             $("#intansi_perujuk").attr("disabled", true);
             $("#intansi_perujuk").removeAttr("placeholder");
         }
-
     }
 
     function showAdmisiPasien() {

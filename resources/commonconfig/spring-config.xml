@@ -179,4 +179,10 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikator/spring/VerifikatorBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/riwayattindakan/spring/RiwayatTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaangizi/spring/PermintaanGiziBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/spring/KasirRawatInapBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/spring/KasirRawatJalanBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/transaksi/monitorruangan/spring/MonitorRuanganBean.xml"/>
+
 </beans>

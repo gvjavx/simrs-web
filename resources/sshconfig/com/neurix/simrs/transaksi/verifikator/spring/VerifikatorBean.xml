@@ -36,9 +36,11 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
-                <prop key="getSearchObatTransaksiByCriteria">readOnly</prop>
-                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
-                <prop key="saveEditDetail">PROPAGATION_REQUIRED</prop>
+                <prop key="getListAllTindakan">readOnly</prop>
+                <prop key="getListVerifikasiRawatInap">readOnly</prop>
+                <prop key="getListVerifikasiRawatJalan">PROPAGATION_REQUIRED</prop>
+                <prop key="updateFlagKlaim">PROPAGATION_REQUIRED</prop>
+                <prop key="updateKlaimBpjsFlag">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

@@ -68,6 +68,16 @@ public class RawatInap {
     private String approveFlag;
     private String diterimaFlag;
 
+    private String statusBayar;
+
+    public String getStatusBayar() {
+        return statusBayar;
+    }
+
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
+
     public String getDiterimaFlag() {
         return diterimaFlag;
     }

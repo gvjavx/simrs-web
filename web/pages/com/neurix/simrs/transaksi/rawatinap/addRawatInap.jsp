@@ -94,13 +94,15 @@
                                     <s:hidden id="id_rawat_inap" name="rawatInap.idRawatInap"/>
                                     <s:hidden id="id_pasien" name="rawatInap.idPasien"/>
                                     <s:hidden id="id_jenis_pasien" name="rawatInap.idJenisPeriksa"/>
-                                    <tr>
-                                        <td width="45%"><b>No SEP</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="rawatInap.noSep"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                                        <tr>
+                                            <td width="45%"><b>No SEP</b></td>
+                                            <td style="vertical-align: middle;">
+                                                <table>
+                                                    <s:label cssClass="label label-success" name="rawatInap.noSep"></s:label></table>
+                                            </td>
+                                        </tr> 
+                                    </s:if>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -154,13 +156,13 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Poli</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="rawatInap.namaPelayanan"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <%--<tr>--%>
+                                        <%--<td><b>Poli</b></td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<s:label name="rawatInap.namaPelayanan"></s:label></table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -226,45 +228,45 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>
                     </div>
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
-                                        <i class="fa fa-edit"></i> Form Resiko Dekubitus
-                                    </button>
-                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
-                                        <i class="fa fa-edit"></i> Form Fungsional
-                                    </button>
-                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
-                                        <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
-                                        <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
-                                    </button>
-                                    <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">
-                                        <i class="fa fa-edit"></i> Form Seksual dan Reproduksi
-                                    </button>
-                                    <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">
-                                        <i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">
-                                    <i class="fa fa-edit"></i> Form Psikososial dan Ekonomi
-                                </button>
-                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">
-                                    <i class="fa fa-edit"></i> Form Spritual
-                                </button>
-                                <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">
-                                    <i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul
-                                </button>
-                            </div>
-                        </div>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap10')">
+                            <i class="fa fa-edit"></i> Form Riwayat Kesehatan
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap11')">
+                            <i class="fa fa-edit"></i> Form Keadaan Umum
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap12')">
+                            <i class="fa fa-edit"></i> Form Pemeriksaan Fisik
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap13')">
+                            <i class="fa fa-edit"></i> Form Asesmen Nyeri
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">
+                            <i class="fa fa-edit"></i> Form Resiko Dekubitus
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">
+                            <i class="fa fa-edit"></i> Form Fungsional
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">
+                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">
+                            <i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">
+                            <i class="fa fa-edit"></i> Form Seksual dan Reproduksi
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">
+                            <i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">
+                            <i class="fa fa-edit"></i> Form Psikososial dan Ekonomi
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">
+                            <i class="fa fa-edit"></i> Form Spritual
+                        </button>
+                        <button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">
+                            <i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul
+                        </button>
                     </div>
 
                     <div class="box-header with-border"></div>
@@ -1474,7 +1476,7 @@
 
 
 <div class="modal fade" id="modal-resiko">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1489,8 +1491,8 @@
                     <thead>
                       <td>Asesmen</td>
                       <td>Skor</td>
-                      <td>Created By</td>
-                      <td>Created</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                       <td>Action</td>
                     </thead>
                     <tbody id="body-list-resiko">
@@ -1546,7 +1548,7 @@
 </div>
 
 <div class="modal fade" id="modal-asesmen">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1561,8 +1563,8 @@
                   <table class="table table-bordered">
                     <thead>
                       <td>Asesmen</td>
-                      <td>Created By</td>
-                      <td>Created</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                       <td>Action</td>
                     </thead>
                     <tbody id="body-list-asesmen">
@@ -1721,8 +1723,8 @@
                       <td>tensi</td>
                       <td>bb</td>
                       <td>tb</td>
-                      <td>Insert By</td>
-                      <td>Insert Date</td>
+                      <td>Created Who</td>
+                      <td>Created Date</td>
                     </thead>
                     <tbody id="body-list-vital-sign">
 
@@ -1751,7 +1753,17 @@
                     <br>
                       <div class="form-group">
                         <div class="row">
-                          <div class="col-md-1">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="mvs_date"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-3">
                             <label>Jam</label>
                           </div>
                           <div class="col-md-2">
@@ -1905,7 +1917,7 @@
                       <i class="fa fa-pie-chart"></i> View Graf
                     </button> --%>
                   </div>
-                  <table class="table table-bordered">
+                  <table class="table table-bordered" style="font-size:11px;">
                     <thead>
                       <td>tgl</td>
                       <td>macam cairan</td>
@@ -1919,7 +1931,7 @@
                       <td>dari</td>
                       <td>balance cairan</td>
                       <td>keterangan</td>
-                      <td>insert by</td>
+                      <td>Created Who</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -1949,6 +1961,16 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="mcr_date">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4">
                             <label>Macam Cairan</label>
                           </div>
                           <div class="col-md-8">
@@ -1971,8 +1993,8 @@
                           <div class="col-md-4">
                             <label>Jumlah (dalam botol)</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_jumlah">
+                          <div class="col-md-4">
+                            <input type="number" name="" value="" class="form-control" id="mcr_jumlah">
                           </div>
                         </div>
                       </div>
@@ -1982,11 +2004,11 @@
                           </div>
                           <div class="col-md-4">
                             <label>Jam mulai</label>
-                            <input type="text" name="" value="" class="form-control" id="mcr_mulai">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_mulai">
                           </div>
                           <div class="col-md-4">
                             <label>Jam selesai</label>
-                            <input type="text" name="" value="" class="form-control" id="mcr_selesai">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_selesai">
                           </div>
                         </div>
                       </div>
@@ -1995,8 +2017,11 @@
                           <div class="col-md-4">
                             <label>Cek tambahan obat</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_cek">
+                          <div class="col-md-4">
+                            <select class="form-control" name="" id="mcr_cek">
+                              <option value="Ya">Ya</option>
+                              <option value="Tidak">Tidak</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -2006,7 +2031,7 @@
                             <label>Sisa</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="text" name="" value="" class="form-control" id="mcr_sisa">
+                            <input type="number" name="" value="" class="form-control" id="mcr_sisa">
                           </div>
                         </div>
                       </div>
@@ -2015,8 +2040,8 @@
                           <div class="col-md-4">
                             <label>Jam ukur buang</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_buang">
+                          <div class="col-md-4">
+                            <input type="text" name="" value="" class="time form-control" id="mcr_buang">
                           </div>
                         </div>
                       </div>
@@ -2040,8 +2065,8 @@
                           <div class="col-md-4">
                             <label>Balance Cairan</label>
                           </div>
-                          <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_balance">
+                          <div class="col-md-4">
+                            <input type="number" name="" value="" class="form-control" id="mcr_balance">
                           </div>
                         </div>
                       </div>
@@ -2129,6 +2154,16 @@
                     <br>
                       <div class="form-group">
                         <div class="row">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="nonpar_date"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
                           <div class="col-md-4">
                             <label>Obat</label>
                           </div>
@@ -2212,6 +2247,16 @@
             <div class="modal-body">
                 <div class="box">
                     <br>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label>Created Date</label>
+                          </div>
+                          <div class="col-md-4">
+                            <input type="date" name="" value="" class="date form-control" id="par_date"/>
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
@@ -2304,6 +2349,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-edukasi">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Edukasi Pasien Dan Keluarga Terintregasi </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap14')">
+                        <i class="fa fa-plus"></i> Add Header Edukasi
+                    </button>
+                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap15')">
+                        <i class="fa fa-plus"></i> Add Parameter Edukasi
+                    </button>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <td>Asesmen</td>
+                        <td>Created Who</td>
+                        <td>Created Date</td>
+                        <td>Action</td>
+                        </thead>
+                        <tbody id="list-body-header-edukasi">
+
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <td>Asesmen</td>
+                        <td>Created Who</td>
+                        <td>Created Date</td>
+                        <td>Action</td>
+                        </thead>
+                        <tbody id="list-body-edukasi">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mask"></div>
 <script type='text/javascript'>
@@ -2313,9 +2407,34 @@
     var idRawatInap     = $('#id_rawat_inap').val();
     var idPasien        = $('#id_pasien').val();
     var noCheckup       = $('#no_checkup').val();
+    var today           = new Date();
+    var month           = ""+(today.getMonth()+1);
+    var day             = ""+today.getDate();
+
+    if (month.length < 2) {
+      month = "0"+month;
+    }
+    if (day.length < 2) {
+      day = "0"+day;
+    }
+    var date = today.getFullYear()+"-"+month+"-"+day;
+    // console.log(date);
+
+    function titleCase(string) {
+        var sentence = string.toLowerCase().split(" ");
+        for(var i = 0; i< sentence.length; i++){
+           sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+        // document.write(sentence.join(" "));
+        return sentence;
+     }
 
     $(document).ready(function () {
         $('#rawat_inap').addClass('active');
+        $("#mcr_mulai").timepicker();
+        $("#mcr_selesai").timepicker();
+        $("#mcr_buang").timepicker();
+        $(".date").val(date);
         listDokter();
         listTindakan();
         listDiagnosa();
@@ -2350,8 +2469,8 @@
     });
 
     function hitungStatusBiaya() {
-        CheckupDetailAction.getStatusBiayaTindakan(noCheckup, function (response) {
-            if (response.jenisTransaksi == "bpjs") {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+            if (response.idJenisPeriksaPasien == "bpjs") {
                 $('#status_bpjs').show();
                 if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
@@ -2637,6 +2756,7 @@
         var data = [];
         var dokter = "";
         TeamDokterAction.listDokter(idDetailCheckup, function (response) {
+            console.log(response)
             data = response;
             if (data != null) {
                 $.each(data, function (i, item) {
@@ -2677,6 +2797,7 @@
         var idDokter = $('#tin_id_dokter').val();
         var idPerawat = 1;
         var qty = $('#tin_qty').val();
+        console.log(qty);
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
 
@@ -3967,6 +4088,12 @@
         var str = "";
         if (response != null){
                 var n = 0;
+                var dateupline = "<div class='form-group'>"+
+                                "<div class='row'>"+
+                                "<div class='col-md-4'><label>Created Date</label></div>"+
+                                "<div class='col-md-4'><input type='date' class='form-control' id='val_rsk_date' /></div>"
+                                "</div>"+
+                                "</div>";
                 $.each(response, function (i, item) {
                     n = i;
                     var upline = "";
@@ -4159,6 +4286,8 @@
                           } else {
                             if (item.type == "date") {
                               opt = "<input type='date' class='form-control' id='val_rsk_"+i+"'>";
+                            } else if (item.type == "number"){
+                              opt = "<input type='number' class='form-control' id='val_rsk_"+i+"'>";
                             } else {
                               opt = "<input type='text' class='form-control' id='val_rsk_"+i+"'>";
                             }
@@ -4715,8 +4844,8 @@
                     "<td>Skin Tes</td>"+
                     "<td>Waktu</td>"+
                     "<td>Keterangan</td>"+
-                    "<td>Insert By</td>"+
-                    "<td>Insert Date</td>"+
+                    "<td>Created Who</td>"+
+                    "<td>Created Date</td>"+
                     "</tr>";
         } else {
 
@@ -4736,8 +4865,8 @@
                     "<td>Dosis</td>"+
                     "<td>Waktu</td>"+
                     "<td>Keterangan</td>"+
-                    "<td>Insert By</td>"+
-                    "<td>Insert Date</td>"+
+                    "<td>Created Who</td>"+
+                    "<td>Created Date</td>"+
                     "</tr>";;
         }
 
@@ -4844,7 +4973,185 @@
         alert(response.msg);
       }
     });
-  }
+  };
+
+
+    function showFormEdukasi(){
+        $("#modal-edukasi").modal("show");
+
+        dwr.engine.setAsync(true);
+        RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, "inap14", function(response){
+            if(response.length > 0){
+                var strhead = "";
+                $.each(response, function(i, itemHeader){
+                    strhead += "<tr>"+
+                        "<td>"+itemHeader.namaKategori+"</td>"+
+                        "<td>"+itemHeader.createdWho+"</td>"+
+                        "<td>"+itemHeader.stDate+"</td>"+
+                        "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+itemHeader.groupId+"')\">View</button></td>"+
+                        "</tr>";
+                });
+            }
+
+            RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, "inap15", function(bodyresponse){
+                if(response.length > 0){
+                    var strbody = "";
+                    $.each(bodyresponse, function(i, itemBody){
+                        strbody += "<tr>"+
+                            "<td>"+itemBody.namaKategori+"</td>"+
+                            "<td>"+itemBody.createdWho+"</td>"+
+                            "<td>"+itemBody.stDate+"</td>"+
+                            "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+itemBody.groupId+"')\">View</button></td>"+
+                            "</tr>";
+                    });
+                }
+
+                $("#list-body-header-edukasi").html(strhead);
+                $("#list-body-edukasi").html(strbody);
+            });
+        });
+    };
+
+    function addFormEdukasi(kategori){
+
+        $("#btn-save-edukasi").html("");
+        $("#btn-save-edukasi").html("<button class='btn btn-success' onclick=\"saveFormEdukasi('"+kategori+"')\"></button>");
+        dwr.engine.setAsync(true);
+        RawatInapAction.getListParameterByKategori(noCheckup, idDetailCheckup, kategori, function(response){
+
+            var str = "";
+            if (response != null){
+                var n = 0;
+                $.each(response, function (i, item) {
+                    n = i;
+                    var upline = "";
+                    if (item.namaParameter.length > 25) {
+                        upline ="<div class='form-group'>" +
+                            "<div class='row'>"+
+                            "<div class='col-md-8'>"+
+                            "<label>"+item.namaParameter+"</label>"+
+                            "</div>"+
+                            "<div class='col-md-4'>";
+                    } else {
+                        upline ="<div class='form-group'>" +
+                            "<div class='row'>"+
+                            "<div class='col-md-4'>"+
+                            "<label>"+item.namaParameter+"</label>"+
+                            "</div>"+
+                            "<div class='col-md-8'>";
+                    }
+
+                    var opt = "";
+                    RawatInapAction.getListSkorRanapByParam(item.idParameter, function(skors){
+
+                        var up_select = "<select class='form-control' id='val_rsk_"+i+"' onchange=\"showOtherInput(this.id)\">";
+                        // var other_text = "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none'/>";
+                        if (skors.length > 0) {
+                            $.each(skors, function(i, itemSkor){
+                                opt += "<option value="+itemSkor.ketSkor+">"+itemSkor.namaSkor+"</option>";
+                            });
+                        } else {
+                            if (item.type == "date") {
+                                opt = "<input type='date' class='form-control' id='val_rsk_"+i+"'>";
+                            } else if (item.type == "number"){
+                                opt = "<input type='number' class='form-control' id='val_rsk_"+i+"'>";
+                            } else {
+                                opt = "<input type='text' class='form-control' id='val_rsk_"+i+"'>";
+                            }
+                        }
+
+
+                        // console.log(skors);
+
+                        var down_select = "</select>";
+                        var downline = "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
+                            "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
+                            "<input type='text' class='form-control' id='ot_val_rsk_"+i+"' style='display:none' placeholder='sebutkan ...'/>"+
+                            "</div>" +
+                            "</div>"+
+                            "<hr style='color:#b0b0b0;'/>"+
+                            "</div>";
+                        // "<div class='box-header with-border' style='margin-bottom: 7px;'></div>";
+
+                        if (skors.length > 0) {
+                            str += upline+up_select+opt+down_select+downline;
+                        } else {
+                            str += upline+opt+downline;
+                        }
+
+                        $("#ind_edukasi").val(n);
+                        $("#body_edukasi").html(str);
+                    });
+                });
+            };
+        });
+    }
+
+    function saveFormEdukasi(kategori){
+
+        var jsonrq = [];
+        var ind = $("#ind_edukasi").val();
+
+        for (i = 0; i <= ind; i++){
+
+            var id_rsk = $("#id_rsk_"+i+"").val();
+
+            var nilai = "";
+            if ($("#val_rsk_"+i+"").is("select")) {
+                nilai = $("#val_rsk_"+i+" option:selected").text();
+            } else {
+                nilai = $("#val_rsk_"+i+"").val();
+            }
+
+            var name_rsk = $("#name_rsk_"+i+"").val();
+            var ket_rsk = "";
+            var val_rsk = "0";
+
+            if (nilai.toLowerCase() == "lain") {
+                ket_rsk = $("#ot_val_rsk_"+i+"").val();
+            } else {
+                ket_rsk = nilai;
+            }
+
+            jsonrq.push({'id':id_rsk, 'val':val_rsk, 'name':name_rsk, 'ket':ket_rsk});
+        }
+        var jsonstr = JSON.stringify(jsonrq);
+        dwr.engine.setAsync(true);
+        RawatInapAction.saveSkorRanapByKategori(noCheckup, idDetailCheckup, kategori, jsonstr, function(response){
+            if (response.status == "success") {
+                alert("sukses");
+
+                RawatInapAction.getListGroupSkorRanap(noCheckup, idDetailCheckup, kategori, function(response){
+                    if (response != null) {
+                        var str = "";
+                        $.each(response, function(i, item){
+                            str += "<tr>"+
+                                "<td>"+item.namaKategori+"</td>"+
+                                "<td>"+item.createdWho+"</td>"+
+                                "<td>"+item.stDate+"</td>"+
+                                "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\">View</button></td>"+
+                                "</tr>";
+                        });
+
+                        if(kategori == "inap14"){
+                            $("#list-body-header-edukasi").html("");
+                            $("#list-body-header-edukasi").html(str);
+                        } else {
+                            $("#list-body-edukasi").html("");
+                            $("#list-body-edukasi").html(str);
+                        }
+
+                        $("#modal-add-edukasi").modal("hide");
+                    }
+                    // console.log(response);
+                });
+
+            } else {
+                alert(response.msg);
+            }
+        });
+
+    }
 
 </script>
 

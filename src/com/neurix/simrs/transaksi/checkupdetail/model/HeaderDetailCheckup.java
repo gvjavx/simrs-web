@@ -1,11 +1,14 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -74,6 +77,35 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String caraPasienPulang;
     private String pendamping;
     private String tempatTujuan;
+
+    private BigDecimal tarifBpjs;
+    private BigDecimal tarifTindakan;
+
+    private List<Tindakan> tindakanList;
+
+    public List<Tindakan> getTindakanList() {
+        return tindakanList;
+    }
+
+    public void setTindakanList(List<Tindakan> tindakanList) {
+        this.tindakanList = tindakanList;
+    }
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
 
     public String getCaraPasienPulang() {
         return caraPasienPulang;
