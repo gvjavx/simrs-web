@@ -1966,5 +1966,4 @@ public class CheckupAction extends BaseMasterAction {
 
         return  registrasiOnline;
     }
->>>>>>> sodiq/editor
 }
