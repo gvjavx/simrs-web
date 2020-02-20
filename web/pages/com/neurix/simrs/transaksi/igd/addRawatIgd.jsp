@@ -25,6 +25,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>--%>
 
     <script type='text/javascript'>
 
@@ -178,6 +179,13 @@
                                         <td><b>Desa</b></td>
                                         <td>
                                             <table><s:label name="headerDetailCheckup.desa"></s:label></table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="headerDetailCheckup.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -1764,8 +1772,50 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-rekam-medic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
+                <!-- Custom Tabs -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
+                    </ul>
+                    <div class="tab-content" id="list-body-rekam-medic">
+                        <%-- <table class="table">
+                          <tbody id="list-body-rekam-medic">
+                          </tbody>
+                        </table> --%>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <input type="hidden" name="" id="rm-no-checkup">
+                    <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
+
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();

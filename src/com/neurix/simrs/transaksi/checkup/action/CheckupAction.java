@@ -1809,8 +1809,7 @@ public class CheckupAction extends BaseMasterAction {
         tranfusiEntity.setCreatedDate(now);
         tranfusiEntity.setCreatedWho(userLogin);
 
-        checkupBo.saveTranfusi(tranfusiEntity);
-
+        response = checkupBo.saveTranfusi(tranfusiEntity);
         return response;
     }
 
