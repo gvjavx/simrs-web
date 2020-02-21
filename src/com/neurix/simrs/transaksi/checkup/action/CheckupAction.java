@@ -27,12 +27,12 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
+import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
+import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
-import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
-import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
-import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
+import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
@@ -95,6 +95,16 @@ public class CheckupAction extends BaseMasterAction {
     private DiagnosaRawatBo diagnosaRawatBoProxy;
     private DiagnosaBo diagnosaBoProxy;
     private TindakanBo tindakanBoProxy;
+    private RegistrasiOnlineBo registrasiOnlineBoProxy;
+    private AntrianOnlineBo antrianOnlineBoProxy;
+
+    public void setRegistrasiOnlineBoProxy(RegistrasiOnlineBo registrasiOnlineBoProxy) {
+        this.registrasiOnlineBoProxy = registrasiOnlineBoProxy;
+    }
+
+    public void setAntrianOnlineBoProxy(AntrianOnlineBo antrianOnlineBoProxy) {
+        this.antrianOnlineBoProxy = antrianOnlineBoProxy;
+    }
 
     public void setTindakanBoProxy(TindakanBo tindakanBoProxy) {
         this.tindakanBoProxy = tindakanBoProxy;
@@ -146,6 +156,16 @@ public class CheckupAction extends BaseMasterAction {
     private File fileUploadDoc;
     private String fileUploadDocFileName;
     private String fileUploadDocContentType;
+
+    private String noCheckupOnline;
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
 
     public List<Pelayanan> getListOfPelayananIgd() {
         return listOfPelayananIgd;
@@ -357,6 +377,88 @@ public class CheckupAction extends BaseMasterAction {
             //checkup.setIdJenisPeriksaPasien(tipe);
 
         }
+
+        if(getNoCheckupOnline() != null && !"".equalsIgnoreCase(getNoCheckupOnline())){
+
+            RegistrasiOnline online = new RegistrasiOnline();
+
+            List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
+
+                RegistrasiOnline registrasiOnline = new RegistrasiOnline();
+                registrasiOnline.setNoCheckupOnline(noCheckupOnline);
+
+                try {
+                    registrasiOnlineList = registrasiOnlineBoProxy.getByCriteria(registrasiOnline);
+                }catch (GeneralBOException e){
+                    logger.error("Found Error when search no checkup online "+e.getMessage());
+                }
+
+                if (registrasiOnlineList.size() > 0){
+
+                    online = registrasiOnlineList.get(0);
+
+                    AntianOnline antianOnline = new AntianOnline();
+                    antianOnline.setNoCheckupOnline(online.getNoCheckupOnline());
+                    List<AntianOnline> antianOnlineList = new ArrayList<>();
+
+                    try {
+                        antianOnlineList = antrianOnlineBoProxy.getByCriteria(antianOnline);
+                    }catch (GeneralBOException e){
+                        logger.error("Founf Error when antrian online "+e.getMessage());
+                    }
+
+                    if(antianOnlineList.size() > 0 ){
+
+                        antianOnline = antianOnlineList.get(0);
+
+                        checkup.setNama(online.getNama());
+                        checkup.setIdPasien(online.getIdPasien());
+                        checkup.setJenisKelamin(online.getJenisKelamin());
+                        checkup.setNoKtp(online.getNoKtp());
+                        checkup.setTempatLahir(online.getTempatLahir());
+                        checkup.setTglLahir(online.getTglLahir());
+                        checkup.setStTglLahir(online.getTglLahir().toString());
+                        checkup.setJalan(online.getJalan());
+                        checkup.setSuku(online.getSuku());
+                        checkup.setProfesi(online.getProfesi());
+                        checkup.setNoTelp(online.getNoTelp());
+                        checkup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
+                        checkup.setUrlKtp(online.getUrlKtp());
+                        checkup.setIdPelayanan(antianOnline.getIdPelayanan());
+                        checkup.setIdDokter(antianOnline.getIdDokter());
+                        checkup.setDesaId(online.getDesaId());
+                        checkup.setKecamatanId(online.getKecamatanId());
+                        checkup.setKotaId(online.getKotaId());
+                        checkup.setProvinsiId(online.getProvinsiId());
+                        checkup.setNamaDesa(online.getNamaDesa());
+                        checkup.setNamaKecamatan(online.getNamaKecamatan());
+                        checkup.setNamaKota(online.getNamaKota());
+                        checkup.setNamaProvinsi(online.getNamaProvinsi());
+                        checkup.setAgama(online.getAgama());
+
+                        List<HeaderCheckup> checkups = new ArrayList<>();
+                        HeaderCheckup header = new HeaderCheckup();
+                        header.setIdPasien(online.getIdPasien());
+
+                        try {
+                            checkups = checkupBoProxy.getByCriteria(header);
+                        }catch (GeneralBOException e){
+                            logger.error("Found Error when search pasien in traksaksi");
+                        }
+
+                        if(checkups.size() > 0){
+                            checkup.setJenisKunjungan("Lama");
+                        }else{
+                            checkup.setJenisKunjungan("Baru");
+                        }
+
+                        checkup.setOnline(true);
+                        checkup.setTglAntian(antianOnline.getLastUpdate());
+                    }
+                }
+
+        }
+
 //        checkup.setIdJenisPeriksaPasien(tipe);
         checkup.setJenisTransaksi(tipe);
         setHeaderCheckup(checkup);
@@ -1962,8 +2064,119 @@ public class CheckupAction extends BaseMasterAction {
 
 
     public RegistrasiOnline getDetailAntrianOnline(String noCheckup){
+
+        RegistrasiOnline oline = new RegistrasiOnline();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RegistrasiOnlineBo registrasiOnlineBo = (RegistrasiOnlineBo) ctx.getBean("registrasiOnlineBoProxy");
+        AntrianOnlineBo antrianOnlineBo = (AntrianOnlineBo) ctx.getBean("antrianOnlineBoProxy");
+
         RegistrasiOnline registrasiOnline = new RegistrasiOnline();
 
-        return  registrasiOnline;
+        List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
+        if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+
+            registrasiOnline.setNoCheckupOnline(noCheckup);
+
+            try {
+                registrasiOnlineList = registrasiOnlineBo.getByCriteria(registrasiOnline);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search no checkup online "+e.getMessage());
+            }
+
+            if (registrasiOnlineList.size() > 0){
+
+                oline = registrasiOnlineList.get(0);
+
+                AntianOnline antianOnline = new AntianOnline();
+                antianOnline.setNoCheckupOnline(oline.getNoCheckupOnline());
+                List<AntianOnline> antianOnlineList = new ArrayList<>();
+
+                try {
+                    antianOnlineList = antrianOnlineBo.getByCriteria(antianOnline);
+                }catch (GeneralBOException e){
+                    logger.error("Founf Error when antrian online "+e.getMessage());
+                }
+
+                if(antianOnlineList.size() > 0 ){
+                    antianOnline = antianOnlineList.get(0);
+
+                    oline.setNamaPelayanan(antianOnline.getNamaPelayanan());
+                    oline.setNamaDokter(antianOnline.getNamaDokter());
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(antianOnline.getLastUpdate());
+                    oline.setTglDaftar(formatDate);
+
+                }
+            }
+
+        }
+
+        return  oline;
+    }
+
+    public CheckResponse aktivasiAntrianOnline(String noCheckupOnline){
+        CheckResponse response = new CheckResponse();
+
+        RegistrasiOnline online = new RegistrasiOnline();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RegistrasiOnlineBo registrasiOnlineBo = (RegistrasiOnlineBo) ctx.getBean("registrasiOnlineBoProxy");
+        AntrianOnlineBo antrianOnlineBo = (AntrianOnlineBo) ctx.getBean("antrianOnlineBoProxy");
+
+        RegistrasiOnline registrasiOnline = new RegistrasiOnline();
+
+        List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
+        if(noCheckupOnline != null && !"".equalsIgnoreCase(noCheckupOnline)){
+
+            registrasiOnline.setNoCheckupOnline(noCheckupOnline);
+
+            try {
+                registrasiOnlineList = registrasiOnlineBo.getByCriteria(registrasiOnline);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search no checkup online "+e.getMessage());
+            }
+
+            if (registrasiOnlineList.size() > 0){
+
+                online = registrasiOnlineList.get(0);
+
+                AntianOnline antianOnline = new AntianOnline();
+                antianOnline.setNoCheckupOnline(online.getNoCheckupOnline());
+                List<AntianOnline> antianOnlineList = new ArrayList<>();
+
+                try {
+                    antianOnlineList = antrianOnlineBo.getByCriteria(antianOnline);
+                }catch (GeneralBOException e){
+                    logger.error("Founf Error when antrian online "+e.getMessage());
+                }
+
+                if(antianOnlineList.size() > 0 ){
+                    antianOnline = antianOnlineList.get(0);
+
+
+                    HeaderCheckup headerCheckup = new HeaderCheckup();
+                    headerCheckup.setNama(online.getNama());
+                    headerCheckup.setIdPasien(online.getIdPasien());
+                    headerCheckup.setJenisKelamin(online.getJenisKelamin());
+                    headerCheckup.setNoKtp(online.getNoKtp());
+                    headerCheckup.setTempatLahir(online.getTempatLahir());
+                    headerCheckup.setTglLahir(online.getTglLahir());
+                    headerCheckup.setJalan(online.getJalan());
+                    headerCheckup.setSuku(online.getSuku());
+                    headerCheckup.setProfesi(online.getProfesi());
+                    headerCheckup.setNoTelp(online.getNoTelp());
+                    headerCheckup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
+                    headerCheckup.setUrlKtp(online.getUrlKtp());
+                    headerCheckup.setIdPelayanan(antianOnline.getIdPelayanan());
+                    headerCheckup.setIdDokter(antianOnline.getIdDokter());
+                    headerCheckup.setOnline(true);
+                    headerCheckup.setTglAntian(antianOnline.getLastUpdate());
+                    setHeaderCheckup(headerCheckup);
+                    saveAdd();
+                    response.setMessage("success");
+                    response.setMessage("Berhasil");
+                }
+            }
+
+        }
+        return response;
     }
 }

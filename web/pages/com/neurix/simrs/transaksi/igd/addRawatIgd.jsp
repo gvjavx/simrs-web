@@ -275,7 +275,7 @@
                                 <%--</div>--%>
                             <%--</div>--%>
                         <%--</div>--%>
-=======
+
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan cek kembali data inputan!
@@ -327,7 +327,6 @@
                                 </div>
                             </div>
                         </div>
->>>>>>> sodiq/editor
                         <%--<div class="form-group">--%>
                         <%--<br>--%>
 

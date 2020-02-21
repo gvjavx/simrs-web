@@ -456,6 +456,7 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.moncairan.model.MonCairan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>

@@ -41,9 +41,10 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             if (mapCriteria.get("id_dokter")!=null) {
                 criteria.add(Restrictions.eq("idDokter", (String) mapCriteria.get("id_dokter")));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
         }
-
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idAntrianOnline"));

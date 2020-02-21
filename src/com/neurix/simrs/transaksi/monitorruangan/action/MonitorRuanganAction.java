@@ -26,6 +26,8 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +77,8 @@ public class MonitorRuanganAction extends BaseMasterAction {
     public String search() {
 
         List<Ruangan> ruanganList = new ArrayList<>();
+        List<Ruangan> result = new ArrayList<>();
+
         Ruangan ruangan = getRuangan();
 
         try {
@@ -82,8 +86,6 @@ public class MonitorRuanganAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("Found Error" + e.getMessage());
         }
-
-        List<Ruangan> result = new ArrayList<>();
 
         if (ruanganList.size() > 0) {
 
@@ -108,7 +110,7 @@ public class MonitorRuanganAction extends BaseMasterAction {
                     BigInteger tarifTindakan = new BigInteger(String.valueOf(0));
 
                     try {
-                        tarifTindakan = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(ruangan.getIdDetailCheckup());
+                        tarifTindakan = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(ruang.getIdDetailCheckup());
                     } catch (GeneralBOException e) {
                         logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
                     }
@@ -138,7 +140,7 @@ public class MonitorRuanganAction extends BaseMasterAction {
                                 headerCheckup = headerCheckupList.get(0);
 
                                 if (headerCheckup != null) {
-                                    detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+                                    ruangan1.setTipeTransaksi(headerCheckup.getIdJenisPeriksaPasien());
                                 }
                             }
 
@@ -250,12 +252,26 @@ public class MonitorRuanganAction extends BaseMasterAction {
                                 }
                             }
 
+
+                            DecimalFormat pattern = new DecimalFormat("#.##");
+
                             BigDecimal totalTarifTindakan = tarifLab.add(tarifResep).add(new BigDecimal(tarifTindakan)).add(tarifGizi);
+                            BigDecimal hasilKali = new BigDecimal(String.valueOf(0));
+                            BigDecimal hasilBagi = new BigDecimal(String.valueOf(0));
 
                             //=======START HITUNG TARIF TINDAKAN==========================
 
                             ruangan1.setTarifBpjs(detailCheckup.getTarifBpjs());
                             ruangan1.setTarifTindakan(totalTarifTindakan);
+
+                            if(detailCheckup.getTarifBpjs() != null && totalTarifTindakan != null){
+
+                                hasilKali = totalTarifTindakan.divide(detailCheckup.getTarifBpjs(), 2, RoundingMode.HALF_UP);
+                                hasilBagi = hasilKali.multiply(new BigDecimal(100));
+
+                                ruangan1.setNilaiPersen(hasilBagi);
+
+                            }
 
                             //=======END HITUNG TARIF TINDAKAN==========================
                         }
@@ -277,7 +293,7 @@ public class MonitorRuanganAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", ruanganList);
+        session.setAttribute("listOfResult", result);
 
         return "search";
     }

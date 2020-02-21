@@ -31,6 +31,99 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
     private String stTglCheckup;
     private String valid;
 
+    private String namaPelayanan;
+    private String namaDokter;
+    private String tglDaftar;
+
+    private String namaDesa;
+    private String namaKecamatan;
+    private String namaKota;
+    private String namaProvinsi;
+
+    private String kecamatanId;
+    private String kotaId;
+    private String provinsiId;
+
+    public String getKecamatanId() {
+        return kecamatanId;
+    }
+
+    public void setKecamatanId(String kecamatanId) {
+        this.kecamatanId = kecamatanId;
+    }
+
+    public String getKotaId() {
+        return kotaId;
+    }
+
+    public void setKotaId(String kotaId) {
+        this.kotaId = kotaId;
+    }
+
+    public String getProvinsiId() {
+        return provinsiId;
+    }
+
+    public void setProvinsiId(String provinsiId) {
+        this.provinsiId = provinsiId;
+    }
+
+    public String getNamaDesa() {
+        return namaDesa;
+    }
+
+    public void setNamaDesa(String namaDesa) {
+        this.namaDesa = namaDesa;
+    }
+
+    public String getNamaKecamatan() {
+        return namaKecamatan;
+    }
+
+    public void setNamaKecamatan(String namaKecamatan) {
+        this.namaKecamatan = namaKecamatan;
+    }
+
+    public String getNamaKota() {
+        return namaKota;
+    }
+
+    public void setNamaKota(String namaKota) {
+        this.namaKota = namaKota;
+    }
+
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getTglDaftar() {
+        return tglDaftar;
+    }
+
+    public void setTglDaftar(String tglDaftar) {
+        this.tglDaftar = tglDaftar;
+    }
+
     public String getStTglCheckup() {
         return stTglCheckup;
     }

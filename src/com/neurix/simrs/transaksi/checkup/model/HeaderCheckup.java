@@ -90,6 +90,25 @@ public class HeaderCheckup {
     private String kelasPasien;
     private String noMr;
 
+    private boolean isOnline = false;
+    private Timestamp tglAntian;
+
+    public Timestamp getTglAntian() {
+        return tglAntian;
+    }
+
+    public void setTglAntian(Timestamp tglAntian) {
+        this.tglAntian = tglAntian;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
     public String getKelasPasien() {
         return kelasPasien;
     }

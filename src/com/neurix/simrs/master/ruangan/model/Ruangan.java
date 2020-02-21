@@ -31,6 +31,25 @@ public class Ruangan extends BaseModel {
     private BigDecimal tarifBpjs;
     private BigDecimal tarifTindakan;
 
+    private String tipeTransaksi;
+    private BigDecimal nilaiPersen;
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
+
+    public BigDecimal getNilaiPersen() {
+        return nilaiPersen;
+    }
+
+    public void setNilaiPersen(BigDecimal nilaiPersen) {
+        this.nilaiPersen = nilaiPersen;
+    }
+
     public BigDecimal getTarifBpjs() {
         return tarifBpjs;
     }

@@ -346,7 +346,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+
+                //TGL Antrin dari tabel antrian online
+                if(bean.isOnline()){
+                    detailCheckupEntity.setTglAntrian(bean.getTglAntian());
+                }else{
+                    detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+                }
+
                 detailCheckupEntity.setNoSep(bean.getNoSep());
                 detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 

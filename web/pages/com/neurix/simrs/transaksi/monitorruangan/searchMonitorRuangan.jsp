@@ -89,6 +89,13 @@
             $('#monitor_ruangan').addClass('active');
         });
 
+        function formatRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
+
     </script>
 </head>
 
@@ -134,7 +141,7 @@
                                         <s:select cssStyle="margin-top: 7px"
                                                   onchange="$(this).css('border',''); listSelectRuangan(this)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="ruang.idKelasRuangan"
+                                                  name="ruangan.idKelasRuangan"
                                                   listKey="idKelasRuangan"
                                                   listValue="namaKelasRuangan"
                                                   headerKey="" headerValue="[Select one]"
@@ -149,7 +156,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
-                                                id="nama_ruangan" name="ruang.idRuangan">
+                                                id="nama_ruangan" name="ruangan.idRuangan">
                                             <option value=''>[Select One]</option>
                                         </select>
                                     </div>
@@ -234,8 +241,16 @@
                             <div class="col-md-12" style="display:inline;">
                                 <s:iterator value="#session.listOfResult" var="row">
                                 <div class="btn-wrapper">
-                                    <s:if test='#row.statusRuangan == "Y"'>
-                                    <div id="id_box" class="btn-trans box-green">
+                                    <s:if test='#row.statusRuangan == "N"'>
+                                        <s:if test='#row.nilaiPersen > 70'>
+                                            <div id="id_box" class="btn-trans box-red">
+                                        </s:if>
+                                        <s:elseif test='#row.nilaiPersen > 50'>
+                                            <div id="id_box" class="btn-trans box-yellow">
+                                        </s:elseif>
+                                        <s:else>
+                                            <div id="id_box" class="btn-trans box-green">
+                                        </s:else>
                                         </s:if>
                                         <s:else>
                                         <div id="id_box" class="btn-trans">
@@ -245,12 +260,17 @@
                                             <div style="text-align:left; cursor:pointer; font-size:11px;">
                                                 <table align="center"
                                                        style="width:100%; border-radius:5px; margin-top:2px;">
-                                                    <td colspan="2" style="text-align: center">
-                                                        <img style="background-color:transparent; height:70px;"
-                                                             src="<s:url value="/pages/images/room.png"/>">
+                                                    <td align="center" colspan="2">
+                                                        <img style="background-color:transparent; height:70px;" src="<s:url value="/pages/images/room.png"/>">
                                                     </td>
-                                                    <tr class="hiddenx">
-                                                        <td colspan="2"><s:property value="tarifTindakan"/></td>
+                                                    <tr>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><script>var tar = '<s:property value="tarifBpjs"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><script>var tar = '<s:property value="tarifTindakan"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><label class="label label-warning"><s:property value="tipeTransaksi"/></label></td>
                                                     </tr>
                                                 </table>
                                             </div>

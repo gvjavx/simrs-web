@@ -13,6 +13,9 @@
           p:pasienBoProxy-ref="pasienBoProxy"
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
           p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
+          p:registrasiOnlineBoProxy-ref="registrasiOnlineBoProxy"
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
+
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:checkupBoProxy-ref="checkupBoProxy"

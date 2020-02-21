@@ -69,9 +69,11 @@ public class RegistrasiOnlineDao extends GenericDao<ItSimrsRegistrasiOnlineEntit
             if (mapCriteria.get("branch_id")!=null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("noCheckupOnline"));
@@ -85,5 +87,28 @@ public class RegistrasiOnlineDao extends GenericDao<ItSimrsRegistrasiOnlineEntit
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<Object[]> getListAlamatByDesaId(String desaId) {
+        String SQL = "SELECT \n" +
+                "ds.desa_name, \n" +
+                "kec.kecamatan_name,\n" +
+                "kot.kota_name,\n" +
+                "prov.provinsi_name,\n" +
+                "kec.kecamatan_id,\n" +
+                "kot.kota_id,\n" +
+                "prov.provinsi_id\n" +
+                "FROM \n" +
+                "im_hris_desa ds\n" +
+                "INNER JOIN im_hris_kecamatan kec ON kec.kecamatan_id = ds.kecamatan_id\n" +
+                "INNER JOIN im_hris_kota kot ON kot.kota_id = kec.kota_id\n" +
+                "INNER JOIN im_hris_provinsi prov ON prov.provinsi_id = kot.provinsi_id\n" +
+                "WHERE ds.desa_id = :id ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", desaId)
+                .list();
+
+        return results;
     }
 }
