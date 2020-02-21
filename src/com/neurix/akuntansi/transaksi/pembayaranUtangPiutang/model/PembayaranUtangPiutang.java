@@ -20,6 +20,79 @@ public class PembayaranUtangPiutang extends BaseModel {
     private BigDecimal bayar;
     private String keterangan;
     private String noSlipBank;
+    private String branchId;
+    private String noJurnal;
+    private String registeredFlag;
+    private Date registeredDate;
+    private String registeredWho;
+
+    private String stBayar;
+    private String stTanggal;
+    private boolean flagPosting=false;
+
+    public boolean isFlagPosting() {
+        return flagPosting;
+    }
+
+    public void setFlagPosting(boolean flagPosting) {
+        this.flagPosting = flagPosting;
+    }
+
+    public String getRegisteredFlag() {
+        return registeredFlag;
+    }
+
+    public void setRegisteredFlag(String registeredFlag) {
+        this.registeredFlag = registeredFlag;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public String getRegisteredWho() {
+        return registeredWho;
+    }
+
+    public void setRegisteredWho(String registeredWho) {
+        this.registeredWho = registeredWho;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getStTanggal() {
+        return stTanggal;
+    }
+
+    public void setStTanggal(String stTanggal) {
+        this.stTanggal = stTanggal;
+    }
+
+    public String getStBayar() {
+        return stBayar;
+    }
+
+    public void setStBayar(String stBayar) {
+        this.stBayar = stBayar;
+    }
 
     public String getPembayaranUtangPiutangId() {
         return pembayaranUtangPiutangId;

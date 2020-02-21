@@ -190,7 +190,10 @@
     <include file="sshconfig/com/neurix/akuntansi/master/kodeRekening/struts/KodeRekeningAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/tipeJurnal/struts/TipeJurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/tipeRekening/struts/TipeRekeningAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/trans/struts/TransAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/master/struts/MasterAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/struts/LaporanAkuntansiAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/transaksi/jurnal/struts/JurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/struts/PembayaranUtangPiutangAction.xml"/>
 
 </struts>

@@ -28,6 +28,21 @@
         <property name="noSlipBank">
             <column name="no_slip_bank" sql-type="varchar" length="20" not-null="false" />
         </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="registeredFlag">
+            <column name="registered_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="registeredDate">
+            <column name="registered_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="registeredWho">
+            <column name="registered_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

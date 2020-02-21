@@ -17,7 +17,9 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private String pembayaranUtangPiutangId;
     private String masterId;
     private String noNota;
-    private BigDecimal jumlahPembayaran;
+    private BigDecimal debit;
+    private BigDecimal kredit;
+    private String rekeningId;
 
     private String flag;
     private String action;
@@ -25,6 +27,30 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public BigDecimal getDebit() {
+        return debit;
+    }
+
+    public void setDebit(BigDecimal debit) {
+        this.debit = debit;
+    }
+
+    public BigDecimal getKredit() {
+        return kredit;
+    }
+
+    public void setKredit(BigDecimal kredit) {
+        this.kredit = kredit;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
 
     public String getPembayaranUtangPiutangDetailId() {
         return pembayaranUtangPiutangDetailId;
@@ -56,14 +82,6 @@ public class ImPembayaranUtangPiutangDetailEntity implements Serializable {
 
     public void setNoNota(String noNota) {
         this.noNota = noNota;
-    }
-
-    public BigDecimal getJumlahPembayaran() {
-        return jumlahPembayaran;
-    }
-
-    public void setJumlahPembayaran(BigDecimal jumlahPembayaran) {
-        this.jumlahPembayaran = jumlahPembayaran;
     }
 
     public String getFlag() {

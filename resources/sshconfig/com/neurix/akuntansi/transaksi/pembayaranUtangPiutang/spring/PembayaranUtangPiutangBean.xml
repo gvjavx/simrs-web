@@ -12,6 +12,8 @@
           p:pembayaranUtangPiutangDao-ref="pembayaranUtangPiutangDao"
           p:pembayaranUtangPiutangDetailDao-ref="pembayaranUtangPiutangDetailDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:jurnalDao-ref="jurnalDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
     />
 
     <bean id="pembayaranUtangPiutangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

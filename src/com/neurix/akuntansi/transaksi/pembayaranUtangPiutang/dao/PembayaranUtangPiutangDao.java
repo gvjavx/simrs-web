@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao;
 
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranUtangPiutangEntity;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -9,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +35,8 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("tipe_jurnal_id")!=null) {
-                criteria.add(Restrictions.eq("pembayaranUtangPiutangId", (String) mapCriteria.get("pembayaranUtangPiutang_id")));
-            }
-            if (mapCriteria.get("tipe_jurnal_name")!=null) {
-                criteria.add(Restrictions.ilike("pembayaranUtangPiutangName", "%" + (String)mapCriteria.get("tipe_jurnal_name") + "%"));
+            if (mapCriteria.get("pembayaran_id")!=null) {
+                criteria.add(Restrictions.eq("pembayaranUtangPiutangId", (String) mapCriteria.get("pembayaran_id")));
             }
         }
 
@@ -52,10 +51,96 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
 
     // Generate surrogate id from postgre
     public String getNextPembayaranUtangPiutangId() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_jurnal')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_utang_piutang_detail')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%07d", iter.next());
+        String sId = String.format("%09d", iter.next());
 
-        return "TJ"+sId;
+        return "PUP"+sId;
+    }
+    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi) throws HibernateException {
+        List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<PembayaranUtangPiutangDetail>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "  master_id, \n" +
+                "  rekening_id, \n" +
+                "  noNota, \n" +
+                "  to_char(debit, '99G999G999G999G999') as debit \n" +
+                "from \n" +
+                "  (\n" +
+                "    select \n" +
+                "      b.master_id, \n" +
+                "      b.rekening_id, \n" +
+                "      a.mata_uang_id as mataUangId, \n" +
+                "      b.no_nota as noNota, \n" +
+                "      sum(jumlah_debit - jumlah_kredit) as debit \n" +
+                "    from \n" +
+                "      it_akun_jurnal a \n" +
+                "      inner join (\n" +
+                "        select \n" +
+                "          * \n" +
+                "        from \n" +
+                "          it_akun_jurnal_detail \n" +
+                "        where \n" +
+                "          rekening_id IN (\n" +
+                "\t\t  select \n" +
+                "\t\t\t  rekening_id\n" +
+                "\t\t  from \n" +
+                "\t\t\t  im_akun_kode_rekening kr INNER JOIN (\n" +
+                "\t\t\t  \tSELECT \n" +
+                "\t\t\t\t  kode_rekening\n" +
+                "\t\t\t\tFROM \n" +
+                "\t\t\t\t  im_akun_mapping_jurnal\n" +
+                "\t\t\t\tWHERE\n" +
+                "\t\t\t\t  trans_id='"+tipeTransaksi+"' AND\n" +
+                "\t\t\t\t  flag='Y'\n" +
+                "\t\t\t  ) mapping\n" +
+                "\t\t\t  ON kr.kode_rekening=mapping.kode_rekening\n" +
+                "\t\t  ) \n" +
+                "      ) b on a.no_jurnal = b.no_jurnal \n" +
+                "      /* and b.no_nota in (\n" +
+                "        select \n" +
+                "          *\n" +
+                "        from \n" +
+                "          it_akun_jurnal \n" +
+                "        where \n" +
+                "          tipe_jurnal_id IN (\n" +
+                "\t\t  \tSELECT \n" +
+                "\t\t\t\t  tipe_jurnal_id\n" +
+                "\t\t\t\tFROM \n" +
+                "\t\t\t\t  im_akun_mapping_jurnal\n" +
+                "\t\t\t\tWHERE\n" +
+                "\t\t\t\t  trans_id='11' AND\n" +
+                "\t\t\t\t  flag='Y'\n" +
+                "\t\t\t  \tGROUP BY\n" +
+                "\t\t\t  \t\ttipe_jurnal_id\n" +
+                "\t\t  )\n" +
+                "      ) */\n" +
+                "      and b.no_nota != '' \n" +
+                "    where \n" +
+                "      a.flag = 'Y' \n" +
+                "      and a.registered_flag = 'Y' \n" +
+                "    group by \n" +
+                "      b.no_nota, \n" +
+                "      a.mata_uang_id, \n" +
+                "      b.master_id, \n" +
+                "      b.rekening_id\n" +
+                "  ) foo \n" +
+                "where \n" +
+                "  foo.debit > 0 \n" +
+                "  and master_id like '%' || '"+masterId+"' || '%' ";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            PembayaranUtangPiutangDetail data= new PembayaranUtangPiutangDetail();
+            data.setMasterId((String) row[0]);
+            data.setRekeningId((String) row[1]);
+            data.setNoNota((String) row[2]);
+            data.setStJumlahPembayaran((String) row[3]);
+
+            listOfResult.add(data);
+        }
+        return listOfResult;
     }
 }

@@ -16,7 +16,53 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String pembayaranUtangPiutangId;
     private String masterId;
     private String noNota;
-    private BigDecimal jumlahPembayaran;
+    private BigDecimal debit;
+    private BigDecimal kredit;
+
+    private String stJumlahPembayaran;
+    private String masterName;
+    private String rekeningId;
+    private String kodeRekening;
+
+    public BigDecimal getKredit() {
+        return kredit;
+    }
+
+    public void setKredit(BigDecimal kredit) {
+        this.kredit = kredit;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getKodeRekening() {
+        return kodeRekening;
+    }
+
+    public void setKodeRekening(String kodeRekening) {
+        this.kodeRekening = kodeRekening;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
+    }
+
+    public String getStJumlahPembayaran() {
+        return stJumlahPembayaran;
+    }
+
+    public void setStJumlahPembayaran(String stJumlahPembayaran) {
+        this.stJumlahPembayaran = stJumlahPembayaran;
+    }
 
     public String getPembayaranUtangPiutangDetailId() {
         return pembayaranUtangPiutangDetailId;
@@ -50,11 +96,11 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
         this.noNota = noNota;
     }
 
-    public BigDecimal getJumlahPembayaran() {
-        return jumlahPembayaran;
+    public BigDecimal getDebit() {
+        return debit;
     }
 
-    public void setJumlahPembayaran(BigDecimal jumlahPembayaran) {
-        this.jumlahPembayaran = jumlahPembayaran;
+    public void setDebit(BigDecimal debit) {
+        this.debit = debit;
     }
 }

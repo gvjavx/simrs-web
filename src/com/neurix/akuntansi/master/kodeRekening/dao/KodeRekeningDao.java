@@ -77,7 +77,12 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
     //for typeahead
     public List<ImKodeRekeningEntity> getKodeRekeningListByLikeCoa(String coa) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImKodeRekeningEntity.class);
-        criteria.add(Restrictions.ilike("kodeRekening", coa + "%"));
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("kodeRekening", coa + "%"),
+                        Restrictions.ilike("namaKodeRekening", "%"+coa+"%")
+                )
+        );
         criteria.add(Restrictions.eq("flag", "Y"));
         criteria.addOrder(Order.asc("rekeningId"));
 

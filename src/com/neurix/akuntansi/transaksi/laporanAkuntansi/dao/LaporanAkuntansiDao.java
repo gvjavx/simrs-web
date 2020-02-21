@@ -87,7 +87,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\t  \tSELECT\n" +
                 "\t\t  *\n" +
                 "\t\tFROM\n" +
-                "\t\t  im_akun_setting_aging_tipe_jurnal\n" +
+                "\t\t\tim_akun_setting_aging_tipe_jurnal\n" +
                 "\t\tWHERE\n" +
                 "\t\t  tipe_aging='"+tipeAging+"' AND flag='Y'\n" +
                 "\t  ) saj ON saj.tipe_jurnal_id=a.tipe_jurnal_id\n" +
@@ -110,7 +110,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "  ) < (\n" +
                 "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
                 "  ) \n" +
-                "  "+tipeWhere+" \n" +
+                tipeWhere +
                 "order by \n" +
                 "  mastergrp, \n" +
                 "  masterId, \n" +

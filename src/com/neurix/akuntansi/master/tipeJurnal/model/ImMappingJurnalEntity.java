@@ -16,6 +16,9 @@ public class ImMappingJurnalEntity implements Serializable {
     private String tipeJurnalId;
     private String kodeRekening;
     private String posisi;
+    private String transId;
+    private String masterId;
+    private String bukti;
 
     private String flag;
     private String action;
@@ -23,6 +26,30 @@ public class ImMappingJurnalEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getTransId() {
+        return transId;
+    }
+
+    public void setTransId(String transId) {
+        this.transId = transId;
+    }
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getBukti() {
+        return bukti;
+    }
+
+    public void setBukti(String bukti) {
+        this.bukti = bukti;
+    }
 
     public String getMappingJurnalId() {
         return mappingJurnalId;

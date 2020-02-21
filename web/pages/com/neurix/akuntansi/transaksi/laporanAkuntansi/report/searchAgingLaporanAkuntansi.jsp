@@ -15,6 +15,8 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         function callSearch2() {
@@ -149,6 +151,37 @@
                                                     <table>
                                                         <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control" maxLength="10"/>
                                                     </table>
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            var functions, mapped;
+                                                            $('#masterId').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.nomorVendor,
+                                                                            nama: item.nama
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    $('#masterName').val(selectedObj.nama);
+                                                                    return selectedObj.id;
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
                                                 </td>
                                                 <td>
                                                     <table>

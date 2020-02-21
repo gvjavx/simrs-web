@@ -27,6 +27,33 @@ public class LaporanAkuntansi extends BaseModel {
     private String nipManagerKeuangan;
     private String namaManagerKeuangan;
     private String masterId;
+    private String kodeRekening;
+    private String rekeningId;
+    private String tipeJurnalId;
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getKodeRekening() {
+        return kodeRekening;
+    }
+
+    public void setKodeRekening(String kodeRekening) {
+        this.kodeRekening = kodeRekening;
+    }
 
     public String getMasterId() {
         return masterId;

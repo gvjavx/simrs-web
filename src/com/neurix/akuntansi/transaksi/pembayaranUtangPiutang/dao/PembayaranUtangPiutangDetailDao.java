@@ -55,11 +55,10 @@ public class PembayaranUtangPiutangDetailDao extends GenericDao<ImPembayaranUtan
 
     // Generate surrogate id from postgre
     public String getNextPembayaranUtangPiutangDetailId() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_mapping_jurnal')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_utang_piutang_detail')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%03d", iter.next());
-
-        return "IJ"+sId;
+        String sId = String.format("%09d", iter.next());
+        return "PUPD"+sId;
     }
 
     public List<ImPembayaranUtangPiutangDetailEntity> getListPembayaranUtangPiutangDetailByTipeJurnalId(String id) throws HibernateException {

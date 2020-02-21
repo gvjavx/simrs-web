@@ -19,6 +19,15 @@
         <property name="posisi">
             <column name="posisi" sql-type="varchar" length="1" not-null="true" />
         </property>
+        <property name="transId">
+            <column name="trans_id" sql-type="varchar" length="2" not-null="false" />
+        </property>
+        <property name="masterId">
+            <column name="master_id" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="bukti">
+            <column name="bukti" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

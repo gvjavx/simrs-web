@@ -19,8 +19,14 @@
         <property name="noNota">
             <column name="no_nota" sql-type="varchar" length="15" not-null="false" />
         </property>
-        <property name="jumlahPembayaran">
-            <column name="jumlah_pembayaran" sql-type="numeric" not-null="false" />
+        <property name="debit">
+            <column name="debit" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="kredit">
+            <column name="kredit" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="rekeningId">
+            <column name="rekening_id" sql-type="varchar" length="30" not-null="false" />
         </property>
 
         <property name="flag">
