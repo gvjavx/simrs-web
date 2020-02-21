@@ -65,19 +65,19 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select cssStyle="border-radius: 4px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
-                                                  name="rawatInap.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                  <%--name="getComboPelayanan_checkup"/>--%>
+                                        <%--<s:select cssStyle="border-radius: 4px; width: 100%"--%>
+                                                  <%--list="#initComboPoli.listOfPelayanan" id="poli"--%>
+                                                  <%--name="rawatInap.idPelayanan" listKey="idPelayanan"--%>
+                                                  <%--listValue="namaPelayanan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -87,15 +87,15 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Jenis Kelamin</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'L':'Laki-laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
-                                                  id="jenis_kelamin" name="rawatInap.jenisKelamin"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Jenis Kelamin</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'L':'Laki-laki','P':'Perempuan'}" cssStyle="margin-top: 7px"--%>
+                                                  <%--id="jenis_kelamin" name="rawatInap.jenisKelamin"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
@@ -197,7 +197,7 @@
                                 <td>No Checkup</td>
                                 <td>ID Pasien</td>
                                 <td>Nama</td>
-                                <td>Alamat</td>
+                                <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -208,7 +208,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="alamat"/></td>
+                                    <td><s:property value="namaDesa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">

@@ -10,6 +10,8 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -102,10 +104,10 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
             String SQL = "SELECT a.no_checkup, b.id_detail_checkup, c.id_riwayat_tindakan, \n" +
                     "c.id_tindakan, c.nama_tindakan, c.keterangan, c.jenis_pasien, c.total_tarif, c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag FROM it_simrs_header_checkup a\n" +
+                    "c.approve_bpjs_flag, c.tanggal_tindakan FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "WHERE a.branch_id LIKE :branchId AND a.no_checkup LIKE :noCheckup AND CAST(c.created_date AS DATE) = CURRENT_DATE AND b.id_detail_checkup LIKE :idDetail\n";
+                    "WHERE a.branch_id LIKE :branchId AND a.no_checkup LIKE :noCheckup AND b.id_detail_checkup LIKE :idDetail ORDER BY c.keterangan\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -131,6 +133,13 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     }
                     tindakan.setKategoriTindakanBpjs(obj[8] == null ? "" : obj[8].toString());
                     tindakan.setApproveBpjsFlag(obj[9] == null ? "" : obj[9].toString());
+
+                    if(obj[10] != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp)obj[10]);
+                        tindakan.setTanggalTindakan((Timestamp) obj[10]);
+                        tindakan.setStTglTindakan(formatDate);
+                    }
+
                     riwayatTindakanList.add(tindakan);
                 }
             }

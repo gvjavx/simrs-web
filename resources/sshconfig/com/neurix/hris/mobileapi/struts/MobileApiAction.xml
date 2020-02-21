@@ -123,8 +123,69 @@
             <interceptor-ref name="mobileStack"/>
             <param name="id">{1}</param>
         </action>
-        <action name="loginpasien/*" class="com.neurix.simrs.mobileapi.pasien.PasienController">
+
+        <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">
             <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="antrian/*" class="com.neurix.simrs.mobileapi.AntrianOnlineController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="pelayanan/*" class="com.neurix.simrs.mobileapi.PelayananController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="provinsi/*" class="com.neurix.simrs.mobileapi.ProvinsiController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="kota/*" class="com.neurix.simrs.mobileapi.KotaController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="kecamatan/*" class="com.neurix.simrs.mobileapi.KecamatanController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="desa/*" class="com.neurix.simrs.mobileapi.DesaController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="loginpasien/*" class="com.neurix.simrs.mobileapi.PasienController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="pengajuanlembur/*" class="com.neurix.hris.mobileapi.LemburFormController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="dokter/*" class="com.neurix.simrs.mobileapi.DokterController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="statuspasien/*" class="com.neurix.simrs.mobileapi.StatusPasienController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="checkup/*" class="com.neurix.simrs.mobileapi.CheckupController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="purchaseorder/*" class="com.neurix.simrs.mobileapi.PurchaseOrderController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="permintaanobat/*" class="com.neurix.simrs.mobileapi.PermintaanObatController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="transaksiapotek/*" class="com.neurix.simrs.mobileapi.TransaksiApotekController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="rawatinap/*" class="com.neurix.simrs.mobileapi.RawatInapController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+        <action name="ruangan/*" class="com.neurix.simrs.mobileapi.RuanganController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
+
+        <action name="antrian/*" class="com.neurix.simrs.mobileapi.antrian.AntrianController">
+            <interceptor-ref name="mobileStack"/>
+            <param name="id">{1}</param>
         </action>
     </package>
 

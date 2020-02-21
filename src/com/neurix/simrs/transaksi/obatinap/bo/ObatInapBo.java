@@ -10,3 +10,4 @@ public interface ObatInapBo {
     public void saveAdd(ObatInap bean)throws GeneralBOException;
     public void saveEdit(ObatInap bean)throws GeneralBOException;
 }
+

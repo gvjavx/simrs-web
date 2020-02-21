@@ -70,6 +70,9 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                 orderGiziEntity.setLastUpdate(bean.getLastUpdate());
                 orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 orderGiziEntity.setTarifTotal(bean.getTarifTotal());
+                orderGiziEntity.setIdDietGizi(bean.getIdDietGizi());
+                orderGiziEntity.setKeterangan(bean.getKeterangan());
+                orderGiziEntity.setBentukDiet(bean.getBentukDiet());
 
                 try {
                     orderGiziDao.addAndSave(orderGiziEntity);
@@ -117,7 +120,9 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                 orderGiziEntity.setAction(bean.getAction());
                 orderGiziEntity.setLastUpdate(bean.getLastUpdate());
                 orderGiziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                orderGiziEntity.setIdDietGizi(bean.getIdDietGizi());
                 orderGiziEntity.setTarifTotal(bean.getTarifTotal());
+                orderGiziEntity.setBentukDiet(bean.getBentukDiet());
 
                 try {
                     orderGiziDao.updateAndSave(orderGiziEntity);
@@ -235,6 +240,11 @@ public class OrderGiziBoImpl implements OrderGiziBo {
             orderGizi.setLastUpdateWho(entity.getLastUpdateWho());
             orderGizi.setApproveFlag(entity.getApproveFlag());
             orderGizi.setDiterimaFlag(entity.getDiterimaFlag());
+            orderGizi.setTarifTotal(entity.getTarifTotal());
+            orderGizi.setBentukDiet(entity.getBentukDiet());
+            orderGizi.setIdDietGizi(entity.getIdDietGizi());
+            orderGizi.setBentukDiet(entity.getBentukDiet());
+            orderGizi.setKeterangan(entity.getKeterangan());
 
             results.add(orderGizi);
         }
@@ -242,3 +252,4 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         return results;
     }
 }
+

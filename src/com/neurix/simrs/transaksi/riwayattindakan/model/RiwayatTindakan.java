@@ -31,6 +31,26 @@ public class RiwayatTindakan extends BaseModel {
 
     private String flagUpdateKlaim;
 
+    private Timestamp tanggalTindakan;
+
+    private String stTglTindakan;
+
+    public String getStTglTindakan() {
+        return stTglTindakan;
+    }
+
+    public void setStTglTindakan(String stTglTindakan) {
+        this.stTglTindakan = stTglTindakan;
+    }
+
+    public Timestamp getTanggalTindakan() {
+        return tanggalTindakan;
+    }
+
+    public void setTanggalTindakan(Timestamp tanggalTindakan) {
+        this.tanggalTindakan = tanggalTindakan;
+    }
+
     public String getFlagUpdateKlaim() {
         return flagUpdateKlaim;
     }

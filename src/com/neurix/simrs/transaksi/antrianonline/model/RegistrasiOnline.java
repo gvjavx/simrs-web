@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.antrianonline.model;
 import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -15,7 +16,7 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
     private String noKtp;
     private String tempatLahir;
     private Date tglLahir;
-    private Long desaId;
+    private BigInteger desaId;
     private String jalan;
     private String suku;
     private String agama;
@@ -24,12 +25,144 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
     private String idJenisPeriksaPasien;
     private String branchId;
     private String urlKtp;
-    private String flag;
-    private String action;
-    private Timestamp createdDate;
-    private String createdWho;
-    private Timestamp lastUpdate;
-    private String lastUpdateWho;
+    private String stTglLahir;
+    private String stDesaId;
+    private Date tglCheckup;
+    private String stTglCheckup;
+    private String valid;
+
+    private String namaPelayanan;
+    private String namaDokter;
+    private String tglDaftar;
+
+    private String namaDesa;
+    private String namaKecamatan;
+    private String namaKota;
+    private String namaProvinsi;
+
+    private String kecamatanId;
+    private String kotaId;
+    private String provinsiId;
+
+    public String getKecamatanId() {
+        return kecamatanId;
+    }
+
+    public void setKecamatanId(String kecamatanId) {
+        this.kecamatanId = kecamatanId;
+    }
+
+    public String getKotaId() {
+        return kotaId;
+    }
+
+    public void setKotaId(String kotaId) {
+        this.kotaId = kotaId;
+    }
+
+    public String getProvinsiId() {
+        return provinsiId;
+    }
+
+    public void setProvinsiId(String provinsiId) {
+        this.provinsiId = provinsiId;
+    }
+
+    public String getNamaDesa() {
+        return namaDesa;
+    }
+
+    public void setNamaDesa(String namaDesa) {
+        this.namaDesa = namaDesa;
+    }
+
+    public String getNamaKecamatan() {
+        return namaKecamatan;
+    }
+
+    public void setNamaKecamatan(String namaKecamatan) {
+        this.namaKecamatan = namaKecamatan;
+    }
+
+    public String getNamaKota() {
+        return namaKota;
+    }
+
+    public void setNamaKota(String namaKota) {
+        this.namaKota = namaKota;
+    }
+
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getTglDaftar() {
+        return tglDaftar;
+    }
+
+    public void setTglDaftar(String tglDaftar) {
+        this.tglDaftar = tglDaftar;
+    }
+
+    public String getStTglCheckup() {
+        return stTglCheckup;
+    }
+
+    public void setStTglCheckup(String stTglCheckup) {
+        this.stTglCheckup = stTglCheckup;
+    }
+
+    public Date getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(Date tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
+
+    public String getStTglLahir() {
+        return stTglLahir;
+    }
+
+    public void setStTglLahir(String stTglLahir) {
+        this.stTglLahir = stTglLahir;
+    }
+
+    public String getStDesaId() {
+        return stDesaId;
+    }
+
+    public void setStDesaId(String stDesaId) {
+        this.stDesaId = stDesaId;
+    }
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
 
     public String getNoCheckupOnline() {
         return noCheckupOnline;
@@ -87,11 +220,11 @@ public class RegistrasiOnline extends BaseModel implements Serializable {
         this.tglLahir = tglLahir;
     }
 
-    public Long getDesaId() {
+    public BigInteger getDesaId() {
         return desaId;
     }
 
-    public void setDesaId(Long desaId) {
+    public void setDesaId(BigInteger desaId) {
         this.desaId = desaId;
     }
 

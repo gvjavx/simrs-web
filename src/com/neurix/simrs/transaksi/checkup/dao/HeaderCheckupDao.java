@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -71,7 +72,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "pel.nama_pelayanan,\n" +
                     "ranap.nama_ruangan,\n" +
                     "ranap.no_ruangan,\n" +
-                    "detail.id_detail_checkup\n" +
+                    "detail.id_detail_checkup, detail.no_sep, detail.tarif_bpjs\n" +
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
@@ -102,6 +103,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 headerDetailCheckup.setNamaRuangan(obj[5] == null ? "" : obj[5].toString());
                 headerDetailCheckup.setNoRuangan(obj[6] == null ? "" : obj[6].toString());
                 headerDetailCheckup.setIdDetailCheckup(obj[7].toString());
+                headerDetailCheckup.setNoSep(obj[8] == null ? "" : obj[8].toString());
+                if(obj[9] != null){
+                    headerDetailCheckup.setTarifBpjs(new BigDecimal(obj[9].toString()));
+                }
                 return headerDetailCheckup;
             }
         }
@@ -273,6 +278,106 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         }
 
         return alertPasien;
+    }
+
+    public List<HeaderCheckup> getListAntrianPasien(String branchId, String poli) {
+
+        String branch = "%";
+        String pelayanan = "%";
+
+        List<HeaderCheckup> listOfResult = new ArrayList<>();
+
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
+            branch = branchId;
+        }
+
+        if (poli != null && !"".equalsIgnoreCase(poli)) {
+            pelayanan = poli;
+        }
+
+        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
+                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
+                "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
+                "WHERE b.status_periksa = '0'\n" +
+                "AND a.branch_id LIKE :branchId \n" +
+                "AND b.id_pelayanan LIKE :poliId \n" +
+                "AND CAST(a.created_date AS date) = current_date\n" +
+                "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branch)
+                .setParameter("poliId", pelayanan)
+                .list();
+
+        if (!result.isEmpty()) {
+            HeaderCheckup checkup;
+            for (Object[] obj : result) {
+                checkup = new HeaderCheckup();
+                checkup.setIdPasien(obj[0].toString());
+                checkup.setNama(obj[1].toString());
+                checkup.setNamaDesa(obj[3].toString());
+                checkup.setNamaPelayanan(obj[5].toString());
+                checkup.setNamaKecamatan(obj[7].toString());
+                listOfResult.add(checkup);
+            }
+        }
+
+        return listOfResult;
+    }
+
+    public List<HeaderCheckup> getListPeriksaPasien(String branchId, String poli) {
+
+        String branch = "%";
+        String pelayanan = "%";
+
+        List<HeaderCheckup> listOfResult = new ArrayList<>();
+
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
+            branch = branchId;
+        }
+
+        if (poli != null && !"".equalsIgnoreCase(poli)) {
+            pelayanan = poli;
+        }
+
+        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
+                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
+                "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
+                "WHERE b.status_periksa = '1'\n" +
+                "AND a.branch_id LIKE :branchId \n" +
+                "AND b.id_pelayanan LIKE :poliId \n" +
+                "AND CAST(a.created_date AS date) = current_date\n" +
+                "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branch)
+                .setParameter("poliId", pelayanan)
+                .list();
+
+        if (!result.isEmpty()) {
+            HeaderCheckup checkup;
+            for (Object[] obj : result) {
+                checkup = new HeaderCheckup();
+                checkup.setIdPasien(obj[0].toString());
+                checkup.setNama(obj[1].toString());
+                checkup.setNamaDesa(obj[3].toString());
+                checkup.setNamaPelayanan(obj[5].toString());
+                checkup.setNamaKecamatan(obj[7].toString());
+                listOfResult.add(checkup);
+            }
+        }
+
+        return listOfResult;
     }
 
     private String timeToStringDate(Long time){

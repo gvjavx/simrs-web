@@ -20,5 +20,6 @@ public interface PeriksaLabBo {
     public void saveUpdateHasilLab(PeriksaLabDetail bean) throws GeneralBOException;
     public List<PeriksaLabDetail> getListParameterLab(PeriksaLabDetail bean) throws GeneralBOException;
     public void saveDokterLab(PeriksaLab bean) throws GeneralBOException;
+
     public CheckResponse updateFlagApprovePeriksaLab (PeriksaLab bean) throws GeneralBOException;
 }

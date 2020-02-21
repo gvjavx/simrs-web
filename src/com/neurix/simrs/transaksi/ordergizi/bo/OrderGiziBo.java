@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface OrderGiziBo {
     public List<OrderGizi> getByCriteria(OrderGizi bean) throws GeneralBOException;
+
     public CheckResponse saveAdd(OrderGizi bean)throws GeneralBOException;
     public CheckResponse saveEdit(OrderGizi bean)throws GeneralBOException;
     public CheckResponse updateDiterimaFLag(OrderGizi bean) throws GeneralBOException;

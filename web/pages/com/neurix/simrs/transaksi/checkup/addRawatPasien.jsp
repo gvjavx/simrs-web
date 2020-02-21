@@ -529,6 +529,10 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
+
+                                        <s:hidden name="headerCheckup.isOnline"/>
+                                        <s:hidden name="headerCheckup.tglAntian"/>
+
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
                                             <div class="col-md-8">
@@ -582,7 +586,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4">Provinsi</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="headerCheckup.namaProvinsi"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -594,7 +598,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kota</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="headerCheckup.namaKota"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -606,7 +610,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="headerCheckup.namaKecamatan"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -618,7 +622,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name="headerCheckup.namaDesa"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -728,6 +732,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Penanggung Jawab</h3>
@@ -843,6 +848,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <s:if test='tipe == "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
@@ -926,6 +933,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </s:if>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
@@ -1207,7 +1215,13 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
+
+    var idPelayanan = $('#poli').val();
+
     $(document).ready(function () {
+
+        $("#bahasa").val("indonesia");
+        $("#bahasa").attr("readOnly","true");
         $('#pendaftaran').addClass('active');
 
         $(document).on('change', '.btn-file :file', function () {
@@ -1245,6 +1259,8 @@
         });
 
         initlistPenjamin();
+        initListDokter();
+
     });
 
     function setFormAdmisi() {
@@ -1440,6 +1456,7 @@
         });
 
     }
+
     function listDokter(idPelayanan) {
         var idx = idPelayanan.selectedIndex;
         var idPoli = idPelayanan.options[idx].value;
@@ -1457,6 +1474,39 @@
                 option = option;
             }
         });
+    }
+
+    function initListDokter() {
+        if(idPelayanan != ''){
+            var option = "";
+            CheckupAction.listOfDokter(idPelayanan, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                    });
+
+                    $('#dokter').html(option);
+                } else {
+                    option = option;
+                }
+            });
+        }
+
+        var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
+        if(idDokter != ''){
+            $('#dokter').val(idDokter).trigger('change');
+        }
+
+        var isLama = '<s:property value="headerCheckup.jenisKunjungan"></s:property>';
+        if(isLama != ''){
+
+            if(isLama == "Lama"){
+                $('#kunjungan').val("Lama").trigger('change');
+            }else{
+                $('#kunjungan').val("Baru").trigger('change');
+            }
+        }
     }
 
     function alertPasien(noPasien) {
@@ -1530,6 +1580,33 @@
             return namaAlat;
         }
     });
+
+    function changePlaceHolder(n){
+
+        var idx = n.selectedIndex;
+        var perujuk = n.options[idx].value;
+
+        if (perujuk == "dokter"){
+            $("#intansi_perujuk").attr("placeholder","nama dokter");
+        }
+        if (perujuk == "puskesmas"){
+            $("#intansi_perujuk").attr("placeholder","nama puskesmas");
+        }
+        if (perujuk == "rs"){
+            $("#intansi_perujuk").attr("placeholder","nama rumah sakit");
+        }
+        if (perujuk == "bidan"){
+            $("#intansi_perujuk").attr("placeholder","nama bidan");
+        }
+        if (perujuk == "polisi"){
+            $("#intansi_perujuk").attr("placeholder","nama instansi");
+        }
+        if (perujuk == "sendiri"){
+            $("#intansi_perujuk").attr("disabled","true");
+            $("#intansi_perujuk").removeAttr("placeholder");
+        }
+
+    }
 
 
 </script>
@@ -1639,6 +1716,7 @@
         }
     });
 
+
     function changePlaceHolder(n) {
 
         var idx = n.selectedIndex;
@@ -1685,6 +1763,7 @@
     }
 
     var listAlergi = [];
+
     function addAlergi(alergi) {
         listAlergi.push({"alergi": alergi});
     }

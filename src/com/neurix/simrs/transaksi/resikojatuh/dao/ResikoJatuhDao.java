@@ -32,6 +32,7 @@ public class ResikoJatuhDao extends GenericDao<ItSImrsResikoJatuhEntity, String>
         if (mapCriteria.get("no_checkup") != null){
             criteria.add(Restrictions.eq("noCheckup", mapCriteria.get("no_checkup").toString()));
         }
+
         if (mapCriteria.get("id_parameter") != null){
             criteria.add(Restrictions.eq("idParameter", mapCriteria.get("id_parameter").toString()));
         }

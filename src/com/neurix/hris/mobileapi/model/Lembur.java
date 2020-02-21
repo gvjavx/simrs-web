@@ -13,17 +13,25 @@ public class Lembur {
     private String tanggalAkhir;
     private String unit;
     private String jamLemburAwal;
-    private BigDecimal lamaJamLembur;
+    private String lamaJamLembur;
     private String keterangan;
     private String jamLemburAkhir;
     private String message;
-    private Integer jumlah;
+    private String jumlah;
 
-    public Integer getJumlah() {
+    public String getLamaJamLembur() {
+        return lamaJamLembur;
+    }
+
+    public void setLamaJamLembur(String lamaJamLembur) {
+        this.lamaJamLembur = lamaJamLembur;
+    }
+
+    public String getJumlah() {
         return jumlah;
     }
 
-    public void setJumlah(Integer jumlah) {
+    public void setJumlah(String jumlah) {
         this.jumlah = jumlah;
     }
 
@@ -99,13 +107,6 @@ public class Lembur {
         this.unit = unit;
     }
 
-    public BigDecimal getLamaJamLembur() {
-        return lamaJamLembur;
-    }
-
-    public void setLamaJamLembur(BigDecimal lamaJamLembur) {
-        this.lamaJamLembur = lamaJamLembur;
-    }
 
     public String getKeterangan() {
         return keterangan;

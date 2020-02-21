@@ -254,4 +254,5 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo{
     public void setStatusPasienDao(StatusPasienDao statusPasienDao) {
         this.statusPasienDao = statusPasienDao;
     }
+
 }

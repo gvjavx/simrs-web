@@ -13,7 +13,16 @@
           p:pasienBoProxy-ref="pasienBoProxy"
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
           p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
+          p:registrasiOnlineBoProxy-ref="registrasiOnlineBoProxy"
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
+
     />
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
+
+
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
           p:headerCheckupDao-ref="headerCheckupDao"
@@ -85,7 +94,6 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="psikososialDao" class="com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao"
           p:sessionFactory-ref="sessionFactory" />
-
     <bean id="patrusDao" class="com.neurix.simrs.transaksi.patrus.dao.PatrusDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="tranfusiDao" class="com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao"

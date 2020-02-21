@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.cuti.bo.CutiBo;
 import com.neurix.hris.mobileapi.model.PengajuanCuti;
+import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.opensymphony.xwork2.ModelDriven;
@@ -125,6 +126,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
 
     public HttpHeaders update() {
         logger.info("[CutiFormPegawaiController.update] end process POST /pengajuancuti/{id} <<<");
+        PengajuanCuti result = new PengajuanCuti();
+        result.setActionError("");
 
         try {
 
@@ -152,9 +155,11 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setLastUpdateWho(model.getNamaPegawai());
             cutiPegawai.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             cutiPegawai.setCreatedDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            cutiPegawai.setOs(model.getOs());
 
             cutiPegawaiBoProxy.saveAdd(cutiPegawai);
         } catch (GeneralBOException e) {
+            result.setActionError(e.getMessage());
             Long logId = null;
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
@@ -205,6 +210,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             for(com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai modelCuti : listOfCuti){
                 if(modelCuti.getApprovalFlag() == null) {
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());
@@ -222,6 +228,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                 } else if(modelCuti.getApprovalFlag().equals("Y") && statusApprove.equals("Y")){
 
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());
@@ -238,6 +245,7 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                     listOfCutiPegawai.add(model);
                 } else if (modelCuti.getApprovalFlag().equals("N") && statusApprove.equals("N")){
                     PengajuanCuti model = new PengajuanCuti();
+                    model.setCutiPegawaiId(modelCuti.getCutiPegawaiId());
                     model.setNip(modelCuti.getNip());
                     model.setUnit(modelCuti.getUnitName());
                     model.setNamaPegawai(modelCuti.getNamaPegawai());

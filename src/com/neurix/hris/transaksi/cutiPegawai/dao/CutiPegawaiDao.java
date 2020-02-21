@@ -96,7 +96,9 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "                cuti.cuti_name, \n" +
                 "                cuti.jumlah_cuti_harI\n" +
                 "                from  \n" +
-                "                im_hris_cuti cuti \n";
+                "                im_hris_cuti cuti \n" +
+                "                where \n " +
+                "                cuti.cuti_id != 'CT005'";
         resultsCuti = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query1)
                 .list();

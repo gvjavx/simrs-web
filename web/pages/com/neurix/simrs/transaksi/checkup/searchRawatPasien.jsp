@@ -44,7 +44,21 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group date">
+                                    <input class="form-control" id="id_antrian" placeholder="Antrian Online"
+                                           onchange="saveAntrian()">
+                                    <div class="input-group-btn" onclick="saveAntrian()">
+                                        <button class="btn btn-success" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
+                                        <button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -181,6 +195,20 @@
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false" closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         $('#id_antrian').val('');
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
                                         </sj:dialog>
                                         <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
                                                    resizable="false" cssStyle="text-align:left;"
@@ -419,6 +447,107 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-antrian">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>No Checkup Online</b></td>
+                                    <td><span id="an_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="an_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ID Pasien</b></td>
+                                    <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="an_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="an_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><span id="an_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Agama</b></td>
+                                    <td><span id="an_agama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Suku</b></td>
+                                    <td><span id="an_suku"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="an_alamat"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="an_desa"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="an_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="an_kabupaten"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="an_provinsi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tanggal Daftar</b></td>
+                                    <td><span id="an_tgl_daftar"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tujuan Poli</b></td>
+                                    <td><span id="an_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Dokter</b></td>
+                                    <td><span id="an_dokter"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button class="btn btn-success" id="save_aktif"><i class="fa fa-arrow-right"></i> Aktivasi</button>
+                <button class="btn btn-success" style="cursor: no-drop; display: none" id="load_aktif"><i class="fa fa-spinner fa-spin"></i> Sedang menyimpan...</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type='text/javascript'>
     function detail_pasien(idCheckup) {
         var table = "";
@@ -537,6 +666,61 @@
             window.location.href = 'finspot:FingerspotVer;'+url;
         }
     });
+
+
+    function  saveAntrian() {
+        var noAntrian = $('#id_antrian').val();
+        if(noAntrian != ''){
+            CheckupAction.getDetailAntrianOnline(noAntrian, function (response) {
+                if(response.noCheckupOnline != null){
+                    var tipe = "";
+                    if(response.idJenisPeriksaPasien == "bpjs"){
+                        tipe = "bpjs";
+                    }else{
+                        tipe = "umum";
+                    }
+
+                    window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
+
+                    // $('#modal-antrian').modal({show:true, backdrop:'static'});
+                    // $('#an_no_checkup').text(response.noCheckupOnline);
+                    // $('#an_nik').text(response.noKtp);
+                    // $('#an_id_pasien').text(response.idPasien);
+                    // $('#an_nama').text(response.nama);
+                    // if(response.jenisKelamin == "P"){
+                    //     jenis = "Perempuan";
+                    // }else{
+                    //     jenis = "Laki-Laki";
+                    // }
+                    // $('#an_jenis_kelamin').text(jenis);
+                    // $('#an_tgl').text(response.tempatLahir+", "+$.datepicker.formatDate("dd-mm-yy",response.tglLahir));
+                    // $('#an_agama').text(response.agama);
+                    // $('#an_suku').text(response.suku);
+                    // $('#an_alamat').text(response.jalan);
+                    // $('#an_desa').text(response.namaDesa);
+                    // $('#an_kecamatan').text(response.namaKecamatan);
+                    // $('#an_kabupaten').text(response.namaKota);
+                    // $('#an_provinsi').text(response.namaProvinsi);
+                    // $('#an_tgl_daftar').text(response.tglDaftar);
+                    // $('#an_poli').text(response.namaPelayanan);
+                    // $('#an_dokter').text(response.namaDokter);
+                    //
+                    // $('#save_aktif').attr('onclick','saveAktivasi(\''+response.noCheckupOnline+'\')');
+                }else{
+
+                }
+            });
+        }
+    }
+
+    function saveAktivasi(noCheckupOnline){
+        CheckupAction.aktivasiAntrianOnline(noCheckupOnline, function (response) {
+            if(response.status == "success"){
+                $('#modal-antrian').modal('hide');
+                $('#info_dialog').dialog('open');
+            }
+        })
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

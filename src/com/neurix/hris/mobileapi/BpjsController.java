@@ -19,13 +19,16 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 /**
  * Created by Toshiba on 21/10/2019.
  */
-public class BpjsController extends BpjsService implements ModelDriven<String> {
+public class BpjsController extends BpjsService implements ModelDriven<Object> {
+
+    private Collection<TindakanResponse> listOfTindakanResponse = new ArrayList<>();
 
     private String data;
     private String keyword;
@@ -182,6 +185,8 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         for (TindakanResponse tindakanResponse : tindakanResponseList){
             logger.info(tindakanResponse.getNamaTindakanBpjs());
         }
+
+        listOfTindakanResponse.addAll(tindakanResponseList);
     }
     public void listDiagnosa(String key){
         List<DiagnosaResponse> diagnosaResponseList = new ArrayList<>();
@@ -358,8 +363,14 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         return result;
     }
     @Override
-    public String getModel() {
-        return result;
+    public Object getModel() {
+        switch (data){
+            case "finger-register":
+                return result;
+            case "bpjs-tindakan":
+                return listOfTindakanResponse;
+            default: return null;
+        }
     }
 
 }

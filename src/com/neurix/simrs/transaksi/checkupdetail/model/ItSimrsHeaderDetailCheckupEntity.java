@@ -35,6 +35,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String noSep;
     private BigDecimal tarifBpjs;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
 
     public String getNoSep() {
         return noSep;

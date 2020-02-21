@@ -18,6 +18,16 @@ public class Dokter {
     private String idSpesialis;
     private String namaSpesialis;
 
+    private String kuota;
+
+    public String getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(String kuota) {
+        this.kuota = kuota;
+    }
+
     public String getIdDokter() {
         return idDokter;
     }

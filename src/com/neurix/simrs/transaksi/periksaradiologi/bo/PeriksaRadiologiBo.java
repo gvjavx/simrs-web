@@ -13,4 +13,5 @@ public interface PeriksaRadiologiBo {
     public List<PeriksaRadiologi> getListPeriksaRadioLogiByCriteria(PeriksaRadiologi bean) throws GeneralBOException;
     public void saveAdd(PeriksaRadiologi bean) throws GeneralBOException;
     public void saveEdit(PeriksaRadiologi bean) throws GeneralBOException;
+
 }

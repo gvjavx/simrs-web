@@ -2,12 +2,14 @@ package com.neurix.simrs.master.ruangan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +30,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             if (mapCriteria.get("id_ruangan")!=null) {
                 criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
             }
-            if (mapCriteria.get("nama_rangan")!=null) {
-                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String)mapCriteria.get("nama_rangan") + "%"));
+            if (mapCriteria.get("nama_ruangan")!=null) {
+                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String)mapCriteria.get("nama_ruangan") + "%"));
             }
             if (mapCriteria.get("no_ruangan")!=null) {
                 criteria.add(Restrictions.eq("noRuangan", (String) mapCriteria.get("no_ruangan")));
@@ -64,5 +66,65 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<Ruangan> getListRuangan(Ruangan bean) {
+
+        String idRuang = "%";
+        String idkelas = "%";
+        String namaRuang = "%";
+
+        List<Ruangan> ruanganList = new ArrayList<>();
+
+        if(bean != null){
+            if(bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+                idRuang = bean.getIdRuangan();
+            }
+
+            if(bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())){
+                namaRuang = bean.getNamaRuangan();
+            }
+
+            if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+                idkelas = bean.getIdKelasRuangan();
+            }
+
+            String SQL = "SELECT a.id_kelas_ruangan, b.id_ruangan, b.nama_ruangan, b.no_ruangan, b.status_ruangan,\n" +
+                    "c.id_detail_checkup, c.tgl_masuk FROM im_simrs_kelas_ruangan a\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                    "LEFT JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') c On b.id_ruangan = c.id_ruangan\n" +
+                    "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
+                    "AND b.id_ruangan LIKE :idRuang\n" +
+                    "AND b.nama_ruangan LIKE :namaRuang\n" +
+                    "ORDER BY a.id_kelas_ruangan ASC";
+
+            List<Object[]> results = new ArrayList<>();
+
+            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idKelas", idkelas)
+                    .setParameter("idRuang", idRuang)
+                    .setParameter("namaRuang", namaRuang)
+                    .list();
+
+            if(results != null){
+
+                Ruangan ruangan;
+                for (Object[] obj: results){
+
+                    ruangan = new Ruangan();
+                    ruangan.setIdKelasRuangan(obj[0] == null ? "" : obj[0].toString());
+                    ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
+                    ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
+                    ruangan.setNoRuangan(obj[3] == null ? "" : obj[3].toString());
+                    ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
+                    ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
+                    ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
+                    ruanganList.add(ruangan);
+
+                }
+            }
+        }
+
+        return ruanganList;
     }
 }

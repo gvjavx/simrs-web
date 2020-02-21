@@ -8,6 +8,7 @@ import java.sql.Timestamp;
  */
 public class ItSimrsDataPsikososialEntity implements Serializable {
     private String id;
+
     private String noCheckup;
     private String komunikasi;
     private String kemampuanBicara;

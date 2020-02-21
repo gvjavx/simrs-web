@@ -1,13 +1,10 @@
-package com.neurix.simrs.mobileapi.pasien.model;
+package com.neurix.simrs.mobileapi.antrian.model;
 
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by Toshiba on 07/11/2019.
- */
-public class Pasien implements Serializable, Comparable<Pasien> {
+public class Antrian implements Serializable, Comparable<Antrian> {
 
     private String idPasien;
     private String nama;
@@ -317,7 +314,7 @@ public class Pasien implements Serializable, Comparable<Pasien> {
     }
 
     @Override
-    public int compareTo(Pasien o) {
+    public int compareTo(Antrian o) {
         return 0;
     }
 }

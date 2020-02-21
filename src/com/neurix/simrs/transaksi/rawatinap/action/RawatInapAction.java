@@ -233,6 +233,7 @@ public class RawatInapAction extends BaseMasterAction {
                                     tindakan.setCreatedWho(user);
                                     tindakan.setLastUpdate(now);
                                     tindakan.setLastUpdateWho(user);
+                                    tindakan.setTanggalTindakan(now);
 
                                     try {
                                         riwayatTindakanBoProxy.saveAdd(tindakan);
@@ -533,6 +534,62 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListSkorRanap(skorRanap);
     }
 
+
+    public String printGelangPasien(){
+
+        String id = getId();
+
+        //get data from session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+
+        if (id != null && !"".equalsIgnoreCase(id)) {
+
+            if (listOfResult != null) {
+
+                for (RawatInap rawatInap : listOfResult) {
+                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+
+                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+                        reportParams.put("noCheckup",id);
+                        reportParams.put("idDetailCheckup",rawatInap.getIdDetailCheckup());
+                        reportParams.put("nama",headerCheckup.getNama());
+                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_gelang_pasien";
+    }
+
+    public String getComboBoxDietGizi() {
+
+        List<DietGizi> dietGiziArrayList = new ArrayList<>();
+        DietGizi dietGizi = new DietGizi();
+        dietGizi.setBranchId(CommonUtil.userBranchLogin());
+        dietGizi.setFlag("Y");
+
+        try {
+            dietGiziArrayList = dietGiziBoProxy.getByCriteria(dietGizi);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.getComboBoxDietGizi] Error when get data for combo list of diet gizi", e);
+            addActionError(" Error when get data for combo list of diet gizi" + e.getMessage());
+        }
+
+        listOfDietGizi.addAll(dietGiziArrayList);
+        return SUCCESS;
+    }
+
     public List<MonVitalSign> getListMonVitalSign(String noCheckup, String idDetailCheckup, String id){
 
         MonVitalSign monVitalSign = new MonVitalSign();
@@ -719,61 +776,5 @@ public class RawatInapAction extends BaseMasterAction {
 
         return rawatInapBo.getListGraf(monVitalSign);
     }
-
-    public String printGelangPasien(){
-
-        String id = getId();
-
-        //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
-
-        if (id != null && !"".equalsIgnoreCase(id)) {
-
-            if (listOfResult != null) {
-
-                for (RawatInap rawatInap : listOfResult) {
-                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
-
-                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
-                        reportParams.put("noCheckup",id);
-                        reportParams.put("idDetailCheckup",rawatInap.getIdDetailCheckup());
-                        reportParams.put("nama",headerCheckup.getNama());
-                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
-                        break;
-                    }
-                }
-            }
-        }
-
-        try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
-        }
-
-        return "print_gelang_pasien";
-    }
-
-    public String getComboBoxDietGizi() {
-
-        List<DietGizi> dietGiziArrayList = new ArrayList<>();
-        DietGizi dietGizi = new DietGizi();
-        dietGizi.setBranchId(CommonUtil.userBranchLogin());
-        dietGizi.setFlag("Y");
-
-        try {
-            dietGiziArrayList = dietGiziBoProxy.getByCriteria(dietGizi);
-        } catch (GeneralBOException e) {
-            logger.error("[RawatInapAction.getComboBoxDietGizi] Error when get data for combo list of diet gizi", e);
-            addActionError(" Error when get data for combo list of diet gizi" + e.getMessage());
-        }
-
-        listOfDietGizi.addAll(dietGiziArrayList);
-        return SUCCESS;
-    }
-
 
 }

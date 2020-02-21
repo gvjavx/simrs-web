@@ -26,6 +26,13 @@
           p:tindakanRawatDao-ref="tindakanRawatDao"
           p:periksaLabDao-ref="periksaLabDao"
           p:permintaanResepDao-ref="permintaanResepDao"
+          p:orderGiziDao-ref="orderGiziDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
+    />
+
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+        p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

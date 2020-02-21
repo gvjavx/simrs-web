@@ -205,7 +205,7 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="namaRangan"/> [<s:property value="noRuangan"/>]</td>
                                     <td style="vertical-align: middle">
-                                        <s:if test='#row.approveFlag == "Y"'>
+                                        <s:if test='#row.cekApprove == false'>
                                             <label class="label label-success"> telah dikonfirmasi</label>
                                         </s:if>
                                         <s:else>
@@ -213,7 +213,7 @@
                                         </s:else>
                                     </td>
                                     <td align="center">
-                                        <s:if test='#row.approveFlag == "Y"'>
+                                        <s:if test='#row.cekApprove == false'>
                                         </s:if>
                                         <s:else>
                                             <img onclick="listOrderGizi('<s:property value="idRawatInap"/>', '<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
@@ -253,9 +253,9 @@
                         <thead>
                         <tr >
                             <td>Tanggal Order</td>
-                            <td>Diet Pagi</td>
-                            <td>Diet Siang</td>
-                            <td>Diet Malam</td>
+                            <td>ID Diet Gizi</td>
+                            <td>Bentuk Diet</td>
+                            <td>Keterangan</td>
                             <td align="center" rowspan="2">Status</td>
                             <td align="center" rowspan="2">Action</td>
                         </tr>
@@ -298,6 +298,9 @@
                     var bentukMalam = "";
                     var label = "";
                     var btn = "";
+                    var idDietGizi = "";
+                    var bentukDiet = "";
+                    var keterangan = "";
 
                     if(item.bentukMakanPagi != null){
                         bentukPagi = item.bentukMakanPagi;
@@ -318,6 +321,16 @@
                         jenisMalam = item.dietMalam;
                     }
 
+                    if(item.idDietGizi != null){
+                        idDietGizi = item.idDietGizi;
+                    }
+                    if(item.bentukDiet != null){
+                        bentukDiet = item.bentukDiet;
+                    }
+                    if(item.keterangan != null){
+                        keterangan = item.keterangan;
+                    }
+
                     if(item.approveFlag == "Y"){
                         label = '<label class="label label-info"> siap kirim</label>';
                         btn = '<img onclick="printBarcodeGizi(\''+noCheckup+'\',\''+item.idOrderGizi+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;">';
@@ -332,9 +345,9 @@
                     }
                     table +=    '<tr>' +
                                 '<td>'+tanggal+'</td>'+
-                                '<td>'+bentukPagi+'</td>'+
-                                '<td>'+bentukSiang+'</td>'+
-                                '<td>'+bentukMalam+'</td>'+
+                                '<td>'+idDietGizi+'</td>'+
+                                '<td>'+bentukDiet+'</td>'+
+                                '<td>'+keterangan+'</td>'+
                                 '<td style="vertical-align: middle" align="center">'+label+'</td>'+
                                 '<td align="center">'+btn+'</td>'+
                                 '</tr>'

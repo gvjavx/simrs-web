@@ -62,6 +62,25 @@ public class Lembur extends BaseModel {
     private String bulan;
     private String tahun;
 
+    private String os;
+    private String channelId;
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
     public boolean isAdaAbsen() {
         return adaAbsen;
     }

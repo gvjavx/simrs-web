@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -68,8 +69,9 @@ public class RawatInapBoImpl implements RawatInapBo {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-
-        hsCriteria.put("flag", "Y");
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            hsCriteria.put("flag", bean.getFlag());
+        }
 
         try {
             entityList = rawatInapDao.getByCriteria(hsCriteria);
@@ -465,6 +467,29 @@ public class RawatInapBoImpl implements RawatInapBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("head", head);
         return kategoriSkorRanapDao.getByCriteria(hsCriteria);
+    }
+
+    @Override
+    public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException {
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        if(bean != null){
+            List<ItSimrsRawatInapEntity> list = getListEntityByCriteria(bean);
+            if(list.size() > 0){
+                RawatInap rawatInap;
+                for (ItSimrsRawatInapEntity entity: list){
+                    rawatInap = new RawatInap();
+                    rawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    rawatInap.setIdRawatInap(entity.getIdRawatInap());
+                    rawatInap.setNoCheckup(entity.getNoCheckup());
+                    rawatInap.setIdRuangan(entity.getIdRuangan());
+                    rawatInap.setNamaRangan(entity.getNamaRangan());
+                    rawatInap.setTglMasuk(entity.getTglMasuk());
+                    rawatInap.setTglKeluar(entity.getTglKeluar());
+                    rawatInapList.add(rawatInap);
+                }
+            }
+        }
+        return rawatInapList;
     }
 
     private String stringDate(Timestamp datetime){

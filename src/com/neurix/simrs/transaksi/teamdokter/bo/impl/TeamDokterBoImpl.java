@@ -146,4 +146,5 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     public void setDokterTeamDao(DokterTeamDao dokterTeamDao) {
         this.dokterTeamDao = dokterTeamDao;
     }
+
 }

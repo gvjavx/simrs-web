@@ -45,6 +45,7 @@ import com.neurix.simrs.transaksi.resikojatuh.dao.ParameterResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.ResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.dao.SkorResikoJatuhDao;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -212,15 +213,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setHubunganKeluarga(headerList.getHubunganKeluarga());
             headerCheckup.setRujuk(headerList.getRujuk());
             headerCheckup.setJenisKunjungan(headerList.getJenisKunjungan());
-            headerCheckup.setNoSep(headerList.getNoSep());
             headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
             headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
-            headerCheckup.setTarifBpjs(headerList.getTarifBpjs());
             headerCheckup.setNoRujukan(headerList.getNoRujukan());
             headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
             headerCheckup.setTglRujukan(headerList.getNoRujukan());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
             try {
                 headerDetailCheckup = headerCheckupDao.getLastPoliAndStatus(headerList.getNoCheckup());
             } catch (HibernateException e){
@@ -235,6 +235,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerCheckup.setNamaRuangan(headerDetailCheckup.getNamaRuangan());
                 headerCheckup.setNoRuangan(headerDetailCheckup.getNoRuangan());
                 headerCheckup.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
+                headerCheckup.setNoSep(headerDetailCheckup.getNoSep());
+                headerCheckup.setTarifBpjs(headerDetailCheckup.getTarifBpjs());
 
                 DokterTeam dokterTeam = new DokterTeam();
                 dokterTeam.setIdDetailCheckup(headerDetailCheckup.getIdDetailCheckup());
@@ -310,6 +312,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setUrlDocRujuk(bean.getUrlDocRujuk());
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setNoSep(bean.getNoSep());
+
+
             headerEntity.setJenisTransaksi(bean.getIdJenisPeriksaPasien());
             headerEntity.setKetRujukan(bean.getKetPerujuk());
             headerEntity.setKetKeyakinan(bean.getKetKeyakinan());
@@ -347,7 +352,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+
+                //TGL Antrin dari tabel antrian online
+                if(bean.isOnline()){
+                    detailCheckupEntity.setTglAntrian(bean.getTglAntian());
+                }else{
+                    detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+                }
+
                 detailCheckupEntity.setNoSep(bean.getNoSep());
                 detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 
@@ -429,6 +441,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     riwayatTindakan.setLastUpdateWho(bean.getLastUpdateWho());
                                     riwayatTindakan.setFlag("Y");
                                     riwayatTindakan.setAction("C");
+                                    riwayatTindakan.setTanggalTindakan(bean.getCreatedDate());
 
                                     try {
                                         riwayatTindakanDao.addAndSave(riwayatTindakan);
@@ -437,6 +450,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                     }
 
                                 }
+
                             } catch (HibernateException e){
                                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" +e.getMessage());
                                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat"+ e.getMessage());
@@ -673,6 +687,32 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             throw new GeneralBOException("[CheckupBoImpl.getNextHeaderId] Error When Error get next seq id");
         }
         return id;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListAntrian(String branch, String poli) throws GeneralBOException {
+        List<HeaderCheckup> result = new ArrayList<>();
+
+        try {
+            result = headerCheckupDao.getListAntrianPasien(branch, poli);
+        }catch (HibernateException e){
+            logger.error("[Found Error when search list antrian pasien] "+e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<HeaderCheckup> getListPeriksa(String branch, String poli) throws GeneralBOException {
+        List<HeaderCheckup> result = new ArrayList<>();
+
+        try {
+            result = headerCheckupDao.getListPeriksaPasien(branch, poli);
+        }catch (HibernateException e){
+            logger.error("[Found Error when search list antrian pasien] "+e);
+        }
+
+        return result;
     }
 
     private String getNextDetailCheckupId(){
@@ -1638,6 +1678,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
         return id;
     }
+
 
     private String getIdTranfusi(){
         String id = "";

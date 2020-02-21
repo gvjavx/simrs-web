@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface VerifikatorBo {
     public CheckResponse updateApproveBpjsFlag(RiwayatTindakan bean) throws GeneralBOException;
-    public CheckResponse updateKlaimBpjsFlag(HeaderCheckup bean) throws GeneralBOException;
+    public CheckResponse updateKlaimBpjsFlag(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<HeaderDetailCheckup> getListVerifikasiRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException;
     public CheckResponse updateFlagKlaim(RiwayatTindakan bean) throws GeneralBOException;

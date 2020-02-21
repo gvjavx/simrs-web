@@ -11,6 +11,10 @@
           p:kategoriTindakanDao-ref="kategoriTindakanDao"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
+    />
+
     <bean id="kategoriTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="kategoriTindakanBo">
         <property name="interceptorNames">
