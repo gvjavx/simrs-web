@@ -47,6 +47,7 @@
           p:patrusDao-ref="patrusDao"
           p:tranfusiDao-ref="tranfusiDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
