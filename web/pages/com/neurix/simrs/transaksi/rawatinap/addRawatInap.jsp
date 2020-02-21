@@ -54,6 +54,9 @@
     #line-chart{
       width: 100%;
     }
+    #line-chart-rm{
+        width: 100%;
+    }
     </style>
 </head>
 
@@ -198,6 +201,13 @@
                                         <td>
                                             <table><label class="label label-success"> <span id="no_ruang"></span> -
                                                 <span id="name_ruang"></span></label></table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="rawatInap.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -2398,7 +2408,50 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-rekam-medic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
+                <!-- Custom Tabs -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
+                        <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
+                    </ul>
+                    <div class="tab-content" id="list-body-rekam-medic">
+                        <%-- <table class="table">
+                          <tbody id="list-body-rekam-medic">
+                          </tbody>
+                        </table> --%>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <input type="hidden" name="" id="rm-no-checkup">
+                    <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="mask"></div>
+
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
 
     var idDetailCheckup = $('#no_detail_checkup').val();
@@ -4607,7 +4660,7 @@
 
       var suhu = [], nadi = [], nafas = [], label = [];
       dwr.engine.setAsync(true);
-      RawatInapAction.getListGraf(idDetailCheckup, function(response){
+      RawatInapAction.getListGraf(idDetailCheckup, "", function(response){
         console.log(response)
         $.each(response, function(i, item){
           suhu.push([i,item.suhu]);
@@ -4620,52 +4673,16 @@
        * LINE CHART
        * ----------
        */
-      //LINE randomly generated data
+      var line_data1 = { data : suhu, color: '#3a4dc9' }
+      var line_data2 = { data : nadi, color: '#eb4034' }
+      var line_data3 = { data : nafas, color: '#6b6b6b' }
 
-      // var sin = [], cos = []
-      // for (var i = 0; i < 14; i += 0.5) {
-      //   sin.push([i, Math.sin(i)])
-      //   cos.push([i, Math.cos(i)])
-      // }
-      var line_data1 = {
-        data : suhu,
-        color: '#3a4dc9'
-      }
-      var line_data2 = {
-        data : nadi,
-        color: '#eb4034'
-      }
-      var line_data3 = {
-        data : nafas,
-        color: '#6b6b6b'
-      }
       $.plot('#line-chart', [line_data1, line_data2, line_data3], {
-        grid  : {
-          hoverable  : true,
-          borderColor: '#f3f3f3',
-          borderWidth: 1,
-          tickColor  : '#f3f3f3'
-        },
-        series: {
-          shadowSize: 0,
-          lines     : {
-            show: true
-          },
-          points    : {
-            show: true
-          }
-        },
-        lines : {
-          fill : false,
-          color: ['#3c8dbc', '#f56954']
-        },
-        yaxis : {
-          show: true
-        },
-        xaxis : {
-          show: true,
-          ticks: label
-        }
+        grid  : { hoverable  : true, borderColor: '#f3f3f3', borderWidth: 1, tickColor  : '#f3f3f3'},
+        series: { shadowSize: 0, lines : { show: true }, points : { show: true } },
+        lines : { fill : false, color: ['#3c8dbc', '#f56954'] },
+        yaxis : { show: true },
+        xaxis : { show: true, ticks: label }
       })
       //Initialize tooltip on hover
       $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
@@ -4685,7 +4702,6 @@
         } else {
           $('#line-chart-tooltip').hide()
         }
-
       })
       /* END LINE CHART */
       });

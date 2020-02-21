@@ -944,13 +944,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException {
+    public List<AlertPasien> listOfRekamMedic(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.listOfRekamMedic] Start >>>>>>>>");
 
         List<ItSimrsHeaderChekupEntity> headerChekupEntities = null;
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pasien", idPasien);
-        hsCriteria.put("tgl_keluar_not_null", "Y");
+        if (bean.getNoCheckup() != null){
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        } else {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+            hsCriteria.put("tgl_keluar_not_null", "Y");
+        }
 
         try {
             headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
@@ -1158,9 +1162,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.getListRencanaRawat] Start >>>>>>>>");
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("no_checkup", noCheckup);
-        hsCriteria.put("id_detail_checkup", idDetail);
-        hsCriteria.put("id_kategori", kategori);
+        if (!"".equalsIgnoreCase(noCheckup))
+            hsCriteria.put("no_checkup", noCheckup);
+        if (!"".equalsIgnoreCase(idDetail))
+            hsCriteria.put("id_detail_checkup", idDetail);
+        if (!"".equalsIgnoreCase(kategori))
+            hsCriteria.put("id_kategori", kategori);
 
         List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = rencanaRawatDao.getByCriteria(hsCriteria);
         if (rencanaRawatEntities.size() == 0){

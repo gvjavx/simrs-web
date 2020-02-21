@@ -38,6 +38,15 @@
             text-decoration: none;
             display: block;
         }
+        #line-chart-tooltip{
+          z-index: 10000;
+        }
+        #line-chart{
+          width: 100%;
+        }
+        #line-chart-rm{
+            width: 100%;
+        }
 
         /*.dropdown-content a:hover {background-color: #f1f1f1}*/
 
@@ -1172,22 +1181,24 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
             </div>
             <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                    <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
                   </ul>
-                  <div class="tab-content">
-                    <table class="table">
+                  <div class="tab-content" id="list-body-rekam-medic">
+                    <%-- <table class="table">
                       <tbody id="list-body-rekam-medic">
                       </tbody>
-                    </table>
-                    <input type="hidden" id="rm-no-checkup" name="" value="">
+                    </table> --%>
                     <!-- /.tab-pane -->
                   </div>
+                  <input type="hidden" name="" id="rm-no-checkup">
                   <!-- /.tab-content -->
                 </div>
                 <!-- nav-tabs-custom -->
@@ -1196,15 +1207,13 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- /.content-wrapper -->
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
 
     var idPelayanan = $('#poli').val();
@@ -1535,92 +1544,6 @@
                 closeAlert();
             }
         });
-    }
-
-    function initRekamMedic() {
-        var idPasien = $("#id_pasien").val();
-        var table = "";
-        var namaPasien = "";
-
-        CheckupAction.listRekamMedic(idPasien, function (response) {
-            // console.log(response);
-            $.each(response, function (i, item) {
-                var noCheckup = "";
-                var dignosa = "";
-                var tanggal = "";
-                var dateFormatMasuk = "";
-                var dateFormatKeluar = "";
-
-                if(item.noCheckup != null){
-                    noCheckup = item.noCheckup;
-                }
-                if(item.diagnosa != null){
-                    dignosa = item.diagnosa;
-                }
-                if(item.stTglMasuk != null && item.stTglKeluar != null){
-                    tanggalMasuk = item.stTglMasuk;
-                    tanggalKeluar = item.stTglKeluar;
-                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
-                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
-                }
-                table += "<tr>" +
-                        "<td>" + noCheckup + "</td>" +
-                        "<td>" + dignosa + "</td>" +
-                        "<td align='center'>" + dateFormatMasuk + "</td>" +
-                        "<td align='center'>" + dateFormatKeluar + "</td>" +
-                        "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
-                        "</tr>";
-
-                namaPasien = item.namaPasien;
-            });
-
-            $("#modal-rekam-medic").modal('show');
-            $('#nama_medik').html(namaPasien);
-            $("#body-rekam-medic").html(table);
-        });
-    }
-
-    function viewDetailRekamMedic(noCheckup){
-      console.log("viewDetailRekamMedic ==> klik");
-      $("#rm-no-checkup").val(noCheckup);
-      $("#modal-detail-rekam-medic").modal("show");
-    }
-
-    function viewDetailRekamMedicByKategori(kategori){
-      if (kategori == "ri") {
-        CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
-          // console.log(response);
-          var str = "";
-          $.each(response, function(i, item) {
-            str += "<tr>"+
-                  "<td>"+item.namaKategori+"</td>"+
-                  "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
-                  "</tr>";
-          });
-          $("#list-body-rekam-medic").html("");
-          $("#list-body-rekam-medic").html(str);
-        });
-      } else {
-        $("#list-body-rekam-medic").html("");
-        if (kategori == "mon") {
-
-          str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-          $("#list-body-rekam-medic").html(str);
-
-        } else if (kategori == "igd") {
-          str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                    "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-          $("#list-body-rekam-medic").html(str);
-        } else {
-
-        }
-      }
     }
 
     function closeAlert() {

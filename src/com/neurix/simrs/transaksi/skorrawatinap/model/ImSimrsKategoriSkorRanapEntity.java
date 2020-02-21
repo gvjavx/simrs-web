@@ -16,6 +16,7 @@ public class ImSimrsKategoriSkorRanapEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String head;
+    private String type;
 
     public String getIdKategori() {
         return idKategori;
@@ -87,5 +88,13 @@ public class ImSimrsKategoriSkorRanapEntity implements Serializable {
 
     public void setHead(String head) {
         this.head = head;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

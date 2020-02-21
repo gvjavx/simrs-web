@@ -1342,11 +1342,14 @@ public class CheckupAction extends BaseMasterAction {
 
         List<AlertPasien> alertPasienList = new ArrayList<>();
 
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setIdPasien(idPasien);
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         try {
-            alertPasienList = checkupBo.listOfRekamMedic(idPasien);
+            alertPasienList = checkupBo.listOfRekamMedic(headerCheckup);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.getListRekamMedic] ERROR " + e.getMessage());
         }
@@ -1521,15 +1524,17 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
-        LocalDate now = LocalDate.now();
-        LocalDate birthDay = null;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        birthDay = LocalDate.parse(tglLahir, formatter);
-
         Integer umur = new Integer(0);
-        if ((birthDay != null) && (now != null)) {
-            umur = new Integer(Period.between(birthDay, now).getYears());
+        if (!"".equalsIgnoreCase(tglLahir)){
+            LocalDate now = LocalDate.now();
+            LocalDate birthDay = null;
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            birthDay = LocalDate.parse(tglLahir, formatter);
+
+            if ((birthDay != null) && (now != null)) {
+                umur = new Integer(Period.between(birthDay, now).getYears());
+            }
         }
 
         ResikoJatuh resikoJatuh = new ResikoJatuh();
@@ -1946,8 +1951,7 @@ public class CheckupAction extends BaseMasterAction {
         tranfusiEntity.setCreatedDate(now);
         tranfusiEntity.setCreatedWho(userLogin);
 
-        checkupBo.saveTranfusi(tranfusiEntity);
-
+        response = checkupBo.saveTranfusi(tranfusiEntity);
         return response;
     }
 
@@ -2113,7 +2117,7 @@ public class CheckupAction extends BaseMasterAction {
         return  oline;
     }
 
-    public CheckResponse aktivasiAntrianOnline(String noCheckupOnline){
+    public CheckResponse aktivasiAntrianOnline(String noCheckupOnline) {
         CheckResponse response = new CheckResponse();
 
         RegistrasiOnline online = new RegistrasiOnline();
@@ -2124,17 +2128,17 @@ public class CheckupAction extends BaseMasterAction {
         RegistrasiOnline registrasiOnline = new RegistrasiOnline();
 
         List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
-        if(noCheckupOnline != null && !"".equalsIgnoreCase(noCheckupOnline)){
+        if (noCheckupOnline != null && !"".equalsIgnoreCase(noCheckupOnline)) {
 
             registrasiOnline.setNoCheckupOnline(noCheckupOnline);
 
             try {
                 registrasiOnlineList = registrasiOnlineBo.getByCriteria(registrasiOnline);
-            }catch (GeneralBOException e){
-                logger.error("Found Error when search no checkup online "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search no checkup online " + e.getMessage());
             }
 
-            if (registrasiOnlineList.size() > 0){
+            if (registrasiOnlineList.size() > 0) {
 
                 online = registrasiOnlineList.get(0);
 
@@ -2144,11 +2148,11 @@ public class CheckupAction extends BaseMasterAction {
 
                 try {
                     antianOnlineList = antrianOnlineBo.getByCriteria(antianOnline);
-                }catch (GeneralBOException e){
-                    logger.error("Founf Error when antrian online "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Founf Error when antrian online " + e.getMessage());
                 }
 
-                if(antianOnlineList.size() > 0 ){
+                if (antianOnlineList.size() > 0) {
                     antianOnline = antianOnlineList.get(0);
 
 
@@ -2178,5 +2182,20 @@ public class CheckupAction extends BaseMasterAction {
 
         }
         return response;
+
+    }
+
+    public AlertPasien getDataCheckupPasien(String noCheckup){
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setNoCheckup(noCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        List<AlertPasien> alertPasienList = checkupBo.listOfRekamMedic(headerCheckup);
+        if (alertPasienList.size() > 0){
+            return alertPasienList.get(0);
+        }
+        return new AlertPasien();
     }
 }

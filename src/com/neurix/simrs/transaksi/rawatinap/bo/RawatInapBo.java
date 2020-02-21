@@ -35,7 +35,7 @@ public interface RawatInapBo {
     public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean);
     public List<Obat> getListObatParenteral(String idPelayanan);
     public List<Obat> getListObatNonParenteral(String idDetail, String kategori);
-    public List<MonVitalSign> getListGraf(String id);
+    public List<MonVitalSign> getListGraf(MonVitalSign bean);
     public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head);
     public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException;
 }
