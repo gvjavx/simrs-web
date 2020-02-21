@@ -1173,26 +1173,6 @@
                     <p id="msg_resep"></p>
                 </div>
                 <div class="row">
-                    <%--<div class="form-group">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
-                    <%--<div class="col-md-7">--%>
-                    <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                    <%--name="getListJenisObat_jenisobat"/>--%>
-                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                    <%--list="#initJenis.listOfJenisObat" id="resep_jenis"--%>
-                    <%--listKey="idJenisObat"--%>
-                    <%--onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"--%>
-                    <%--listValue="namaJenisObat"--%>
-                    <%--headerKey="" headerValue="[Select one]"--%>
-                    <%--cssClass="form-control select2"/>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-2">--%>
-                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                    <%--id="war_rep_jenis"><i class="fa fa-times"></i> required</p>--%>
-                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                    <%--id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                         <div class="col-md-7">
@@ -1219,15 +1199,6 @@
                                     id="resep_nama_obat">
                                 <option value="">[select one]</option>
                             </select>
-                            <%--<s:action id="initObat" namespace="/obat"--%>
-                            <%--name="getListObat_obat"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                            <%--list="#initObat.listOfObat" id="resep_nama_obat"--%>
-                            <%--listKey="idObat + '|' + namaObat + '|' + qty"--%>
-                            <%--onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)"--%>
-                            <%--listValue="namaObat"--%>
-                            <%--headerKey="" headerValue="[Select one]"--%>
-                            <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1288,12 +1259,6 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <%--<select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"--%>
-                            <%--class="form-control" id="resep_keterangan" style="margin-top: 7px">--%>
-                            <%--<option value="">[Select One]</option>--%>
-                            <%--<option value="2 x 1 /Hari">2 x 1 /Hari</option>--%>
-                            <%--<option value="3 x 1 /Hari">3 x 1 /Hari</option>--%>
-                            <%--</select>--%>
                             <textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px"
                                       oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>
                         </div>

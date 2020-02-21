@@ -7,6 +7,8 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -113,7 +115,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public List<RiwayatTindakan> getListTindakanRawat(String idDetail) {
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+        if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
             List<RiwayatTindakan> result = new ArrayList<>();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
@@ -130,6 +132,26 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
         return riwayatTindakanList;
 
+    }
+
+    public List<TransaksiObatDetail> getListDetailResep(String idResep) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        transaksiObatDetail.setIdPermintaanResep(idResep);
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (idResep != null && !"".equalsIgnoreCase(idResep)) {
+            try {
+                obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(transaksiObatDetail);
+            } catch (GeneralBOException e) {
+                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+            }
+        }
+
+        return obatDetailList;
     }
 
     @Override
