@@ -530,7 +530,7 @@
                                             </div>
                                         </div>
 
-                                        <s:hidden name="headerCheckup.isOnline"/>
+                                        <s:hidden name="headerCheckup.isOnline" id="tes_online"/>
                                         <s:hidden name="headerCheckup.tglAntian"/>
 
                                         <div class="form-group">
@@ -1217,6 +1217,7 @@
 <script type='text/javascript'>
 
     var idPelayanan = $('#poli').val();
+    var isOnline = '<s:property value="headerCheckup.isOnlne"/>';
 
     $(document).ready(function () {
 
@@ -1260,6 +1261,7 @@
 
         initlistPenjamin();
         initListDokter();
+        console.log(isOnline);
 
     });
 

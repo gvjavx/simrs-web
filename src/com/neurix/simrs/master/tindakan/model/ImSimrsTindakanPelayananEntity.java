@@ -3,7 +3,7 @@ package com.neurix.simrs.master.tindakan.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ImSimrsTindakanPelayanan implements Serializable {
+public class ImSimrsTindakanPelayananEntity implements Serializable {
 
     private String idTindakanPelayanan;
     private String idTindakan;

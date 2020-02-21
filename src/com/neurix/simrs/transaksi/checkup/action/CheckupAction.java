@@ -452,7 +452,7 @@ public class CheckupAction extends BaseMasterAction {
                             checkup.setJenisKunjungan("Baru");
                         }
 
-                        checkup.setOnline(true);
+                        checkup.setIsOnline("Y");
                         checkup.setTglAntian(antianOnline.getLastUpdate());
                     }
                 }
@@ -2171,7 +2171,6 @@ public class CheckupAction extends BaseMasterAction {
                     headerCheckup.setUrlKtp(online.getUrlKtp());
                     headerCheckup.setIdPelayanan(antianOnline.getIdPelayanan());
                     headerCheckup.setIdDokter(antianOnline.getIdDokter());
-                    headerCheckup.setOnline(true);
                     headerCheckup.setTglAntian(antianOnline.getLastUpdate());
                     setHeaderCheckup(headerCheckup);
                     saveAdd();

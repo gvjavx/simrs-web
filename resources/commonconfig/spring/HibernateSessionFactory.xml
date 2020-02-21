@@ -352,6 +352,8 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/monpemberianobat/hibernate/ItSimrsMonPemberianObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/monvitalsign/hibernate/ItSimrsMonVitalSignEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsTindakanPelayananEntity.hbm.xml</value>
+
 
             </list>
         </property>

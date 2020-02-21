@@ -348,7 +348,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
                 //TGL Antrin dari tabel antrian online
-                if(bean.isOnline()){
+                if("Y".equalsIgnoreCase(bean.getIsOnline())){
                     detailCheckupEntity.setTglAntrian(bean.getTglAntian());
                 }else{
                     detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
