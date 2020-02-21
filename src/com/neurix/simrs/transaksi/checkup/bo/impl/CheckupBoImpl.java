@@ -7,6 +7,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 import com.neurix.simrs.bpjs.BpjsService;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -26,6 +29,7 @@ import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
+import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao;
@@ -49,6 +53,7 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
@@ -94,6 +99,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private TranfusiDao tranfusiDao;
     private RekonsiliasiObatDao rekonsiliasiObatDao;
     private RiwayatTindakanDao riwayatTindakanDao;
+    private DokterDao dokterDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -1492,6 +1498,82 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return response;
     }
 
+    @Override
+    public RingkasanKeluarMasukRs getRingkasanKeluarMasuk(String noCheckup, String kategori) {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        RingkasanKeluarMasukRs ringkasan = new RingkasanKeluarMasukRs();
+        if ("masuk".equalsIgnoreCase(kategori)){
+            List<ItSimrsHeaderChekupEntity> headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+            if (headerChekupEntities.size() > 0){
+                ItSimrsHeaderChekupEntity checkupEntity = new ItSimrsHeaderChekupEntity();
+                ringkasan = headerCheckupDao.getRingkasanMasukRs(noCheckup);
+                ringkasan.setRujukan(checkupEntity.getRujuk());
+                ringkasan.setKetRujukan(checkupEntity.getKetRujukan());
+            }
+        }
+        if ("keluar".equalsIgnoreCase(kategori)){
+            ringkasan = headerCheckupDao.getRingkasanKeluarRs(noCheckup);
+            if (ringkasan.getIdDetailCheckup() != null){
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", ringkasan.getIdDetailCheckup());
+                List<ItSimrsDokterTeamEntity> dokterTeamEntities = dokterTeamDao.getByCriteria(hsCriteria);
+                if (dokterTeamEntities.size() > 0){
+
+                    Dokter dokter;
+                    List<Dokter> dokterList = new ArrayList<>();
+                    for (ItSimrsDokterTeamEntity entity : dokterTeamEntities){
+
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_dokter", entity.getIdDokter());
+                        List<ImSimrsDokterEntity> dokterEntities = dokterDao.getByCriteria(hsCriteria);
+                        if (dokterEntities.size() > 0){
+                            dokter = new Dokter();
+                            ImSimrsDokterEntity dokterEntity = dokterEntities.get(0);
+                            dokter.setNamaDokter(dokterEntity.getNamaDokter());
+                            dokter.setIdDokter(dokterEntity.getIdDokter());
+                            dokterList.add(dokter);
+                        }
+                    }
+                    ringkasan.setDokterList(dokterList);
+                }
+            }
+        }
+        return ringkasan;
+    }
+
+    @Override
+    public List<TindakanRawat> getListTindakan(String noCheckup, String kategori) {
+
+        List<TindakanRawat> resultTindakans = new ArrayList<>();
+        List<String> idDetailCheckups = headerCheckupDao.listOfIdDetailCheckupByTipePelayanan(noCheckup,kategori);
+        if (idDetailCheckups.size() > 0){
+            for (String idDetail : idDetailCheckups){
+                List<ItSimrsTindakanRawatEntity> tindakanRawatEntities = new ArrayList<>();
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", idDetail);
+                hsCriteria.put("approve_flag", "Y");
+
+                tindakanRawatEntities = tindakanRawatDao.getByCriteria(hsCriteria);
+                if (tindakanRawatEntities.size() > 0){
+                    TindakanRawat tindakanRawat;
+                    for (ItSimrsTindakanRawatEntity tindakanRawatEntity : tindakanRawatEntities){
+                        tindakanRawat = new TindakanRawat();
+                        tindakanRawat.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                        tindakanRawat.setCreatedDate(tindakanRawatEntity.getCreatedDate());
+                        tindakanRawat.setCreatedWho(tindakanRawatEntity.getCreatedWho());
+                        tindakanRawat.setStDate(tindakanRawatEntity.getCreatedDate().toString());
+                        resultTindakans.add(tindakanRawat);
+                    }
+                }
+            }
+        }
+        return resultTindakans;
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -1693,5 +1775,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
     }
 }

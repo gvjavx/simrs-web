@@ -10,10 +10,13 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
+import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 
 import java.util.List;
@@ -48,6 +51,8 @@ public interface CheckupBo {
     public void saveRekonObat(String noCheckup, ItSimrsRekonsiliasiObatEntity obatEntity) throws GeneralBOException;
     public CrudResponse savePatrus(ItSImrsPatrusEntity bean);
     public CrudResponse saveTranfusi(ItSimrsTranfusiEntity bean);
+    public RingkasanKeluarMasukRs getRingkasanKeluarMasuk(String noCheckup, String kategori);
+    public List<TindakanRawat> getListTindakan(String noCheckup, String kategori);
 
     Long saveErrorMessage(String message, String s);
 

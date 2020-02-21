@@ -35,6 +35,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisik
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
@@ -44,6 +45,8 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -1832,4 +1835,23 @@ public class CheckupAction extends BaseMasterAction {
         }
         return new AlertPasien();
     }
-}
+
+    public RingkasanKeluarMasukRs getRingkasanKeluarMasuk(String noCheckup, String kategori){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        return checkupBo.getRingkasanKeluarMasuk(noCheckup, kategori);
+    }
+
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String kategori){
+        String kat = "";
+        if ("igd".equalsIgnoreCase(kategori))
+            kat = "igd";
+        if ("ri".equalsIgnoreCase(kategori))
+            kat = "rawat_inap";
+        if ("rj".equalsIgnoreCase(kategori))
+            kat = "rawat_jalan";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        return checkupBo.getListTindakan(noCheckup, kat);
+    }
+ }
