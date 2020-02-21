@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.mutasi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.displaytag.LongDateWrapper;
@@ -18,6 +20,7 @@ import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -417,10 +420,27 @@ public class MutasiAction extends BaseMasterAction{
             searchMutasi = mutasiBo.getDataReportMutasi(id);
 
             String namaDirektur = mutasiBoProxy.getDirektur();
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+            Branch branch = new Branch();
+            try{
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(searchMutasi.getBranchLamaId(),"Y");
+            }catch( HibernateException e){
+            }
+            if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS01")){
+                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS02")){
+                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+            }else if (searchMutasi.getBranchLamaId().equalsIgnoreCase("RS03")){
+                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+            }else{
+                reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("branchName", branch.getBranchName());
             reportParams.put("titleReport", "Report Mutasi Jabatan");
             reportParams.put("direktur", namaDirektur);
-            reportParams.put("noMutasi", id);
+            reportParams.put("noMutasi", "No. Mutasi: "+id);
             reportParams.put("strLabel1", searchMutasi.getLabel1());
             reportParams.put("strLabel2", searchMutasi.getLabel2());
             reportParams.put("strLabel3", searchMutasi.getLabel3());

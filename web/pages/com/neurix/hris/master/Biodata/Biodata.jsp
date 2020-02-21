@@ -2450,6 +2450,7 @@
     window.listPosisiHistory = function (branch, divisi) {
         var branch = document.getElementById("branch1").value;
         var divisi = document.getElementById("divisi1").value;
+        $('#positionId3').empty();
         $('#positionId3').append($("<option></option>")
                 .attr("value", '')
                 .text(''));
@@ -3547,12 +3548,12 @@
 
                 }
             } else {
-                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId == '' && point=='' && pointLebih =='' && nilaiSmk=='') {
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId == '') {
                     alert('Isi Field Terlebih Dahulu');
                 } else {
                     var msg ="Field:  \n";
                     var msg2 ="";
-                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tanggalKeluar ==''|| tipePegawaiId==''|| point=='' || pointLebih =='' || nilaiSmk=='') {
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tanggalKeluar ==''|| tipePegawaiId=='') {
                         if(branchId == ''){
                             msg+="- Nama Perusahaan\n";
                         }
@@ -3576,15 +3577,6 @@
                                 msg2+="- Format Tanggal Selesai Salah\n";
                             }
                         }
-                        if(point == ''){
-                            msg+="- Point\n";
-                        }
-                        if(pointLebih == ''){
-                            msg+="- Point Lebih\n";
-                        }
-                        if(nilaiSmk == ''){
-                            msg+="- Nilai Smk\n";
-                        }
                         if(tipePegawaiId ==''){
                             msg+="- Tipe Pegawai\n";
                         }
@@ -3593,7 +3585,7 @@
                         if (confirm('Are you sure you want to save this Record?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                    golonganId, point, pointLebih, nilaiSmk, gradeSmk,perusahaanLain, bidangLain, jabatanLain, function (listdata) {
+                                    golonganId, perusahaanLain, bidangLain, jabatanLain, function (listdata) {
                                         alert('Data Successfully Updated');
                                         $('#modal-pengalamanKerja').modal('hide');
                                         $('#myFormPengalaman')[0].reset();
@@ -4045,8 +4037,8 @@
                 $('#departmentId').val(listdata.divisiId).change();
                 $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
                 $('#pengalamanJabatan').val(listdata.jabatan);
-                $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
-                $('#pengalamanTanggalKeluar').val(listdata.stTtahunMasuk);
+                $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
+                $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
                 $('#flagAktif1').val(listdata.flagJabatanAktif).change();
                 if(listdata.tipePegawaiId == "TP01"){

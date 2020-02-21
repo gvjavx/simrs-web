@@ -1217,8 +1217,23 @@ public class CutiPegawaiAction extends BaseMasterAction {
                 if (result.getSisaCutiPanjang()==null){
                     result.setSisaCutiPanjang("0");
                 }
-
-                reportParams.put("urlLogo",CommonConstant.URL_IMAGE_LOGO_REPORT);
+                Branch branch = new Branch();
+                try{
+                    BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                    branch = branchBo.getBranchById(cutiPegawai1.getUnitId(),"Y");
+                }catch( HibernateException e){
+                }
+                if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS01")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+                }else if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS02")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+                }else if (cutiPegawai1.getUnitId().equalsIgnoreCase("RS03")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+                }else{
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                }
+                String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("cutiPegawaiId", id);
                 reportParams.put("nama",cutiPegawai1.getNamaPegawai());
                 reportParams.put("nip",cutiPegawai1.getNip());

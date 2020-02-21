@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contoh" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a8dcfcf1-63fd-4ab7-8dc0-ed8cc0ecc671">
 	<property name="ireport.zoom" value="1.7715610000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="248"/>
+	<property name="ireport.y" value="220"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.payrollId" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -63,7 +63,7 @@ where
 	<field name="gaji_bersih" class="java.math.BigDecimal"/>
 	<field name="pph_gaji" class="java.math.BigDecimal"/>
 	<pageHeader>
-		<band height="79" splitType="Stretch">
+		<band height="64" splitType="Stretch">
 			<image>
 				<reportElement x="497" y="4" width="60" height="54" uuid="c252741d-c95f-46b9-b389-2aa80b30778f"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
@@ -72,7 +72,7 @@ new com.google.zxing.qrcode.QRCodeWriter().encode(
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<line>
-				<reportElement x="2" y="75" width="555" height="1" uuid="d94f6e6d-b6e4-4353-ad1a-3d9ccd510296"/>
+				<reportElement x="1" y="57" width="555" height="1" uuid="d94f6e6d-b6e4-4353-ad1a-3d9ccd510296"/>
 			</line>
 			<staticText>
 				<reportElement x="2" y="19" width="170" height="25" uuid="732c0408-82f3-4e9d-9a5a-89efa4097bc0"/>
@@ -277,7 +277,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</textField>
 			<staticText>
 				<reportElement x="278" y="198" width="135" height="20" uuid="2d44b4d7-668a-402f-a930-6a94d6bfd111"/>
-				<text><![CDATA[Total THR di terima]]></text>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[THR di terima]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="413" y="198" width="14" height="20" uuid="7a6879d5-9290-405b-a84d-b07cbf95c2b9"/>
@@ -286,7 +289,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</staticText>
 			<textField pattern="#,##0">
 				<reportElement x="427" y="198" width="86" height="20" uuid="bc1c2494-82c1-46dd-9e83-f53b4dd5bb4b"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{gaji_bersih}]]></textFieldExpression>
 			</textField>
 			<staticText>

@@ -2161,9 +2161,10 @@ public class BiodataBoImpl implements BiodataBo {
 
         if (bean!=null) {
             String PengalamanKerjaId = bean.getHistoryJabatanId();
+            String golonganName ="";
 //            String pengalamanId;
             List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
-            String branchName, positionname, divisiName, golonganName, tipePegawaiName;
+            String branchName, positionname, divisiName, tipePegawaiName;
             ImtHrisHistoryJabatanPegawaiEntity imPengalamanKerjaEntity = null;
             try {
                 // Get data from database by ID
@@ -2188,7 +2189,12 @@ public class BiodataBoImpl implements BiodataBo {
                 }
                 if(bean.getGolonganId()!= null){
                     if (!bean.getGolonganId().equalsIgnoreCase("")){
-                        golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
+                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP01")){
+                            golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
+                        }
+                        if (bean.getTipePegawaiId().equalsIgnoreCase("TP03")){
+                            golonganName = historyJabatanPegawaiDao.getGolonganPkwtById(bean.getGolonganId());
+                        }
                     }else {
                         golonganName = null;
                     }
