@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.ijinKeluar.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -23,6 +25,7 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -1258,7 +1261,23 @@ public class IjinKeluarAction extends BaseMasterAction {
             SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
             String stDate = dt1.format(dataDate);
             for (IjinKeluar ijinKeluar1 : ijinKeluarList){
-                reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+                Branch branch = new Branch();
+                try{
+                    BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                    branch = branchBo.getBranchById(ijinKeluar1.getUnitId(),"Y");
+                }catch( HibernateException e){
+                }
+                if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS01")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS02")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS03")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+                }else{
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                }
+                String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("ijinTidakMasukId", id);
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());

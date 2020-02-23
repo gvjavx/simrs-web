@@ -46,7 +46,7 @@
     <section class="content-header">
         <h1>
             Report Absensi
-            <small>HRIS</small>
+            <small>SIMRS</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -191,7 +191,7 @@
                                             <i class="fa fa-print"></i> Cetak Evaluasi
                                         </button>
                                     </td>
-                                    <td width="2%"></td>
+                                    <%--<td width="2%"></td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
@@ -211,7 +211,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </td>
+                                    </td>--%>
                                     <td width="2%"></td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="reportAbsensi_absensi"/>'">

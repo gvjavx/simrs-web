@@ -43,6 +43,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -2094,6 +2095,7 @@ public class AbsensiAction extends BaseMasterAction {
         String bagian ="";
         String golongan="";
         String posisi="";
+        String branchIdForReport="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -2152,6 +2154,7 @@ public class AbsensiAction extends BaseMasterAction {
 
         DecimalFormat df = new DecimalFormat("0.00");
         for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+            branchIdForReport = absensiPegawai.getBranchId();
             nama=absensiPegawai.getNama();
             double realisasi;
             if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
@@ -2211,7 +2214,23 @@ public class AbsensiAction extends BaseMasterAction {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
         String stDate = dt1.format(dataDate);
 
-        reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+        Branch branch = new Branch();
+        try{
+            branch = branchBo.getBranchById(branchIdForReport,"Y");
+        }catch( HibernateException e){
+        }
+        if (branchIdForReport.equalsIgnoreCase("RS01")){
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+        }else if (branchIdForReport.equalsIgnoreCase("RS02")){
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+        }else if (branchIdForReport.equalsIgnoreCase("RS03")){
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+        }else{
+            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        }
+        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
+        reportParams.put("branchName", branch.getBranchName());
         reportParams.put("titleReport", "DAFTAR LEMBUR");
         reportParams.put("tanggalDari", getTglFrom());
         reportParams.put("tanggalSelesai", getTglTo());

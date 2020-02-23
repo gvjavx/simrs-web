@@ -50,6 +50,7 @@ import org.joda.time.PeriodType;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1148,9 +1149,13 @@ public class MutasiBoImpl implements MutasiBo {
         List<Mutasi> mutasiList = null;
         String label1, label2, label3, label4, label5, label6, label7 ;
         mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
-
-        label1 = "KEPUTUSAN DIREKSI PT PG RAJAWALI I\n" +
-                "NOMOR : SK.07/RWI.01/I/2018\n" +
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        java.sql.Date dataDate = new java.sql.Date(updateTime.getTime());
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
+        String stDate = dt1.format(dataDate);
+        String[]tahun = stDate.split("-");
+        label1 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA\n" +
+                "NOMOR : SK.07/NMU.01/I/"+tahun[2]+"\n" +
                 "\n" +
                 "TENTANG\n" ;
 
@@ -1158,7 +1163,7 @@ public class MutasiBoImpl implements MutasiBo {
             for(Mutasi mutasi : mutasiList){
                 biodata = biodataDao.getById("nip", mutasi.getNip());
                 String gender = "";
-
+                resultMutasi.setBranchLamaId(mutasi.getBranchLamaId());
                 if(biodata.getGender().equalsIgnoreCase("L")){
                     gender = "Saudara ";
                 }else{
@@ -1166,7 +1171,7 @@ public class MutasiBoImpl implements MutasiBo {
                 }
                 resultMutasi.setLabel1(label1);
                 label2 = "MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI \n" +
-                        ""+mutasi.getPositionBaruName()+"  PT PG RAJAWALI I - "+mutasi.getBranchBaruName()+"\n";
+                        ""+mutasi.getPositionBaruName()+"  PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+"\n";
                 resultMutasi.setLabel2(label2);
 
                 label3 = "Bahwa dalam rangka mengisi formasi dan menjalankan fungsi organisasi di "+mutasi.getDivisiBaruName()+" PT PG Rajawali I "+mutasi.getBranchBaruName()+", " +
@@ -1174,17 +1179,17 @@ public class MutasiBoImpl implements MutasiBo {
                 resultMutasi.setLabel3(label3);
 
                 label4 = "Bahwa "+ gender + mutasi.getNama()+" diputuskan untuk ditetapkan sebagai "
-                        +mutasi.getPositionBaruName()+" PT PG Rajawali I – "+mutasi.getBranchBaruName()+"." ;
+                        +mutasi.getPositionBaruName()+" PT NUSANTARA MEDICA UTAMA – "+mutasi.getBranchBaruName()+"." ;
                 resultMutasi.setLabel4(label4);
 
-                label5 = "KEPUTUSAN DIREKSI PT PG RAJAWALI I TENTANG MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI "+mutasi.getPositionBaruName()+
-                        " PT PG RAJAWALI I - "+mutasi.getBranchBaruName()+".";
+                label5 = "KEPUTUSAN DIREKSI PT NUSANTARA MEDICA UTAMA TENTANG MUTASI "+ gender.toUpperCase() +mutasi.getNama()+" SEBAGAI "+mutasi.getPositionBaruName()+
+                        " PT NUSANTARA MEDICA UTAMA - "+mutasi.getBranchBaruName()+".";
                 resultMutasi.setLabel5(label5);
 
-                label6 = "Membebaskan "+ gender + mutasi.getNama()+" dari tugas dan tanggung jawabnya sebagai "+mutasi.getPositionLamaName()+" "+mutasi.getBranchLamaName()+" PT PG Rajawali I.\n" +
+                label6 = "Membebaskan "+ gender + mutasi.getNama()+" dari tugas dan tanggung jawabnya sebagai "+mutasi.getPositionLamaName()+" "+mutasi.getBranchLamaName()+" PT NUSANTARA MEDICA UTAMA\n" +
                         "Memutasi "+gender +mutasi.getNama()+" sebagai " +
                         "" +
-                        ""+mutasi.getPositionBaruName()+" "+mutasi.getBranchBaruName()+" PT PG Rajawali I.";
+                        ""+mutasi.getPositionBaruName()+" "+mutasi.getBranchBaruName()+" PT NUSANTARA MEDICA UTAMA.";
                 resultMutasi.setLabel6(label6);
 
                 label7 = "Keputusan ini berlaku surut terhitung sejak tanggal "+mutasi.getStTanggalEfektif()+" dengan " +

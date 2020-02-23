@@ -228,6 +228,15 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
         Result = results.toString();
         return Result;
     }
+    public String getGolonganPkwtById(String golonganId) throws HibernateException {
+        String Result;
+        String query ="select golongan_pkwt_name from im_hris_golongan_pkwt where golongan_pkwt_id ='"+golonganId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
     public String getTipePegawaiById(String tipePegawaiId) throws HibernateException {
         String Result;
         String query ="select tipe_pegawai_name from im_hris_tipe_pegawai where tipe_pegawai_id ='"+tipePegawaiId+"'";

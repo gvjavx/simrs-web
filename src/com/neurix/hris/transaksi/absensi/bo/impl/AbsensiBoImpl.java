@@ -2164,6 +2164,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     Map hsCriteria2 = new HashMap();
 
                     returnAbsensi.setNip(absensiPegawaiEntity.getNip());
+                    returnAbsensi.setBranchId(absensiPegawaiEntity.getBranchId());
                     returnAbsensi.setTanggal(absensiPegawaiEntity.getTanggal());
                     returnAbsensi.setStTanggal(df.format(absensiPegawaiEntity.getTanggal()));
 

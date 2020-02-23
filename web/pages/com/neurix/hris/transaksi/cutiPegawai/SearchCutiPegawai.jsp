@@ -940,7 +940,7 @@
         var today = new Date();
         var month = today.getMonth()+1;
 //        alert(date);
-        if(month == 1){
+//        if(month == 1){
 //            alert(cutiAktif);
             if(unit!=""){
                 var cutiAktif="";
@@ -987,9 +987,9 @@
             }else{
                 alert("Unit belum diisi")
             }
-        }else{
-            alert('Reset Cuti Tahunan Hanya Bisa Dilakukan di bulan Januari');
-        }
+//        }else{
+//            alert('Reset Cuti Tahunan Hanya Bisa Dilakukan di bulan Januari');
+//        }
 
     });
     $('.tableCutiPegawai').on('click', '.item-edit', function() {

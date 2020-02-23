@@ -317,7 +317,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Jasprod :</small></label>
+                                        <label class="control-label"><small>Jasopr :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -349,7 +349,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Jubileum :</small></label>
+                                        <label class="control-label"><small>PMP :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -381,7 +381,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Pesangon :</small></label>
+                                        <label class="control-label"><small>SHT :</small></label>
                                     </td>
                                     <td>
                                         <table>
