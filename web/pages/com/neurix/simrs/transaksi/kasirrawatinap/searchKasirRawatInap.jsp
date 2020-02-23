@@ -194,7 +194,13 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
-
+                                            <s:url var="print_invo" namespace="/kasirinap" action="printInvoice_kasirinap" escapeAmp="false">
+                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_invo}" target="_blank">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">

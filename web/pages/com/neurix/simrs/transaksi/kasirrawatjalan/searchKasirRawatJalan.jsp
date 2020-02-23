@@ -196,7 +196,7 @@
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td style="vertical-align: middle">
+                                    <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <label class="label label-success"> sudah bayar</label>
                                         </s:if>
@@ -207,7 +207,13 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
-
+                                            <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
+                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_invo}" target="_blank">
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">

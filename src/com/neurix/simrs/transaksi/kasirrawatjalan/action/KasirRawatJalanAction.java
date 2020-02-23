@@ -11,11 +11,15 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
+import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -32,6 +36,41 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+    private RiwayatTindakanBo riwayatTindakanBoProxy;
+    private KasirRawatJalanBo kasirRawatJalanBoProxy;
+    private TransaksiObatBo transaksiObatBoProxy;
+    private String id;
+    private String idDetailCheckup;
+
+    public void setTransaksiObatBoProxy(TransaksiObatBo transaksiObatBoProxy) {
+        this.transaksiObatBoProxy = transaksiObatBoProxy;
+    }
+
+    public void setKasirRawatJalanBoProxy(KasirRawatJalanBo kasirRawatJalanBoProxy) {
+        this.kasirRawatJalanBoProxy = kasirRawatJalanBoProxy;
+    }
+
+    public void setRiwayatTindakanBoProxy(RiwayatTindakanBo riwayatTindakanBoProxy) {
+        this.riwayatTindakanBoProxy = riwayatTindakanBoProxy;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
         this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
@@ -173,10 +212,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     public String printInvoice() {
 
         String id = getId();
+        String idDetail = getIdDetailCheckup();
         String jk = "";
 
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
+        String unit = CommonUtil.userBranchNameLogin();
+        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
         switch (branch) {
             case CommonConstant.BRANCH_RS01:
@@ -190,9 +233,51 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 break;
         }
 
+        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+        riwayatTindakan.setIdDetailCheckup(idDetail);
+        riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            riwayatTindakanList = kasirRawatJalanBoProxy.getListAllTindakan(riwayatTindakan);
+        } catch (GeneralBOException e) {
+            logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+        }
+
+        RiwayatTindakan result = new RiwayatTindakan();
+        List<TransaksiObatDetail> resultListObat = new ArrayList<>();
+
+        if (riwayatTindakanList.size() > 0) {
+            result = riwayatTindakanList.get(0);
+
+            for (RiwayatTindakan riwayat : riwayatTindakanList) {
+                if ("resep".equalsIgnoreCase(riwayat.getKeterangan())) {
+                    TransaksiObatDetail detail = new TransaksiObatDetail();
+                    detail.setIdPermintaanResep(riwayat.getIdTindakan());
+
+                    try {
+                        obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(detail);
+                    } catch (GeneralBOException e) {
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                    }
+
+                    resultListObat.addAll(obatDetailList);
+                }
+            }
+
+        }
+
+        JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
+        JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
+
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-//        reportParams.put("resepId", idResep);
+
+
+        reportParams.put("itemDataSource", itemData);
+        reportParams.put("listObatDetail", itemDataObat);
+        reportParams.put("unit", unit);
+        reportParams.put("idDetailCheckup", idDetail);
+        reportParams.put("noCheckup", id);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());
         reportParams.put("nama", headerCheckup.getNama());

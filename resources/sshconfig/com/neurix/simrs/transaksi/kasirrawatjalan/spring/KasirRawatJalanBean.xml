@@ -8,6 +8,9 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
+          p:riwayatTindakanBoProxy-ref="riwayatTindakanBoProxy"
+          p:kasirRawatJalanBoProxy-ref="kasirRawatJalanBoProxy"
+          p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
     />
 
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"
