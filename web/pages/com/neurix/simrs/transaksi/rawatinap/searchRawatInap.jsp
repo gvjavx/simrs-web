@@ -208,7 +208,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="namaDesa"/></td>
+                                    <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">

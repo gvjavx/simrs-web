@@ -47,61 +47,12 @@
                 -webkit-transform: rotate(359deg);
             }
         }
-        .btn-trans{
-            background-color: #404040;
-            width: 100px;
-            height: 130px;
-            border-radius: 10px;
-            opacity: 0.9;
-            /*padding-right: 20px;
-            padding-left: 20px;*/
-            padding: 6px;
-            float: left;
-            margin: 5px;
-            border: 1px solid #f7f7f7;
-            font-size: 12px;
-            text-align: center;
-            color : #fff;
-        }
-
-        .btn-green{
-            background-color: green;
-        }
-        .btn-red{
-            background-color: red;
-        }
-        .btn-yellow{
-            background-color: yellow;
-        }
-        .btn-orange{
-            background-color: orange;
-        }
-        .btn-default{
-            background-color: green;
-            color:#fff;
-        }
-        .btn-transparent{
-            background-color: transparent;
-            color:#fff;
-        }
-
-        .btn-white:hover{
-            color:#fff;
-        }
-
-        .btn-trans:active{
-            background-color: #2caaea;
-        }
-
-        .btn-trans:visited{
-            background-color: #2caaea;
-        }
     </style>
 
 </head>
 
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-<body class="hold-transition skin-blue layout-top-nav fixed">
+<body class="hold-transition skin-blue layout-top-nav fixed" onload="startTime()">
 <div class="wrapper">
 
     <header class="main-header">
@@ -145,7 +96,11 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="box-header with-border">
-                                    <h5 class="box-title"><i class="fa fa-user-md"></i> PASIEN PERIKSA</h5>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5 class="box-title"><i class="fa fa-user-md"></i> PASIEN PERIKSA</h5>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="box-header with-border"></div>
                                 <table class="table table-striped">
@@ -155,7 +110,15 @@
                             </div>
                             <div class="col-md-7">
                                 <div class="box-header with-border">
-                                    <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN PASIEN</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN PASIEN</h5>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right"><i class="fa fa-clock-o"></i> <span id="txt"></span></span>
+                                            <span class="pull-right" style="margin-right: 10px"><i class="fa fa-calendar-check-o"></i> <span id="tgl"></span></span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="box-header with-border"></div>
                                 <table class="table table-striped">
@@ -167,39 +130,6 @@
                     </div>
                     <!-- /.box-body -->
                 </div>
-                <%--<div class="box box-default">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="col-md-12" style="display:inline;">--%>
-                            <%--<div class="btn-wrapper">--%>
-                                <%--<div id="id__box" class="btn-trans btn-white" data-target="#detailalat" data-toggle="modal"   >--%>
-                                    <%--<b>Mawar</b>--%>
-                                    <%--<i id="icon_" class="icon-volume fa" >&nbsp;</i>--%>
-                                    <%--<div title="Klik untuk info detail" onClick="cek_event('')" style="text-align:left; cursor:pointer; font-size:11px; border-top:solid 2px #fff;">--%>
-                                        <%--<table align="center" id="id_"--%>
-                                               <%--style="width:80px; border-radius:5px; margin-top:2px;">--%>
-                                            <%--<td id="id__dc" colspan="2" align="center" style="border:solid 0px red; " >--%>
-                                                <%--<img style="background-color:transparent; height:65px;" class="" src="<s:url value="/pages/images/logo-poli.png"/>">--%>
-                                            <%--</td>--%>
-                                            <%--<tr class="hiddenx">--%>
-                                                <%--<td colspan="2" style="border:solid 0px #fff;">--%>
-                                                    <%--<center>&nbsp;<b id="id__s"></b></center>--%>
-                                                <%--</td>--%>
-                                            <%--</tr>--%>
-                                            <%--<tr class="hidden" style="display: none;">--%>
-                                                <%--<td>&nbsp;</td>--%>
-                                                <%--<td> : <b id="id__i">0</b></td>--%>
-                                            <%--</tr>--%>
-                                            <%--<tr class="hidden" style="display: none;">--%>
-                                                <%--<td>&nbsp;</td>--%>
-                                                <%--<td> : <b id="id__v">0</b></td>--%>
-                                            <%--</tr>--%>
-                                        <%--</table>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
                 <!-- /.box -->
             </section>
             <!-- /.content -->
@@ -304,6 +234,35 @@
                 $('#nav_logo_branch').html('<img border="0" class="hvr-grow" src="'+response.logoBranch+'" style="cursor: pointer; height: 35px; width: 110px; margin-top: 9px">');
             }
         });
+    }
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('txt').innerHTML =
+            h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+
+        initDate();
+    }
+
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function initDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = dd + '-' + mm + '-' + yyyy;
+        $('#tgl').html(today);
+        return today;
     }
 
 </script>

@@ -276,6 +276,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                                 } else {
                                     jalan = alamatLengkap;
                                 }
+
+                                rawatInap.setDesa(objDesa[0].toString());
+                                rawatInap.setKecamatan(objDesa[1].toString());
                             }
                         }
                     }

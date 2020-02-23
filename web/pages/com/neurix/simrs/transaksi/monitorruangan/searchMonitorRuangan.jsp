@@ -16,7 +16,7 @@
         .btn-trans {
             background-color: #404040;
             width: 110px;
-            height: 130px;
+            height: 153px;
             border-radius: 10px;
             opacity: 0.9;
             /*padding-right: 20px;
@@ -81,6 +81,16 @@
 
         .btn-trans:visited {
             background-color: #2caaea;
+        }
+
+        .blink_me {
+            animation: blinker 3.0s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
         }
     </style>
     <script type='text/javascript'>
@@ -241,9 +251,9 @@
                             <div class="col-md-12" style="display:inline;">
                                 <s:iterator value="#session.listOfResult" var="row">
                                 <div class="btn-wrapper">
-                                    <s:if test='#row.statusRuangan == "N"'>
+                                    <s:if test='#row.namaPasien != null'>
                                         <s:if test='#row.nilaiPersen > 70'>
-                                            <div id="id_box" class="btn-trans box-red">
+                                            <div id="id_box" class="blink_me btn-trans box-red">
                                         </s:if>
                                         <s:elseif test='#row.nilaiPersen > 50'>
                                             <div id="id_box" class="btn-trans box-yellow">
@@ -261,16 +271,19 @@
                                                 <table align="center"
                                                        style="width:100%; border-radius:5px; margin-top:2px;">
                                                     <td align="center" colspan="2">
-                                                        <img style="background-color:transparent; height:70px;" src="<s:url value="/pages/images/room.png"/>">
+                                                        <img style="background-color:transparent; height:70px; padding-bottom: 2px" src="<s:url value="/pages/images/room.png"/>">
                                                     </td>
                                                     <tr>
-                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><script>var tar = '<s:property value="tarifBpjs"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></td>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; padding-top: 3px; border-bottom: white solid 2px"><s:if test='#row.namaPasien != null'><i class="fa fa-user"></i> <s:property value="namaPasien"></s:property></s:if><s:else>&nbsp;</s:else></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><script>var tar = '<s:property value="tarifTindakan"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></td>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; padding-top: 5px"><s:if test='#row.tarifBpjs'><script>var tar = '<s:property value="tarifBpjs"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></s:if><s:else>&nbsp;</s:else></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><label class="label label-warning"><s:property value="tipeTransaksi"/></label></td>
+                                                        <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><s:if test='#row.tarifTindakan'><script>var tar = '<s:property value="tarifTindakan"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></s:if><s:else>&nbsp;</s:else></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><s:if test='#row.tipeTransaksi == "bpjs"'><label class="label label-info"><s:property value="tipeTransaksi"/></label></s:if><s:else><label class="label label-primary"><s:property value="tipeTransaksi"/></label></s:else></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -282,9 +295,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 <div class="modal fade" id="modal-detail-pasien">

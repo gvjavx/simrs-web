@@ -567,7 +567,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             if (lab != null) {
 
                                 BigDecimal tariff = new BigDecimal(String.valueOf(0));
-                                if(lab.getTarif() != null){
+                                if (lab.getTarif() != null) {
                                     tariff = lab.getTarif();
                                 }
 
@@ -635,7 +635,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             for (OrderGizi gizi : giziList) {
 
                                 BigDecimal tariff = new BigDecimal(String.valueOf(0));
-                                if(gizi.getTarifTotal() != null){
+                                if (gizi.getTarifTotal() != null) {
                                     tariff = gizi.getTarifTotal();
                                 }
 
@@ -827,12 +827,17 @@ public class CheckupDetailAction extends BaseMasterAction {
         List<Tindakan> tindakanList = new ArrayList<>();
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
+        if ("ADMIN RS".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
+            //tampil semua tindakan
+        } else {
+            tindakan.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
 
         try {
-            tindakanList = tindakanBo.getByCriteria(tindakan);
+            tindakanList = tindakanBo.getComboBoxTindakan(tindakan);
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
         }
@@ -874,6 +879,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
+            cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
@@ -1609,6 +1615,41 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     }
 
+    private void cekRawatInap(String idDetailCheckup) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setIdDetailCheckup(idDetailCheckup);
+
+        try {
+            rawatInapList = rawatInapBo.getByCriteria(rawatInap);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search rawat inap " + e.getMessage());
+        }
+
+        RawatInap rawat = new RawatInap();
+        if (rawatInapList.size() > 0) {
+            rawat = rawatInapList.get(0);
+
+            if (rawat.getIdRuangan() != null && !"".equalsIgnoreCase(rawat.getIdRuangan())) {
+                CheckResponse response = new CheckResponse();
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(rawat.getIdRuangan());
+
+                try {
+                    response = ruanganBo.updateRuangan(ruangan);
+                } catch (HibernateException e) {
+                    logger.error("Found error" + e.getMessage());
+                }
+            }
+        }
+
+    }
+
     private JenisPriksaPasien getListJenisPeriksaPasien(String idJenisPeriksa) {
         logger.info("[CheckupDetailAction.getListJenisPeriksaPasien] start process >>>");
 
@@ -1656,6 +1697,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         Ruangan ruangan = new Ruangan();
         if (flag) {
             ruangan.setStatusRuangan("Y");
+            ruangan.setSisaKuota(0);
         }
         ruangan.setIdKelasRuangan(idkelas);
 

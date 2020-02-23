@@ -6,6 +6,8 @@
 
     <bean id="kasirRawatJalanAction" class="com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
 
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"

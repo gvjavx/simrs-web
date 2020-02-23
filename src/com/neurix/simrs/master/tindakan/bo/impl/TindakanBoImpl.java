@@ -37,6 +37,19 @@ public class TindakanBoImpl implements TindakanBo {
         return results;
     }
 
+    @Override
+    public List<Tindakan> getComboBoxTindakan(Tindakan bean) throws GeneralBOException {
+        List<Tindakan> tindakanList = new ArrayList<>();
+        if(bean != null){
+            try {
+                tindakanList = tindakanDao.getListComboBoxTindakan(bean);
+            }catch (HibernateException e){
+                logger.error("Found Error"+e.getMessage());
+            }
+        }
+        return tindakanList;
+    }
+
     protected List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException{
         logger.info("[TindakanBoImpl.getListEntityTindakan] Start >>>>>>>");
         List<ImSimrsTindakanEntity> results = new ArrayList<>();

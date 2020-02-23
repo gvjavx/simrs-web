@@ -23,35 +23,39 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
     @Override
     public List<MtSimrsRuanganEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(MtSimrsRuanganEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsRuanganEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("id_ruangan")!=null) {
+        if (mapCriteria != null) {
+            if (mapCriteria.get("id_ruangan") != null) {
                 criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
             }
-            if (mapCriteria.get("nama_ruangan")!=null) {
-                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String)mapCriteria.get("nama_ruangan") + "%"));
+            if (mapCriteria.get("nama_ruangan") != null) {
+                criteria.add(Restrictions.ilike("namaRuangan", "%" + (String) mapCriteria.get("nama_ruangan") + "%"));
             }
-            if (mapCriteria.get("no_ruangan")!=null) {
+            if (mapCriteria.get("no_ruangan") != null) {
                 criteria.add(Restrictions.eq("noRuangan", (String) mapCriteria.get("no_ruangan")));
             }
-            if (mapCriteria.get("status_ruangan")!=null) {
+            if (mapCriteria.get("status_ruangan") != null) {
                 criteria.add(Restrictions.eq("statusRuangan", (String) mapCriteria.get("status_ruangan")));
             }
-            if (mapCriteria.get("id_kelas_ruangan")!=null) {
+            if (mapCriteria.get("id_kelas_ruangan") != null) {
                 criteria.add(Restrictions.eq("idKelasRuangan", (String) mapCriteria.get("id_kelas_ruangan")));
             }
-            if (mapCriteria.get("tarif")!=null) {
+            if (mapCriteria.get("tarif") != null) {
                 criteria.add(Restrictions.eq("tarif", (Long) mapCriteria.get("tarif")));
             }
-            if (mapCriteria.get("branch_id")!=null) {
+            if (mapCriteria.get("branch_id") != null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
+            if (mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
+            if (mapCriteria.get("sisa_kuota") != null) {
+                criteria.add(Restrictions.gt("sisaKuota", Integer.parseInt(mapCriteria.get("sisa_kuota").toString())));
             }
 
         }
-
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("idRuangan"));
@@ -61,9 +65,9 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         return results;
     }
 
-    public String getNextIdRuangan(){
+    public String getNextIdRuangan() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_ruangan')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
     }
@@ -76,21 +80,21 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
 
         List<Ruangan> ruanganList = new ArrayList<>();
 
-        if(bean != null){
-            if(bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+        if (bean != null) {
+            if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
                 idRuang = bean.getIdRuangan();
             }
 
-            if(bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())){
+            if (bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())) {
                 namaRuang = bean.getNamaRuangan();
             }
 
-            if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+            if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
                 idkelas = bean.getIdKelasRuangan();
             }
 
             String SQL = "SELECT a.id_kelas_ruangan, b.id_ruangan, b.nama_ruangan, b.no_ruangan, b.status_ruangan,\n" +
-                    "c.id_detail_checkup, c.tgl_masuk FROM im_simrs_kelas_ruangan a\n" +
+                    "c.id_detail_checkup, c.tgl_masuk, b.sisa_kuota, b.kuota FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                     "LEFT JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') c On b.id_ruangan = c.id_ruangan\n" +
                     "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
@@ -106,10 +110,10 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     .setParameter("namaRuang", namaRuang)
                     .list();
 
-            if(results != null){
+            if (results != null) {
 
                 Ruangan ruangan;
-                for (Object[] obj: results){
+                for (Object[] obj : results) {
 
                     ruangan = new Ruangan();
                     ruangan.setIdKelasRuangan(obj[0] == null ? "" : obj[0].toString());
@@ -119,6 +123,14 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
                     ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
                     ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
+
+                    if(obj[7] != null){
+                        ruangan.setSisaKuota((Integer) obj[7]);
+                    }
+                    if(obj[8] != null){
+                        ruangan.setKuota((Integer) obj[8]);
+                    }
+
                     ruanganList.add(ruangan);
 
                 }

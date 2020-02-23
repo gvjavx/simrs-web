@@ -118,31 +118,31 @@ public class MonitorRuanganAction extends BaseMasterAction {
                     if (!detailCheckupList.isEmpty()) {
                         detailCheckup = detailCheckupList.get(0);
 
-                        if (detailCheckup.getTarifBpjs() != null && detailCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
+                        HeaderCheckup headerCheckup = new HeaderCheckup();
+                        headerCheckup.setNoCheckup(detailCheckup.getNoCheckup());
+                        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+
+                        try {
+                            headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
+                        } catch (GeneralBOException e) {
+                            logger.error("Gound Error" + e.getMessage());
+                        }
+
+                        if (headerCheckupList.size() > 0) {
+
+                            headerCheckup = headerCheckupList.get(0);
+
+                            if (headerCheckup != null) {
+                                ruangan1.setTipeTransaksi(headerCheckup.getIdJenisPeriksaPasien());
+                                ruangan1.setNamaPasien(headerCheckup.getNama());
+                            }
+                        }
+
+//                        if (detailCheckup.getTarifBpjs() != null && detailCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
 
                             BigDecimal tarifResep = new BigDecimal(String.valueOf(0));
                             BigDecimal tarifLab = new BigDecimal(String.valueOf(0));
                             BigDecimal tarifGizi = new BigDecimal(String.valueOf(0));
-
-
-                            HeaderCheckup headerCheckup = new HeaderCheckup();
-                            headerCheckup.setNoCheckup(detailCheckup.getNoCheckup());
-                            List<HeaderCheckup> headerCheckupList = new ArrayList<>();
-
-                            try {
-                                headerCheckupList = checkupBoProxy.getByCriteria(headerCheckup);
-                            } catch (GeneralBOException e) {
-                                logger.error("Gound Error" + e.getMessage());
-                            }
-
-                            if (headerCheckupList.size() > 0) {
-
-                                headerCheckup = headerCheckupList.get(0);
-
-                                if (headerCheckup != null) {
-                                    ruangan1.setTipeTransaksi(headerCheckup.getIdJenisPeriksaPasien());
-                                }
-                            }
 
                             List<PeriksaLab> periksaLabList = new ArrayList<>();
                             PeriksaLab periksaLab = new PeriksaLab();
@@ -275,7 +275,7 @@ public class MonitorRuanganAction extends BaseMasterAction {
 
                             //=======END HITUNG TARIF TINDAKAN==========================
                         }
-                    }
+//                    }
                 }
 
                 ruangan1.setIdKelasRuangan(ruang.getIdKelasRuangan());

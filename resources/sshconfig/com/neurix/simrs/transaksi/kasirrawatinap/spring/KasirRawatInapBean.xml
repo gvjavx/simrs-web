@@ -7,6 +7,8 @@
     <bean id="kasirRawatInapAction" class="com.neurix.simrs.transaksi.kasirrawatinap.action.KasirRawatInapAction"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
           p:kasirRawatInapBoProxy-ref="kasirRawatInapBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
     />
 
     <bean id="kasirRawatInapBo" class="com.neurix.simrs.transaksi.kasirrawatinap.bo.impl.KasirRawatInapBoImpl"
