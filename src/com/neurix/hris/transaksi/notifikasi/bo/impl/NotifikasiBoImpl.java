@@ -840,10 +840,17 @@ public class NotifikasiBoImpl implements NotifikasiBo {
 
                 for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
                     if (entity.getUserId().equals(personilPosition.getNip())) {
-                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+                        ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, entity.getOs());
                         break;
                     }
                 }
+
+//                for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
+//                    if (entity.getUserId().equals(personilPosition.getNip())) {
+//                        FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), note, action);
+//                        break;
+//                    }
+//                }
             }
         }else {
             ImNotifikasiEntity addNotif = new ImNotifikasiEntity();

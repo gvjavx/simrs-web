@@ -84,9 +84,9 @@ WHERE payroll_id = $P{reportParams.payrollId}]]>
 	<field name="approval_date" class="java.sql.Timestamp"/>
 	<field name="flag_payroll" class="java.lang.String"/>
 	<field name="flag_thr" class="java.lang.String"/>
-	<field name="flag_pendidikan" class="java.lang.String"/>
+	<!--<field name="flag_pendidikan" class="java.lang.String"/>-->
 	<field name="flag_jasprod" class="java.lang.String"/>
-	<field name="flag_rapel" class="java.lang.String"/>
+	<!--<field name="flag_rapel" class="java.lang.String"/>-->
 	<field name="total_thr" class="java.math.BigDecimal"/>
 	<field name="total_pendidikan" class="java.math.BigDecimal"/>
 	<field name="total_jasprod" class="java.math.BigDecimal"/>

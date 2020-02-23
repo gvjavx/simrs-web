@@ -50,8 +50,8 @@ public class CommonConstant {
     //sodiq, 18 Nov 2019, Upload KTP pasien
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
-    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
-//    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
+//    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
+    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
 
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
@@ -102,8 +102,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD_PDF = "/pages/upload/doc/pdf/";
 
     //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
-    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
-    //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
+//    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
+        public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
     public final static String URL_IMAGE_LOGO_REPORT_BACKGROUND_PRAPRINT = "C:\\project\\e-farming\\web\\pages\\images\\pre-print.png";
@@ -158,7 +158,9 @@ public class CommonConstant {
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
-    public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";
+//    public final static String LOGO_REPORT_PAYROLL = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\logo-nmu-copy.png";
+    public final static String LOGO_REPORT_PAYROLL = "/opt/tomcat/webapps/simrs/pages/images/logo-nmu-copy.png";
+
 
     public final static String BRANCH_RS01 = "RS01";
     public final static String BRANCH_RS02 = "RS02";

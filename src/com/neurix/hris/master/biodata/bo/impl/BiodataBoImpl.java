@@ -338,12 +338,12 @@ public class BiodataBoImpl implements BiodataBo {
                 payroll1.setTotalB(CommonUtil.numbericFormat(itPayrollEntity.getTotalB(), "###,###"));
                 payroll1.setPphGaji(CommonUtil.numbericFormat(itPayrollEntity.getPphGaji(), "###,###"));
                 payroll1.setTotalGajiBersih(CommonUtil.numbericFormat(itPayrollEntity.getGajiBersih(), "###,###"));
-                payroll1.setTotalRapel(CommonUtil.numbericFormat(itPayrollEntity.getTotalRapel(), "###,###"));
+//                payroll1.setTotalRapel(CommonUtil.numbericFormat(itPayrollEntity.getTotalRapel(), "###,###"));
                 payroll1.setTotalThr(CommonUtil.numbericFormat(itPayrollEntity.getTotalThr(), "###,###"));
-                payroll1.setTotalPendidikan(CommonUtil.numbericFormat(itPayrollEntity.getTotalPendidikan(), "###,###"));
-                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
-                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
-                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
+//                payroll1.setTotalPendidikan(CommonUtil.numbericFormat(itPayrollEntity.getTotalPendidikan(), "###,###"));
+//                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
+//                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
+//                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
 
                 payroll.add(payroll1);
             }
@@ -1852,12 +1852,12 @@ public class BiodataBoImpl implements BiodataBo {
                     payroll1.setPphGaji(CommonUtil.numbericFormat(BigDecimal.valueOf(0), "###,###"));
                 }
                 payroll1.setTotalGajiBersih(CommonUtil.numbericFormat(itPayrollEntity.getGajiBersih(), "###,###"));
-                payroll1.setTotalRapel(CommonUtil.numbericFormat(itPayrollEntity.getTotalRapel(), "###,###"));
+//                payroll1.setTotalRapel(CommonUtil.numbericFormat(itPayrollEntity.getTotalRapel(), "###,###"));
                 payroll1.setTotalThr(CommonUtil.numbericFormat(itPayrollEntity.getTotalThr(), "###,###"));
-                payroll1.setTotalPendidikan(CommonUtil.numbericFormat(itPayrollEntity.getTotalPendidikan(), "###,###"));
-                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
-                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
-                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
+//                payroll1.setTotalPendidikan(CommonUtil.numbericFormat(itPayrollEntity.getTotalPendidikan(), "###,###"));
+//                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
+//                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
+//                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
 
                 payroll1.setFlagPayroll(itPayrollEntity.getFlagPayroll());
                 payroll1.setFlagRapel(itPayrollEntity.getFlagRapel());

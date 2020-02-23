@@ -122,7 +122,11 @@ public class CutiPegawaiController implements ModelDriven<Object> {
             editCutiPegawai.setAction("U");
             editCutiPegawai.setFlag("Y");
 
-            cutiPegawaiBoProxy.saveApprove(editCutiPegawai);
+           List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveApprove(editCutiPegawai);
+
+           for (Notifikasi notifikasi : notifikasiList){
+               notifikasiBoProxy.sendNotif(notifikasi);
+           }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
