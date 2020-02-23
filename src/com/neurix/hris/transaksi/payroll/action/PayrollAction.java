@@ -2893,10 +2893,39 @@ public class PayrollAction extends BaseMasterAction{
         String tipe = getTipe();
         String noSurat = getNoSurat();
         String tanggalSK = getTanggal();
-
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ItPayrollEntity payroll = new ItPayrollEntity();
         if (id != null) {
             if(tipe.equalsIgnoreCase("PR")){
+                Branch branch = new Branch();
+
+                try{
+                    PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                    payroll = payrollBo.getPayrollById(id);
+                    BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                    branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+                }catch( HibernateException e){
+
+                }
+                String logo ="";
+                if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                }else{
+                    logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                }
+                String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                reportParams.put("urlLogo", logo);
+                reportParams.put("branchId", payroll.getBranchId());
+                reportParams.put("branchName", branch.getBranchName());
+                reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+                reportParams.put("bulan", payroll.getBulan());
+                reportParams.put("tahun", payroll.getTahun());
                 reportParams.put("titleReport", "Slip Gaji");
+                reportParams.put("payrollId", id);
                 hasil = "success_print_report_payroll";
             }else if(tipe.equalsIgnoreCase("T")){
 
@@ -2925,7 +2954,7 @@ public class PayrollAction extends BaseMasterAction{
                 String tglPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]).toUpperCase() + " " + tanggalSk[2];
                 String tglCetakPensiun = tanggalSk[0] + " " + CommonUtil.convertNumberToStringBulan(tanggalSk[1]) + " " + tanggalSk[2];
                 String namaDirektur = payrollBoProxy.getDirektur();
-                ItPayrollEntity payroll = payrollBoProxy.getPayrollById(payrollId);
+                payroll = payrollBoProxy.getPayrollById(payrollId);
                 String nettoDiterima =CommonUtil.angkaToTerbilang(payroll.getGajiBersih().longValue());
 
                 if (payrollId != null) {
@@ -2993,7 +3022,6 @@ public class PayrollAction extends BaseMasterAction{
             reportParams.put("titleReport", "Slip Jasa Produksi");
             hasil = "success_print_report_payroll_jasprod_branch";
         }else if(tipe.equalsIgnoreCase("CP")){
-            reportParams.put("titleReport", "Slip Rapel");
             hasil = "success_print_report_payroll_Cuti_panjang_branch";
         }
         if (branchId != null) {
@@ -3049,9 +3077,36 @@ public class PayrollAction extends BaseMasterAction{
         logger.info("[ReportAction.printReportPayrollJasprod] start process >>>");
         String payrollId = getId();
         if (payrollId != null) {
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
-            reportParams.put("titleReport", "Report Payroll Jasprod");
-            reportParams.put("payrollId", payrollId);
+            Branch branch = new Branch();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ItPayrollEntity payroll = new ItPayrollEntity();
+            try{
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                payroll = payrollBo.getPayrollById(payrollId);
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+            }catch( HibernateException e){
+
+            }
+            String logo ="";
+            if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
+            reportParams.put("branchId", payroll.getBranchId());
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("bulan", payroll.getBulan());
+            reportParams.put("tahun", payroll.getTahun());
+            reportParams.put("titleReport", "Slip Gaji");
+            reportParams.put("payrollId", id);
 
             try {
                 preDownload();
@@ -3121,9 +3176,36 @@ public class PayrollAction extends BaseMasterAction{
         logger.info("[PayrollAction.printReportPayrollInsentif] start process >>>");
         String payrollId = getId();
         if (payrollId != null) {
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
-            reportParams.put("titleReport", "Slip Tunjangan Insentif");
-            reportParams.put("payrollId", payrollId);
+            Branch branch = new Branch();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ItPayrollEntity payroll = new ItPayrollEntity();
+            try{
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                payroll = payrollBo.getPayrollById(payrollId);
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+            }catch( HibernateException e){
+
+            }
+            String logo ="";
+            if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
+            reportParams.put("branchId", payroll.getBranchId());
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("bulan", payroll.getBulan());
+            reportParams.put("tahun", payroll.getTahun());
+            reportParams.put("titleReport", "Slip Gaji");
+            reportParams.put("payrollId", id);
 
             try {
                 preDownload();
@@ -3230,12 +3312,153 @@ public class PayrollAction extends BaseMasterAction{
         return "success_print_report_payroll_rapel";
     }
 
+    public String printReportCutiTahunan(){
+        logger.info("[ReportAction.printReportPayrollThr] start process >>>");
+        String payrollId = getId();
+        if (payrollId != null) {
+            Branch branch = new Branch();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ItPayrollEntity payroll = new ItPayrollEntity();
+            try{
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                payroll = payrollBo.getPayrollById(payrollId);
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+            }catch( HibernateException e){
+
+            }
+            String logo ="";
+            if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
+            reportParams.put("branchId", payroll.getBranchId());
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("bulan", payroll.getBulan());
+            reportParams.put("tahun", payroll.getTahun());
+            reportParams.put("titleReport", "Slip Gaji");
+            reportParams.put("payrollId", id);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                Long logId = null;
+                try {
+                    logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportPayrollThr");
+                } catch (GeneralBOException e1) {
+                    logger.error("[ReportAction.printReportPayrollThr] Error when downloading ,", e1);
+                }
+                logger.error("[ReportAction.printReportPayrollThr] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+            }
+
+        } else {
+            logger.error("[ReportAction.printReportPayrollThr] Error when print report Thr Found problem when downloading data, please inform to your admin.");
+            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+        }
+
+        logger.info("[ReportAction.printReportPayrollThr] end process <<<");
+        return "success_print_report_payroll_cutiTahunan";
+    }
+    public String printReportCutiPanjang(){
+        logger.info("[ReportAction.printReportPayrollThr] start process >>>");
+        String payrollId = getId();
+        if (payrollId != null) {
+            Branch branch = new Branch();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ItPayrollEntity payroll = new ItPayrollEntity();
+            try{
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                payroll = payrollBo.getPayrollById(payrollId);
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+            }catch( HibernateException e){
+
+            }
+            String logo ="";
+            if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
+            reportParams.put("branchId", payroll.getBranchId());
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("bulan", payroll.getBulan());
+            reportParams.put("tahun", payroll.getTahun());
+            reportParams.put("titleReport", "Slip Gaji");
+            reportParams.put("payrollId", id);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                Long logId = null;
+                try {
+                    logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportPayrollThr");
+                } catch (GeneralBOException e1) {
+                    logger.error("[ReportAction.printReportPayrollThr] Error when downloading ,", e1);
+                }
+                logger.error("[ReportAction.printReportPayrollThr] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+            }
+
+        } else {
+            logger.error("[ReportAction.printReportPayrollThr] Error when print report Thr Found problem when downloading data, please inform to your admin.");
+            addActionError("Error, Found problem when downloading data, list kpi unit is empty, please inform to your admin.");
+        }
+
+        logger.info("[ReportAction.printReportPayrollThr] end process <<<");
+        return "success_print_report_payroll_cutiPanjang";
+    }
+
     public String printReportThr(){
         logger.info("[ReportAction.printReportPayrollThr] start process >>>");
         String payrollId = getId();
         if (payrollId != null) {
-            reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
-            reportParams.put("payrollId", payrollId);
+            Branch branch = new Branch();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ItPayrollEntity payroll = new ItPayrollEntity();
+            try{
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                payroll = payrollBo.getPayrollById(payrollId);
+                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+            }catch( HibernateException e){
+
+            }
+            String logo ="";
+            if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            }else{
+                logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+            }
+            String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+            reportParams.put("urlLogo", logo);
+            reportParams.put("branchId", payroll.getBranchId());
+            reportParams.put("branchName", branch.getBranchName());
+            reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+            reportParams.put("bulan", payroll.getBulan());
+            reportParams.put("tahun", payroll.getTahun());
+            reportParams.put("titleReport", "Slip Gaji");
+            reportParams.put("payrollId", id);
 
             try {
                 preDownload();

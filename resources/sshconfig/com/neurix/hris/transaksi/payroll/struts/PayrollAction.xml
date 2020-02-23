@@ -124,7 +124,7 @@
             </result>
 
             <result name="success_print_report_payroll_jasprod" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollJasprod.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollJasopr.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -167,6 +167,18 @@
 
             <result name="success_print_report_payroll_thr" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/reportPayrollThr.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="success_print_report_payroll_cutiTahunan" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="success_print_report_payroll_cutiPanjang" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

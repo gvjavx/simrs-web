@@ -14,23 +14,26 @@
         <property name="payrollId">
             <column name="payroll_id" sql-type="varchar" length="12" not-null="true" />
         </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="true" />
+        </property>
         <property name="tanggalAktif">
             <column name="tanggal_aktif" sql-type="date" not-null="true" />
         </property>
         <property name="tanggalPensiun">
             <column name="tanggal_pensiun" sql-type="date" not-null="true" />
         </property>
-        <property name="faktorPensiun">
+        <!--<property name="faktorPensiun">
             <column name="faktor_pensiun" sql-type="integer" not-null="true" />
         </property>
         <property name="faktorPenghargaan">
             <column name="faktor_penghargaan" sql-type="integer" not-null="true" />
-        </property>
+        </property>-->
 
         <property name="gajiGolongan">
             <column name="gaji_golongan" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
-        <property name="tunjanganUmk">
+        <!--<property name="tunjanganUmk">
             <column name="tunjangan_umk" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
         <property name="tunjanganStruktural">
@@ -38,12 +41,12 @@
         </property>
         <property name="tunjanganJabatanStruktural">
             <column name="tunjangan_jabatan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+        </property>-->
         <property name="tunjanganPeralihan">
             <column name="tunjangan_peralihan" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
 
-        <property name="tunjanganPensiun">
+        <!--<property name="tunjanganPensiun">
             <column name="tunjangan_pensiun" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
         <property name="tunjanganPenghargaan">
@@ -54,12 +57,12 @@
         </property>
         <property name="penggantianPerumahan">
             <column name="penggantian_perumahan" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+        </property>-->
 
         <property name="jumlahBiayaPensiun">
             <column name="total_pensiun" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
-        <property name="pph1Nilai">
+        <!--<property name="pph1Nilai">
             <column name="pph1" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
         <property name="pph2Nilai">
@@ -70,7 +73,7 @@
         </property>
         <property name="pph4Nilai">
             <column name="pph4" sql-type="numeric" length="15" precision="2" not-null="false" />
-        </property>
+        </property>-->
         <property name="pphPensiun">
             <column name="pph_final" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
