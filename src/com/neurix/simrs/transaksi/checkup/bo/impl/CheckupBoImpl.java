@@ -7,6 +7,14 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 import com.neurix.simrs.bpjs.BpjsService;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -26,6 +34,7 @@ import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
+import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao;
@@ -50,12 +59,14 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -95,6 +106,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private TranfusiDao tranfusiDao;
     private RekonsiliasiObatDao rekonsiliasiObatDao;
     private RiwayatTindakanDao riwayatTindakanDao;
+    private DokterDao dokterDao;
+    private RekamMedicLamaDao rekamMedicLamaDao;
+    private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -346,7 +360,14 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+
+                //TGL Antrin dari tabel antrian online
+                if("Y".equalsIgnoreCase(bean.getIsOnline())){
+                    detailCheckupEntity.setTglAntrian(bean.getTglAntian());
+                }else{
+                    detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
+                }
+
                 detailCheckupEntity.setNoSep(bean.getNoSep());
                 detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
 
@@ -937,13 +958,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<AlertPasien> listOfRekamMedic(String idPasien) throws GeneralBOException {
+    public List<AlertPasien> listOfRekamMedic(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.listOfRekamMedic] Start >>>>>>>>");
 
         List<ItSimrsHeaderChekupEntity> headerChekupEntities = null;
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pasien", idPasien);
-        hsCriteria.put("tgl_keluar_not_null", "Y");
+        if (bean.getNoCheckup() != null){
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        } else {
+            hsCriteria.put("id_pasien", bean.getIdPasien());
+            hsCriteria.put("tgl_keluar_not_null", "Y");
+        }
 
         try {
             headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
@@ -1151,9 +1176,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         logger.info("[CheckupBoImpl.getListRencanaRawat] Start >>>>>>>>");
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("no_checkup", noCheckup);
-        hsCriteria.put("id_detail_checkup", idDetail);
-        hsCriteria.put("id_kategori", kategori);
+        if (!"".equalsIgnoreCase(noCheckup))
+            hsCriteria.put("no_checkup", noCheckup);
+        if (!"".equalsIgnoreCase(idDetail))
+            hsCriteria.put("id_detail_checkup", idDetail);
+        if (!"".equalsIgnoreCase(kategori))
+            hsCriteria.put("id_kategori", kategori);
 
         List<ItSimrsRencanaRawatEntity> rencanaRawatEntities = rencanaRawatDao.getByCriteria(hsCriteria);
         if (rencanaRawatEntities.size() == 0){
@@ -1518,6 +1546,125 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return response;
     }
 
+    @Override
+    public RingkasanKeluarMasukRs getRingkasanKeluarMasuk(String noCheckup, String kategori) {
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("no_checkup", noCheckup);
+
+        RingkasanKeluarMasukRs ringkasan = new RingkasanKeluarMasukRs();
+        if ("masuk".equalsIgnoreCase(kategori)){
+            List<ItSimrsHeaderChekupEntity> headerChekupEntities = headerCheckupDao.getByCriteria(hsCriteria);
+            if (headerChekupEntities.size() > 0){
+                ItSimrsHeaderChekupEntity checkupEntity = new ItSimrsHeaderChekupEntity();
+                ringkasan = headerCheckupDao.getRingkasanMasukRs(noCheckup);
+                ringkasan.setRujukan(checkupEntity.getRujuk());
+                ringkasan.setKetRujukan(checkupEntity.getKetRujukan());
+            }
+        }
+        if ("keluar".equalsIgnoreCase(kategori)){
+            ringkasan = headerCheckupDao.getRingkasanKeluarRs(noCheckup);
+            if (ringkasan.getIdDetailCheckup() != null){
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", ringkasan.getIdDetailCheckup());
+                List<ItSimrsDokterTeamEntity> dokterTeamEntities = dokterTeamDao.getByCriteria(hsCriteria);
+                if (dokterTeamEntities.size() > 0){
+
+                    Dokter dokter;
+                    List<Dokter> dokterList = new ArrayList<>();
+                    for (ItSimrsDokterTeamEntity entity : dokterTeamEntities){
+
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_dokter", entity.getIdDokter());
+                        List<ImSimrsDokterEntity> dokterEntities = dokterDao.getByCriteria(hsCriteria);
+                        if (dokterEntities.size() > 0){
+                            dokter = new Dokter();
+                            ImSimrsDokterEntity dokterEntity = dokterEntities.get(0);
+                            dokter.setNamaDokter(dokterEntity.getNamaDokter());
+                            dokter.setIdDokter(dokterEntity.getIdDokter());
+                            dokterList.add(dokter);
+                        }
+                    }
+                    ringkasan.setDokterList(dokterList);
+                }
+            }
+        }
+        return ringkasan;
+    }
+
+    @Override
+    public List<TindakanRawat> getListTindakan(String noCheckup, String kategori) {
+
+        List<TindakanRawat> resultTindakans = new ArrayList<>();
+        List<String> idDetailCheckups = headerCheckupDao.listOfIdDetailCheckupByTipePelayanan(noCheckup,kategori);
+        if (idDetailCheckups.size() > 0){
+            for (String idDetail : idDetailCheckups){
+                List<ItSimrsTindakanRawatEntity> tindakanRawatEntities = new ArrayList<>();
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id_detail_checkup", idDetail);
+                hsCriteria.put("approve_flag", "Y");
+
+                tindakanRawatEntities = tindakanRawatDao.getByCriteria(hsCriteria);
+                if (tindakanRawatEntities.size() > 0){
+                    TindakanRawat tindakanRawat;
+                    for (ItSimrsTindakanRawatEntity tindakanRawatEntity : tindakanRawatEntities){
+                        tindakanRawat = new TindakanRawat();
+                        tindakanRawat.setNamaTindakan(tindakanRawatEntity.getNamaTindakan());
+                        tindakanRawat.setCreatedDate(tindakanRawatEntity.getCreatedDate());
+                        tindakanRawat.setCreatedWho(tindakanRawatEntity.getCreatedWho());
+                        tindakanRawat.setStDate(tindakanRawatEntity.getCreatedDate().toString());
+                        resultTindakans.add(tindakanRawat);
+                    }
+                }
+            }
+        }
+        return resultTindakans;
+    }
+
+    @Override
+    public List<RekamMedicLama> getListRekamMedicLama(String idPasien) {
+        List<RekamMedicLama> rekamMedicLamas = new ArrayList<>();
+        if (!"".equalsIgnoreCase(idPasien)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_pasien", idPasien);
+            List<ImSImrsRekamMedicLamaEntity> rekamMedicLamaEntities = rekamMedicLamaDao.getByCriteria(hsCriteria);
+            if (rekamMedicLamaEntities.size() > 0){
+                RekamMedicLama rekamMedicLama;
+                for (ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity : rekamMedicLamaEntities){
+                    rekamMedicLama = new RekamMedicLama();
+                    rekamMedicLama.setId(rekamMedicLamaEntity.getId());
+                    rekamMedicLama.setStDate(rekamMedicLamaEntity.getCreatedDate().toString());
+                    rekamMedicLama.setCreatedWho(rekamMedicLamaEntity.getCreatedWho());
+                    rekamMedicLamas.add(rekamMedicLama);
+                }
+            }
+        }
+        return rekamMedicLamas;
+    }
+
+    @Override
+    public List<RekamMedicLama> getListUploadRekamMedicLama(String headId) {
+        List<RekamMedicLama> rekamMedicLamas = new ArrayList<>();
+        if (!"".equalsIgnoreCase(headId)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("head_id", headId);
+            List<ImSimrsUploadRekamMedicLamaEntity> uploads = uploadRekamMedicLamaDao.getByCriteria(hsCriteria);
+            if (uploads.size() > 0){
+                RekamMedicLama rekamMedicLama;
+                for (ImSimrsUploadRekamMedicLamaEntity rekamMedicLamaEntity : uploads){
+                    rekamMedicLama = new RekamMedicLama();
+                    rekamMedicLama.setId(rekamMedicLamaEntity.getId());
+                    rekamMedicLama.setUrlImg(CommonConstant.EXTERNAL_IMG_URI + File.separator + CommonConstant.URL_IMG_RM + File.separator + rekamMedicLamaEntity.getUrlImg());
+                    rekamMedicLama.setStDate(rekamMedicLamaEntity.getCreatedDate().toString());
+                    rekamMedicLama.setCreatedWho(rekamMedicLamaEntity.getCreatedWho());
+                    rekamMedicLamas.add(rekamMedicLama);
+                }
+            }
+        }
+        return rekamMedicLamas;
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -1720,5 +1867,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
+
+    public void setRekamMedicLamaDao(RekamMedicLamaDao rekamMedicLamaDao) {
+        this.rekamMedicLamaDao = rekamMedicLamaDao;
+    }
+
+    public void setUploadRekamMedicLamaDao(UploadRekamMedicLamaDao uploadRekamMedicLamaDao) {
+        this.uploadRekamMedicLamaDao = uploadRekamMedicLamaDao;
     }
 }

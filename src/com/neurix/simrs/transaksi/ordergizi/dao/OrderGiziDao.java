@@ -134,19 +134,18 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
                     "a.no_sep, \n" +
-                    "d.id_rawat_inap,\n" +
-                    "g.id_order_gizi,\n" +
-                    "g.approve_flag, g.diterima_flag\n" +
+                    "d.id_rawat_inap\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
-                    "INNER JOIN (SELECT * FROM (\n" +
-                    "SELECT *, rank() OVER(PARTITION BY id_rawat_inap ORDER BY created_date DESC) as rank\n" +
-                    "FROM it_simrs_order_gizi) a WHERE rank = 1\n" +
-                    ") g ON d.id_rawat_inap = g.id_rawat_inap\n" +
+//                    "INNER JOIN (SELECT * FROM (\n" +
+//                    "SELECT *, rank() OVER(PARTITION BY id_rawat_inap ORDER BY created_date DESC) as rank\n" +
+//                    "FROM it_simrs_order_gizi) a WHERE rank = 1\n" +
+//                    ") g ON d.id_rawat_inap = g.id_rawat_inap\n" +
+                    "INNER JOIN (SELECT id_rawat_inap FROM it_simrs_order_gizi GROUP BY id_rawat_inap) g ON d.id_rawat_inap = g.id_rawat_inap\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
                     "AND a.nama LIKE :nama\n" +
                     "AND b.id_pelayanan LIKE :idPelayanan\n" +
@@ -163,8 +162,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
 
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n" +
-                        "ORDER BY g.created_date ASC";
+                SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -185,8 +183,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
 
                 if(!"".equalsIgnoreCase(bean.getStTglFrom())){
 
-                    SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n" +
-                            "ORDER BY g.created_date ASC";
+                    SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -203,8 +200,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .list();
                 }else if (!"".equalsIgnoreCase(bean.getStTglTo())){
 
-                    SQL = SQL + "AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n" +
-                            "ORDER BY g.created_date ASC";
+                    SQL = SQL + "AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -221,7 +217,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .list();
                 }else{
 
-                    SQL = SQL + "ORDER BY g.created_date ASC";
+                    SQL = SQL;
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -262,9 +258,6 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     rawatInap.setIdKelas(obj[15].toString());
                     rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
                     rawatInap.setIdRawatInap(obj[17].toString());
-                    rawatInap.setIdOrderGizi(obj[18].toString());
-                    rawatInap.setApproveFlag(obj[19] == null ? "" : obj[19].toString());
-                    rawatInap.setDiterimaFlag(obj[20] == null ? "" : obj[20].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -286,7 +279,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                         }
                     }
 
-//                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
+                    rawatInap.setCekApprove(cekStatusOrderGizi(obj[17].toString()));
                     rawatInap.setAlamat(jalan);
                     rawatInapList.add(rawatInap);
                 }
@@ -313,5 +306,28 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public boolean cekStatusOrderGizi(String idRawatInap) {
+
+        Boolean cek = false;
+
+        String SQL = "SELECT approve_flag, id_order_gizi FROM it_simrs_order_gizi WHERE id_rawat_inap = :id";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idRawatInap)
+                .list();
+
+        if(results != null){
+            for (Object[] obj: results){
+                if(obj[0] == null || "".equalsIgnoreCase(obj[0].toString())){
+                    cek = true;
+                }
+            }
+        }else{
+           cek = null;
+        }
+
+        return cek;
     }
 }

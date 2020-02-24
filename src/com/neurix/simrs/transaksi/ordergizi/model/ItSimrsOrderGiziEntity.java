@@ -27,6 +27,34 @@ public class ItSimrsOrderGiziEntity implements Serializable{
     private String approveFlag;
     private String diterimaFlag;
 
+    private String idDietGizi;
+    private String keterangan;
+    private String bentukDiet;
+
+    public String getIdDietGizi() {
+        return idDietGizi;
+    }
+
+    public void setIdDietGizi(String idDietGizi) {
+        this.idDietGizi = idDietGizi;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getBentukDiet() {
+        return bentukDiet;
+    }
+
+    public void setBentukDiet(String bentukDiet) {
+        this.bentukDiet = bentukDiet;
+    }
+
     private BigDecimal tarifTotal;
 
     public BigDecimal getTarifTotal() {

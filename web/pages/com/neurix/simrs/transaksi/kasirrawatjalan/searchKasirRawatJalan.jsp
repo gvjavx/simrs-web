@@ -196,7 +196,7 @@
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td style="vertical-align: middle">
+                                    <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <label class="label label-success"> sudah bayar</label>
                                         </s:if>
@@ -207,10 +207,16 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
-
+                                            <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
+                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_invo}" target="_blank">
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
                                         </s:if>
                                         <s:else>
-                                            <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">
+                                            <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
                                         </s:else>
                                     </td>
                                 </tr>
@@ -300,6 +306,7 @@
                     <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
                         <thead>
                         <tr bgcolor="#90ee90">
+                            <td width="10%" align="center">Action</td>
                             <td width="20%">Tanggal</td>
                             <td>Nama Tindakan</td>
                             <td align="center" width="20%">Total Tarif (Rp.)</td>
@@ -383,7 +390,7 @@
 
         setTimeout(function () {
 
-            var url = '<s:url value="/pages/images/icons8-test-passed-25-2.png"/>';
+            var url = '<s:url value="/pages/images/icon_payment.ico"/>';
             $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
 
             CheckupAction.listDataPasien(idCheckup, function (response) {
@@ -446,10 +453,11 @@
                         }
 
                         if(item.keterangan == "resep"){
-                            btn = '<img  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                            btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
+                            "<td align='center'>"+btn+"</td>" +
                             "<td >"+tgl+"</td>" +
                             "<td>" + tindakan + "</td>" +
                             "<td align='right' style='padding-right: 20px'>" +formatRupiah(tarif) + "</td>" +
@@ -457,7 +465,7 @@
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="2">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
                 }
             });
 
@@ -490,21 +498,43 @@
 
     function detailResep(idResep, idRiwayat){
 
-        var rowIndex = document.getElementById("row"+idRiwayat).rowIndex;
-        console.log(rowIndex);
+        var tbody = "";
+        KasirRawatJalanAction.getListDetailResep(idResep, function (response) {
+            if(response.length > 0){
 
-        // $('#tabel_tindakan_fin tbody tr:nth(' + rowIndex + ')')
-        $('#tabel_tindakan_fin  > tbody > tr').eq(rowIndex).after('<table class="table table-bordered" width="100%">' +
-            '<thead> <td>NAMA</td>' +
-            '</thead>' +
-            '<tbody> ' +
-            '<tr> <td>TES MUHAMMAD SODIQ</td>' +
-            '</tr>' +
-            '</tbody>' +
-            '</table>');
-        // var tes = '<table><thead><td>TES</td></thead></table>';
-        //
-        // tes.insertBefore($('#tabel_tindakan_fin tbody tr:nth(' + rowIndex + ')'));
+                $.each(response, function (i, item) {
+                    tbody += '<tr>' +
+                        '<td>'+item.namaObat+'</td>' +
+                        '<td align="center">'+item.qty+'</td>' +
+                        '<td>'+item.jenisSatuan+'</td>' +
+                        '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
+                        '</tr>';
+                });
+            }
+        });
+
+        var rowIndex = document.getElementById("row"+idRiwayat).rowIndex;
+        var table = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +
+            '<td>Nama Obat</td>' +
+            '<td align="center" width="10%">Qty</td>' +
+            '<td>Lembar</td>' +
+            '<td align="center">Tarif (Rp.)</td></tr>' +
+            '<tbody>'+tbody+'</tbody>'+
+            '</table>';
+
+        var newRow = $('<tr id="del'+idRiwayat+'"><td colspan="4">'+table+'</td></tr>');
+        newRow.insertAfter($('#tabel_tindakan_fin tr:nth('+rowIndex+')'));
+        var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';
+        $('#btn'+idRiwayat).attr('src',cancel);
+        $('#btn'+idRiwayat).attr('onclick', 'deleteRow(\''+idResep+'\',\''+idRiwayat+'\')');
+
+    }
+
+    function deleteRow(idResep, idRiwayat){
+        $('#del'+idRiwayat).remove();
+        var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
+        $('#btn'+idRiwayat).attr('src',plus);
+        $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
     }
 
 </script>

@@ -69,6 +69,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setIdObat(obatDetailEntity.getIdObat());
                 transaksiObatDetail.setIdApprovalObat(obatDetailEntity.getIdApprovalObat());
                 transaksiObatDetail.setQty(obatDetailEntity.getQty());
+                transaksiObatDetail.setQtyApprove(obatDetailEntity.getQtyApprove());
                 transaksiObatDetail.setFlag(obatDetailEntity.getFlag());
                 transaksiObatDetail.setAction(obatDetailEntity.getAction());
                 transaksiObatDetail.setCreatedDate(obatDetailEntity.getCreatedDate());

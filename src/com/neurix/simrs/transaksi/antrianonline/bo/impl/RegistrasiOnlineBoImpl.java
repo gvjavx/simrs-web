@@ -143,6 +143,21 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
                     registrasiItem.setLastUpdateWho(item.getLastUpdateWho());
                     registrasiItem.setBranchId(item.getBranchId());
 
+                    if(item.getDesaId() != null && !"".equalsIgnoreCase(item.getDesaId().toString())){
+                        List<Object[]> result = registrasiOnlineDao.getListAlamatByDesaId(item.getDesaId().toString());
+                        if(!result.isEmpty()){
+                            for (Object[] obj : result){
+                                registrasiItem.setNamaDesa(obj[0] == null ? "" : obj[0].toString());
+                                registrasiItem.setNamaKecamatan(obj[1] == null ? "" : obj[1].toString());
+                                registrasiItem.setNamaKota(obj[2] == null ? "" : obj[2].toString());
+                                registrasiItem.setNamaProvinsi(obj[3] == null ? "" : obj[3].toString());
+                                registrasiItem.setKecamatanId(obj[4] == null ? "" : obj[4].toString());
+                                registrasiItem.setKotaId(obj[5] == null ? "" : obj[5].toString());
+                                registrasiItem.setProvinsiId(obj[6] == null ? "" : obj[6].toString());
+                            }
+                        }
+                    }
+
                     listOfResult.add(registrasiItem);
                 }
             }

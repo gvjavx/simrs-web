@@ -5,6 +5,7 @@ import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -235,7 +236,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             branchId = "%";
         }
 
-        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.created_date, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.created_date, ck.tgl_keluar, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien \n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup \n" +
                 "INNER JOIN ( \n" +
@@ -264,15 +265,17 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
             alertPasien.setNoCheckup(obj[4] == null ? "" : obj[4].toString());
 
-            if (obj[3] != null){
+            if (obj[2] != null){
                 Timestamp createdDate = (Timestamp) obj[2];
-                Timestamp lastUpdate = (Timestamp) obj[3];
-
                 Long createdDateTime = createdDate.getTime();
-                Long lastUpdateTime = lastUpdate.getTime();
-
                 alertPasien.setStTglMasuk(timeToStringDate(createdDateTime));
+            }
+            if (obj[3] != null){
+                Timestamp lastUpdate = (Timestamp) obj[3];
+                Long lastUpdateTime = lastUpdate.getTime();
                 alertPasien.setStTglKeluar(timeToStringDate(lastUpdateTime));
+            } else {
+                alertPasien.setStTglKeluar("");
             }
         }
 
@@ -353,7 +356,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "WHERE b.status_periksa = '1'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId \n" +
+                "AND b.id_pelayanan LIKE :poliId AND c.tipe_pelayanan = 'rawat_jalan' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
@@ -382,6 +385,107 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
     private String timeToStringDate(Long time){
         Date date = new Date(time);
         return date.toString();
+    }
+
+    public RingkasanKeluarMasukRs getRingkasanMasukRs(String noCheckup){
+
+        String SQL = "SELECT \n" +
+                "pel.nama_pelayanan,\n" +
+                "dck.created_date as tgl_masuk,\n" +
+                "ri.created_date as tgl_pindah,\n" +
+                "mri.nama_ruangan\n" +
+                "FROM it_simrs_header_detail_checkup dck\n" +
+                "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = dck.id_pelayanan\n" +
+                "LEFT JOIN (\n" +
+                "\tSELECT inap.no_checkup, MIN(inap.created_date) as created_date\n" +
+                "\tFROM it_simrs_rawat_inap inap\n" +
+                "\tGROUP BY inap.no_checkup\n" +
+                ") ri ON ri.no_checkup = dck.no_checkup\n" +
+                "LEFT JOIN (\n" +
+                "\tSELECT \n" +
+                "\tno_checkup,\n" +
+                "\tid_detail_checkup, \n" +
+                "\tid_ruangan, \n" +
+                "\tnama_ruangan,\n" +
+                "\tcreated_date\n" +
+                "\tFROM it_simrs_rawat_inap\n" +
+                ") mri ON mri.no_checkup = ri.no_checkup AND mri.created_date = ri.created_date\n" +
+                "WHERE dck.no_checkup = :no ORDER BY dck.created_date ASC LIMIT 1";
+
+        RingkasanKeluarMasukRs ringkasan = new RingkasanKeluarMasukRs();
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("no", noCheckup)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                ringkasan.setMasukMelalui(obj[0].toString());
+                ringkasan.setTglMasukRs(obj[1].toString());
+                ringkasan.setTglPindahRuang(obj[2] == null ? "" : obj[2].toString());
+                ringkasan.setRuang(obj[3] == null ? "" : obj[3].toString());
+            }
+        }
+        return ringkasan;
+    }
+
+    public RingkasanKeluarMasukRs getRingkasanKeluarRs(String noCheckup){
+
+        String SQL = "SELECT \n" +
+                "a.id_detail_checkup,\n" +
+                "a.keterangan_selesai,\n" +
+                "a.cara_pasien_pulang,\n" +
+                "a.tempat_tujuan,\n" +
+                "a.keterangan_cekup_ulang,\n" +
+                "a.last_update\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN\n" +
+                "(\n" +
+                "\tSELECT dck.no_checkup, MAX(dck.created_date) as created_date\n" +
+                "\tFROM it_simrs_header_detail_checkup dck\n" +
+                "\tWHERE dck.no_checkup = :no\n" +
+                "\tAND dck.status_periksa = '3'" +
+                "\tGROUP BY dck.no_checkup\n" +
+                ") b ON b.no_checkup = a.no_checkup AND b.created_date = a.created_date";
+
+        List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("no", noCheckup)
+                .list();
+
+        RingkasanKeluarMasukRs ringkasan = new RingkasanKeluarMasukRs();
+        if (resuts.size() > 0){
+            for (Object[] obj : resuts){
+                ringkasan.setIdDetailCheckup(obj[0].toString());
+                ringkasan.setKeadaanKeluar(obj[1].toString());
+                ringkasan.setCaraKeluar(obj[2] == null ? "" : obj[2].toString());
+                ringkasan.setTujuanPulang(obj[3] == null ? "" : obj[3].toString());
+                ringkasan.setKetCheckupUlang(obj[4] == null ? "" : obj[4].toString());
+                ringkasan.setTglKeluarRs(obj[5] == null ? "" : obj[5].toString());
+            }
+        }
+        return ringkasan;
+    }
+
+    public List<String> listOfIdDetailCheckupByTipePelayanan(String noCheckup, String kategori){
+        String SQL = "SELECT \n" +
+                "a.id_detail_checkup,\n" +
+                "a.no_checkup\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.no_checkup LIKE :no\n" +
+                "AND b.tipe_pelayanan = :kat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("no", noCheckup)
+                .setParameter("kat", kategori)
+                .list();
+
+        List<String> detailCheckups = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                detailCheckups.add(obj[0].toString());
+            }
+        }
+        return detailCheckups;
     }
 
     public String getNextSeq(){

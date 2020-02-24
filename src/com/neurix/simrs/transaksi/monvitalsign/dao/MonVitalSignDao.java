@@ -47,7 +47,16 @@ public class MonVitalSignDao extends GenericDao<ItSimrsMonVitalSignEntity, Strin
         return sId;
     }
 
-    public List<MonVitalSign> getListGraf(String idDetail){
+    public List<MonVitalSign> getListGraf(MonVitalSign bean){
+
+        String noCheckup = "%";
+        String idDetail = "%";
+
+        if (bean.getNoCheckup() != null)
+            noCheckup = bean.getNoCheckup();
+
+        if (bean.getIdDetailCheckup() != null)
+            idDetail = bean.getIdDetailCheckup();
 
         String SQL = "SELECT \n" +
                 "created_date,\n" +
@@ -56,11 +65,13 @@ public class MonVitalSignDao extends GenericDao<ItSimrsMonVitalSignEntity, Strin
                 "nadi,\n" +
                 "suhu\n" +
                 "FROM it_simrs_mon_vital_sign vital\n" +
-                "WHERE id_detail_checkup = :detail \n" +
+                "WHERE id_detail_checkup LIKE :detail \n" +
+                "AND no_checkup LIKE :noCheckup \n" +
                 "ORDER BY created_date, jam";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("detail", idDetail)
+                .setParameter("noCheckup", noCheckup)
                 .list();
 
         List<MonVitalSign> monVitalSigns = new ArrayList<>();

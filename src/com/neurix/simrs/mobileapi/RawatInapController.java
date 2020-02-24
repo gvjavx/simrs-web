@@ -1066,8 +1066,11 @@ public class RawatInapController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("getListGraf")){
             List<MonVitalSign> result = new ArrayList<>();
 
+            MonVitalSign monVitalSign = new MonVitalSign();
+            monVitalSign.setIdDetailCheckup(idDetailCheckup);
+
             try {
-                result = rawatInapBoProxy.getListGraf(idDetailCheckup);
+                result = rawatInapBoProxy.getListGraf(monVitalSign);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }

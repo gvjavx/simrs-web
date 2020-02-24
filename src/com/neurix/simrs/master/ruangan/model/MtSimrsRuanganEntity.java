@@ -23,6 +23,25 @@ public class MtSimrsRuanganEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private Integer sisaKuota;
+    private Integer kuota;
+
+    public Integer getSisaKuota() {
+        return sisaKuota;
+    }
+
+    public void setSisaKuota(Integer sisaKuota) {
+        this.sisaKuota = sisaKuota;
+    }
+
+    public Integer getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(Integer kuota) {
+        this.kuota = kuota;
+    }
+
     private ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity;
 
     public ImSimrsKelasRuanganEntity getImSimrsKelasRuanganEntity() {

@@ -38,6 +38,15 @@
             text-decoration: none;
             display: block;
         }
+        #line-chart-tooltip{
+          z-index: 10000;
+        }
+        #line-chart{
+          width: 100%;
+        }
+        #line-chart-rm{
+            width: 100%;
+        }
 
         /*.dropdown-content a:hover {background-color: #f1f1f1}*/
 
@@ -520,6 +529,10 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
+
+                                        <s:hidden name="headerCheckup.isOnline" id="tes_online"/>
+                                        <s:hidden name="headerCheckup.tglAntian"/>
+
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
                                             <div class="col-md-8">
@@ -573,7 +586,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4">Provinsi</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi" name="headerCheckup.namaProvinsi"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -585,7 +598,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kota</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten" name="headerCheckup.namaKota"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -597,7 +610,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan" name="headerCheckup.namaKecamatan"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -609,7 +622,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
                                             <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name=""
+                                                <s:textfield cssStyle="margin-top: 7px" id="desa" name="headerCheckup.namaDesa"
                                                              required="true" disabled="false"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control"/>
@@ -715,77 +728,6 @@
                                                               cssClass="form-control select2" disabled="true"/>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Pre-Admisi Untuk Pasien</h3>
-                            </div>
-                            <div class="box-body">
-                                <br>
-                                <%-- <button class="btn btn-success" onclick="showAdmisiPasien()"><i class="fa fa-plus"></i> Tambah</button> --%>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-md-4">Adakah hal hal yang berkaitan dengan keyakinan anda yang perlu kami ketahui ?</label>
-                                        <div class="col-md-8">
-                                            <s:textfield id="ketKeyakinan" name="headerCheckup.ketKeyakinan"
-                                                         cssClass="form-control"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-md-4">Apakah anda membutuhkan penerjemah bahasa ?</label>
-                                        <div class="col-md-8">
-                                            <s:select list="#{'Y':'Ya'}" id="bantuanBahasa"
-                                            onchange="changeBahasa(this)"
-                                            cssStyle="width:20%;"
-                                            headerKey="N" headerValue="Tidak"
-                                            cssClass="form-control" name="headerCheckup.bantuanBahasa"/>
-                                            <s:textfield id="bahasa" name="headerCheckup.bahasa"
-                                                         cssClass="form-control" placeholder="bahasa lain"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-md-4">Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?</label>
-                                        <div class="col-md-8">
-                                            <s:textfield id="gangguanLain" name="headerCheckup.gangguanLain"
-                                                         cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-md-4">Apakah anda membutuhkan alat bantu khusus ?</label>
-                                        <div class="col-md-8">
-                                            <s:textfield id="alatBantu" name="headerCheckup.alatBantu"
-                                                         cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label class="col-md-4">Apakah anda mempunyai riwayat alergi ?</label>
-                                        <div class="col-md-8">
-                                            <s:textfield id="alergi" cssClass="form-control" 
-                                            name="headerCheckup.alergi"
-                                            />
-                                            <%-- <div class="input-group-addon btn btn-success"
-                                                    onclick="addAlergi()" style="background-color: green;color:#fff;">
-                                            <span id="btn-cek"><i class="fa fa-plus"></i> Tambahkan</span> --%>
-                                            <%-- </div> --%>
-                                            <div id="new_alergi">
-
-                                            </div>
-                                            <%-- <s:hidden id="hiden_alergi" name="headerCheckup.alergi"/> --%>
                                         </div>
                                     </div>
                                 </div>
@@ -1135,13 +1077,10 @@
             </div>
             <div class="modal-body">
                 <div class="box">
+                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>
+                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No Checkup</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Masuk</td>
-                        <td>Tanggal Keluar</td>
-                        <td>View Details RM</td>
+                        <thead id="label-rekam-medic">
                         </thead>
                         <tbody id="body-rekam-medic">
                         </tbody>
@@ -1239,22 +1178,24 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
             </div>
             <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                    <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
                     <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
                   </ul>
-                  <div class="tab-content">
-                    <table class="table">
+                  <div class="tab-content" id="list-body-rekam-medic">
+                    <%-- <table class="table">
                       <tbody id="list-body-rekam-medic">
                       </tbody>
-                    </table>
-                    <input type="hidden" id="rm-no-checkup" name="" value="">
+                    </table> --%>
                     <!-- /.tab-pane -->
                   </div>
+                  <input type="hidden" name="" id="rm-no-checkup">
                   <!-- /.tab-content -->
                 </div>
                 <!-- nav-tabs-custom -->
@@ -1263,8 +1204,53 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
-                        class="fa fa-arrow-right"></i> Save
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail-rekam-medic-lama">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Lama Pasien</h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators" id="indicator-img">
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
+                    </ol>
+                    <div class="carousel-inner" id="body-img-rm">
+                        <%--<div class="carousel-item active">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
+                        <%--</div>--%>
+                        <%--<div class="carousel-item">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Second slide">--%>
+                        <%--</div>--%>
+                        <%--<div class="carousel-item">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
+                        <%--</div>--%>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <%--<div id="body-img-rm">--%>
+
+                <%--</div>--%>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
@@ -1272,8 +1258,14 @@
 </div>
 
 <!-- /.content-wrapper -->
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
+
+    var idPelayanan = $('#poli').val();
+    var isOnline = '<s:property value="headerCheckup.isOnlne"/>';
+
     $(document).ready(function () {
+
         $("#bahasa").val("indonesia");
         $("#bahasa").attr("readOnly","true");
         $('#pendaftaran').addClass('active');
@@ -1313,6 +1305,9 @@
         });
 
         initlistPenjamin();
+        initListDokter();
+        console.log(isOnline);
+
     });
 
     function setFormAdmisi() {
@@ -1508,6 +1503,7 @@
         });
 
     }
+
     function listDokter(idPelayanan) {
         var idx = idPelayanan.selectedIndex;
         var idPoli = idPelayanan.options[idx].value;
@@ -1525,6 +1521,39 @@
                 option = option;
             }
         });
+    }
+
+    function initListDokter() {
+        if(idPelayanan != ''){
+            var option = "";
+            CheckupAction.listOfDokter(idPelayanan, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                    });
+
+                    $('#dokter').html(option);
+                } else {
+                    option = option;
+                }
+            });
+        }
+
+        var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
+        if(idDokter != ''){
+            $('#dokter').val(idDokter).trigger('change');
+        }
+
+        var isLama = '<s:property value="headerCheckup.jenisKunjungan"></s:property>';
+        if(isLama != ''){
+
+            if(isLama == "Lama"){
+                $('#kunjungan').val("Lama").trigger('change');
+            }else{
+                $('#kunjungan').val("Baru").trigger('change');
+            }
+        }
     }
 
     function alertPasien(noPasien) {
@@ -1562,92 +1591,6 @@
                 closeAlert();
             }
         });
-    }
-
-    function initRekamMedic() {
-        var idPasien = $("#id_pasien").val();
-        var table = "";
-        var namaPasien = "";
-
-        CheckupAction.listRekamMedic(idPasien, function (response) {
-            // console.log(response);
-            $.each(response, function (i, item) {
-                var noCheckup = "";
-                var dignosa = "";
-                var tanggal = "";
-                var dateFormatMasuk = "";
-                var dateFormatKeluar = "";
-
-                if(item.noCheckup != null){
-                    noCheckup = item.noCheckup;
-                }
-                if(item.diagnosa != null){
-                    dignosa = item.diagnosa;
-                }
-                if(item.stTglMasuk != null && item.stTglKeluar != null){
-                    tanggalMasuk = item.stTglMasuk;
-                    tanggalKeluar = item.stTglKeluar;
-                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
-                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
-                }
-                table += "<tr>" +
-                        "<td>" + noCheckup + "</td>" +
-                        "<td>" + dignosa + "</td>" +
-                        "<td align='center'>" + dateFormatMasuk + "</td>" +
-                        "<td align='center'>" + dateFormatKeluar + "</td>" +
-                        "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
-                        "</tr>";
-
-                namaPasien = item.namaPasien;
-            });
-
-            $("#modal-rekam-medic").modal('show');
-            $('#nama_medik').html(namaPasien);
-            $("#body-rekam-medic").html(table);
-        });
-    }
-
-    function viewDetailRekamMedic(noCheckup){
-      console.log("viewDetailRekamMedic ==> klik");
-      $("#rm-no-checkup").val(noCheckup);
-      $("#modal-detail-rekam-medic").modal("show");
-    }
-
-    function viewDetailRekamMedicByKategori(kategori){
-      if (kategori == "ri") {
-        CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
-          // console.log(response);
-          var str = "";
-          $.each(response, function(i, item) {
-            str += "<tr>"+
-                  "<td>"+item.namaKategori+"</td>"+
-                  "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
-                  "</tr>";
-          });
-          $("#list-body-rekam-medic").html("");
-          $("#list-body-rekam-medic").html(str);
-        });
-      } else {
-        $("#list-body-rekam-medic").html("");
-        if (kategori == "mon") {
-
-          str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-          $("#list-body-rekam-medic").html(str);
-
-        } else if (kategori == "igd") {
-          str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                    "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-          $("#list-body-rekam-medic").html(str);
-        } else {
-
-        }
-      }
     }
 
     function closeAlert() {

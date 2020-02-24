@@ -803,10 +803,26 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 logger.error("[PermintaanVendorAction.printPermintaanPO] Error when searching permintan vendor by criteria,", e);
             }
 
+            String branch = CommonUtil.userBranchLogin();
+            String logo = "";
+
+            switch (branch){
+                case CommonConstant.BRANCH_RS01 :
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                    break;
+                case CommonConstant.BRANCH_RS02 :
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                    break;
+                case CommonConstant.BRANCH_RS03 :
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                    break;
+            }
+
             JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(obatDetailList);
 
             reportParams.put("permintaanId", idPermintaan);
-            reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
+            reportParams.put("logo", logo);
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idVendor", vendorResult.getIdVendor());
             reportParams.put("namaVendor", vendorResult.getNamaVendor());
             reportParams.put("email", vendorResult.getEmail());

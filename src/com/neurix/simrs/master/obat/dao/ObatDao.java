@@ -202,6 +202,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         String namaObat = "%";
         String flag = "%";
         String branchId = "%";
+        String squen = "%";
 
         if (criteria.get("id_obat") != null) {
             idObat = criteria.get("id_obat").toString();
@@ -220,6 +221,9 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
         if (criteria.get("id_pabrik") != null) {
             idPabrik = criteria.get("id_pabrik").toString();
+        }
+        if (criteria.get("id_squen") != null) {
+            squen = criteria.get("id_squen").toString();
         }
 
         String SQL = "SELECT\n" +
@@ -245,7 +249,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "ob.average_harga_lembar,\n" +
                 "ob.average_harga_biji,\n" +
                 "ob.expired_date,\n" +
-                "ob.id_barang\n" +
+                "ob.id_barang, ob.id_seq_obat\n" +
                 "FROM im_simrs_obat ob \n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -297,6 +301,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             obatEntity.setAverageHargaBiji(obj[20] == null ? null : (BigDecimal) obj[20]);
             obatEntity.setExpiredDate(obj[21] == null ? null : (Date) obj[21]);
             obatEntity.setIdBarang(obj[22] == null ? null : (String) obj[22]);
+            obatEntity.setIdSeqObat(obj[23] == null ? null : (String) obj[23]);
 
             listOfResults.add(obatEntity);
         }

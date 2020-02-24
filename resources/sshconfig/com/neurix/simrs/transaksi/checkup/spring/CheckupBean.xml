@@ -13,6 +13,9 @@
           p:pasienBoProxy-ref="pasienBoProxy"
           p:diagnosaBoProxy-ref="diagnosaBoProxy"
           p:diagnosaRawatBoProxy-ref="diagnosaRawatBoProxy"
+          p:registrasiOnlineBoProxy-ref="registrasiOnlineBoProxy"
+          p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
+
     />
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:checkupBoProxy-ref="checkupBoProxy"
@@ -44,6 +47,9 @@
           p:patrusDao-ref="patrusDao"
           p:tranfusiDao-ref="tranfusiDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:dokterDao-ref="dokterDao"
+          p:rekamMedicLamaDao-ref="rekamMedicLamaDao"
+          p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
