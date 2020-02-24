@@ -236,7 +236,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             branchId = "%";
         }
 
-        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.created_date, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.created_date, ck.tgl_keluar, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien \n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup \n" +
                 "INNER JOIN ( \n" +
@@ -265,15 +265,17 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
             alertPasien.setNoCheckup(obj[4] == null ? "" : obj[4].toString());
 
-            if (obj[3] != null){
+            if (obj[2] != null){
                 Timestamp createdDate = (Timestamp) obj[2];
-                Timestamp lastUpdate = (Timestamp) obj[3];
-
                 Long createdDateTime = createdDate.getTime();
-                Long lastUpdateTime = lastUpdate.getTime();
-
                 alertPasien.setStTglMasuk(timeToStringDate(createdDateTime));
+            }
+            if (obj[3] != null){
+                Timestamp lastUpdate = (Timestamp) obj[3];
+                Long lastUpdateTime = lastUpdate.getTime();
                 alertPasien.setStTglKeluar(timeToStringDate(lastUpdateTime));
+            } else {
+                alertPasien.setStTglKeluar("");
             }
         }
 

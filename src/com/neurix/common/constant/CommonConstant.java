@@ -54,6 +54,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
+    public final static String EXTERNAL_IMG_URI="/simrs/images";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -175,6 +176,7 @@ public class CommonConstant {
 
     public final static String URL_IMG="/images/";
     public final static String URL_DOC="/documents/";
+    public final static String URL_IMG_RM = "rekam_medic";
 
 
 }

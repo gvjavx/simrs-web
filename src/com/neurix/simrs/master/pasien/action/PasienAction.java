@@ -5,17 +5,24 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
+import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PasienAction extends BaseMasterAction {
@@ -25,6 +32,10 @@ public class PasienAction extends BaseMasterAction {
     private String userId;
     private PasienBo pasienBoProxy;
     private List<Pasien> listOfpasien = new ArrayList<>();
+
+    private File[] fileUploadImage;
+    private String[] fileUploadImageContentType;
+    private String[] fileUploadImageFileName;
 
     private String tipe;
 
@@ -54,6 +65,30 @@ public class PasienAction extends BaseMasterAction {
 
     public void setListOfpasien(List<Pasien> listOfpasien) {
         this.listOfpasien = listOfpasien;
+    }
+
+    public File[] getFileUploadImage() {
+        return fileUploadImage;
+    }
+
+    public void setFileUploadImage(File[] fileUploadImage) {
+        this.fileUploadImage = fileUploadImage;
+    }
+
+    public String[] getFileUploadImageContentType() {
+        return fileUploadImageContentType;
+    }
+
+    public void setFileUploadImageContentType(String[] fileUploadImageContentType) {
+        this.fileUploadImageContentType = fileUploadImageContentType;
+    }
+
+    public String[] getFileUploadImageFileName() {
+        return fileUploadImageFileName;
+    }
+
+    public void setFileUploadImageFileName(String[] fileUploadImageFileName) {
+        this.fileUploadImageFileName = fileUploadImageFileName;
     }
 
     public Pasien init(String kode, String flag){
@@ -483,6 +518,76 @@ public class PasienAction extends BaseMasterAction {
         listOfpasien.addAll(pasienList);
         logger.info("[PasienAction.getListComboSelectPasien] end process <<<");
         return SUCCESS;
+    }
+
+    public String saveUploadRmLama() throws IOException {
+
+        File fileToCreate = null;
+        Pasien pasien = getPasien();
+
+        String branchId = CommonUtil.userBranchLogin();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
+        rekamMedicLamaEntity.setIdPasien(pasien.getIdPasien());
+        rekamMedicLamaEntity.setBranchId(branchId);
+        rekamMedicLamaEntity.setFlag("Y");
+        rekamMedicLamaEntity.setAction("C");
+        rekamMedicLamaEntity.setCreatedDate(time);
+        rekamMedicLamaEntity.setLastUpdate(time);
+        rekamMedicLamaEntity.setCreatedWho(userLogin);
+        rekamMedicLamaEntity.setLastUpdateWho(userLogin);
+
+        List<ImSimrsUploadRekamMedicLamaEntity> uploads = new ArrayList<>();
+
+        ImSimrsUploadRekamMedicLamaEntity uploadRekamMedicLamaEntity;
+        if (fileUploadImage != null){
+            for (int i = 0; i < fileUploadImage.length ; i++){
+                if (fileUploadImage[i] != null){
+                    String fileName = fileUploadImageFileName[i];
+                    String fileNameReplace = fileName.replace(" ", "_");
+                    String seqImg = pasienBoProxy.getNextIdImg();
+                    File imagePath = fileUploadImage[i];
+                    String fileTipe = fileUploadImageContentType[i];
+
+                    if ("image/jpeg".equalsIgnoreCase(fileTipe)) {
+
+                        // set new file path and file name to copy
+                        String filePathToCopy = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + File.separator + CommonConstant.URL_IMG_RM + File.separator;
+                        String newFileName = branchId + "_" + pasien.getIdPasien() + "_" +seqImg+"_"+ fileNameReplace;
+
+                        // set new file then copying to new path directory
+                        fileToCreate = new File(filePathToCopy, newFileName);
+                        FileUtils.copyFile(imagePath, fileToCreate);
+
+                        logger.info("fileName : " + fileNameReplace);
+                        logger.info("imagePath : " + imagePath);
+                        logger.info("fileTipe : " + fileTipe);
+
+                        uploadRekamMedicLamaEntity = new ImSimrsUploadRekamMedicLamaEntity();
+                        uploadRekamMedicLamaEntity.setUrlImg(newFileName);
+                        uploadRekamMedicLamaEntity.setId("URM"+seqImg);
+                        uploads.add(uploadRekamMedicLamaEntity);
+
+                    } else {
+                        logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
+                        addActionError("Error,  Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
+                        return ERROR;
+                    }
+                }
+            }
+
+            try {
+                pasienBoProxy.saveUploadRekamMedicLama(rekamMedicLamaEntity, uploads);
+            } catch (GeneralBOException e){
+                logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, please inform to your admin.");
+                addActionError("Error,  Error when saving rekam medic lama, please inform to your admin.");
+                return ERROR;
+            }
+        }
+
+        return "search";
     }
 
     public String getTipe() {

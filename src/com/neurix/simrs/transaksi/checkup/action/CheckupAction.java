@@ -2227,4 +2227,15 @@ public class CheckupAction extends BaseMasterAction {
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
         return checkupBo.getListTindakan(noCheckup, kat);
     }
+
+    public List getListRekamMedicLama(String idPasien){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        return checkupBo.getListRekamMedicLama(idPasien);
+    }
+    public List getListUploadRekamMedic(String headId){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        return checkupBo.getListUploadRekamMedicLama(headId);
+    }
  }

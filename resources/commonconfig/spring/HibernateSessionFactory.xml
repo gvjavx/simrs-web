@@ -347,10 +347,11 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/patrus/hibernate/ItSimrsPatrusEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/transfusi/hibernate/ItSImrsTranfusiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/skorrawatinap/hibernate/ItSimrsSkorRanapEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/simrs/transaksi/moncairan/hibernate/ItSimrsMonCairanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/monpemberianobat/hibernate/ItSimrsMonPemberianObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/monvitalsign/hibernate/ItSimrsMonVitalSignEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/ImSimrsRekamMedicLamaEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/ImSimrsUploadRekamMedicLamaEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsTindakanPelayananEntity.hbm.xml</value>
 
