@@ -374,7 +374,7 @@ public class PasienAction extends BaseMasterAction {
         reportParams.put("kota", pasien.getKota());
         reportParams.put("kec", pasien.getKecamatan());
         reportParams.put("desa", pasien.getDesa());
-        reportParams.put("photo", CommonConstant.URL_IMAGE_CARD);
+        reportParams.put("photo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.IMAGE_CARD);
 
         try {
             preDownload();

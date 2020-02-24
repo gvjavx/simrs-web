@@ -2186,6 +2186,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         HeaderCheckup headerCheckup = getHeaderCheckup(id);
         JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
         reportParams.put("resepId", idResep);
         reportParams.put("logo", logo);
         reportParams.put("nik", headerCheckup.getNoKtp());

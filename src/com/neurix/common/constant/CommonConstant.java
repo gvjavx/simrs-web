@@ -157,6 +157,7 @@ public class CommonConstant {
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
+    public final static String IMAGE_CARD  = "/pages/images/card.png";
 
     public final static String BRANCH_RS01 = "RS01";
     public final static String BRANCH_RS02 = "RS02";

@@ -248,7 +248,7 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-12" style="display:inline;">
+                            <div class="col-md-12" style="display:inline; padding-left: 5%">
                                 <s:iterator value="#session.listOfResult" var="row">
                                 <div class="btn-wrapper">
                                     <s:if test='#row.namaPasien != null'>

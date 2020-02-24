@@ -699,7 +699,15 @@ public class CheckupAction extends BaseMasterAction {
                         klaimRequest.setNoRm(getPasien.getIdPasien());
                         klaimRequest.setNamaPasien(getPasien.getNama());
                         klaimRequest.setTglLahir(getPasien.getTglLahir());
-                        klaimRequest.setGender(getPasien.getJenisKelamin());
+
+                        String jk = "";
+
+                        if("L".equalsIgnoreCase(getPasien.getJenisKelamin())){
+                            jk = "1";
+                        }else{
+                            jk = "2";
+                        }
+                        klaimRequest.setGender(jk);
 
                         KlaimResponse responseNewClaim = new KlaimResponse();
                         try {

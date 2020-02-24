@@ -279,11 +279,13 @@ public class ObatAction extends BaseMasterAction {
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
             Obat obat = new Obat();
-            obat.setIdObat(idObat);
+            obat.setIdSeqObat(idObat);
             obat.setNamaObat(namaObat);
             obat.setQtyBox(box);
             obat.setQtyLembar(lembar);
             obat.setQtyBiji(biji);
+            obat.setMerk(merek);
+            obat.setIdPabrik(pabrik);
             obat.setLembarPerBox(lembarBox);
             obat.setBijiPerLembar(bijiLembar);
             obat.setAverageHargaBox(hargaBox);

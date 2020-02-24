@@ -189,6 +189,14 @@
                                         <s:a href="%{verify_po}">
                                             <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
+                                        <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
+                                            <s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_po}" target="_blink">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

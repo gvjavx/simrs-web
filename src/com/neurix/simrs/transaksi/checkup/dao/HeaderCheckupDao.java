@@ -354,7 +354,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "WHERE b.status_periksa = '1'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
-                "AND b.id_pelayanan LIKE :poliId \n" +
+                "AND b.id_pelayanan LIKE :poliId AND c.tipe_pelayanan = 'rawat_jalan' \n" +
                 "AND CAST(a.created_date AS date) = current_date\n" +
                 "ORDER BY c.nama_pelayanan, b.tgl_antrian ASC";
 
