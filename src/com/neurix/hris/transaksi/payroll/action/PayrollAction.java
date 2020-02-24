@@ -2892,7 +2892,7 @@ public class PayrollAction extends BaseMasterAction{
         String id = getId();
         String tipe = getTipe();
         String noSurat = getNoSurat();
-        String tanggalSK = getTanggal();
+        String tanggalSK = getTanggalSk();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ItPayrollEntity payroll = new ItPayrollEntity();
         if (id != null) {
@@ -2939,9 +2939,9 @@ public class PayrollAction extends BaseMasterAction{
                 String payrollId = getId();
                 String tahun = getTahun();
                 String bulan = getBulan();
-                String tanggalPensiunRealisasi = getTanggal();
+                String tanggalPensiunRealisasi = getTanggalSk();
                 String positionId = getPositionId();
-                 String tanggalAktif = getTanggalAktif();
+                String tanggalAktif = getTanggalAktif();
 
                 Date tanggalPensiun = CommonUtil.convertStringToDate(tanggalPensiunRealisasi);
                 Calendar cal = Calendar.getInstance();
@@ -2958,8 +2958,33 @@ public class PayrollAction extends BaseMasterAction{
                 String nettoDiterima =CommonUtil.angkaToTerbilang(payroll.getGajiBersih().longValue());
 
                 if (payrollId != null) {
-                    reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+                    Branch branch = new Branch();
+
+                    try{
+                        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                        payroll = payrollBo.getPayrollById(payrollId);
+                        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                        branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+                    }catch( HibernateException e){
+
+                    }
+                    String logo ="";
+                    if (payroll.getBranchId().equalsIgnoreCase("RS01")){
+                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                    }else if (payroll.getBranchId().equalsIgnoreCase("RS02")){
+                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                    }else if (payroll.getBranchId().equalsIgnoreCase("RS03")){
+                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                    }else{
+                        logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+                    }
+                    String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                    reportParams.put("urlLogo", logo);
+                    reportParams.put("branchId", payroll.getBranchId());
+                    reportParams.put("branchName", branch.getBranchName());
+                    reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
                     reportParams.put("tahun", tahun);
+                    reportParams.put("tanggalSk", tanggalSK);
                     reportParams.put("bulan", bulan);
                     reportParams.put("noSurat", getNoSurat());
                     reportParams.put("payrollId", payrollId);

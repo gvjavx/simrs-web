@@ -2987,7 +2987,7 @@
 
             if(noSurat != '' && tanggalPensiun != ''){
                 window.location.href = 'printReportPayroll_payroll?id='+payrollId+'&tipe='
-                        +tipe+'&noSurat='+noSurat+'&tahun='+tahun+'&bulan='+bulan+'&tanggal='+tanggalPensiun;
+                        +tipe+'&noSurat='+noSurat+'&tahun='+tahun+'&bulan='+bulan+'&tanggalSk='+tanggalPensiun;
             }else{
                 alert('No Surat dan Tanggal Pensiun tidak boleh kosong');
             }

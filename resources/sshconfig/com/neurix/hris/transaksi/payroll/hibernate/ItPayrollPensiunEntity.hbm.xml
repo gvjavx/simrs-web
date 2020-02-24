@@ -33,7 +33,7 @@
         <property name="gajiGolongan">
             <column name="gaji_golongan" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
-        <!--<property name="tunjanganUmk">
+        <property name="tunjanganUmk">
             <column name="tunjangan_umk" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
         <property name="tunjanganStruktural">
@@ -41,7 +41,7 @@
         </property>
         <property name="tunjanganJabatanStruktural">
             <column name="tunjangan_jabatan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>-->
+        </property>
         <property name="tunjanganPeralihan">
             <column name="tunjangan_peralihan" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>

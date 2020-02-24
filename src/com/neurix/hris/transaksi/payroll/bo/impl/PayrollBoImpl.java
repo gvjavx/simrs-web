@@ -2293,7 +2293,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             Integer bulanPensiun = hitungBulanInsentif("01-"+bean.getBulan()+"-"+bean.getTahun(),tglPensiunPegawai);
                             bulanBerjalan = hitungBulanInsentif(CommonUtil.convertDateToString(payrollEntity.getTanggalAktif()),"01-"+bean.getBulan()+"-"+bean.getTahun());
                             if (bulanPensiun-bulanSekarang<=7){
-                                payrollPensiun = getPensiunSimRs(payrollEntity.getNip(),gaji,tunjPeralihan,bulanBerjalan);
+                                payrollPensiun = getPensiunSimRs(payrollEntity.getNip(),gaji,santunanKhusus, tunjJabatanStruktural, tunjStruktural,tunjPeralihan,bulanBerjalan);
                                 BigDecimal pphPensiun = hitungPph21Sht(payrollPensiun.getNettoPensiunNilai());
 
                                 payrollPensiun.setNip(payrollEntity.getNip());
@@ -3671,16 +3671,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         return totalThp;
     }
 
-    private PayrollPensiun getPensiunSimRs(String nip, BigDecimal gaji, BigDecimal peralihan, int bulan){
+    private PayrollPensiun getPensiunSimRs(String nip, BigDecimal gaji, BigDecimal sankhus,BigDecimal tunjJabatan,BigDecimal tunjStruktural, BigDecimal peralihan, int bulan){
         PayrollPensiun payrollPensiun = new PayrollPensiun();
         BigDecimal hasil = new BigDecimal(0);
         if(bulan /12 <20){
-            hasil = (gaji.add(peralihan)).multiply(BigDecimal.valueOf(2)).multiply(BigDecimal.valueOf(bulan/12));
+            hasil = (gaji.add(peralihan).add(sankhus).add(tunjJabatan).add(tunjStruktural)).multiply(BigDecimal.valueOf(2)).multiply(BigDecimal.valueOf(bulan/12));
         }else{
-            hasil = (gaji.add(peralihan)).multiply(BigDecimal.valueOf(3)).multiply(BigDecimal.valueOf(bulan/12));
+            hasil = (gaji.add(peralihan).add(sankhus).add(tunjJabatan).add(tunjStruktural)).multiply(BigDecimal.valueOf(3)).multiply(BigDecimal.valueOf(bulan/12));
         }
         payrollPensiun.setNettoPensiunNilai(hasil);
         payrollPensiun.setGajiGolonganNilai(gaji);
+        payrollPensiun.setTunjanganUmkNilai(sankhus);
+        payrollPensiun.setTunjanganJabatanStrukturalNilai(tunjJabatan);
+        payrollPensiun.setTunjanganStrukturalNilai(tunjStruktural);
         payrollPensiun.setTunjanganPeralihanNilai(peralihan);
 
         payrollPensiun.setNip(nip);
@@ -5184,6 +5187,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         payrollPensiunEntity.setTanggalPensiun(pensiunLoop.getTanggalPensiun());
 
                         payrollPensiunEntity.setGajiGolongan(pensiunLoop.getGajiGolonganNilai());
+                        payrollPensiunEntity.setTunjanganUmk(pensiunLoop.getTunjanganUmkNilai());
+                        payrollPensiunEntity.setTunjanganJabatanStruktural(pensiunLoop.getTunjanganJabatanStrukturalNilai());
+                        payrollPensiunEntity.setTunjanganStruktural(pensiunLoop.getTunjanganJabatanStrukturalNilai());
                         payrollPensiunEntity.setTunjanganPeralihan(pensiunLoop.getTunjanganPeralihanNilai());
 
                         payrollPensiunEntity.setJumlahBiayaPensiun(pensiunLoop.getTotalPensiunNilai());
