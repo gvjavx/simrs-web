@@ -870,7 +870,7 @@ public class LemburBoImpl implements LemburBo {
                     notifSelf.setNoRequest(bean.getLemburId());
                     notifSelf.setTipeNotifId("umum");
                     notifSelf.setTipeNotifName(("Lembur"));
-                    notifSelf.setNote("Lembur anda pada tanggal "+bean.getStTanggalAwal()+" sampai dengan tanggal "+bean.getStTanggalAkhir()+" di approve oleh atasan anda");
+                    notifSelf.setNote("Lembur anda pada tanggal "+CommonUtil.convertDateToString(bean.getTanggalAwalSetuju())+" sampai dengan tanggal "+CommonUtil.convertDateToString(bean.getTanggalAkhirSetuju())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itLemburEntity.getNip());
                     notifSelf.setTo("self");
 

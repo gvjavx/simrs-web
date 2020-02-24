@@ -112,6 +112,17 @@ public class CommonConstant {
     public final static String APPROVE_CREDIT_NOTE = "ACN";
     public final static String NOTAPPROVE_CREDIT_NOTE = "NCN";
 
+
+    public final static String REPORT_PAYROLL= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayroll.jrxml";
+    public final static String REPORT_PAYROLL_THR= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollthr.jrxml";
+    public final static String REPORT_PAYROLL_JASPROD= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJasopr.jrxml";
+    public final static String REPORT_PAYROLL_PENSIUN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollPensiun.jrxml";
+    public final static String REPORT_PAYROLL_PMP= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollJubileum.jrxml";
+    public final static String REPORT_PAYROLL_INSENTIF= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollInsentif.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_PANJANG= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiPanjang.jrxml";
+    public final static String REPORT_PAYROLL_CUTI_TAHUNAN= "/opt/tomcat/webapps/simrs/pages/report/com/neurix/hris/reportPayrollCutiTahunan.jrxml";
+
+
     //ptpnx e-farming
     public final static String ROLE_MANAGER_QC = "MANAGER QC";
     public final static String ROLE_MANAGER_TANAMAN = "MANAGER TANAMAN";

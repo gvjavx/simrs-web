@@ -595,15 +595,15 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                                 break;
                                             }
                                         }
-                                        if (cutiPegawaiPltList.size()!=0){
-                                            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
-                                                if (entity.getUserId().equals(plt)) {
-                                                    String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, bean.getOs());
-                                                    logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
-                                                    break;
-                                                }
-                                            }
-                                        }
+//                                        if (cutiPegawaiPltList.size()!=0){
+//                                            for (ItNotifikasiFcmEntity entity : notifikasiFcm) {
+//                                                if (entity.getUserId().equals(plt)) {
+//                                                    String message = ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), note, bean.getOs());
+//                                                    logger.info("[CutiPegawaiBoImpl.saveAdd] Expo Notif: " + message);
+//                                                    break;
+//                                                }
+//                                            }
+//                                        }
 
 //                                        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //                                            if(entity.getUserId().equals(atasanNip)){
@@ -1553,7 +1553,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (!"".equalsIgnoreCase(itCutiPegawaiEntity.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
                         Notifikasi notifElse= new Notifikasi();
-                        notifElse.setNip(itCutiPegawaiEntity.getNip());
+                        notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
                         notifElse.setTipeNotifName(("Cuti Pegawai"));
@@ -1571,7 +1571,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                     //Send notif ke orang yang mengajukan
                     Notifikasi notifSelf= new Notifikasi();
-                    notifSelf.setNip(itCutiPegawaiEntity.getNip());
+                    notifSelf.setNip(itCutiPegawaiEntity.getPegawaiPenggantiSementara());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
                     notifSelf.setTipeNotifName(("Cuti Pegawai"));
