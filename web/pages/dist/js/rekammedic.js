@@ -167,7 +167,7 @@ function viewDetailRekamMedic(noCheckup){
             "<table class='table table-bordered table-striped' style='font-size:12px'><tbody>"+
             "<tr><td>Diagnosa terakhir :</td><td>"+item.diagnosa+"</td></tr>"+
             "<tr><td>Tanggal Masuk :</td><td>"+item.stTglMasuk+"</td></tr>"+
-            "<tr><td>Tiagnosa Keluar :</td><td>"+item.stTglKeluar+"</td></tr>"+
+            "<tr><td>Tanggal Keluar :</td><td>"+item.stTglKeluar+"</td></tr>"+
             "</tbody></table>"+
             "</div>"+
             "</div>";
