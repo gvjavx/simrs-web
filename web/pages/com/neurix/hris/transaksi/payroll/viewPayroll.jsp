@@ -759,6 +759,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-1" >Tunj. Lembur</label>
+                        <div class="col-sm-2">
+                            <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur"name="nip">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-sm-1" >Pemondokan</label>
                         <div class="col-sm-2">
                             <input style="text-align: right" type="text" class="form-control nip" id="pemondokan" onfocusout="updateNilai(this.id, this.value)" name="nip">
@@ -2683,78 +2689,6 @@
                     $('.detailThr').hide();
                 }
 
-                /*if(listdata.flagJubileumOn == true){
-                 $('#checkApproveJubileum').removeAttr('disabled');
-                 $('#jubileum').val(listdata.nettoJubileum);
-                 $('.detailJubileum').show();
-                 }else{
-                 $('.detailJubileum').hide();
-                 $('#jubileum').val(listdata.labelJubileum);
-                 $('#checkApproveJubileum').prop('disabled', 'true');
-                 }*/
-
-                /*if(listdata.centangJubileum == "Y"){
-                 if(listdata.flagJubileumOn == true){
-                 if($('#checkApproveJubileum').prop('disabled')){
-                 $('.detailJubileum').hide();
-                 }else{
-                 $('.detailJubileum').show();
-                 }
-                 }else{
-                 $('.detailJubileum').hide();
-                 }
-                 document.getElementById("checkApproveJubileum").checked = true;
-                 }else{
-                 $('.detailJubileum').hide();
-                 document.getElementById("checkApproveJubileum").checked = false;
-                 }*/
-
-                /*if(listdata.flagPensiunOn == true){
-                 $('.detailPensiun').show();
-                 $('#checkApprovePensiun').removeAttr('disabled');
-                 }else{
-                 $('.detailPensiun').hide();
-                 $('#checkApprovePensiun').prop('disabled', 'true');
-                 }
-
-                 if(listdata.centangPensiun == "Y"){
-                 if($('#checkApprovePensiun').prop('disabled')){
-                 $('.detailPensiun').hide();
-                 }else{
-                 $('.detailPensiun').show();
-                 }
-                 document.getElementById("checkApprovePensiun").checked = true;
-                 }else{
-                 $('.detailPensiun').hide();
-                 document.getElementById("checkApprovePensiun").checked = false;
-                 }
-
-                 if(listdata.flagPerumahanOn == true){
-                 $('#checkPerumahan').removeAttr('disabled');
-                 }else{
-                 $('#checkPerumahan').prop('disabled', 'true');
-                 }
-
-                 if(listdata.flagListrikAirOn == true){
-                 $('#checkListrikAir').removeAttr('disabled');
-                 }else{
-                 $('#checkListrikAir').prop('disabled', 'true');
-                 }
-
-                 if(listdata.centangListrikAir == "Y"){
-                 document.getElementById("checkListrikAir").checked = true;
-                 }else{
-                 document.getElementById("checkListrikAir").checked = false;
-                 }
-
-                 if(listdata.centangPerumahan == "Y"){
-                 document.getElementById("checkPerumahan").checked = true;
-                 }else{
-                 document.getElementById("checkPerumahan").checked = false;
-                 }*/
-
-
-
                 if(listdata.flagPayroll == "Y"){
                     $('.detailLembur').show();
                     $('.detailPphGaji').show();
@@ -2822,6 +2756,7 @@
                 $('#pemondokan').val(listdata.pemondokan);
                 $('#komunikasi').val(listdata.komunikasi);
                 $('#tambahanLain').val(listdata.tambahanLain);
+                $('#tunjLembur').val(listdata.tunjanganLembur);
 
                 //komponen B
                 //RLAB

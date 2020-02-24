@@ -1628,7 +1628,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     BigDecimal jumlahGajiKotor = new BigDecimal(0);
 
-                    BigDecimal lembur = new BigDecimal(0);
 
                     //tambahan Irfan
                     //A
@@ -1643,6 +1642,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     BigDecimal pemondokan = new BigDecimal(0);
                     BigDecimal komunikasi = new BigDecimal(0);
                     BigDecimal tambahanLain = new BigDecimal(0);
+                    BigDecimal lembur = new BigDecimal(0);
                     //Tunjangan A lainnya
                     BigDecimal tunjSupervisi = new BigDecimal(0);
                     BigDecimal tunjLokasi = new BigDecimal(0);
@@ -1700,7 +1700,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     BigDecimal iuranYpks = new BigDecimal(0);
 
                     BigDecimal gajiBersih = new BigDecimal(0);
-                    BigDecimal tunjUmk = new BigDecimal(0);
+                    BigDecimal tunjLembur = new BigDecimal(0);
                     BigDecimal gajiPensiun = new BigDecimal(0);
 
                     //flag untuk testing Tambahan Lain
@@ -1717,9 +1717,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // Flag Payroll
                     if(bean.getFlagPayroll().equalsIgnoreCase("Y") || flagTestTambahanLain.equalsIgnoreCase("Y")) {
-                        /*tunjLembur = getTunjanganLembur(payrollEntity.getNip(), payrollEntity.getBranchId(), tahunBefore + "-" + bulanBefore + "-"+lemburGajiAwal,
-                                bean.getTahun() + "-" + bean.getBulan() + "-"+lemburGajiAkhir);
-*/
+                        lembur = getTunjanganLembur(payrollEntity.getNip(), payrollEntity.getBranchId(), tahunBefore + "-" + bulanBefore + "-01",
+                                bean.getTahun() + "-" + bean.getBulan() + "-01");
+
                         if (!payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")) {
                             //Jika Kelompok position komisaris dan kelompok direksi
                             if (payrollEntity.getKelompokId().equalsIgnoreCase("KL00") || payrollEntity.getKelompokId().equalsIgnoreCase("KL01")) {
@@ -2339,6 +2339,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjLain = BigDecimal.valueOf(0);
                         pemondokan = BigDecimal.valueOf(0);
                         komunikasi = BigDecimal.valueOf(0);
+                        lembur = BigDecimal.valueOf(0);
                         //Tunjangan A lainnya
                         tunjSupervisi = BigDecimal.valueOf(0);
                         tunjLokasi = BigDecimal.valueOf(0);
@@ -2411,6 +2412,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setTunjanganLemburNilai(lembur);
                     payroll.setTambahanLain(CommonUtil.numbericFormat(tambahanLain, "###,###"));
                     payroll.setTambahanLainNilai(tambahanLain);
+                    payroll.setTunjanganLembur(CommonUtil.numbericFormat(lembur, "###,###"));
+                    payroll.setTunjanganLemburNilai(lembur);
 
                     BigDecimal totalA = new BigDecimal(0);
                     totalA = totalA.add(gaji).add(santunanKhusus).add(tunjJabatanStruktural).add(tunjStruktural)

@@ -180,17 +180,17 @@
                                         </button>
                                     </td>
                                     <td width="2%"></td>
-                                    <td>
+                                    <%--<td>
                                         <button type="button" class="btn btn-success" id="btnPrintUangMakan">
                                             <i class="fa fa-print"></i> Cetak Uang Makan
                                         </button>
                                     </td>
-                                    <td width="2%"></td>
-                                    <td>
+                                    <td width="2%"></td>--%>
+                                    <%--<td>
                                         <button type="button" class="btn btn-success" id="btnPrintTriwulan">
                                             <i class="fa fa-print"></i> Cetak Evaluasi
                                         </button>
-                                    </td>
+                                    </td>--%>
                                     <%--<td width="2%"></td>
                                     <td>
                                         <div class="btn-group">
