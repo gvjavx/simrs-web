@@ -761,7 +761,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         return listComboNotifikasi;
     }
     @Override
-    public void sendNotif(Notifikasi notifikasi){
+    public void sendNotif(Notifikasi notifikasi) {
         String nip=notifikasi.getNip();
         String id=notifikasi.getNoRequest();
         String tipeNotifId=notifikasi.getTipeNotifId();
@@ -769,7 +769,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         String note=notifikasi.getNote();
         String createdWho=notifikasi.getCreatedWho();
         String to=notifikasi.getTo();
-        String pengganti = notifikasi.getFromPerson();
+        String pengganti = notifikasi.getNip();
         String os = notifikasi.getOs();
 
         if (to!=null){

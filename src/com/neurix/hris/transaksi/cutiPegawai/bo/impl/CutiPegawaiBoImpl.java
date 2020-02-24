@@ -1553,7 +1553,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (!"".equalsIgnoreCase(itCutiPegawaiEntity.getPegawaiPenggantiSementara())){
                         //Send notif ke orang yang mengajukan
                         Notifikasi notifElse= new Notifikasi();
-                        notifElse.setNip(bean.getPegawaiPenggantiSementara());
+                        notifElse.setNip(itCutiPegawaiEntity.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
                         notifElse.setTipeNotifName(("Cuti Pegawai"));
@@ -1571,7 +1571,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                     //Send notif ke orang yang mengajukan
                     Notifikasi notifSelf= new Notifikasi();
-                    notifSelf.setNip(itCutiPegawaiEntity.getPegawaiPenggantiSementara());
+                    notifSelf.setNip(itCutiPegawaiEntity.getCutiPegawaiId());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
                     notifSelf.setTipeNotifName(("Cuti Pegawai"));
@@ -1930,11 +1930,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public String cekIfAbsensi(String nip, String tglDari, String tglSelesai){
         String status ="";
         Date tgl;
-        try{
+        try {
             if (tglDari.equalsIgnoreCase(tglSelesai)){
                 tgl = CommonUtil.convertStringToDate(tglDari);
                 status = cutiPegawaiDao.cekIfAbsensi(nip,tgl);
-            }else {
+            } else {
                 Date dTglDari = CommonUtil.convertStringToDate(tglDari);
                 Date dTglSelesaai = CommonUtil.convertStringToDate(tglSelesai);
                 List<Date> datesInRange = new ArrayList<>();
@@ -1956,7 +1956,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 }
 
             }
-        }catch (GeneralBOException e1) {
+        } catch (GeneralBOException e1) {
             logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
         }
         return status;

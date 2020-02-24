@@ -1867,6 +1867,8 @@ public class BiodataBoImpl implements BiodataBo {
                 payroll1.setFlagPensiun(itPayrollEntity.getFlagPensiun());
                 payroll1.setFlagJubileum(itPayrollEntity.getFlagJubileum());
                 payroll1.setFlagInsentif(itPayrollEntity.getFlagInsentif());
+                payroll1.setFlagCutiPanjang(itPayrollEntity.getFlagCutiPanjang());
+                payroll1.setFlagCutiTahunan(itPayrollEntity.getFlagCutiTahunan());
 
                 payroll.add(payroll1);
             }
