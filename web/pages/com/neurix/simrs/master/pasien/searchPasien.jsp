@@ -37,6 +37,7 @@ To change this template use File | Settings | File Templates.
 
     </script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -141,7 +142,7 @@ To change this template use File | Settings | File Templates.
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary" onclick="showModalUpload()">
-                                                        <i class="fa fa-refresh"></i> Upload Rekam Medic Lama
+                                                        <i class="fa fa-plus"></i> Upload Rekam Medic Lama
                                                     </button>
                                                 </td>
                                             </tr>
@@ -271,7 +272,7 @@ To change this template use File | Settings | File Templates.
                     </div>
                     <div class="modal-body">
                         <div class="box">
-                            <s:form id="uploadForm" method="post"  theme="simple" namespace="/pasien" action="search_pasien.action" cssClass="form-horizontal">
+                            <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
                                     <div class="col-md-8">
@@ -323,8 +324,9 @@ To change this template use File | Settings | File Templates.
                                         });
                                     </script>
                                 </div>
-                                <button class="btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i></button>
-                                <div id="body-rekam-medic">
+                                <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
+                                <br/>
+                                <div id="body-rm">
 
                                 </div>
                             </s:form>
@@ -382,16 +384,20 @@ To change this template use File | Settings | File Templates.
     function addInputUpload() {
 
         var str = "";
-        str += "<div class=\"form-group\">"+
-                "<label class=\"col-md-4\" style=\"margin-top: 7px\">Upload Foto Rekam Medic "+i+"</label>"+
-                "<div class=\"col-md-8\">"+
-                "<s:file id=\"upload_img"+i+"\" name=\"fileUploadImage\" cssClass=\"form form-control\"/>"+
-                "</div>"+
-                "</div>";
+        str += '<div class="form-group">'+
+                '<label class="col-md-4" style="margin-top: 7px">Upload Foto Rekam Medic '+i+'</label>'+
+                '<div class="col-md-8">'+
+                '<input type="file" name="fileUploadImage" class="form form-control">'+
+                <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
+                '</div>'+
+                '</div>';
+        if (n > 0){
+            $("#body-rekam-medic-"+n+"").html(str+'<div id="body-rekam-medic-'+i+'"></div>');
+        } else {
+            $("#body-rm").html('<div id="body-rekam-medic-'+n+'">'+str+'</div><div id="body-rekam-medic-'+i+'"></div>');
+        }
         n++;
         i++;
-
-        $("#body-rekam-medic").html(str);
     }
 
     /*function user_register(user_id, user_name) {

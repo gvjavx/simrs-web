@@ -48,6 +48,8 @@
           p:tranfusiDao-ref="tranfusiDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:dokterDao-ref="dokterDao"
+          p:rekamMedicLamaDao-ref="rekamMedicLamaDao"
+          p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

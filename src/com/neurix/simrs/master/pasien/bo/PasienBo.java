@@ -34,4 +34,5 @@ public interface PasienBo extends GeneralBo {
     ImSimrsPasienEntity getPasienByIdPasien(String idPasien);
 
     public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException;
+    public String getNextIdImg();
 }

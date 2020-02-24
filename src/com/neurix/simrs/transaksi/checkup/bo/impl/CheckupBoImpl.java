@@ -10,6 +10,11 @@ import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -61,6 +66,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -101,6 +107,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private RekonsiliasiObatDao rekonsiliasiObatDao;
     private RiwayatTindakanDao riwayatTindakanDao;
     private DokterDao dokterDao;
+    private RekamMedicLamaDao rekamMedicLamaDao;
+    private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -1614,6 +1622,49 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return resultTindakans;
     }
 
+    @Override
+    public List<RekamMedicLama> getListRekamMedicLama(String idPasien) {
+        List<RekamMedicLama> rekamMedicLamas = new ArrayList<>();
+        if (!"".equalsIgnoreCase(idPasien)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_pasien", idPasien);
+            List<ImSImrsRekamMedicLamaEntity> rekamMedicLamaEntities = rekamMedicLamaDao.getByCriteria(hsCriteria);
+            if (rekamMedicLamaEntities.size() > 0){
+                RekamMedicLama rekamMedicLama;
+                for (ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity : rekamMedicLamaEntities){
+                    rekamMedicLama = new RekamMedicLama();
+                    rekamMedicLama.setId(rekamMedicLamaEntity.getId());
+                    rekamMedicLama.setStDate(rekamMedicLamaEntity.getCreatedDate().toString());
+                    rekamMedicLama.setCreatedWho(rekamMedicLamaEntity.getCreatedWho());
+                    rekamMedicLamas.add(rekamMedicLama);
+                }
+            }
+        }
+        return rekamMedicLamas;
+    }
+
+    @Override
+    public List<RekamMedicLama> getListUploadRekamMedicLama(String headId) {
+        List<RekamMedicLama> rekamMedicLamas = new ArrayList<>();
+        if (!"".equalsIgnoreCase(headId)){
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("head_id", headId);
+            List<ImSimrsUploadRekamMedicLamaEntity> uploads = uploadRekamMedicLamaDao.getByCriteria(hsCriteria);
+            if (uploads.size() > 0){
+                RekamMedicLama rekamMedicLama;
+                for (ImSimrsUploadRekamMedicLamaEntity rekamMedicLamaEntity : uploads){
+                    rekamMedicLama = new RekamMedicLama();
+                    rekamMedicLama.setId(rekamMedicLamaEntity.getId());
+                    rekamMedicLama.setUrlImg(CommonConstant.EXTERNAL_IMG_URI + File.separator + CommonConstant.URL_IMG_RM + File.separator + rekamMedicLamaEntity.getUrlImg());
+                    rekamMedicLama.setStDate(rekamMedicLamaEntity.getCreatedDate().toString());
+                    rekamMedicLama.setCreatedWho(rekamMedicLamaEntity.getCreatedWho());
+                    rekamMedicLamas.add(rekamMedicLama);
+                }
+            }
+        }
+        return rekamMedicLamas;
+    }
+
     private String getNextIdAlergi(){
         String id = "";
         try {
@@ -1820,5 +1871,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
+    }
+
+    public void setRekamMedicLamaDao(RekamMedicLamaDao rekamMedicLamaDao) {
+        this.rekamMedicLamaDao = rekamMedicLamaDao;
+    }
+
+    public void setUploadRekamMedicLamaDao(UploadRekamMedicLamaDao uploadRekamMedicLamaDao) {
+        this.uploadRekamMedicLamaDao = uploadRekamMedicLamaDao;
     }
 }

@@ -5,9 +5,16 @@ function initRekamMedic() {
     var idPasien = $("#id_pasien").val();
     var table = "";
     var namaPasien = "";
-
+    var thead = "";
     CheckupAction.listRekamMedic(idPasien, function (response) {
         // console.log(response);
+
+        thead = "<tr></tr><td>No Checkup</td>"+
+            "<td>Diagnosa Terakhir</td>"+
+            "<td>Tanggal Masuk</td>"+
+            "<td>Tanggal Keluar</td>"+
+            "<td>View Details RM</td></tr>";
+
         $.each(response, function (i, item) {
             var noCheckup = "";
             var dignosa = "";
@@ -40,8 +47,111 @@ function initRekamMedic() {
 
         $("#modal-rekam-medic").modal('show');
         $('#nama_medik').html(namaPasien);
-        $("#body-rekam-medic").html(table);
+        $("#body-rekam-medic").html(thead+table);
     });
+}
+
+function getByTypeRekamMedic(type) {
+    console.log("getByTypeRekamMedic ==> klik");
+
+    var idPasien = $("#id_pasien").val();
+    var table = "";
+    var namaPasien = "";
+    var thead = "";
+
+    if (type == "lama"){
+        CheckupAction.getListRekamMedicLama(idPasien, function (response) {
+            // console.log(response);
+
+            thead = "<tr></tr><td>ID</td>"+
+                    "<td>Created Date</td>"+
+                    "<td>View Detail RM</td></tr>";
+
+            $.each(response, function (i, item) {
+                table += "<tr>" +
+                    "<td>" + item.id + "</td>" +
+                    "<td>" + item.stDate + "</td>" +
+                    "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedicLama('"+item.id+"')\">View</button></td>" +
+                    "</tr>";
+            });
+
+            $("#body-rekam-medic").html("");
+            $("#body-rekam-medic").html(thead+table);
+        });
+    }
+    if (type == "baru"){
+
+        CheckupAction.listRekamMedic(idPasien, function (response) {
+            // console.log(response);
+
+            thead = "<tr></tr><td>No Checkup</td>"+
+                    "<td>Diagnosa Terakhir</td>"+
+                    "<td>Tanggal Masuk</td>"+
+                    "<td>Tanggal Keluar</td>"+
+                    "<td>View Details RM</td></tr>";
+
+            $.each(response, function (i, item) {
+                var noCheckup = "";
+                var dignosa = "";
+                var tanggal = "";
+                var dateFormatMasuk = "";
+                var dateFormatKeluar = "";
+
+                if(item.noCheckup != null){
+                    noCheckup = item.noCheckup;
+                }
+                if(item.diagnosa != null){
+                    dignosa = item.diagnosa;
+                }
+                if(item.stTglMasuk != null && item.stTglKeluar != null){
+                    tanggalMasuk = item.stTglMasuk;
+                    tanggalKeluar = item.stTglKeluar;
+                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
+                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
+                }
+                table += "<tr>" +
+                    "<td>" + noCheckup + "</td>" +
+                    "<td>" + dignosa + "</td>" +
+                    "<td align='center'>" + dateFormatMasuk + "</td>" +
+                    "<td align='center'>" + dateFormatKeluar + "</td>" +
+                    "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
+                    "</tr>";
+
+                namaPasien = item.namaPasien;
+            });
+
+            $('#nama_medik').html(namaPasien);
+            $("#body-rekam-medic").html("");
+            $("#body-rekam-medic").html(thead+table);
+        });
+    }
+
+}
+
+function viewDetailRekamMedicLama(headId) {
+    console.log("getByTypeRekamMedic ==> "+ headId);
+    var str = "";
+    var indicator = "";
+    CheckupAction.getListUploadRekamMedic(headId, function (response) {
+        if (response.length > 0){
+            $.each(response, function (i, item) {
+                if (i == 0){
+                    indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'" class="active"></li>';
+                    str += '<div class="carousel-item active">'+
+                           '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                           '</div>';
+                } else {
+                    indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'"></li>';
+                    str += '<div class="carousel-item">'+
+                        '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                        '</div>';
+                }
+            });
+            $("#modal-detail-rekam-medic-lama").modal("show");
+            $("#indicator-img").html(indicator);
+            $("#body-img-rm").html(str);
+        }
+    })
 }
 
 function viewDetailRekamMedic(noCheckup){

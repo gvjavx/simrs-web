@@ -640,7 +640,6 @@ public class PasienBoImpl implements PasienBo {
 
             if (uploads.size() > 0){
                 for (ImSimrsUploadRekamMedicLamaEntity uploadEntity : uploads){
-                    uploadEntity.setId("URM"+uploadRekamMedicLamaDao.getNextSeq());
                     uploadEntity.setHeadId(rekamMedicLamaEntity.getId());
                     uploadEntity.setFlag(rekamMedicLama.getFlag());
                     uploadEntity.setAction(rekamMedicLama.getAction());
@@ -658,6 +657,11 @@ public class PasienBoImpl implements PasienBo {
                 }
             }
         }
+    }
+
+    @Override
+    public String getNextIdImg() {
+        return uploadRekamMedicLamaDao.getNextSeq();
     }
 
     public void setPasienDao(PasienDao pasienDao) {

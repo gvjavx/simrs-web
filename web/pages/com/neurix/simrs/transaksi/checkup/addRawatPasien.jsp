@@ -1077,13 +1077,10 @@
             </div>
             <div class="modal-body">
                 <div class="box">
+                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>
+                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>
                     <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No Checkup</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Masuk</td>
-                        <td>Tanggal Keluar</td>
-                        <td>View Details RM</td>
+                        <thead id="label-rekam-medic">
                         </thead>
                         <tbody id="body-rekam-medic">
                         </tbody>
@@ -1203,6 +1200,54 @@
                 </div>
                 <!-- nav-tabs-custom -->
 
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail-rekam-medic-lama">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Lama Pasien</h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators" id="indicator-img">
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
+                        <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
+                    </ol>
+                    <div class="carousel-inner" id="body-img-rm">
+                        <%--<div class="carousel-item active">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
+                        <%--</div>--%>
+                        <%--<div class="carousel-item">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Second slide">--%>
+                        <%--</div>--%>
+                        <%--<div class="carousel-item">--%>
+                            <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
+                        <%--</div>--%>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <%--<div id="body-img-rm">--%>
+
+                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close

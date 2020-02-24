@@ -531,6 +531,7 @@ public class PasienAction extends BaseMasterAction {
 
         ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
         rekamMedicLamaEntity.setIdPasien(pasien.getIdPasien());
+        rekamMedicLamaEntity.setBranchId(branchId);
         rekamMedicLamaEntity.setFlag("Y");
         rekamMedicLamaEntity.setAction("C");
         rekamMedicLamaEntity.setCreatedDate(time);
@@ -546,6 +547,7 @@ public class PasienAction extends BaseMasterAction {
                 if (fileUploadImage[i] != null){
                     String fileName = fileUploadImageFileName[i];
                     String fileNameReplace = fileName.replace(" ", "_");
+                    String seqImg = pasienBoProxy.getNextIdImg();
                     File imagePath = fileUploadImage[i];
                     String fileTipe = fileUploadImageContentType[i];
 
@@ -553,7 +555,7 @@ public class PasienAction extends BaseMasterAction {
 
                         // set new file path and file name to copy
                         String filePathToCopy = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + File.separator + CommonConstant.URL_IMG_RM + File.separator;
-                        String newFileName = branchId + "_" + pasien.getIdPasien() + "_" + fileNameReplace;
+                        String newFileName = branchId + "_" + pasien.getIdPasien() + "_" +seqImg+"_"+ fileNameReplace;
 
                         // set new file then copying to new path directory
                         fileToCreate = new File(filePathToCopy, newFileName);
@@ -565,6 +567,7 @@ public class PasienAction extends BaseMasterAction {
 
                         uploadRekamMedicLamaEntity = new ImSimrsUploadRekamMedicLamaEntity();
                         uploadRekamMedicLamaEntity.setUrlImg(newFileName);
+                        uploadRekamMedicLamaEntity.setId("URM"+seqImg);
                         uploads.add(uploadRekamMedicLamaEntity);
 
                     } else {

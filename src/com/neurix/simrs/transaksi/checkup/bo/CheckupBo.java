@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
@@ -54,6 +55,8 @@ public interface CheckupBo {
     public CrudResponse saveTranfusi(ItSimrsTranfusiEntity bean);
     public RingkasanKeluarMasukRs getRingkasanKeluarMasuk(String noCheckup, String kategori);
     public List<TindakanRawat> getListTindakan(String noCheckup, String kategori);
+    public List<RekamMedicLama> getListRekamMedicLama(String idPasien);
+    public List<RekamMedicLama> getListUploadRekamMedicLama(String headId);
 
     Long saveErrorMessage(String message, String s);
 
