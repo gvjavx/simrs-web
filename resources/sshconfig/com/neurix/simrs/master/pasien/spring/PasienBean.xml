@@ -18,6 +18,8 @@
           p:fingerDataDao-ref="fingerDataDao"
          p:provinsiDao-ref="provinsiDao"
          p:headerCheckupDao-ref="headerCheckupDao"
+          p:rekamMedicLamaDao-ref="rekamMedicLamaDao"
+          p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
     />
 
     <bean id="pasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -47,5 +49,9 @@
     <bean id="pasienDao" class="com.neurix.simrs.master.pasien.dao.PasienDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="fingerDataDao" class="com.neurix.simrs.master.pasien.dao.FingerDataDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="rekamMedicLamaDao" class="com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="uploadRekamMedicLamaDao" class="com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

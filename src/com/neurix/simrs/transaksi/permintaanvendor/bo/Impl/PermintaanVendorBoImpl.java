@@ -712,6 +712,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 //        String userLogin = CommonUtil.userLogin();
 
         Obat sumObat = new Obat();
@@ -812,7 +813,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setCreatedWho(bean.getCreatedWho());
         newObatEntity.setLastUpdate(time);
         newObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-        newObatEntity.setBranchId(bean.getBranchId());
+        newObatEntity.setBranchId(branchId);
 
         try {
             obatDao.addAndSave(newObatEntity);

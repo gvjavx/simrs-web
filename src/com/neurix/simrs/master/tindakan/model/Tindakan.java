@@ -19,6 +19,16 @@ public class Tindakan {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getIdTindakan() {
         return idTindakan;
     }

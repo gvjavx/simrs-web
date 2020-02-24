@@ -532,10 +532,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             // set ketersedian ruangan to tidak tersedia
             if (ruanganEntity != null) {
-                ruanganEntity.setStatusRuangan("N");
+
+                ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() - 1);
                 ruanganEntity.setAction("U");
                 ruanganEntity.setLastUpdate(bean.getCreatedDate());
                 ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
+
+                if(ruanganEntity.getSisaKuota() == 0){
+                    ruanganEntity.setStatusRuangan("N");
+                }
+
                 try {
                     ruanganDao.updateAndSave(ruanganEntity);
                 } catch (HibernateException e) {

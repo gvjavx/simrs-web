@@ -31,6 +31,55 @@ public class Ruangan extends BaseModel {
     private BigDecimal tarifBpjs;
     private BigDecimal tarifTindakan;
 
+    private String tipeTransaksi;
+    private BigDecimal nilaiPersen;
+
+    private Integer sisaKuota;
+    private Integer kuota;
+
+    private String namaPasien;
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public Integer getSisaKuota() {
+        return sisaKuota;
+    }
+
+    public void setSisaKuota(Integer sisaKuota) {
+        this.sisaKuota = sisaKuota;
+    }
+
+    public Integer getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(Integer kuota) {
+        this.kuota = kuota;
+    }
+
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
+
+    public BigDecimal getNilaiPersen() {
+        return nilaiPersen;
+    }
+
+    public void setNilaiPersen(BigDecimal nilaiPersen) {
+        this.nilaiPersen = nilaiPersen;
+    }
+
     public BigDecimal getTarifBpjs() {
         return tarifBpjs;
     }

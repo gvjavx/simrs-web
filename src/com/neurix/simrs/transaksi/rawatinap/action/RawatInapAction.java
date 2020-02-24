@@ -762,11 +762,19 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListObatNonParenteral(id, kategori);
     }
 
-    public List<MonVitalSign> getListGraf(String idDetail){
+    public List<MonVitalSign> getListGraf(String idDetail, String noCheckup){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        return rawatInapBo.getListGraf(idDetail);
+
+        MonVitalSign monVitalSign = new MonVitalSign();
+
+        if (!"".equalsIgnoreCase(noCheckup))
+            monVitalSign.setNoCheckup(noCheckup);
+        if (!"".equalsIgnoreCase(idDetail))
+            monVitalSign.setIdDetailCheckup(idDetail);
+
+        return rawatInapBo.getListGraf(monVitalSign);
     }
 
 }

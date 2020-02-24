@@ -662,6 +662,7 @@ public class ObatPoliAction extends BaseMasterAction {
                         break;
                 }
 
+                reportParams.put("unit", CommonUtil.userBranchNameLogin());
                 reportParams.put("permintaanId", idPermintaan);
                 reportParams.put("logo", logo);
                 reportParams.put("namaPelayanan", entity.getNamaPelayanan());

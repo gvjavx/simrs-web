@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPermintaanObat" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="147"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -27,6 +27,7 @@
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.namaPelayanan" class="java.lang.String"/>
 	<parameter name="reportParams.dariPelayanan" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT a.id_approval_obat, c.id_obat, e.nama_obat, c.qty, c.qty_approve, c.jenis_satuan, d.id_barang, d.qty_approve as qty_app
 FROM mt_simrs_approval_transaksi_obat a
@@ -49,46 +50,6 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 	</background>
 	<title>
 		<band height="141" splitType="Stretch">
-			<componentElement>
-				<reportElement x="388" y="0" width="167" height="20" uuid="67785d5f-b464-498b-ba36-7c91ce827318">
-					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[]]></propertyExpression>
-				</reportElement>
-				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
-				</jr:Code39>
-			</componentElement>
-			<staticText>
-				<reportElement x="388" y="20" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
-				<textElement>
-					<font fontName="Calibri" size="8"/>
-				</textElement>
-				<text><![CDATA[Printed date : ]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="446" y="20" width="100" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
-				<textElement>
-					<font fontName="Calibri" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="160" y="17" width="199" height="20" uuid="bc81f7c9-c28f-4030-861c-305cac8d2b33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Request Permintaan Obat]]></text>
-			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
-				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
@@ -143,12 +104,58 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.dariPelayanan} == null ? "" : $P{reportParams.dariPelayanan}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="dae03b5a-8e5d-4056-8b91-3f17772d252c"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="422" y="33" width="59" height="19" uuid="94dd16b0-69b2-46f9-ac9f-4ce103b4bbf8"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="33" width="173" height="20" uuid="9e7f704f-52b3-4c32-91cd-ed5b196c853c"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="480" y="33" width="75" height="19" uuid="cfa43104-d180-45d1-838a-ac81aed91eaf"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="43" width="173" height="22" uuid="447e1d23-9dc9-4565-bea8-c16ff3f9e324"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="13" width="262" height="20" uuid="10d5637d-5f4c-478c-b538-35c2b397af4b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Request Permintaan Obat]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="435" y="1" width="120" height="32" uuid="8d1e68ad-254c-4297-a45e-1a69aa58ac55"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="120" height="25" backcolor="#CCFFCC" uuid="00885b2a-122c-42e3-be07-15a8cfb7d05e"/>
+				<reportElement mode="Opaque" x="0" y="0" width="120" height="25" backcolor="#FFFFFF" uuid="00885b2a-122c-42e3-be07-15a8cfb7d05e"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -162,7 +169,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<text><![CDATA[ID Barang]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="120" y="0" width="165" height="25" backcolor="#CCFFCC" uuid="1bcd118f-b012-4f3f-89ec-483c3e4fe591"/>
+				<reportElement mode="Opaque" x="120" y="0" width="165" height="25" backcolor="#FFFFFF" uuid="1bcd118f-b012-4f3f-89ec-483c3e4fe591"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -176,7 +183,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<text><![CDATA[Nama Obat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="285" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="8121d0f2-d6d7-4811-bf8f-182ca34f5e8e"/>
+				<reportElement mode="Opaque" x="285" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="8121d0f2-d6d7-4811-bf8f-182ca34f5e8e"/>
 				<box leftPadding="0">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -190,7 +197,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<text><![CDATA[Qty Request]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="465" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="02d0f82e-8ef9-48d6-b4fb-eb08df635953"/>
+				<reportElement mode="Opaque" x="465" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="02d0f82e-8ef9-48d6-b4fb-eb08df635953"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -204,7 +211,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<text><![CDATA[Jenis Satuan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="328a3724-a9b4-4851-aa2f-84112355f45c"/>
+				<reportElement mode="Opaque" x="375" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="328a3724-a9b4-4851-aa2f-84112355f45c"/>
 				<box leftPadding="0">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -293,6 +300,23 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			</textField>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="154">
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="20" uuid="f18a07e7-7cd0-483b-ab03-0ab0b1706a05"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TTD]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
 	<summary>
 		<band height="114" splitType="Stretch"/>
 	</summary>

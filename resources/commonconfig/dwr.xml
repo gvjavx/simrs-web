@@ -290,6 +290,7 @@
           <param name="class" value="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"/>
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity"/>
 
       <!--Header Checkup -->
       <create creator="new">
@@ -457,6 +458,9 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.moncairan.model.MonCairan"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.CrudResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pasien.model.RekamMedicLama"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>

@@ -55,5 +55,12 @@
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="id_kelas_ruangan"></column>
         </many-to-one>
+
+        <property name="sisaKuota">
+            <column name="sisa_kuota" sql-type="integer" not-null="false" />
+        </property>
+        <property name="kuota">
+            <column name="kuota" sql-type="integer" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

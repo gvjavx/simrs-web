@@ -6,7 +6,10 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="antrianOnlineBo" class="com.neurix.simrs.transaksi.antrianonline.bo.impl.AntrianOnlineBoImpl"
-          p:antrianOnlineDao-ref="antrianOnlineDao"/>
+          p:antrianOnlineDao-ref="antrianOnlineDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:dokterDao-ref="dokterDao"
+    />
 
     <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"/>
