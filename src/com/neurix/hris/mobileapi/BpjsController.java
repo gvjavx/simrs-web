@@ -35,6 +35,15 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private String userId;
     private String RegTemp;
     private String result;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getResult() {
         return result;
@@ -158,6 +167,12 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "insert-sep":
                 sendSep();
                 break;
+            case "cek-rujukan":
+                cekRujukan(keyword,tipe);
+                break;
+            case "cek-rujukan-bpjs":
+                cekRujukanNoBpjs(keyword,tipe);
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -174,6 +189,26 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             logger.info(poliResponse.getNamaPoliBpjs());
             logger.info(poliResponse.getKodePoliBpjs());
         }
+    }
+    public void cekRujukan(String rujukanId,String tipeRujukan){
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        try {
+            rujukanResponse= bpjsBoProxy.caraRujukanBerdasarNomorBpjs(rujukanId,tipeRujukan,"RS01");
+        }catch (Exception e){
+            logger.error("[BpjsController.listPoli] Error : " + "[" + e + "]");
+        }
+        logger.info(rujukanResponse);
+
+    }
+    public void cekRujukanNoBpjs(String noBpjs,String tipeRujukan){
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        try {
+            rujukanResponse= bpjsBoProxy.caraRujukanBerdasarNomorkartuBpjs(noBpjs,tipeRujukan,"RS01");
+        }catch (Exception e){
+            logger.error("[BpjsController.listPoli] Error : " + "[" + e + "]");
+        }
+        logger.info(rujukanResponse);
+
     }
     public void listTindakan(String key){
         List<TindakanResponse> tindakanResponseList = new ArrayList<>();

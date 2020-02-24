@@ -313,9 +313,9 @@
     }
 
     .exportlinks a{
-        color: #FFF;
+        /*color: #FFF;*/
         padding: 5px;
-        background-color: #50d4a3;
+        /*background-color: #50d4a3;*/
         border-radius: 3px;
     }
 

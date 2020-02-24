@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="jurnalAction" class="com.neurix.akuntansi.transaksi.jurnal.action.JurnalAction"
+          p:jurnalBoProxy-ref="jurnalBoProxy" />
+
+    <bean id="jurnalBo" class="com.neurix.akuntansi.transaksi.jurnal.bo.impl.JurnalBoImpl"
+          p:jurnalDao-ref="jurnalDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+    />
+
+    <bean id="jurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="jurnalBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jurnalDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
