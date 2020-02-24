@@ -139,6 +139,11 @@ To change this template use File | Settings | File Templates.
                                                         <i class="fa fa-refresh"></i> Reset
                                                     </button>
                                                 </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" onclick="showModalUpload()">
+                                                        <i class="fa fa-refresh"></i> Upload Rekam Medic Lama
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -255,6 +260,88 @@ To change this template use File | Settings | File Templates.
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modal-upload">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #00a65a">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box">
+                            <s:form id="uploadForm" method="post"  theme="simple" namespace="/pasien" action="search_pasien.action" cssClass="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
+                                    <div class="col-md-8">
+                                        <s:textfield id="upload_pasien" name="pasien.idPasien"
+                                                     onkeypress="$(this).css('border','');"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                    <script>
+                                        function tesPasien(val) {
+                                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
+                                        }
+                                    </script>
+                                    <script type="application/javascript">
+                                        var functions, mapped;
+                                        $('#upload_pasien').typeahead({
+                                            minLength: 1,
+                                            source: function (query, process) {
+                                                functions = [];
+                                                mapped = {};
+
+                                                var data = [];
+                                                dwr.engine.setAsync(false);
+
+                                                PasienAction.getListComboPasien(query, function (listdata) {
+                                                    data = listdata;
+                                                });
+
+                                                $.each(data, function (i, item) {
+                                                    var labelItem = "";
+
+                                                    if (item.noBpjs != '' && item.noBpjs != null) {
+                                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
+                                                    } else {
+                                                        labelItem = item.noKtp + "-" + item.nama;
+                                                    }
+                                                    mapped[labelItem] = {
+                                                        id: item.idPasien,
+                                                        nama: item.nama
+                                                    };
+                                                    functions.push(labelItem);
+                                                });
+                                                process(functions);
+
+                                            },
+                                            updater: function (item) {
+                                                var selectedObj = mapped[item];
+                                                return selectedObj.id;
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                                <button class="btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i></button>
+                                <div id="body-rekam-medic">
+
+                                </div>
+                            </s:form>
+                        </div>
+                    <div class="modal-footer" style="background-color: #cacaca">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                        </button>
+                        <sj:submit type="button" cssClass="btn btn-primary" formIds="uploadForm" id="save" name="save"
+                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                            <i class="fa fa-search"></i>
+                            Save
+                        </sj:submit>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Your Page Content Here -->
         <div class="row">
             <div class="col-md-12">
@@ -285,6 +372,27 @@ To change this template use File | Settings | File Templates.
         var href ='finspot:FingerspotReg;'+url;
         window.location.href =href ;
     });
+
+    function showModalUpload(){
+        $("#modal-upload").modal("show");
+    }
+
+    var n = 0;
+    var i = 1;
+    function addInputUpload() {
+
+        var str = "";
+        str += "<div class=\"form-group\">"+
+                "<label class=\"col-md-4\" style=\"margin-top: 7px\">Upload Foto Rekam Medic "+i+"</label>"+
+                "<div class=\"col-md-8\">"+
+                "<s:file id=\"upload_img"+i+"\" name=\"fileUploadImage\" cssClass=\"form form-control\"/>"+
+                "</div>"+
+                "</div>";
+        n++;
+        i++;
+
+        $("#body-rekam-medic").html(str);
+    }
 
     /*function user_register(user_id, user_name) {
         regStats = 0;

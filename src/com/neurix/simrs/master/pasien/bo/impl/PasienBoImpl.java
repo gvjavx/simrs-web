@@ -10,10 +10,9 @@ import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.dao.FingerDataDao;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
-import com.neurix.simrs.master.pasien.model.FingerData;
-import com.neurix.simrs.master.pasien.model.ImSimrsFingerDataEntity;
-import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
-import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.model.*;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import org.apache.log4j.Logger;
@@ -36,6 +35,8 @@ public class PasienBoImpl implements PasienBo {
     private FingerDataDao fingerDataDao;
     private ProvinsiDao provinsiDao;
     private HeaderCheckupDao headerCheckupDao;
+    private RekamMedicLamaDao rekamMedicLamaDao;
+    private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
@@ -614,6 +615,51 @@ public class PasienBoImpl implements PasienBo {
         return pasienEntity;
     }
 
+    @Override
+    public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException {
+
+        if (rekamMedicLama.getIdPasien() != null && !"".equalsIgnoreCase(rekamMedicLama.getIdPasien())){
+
+            ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
+            rekamMedicLamaEntity.setId("RM"+rekamMedicLamaDao.getNextSeq());
+            rekamMedicLamaEntity.setIdPasien(rekamMedicLama.getIdPasien());
+            rekamMedicLamaEntity.setBranchId(rekamMedicLama.getBranchId());
+            rekamMedicLamaEntity.setFlag(rekamMedicLama.getFlag());
+            rekamMedicLamaEntity.setAction(rekamMedicLama.getAction());
+            rekamMedicLamaEntity.setLastUpdate(rekamMedicLama.getLastUpdate());
+            rekamMedicLamaEntity.setLastUpdateWho(rekamMedicLama.getLastUpdateWho());
+            rekamMedicLamaEntity.setCreatedDate(rekamMedicLama.getCreatedDate());
+            rekamMedicLamaEntity.setCreatedWho(rekamMedicLama.getCreatedWho());
+
+            try {
+                rekamMedicLamaDao.addAndSave(rekamMedicLamaEntity);
+            } catch (HibernateException e){
+                logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
+            }
+
+            if (uploads.size() > 0){
+                for (ImSimrsUploadRekamMedicLamaEntity uploadEntity : uploads){
+                    uploadEntity.setId("URM"+uploadRekamMedicLamaDao.getNextSeq());
+                    uploadEntity.setHeadId(rekamMedicLamaEntity.getId());
+                    uploadEntity.setFlag(rekamMedicLama.getFlag());
+                    uploadEntity.setAction(rekamMedicLama.getAction());
+                    uploadEntity.setCreatedDate(rekamMedicLama.getCreatedDate());
+                    uploadEntity.setCreatedWho(rekamMedicLama.getCreatedWho());
+                    uploadEntity.setLastUpdate(rekamMedicLama.getLastUpdate());
+                    uploadEntity.setLastUpdateWho(rekamMedicLama.getLastUpdateWho());
+
+                    try {
+                        uploadRekamMedicLamaDao.addAndSave(uploadEntity);
+                    } catch (HibernateException e){
+                        logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
     }
@@ -621,5 +667,13 @@ public class PasienBoImpl implements PasienBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    public void setRekamMedicLamaDao(RekamMedicLamaDao rekamMedicLamaDao) {
+        this.rekamMedicLamaDao = rekamMedicLamaDao;
+    }
+
+    public void setUploadRekamMedicLamaDao(UploadRekamMedicLamaDao uploadRekamMedicLamaDao) {
+        this.uploadRekamMedicLamaDao = uploadRekamMedicLamaDao;
     }
 }

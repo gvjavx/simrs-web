@@ -3,9 +3,7 @@ package com.neurix.simrs.master.pasien.bo;
 import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.belajar.model.Belajar;
-import com.neurix.simrs.master.pasien.model.FingerData;
-import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
-import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.master.pasien.model.*;
 
 import java.util.List;
 
@@ -34,4 +32,6 @@ public interface PasienBo extends GeneralBo {
     List<Pasien> getListOfPasienByQuery(String query) throws GeneralBOException;
 
     ImSimrsPasienEntity getPasienByIdPasien(String idPasien);
+
+    public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException;
 }

@@ -174,6 +174,7 @@ public class CommonConstant {
 
     public final static String URL_IMG="/images/";
     public final static String URL_DOC="/documents/";
+    public final static String URL_IMG_RM = "rekam_medic";
 
 
 }
