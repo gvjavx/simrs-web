@@ -236,8 +236,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel',
-                                        'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
+                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'CT':'Cuti Tahunan', 'CP':'Cuti Panjang',
+                                        'JP':'Jasop', 'JB':'PMP', 'PN':'Pensiun', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
                                                   cssClass="form-control" disabled="true" />
                                     </table>
 
@@ -2968,8 +2968,12 @@
                 window.location.href = 'printReportInsentif_payroll?id='+payrollId;
             }else if(tipe == "JP"){
                 window.location.href = 'printReportJasprod_payroll?id='+payrollId;
-            }else if(tipe == "R"){
-                window.location.href = 'printReportRapel_payroll?id='+payrollId;
+            }else if(tipe == "T"){
+                window.location.href = 'printReportThr_payroll?id='+payrollId;
+            } else if(tipe == "CT"){
+                window.location.href = 'printReportCutiTahunan_payroll?id='+payrollId;
+            }else if(tipe == "CP"){
+                window.location.href = 'printReportCutiPanjang_payroll?id='+payrollId;
             }
         });
 
@@ -2983,7 +2987,7 @@
 
             if(noSurat != '' && tanggalPensiun != ''){
                 window.location.href = 'printReportPayroll_payroll?id='+payrollId+'&tipe='
-                        +tipe+'&noSurat='+noSurat+'&tahun='+tahun+'&bulan='+bulan+'&tanggal='+tanggalPensiun;
+                        +tipe+'&noSurat='+noSurat+'&tahun='+tahun+'&bulan='+bulan+'&tanggalSk='+tanggalPensiun;
             }else{
                 alert('No Surat dan Tanggal Pensiun tidak boleh kosong');
             }

@@ -15,6 +15,7 @@ import java.sql.Timestamp;
  */
 
 public class ItPayrollPensiunEntity implements Serializable {
+    private String nip;
     private String pensiunId;
     private String payrollId;
     private Date tanggalAktif;
@@ -46,6 +47,14 @@ public class ItPayrollPensiunEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public BigDecimal getNettoPensiun() {
         return nettoPensiun;
