@@ -385,6 +385,8 @@
 
     var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
+
+        mapBiaya = [];
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -442,7 +444,12 @@
                 }
             });
 
-
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, "Y", function (response) {
+                console.log(response);
+                $.each(response, function(i, item){
+                   mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+                });
+            });
 
             KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
                 dataTindakan = response;
@@ -491,6 +498,8 @@
                     mapBiaya.push({"type":"kurang_bayar","nilai":total});
                 }
             });
+
+            console.log(mapBiaya);
 
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();

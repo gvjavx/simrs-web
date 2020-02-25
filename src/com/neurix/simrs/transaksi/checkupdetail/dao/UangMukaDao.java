@@ -38,7 +38,6 @@ public class UangMukaDao extends GenericDao<ItSimrsUangMukaPendaftaranEntity, St
             if (mapCriteria.get("status_bayar") != null) {
                 criteria.add(Restrictions.eq("statusBayar", mapCriteria.get("status_bayar")));
             }
-
         }
 
         List<ItSimrsUangMukaPendaftaranEntity> results = criteria.list();

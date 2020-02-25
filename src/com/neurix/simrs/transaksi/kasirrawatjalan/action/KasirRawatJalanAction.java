@@ -32,6 +32,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -345,12 +346,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     }
 
-    public List<UangMuka> getListUangMuka(String idDetailCheckup) {
+    public List<UangMuka> getListUangMuka(String idDetailCheckup, String statusBayar) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
         UangMuka uangMuka = new UangMuka();
         uangMuka.setIdDetailCheckup(idDetailCheckup);
+        uangMuka.setStatusBayar(statusBayar);
         List<UangMuka> obatDetailList = new ArrayList<>();
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
@@ -363,6 +365,47 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         return obatDetailList;
+    }
+
+    public CrudResponse saveUangMuka(String id, String idPasien){
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        String transId = "01";
+        String noNota = "";
+        try {
+            noNota = billingSystemBo.createInvoiceNumber(transId);
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+            return response;
+        }
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("master_id", idPasien);
+        hsCriteria.put("no_nota", noNota);
+
+        try {
+            billingSystemBo.createJurnal(transId,hsCriteria,CommonUtil.userBranchLogin(),"Uang Muka untuk id_pasien : " + idPasien,"Y","");
+
+            UangMuka uangMuka = new UangMuka();
+            uangMuka.setNoNota(noNota);
+            uangMuka.setId(id);
+            uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            uangMuka.setLastUpdateWho(CommonUtil.userLogin());
+
+            kasirRawatJalanBo.updateNotaUangMukaById(uangMuka);
+
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+        }
+        return response;
     }
 
     private HeaderCheckup getHeaderCheckup(String noCheckup) {

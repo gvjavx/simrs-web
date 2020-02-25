@@ -68,6 +68,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriterian.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(!"".equalsIgnoreCase(bean.getStatusBayar())){
+                hsCriterian.put("status_bayar", bean.getStatusBayar());
+            }
 
             List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();
             try {
@@ -77,7 +80,6 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             }
 
             if(entityList.size() > 0){
-
                 UangMuka uangMuka;
                 for (ItSimrsUangMukaPendaftaranEntity entity :entityList){
                     uangMuka = new UangMuka();
@@ -88,10 +90,43 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     uangMuka.setCreatedWho(entity.getCreatedWho());
                     uangMuka.setFlag(entity.getFlag());
                     uangMuka.setStatusBayar(entity.getStatusBayar());
+                    uangMuka.setNoNota(entity.getNoNota());
                     uangMukaList.add(uangMuka);
                 }
             }
         }
         return uangMukaList;
+    }
+
+    @Override
+    public void updateNotaUangMukaById(UangMuka bean) throws GeneralBOException {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsUangMukaPendaftaranEntity> uangMukaPendaftaranEntities = new ArrayList<>();
+        try {
+            uangMukaPendaftaranEntities = uangMukaDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[KasirRawatJalanBoImpl.updateNotaUangMukaById] Error ", e);
+            new GeneralBOException("[KasirRawatJalanBoImpl.updateNotaUangMukaById] Error  ", e);
+        }
+
+        if (uangMukaPendaftaranEntities.size() > 0){
+            for (ItSimrsUangMukaPendaftaranEntity pendaftaranEntity : uangMukaPendaftaranEntities){
+                pendaftaranEntity.setStatusBayar("Y");
+                pendaftaranEntity.setAction("U");
+                pendaftaranEntity.setNoNota(bean.getNoNota());
+                pendaftaranEntity.setLastUpdate(bean.getLastUpdate());
+                pendaftaranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    uangMukaDao.updateAndSave(pendaftaranEntity);
+                } catch (HibernateException e){
+                    logger.error("[KasirRawatJalanBoImpl.updateNotaUangMukaById] Error ", e);
+                    new GeneralBOException("[KasirRawatJalanBoImpl.updateNotaUangMukaById] Error  ", e);
+                }
+            }
+        }
+
     }
 }

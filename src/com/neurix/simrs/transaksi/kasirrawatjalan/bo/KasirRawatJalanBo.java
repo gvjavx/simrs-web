@@ -10,4 +10,5 @@ import java.util.List;
 public interface KasirRawatJalanBo {
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException;
     public List<UangMuka> getListUangMuka(UangMuka bean) throws GeneralBOException;
+    public void updateNotaUangMukaById(UangMuka bean) throws GeneralBOException;
 }
