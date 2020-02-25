@@ -10,6 +10,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,9 +57,14 @@ public class JurnalDao extends GenericDao<ItJurnalEntity, String> {
     // Generate surrogate id from postgre
     public String getNextJurnalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_jurnal')");
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat dfTahun = new SimpleDateFormat("yy");
+        DateFormat dfBulan = new SimpleDateFormat("MM");
+        String tahun = dfTahun.format(date);
+        String bulan = dfBulan.format(date);
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%09d", iter.next());
+        String sId = String.format("%07d", iter.next());
 
-        return "J"+sId;
+        return "J"+tahun+bulan+sId;
     }
 }

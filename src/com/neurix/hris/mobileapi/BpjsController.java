@@ -418,12 +418,12 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
     //case 1 jika hanya 1 parameter
     public void createJurnalBillingCase1(){
         Map data = new HashMap();
-        data.put("master_id",null);
-        data.put("no_nota",null);
+        data.put("master_id","1111");
+        data.put("no_nota","IV000001111");
         data.put("biaya", new BigDecimal(90000));
 
         try {
-            billingSystemBoProxy.createJurnal("02",data,"RS02","Closing Pasien Rawat Jalan BPJS tanpa Obat","N");
+            billingSystemBoProxy.createJurnal("02",data,"RS02","Closing Pasien Rawat Jalan BPJS tanpa Obat","N","");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
@@ -432,13 +432,13 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
     //case 2 jika ada 2 debit parameter
     public void createJurnalBillingCase2 (){
         Map data = new HashMap();
-        data.put("master_id",null);
-        data.put("no_nota",null);
+        data.put("master_id","2222");
+        data.put("no_nota","IV000002222");
         data.put("uang_muka", new BigDecimal(10000));
         data.put("kurang_bayar", new BigDecimal(90000));
 
         try {
-            billingSystemBoProxy.createJurnal("04",data,"RS02","Closing Pasien Rawat Jalan Umum tanpa Obat","N");
+            billingSystemBoProxy.createJurnal("04",data,"RS02","Closing Pasien Rawat Jalan Umum tanpa Obat","N","");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase2] Error : " + "[" + e + "]");
         }
@@ -446,13 +446,13 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
     //case 2 jika ada 2 kredit parameter
     public void createJurnalBillingCase3 (){
         Map data = new HashMap();
-        data.put("master_id",null);
-        data.put("no_nota",null);
+        data.put("master_id","3333");
+        data.put("no_nota","IV000003333");
         data.put("pend_obat", new BigDecimal(80000));
         data.put("ppn_kel", new BigDecimal(90000));
 
         try {
-            billingSystemBoProxy.createJurnal("16",data,"RS02","Penjualan Obat Apotik","N");
+            billingSystemBoProxy.createJurnal("16",data,"RS02","Penjualan Obat Apotik","N","");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
