@@ -197,7 +197,7 @@
                                     <tr>
                                         <td></td>
                                         <td>
-                                            <button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="headerDetailCheckup.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>
+                                            <button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="headerDetailCheckup.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medik Saat Ini</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -1333,32 +1333,32 @@
                     <div class="form-group">
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">tinggi badan</label>
+                            <label style="font-size: 11px;">Tinggi badan</label>
                             <input type="number" name="" id="tb" class="form-control" placeholder="cm">
                         </div>
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">berat badan</label>
+                            <label style="font-size: 11px;">Berat badan</label>
                             <input type="number" name="" id="bb" class="form-control" placeholder="Kg">
                         </div>
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">nadi</label>
+                            <label style="font-size: 11px;">Nadi</label>
                             <input type="number" name="" id="nadi" class="form-control">
                         </div>
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">resp rate</label>
+                            <label style="font-size: 11px;">Resp rate</label>
                             <input type="number" name="" id="rr" class="form-control">
                         </div>
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">tknn darah</label>
+                            <label style="font-size: 11px;">Tknn darah</label>
                             <input type="number" name="" id="td" class="form-control">
                         </div>
 
                         <div class="col-md-2">
-                            <label style="font-size: 11px;">suhu</label>
+                            <label style="font-size: 11px;">Suhu</label>
                             <input type="number" name="" id="suhu" class="form-control">
                         </div>
                     </div>
@@ -1425,7 +1425,7 @@
                     </div>
                 </div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_fisik">
-                    <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
                     <p>Data Berhasil Tersimpan</p>
                 </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_fisik">
@@ -1456,36 +1456,45 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Resiko Jatuh</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan..!
-                </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_detail">
-                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    Data berhasil diupdate..!
-                </div>
-                <div class="box">
-                    <br>
+                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resiko">--%>
+                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                    <%--Silahkan cek kembali data inputan..!--%>
+                <%--</div>--%>
+                <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_resiko">--%>
+                    <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
+                    <%--Data berhasil diupdate..!--%>
+                <%--</div>--%>
                     <input type="hidden" id="id-kat-jatuh" class="form form-control"/>
                     <div class="form-group">
-                        Kategori : <span id="label-kat-resiko-jatuh"></span>
-                        <br>
-                        <div class="row" id="body_resiko_jatuh">
+                        <div class="row">
+                                <label class="col-md-2" style="margin-top: 10px">Kategori</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="label-kat-resiko-jatuh" readonly>
+                                <%--<span id="label-kat-resiko-jatuh"></span>--%>
+                            </div>
                         </div>
-                        <br>
-                        Skor : <span id="sum-resiko-jatuh"></span>
+                        <div class="box-header with-border"></div>
+                        <div style="padding-top: 10px" class="row" id="body_resiko_jatuh">
+                        </div>
+                        <div class="box-header with-border"></div>
+                        <div class="row" style="padding-top: 10px">
+                            <label class="col-md-2" style="margin-top: 10px">Skor</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="sum-resiko-jatuh" readonly>
+                                <%--<span id="sum-resiko-jatuh"></span>--%>
+                            </div>
+                        </div>
                     </div>
                     <input type="hidden" id="ind_resiko_jatuh" class="form form-control"/>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_resiko">
                         <h4><i class="icon fa fa-ban"></i> Error !</h4>
                         <p id="error_ket_resiko"></p>
                     </div>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1509,7 +1518,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rencana Awal Rawat <div id="label-rencana"> </div></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
                     <br>
                     <div class="form-group">
                         <div class="row" id="body_rencana">
@@ -1525,7 +1533,6 @@
                         <h4><i class="icon fa fa-ban"></i> Error !</h4>
                         <p id="error_ket_rencana"></p>
                     </div>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1664,31 +1671,28 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekonsiliasi Obat <div id="label-rencana"> </div></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                     <div class="form-group">
                         <div class="row">
-                            <div>
-                                <div class="col-md-4">
-                                    <label>nama obat</label>
+                                <div class="col-md-5">
+                                    <label>Nama obat</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <input type="text" name="" id="namaObatRekon" class="form-control">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label>Bentuk Sediaan</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <input type="text" name="" id="bentukSediaanRekon" class="form-control">
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label>Dosis</label>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <input type="text" name="" id="dosisRekon" class="form-control">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <select class="form-control" id="satuanRekon">
                                         <option value="mg">mg</option>
                                         <option value="mL">mL</option>
@@ -1697,60 +1701,61 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label>Frekuensi</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <input type="text" name="" id="frekuensiRekon" class="form-control">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label>Rute</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <input type="text" name="" id="ruteRekon" class="form-control">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-5">
                                     <label>Permintaan Obat yang Diberikan Saat Masuk</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2 col-md-offset-4">
                                     <select class="form-control" id="obatMasukRekon">
                                         <option value="Y">Ya</option>
                                         <option value="N">Tidak</option>
                                     </select>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-5">
                                     <label>Obat dari Rumah dianjutkan saat pulang</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2 col-md-offset-4">
                                     <select class="form-control" id="obatRumahRekon">
                                         <option value="Y">Ya</option>
                                         <option value="N">Tidak</option>
                                     </select>
                                 </div>
-                            </div>
+                                <div class="col-md-offset-5 col-md-6">
+                                    <button type="button" style="float: right" class="btn btn-success" id="save_rekon" onclick="saveRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                                    </button>
+                                    <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_rekon"><i
+                                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                    </button>
+                                </div>
                         </div>
-                        <button type="button" style="float: right" class="btn btn-success" id="save_rekon" onclick="saveRekonObat('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
-                        </button>
-                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_rekon"><i
-                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                        </button>
                     </div>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_rekon">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_rekon">
                         <h4><i class="icon fa fa-ban"></i> Error !</h4>
                         <p id="error_ket_rekon"></p>
                     </div>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" style="font-size: 11px">
                         <thead>
-                        <td>nama obat</td>
-                        <td>bentuk sediaan</td>
-                        <td>dosis</td>
-                        <td>frekuensi</td>
-                        <td>rute</td>
+                        <td>Nama Obat</td>
+                        <td>Bentuk sediaan</td>
+                        <td>Dosis</td>
+                        <td>Frekuensi</td>
+                        <td>Rute</td>
                         <td>Permintaan Obat yang diberikan saat masuk</td>
                         <td>Obat dari rumah dilanjutkan saat pulang</td>
                         </thead>
@@ -1758,8 +1763,6 @@
                         </tbody>
                     </table>
                     <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
-
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1778,8 +1781,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Patrus </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-4">
@@ -1794,10 +1795,10 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn btn-success" id="save_patrus" onclick="saveDataPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                <button type="button" style="margin-top: 1px" class="btn btn-success" id="save_patrus" onclick="saveDataPatrus('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
                                     Add & Save
                                 </button>
-                                <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_patrus"><i
+                                <button style="margin-top: 1px; display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_patrus"><i
                                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                                 </button>
                             </div>
@@ -1805,7 +1806,7 @@
                     </div>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_patrus">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_patrus">
@@ -1819,9 +1820,6 @@
                         <tbody id="body_patrus">
                         </tbody>
                     </table>
-                    <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
-
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1839,33 +1837,36 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Form Tranfus </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
-                    <div class="form-group">
                         <div class="row">
                             <div class="col-md-4">
-                                <select class="form-control" id="name_tranfusi">
-                                    <option value="Whole Blood">Whole Blood</option>
-                                    <option value="Packed Red Cells">Packed Red Cells</option>
-                                    <option value="Liquid Plasma">Liquid Plasma</option>
-                                </select>
+                                <div class="form-group">
+                                    <select class="form-control" id="name_tranfusi">
+                                        <option value="Whole Blood">Whole Blood</option>
+                                        <option value="Packed Red Cells">Packed Red Cells</option>
+                                        <option value="Liquid Plasma">Liquid Plasma</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="cc_tranfusi" placeholder="CC"/>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="cc_tranfusi" placeholder="CC"/>
+                                </div>
+
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn btn-success" id="save_tranfusi" onclick="saveTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
-                                    Add & Save
-                                </button>
+                                <div class="form-group">
+                                    <a type="button" style="margin-top: -1px" class="btn btn-success" id="save_tranfusi" onclick="saveTranfusi('<s:property value="headerDetailCheckup.noCheckup"/>')"><i class="fa fa-arrow-right"></i>
+                                        Add & Save
+                                    </a>
+                                    <button style="margin-top: -1px; display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_tranfusi"><i
+                                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <button style="display: none; cursor: no-drop; float: right" type="button" class="btn btn-success" id="load_tranfusi"><i
-                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                        </button>
-                    </div>
+                            </div>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_tranfusi">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_tranfusi">
@@ -1876,14 +1877,12 @@
                         <thead>
                         <td>Keterangan Tranfusi</td>
                         <td>CC</td>
-                        <td>tanggal</td>
+                        <td width="20%">Tanggal</td>
                         </thead>
                         <tbody id="body_tranfusi">
                         </tbody>
                     </table>
                     <%--<input type="hidden" id="ind_rencana" class="form form-control"/>--%>
-
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -3674,7 +3673,7 @@
         dwr.engine.setAsync(true);
         CheckupAction.getKategoriResiko( tgl, function(kategori){
 
-            $("#label-kat-resiko-jatuh").html(kategori.namaKategori);
+            $("#label-kat-resiko-jatuh").val(kategori.namaKategori);
             $("#id-kat-jatuh").val(kategori.idKategori);
 
             CheckupAction.getListResikoJatuh(noCheckup, tgl, function(response){
@@ -3687,10 +3686,10 @@
                             n=i;
 
                             var topline = "";
-                            topline = "<div class='col-md-4'>"+
+                            topline = "<div class='col-md-6'>"+
                                 "<label>"+item.namaParameter+"</label>"+
                                 "</div>"+
-                                "<div class='col-md-8'>"+
+                                "<div class='col-md-6'>"+
                                 "<select class='form-control' id='val_rjh_"+i+"'>";
 
                             var skor = "";
@@ -3722,7 +3721,7 @@
 
 //                var idKategori = $("#id-kat-jatuh").val();
                 CheckupAction.getSumResikoJatuh(noCheckup, kategori.idKategori, function(sum){
-                    $("#sum-resiko-jatuh").html(sum);
+                    $("#sum-resiko-jatuh").val(sum);
                 });
 
             });
@@ -4100,7 +4099,7 @@
                     str += "<tr>"+
                         "<td>"+item.ketTransfusi+"</td>"+
                         "<td>"+item.cc+"</td>"+
-                        "<td>"+item.createdDate+"</td>"+
+                        "<td>"+formateDate(item.createdDate)+"</td>"+
                         "</tr>";
                 });
                 $("#body_tranfusi").html(str);

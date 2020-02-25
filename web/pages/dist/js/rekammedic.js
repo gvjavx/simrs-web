@@ -61,8 +61,8 @@ function initRekamMedic() {
             if(item.stTglMasuk != null && item.stTglKeluar != null){
                 tanggalMasuk = item.stTglMasuk;
                 tanggalKeluar = item.stTglKeluar;
-                dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
-                dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
+                dateFormatMasuk = formateDate(tanggalMasuk);
+                dateFormatKeluar = formateDate(tanggalKeluar);
             }
             table += "<tr>" +
                 "<td>" + noCheckup + "</td>" +
@@ -102,7 +102,7 @@ function getByTypeRekamMedic(type) {
                 var tanggal = "";
 
                 if(item.stDate != null){
-                    tanggal = $.datepicker.formatDate("dd-mm-yy", new Date(item.stDate));
+                    tanggal = formateDate(item.stDate);
                 }
 
                 table += "<tr>" +
@@ -144,8 +144,8 @@ function getByTypeRekamMedic(type) {
                 if(item.stTglMasuk != null && item.stTglKeluar != null){
                     tanggalMasuk = item.stTglMasuk;
                     tanggalKeluar = item.stTglKeluar;
-                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
-                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
+                    dateFormatMasuk = formateDate(tanggalMasuk);
+                    dateFormatKeluar = formateDate(tanggalKeluar);
                 }
                 table += "<tr>" +
                     "<td>" + noCheckup + "</td>" +
@@ -206,12 +206,12 @@ function viewDetailRekamMedic(noCheckup){
     CheckupAction.getDataCheckupPasien(noCheckup, function(response){
         var item = response;
         str = "<p style='font-weight:bold'>"+item.namaPasien+"</p><div class=\"row\">"+
-            "<div class='col-md-3'><img src='/simrs/pages/images/nobody_m.original.jpg' style='width:100%;max-height:150px'/></div>"+
+            "<div class='col-md-2'><img src='/simrs/pages/images/nobody_m.original.jpg' style='width:100%;max-height:150px'/></div>"+
             "<div class='col-md-6'>"+
             "<table class='table table-bordered table-striped' style='font-size:12px'><tbody>"+
-            "<tr><td>Diagnosa terakhir :</td><td>"+item.diagnosa+"</td></tr>"+
-            "<tr><td>Tanggal Masuk :</td><td>"+item.stTglMasuk+"</td></tr>"+
-            "<tr><td>Tanggal Keluar :</td><td>"+item.stTglKeluar+"</td></tr>"+
+            "<tr><td>Diagnosa terakhir </td><td>"+item.diagnosa+"</td></tr>"+
+            "<tr><td>Tanggal Masuk </td><td>"+formateDate(item.stTglMasuk)+"</td></tr>"+
+            "<tr><td>Tanggal Keluar </td><td>"+formateDate(item.stTglKeluar)+"</td></tr>"+
             "</tbody></table>"+
             "</div>"+
             "</div>";
@@ -250,7 +250,7 @@ function viewDetailRekamMedicByKategori(kategori){
             $.each(par, function(i, item) {
                 top = "<div class='row' style='margin-top:10px'>"+
                       "<div class='col-md-8'>"+item.namaKategori+"</div>";
-                btn = "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showSkorRanapRm(this.id, '"+noCheckup+"','"+item.idKategori+"','"+item.type+"')\" id=\"mon-rm-"+i+"\"> View</button></div>";
+                btn = "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showSkorRanapRm(this.id, '"+noCheckup+"','"+item.idKategori+"','"+item.type+"')\" id=\"mon-rm-"+i+"\"> <i class='fa fa-plus'></i></button></div>";
 
                 // if (item.type == "skor") {
                 //     btn = "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showSkorRanapRm(this.id, '"+noCheckup+"','"+item.idKategori+"','skor')\" id=\"mon-rm-"+i+"\"> View</button></div>";
@@ -280,7 +280,7 @@ function viewDetailRekamMedicByKategori(kategori){
             $.each(par, function(i, item) {
                 str += "<div class='row' style='margin-top:10px'>"+
                     "<div class='col-md-8'>"+item.label+"</div>"+
-                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showDetailMonitoringRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> View</button></div>"+
+                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showDetailMonitoringRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> <i class='fa fa-plus'></i></button></div>"+
                     "</div>"+
                     "<div id=\"graf-mon-rm-"+i+"\"></div>"+
                     "<div id=\"body-mon-rm-"+i+"\"></div>";
@@ -300,7 +300,7 @@ function viewDetailRekamMedicByKategori(kategori){
             $.each(par, function(i, item) {
                 str += "<div class='row' style='margin-top:10px'>"+
                     "<div class='col-md-8'>"+item.label+"</div>"+
-                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showDetailIgdRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> View</button></div>"+
+                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showDetailIgdRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> <i class='fa fa-plus'></i></button></div>"+
                     "</div>"+
                     "<div id=\"body-mon-rm-"+i+"\"></div>";
             });
@@ -317,7 +317,7 @@ function viewDetailRekamMedicByKategori(kategori){
             $.each(par, function(i, item) {
                 str += "<div class='row' style='margin-top:10px'>"+
                     "<div class='col-md-8'>"+item.label+"</div>"+
-                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary\" onclick=\"showDetailTppriRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> View</button></div>"+
+                    "<div class='col-md-4 pull-right'><button class=\"btn btn-primary \" onclick=\"showDetailTppriRm(this.id, '"+noCheckup+"','"+item.kat+"')\" id=\"mon-rm-"+i+"\"> <i class='fa fa-plus'></i></button></div>"+
                     "</div>"+
                     "<div id=\"body-mon-rm-"+i+"\"></div>";
             });
@@ -349,10 +349,10 @@ function showDetailMonitoringRm(id, noCheckup, kategori){
                 headstr = upthead +
                     "<tr>"+
                     "<td>Created Who</td>"+
-                    "<td>tgl</td>"+
+                    "<td>Tgl</td>"+
                     "<td>Macam Cairan</td>"+
                     "<td>Melalui</td>"+
-                    "<td>jumlah</td>"+
+                    "<td>Jml</td>"+
                     "<td>Jam Mulai</td>"+
                     "<td>Jam Selesai</td>"+
                     "<td>Cek Tambahan Obat</td>"+
@@ -366,7 +366,7 @@ function showDetailMonitoringRm(id, noCheckup, kategori){
                 $.each(response, function(i, item) {
                     str += "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.macamCairan+"</td>"+
                         "<td>"+item.melalui+"</td>"+
                         "<td>"+item.jumlah+"</td>"+
@@ -407,7 +407,7 @@ function showDetailMonitoringRm(id, noCheckup, kategori){
                 $.each(response, function(i, item) {
                     str += "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.jam+"</td>"+
                         "<td>"+item.nafas+"</td>"+
                         "<td>"+item.nadi+"</td>"+
@@ -494,7 +494,7 @@ function showDetailMonitoringRm(id, noCheckup, kategori){
                 $.each(response, function(i, item){
                     str += "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.namaObat+"</td>"+
                         "<td>"+item.caraPemberian+"</td>"+
                         "<td>"+item.dosis+"</td>"+
@@ -526,7 +526,7 @@ function showDetailMonitoringRm(id, noCheckup, kategori){
                 $.each(response, function(i, item){
                     str += "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.namaObat+"</td>"+
                         "<td>"+item.dosis+"</td>"+
                         "<td>"+item.waktu+"</td>"+
@@ -570,7 +570,7 @@ function showSkorRanapRm(id, noCheckup, idKategori, type){
                 $.each(response, function(i, item){
                     str = "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.namaKategori+"</td>"+
                         "<td>"+item.skor+"</td>"+
                         "<td align=\"center\"><button id=\""+idKategori+"-"+i+"\" class='btn btn-primary' onclick=\"viewDetailSkorRm('"+item.groupId+"', '"+type+"', this.id)\"><i class=\"fa fa-search\"></i></button></td>"+
@@ -591,7 +591,7 @@ function showSkorRanapRm(id, noCheckup, idKategori, type){
                 $.each(response, function(i, item){
                     str = "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.namaKategori+"</td>"+
                         "<td align=\"center\"><button id=\""+idKategori+"-"+i+"\" class='btn btn-primary' onclick=\"viewDetailSkorRm('"+item.groupId+"', '"+type+"', this.id)\"><i class=\"fa fa-search\"></i></button></td>"+
                         "</tr>";
@@ -615,7 +615,7 @@ function showSkorRanapRm(id, noCheckup, idKategori, type){
                     $.each(response, function (i, item) {
                         str += "<tr>" +
                             "<td>" + item.createdWho + "</td>" +
-                            "<td>" + item.stDate + "</td>" +
+                            "<td>" + formateDate(item.stDate) + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
                             "</tr>";
                     });
@@ -857,7 +857,7 @@ function showDetailIgdRm(id, noCheckup, kategori){
                 $.each(response, function(i,item){
                     str += "<tr>"+
                         "<td>"+item.createdWho+"</td>"+
-                        "<td>"+item.stDate+"</td>"+
+                        "<td>"+formateDate(item.stDate)+"</td>"+
                         "<td>"+item.namaTindakan+"</td>"+
                         "</tr>";
                 });
@@ -1000,7 +1000,7 @@ function setTidakAdaRekamMedic(id){
     $("#"+id+"").removeAttr("class");
     $("#"+id+"").removeAttr("onclick");
     $("#"+id+"").attr("class", "btn btn-secondary");
-    $("#"+id+"").html("Tidak Ada Rekam Medic");
+    $("#"+id+"").html("Tidak Ada Rekam Medik");
 }
 
 function convertToCheck(item){
@@ -1015,6 +1015,40 @@ function checkNull(item){
     } else {
         return item;
     }
+}
+
+function formateDate(tanggal){
+
+    var tgl = "";
+
+    console.log(tanggal);
+
+    if(tanggal != '' && tanggal != null){
+        tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+    }
+
+    return tgl;
+}
+
+function formateDateTime(dateTime){
+
+    var today = "";
+    console.log(dateTime);
+
+    if(dateTime != '' && dateTime != null){
+
+        today = new Date(dateTime);
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var min = today.getMinutes();
+        var sec = today.getSeconds();
+        today = dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min + ':' + sec;
+        console.log(today);
+    }
+
+    return today;
 }
 
 // rekam medic end

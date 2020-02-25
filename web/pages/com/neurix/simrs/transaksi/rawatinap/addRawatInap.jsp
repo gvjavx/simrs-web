@@ -208,6 +208,7 @@
                                         <td></td>
                                         <td>
                                             <button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="rawatInap.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>
+                                            <%--<button class="btn btn-success" onclick="formateDateTime('2020-02-24 17:27:15.792')">TESSSS</button>--%>
                                         </td>
                                     </tr>
                                 </table>
@@ -1534,7 +1535,7 @@
                     <input type="hidden" id="ind_resiko" class="form form-control"/>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_resiko">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_resiko">
@@ -1565,8 +1566,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-asesmen"></span> </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                  <button type="button" class="btn btn-success" id="add_asesmen" onclick="addAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')">
+                  <button type="button" style="margin-bottom: 10px" class="btn btn-success" id="add_asesmen" onclick="addAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')">
                     <i class="fa fa-plus"></i> Add
                   </button>
                   <table class="table table-bordered">
@@ -1574,14 +1574,13 @@
                       <td>Asesmen</td>
                       <td>Created Who</td>
                       <td>Created Date</td>
-                      <td>Action</td>
+                      <td align="center" width="10%">Action</td>
                     </thead>
                     <tbody id="body-list-asesmen">
 
                     </tbody>
                   </table>
                   <input type="hidden" id="kat_asesmen"/>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
               <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1600,22 +1599,19 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-add-asesmen"> </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                       <div id="body_asesmen">
                       </div>
                       <div style="color:#fc0303">note : kosongkan jika tidak perlu</div>
                     <input type="hidden" id="ind_asesmen" class="form form-control"/>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
                         <h4><i class="icon fa fa-ban"></i> Error !</h4>
                         <p id="error_ket_asesmen"></p>
                     </div>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1639,15 +1635,12 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-view-asesmen"> </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
                       <div id="head-view-asesmen"></div>
                     <br>
                       <table class="table table-bordered">
                         <tbody id="body-view-asesmen">
                         </tbody>
                       </table>
-                    <br>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
               <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1684,27 +1677,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-confirm-dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
-                </h4>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center">Do you want save this record?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
-                </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modal-vital-sign">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1714,7 +1686,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
                   <div style="margin-bottom:7px">
                     <button type="button" class="btn btn-success" onclick="addMonVitalSign()">
                       <i class="fa fa-plus"></i> Add
@@ -1725,13 +1696,13 @@
                   </div>
                   <table class="table table-bordered">
                     <thead>
-                      <td>jam</td>
-                      <td>nafas</td>
-                      <td>nadi</td>
-                      <td>suhu</td>
-                      <td>tensi</td>
-                      <td>bb</td>
-                      <td>tb</td>
+                      <td>Jam</td>
+                      <td>Nafas</td>
+                      <td>Nadi</td>
+                      <td>Suhu</td>
+                      <td>Tensi</td>
+                      <td>Berat Badan</td>
+                      <td>Tinggi Badan</td>
                       <td>Created Who</td>
                       <td>Created Date</td>
                     </thead>
@@ -1740,7 +1711,6 @@
                     </tbody>
                   </table>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
               <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
               </button>
@@ -1758,8 +1728,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-3">
@@ -1773,10 +1741,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-3">
-                            <label>Jam</label>
+                            <label style="margin-top: 7px">Jam</label>
                           </div>
                           <div class="col-md-2">
-                            <select class="form-control" id="mvs_jam">
+                            <select style="margin-top: 7px" class="form-control" id="mvs_jam">
                               <option val='8'>8</option>
                               <option val='12'>12</option>
                               <option val='16'>16</option>
@@ -1844,7 +1812,7 @@
                     <input type="hidden" id="ind_asesmen" class="form form-control"/>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
@@ -1852,7 +1820,6 @@
                         <p id="error_ket_asesmen"></p>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1917,7 +1884,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Cairan </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
                   <div style="margin-bottom:7px">
                     <button type="button" class="btn btn-success" onclick="addObCairan()">
                       <i class="fa fa-plus"></i> Add
@@ -1928,25 +1894,24 @@
                   </div>
                   <table class="table table-bordered" style="font-size:11px;">
                     <thead>
-                      <td>tgl</td>
-                      <td>macam cairan</td>
-                      <td>melalui</td>
-                      <td>jumlah</td>
-                      <td>jam mulai</td>
-                      <td>jam selesai</td>
-                      <td>cek tambahan obat</td>
-                      <td>sisa</td>
-                      <td>jam ukur buang</td>
-                      <td>dari</td>
-                      <td>balance cairan</td>
-                      <td>keterangan</td>
+                      <td width="10%">Tgl</td>
+                      <td>Macam Cairan</td>
+                      <td>Melalui</td>
+                      <td>Jumlah</td>
+                      <td>Jam Mulai</td>
+                      <td>Jam Selesai</td>
+                      <td>Cek Tambahan Obat</td>
+                      <td>Sisa</td>
+                      <td>Jam Ukur Buang</td>
+                      <td>Dari</td>
+                      <td>Balance Cairan</td>
+                      <td>Keterangan</td>
                       <td>Created Who</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
                     </tbody>
                   </table>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
               <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1965,8 +1930,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Cairan </span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
@@ -1980,30 +1943,30 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Macam Cairan</label>
+                            <label style="margin-top: 7px">Macam Cairan</label>
                           </div>
                           <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_macam">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_macam">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Melalui</label>
+                            <label style="margin-top: 7px">Melalui</label>
                           </div>
                           <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="mcr_melalui">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_melalui">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Jumlah (dalam botol)</label>
+                            <label style="margin-top: 7px">Jumlah (dalam botol)</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="number" name="" value="" class="form-control" id="mcr_jumlah">
+                            <input type="number" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_jumlah">
                           </div>
                         </div>
                       </div>
@@ -2012,11 +1975,11 @@
                           <div class="col-md-4">
                           </div>
                           <div class="col-md-4">
-                            <label>Jam mulai</label>
+                            <label style="margin-top: 7px">Jam mulai</label>
                             <input type="text" name="" value="" class="time form-control" id="mcr_mulai">
                           </div>
                           <div class="col-md-4">
-                            <label>Jam selesai</label>
+                            <label style="margin-top: 7px">Jam selesai</label>
                             <input type="text" name="" value="" class="time form-control" id="mcr_selesai">
                           </div>
                         </div>
@@ -2024,10 +1987,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Cek tambahan obat</label>
+                            <label style="margin-top: 7px">Cek tambahan obat</label>
                           </div>
                           <div class="col-md-4">
-                            <select class="form-control" name="" id="mcr_cek">
+                            <select style="margin-top: 7px" class="form-control" name="" id="mcr_cek">
                               <option value="Ya">Ya</option>
                               <option value="Tidak">Tidak</option>
                             </select>
@@ -2037,30 +2000,30 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Sisa</label>
+                            <label style="margin-top: 7px">Sisa</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="number" name="" value="" class="form-control" id="mcr_sisa">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <label>Jam ukur buang</label>
-                          </div>
-                          <div class="col-md-4">
-                            <input type="text" name="" value="" class="time form-control" id="mcr_buang">
+                            <input style="margin-top: 7px" type="number" name="" value="" class="form-control" id="mcr_sisa">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Dari</label>
+                            <label style="margin-top: 7px">Jam ukur buang</label>
                           </div>
                           <div class="col-md-4">
-                            <select class="form-control" id="mcr_dari">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="time form-control" id="mcr_buang">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label style="margin-top: 7px">Dari</label>
+                          </div>
+                          <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" id="mcr_dari">
                               <option val='Selang lambung'>Selang lambung</option>
                               <option val='Kandung kencing'>Kandung kencing</option>
                               <option val='Air seni biasa'>Air seni biasa</option>
@@ -2072,27 +2035,27 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Balance Cairan</label>
+                            <label style="margin-top: 7px">Balance Cairan</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="number" name="" value="" class="form-control" id="mcr_balance">
+                            <input style="margin-top: 7px" type="number" name="" value="" class="form-control" id="mcr_balance">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Keterangan</label>
+                            <label style="margin-top: 7px">Keterangan</label>
                           </div>
                           <div class="col-md-8">
-                            <textarea class="form-control" id="mcr_ket"></textarea>
+                            <textarea style="margin-top: 7px" class="form-control" id="mcr_ket"></textarea>
                           </div>
                         </div>
                       </div>
 
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
@@ -2100,7 +2063,6 @@
                         <p id="error_ket_asesmen"></p>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -2123,7 +2085,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat <span id="label_kat_pemberian"></span> </h4>
             </div>
             <div class="modal-body">
-                <div class="box">
                   <div style="margin-bottom:7px">
                     <button type="button" class="btn btn-success" onclick="addPemberianObat()">
                       <i class="fa fa-plus"></i> Add
@@ -2139,7 +2100,6 @@
 
                     </tbody>
                   </table>
-                </div>
                 <input type="hidden" id="kat_pemberian">
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -2159,11 +2119,9 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat non parenteral</span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                       <div class="form-group">
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                             <label>Created Date</label>
                           </div>
                           <div class="col-md-4">
@@ -2174,10 +2132,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Obat</label>
+                            <label style="margin-top: 7px">Obat</label>
                           </div>
                           <div class="col-md-8">
-                            <select class="form-control" name="" id="select_obat_nonpar">
+                            <select style="margin-top: 7px" class="form-control" name="" id="select_obat_nonpar">
 
                             </select>
                           </div>
@@ -2187,10 +2145,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Dosis</label>
+                            <label style="margin-top: 7px">Dosis</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="text" name="" value="" class="form-control" id="nonpar_dosis">
+                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="nonpar_dosis">
                           </div>
                         </div>
                       </div>
@@ -2198,10 +2156,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Waktu</label>
+                            <label style="margin-top: 7px">Waktu</label>
                           </div>
                           <div class="col-md-4">
-                            <select class="form-control" name="" id="select_waktu_nonpar">
+                            <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_nonpar">
                               <option value='pagi'>Pagi</option>
                               <option value='siang'>Siang</option>
                               <option value='sore'>Sore</option>
@@ -2214,22 +2172,21 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Keterangan</label>
+                            <label style="margin-top: 7px">Keterangan</label>
                           </div>
                           <div class="col-md-8">
-                            <textarea class="form-control" name="name" rows="8" cols="80" id="nonpar_keterangan"></textarea>
+                            <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="nonpar_keterangan"></textarea>
                           </div>
                         </div>
                       </div>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
                         <h4><i class="icon fa fa-ban"></i> Error !</h4>
                         <p id="error_ket_asesmen"></p>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -2254,11 +2211,9 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat parenteral</span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <br>
                       <div class="form-group">
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-4">
                             <label>Created Date</label>
                           </div>
                           <div class="col-md-4">
@@ -2269,10 +2224,10 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Obat</label>
+                            <label style="margin-top: 7px">Obat</label>
                           </div>
                           <div class="col-md-8">
-                            <select class="form-control" name="" id="select_obat_par">
+                            <select style="margin-top: 7px" class="form-control" name="" id="select_obat_par">
 
                             </select>
                           </div>
@@ -2281,40 +2236,40 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Cara Pemberian</label>
+                            <label style="margin-top: 7px">Cara Pemberian</label>
                           </div>
                           <div class="col-md-8">
-                            <input type="text" name="" value="" class="form-control" id="par_cara">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_cara">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Dosis</label>
+                            <label style="margin-top: 7px">Dosis</label>
                           </div>
                           <div class="col-md-4">
-                            <input type="text" name="" value="" class="form-control" id="par_dosis">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <label>Skin Tes</label>
-                          </div>
-                          <div class="col-md-4">
-                            <input type="text" name="" value="" class="form-control" id="par_skintes">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_dosis">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Waktu</label>
+                            <label style="margin-top: 7px">Skin Tes</label>
                           </div>
                           <div class="col-md-4">
-                            <select class="form-control" name="" id="select_waktu_par">
+                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_skintes">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label style="margin-top: 7px">Waktu</label>
+                          </div>
+                          <div class="col-md-4">
+                            <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_par">
                               <option value='pagi'>Pagi</option>
                               <option value='siang'>Siang</option>
                               <option value='sore'>Sore</option>
@@ -2327,16 +2282,16 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="col-md-4">
-                            <label>Keterangan</label>
+                            <label style="margin-top: 7px">Keterangan</label>
                           </div>
                           <div class="col-md-8">
-                            <textarea class="form-control" name="name" rows="8" cols="80" id="par_keterangan"></textarea>
+                            <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="par_keterangan"></textarea>
                           </div>
                         </div>
                       </div>
                     <br>
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                        <h4><i class="icon fa fa-ban"></i> Success!</h4>
+                        <h4><i class="icon fa fa-info"></i> Success!</h4>
                         <p>Data Berhasil Tersimpan</p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
@@ -2344,7 +2299,6 @@
                         <p id="error_ket_asesmen"></p>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -2448,6 +2402,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mask"></div>
 
@@ -4134,7 +4108,7 @@
               "<td>"+item.namaKategori+"</td>"+
               "<td>"+item.skor+"</td>"+
               "<td>"+item.createdWho+"</td>"+
-              "<td>"+item.stDate+"</td>"+
+              "<td>"+formateDateTime(item.stDate)+"</td>"+
               "<td><button class='btn btn-primary' onclick=\"viewSkor('"+item.groupId+"')\">View</button></td>"+
               "</tr>";
             });
@@ -4264,7 +4238,7 @@
                 "<td>"+item.namaKategori+"</td>"+
                 "<td>"+item.skor+"</td>"+
                 "<td>"+item.createdWho+"</td>"+
-                "<td>"+item.stDate+"</td>"+
+                "<td>"+formateDate(item.stDate)+"</td>"+
                 "<td><button class='btn btn-primary' onclick=\"viewSkor('"+item.groupId+"')\">View</button></td>"+
                 "</tr>";
               });
@@ -4303,8 +4277,8 @@
               str += "<tr>"+
               "<td>"+item.namaKategori+"</td>"+
               "<td>"+item.createdWho+"</td>"+
-              "<td>"+item.stDate+"</td>"+
-              "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\">View</button></td>"+
+              "<td>"+formateDateTime(item.stDate)+"</td>"+
+              "<td align='center'><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\"><i class='fa fa-search'></i></button></td>"+
               "</tr>";
             });
 
@@ -4440,7 +4414,7 @@
                 str += "<tr>"+
                 "<td>"+item.namaKategori+"</td>"+
                 "<td>"+item.createdWho+"</td>"+
-                "<td>"+item.stDate+"</td>"+
+                "<td>"+formateDate(item.stDate)+"</td>"+
                 "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\">View</button></td>"+
                 "</tr>";
               });
@@ -4478,7 +4452,7 @@
                     "</tr>";
 
               person = "<p>Diinput oleh : "+item.createdWho+"</p>"+
-                      "<p>Diinput pada : "+item.stDate+"</p>";
+                      "<p>Diinput pada : "+formateDate(item.stDate)+"</p>";
             });
 
             $("#head-view-asesmen").html(person);
@@ -4509,7 +4483,7 @@
                     "</tr>";
 
               person = "<p>Diinput oleh : "+item.createdWho+"</p>"+
-                      "<p>Diinput pada : "+item.stDate+"</p>";
+                      "<p>Diinput pada : "+formateDate(item.stDate)+"</p>";
             });
 
             $("#head-view-skor").html(person);
@@ -4644,7 +4618,7 @@
                 "<td>"+item.bb+"</td>"+
                 "<td>"+item.tb+"</td>"+
                 "<td>"+item.createdWho+"</td>"+
-                "<td>"+item.stDate+"</td>"+
+                "<td>"+formateDate(item.stDate)+"</td>"+
                 "</tr>";
         });
 
@@ -4741,7 +4715,7 @@
                     "<td>"+item.bb+"</td>"+
                     "<td>"+item.tb+"</td>"+
                     "<td>"+item.createdWho+"</td>"+
-                    "<td>"+item.stDate+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
                     "</tr>";
             });
 
@@ -4764,7 +4738,7 @@
         var str = "";
         $.each(response, function(i, item) {
           str += "<tr>"+
-                "<td>"+item.stDate+"</td>"+
+                "<td>"+formateDate(item.stDate)+"</td>"+
                 "<td>"+item.macamCairan+"</td>"+
                 "<td>"+item.melalui+"</td>"+
                 "<td>"+item.jumlah+"</td>"+
@@ -4816,7 +4790,7 @@
             var str = "";
             $.each(response, function(i, item) {
               str += "<tr>"+
-                    "<td>"+item.stDate+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
                     "<td>"+item.macamCairan+"</td>"+
                     "<td>"+item.melalui+"</td>"+
                     "<td>"+item.jumlah+"</td>"+
@@ -4864,7 +4838,7 @@
                     "<td>"+item.waktu+"</td>"+
                     "<td>"+item.keterangan+"</td>"+
                     "<td>"+item.createdWho+"</td>"+
-                    "<td>"+item.stDate+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
                     "</tr>";
           });
 
@@ -4887,7 +4861,7 @@
                   "<td>"+item.waktu+"</td>"+
                   "<td>"+item.keterangan+"</td>"+
                   "<td>"+item.createdWho+"</td>"+
-                  "<td>"+item.stDate+"</td>"+
+                  "<td>"+formateDate(item.stDate)+"</td>"+
                   "</tr>";
           });
 
@@ -4981,7 +4955,7 @@
                       "<td>"+item.waktu+"</td>"+
                       "<td>"+item.keterangan+"</td>"+
                       "<td>"+item.createdWho+"</td>"+
-                      "<td>"+item.stDate+"</td>"+
+                      "<td>"+formateDate(item.stDate)+"</td>"+
                       "</tr>";
             });
           } else {
@@ -4993,7 +4967,7 @@
                     "<td>"+item.waktu+"</td>"+
                     "<td>"+item.keterangan+"</td>"+
                     "<td>"+item.createdWho+"</td>"+
-                    "<td>"+item.stDate+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
                     "</tr>";
             });
           }
@@ -5159,7 +5133,7 @@
                             str += "<tr>"+
                                 "<td>"+item.namaKategori+"</td>"+
                                 "<td>"+item.createdWho+"</td>"+
-                                "<td>"+item.stDate+"</td>"+
+                                "<td>"+formateDate(item.stDate)+"</td>"+
                                 "<td><button class='btn btn-primary' onclick=\"viewAsesmen('"+item.groupId+"')\">View</button></td>"+
                                 "</tr>";
                         });

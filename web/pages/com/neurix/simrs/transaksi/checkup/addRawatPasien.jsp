@@ -49,8 +49,10 @@
         }
 
         .bungkus {
-            width: 800px;
+            width: 600px;
+            height: 570px;
             max-width: 100%;
+            max-height: 100%;
             margin: auto;
             overflow: hidden;
         }
@@ -101,7 +103,7 @@
             width: 36px;
             height: 36px;
             top: 50%;
-            margin-top: -18px;
+            margin-top: 80px;
             border-radius: 50%;
             border: 0;
             background-color: #fff;
@@ -1274,7 +1276,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien</h4>
             </div>
             <div class="modal-body">
                 <div id="head-detail-rm"></div>
@@ -1314,7 +1316,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Lama Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Lama Pasien</h4>
             </div>
             <div class="modal-body">
                 <div class="bungkus">
