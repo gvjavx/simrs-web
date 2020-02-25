@@ -1082,6 +1082,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     monVitalSignMobile.setJam(item.getJam().toString());
                     monVitalSignMobile.setNafas(item.getNafas().toString());
                     monVitalSignMobile.setNadi(item.getNadi().toString());
+                    monVitalSignMobile.setSuhu(item.getSuhu().toString());
 
                     listOfMonVitalSign.add(monVitalSignMobile);
                 }
