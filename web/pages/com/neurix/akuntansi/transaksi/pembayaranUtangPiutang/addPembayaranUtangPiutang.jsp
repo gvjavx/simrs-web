@@ -161,7 +161,8 @@
                                                                     var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
                                                                     mapped[labelItem] = {
                                                                         id: item.kodeRekening,
-                                                                        nama: item.namaKodeRekening
+                                                                        nama: item.namaKodeRekening,
+                                                                        rekeningId:item.rekeningId
                                                                     };
                                                                     functions.push(labelItem);
                                                                 });
@@ -170,6 +171,7 @@
                                                             updater: function (item) {
                                                                 var selectedObj = mapped[item];
                                                                 $('#nama_kode_rekening').val(selectedObj.nama);
+                                                                $('#rekeningId').val(selectedObj.rekeningId);
                                                                 return selectedObj.id;
                                                             }
                                                         });
@@ -179,6 +181,7 @@
                                             <div class="col-md-5">
                                                 <s:textfield id="nama_kode_rekening" onkeypress="$(this).css('border','')" readonly="true"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
+                                                <s:hidden id="rekeningId" name="pembayaranUtangPiutang.rekeningIdKas"/>
                                             </div>
                                         </div>
                                         <div class="form-group">

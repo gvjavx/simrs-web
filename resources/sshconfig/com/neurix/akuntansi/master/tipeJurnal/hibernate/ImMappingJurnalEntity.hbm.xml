@@ -28,6 +28,9 @@
         <property name="bukti">
             <column name="bukti" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="20" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

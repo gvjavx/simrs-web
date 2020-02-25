@@ -2,6 +2,8 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
@@ -25,9 +27,7 @@ import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -36,8 +36,26 @@ import java.util.List;
 public class PembayaranUtangPiutangAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(PembayaranUtangPiutangAction.class);
     private PembayaranUtangPiutangBo pembayaranUtangPiutangBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+    private TipeJurnalBo tipeJurnalBoProxy;
     private PembayaranUtangPiutang pembayaranUtangPiutang;
     private List<PembayaranUtangPiutang> listOfComboPembayaranUtangPiutang = new ArrayList<PembayaranUtangPiutang>();
+
+    public TipeJurnalBo getTipeJurnalBoProxy() {
+        return tipeJurnalBoProxy;
+    }
+
+    public void setTipeJurnalBoProxy(TipeJurnalBo tipeJurnalBoProxy) {
+        this.tipeJurnalBoProxy = tipeJurnalBoProxy;
+    }
+
+    public BillingSystemBo getBillingSystemBoProxy() {
+        return billingSystemBoProxy;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public List<PembayaranUtangPiutang> getListOfComboPembayaranUtangPiutang() {
         return listOfComboPembayaranUtangPiutang;
@@ -345,40 +363,83 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
     public String saveAdd(){
         logger.info("[PembayaranUtangPiutangAction.saveAdd] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String noJurnal;
+        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+
+        PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        BigDecimal bayar = BigDecimal.valueOf(Double.valueOf(pembayaranUtangPiutang.getStBayar().replace(".","")));
+        pembayaranUtangPiutang.setBayar(bayar);
+        pembayaranUtangPiutang.setTanggal(CommonUtil.convertStringToDate2(pembayaranUtangPiutang.getStTanggal()));
+
+        pembayaranUtangPiutang.setCreatedWho(userLogin);
+        pembayaranUtangPiutang.setLastUpdate(updateTime);
+        pembayaranUtangPiutang.setCreatedDate(updateTime);
+        pembayaranUtangPiutang.setLastUpdateWho(userLogin);
+        pembayaranUtangPiutang.setAction("C");
+        pembayaranUtangPiutang.setFlag("Y");
 
         try {
-            PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            pembayaranUtangPiutang.setBayar(BigDecimal.valueOf(Double.valueOf(pembayaranUtangPiutang.getStBayar().replace(".",""))));
-            pembayaranUtangPiutang.setTanggal(CommonUtil.convertStringToDate2(pembayaranUtangPiutang.getStTanggal()));
-
-            pembayaranUtangPiutang.setCreatedWho(userLogin);
-            pembayaranUtangPiutang.setLastUpdate(updateTime);
-            pembayaranUtangPiutang.setCreatedDate(updateTime);
-            pembayaranUtangPiutang.setLastUpdateWho(userLogin);
-            pembayaranUtangPiutang.setAction("C");
-            pembayaranUtangPiutang.setFlag("Y");
-
-            pembayaranUtangPiutangBoProxy.saveAdd(pembayaranUtangPiutang);
+           noJurnal= pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                logger.error("[PembayaranUtangPiutangAction.saveAdd] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[PembayaranUtangPiutangAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
+        //////////////////////////////////////////
+        ///////    MEMBUAT BILLING   /////////////
+        //////////////////////////////////////////
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        //Jika pembayaran berhasil
+        if (noJurnal!=null){
+            //MEMBUAT BILLING
+            ArrayList<Map> jurnalList = new ArrayList<>();
+            for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+                Map data = new HashMap();
+                data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
+                data.put("no_nota",pembayaranUtangPiutangDetail.getNoNota());
+                data.put("jml_pembayaran",jumlahPembayaran);
+                data.put("rekening_id",pembayaranUtangPiutangDetail.getRekeningId());
+                jurnalList.add(data);
+            }
+            Map data = new HashMap();
+            data.put("master_id",null);
+            data.put("no_nota",null);
+            data.put("jml_pembayaran",bayar);
+            data.put("rekening_id",pembayaranUtangPiutang.getRekeningIdKas());
+            jurnalList.add(data);
+
+            try {
+//                billingSystemBoProxy.createJurnalPembayaran(pembayaranUtangPiutang.getTipeTransaksi(),jurnalList,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),noJurnal);
+            }catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.createJurnalPembayaran");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                return ERROR;
+            }
+        }
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultPembayaranDetail");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
+        logger.info("[PembayaranUtangPiutangAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 

@@ -357,4 +357,23 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         logger.info("[TipeJurnalBoImpl.getMappingJurnalInKodeRekening] end process <<<");
         return kodeRekeningList;
     }
+
+    @Override
+    public String getTipeJurnalByTransId ( String transId){
+        logger.info("[TipeJurnalBoImpl.getTipeJurnalByTransId] start process >>>");
+        String tipeJurnal=null;
+
+        List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+        try {
+            // Get data from database by ID
+            mappingJurnalEntityList = mappingJurnalDao.getMappingByTransId(transId);
+        } catch (HibernateException e) {
+            logger.error("[TipeJurnalBoImpl.getTipeJurnalByTransId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data TipeJurnal by Kode TipeJurnal, please inform to your admin...," + e.getMessage());
+        }
+        for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
+            tipeJurnal=mappingJurnalEntity.getTipeJurnalId();
+        }
+        return tipeJurnal;
+    }
 }

@@ -63,12 +63,46 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
     }
 
     public List<ImMappingJurnalEntity> getListMappingJurnalByTipeJurnalId(String id) throws HibernateException {
-
         List<ImMappingJurnalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImMappingJurnalEntity.class)
                 .add(Restrictions.eq("tipeJurnalId", id))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("mappingJurnalId"))
                 .list();
         return results;
+    }
+
+    public List<ImMappingJurnalEntity> getMappingByTransId(String transId) throws HibernateException {
+
+        List<ImMappingJurnalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImMappingJurnalEntity.class)
+                .add(Restrictions.eq("transId", transId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("mappingJurnalId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImMappingJurnalEntity> getMappingByTipeJurnalIdNTransId(String jurnalId,String transId) throws HibernateException {
+
+        List<ImMappingJurnalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImMappingJurnalEntity.class)
+                .add(Restrictions.eq("tipeJurnalId", jurnalId))
+                .add(Restrictions.eq("transId", transId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("keterangan"))
+                .list();
+
+        return results;
+    }
+    public String tipeJurnalByTransId(String transId){
+        String result="";
+        String query = "select distinct tipe_jurnal_id from im_akun_mapping_jurnal where trans_id='"+transId+"' and flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
     }
 }

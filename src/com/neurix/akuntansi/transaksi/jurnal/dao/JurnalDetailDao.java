@@ -33,14 +33,21 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("jurnalDetail_id")!=null) {
-                criteria.add(Restrictions.eq("jurnalDetailId", (String) mapCriteria.get("jurnalDetail_id")));
+            if (mapCriteria.get("rekening_id")!=null) {
+                criteria.add(Restrictions.eq("rekeningId", (String) mapCriteria.get("rekening_id")));
             }
-            if (mapCriteria.get("jurnalDetail_name")!=null) {
-                criteria.add(Restrictions.ilike("jurnalDetailName", "%" + (String)mapCriteria.get("jurnalDetail_name") + "%"));
+            if (mapCriteria.get("no_nota")!=null) {
+                criteria.add(Restrictions.eq("noNota", (String) mapCriteria.get("no_nota")));
             }
-
-
+            if (mapCriteria.get("master_id")!=null) {
+                criteria.add(Restrictions.eq("masterId", (String) mapCriteria.get("master_id")));
+            }
+            if (mapCriteria.get("no_jurnal")!=null) {
+                criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
+            }
+            if (mapCriteria.get("jurnal_detail_id")!=null) {
+                criteria.add(Restrictions.eq("jurnalDetailId", (String) mapCriteria.get("jurnal_detail_id")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

@@ -8,6 +8,8 @@
     <bean id="billingSystemBo" class="com.neurix.akuntansi.transaksi.billingSystem.bo.impl.BillingSystemBoImpl"
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

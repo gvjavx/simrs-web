@@ -29,6 +29,15 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String stBayar;
     private String stTanggal;
     private boolean flagPosting=false;
+    private String rekeningIdKas;
+
+    public String getRekeningIdKas() {
+        return rekeningIdKas;
+    }
+
+    public void setRekeningIdKas(String rekeningIdKas) {
+        this.rekeningIdKas = rekeningIdKas;
+    }
 
     public boolean isFlagPosting() {
         return flagPosting;
