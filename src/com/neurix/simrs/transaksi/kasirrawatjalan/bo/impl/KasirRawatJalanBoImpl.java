@@ -1,21 +1,32 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
     private RawatInapDao rawatInapDao;
+    private UangMukaDao uangMukaDao;
+
+    public void setUangMukaDao(UangMukaDao uangMukaDao) {
+        this.uangMukaDao = uangMukaDao;
+    }
 
     public void setRawatInapDao(RawatInapDao rawatInapDao) {
         this.rawatInapDao = rawatInapDao;
@@ -44,5 +55,43 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
         }
         logger.info("[KasirRawatJalanBoImpl.getListAllTindakan] END process <<<");
         return result;
+    }
+
+    @Override
+    public List<UangMuka> getListUangMuka(UangMuka bean) throws GeneralBOException {
+        List<UangMuka> uangMukaList = new ArrayList<>();
+
+        if(bean != null){
+
+            Map hsCriterian = new HashMap();
+
+            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                hsCriterian.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+
+            List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();
+            try {
+                entityList = uangMukaDao.getByCriteria(hsCriterian);
+            }catch (HibernateException e){
+                logger.error("Found Error when search uang muka");
+            }
+
+            if(entityList.size() > 0){
+
+                UangMuka uangMuka;
+                for (ItSimrsUangMukaPendaftaranEntity entity :entityList){
+                    uangMuka = new UangMuka();
+                    uangMuka.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    uangMuka.setId(entity.getId());
+                    uangMuka.setJumlah(entity.getJumlah());
+                    uangMuka.setCreatedDate(entity.getCreatedDate());
+                    uangMuka.setCreatedWho(entity.getCreatedWho());
+                    uangMuka.setFlag(entity.getFlag());
+                    uangMuka.setStatusBayar(entity.getStatusBayar());
+                    uangMukaList.add(uangMuka);
+                }
+            }
+        }
+        return uangMukaList;
     }
 }

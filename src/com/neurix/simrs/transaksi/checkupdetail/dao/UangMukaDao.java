@@ -25,20 +25,29 @@ public class UangMukaDao extends GenericDao<ItSimrsUangMukaPendaftaranEntity, St
     public List<ItSimrsUangMukaPendaftaranEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsUangMukaPendaftaranEntity.class);
-        if (mapCriteria.get("id") != null)
-            criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
-        if (mapCriteria.get("id_detail_checkup") != null)
-            criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
-        if (mapCriteria.get("status_bayar") != null)
-            criteria.add(Restrictions.eq("statusBayar", mapCriteria.get("status_bayar")));
+
+        if (mapCriteria != null) {
+            if (mapCriteria.get("id") != null) {
+                criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+            }
+
+            if (mapCriteria.get("id_detail_checkup") != null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+            }
+
+            if (mapCriteria.get("status_bayar") != null) {
+                criteria.add(Restrictions.eq("statusBayar", mapCriteria.get("status_bayar")));
+            }
+
+        }
 
         List<ItSimrsUangMukaPendaftaranEntity> results = criteria.list();
         return results;
     }
 
-    public String getNextId(){
+    public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_uang_muka')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
     }

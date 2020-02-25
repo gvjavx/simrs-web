@@ -138,6 +138,13 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
                     resultBranch.setLogoName(imBranches.getLogoName());
 
+                    resultBranch.setPpkPelayanan(imBranches.getPpkPelayanan());
+                    resultBranch.setSuratSkdp(imBranches.getSuratSkdp());
+                    resultBranch.setKodeTarif(imBranches.getKodeTarif());
+                    resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
+                    resultBranch.setPayorCd(imBranches.getTarifPayorId());
+                    resultBranch.setCoderNik(imBranches.getCoderNik());
+
                     listOfResultBranch.add(resultBranch);
                 }
             }

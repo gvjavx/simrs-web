@@ -16,7 +16,7 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
+            $('#pembayaran_uang_muka, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
         });
 
@@ -35,7 +35,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kasir Rawat Jalan
+            Kasir Pembayaran Uang Muka
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -47,11 +47,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Kasir Rawat Jalan</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Kasir Uang Muka</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="uangmukaForm" method="post" namespace="/uangmuka" action="searchUangMuka_uangmuka.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
@@ -92,24 +92,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Status Bayar</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
-                                                  id="statusBayar"
-                                                  headerKey="" headerValue="Belum Dibayar" name="headerDetailCheckup.statusBayar"
-                                                  cssClass="form-control"/>
-                                    </div>
-                                </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Jenis Pembayaran</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'um':'Uang Muka'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="jenisPembayaran"--%>
-                                                  <%--headerKey="tagihan" headerValue="Tagihan" name="headerDetailCheckup.jenisPembayaran"--%>
-                                                  <%--cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
                                         <div class="input-group date" style="margin-top: 7px">
@@ -134,7 +116,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="kasirjalanForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="uangmukaForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search
@@ -383,7 +365,6 @@
 
     }
 
-    var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
         var table = "";
         var dataTindakan = [];
@@ -442,8 +423,6 @@
                 }
             });
 
-
-
             KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
                 dataTindakan = response;
                 console.log(response);
@@ -488,7 +467,6 @@
                     });
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total});
                 }
             });
 

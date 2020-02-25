@@ -101,6 +101,16 @@ public class HeaderCheckup {
         this.uangMuka = uangMuka;
     }
 
+    private String idPelayananBpjs;
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
+
     public String getIsOnline() {
         return isOnline;
     }
