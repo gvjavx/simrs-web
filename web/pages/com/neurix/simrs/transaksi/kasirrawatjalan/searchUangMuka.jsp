@@ -184,9 +184,9 @@
                                 <td>ID Detail Checkup</td>
                                 <td>ID Pasien</td>
                                 <td>Nama</td>
-                                <td>Status Periksa</td>
+                                <td>Nama Pelayanan</td>
                                 <td >Status</td>
-                                <td>Keterangan</td>
+                                <%--<td>Keterangan</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -196,7 +196,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="statusPeriksaName"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <label class="label label-success"> sudah bayar</label>
@@ -205,7 +205,7 @@
                                             <label class="label label-warning"> belum bayar</label>
                                         </s:else>
                                     </td>
-                                    <td><s:property value="keteranganSelesai"/></td>
+                                    <%--<td><s:property value="keteranganSelesai"/></td>--%>
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
@@ -238,7 +238,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Jalan Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Pasien</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
@@ -282,7 +282,7 @@
                                     <td><span id="fin_jenis_kelamin"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="fin_tgl"></span></td>
                                 </tr>
                                 <tr>
@@ -301,21 +301,23 @@
                 <input type="hidden" id="fin_id_detail_checkup">
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
+                    <h3 class="box-title"><i class="fa fa-money"></i> Uang Muka Pasien</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
-                        <thead>
-                        <tr bgcolor="#90ee90">
-                            <td width="10%" align="center">Action</td>
-                            <td width="20%">Tanggal</td>
-                            <td>Nama Tindakan</td>
-                            <td align="center" width="20%">Total Tarif (Rp.)</td>
-                        </tr>
-                        </thead>
-                        <tbody id="body_tindakan_fin">
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-6">
+                            <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td width="20%">Tanggal</td>
+                                    <td align="center" width="20%">Uang Muka (Rp.)</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_tindakan_fin">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -419,54 +421,34 @@
                         kecamatan = item.namaKecamatan;
                         desa = item.namaDesa;
                         noSep = item.noSep;
+                        jenisPasien = item.jenisTransaksi;
                     });
                 }
             });
 
-            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
                 dataTindakan = response;
                 console.log(response);
                 if (dataTindakan != null) {
                     var total = 0;
                     $.each(dataTindakan, function (i, item) {
-                        var tindakan = "";
-                        var tarif    = "";
-                        var kategori = ""
-                        var btn = "";
-                        var tgl = "";
+                        var tanggal = "";
+                        var uangmuka    = "";
 
 
-                        if (item.namaTindakan != null && item.namaTindakan !=  '') {
-                            tindakan = item.namaTindakan;
+                        if (item.createdDate != null && item.createdDate !=  '') {
+                            tanggal = item.createdDate;
                         }
 
-                        if (item.kategoriTindakanBpjs != null && item.kategoriTindakanBpjs != '') {
-                            kategori = item.kategoriTindakanBpjs;
+                        if (item.jumlah != null && item.jumlah != '') {
+                            uangmuka = item.jumlah;
                         }
 
-                        if(item.totalTarif != null && item.totalTarif != ''){
-                            tarif = item.totalTarif;
-                            total = (parseInt(total) + parseInt(tarif));
-                        }
-
-                        if(item.stTglTindakan != null){
-                            tgl = item.stTglTindakan;
-                        }
-
-                        if(item.keterangan == "resep"){
-                            btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
-                        }
-
-                        table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
-                            "<td align='center'>"+btn+"</td>" +
-                            "<td >"+tgl+"</td>" +
-                            "<td>" + tindakan + "</td>" +
-                            "<td align='right' style='padding-right: 20px'>" +formatRupiah(tarif) + "</td>" +
+                        table += '<tr id="row'+item.id+'" >' +
+                            "<td >"+formateDate(tanggal)+"</td>" +
+                            "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
                             "</tr>";
-                        jenisPasien = item.jenisPasien;
                     });
-
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
                 }
             });
 
@@ -497,46 +479,55 @@
         }, 100);
     }
 
-    function detailResep(idResep, idRiwayat){
+    function formateDate(tanggal){
 
-        var tbody = "";
-        KasirRawatJalanAction.getListDetailResep(idResep, function (response) {
-            if(response.length > 0){
-
-                $.each(response, function (i, item) {
-                    tbody += '<tr>' +
-                        '<td>'+item.namaObat+'</td>' +
-                        '<td align="center">'+item.qty+'</td>' +
-                        '<td>'+item.jenisSatuan+'</td>' +
-                        '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
-                        '</tr>';
-                });
-            }
-        });
-
-        var rowIndex = document.getElementById("row"+idRiwayat).rowIndex;
-        var table = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +
-            '<td>Nama Obat</td>' +
-            '<td align="center" width="10%">Qty</td>' +
-            '<td>Lembar</td>' +
-            '<td align="center">Tarif (Rp.)</td></tr>' +
-            '<tbody>'+tbody+'</tbody>'+
-            '</table>';
-
-        var newRow = $('<tr id="del'+idRiwayat+'"><td colspan="4">'+table+'</td></tr>');
-        newRow.insertAfter($('#tabel_tindakan_fin tr:nth('+rowIndex+')'));
-        var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';
-        $('#btn'+idRiwayat).attr('src',cancel);
-        $('#btn'+idRiwayat).attr('onclick', 'deleteRow(\''+idResep+'\',\''+idRiwayat+'\')');
-
+        var tgl = "";
+        if(tanggal != null && tanggal != ''){
+            tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
+        }
+        return tgl;
     }
 
-    function deleteRow(idResep, idRiwayat){
-        $('#del'+idRiwayat).remove();
-        var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
-        $('#btn'+idRiwayat).attr('src',plus);
-        $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
-    }
+    <%--function detailResep(idResep, idRiwayat){--%>
+
+        <%--var tbody = "";--%>
+        <%--KasirRawatJalanAction.getListDetailResep(idResep, function (response) {--%>
+            <%--if(response.length > 0){--%>
+
+                <%--$.each(response, function (i, item) {--%>
+                    <%--tbody += '<tr>' +--%>
+                        <%--'<td>'+item.namaObat+'</td>' +--%>
+                        <%--'<td align="center">'+item.qty+'</td>' +--%>
+                        <%--'<td>'+item.jenisSatuan+'</td>' +--%>
+                        <%--'<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +--%>
+                        <%--'</tr>';--%>
+                <%--});--%>
+            <%--}--%>
+        <%--});--%>
+
+        <%--var rowIndex = document.getElementById("row"+idRiwayat).rowIndex;--%>
+        <%--var table = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +--%>
+            <%--'<td>Nama Obat</td>' +--%>
+            <%--'<td align="center" width="10%">Qty</td>' +--%>
+            <%--'<td>Lembar</td>' +--%>
+            <%--'<td align="center">Tarif (Rp.)</td></tr>' +--%>
+            <%--'<tbody>'+tbody+'</tbody>'+--%>
+            <%--'</table>';--%>
+
+        <%--var newRow = $('<tr id="del'+idRiwayat+'"><td colspan="4">'+table+'</td></tr>');--%>
+        <%--newRow.insertAfter($('#tabel_tindakan_fin tr:nth('+rowIndex+')'));--%>
+        <%--var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';--%>
+        <%--$('#btn'+idRiwayat).attr('src',cancel);--%>
+        <%--$('#btn'+idRiwayat).attr('onclick', 'deleteRow(\''+idResep+'\',\''+idRiwayat+'\')');--%>
+
+    <%--}--%>
+
+    <%--function deleteRow(idResep, idRiwayat){--%>
+        <%--$('#del'+idRiwayat).remove();--%>
+        <%--var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';--%>
+        <%--$('#btn'+idRiwayat).attr('src',plus);--%>
+        <%--$('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');--%>
+    <%--}--%>
 
 </script>
 

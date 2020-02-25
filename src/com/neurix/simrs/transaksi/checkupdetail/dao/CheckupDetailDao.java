@@ -501,11 +501,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         String idPelayanan = "%";
         String statusBayar = "";
 
-        if (bean.getIdDetailCheckup() != null){
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
             idDetail = bean.getIdDetailCheckup();
         }
 
-        if (bean.getIdPelayanan() != null){
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
             idPelayanan = bean.getIdPelayanan();
         }
 
@@ -520,7 +520,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "pel.nama_pelayanan,\n" +
                 "um.jumlah,\n" +
                 "um.status_bayar,\n" +
-                "um.created_date\n" +
+                "um.created_date, ps.id_pasien\n" +
                 "FROM it_simrs_header_detail_checkup dt\n" +
                 "INNER JOIN it_simrs_header_checkup ck ON ck.no_checkup = dt.no_checkup\n" +
                 "INNER JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
@@ -548,6 +548,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 detailCheckup.setJumlahUangMuka(obj[4] == null ? null :(BigInteger) obj[4]);
                 detailCheckup.setStatusBayar(obj[5] == null ? "" : obj[5].toString());
                 detailCheckup.setCreatedDate((Timestamp) obj[6]);
+                detailCheckup.setIdPasien(obj[7] == null ? "" : obj[7].toString());
                 detailCheckups.add(detailCheckup);
             }
         }
