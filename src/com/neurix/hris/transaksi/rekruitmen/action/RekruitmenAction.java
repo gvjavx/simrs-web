@@ -1421,7 +1421,7 @@ public class RekruitmenAction extends BaseMasterAction{
         logger.info("[liburAction.saveAdd] end process >>>");
         return null;
     }
-    public String initComboPeriode() {
+    public void initComboPeriode() {
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         year = year-10;
@@ -1432,9 +1432,31 @@ public class RekruitmenAction extends BaseMasterAction{
         }
 
         listOfComboPeriode.addAll(listOfPeriode);
-
-        return "init_combo_periode";
     }
+
+    public void initComboPeriodeTahunSekarang10() {
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int batas=10;
+        List listOfPeriode = new ArrayList();
+        for (int i=0;i<batas;i++){
+            listOfPeriode.add(year-i);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+    }
+
+    public void initComboPeriodeTahunSekarang5() {
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int batas=5;
+        List listOfPeriode = new ArrayList();
+        for (int i=0;i<batas;i++){
+            listOfPeriode.add(year-i);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+    }
+
+
     @Override
     public String search() {
         logger.info("[RekruitmenAction.search] start process >>>");

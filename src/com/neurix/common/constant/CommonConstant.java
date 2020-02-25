@@ -102,7 +102,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_USER_UPLOAD_PDF = "/pages/upload/doc/pdf/";
 
     //    public final static String URL_IMAGE_LOGO_REPORT = "C:\\Users\\Ferdi\\Downloads\\airnav2.jpg";
-    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\hris\\pages\\images\\LOGO-RW.png";
+    public final static String URL_IMAGE_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\LOGO-RW.png";
+    public final static String URL_LOGO_REPORT = "C:\\tomcat-7-64x\\webapps\\simrs\\pages\\images\\";
     //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = "/opt/tomcat/webapps/mnt/documents/";
 
@@ -153,6 +154,7 @@ public class CommonConstant {
     public final static String verAddress=baseUrl+"prosesLoginFinger.action";
     public final static String regAddress=baseUrl+"prosesRegisterFinger.action";
     public final static String addRawatPasien=baseUrl+"checkup/add_checkup.action";
+
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";

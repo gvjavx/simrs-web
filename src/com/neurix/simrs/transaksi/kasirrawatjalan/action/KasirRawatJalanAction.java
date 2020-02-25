@@ -1,11 +1,13 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -21,14 +23,21 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KasirRawatJalanAction extends BaseMasterAction {
 
@@ -42,6 +51,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private TransaksiObatBo transaksiObatBoProxy;
     private String id;
     private String idDetailCheckup;
+    private BillingSystemBo billingSystemBoProxy;
 
     public void setTransaksiObatBoProxy(TransaksiObatBo transaksiObatBoProxy) {
         this.transaksiObatBoProxy = transaksiObatBoProxy;
@@ -264,7 +274,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     resultListObat.addAll(obatDetailList);
                 }
             }
-
         }
 
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
@@ -337,12 +346,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     }
 
-    public List<UangMuka> getListUangMuka(String idDetailCheckup) {
+    public List<UangMuka> getListUangMuka(String idDetailCheckup, String statusBayar) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
         UangMuka uangMuka = new UangMuka();
         uangMuka.setIdDetailCheckup(idDetailCheckup);
+        uangMuka.setStatusBayar(statusBayar);
         List<UangMuka> obatDetailList = new ArrayList<>();
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
@@ -355,6 +365,48 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         return obatDetailList;
+    }
+
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya){
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+
+        String transId = "01";
+        String noNota = "";
+        try {
+            noNota = billingSystemBo.createInvoiceNumber(transId);
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+            return response;
+        }
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("master_id", idPasien);
+        hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("biaya", new BigInteger(biaya));
+
+        try {
+            billingSystemBo.createJurnal(transId,hsCriteria,CommonUtil.userBranchLogin(),"Uang Muka untuk id_pasien : " + idPasien,"Y","");
+
+            UangMuka uangMuka = new UangMuka();
+            uangMuka.setNoNota(noNota);
+            uangMuka.setId(id);
+            uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            uangMuka.setLastUpdateWho(CommonUtil.userLogin());
+
+            kasirRawatJalanBo.updateNotaUangMukaById(uangMuka);
+
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+        }
+        return response;
     }
 
     private HeaderCheckup getHeaderCheckup(String noCheckup) {
@@ -401,6 +453,37 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat) throws JSONException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("master_id", idPasien);
+        hsCriteria.put("no_nota", noNota);
+
+        JSONArray json = new JSONArray(jsonString);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            hsCriteria.put(obj.getString("type").toString(), new BigInteger(obj.getString("nilai").toString()));
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        CrudResponse response = new CrudResponse();
+        if (!"Y".equalsIgnoreCase(withObat)){
+            try {
+                billingSystemBo.createJurnal("04",hsCriteria,CommonUtil.userBranchLogin(),"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
+                response.setStatus("success");
+            } catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR " +e);
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR Method Belum ada");
+        }
+        return response;
+    }
+
     @Override
     public String downloadPdf() {
         return null;
@@ -409,5 +492,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
     }
 }

@@ -24,6 +24,24 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal uangMakan;
     private int maxJamIjinKeluar;
     private String areaId;
+    private String alamatSurat;
+    private String logoName;
+
+    public String getLogoName() {
+        return logoName;
+    }
+
+    public void setLogoName(String logoName) {
+        this.logoName = logoName;
+    }
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
 
     private String logoBranch;
 

@@ -90,7 +90,12 @@
         <property name="keyEklaim">
             <column name="key_eklaim" sql-type="varchar" length="100"/>
         </property>
-
+        <property name="alamatSurat">
+            <column name="alamat_surat" sql-type="varchar" length="100"/>
+        </property>
+        <property name="logoName">
+            <column name="logo_name" sql-type="varchar" length="100"/>
+        </property>
         <property name="ppkPelayanan">
             <column name="ppk_pelayanan" sql-type="varchar" length="100"/>
         </property>
@@ -109,7 +114,6 @@
         <property name="coderNik">
             <column name="coder_nik" sql-type="varchar" length="100"/>
         </property>
-
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>
                 <column name="branch_id"/>

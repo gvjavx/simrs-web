@@ -55,6 +55,8 @@ public class BranchBoImpl implements BranchBo {
                 resultBranch.setLastUpdate(imBranches.getLastUpdate());
                 resultBranch.setAction(imBranches.getAction());
                 resultBranch.setFlag(imBranches.getFlag());
+                resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+                resultBranch.setLogoName(imBranches.getLogoName());
 
                 listOfResultBranch.add(resultBranch);
             }
@@ -133,6 +135,8 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setFlag(imBranches.getFlag());
                     resultBranch.setEnabled(imBranches.getEnabled());
                     resultBranch.setAreaId(imBranches.getAreaId());
+                    resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+                    resultBranch.setLogoName(imBranches.getLogoName());
 
                     resultBranch.setPpkPelayanan(imBranches.getPpkPelayanan());
                     resultBranch.setSuratSkdp(imBranches.getSuratSkdp());
@@ -169,6 +173,7 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setFaktorJasprod(branch.getFaktorJasprod());
             imBranches.setFaktorJubileum(branch.getFaktorJubileum());
             imBranches.setUmr(branch.getUmr());
+            imBranches.setAlamatSurat(branch.getAlamatSurat());
             imBranches.setBiayaJasprod(branch.getBiayaJasprod());
             imBranches.setStatusPabrik(branch.getStatusPabrik());
             imBranches.setCreatedWho(branch.getCreatedWho());
@@ -177,6 +182,7 @@ public class BranchBoImpl implements BranchBo {
             imBranches.setLastUpdate(branch.getLastUpdate());
             imBranches.setAction(branch.getAction());
             imBranches.setAreaId(branch.getAreaId());
+            imBranches.setLogoName(branch.getLogoName());
             imBranches.setFlag("Y");
 
             String branchId = branch.getBranchId();
@@ -391,6 +397,8 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setLastUpdate(imBranches.getLastUpdate());
             resultBranch.setAction(imBranches.getAction());
             resultBranch.setFlag(imBranches.getFlag());
+            resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
+            resultBranch.setLogoName(imBranches.getLogoName());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");

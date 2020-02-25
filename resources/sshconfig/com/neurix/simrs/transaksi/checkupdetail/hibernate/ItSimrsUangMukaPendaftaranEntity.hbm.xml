@@ -36,5 +36,8 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="noNota">
+            <column name="no_nota" sql-type="varchar" length="100" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>

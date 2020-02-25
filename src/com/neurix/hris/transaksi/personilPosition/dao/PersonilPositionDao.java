@@ -181,4 +181,13 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
         return Integer.parseInt(stKelompok.replace("KL",""));
     }
 
+    public List<ItPersonilPositionEntity> getPersonilPositionByUnitdanPosisi(String branch, String position) throws HibernateException {
+        List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("branchId", branch))
+                .add(Restrictions.eq("positionId", position))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        return results;
+    }
 }

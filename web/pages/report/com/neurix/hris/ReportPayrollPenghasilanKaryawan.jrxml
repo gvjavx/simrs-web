@@ -201,7 +201,7 @@
 		<band height="70" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="95" height="50" uuid="8b897ea6-1e66-4664-ac03-e652875c4c11"/>
-				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+				<imageExpression><![CDATA["/opt/tomcat/webapps/hris/pages/images/LOGO-RW.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="242" y="16" width="311" height="20" uuid="2380af8e-28c7-40fc-a5b9-d262c0e7b397"/>
