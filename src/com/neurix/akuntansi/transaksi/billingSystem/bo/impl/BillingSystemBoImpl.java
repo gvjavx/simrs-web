@@ -194,6 +194,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         if (data.get("rekening_id")!=null){
             rekeningIdPembayaran = (String) data.get("rekening_id");
             rekeningIdKasPembayaran = (String) data.get("rekening_id_kas");
+            totalBayar=(BigDecimal) data.get("jml_pembayaran");
             pembayaran=true;
         }
 
@@ -213,7 +214,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         rekeningId = kodeRekeningEntity.getRekeningId();
                     }
 
-                    if (rekeningId !=null){
+                    if (rekeningId !=null||pembayaran){
                         if (data.get(mapping.getKeterangan())!=null){
                             BigDecimal biayaPembayaran = (BigDecimal) data.get(mapping.getKeterangan());
                             ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
@@ -228,12 +229,13 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             }
 
                             ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
-                            if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
-                                jurnalDetailEntity.setRekeningId(rekeningIdKasPembayaran);
-                            }else if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("Y").equalsIgnoreCase(mapping.getBukti())){
-                                jurnalDetailEntity.setRekeningId(rekeningId);
+                            if (pembayaran){
+                                if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
+                                    jurnalDetailEntity.setRekeningId(rekeningIdKasPembayaran);
+                                }else if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("Y").equalsIgnoreCase(mapping.getBukti())){
+                                    jurnalDetailEntity.setRekeningId(rekeningIdPembayaran);
+                                }
                             }
-
 
                             if (("D").equalsIgnoreCase(mapping.getPosisi())){
                                 jurnalDetailEntity.setJumlahDebit(biayaPembayaran);
@@ -307,6 +309,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             if (("Y").equalsIgnoreCase(mapping.getBukti())){
                                 jurnalDetailEntity.setNoNota(noNota);
                             }
+                            ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
+                            if (pembayaran){
+                                if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
+                                    jurnalDetailEntity.setRekeningId(rekeningIdKasPembayaran);
+                                }else if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("Y").equalsIgnoreCase(mapping.getBukti())){
+                                    jurnalDetailEntity.setRekeningId(rekeningIdPembayaran);
+                                }
+                            }
+
                             if (("D").equalsIgnoreCase(mapping.getPosisi())){
                                 jurnalDetailEntity.setJumlahDebit(totalBayar);
                                 jurnalDetailEntity.setJumlahKredit(BigDecimal.ZERO);
