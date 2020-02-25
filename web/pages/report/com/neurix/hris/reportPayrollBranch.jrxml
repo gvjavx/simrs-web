@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
-	<property name="ireport.zoom" value="1.464100000000004"/>
+	<property name="ireport.zoom" value="1.2100000000000035"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
@@ -8,6 +8,7 @@
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
 	<parameter name="reportParams.bulan" class="java.lang.String"/>
 	<parameter name="reportParams.tahun" class="java.lang.String"/>
+	<parameter name="reportParams.date" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   payroll.*,
@@ -88,8 +89,7 @@ and payroll.flag_payroll = 'Y']]>
 	<field name="lain_lain" class="java.math.BigDecimal"/>
 	<field name="approval_id" class="java.lang.String"/>
 	<field name="approval_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="flag_payroll" class="java.lang.String"/>
 	<field name="flag_thr" class="java.lang.String"/>
@@ -170,11 +170,11 @@ and payroll.flag_payroll = 'Y']]>
 	<pageHeader>
 		<band height="73" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="3" width="77" height="28" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
+				<reportElement x="0" y="3" width="83" height="37" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="733" y="2" width="56" height="46" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
+				<reportElement x="733" y="2" width="50" height="50" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Bulan : " + $F{bulan}+"\nTahun : "+$F{tahun}+"\nNIP:"+$F{nip}
@@ -190,22 +190,36 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[SLIP GAJI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="23" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
+				<reportElement x="0" y="29" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="34" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
+				<reportElement x="0" y="40" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="61" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
+				<reportElement x="0" y="69" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
 			</line>
+			<textField>
+				<reportElement x="757" y="48" width="80" height="20" uuid="8e0ea27b-6977-4a15-86cd-1c8c84dd51a5"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="697" y="48" width="79" height="20" uuid="40a8fec0-1ac2-4838-9dcb-f9708c69676b"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
@@ -491,14 +505,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_tambahan}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="5" y="347" width="100" height="15" uuid="86fea5b4-63a3-4322-a264-5f925cd9bc40"/>
+				<reportElement x="5" y="362" width="100" height="15" uuid="86fea5b4-63a3-4322-a264-5f925cd9bc40"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Total A]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="111" y="347" width="79" height="15" uuid="e5656ecb-dc98-4e58-bcdd-93ec8cfd94fb"/>
+				<reportElement x="116" y="362" width="79" height="15" uuid="e5656ecb-dc98-4e58-bcdd-93ec8cfd94fb"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -771,14 +785,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total C]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="216" y="362" width="122" height="30" uuid="af970579-2e9f-46f9-9631-8779e77b59d6"/>
+				<reportElement x="216" y="377" width="122" height="30" uuid="af970579-2e9f-46f9-9631-8779e77b59d6"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[GAJI BERSIH (A+B)-C]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="349" y="362" width="121" height="30" uuid="6ebfe98b-52d9-45a8-825f-dc31d877909c"/>
+				<reportElement x="349" y="377" width="121" height="30" uuid="6ebfe98b-52d9-45a8-825f-dc31d877909c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -876,28 +890,28 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{npwp}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="5" y="317" width="100" height="15" uuid="876d7eaa-00ed-445e-a600-66c11e1f5b48"/>
+				<reportElement x="5" y="332" width="100" height="15" uuid="876d7eaa-00ed-445e-a600-66c11e1f5b48"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pemondokan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="332" width="100" height="15" uuid="ab4fde65-4bb1-43eb-8561-bef42c20ae16"/>
+				<reportElement x="5" y="347" width="100" height="15" uuid="ab4fde65-4bb1-43eb-8561-bef42c20ae16"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Komunikasi]]></text>
 			</staticText>
 			<textField pattern="#,##0">
-				<reportElement x="116" y="317" width="79" height="15" uuid="01507600-4575-4f6d-bb85-529dfad97b6c"/>
+				<reportElement x="116" y="332" width="79" height="15" uuid="01507600-4575-4f6d-bb85-529dfad97b6c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pemondokan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="116" y="332" width="79" height="15" uuid="37952fa7-6fec-4f3b-9f52-3864c2251a3d"/>
+				<reportElement x="116" y="347" width="79" height="15" uuid="37952fa7-6fec-4f3b-9f52-3864c2251a3d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -993,6 +1007,20 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{potongan_lain}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="316" width="100" height="15" uuid="118ef5e9-7d07-4836-a387-520b6c4804f7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tunj. Lembur]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="116" y="315" width="79" height="15" uuid="26b48881-0a76-4f38-9e11-99fcec8b3f51"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_lembur}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

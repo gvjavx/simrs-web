@@ -44,7 +44,8 @@ public class Payroll extends BaseModel {
     private BigDecimal pemondokanNilai;
     private String komunikasi;
     private BigDecimal komunikasiNilai;
-
+    private String tunjanganLembur;
+    private BigDecimal tunjanganLemburNilai;
 
     //tunjangan RLAB
     private String tunjanganRumah;
@@ -735,8 +736,7 @@ public class Payroll extends BaseModel {
     private BigDecimal potPphNilai;
     private String tunjanganBajuDinas;
     private BigDecimal tunjanganBajuDinasNilai;
-    private String tunjanganLembur;
-    private BigDecimal tunjanganLemburNilai;
+
     private BigDecimal umr;
     private String gender;
     private String tipeThr;

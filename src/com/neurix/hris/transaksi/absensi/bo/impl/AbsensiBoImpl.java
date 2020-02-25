@@ -19,6 +19,8 @@ import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.master.payrollTunjanganUmk.dao.PayrollTunjanganUmkDao;
 import com.neurix.hris.master.payrollTunjanganUmk.model.ImPayrollTunjanganUmkEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
@@ -101,6 +103,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     private JamLemburDao jamLemburDao;
     private PayrollDao payrollDao;
     private PayrollSkalaGajiDao payrollSkalaGajiDao;
+    private PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao;
     private DepartmentDao departmentDao;
     private CutiPegawaiDao cutiPegawaiDao;
     private IndisiplinerDao indisiplinerDao;
@@ -114,6 +117,14 @@ public class AbsensiBoImpl implements AbsensiBo {
     private PegawaiTambahanDao pegawaiTambahanDao;
     private PegawaiTambahanAbsensiDao pegawaiTambahanAbsensiDao;
     private ShiftDao shiftDao;
+
+    public PayrollSkalaGajiPkwtDao getPayrollSkalaGajiPkwtDao() {
+        return payrollSkalaGajiPkwtDao;
+    }
+
+    public void setPayrollSkalaGajiPkwtDao(PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao) {
+        this.payrollSkalaGajiPkwtDao = payrollSkalaGajiPkwtDao;
+    }
 
     public AbsensiDashboardDao getAbsensiDashboardDao() {
         return absensiDashboardDao;
@@ -1071,9 +1082,17 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("tahun", "2019");
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
-                        payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
-                        for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
+                        if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan());
+                            for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
+                                upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            }
+                        }else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
+                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan());
+                            for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
+                                upahLembur = skalaGajiLoop.getGajiPokok().doubleValue();
+                            }
                         }
 
                         double jamLembur = 0;
@@ -1108,7 +1127,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
                         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                         String strDate = dateFormat.format(bean.getTanggal());
@@ -1121,7 +1139,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         for (ItPayrollEntity itPayrollEntity : payrollEntityList){
                             peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
                         }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+                        upahLembur = (upahLembur+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);

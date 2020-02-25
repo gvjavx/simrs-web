@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
-	<property name="ireport.zoom" value="2.357947691000004"/>
-	<property name="ireport.x" value="75"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.zoom" value="1.9487171000000034"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -97,18 +97,18 @@
 	<pageHeader>
 		<band height="144" splitType="Stretch">
 			<textField>
-				<reportElement x="172" y="0" width="208" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="172" y="17" width="208" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="2" y="2" width="81" height="40" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="2" y="6" width="81" height="40" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="508" y="4" width="41" height="42" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="475" y="4" width="50" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Tanggal : " + new java.util.Date(),
@@ -171,22 +171,36 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Golongan	:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="2" y="37" width="145" height="17" uuid="691528d3-3e2f-4b06-a879-a9a668d64a9c"/>
+				<reportElement x="0" y="52" width="145" height="17" uuid="691528d3-3e2f-4b06-a879-a9a668d64a9c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.branchName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="2" y="50" width="143" height="20" uuid="be7f5086-4d3c-4827-a32d-04d8e7253c68"/>
+				<reportElement x="0" y="45" width="143" height="20" uuid="be7f5086-4d3c-4827-a32d-04d8e7253c68"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PT. NUSANTARA MEDICA UTAMA]]></text>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
 			<line>
-				<reportElement x="2" y="71" width="553" height="1" uuid="8f83937d-0c71-4107-89a1-0b4d479247de"/>
+				<reportElement x="1" y="78" width="553" height="1" uuid="8f83937d-0c71-4107-89a1-0b4d479247de"/>
 			</line>
+			<staticText>
+				<reportElement x="446" y="54" width="79" height="20" uuid="8310be79-8975-4749-99a1-9fdeb118c33a"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="506" y="54" width="80" height="20" uuid="85f1082d-12aa-4664-a213-82c7c72d09b0"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>

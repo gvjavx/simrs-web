@@ -166,7 +166,7 @@
     <section class="content-header">
         <h1>
             Inquiry Absensi
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
     <section class="content">

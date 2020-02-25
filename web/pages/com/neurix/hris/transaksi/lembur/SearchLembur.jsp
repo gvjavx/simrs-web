@@ -46,7 +46,7 @@
     <section class="content-header">
         <h1>
             Lembur
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
