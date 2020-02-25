@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
@@ -318,6 +320,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
@@ -538,7 +541,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             reportId="RPT05";
         }else if (data.getTipeLaporan().equalsIgnoreCase("uang_muka")){
             titleReport="IKHTISAR UANG MUKA";
-
+            reportId="RPT06";
         }else{
             reportId="NOTHING";
         }
@@ -592,6 +595,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         if (dataLaporan.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
             titleReport="AGING PIUTANG USAHA";
             reportId="RPT08";
+        }
+        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("uang_muka")){
+            titleReport="AGING UANG MUKA";
+            reportId="RPT09";
         }
         List<Aging> agingList = laporanAkuntansiBo.getAging(dataLaporan.getUnit(),periode,dataLaporan.getMasterId(),dataLaporan.getTipeLaporan(),reportId);
         List<Aging> listOfAgingTemp = new ArrayList<>();

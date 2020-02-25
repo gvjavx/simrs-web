@@ -18,4 +18,6 @@ public interface TipeJurnalBo extends BaseMasterBo<TipeJurnal> {
     public void saveDelete(TipeJurnal bean) throws GeneralBOException;
 
     List<KodeRekening> getMappingJurnalInKodeRekening(String id) throws GeneralBOException;
+
+    String getTipeJurnalByTransId(String transId);
 }

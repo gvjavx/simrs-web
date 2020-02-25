@@ -6,7 +6,10 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="pembayaranUtangPiutangAction" class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"
-          p:pembayaranUtangPiutangBoProxy-ref="pembayaranUtangPiutangBoProxy" />
+          p:pembayaranUtangPiutangBoProxy-ref="pembayaranUtangPiutangBoProxy"
+            p:billingSystemBoProxy-ref="billingSystemBoProxy"
+          p:tipeJurnalBoProxy-ref="tipeJurnalBoProxy"
+    />
 
     <bean id="pembayaranUtangPiutangBo" class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.impl.PembayaranUtangPiutangBoImpl"
           p:pembayaranUtangPiutangDao-ref="pembayaranUtangPiutangDao"

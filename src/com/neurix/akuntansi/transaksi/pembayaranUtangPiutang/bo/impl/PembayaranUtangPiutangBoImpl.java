@@ -206,189 +206,6 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
     @Override
     public PembayaranUtangPiutang saveAdd(PembayaranUtangPiutang bean) throws GeneralBOException {
-        logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
-        List<ImKodeRekeningEntity> kodeRekeningEntityList;
-        if (bean!=null) {
-            String pembayaranUtangPiutangId;
-            String jurnalId;
-            try {
-                // Generating ID, get from postgre sequence
-                pembayaranUtangPiutangId = pembayaranUtangPiutangDao.getNextPembayaranUtangPiutangId();
-
-                //generate jurnal Id
-                jurnalId = jurnalDao.getNextJurnalId();
-
-                //get rekening id kas
-                kodeRekeningEntityList = kodeRekeningDao.getIdByCoa(bean.getKodeRekeningKas());
-            } catch (HibernateException e) {
-                logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence pembayaranUtangPiutangId id, please info to your admin..." + e.getMessage());
-            }
-
-            // creating object entity serializable
-            ImPembayaranUtangPiutangEntity imPembayaranUtangPiutangEntity = new ImPembayaranUtangPiutangEntity();
-            imPembayaranUtangPiutangEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
-            imPembayaranUtangPiutangEntity.setTipeTransaksi(bean.getTipeTransaksi());
-            imPembayaranUtangPiutangEntity.setTanggal(bean.getTanggal());
-            imPembayaranUtangPiutangEntity.setKodeRekeningKas(bean.getKodeRekeningKas());
-            imPembayaranUtangPiutangEntity.setBayar(bean.getBayar());
-            imPembayaranUtangPiutangEntity.setKeterangan(bean.getKeterangan());
-            imPembayaranUtangPiutangEntity.setNoSlipBank(bean.getNoSlipBank());
-            imPembayaranUtangPiutangEntity.setBranchId(bean.getBranchId());
-            imPembayaranUtangPiutangEntity.setNoJurnal(jurnalId);
-
-            imPembayaranUtangPiutangEntity.setFlag(bean.getFlag());
-            imPembayaranUtangPiutangEntity.setAction(bean.getAction());
-            imPembayaranUtangPiutangEntity.setCreatedWho(bean.getCreatedWho());
-            imPembayaranUtangPiutangEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPembayaranUtangPiutangEntity.setCreatedDate(bean.getCreatedDate());
-            imPembayaranUtangPiutangEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                pembayaranUtangPiutangDao.addAndSave(imPembayaranUtangPiutangEntity);
-            } catch (HibernateException e) {
-                logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-            }
-
-            // CREATING JURNAL
-            ItJurnalEntity jurnalEntity = new ItJurnalEntity();
-            jurnalEntity.setNoJurnal(jurnalId);
-            jurnalEntity.setTipeJurnalId("JKM");
-            jurnalEntity.setTanggalJurnal(bean.getTanggal());
-            jurnalEntity.setMataUangId("032");
-            jurnalEntity.setKurs(BigDecimal.ONE);
-            jurnalEntity.setKeterangan(bean.getKeterangan());
-            jurnalEntity.setBranchId(bean.getBranchId());
-            jurnalEntity.setPrintRegisterCount(BigDecimal.ZERO);
-
-            jurnalEntity.setFlag(bean.getFlag());
-            jurnalEntity.setAction(bean.getAction());
-            jurnalEntity.setCreatedWho(bean.getCreatedWho());
-            jurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            jurnalEntity.setCreatedDate(bean.getCreatedDate());
-            jurnalEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                jurnalDao.addAndSave(jurnalEntity);
-            } catch (HibernateException e) {
-                logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-            }
-
-            for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
-                BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
-                ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
-                String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
-                pembayaranUtangPiutangDetailEntity.setMasterId(data.getMasterId());
-                pembayaranUtangPiutangDetailEntity.setNoNota(data.getNoNota());
-                pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
-                pembayaranUtangPiutangDetailEntity.setDebit(BigDecimal.ZERO);
-                pembayaranUtangPiutangDetailEntity.setKredit(jumlahPembayaran);
-
-                pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
-                pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
-                pembayaranUtangPiutangDetailEntity.setCreatedWho(bean.getCreatedWho());
-                pembayaranUtangPiutangDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
-                pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-                }
-
-                // CREATING JURNAL DETAIL //
-                ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
-                jurnalDetailEntity.setJurnalDetailId(jurnalDetailDao.getNextJurnalDetailId());
-                jurnalDetailEntity.setNoJurnal(jurnalId);
-                jurnalDetailEntity.setRekeningId(data.getRekeningId());
-                jurnalDetailEntity.setMasterId(data.getMasterId());
-                jurnalDetailEntity.setNoNota(data.getNoNota());
-                jurnalDetailEntity.setJumlahDebit(BigDecimal.ZERO);
-                jurnalDetailEntity.setJumlahKredit(jumlahPembayaran);
-
-                jurnalDetailEntity.setFlag(bean.getFlag());
-                jurnalDetailEntity.setAction(bean.getAction());
-                jurnalDetailEntity.setCreatedWho(bean.getCreatedWho());
-                jurnalDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                jurnalDetailEntity.setCreatedDate(bean.getCreatedDate());
-                jurnalDetailEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    jurnalDetailDao.addAndSave(jurnalDetailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-                }
-            }
-            if (pembayaranUtangPiutangDetailList.size()!=0){
-                // Membuat Jurnal Lawan //
-                ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
-                jurnalDetailEntity.setJurnalDetailId(jurnalDetailDao.getNextJurnalDetailId());
-                jurnalDetailEntity.setNoJurnal(jurnalId);
-                for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntityList){
-                    jurnalDetailEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
-                }
-                jurnalDetailEntity.setMasterId(null);
-                jurnalDetailEntity.setNoNota(null);
-                jurnalDetailEntity.setJumlahDebit(bean.getBayar());
-                jurnalDetailEntity.setJumlahKredit(BigDecimal.ZERO);
-
-                jurnalDetailEntity.setFlag(bean.getFlag());
-                jurnalDetailEntity.setAction(bean.getAction());
-                jurnalDetailEntity.setCreatedWho(bean.getCreatedWho());
-                jurnalDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                jurnalDetailEntity.setCreatedDate(bean.getCreatedDate());
-                jurnalDetailEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    jurnalDetailDao.addAndSave(jurnalDetailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-                }
-
-                ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
-                String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
-                for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntityList){
-                    pembayaranUtangPiutangDetailEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
-                }
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
-                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
-                pembayaranUtangPiutangDetailEntity.setMasterId(null);
-                pembayaranUtangPiutangDetailEntity.setNoNota(null);
-                pembayaranUtangPiutangDetailEntity.setDebit(bean.getBayar());
-                pembayaranUtangPiutangDetailEntity.setKredit(BigDecimal.ZERO);
-
-                pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
-                pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
-                pembayaranUtangPiutangDetailEntity.setCreatedWho(bean.getCreatedWho());
-                pembayaranUtangPiutangDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
-                pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-                }
-            }
-        }
-        logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] end process <<<");
         return null;
     }
 
@@ -555,5 +372,103 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    @Override
+    public String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] start process >>>");
+        String jurnalId = null;
+
+        if (bean!=null) {
+            String pembayaranUtangPiutangId;
+
+            try {
+                // Generating ID, get from postgre sequence
+                jurnalId=jurnalDao.getNextJurnalId();
+                pembayaranUtangPiutangId = pembayaranUtangPiutangDao.getNextPembayaranUtangPiutangId();
+            } catch (HibernateException e) {
+                logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence pembayaranUtangPiutangId id, please info to your admin..." + e.getMessage());
+            }
+
+            // creating object entity serializable
+            ImPembayaranUtangPiutangEntity imPembayaranUtangPiutangEntity = new ImPembayaranUtangPiutangEntity();
+            imPembayaranUtangPiutangEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
+            imPembayaranUtangPiutangEntity.setTipeTransaksi(bean.getTipeTransaksi());
+            imPembayaranUtangPiutangEntity.setTanggal(bean.getTanggal());
+            imPembayaranUtangPiutangEntity.setKodeRekeningKas(bean.getKodeRekeningKas());
+            imPembayaranUtangPiutangEntity.setBayar(bean.getBayar());
+            imPembayaranUtangPiutangEntity.setKeterangan(bean.getKeterangan());
+            imPembayaranUtangPiutangEntity.setNoSlipBank(bean.getNoSlipBank());
+            imPembayaranUtangPiutangEntity.setBranchId(bean.getBranchId());
+            imPembayaranUtangPiutangEntity.setNoJurnal(jurnalId);
+
+            imPembayaranUtangPiutangEntity.setFlag(bean.getFlag());
+            imPembayaranUtangPiutangEntity.setAction(bean.getAction());
+            imPembayaranUtangPiutangEntity.setCreatedWho(bean.getCreatedWho());
+            imPembayaranUtangPiutangEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            imPembayaranUtangPiutangEntity.setCreatedDate(bean.getCreatedDate());
+            imPembayaranUtangPiutangEntity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                // insert into database
+                pembayaranUtangPiutangDao.addAndSave(imPembayaranUtangPiutangEntity);
+            } catch (HibernateException e) {
+                logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+            }
+
+
+            for (PembayaranUtangPiutangDetail data : pembayaranUtangPiutangDetailList){
+                BigDecimal jumlahPembayaran = new BigDecimal(data.getStJumlahPembayaran().replace(".",""));
+                ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetailEntity = new ImPembayaranUtangPiutangDetailEntity();
+                String pembayaranUtangPiutangDetailId = pembayaranUtangPiutangDetailDao.getNextPembayaranUtangPiutangDetailId();
+                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetailId);
+                pembayaranUtangPiutangDetailEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
+                pembayaranUtangPiutangDetailEntity.setMasterId(data.getMasterId());
+                pembayaranUtangPiutangDetailEntity.setNoNota(data.getNoNota());
+                pembayaranUtangPiutangDetailEntity.setRekeningId(data.getRekeningId());
+                pembayaranUtangPiutangDetailEntity.setJumlahPembayaran(jumlahPembayaran);
+
+                pembayaranUtangPiutangDetailEntity.setFlag(bean.getFlag());
+                pembayaranUtangPiutangDetailEntity.setAction(bean.getAction());
+                pembayaranUtangPiutangDetailEntity.setCreatedWho(bean.getCreatedWho());
+                pembayaranUtangPiutangDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
+                pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
+
+
+                // Cek apakah nota sudah pernah dibayarkan sebelumnya
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("rekening_id",data.getRekeningId());
+                hsCriteria.put("master_id",data.getMasterId());
+                hsCriteria.put("no_nota",data.getNoNota());
+                hsCriteria.put("flag","Y");
+
+                try {
+                    List<ItJurnalDetailEntity> jurnalDetailEntityList = jurnalDetailDao.getByCriteria(hsCriteria);
+                    if (jurnalDetailEntityList.size()!=0){
+                        for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
+                            jurnalId=null;
+                            logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, duplicate pembayaran");
+                            throw new GeneralBOException("sudah pernah dibayarkan dengan nomor jurnal "+jurnalDetailEntity.getNoJurnal()+", please info to your admin...");
+                        }
+                    }
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                }
+
+                try {
+                    // insert into database
+                    pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] end process <<<");
+        return jurnalId;
     }
 }

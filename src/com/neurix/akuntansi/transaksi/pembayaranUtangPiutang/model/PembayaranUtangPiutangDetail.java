@@ -16,21 +16,11 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String pembayaranUtangPiutangId;
     private String masterId;
     private String noNota;
-    private BigDecimal debit;
-    private BigDecimal kredit;
 
     private String stJumlahPembayaran;
     private String masterName;
     private String rekeningId;
     private String kodeRekening;
-
-    public BigDecimal getKredit() {
-        return kredit;
-    }
-
-    public void setKredit(BigDecimal kredit) {
-        this.kredit = kredit;
-    }
 
     public String getRekeningId() {
         return rekeningId;
@@ -96,11 +86,4 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
         this.noNota = noNota;
     }
 
-    public BigDecimal getDebit() {
-        return debit;
-    }
-
-    public void setDebit(BigDecimal debit) {
-        this.debit = debit;
-    }
 }
