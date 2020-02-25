@@ -186,7 +186,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
         return riwayatTindakanList;
-
     }
 
     public List<TransaksiObatDetail> getListDetailResep(String idResep) {
