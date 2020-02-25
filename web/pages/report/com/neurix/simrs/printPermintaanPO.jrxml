@@ -46,8 +46,7 @@ INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approva
 INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON c.id_obat = d.id_obat
 INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty_approve FROM mt_simrs_transaksi_obat_detail_batch
 GROUP BY id_transaksi_obat_detail) e ON c.id_transaksi_obat_detail = e.id_transaksi_obat_detail
-WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}
-]]>
+WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 	</queryString>
 	<field name="id_approval_obat" class="java.lang.String"/>
 	<field name="id_permintaan_obat_vendor" class="java.lang.String"/>

@@ -1,5 +1,35 @@
 // rekam medic start
 
+function carouselSwipe(id) {
+
+    var currentImg = document.getElementsByClassName('carousel-img-displayed')[0].id.substring(9);
+    var newImg = parseInt(currentImg);
+
+    if (id == 'carousel-arrow-next') {
+        newImg++;
+        if (newImg >= document.getElementsByClassName('carousel-img').length) {
+            newImg = 0;
+        }
+    } else if (id == 'carousel-arrow-prev') {
+        newImg--;
+        if (newImg<0) {
+            newImg = document.getElementsByClassName('carousel-img').length-1;
+        }
+    }
+
+    document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-hidden';
+    var displayedCarousel = document.getElementById('carousel-'+newImg);
+    displayedCarousel.className = 'carousel-img carousel-img-hidden';
+    setTimeout(function() {
+        displayedCarousel.className = 'carousel-img carousel-img-displayed';
+    },20);
+
+    setTimeout(function() {
+        document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-noDisplay';
+    },520);
+
+}
+
 function initRekamMedic() {
     console.log("initRekamMedic ==> klik");
     var idPasien = $("#id_pasien").val();
@@ -63,20 +93,28 @@ function getByTypeRekamMedic(type) {
         CheckupAction.getListRekamMedicLama(idPasien, function (response) {
             // console.log(response);
 
-            thead = "<tr></tr><td>ID</td>"+
+            thead = "<tr><td>ID</td>"+
                     "<td>Created Date</td>"+
-                    "<td>View Detail RM</td></tr>";
+                    "<td align='center' width='20%'>View</td></tr>";
 
             $.each(response, function (i, item) {
+
+                var tanggal = "";
+
+                if(item.stDate != null){
+                    tanggal = $.datepicker.formatDate("dd-mm-yy", new Date(item.stDate));
+                }
+
                 table += "<tr>" +
                     "<td>" + item.id + "</td>" +
-                    "<td>" + item.stDate + "</td>" +
-                    "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedicLama('"+item.id+"')\">View</button></td>" +
+                    "<td>" + tanggal + "</td>" +
+                    "<td align='center'>" + "<img class=\"hvr-grow\" onclick=\"viewDetailRekamMedicLama('"+item.id+"')\" src=\"/simrs/pages/images/icons8-view-25.png\" style=\"cursor: pointer;\"/>" + "</td>" +
+                    // "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedicLama('"+item.id+"')\">View</button></td>" +
                     "</tr>";
             });
 
-            $("#body-rekam-medic").html("");
-            $("#body-rekam-medic").html(thead+table);
+            $("#body-rekam-medic-lama").html("");
+            $("#body-rekam-medic-lama").html(thead+table);
         });
     }
     if (type == "baru"){
@@ -84,11 +122,11 @@ function getByTypeRekamMedic(type) {
         CheckupAction.listRekamMedic(idPasien, function (response) {
             // console.log(response);
 
-            thead = "<tr></tr><td>No Checkup</td>"+
+            thead = "<tr><td>No Checkup</td>"+
                     "<td>Diagnosa Terakhir</td>"+
-                    "<td>Tanggal Masuk</td>"+
-                    "<td>Tanggal Keluar</td>"+
-                    "<td>View Details RM</td></tr>";
+                    "<td>Tgl Masuk</td>"+
+                    "<td>Tgl Keluar</td>"+
+                    "<td width='10%' align='center'>View</td></tr>";
 
             $.each(response, function (i, item) {
                 var noCheckup = "";
@@ -114,15 +152,16 @@ function getByTypeRekamMedic(type) {
                     "<td>" + dignosa + "</td>" +
                     "<td align='center'>" + dateFormatMasuk + "</td>" +
                     "<td align='center'>" + dateFormatKeluar + "</td>" +
-                    "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
+                    "<td align='center'>" + "<img class=\"hvr-grow\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\" src=\"/simrs/pages/images/icons8-view-25.png\" style=\"cursor: pointer;\"/>" + "</td>" +
+                    // "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
                     "</tr>";
 
                 namaPasien = item.namaPasien;
             });
 
             $('#nama_medik').html(namaPasien);
-            $("#body-rekam-medic").html("");
-            $("#body-rekam-medic").html(thead+table);
+            $("#body-rekam-medic-baru").html("");
+            $("#body-rekam-medic-baru").html(thead+table);
         });
     }
 
@@ -135,16 +174,21 @@ function viewDetailRekamMedicLama(headId) {
     CheckupAction.getListUploadRekamMedic(headId, function (response) {
         if (response.length > 0){
             $.each(response, function (i, item) {
-                if (i == 0){
-                    indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'" class="active"></li>';
-                    str += '<div class="carousel-item active">'+
-                           '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
-                           '</div>';
-                } else {
-                    indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'"></li>';
-                    str += '<div class="carousel-item">'+
-                        '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
-                        '</div>';
+                // if (i == 0){
+                //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'" class="active"></li>';
+                //     str += '<div class="carousel-item active">'+
+                //            '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                //            '</div>';
+                // } else {
+                //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'"></li>';
+                //     str += '<div class="carousel-item">'+
+                //         '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                //         '</div>';
+                // }
+                if(i == 0){
+                    str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-displayed" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
+                }else{
+                    str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-noDisplay" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
                 }
             });
             $("#modal-detail-rekam-medic-lama").modal("show");
