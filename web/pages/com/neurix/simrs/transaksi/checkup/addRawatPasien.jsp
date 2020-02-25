@@ -48,15 +48,87 @@
             width: 100%;
         }
 
-        /*.dropdown-content a:hover {background-color: #f1f1f1}*/
+        .bungkus {
+            width: 800px;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
 
-        /*.dropdown:hover .dropdown-content {*/
-        /*display: block;*/
-        /*}*/
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            background: #ddd;
+        }
 
-        /*.dropdown:hover .dropbtn {*/
-        /*background-color: #3e8e41;*/
-        /*}*/
+        /* Images */
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            -webkit-transition: opacity ease-out 0.5s;
+            transition: opacity ease-out 0.5s;
+        }
+
+        .carousel-img-displayed {
+            display: block;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .carousel-img-hidden {
+            display: block;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .carousel-img-noDisplay {
+            display: none;
+        }
+
+        /* Flèches de défilement */
+
+        .carousel-arrow {
+            z-index: 3;
+            display: block;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: -18px;
+            border-radius: 50%;
+            border: 0;
+            background-color: #fff;
+            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 16px 16px;
+            cursor: pointer;
+            -webkit-transition: background-size 0.15s ease-out;
+            transition: background-size 0.15s ease-out;
+        }
+
+        .carousel-arrow:hover,
+        .carousel-arrow:focus {
+            background-size: 22px 22px;
+        }
+
+        .carousel-arrow-next {
+            right: 20px;
+        }
+
+        .carousel-arrow-prev {
+            left: 20px;
+            -webkit-transform: rotateZ(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotateZ(180deg);
+        }
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -1076,17 +1148,44 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>
-                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead id="label-rekam-medic">
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li><a href="#medik_baru" data-toggle="tab" onclick="getByTypeRekamMedic('baru')">Rekam Medik Baru</a></li>
+                            <li><a href="#medik_lama" data-toggle="tab" onclick="getByTypeRekamMedic('lama')">Rekam Medik Lama</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="medik_baru">
+                                <table class="table table-striped table-bordered">
+                                <thead id="label-rekam-medic-baru">
+                                </thead>
+                                <tbody id="body-rekam-medic-baru">
+                                </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="medik_lama">
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-md-8">
+                                        <table class="table table-striped table-bordered">
+                                            <thead id="label-rekam-medic-lama">
+                                            </thead>
+                                            <tbody id="body-rekam-medic-lama">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>--%>
+                    <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>--%>
+                    <%--<table class="table table-striped table-bordered" id="tabel_rese_detail">--%>
+                        <%--<thead id="label-rekam-medic">--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body-rekam-medic">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1218,14 +1317,25 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Lama Pasien</h4>
             </div>
             <div class="modal-body">
+                <div class="bungkus">
+                    <div class="carousel">
+                        <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
+                        <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
+                        <div id="body-img-rm"></div>
+                        <%--<img id="carousel-1" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/sea_ej0zoc.jpg" alt="Sea" />--%>
+                        <%--<img id="carousel-2" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/night_pw1bpm.jpg" alt="Night" />--%>
+                        <%--<img id="carousel-3" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/mountain_dekhfd.jpg" alt="Moutain" />--%>
+                        <%--<img id="carousel-4" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/desert_zy3uth.jpg" alt="Desert" />--%>
+                    </div>
+                </div>
 
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators" id="indicator-img">
+                <%--<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">--%>
+                    <%--<ol class="carousel-indicators" id="indicator-img">--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
-                    </ol>
-                    <div class="carousel-inner" id="body-img-rm">
+                    <%--</ol>--%>
+                    <%--<div class="carousel-inner" id="body-img-rm">--%>
                         <%--<div class="carousel-item active">--%>
                             <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
                         <%--</div>--%>
@@ -1235,16 +1345,16 @@
                         <%--<div class="carousel-item">--%>
                             <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
                         <%--</div>--%>
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
+                    <%--</div>--%>
+                    <%--<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">--%>
+                        <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
+                        <%--<span class="sr-only">Previous</span>--%>
+                    <%--</a>--%>
+                    <%--<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">--%>
+                        <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
+                        <%--<span class="sr-only">Next</span>--%>
+                    <%--</a>--%>
+                <%--</div>--%>
                 <%--<div id="body-img-rm">--%>
 
                 <%--</div>--%>
@@ -1307,6 +1417,7 @@
         initlistPenjamin();
         initListDokter();
         console.log(isOnline);
+
 
     });
 
