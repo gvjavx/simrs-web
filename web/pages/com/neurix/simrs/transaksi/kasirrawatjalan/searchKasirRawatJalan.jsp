@@ -382,6 +382,7 @@
 
     }
 
+    var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
         var table = "";
         var dataTindakan = [];
@@ -440,6 +441,8 @@
                 }
             });
 
+
+
             KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
                 dataTindakan = response;
                 console.log(response);
@@ -484,6 +487,7 @@
                     });
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
+                    mapBiaya.push({"type":"kurang_bayar","nilai":total});
                 }
             });
 
