@@ -16,7 +16,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#uang_muka').addClass('active');
+            $('#pembayaran_uang_muka, #pembayaran_active').addClass('active');
+            $('#pembayaran_open').addClass('menu-open');
         });
 
 
@@ -50,7 +51,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="uangmukaForm" method="post" namespace="/uangmuka" action="searchUangMuka_uangmuka.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Pasien</label>
                                     <div class="col-sm-4">
@@ -115,7 +116,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="kasirjalanForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="uangmukaForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
                                             <i class="fa fa-search"></i>
                                             Search

@@ -16,6 +16,7 @@
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:uangMukaDao-ref="uangMukaDao"
     />
 
     <bean id="kasirRawatJalanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

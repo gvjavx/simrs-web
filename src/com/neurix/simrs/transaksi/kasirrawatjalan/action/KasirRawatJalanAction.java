@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -129,6 +130,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+        headerDetailCheckup.setTypeTransaction("kasir");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -186,7 +188,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
         return riwayatTindakanList;
-
     }
 
     public List<TransaksiObatDetail> getListDetailResep(String idResep) {
@@ -306,6 +307,54 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         return "print_invoice";
+    }
+
+    public String searchUangMuka() {
+
+        logger.info("[KasirRawatJalanAction.searchUangMuka] start process >>>");
+
+        HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
+
+        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getListUangPendaftaran(headerDetailCheckup);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[KasirRawatJalanAction.searchUangMuka] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+
+        logger.info("[KasirRawatJalanAction.searchUangMuka] end process <<<");
+        return "search";
+
+    }
+
+    public List<UangMuka> getListUangMuka(String idDetailCheckup) {
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
+        UangMuka uangMuka = new UangMuka();
+        uangMuka.setIdDetailCheckup(idDetailCheckup);
+        List<UangMuka> obatDetailList = new ArrayList<>();
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                obatDetailList = kasirRawatJalanBo.getListUangMuka(uangMuka);
+            } catch (GeneralBOException e) {
+                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+            }
+        }
+
+        return obatDetailList;
     }
 
     private HeaderCheckup getHeaderCheckup(String noCheckup) {

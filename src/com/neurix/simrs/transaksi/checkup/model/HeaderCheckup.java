@@ -91,6 +91,15 @@ public class HeaderCheckup {
     private String noMr;
 
     private String isOnline;
+    private BigInteger uangMuka;
+
+    public BigInteger getUangMuka() {
+        return uangMuka;
+    }
+
+    public void setUangMuka(BigInteger uangMuka) {
+        this.uangMuka = uangMuka;
+    }
 
     private String idPelayananBpjs;
 

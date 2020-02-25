@@ -898,7 +898,7 @@ public class CheckupAction extends BaseMasterAction {
 
                     }
 
-                }else{
+                } else {
                     addActionError("Error, " + "PPK Pelayanan Tidak Ada");
                     return ERROR;
                 }
@@ -966,7 +966,7 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
-            checkup.setUrlKtp(checkup.getUrlKtp());
+//                checkup.setUrlKtp(checkup.getUrlKtp());
 
             String fileName = "";
             if (this.fileUploadDoc != null) {

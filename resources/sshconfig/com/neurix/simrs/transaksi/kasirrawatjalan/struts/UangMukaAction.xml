@@ -73,7 +73,7 @@
                 class="com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/searchKasirRawatJalan.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/searchUangMuka.jsp</result>
 
             <result name="print_invoice" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printInvoiceRawatJalan.jasper</param>

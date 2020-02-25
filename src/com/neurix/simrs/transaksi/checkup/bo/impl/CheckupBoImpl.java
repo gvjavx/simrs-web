@@ -24,8 +24,10 @@ import com.neurix.simrs.transaksi.checkup.dao.CheckupAlergiDao;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
@@ -109,6 +111,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private DokterDao dokterDao;
     private RekamMedicLamaDao rekamMedicLamaDao;
     private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
+    private UangMukaDao uangMukaDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -463,12 +466,29 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat" +e.getMessage());
                                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving tindakan rawat"+ e.getMessage());
                             }
-
                         }
                     }
                 }
-            }
 
+                if (bean.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 1){
+                    ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+                    uangMukaPendaftaranEntity.setId("UMK"+uangMukaDao.getNextId());
+                    uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    uangMukaPendaftaranEntity.setJumlah(bean.getUangMuka());
+                    uangMukaPendaftaranEntity.setFlag("Y");
+                    uangMukaPendaftaranEntity.setAction("C");
+                    uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+                    uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+                    uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+                    uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+                    try {
+                        uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                    } catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
+                    }
+                }
+            }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
     }
@@ -1879,5 +1899,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setUploadRekamMedicLamaDao(UploadRekamMedicLamaDao uploadRekamMedicLamaDao) {
         this.uploadRekamMedicLamaDao = uploadRekamMedicLamaDao;
+    }
+
+    public void setUangMukaDao(UangMukaDao uangMukaDao) {
+        this.uangMukaDao = uangMukaDao;
     }
 }
