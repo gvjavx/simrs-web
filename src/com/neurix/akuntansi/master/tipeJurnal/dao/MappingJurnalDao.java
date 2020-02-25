@@ -9,6 +9,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -104,5 +107,19 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
             result=null;
         }
         return result;
+    }
+
+    // Generate surrogate id from postgre
+    public String getNextInvoiceId(Date date,String transId) throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_invoice')");
+        DateFormat dfTahun = new SimpleDateFormat("yy");
+        DateFormat dfBulan = new SimpleDateFormat("MM");
+        String tahun = dfTahun.format(date);
+        String bulan = dfBulan.format(date);
+        String tipeJurnal = tipeJurnalByTransId(transId);
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+
+        return tipeJurnal+tahun+bulan+sId;
     }
 }

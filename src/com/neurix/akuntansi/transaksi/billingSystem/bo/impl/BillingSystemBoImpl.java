@@ -74,7 +74,20 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     }
 
     @Override
-    //jurnal untuk pembayaran utang piutang
+    public String createInvoiceNumber (String transId){
+        logger.info("[PembayaranUtangPiutangBoImpl.createInvoiceNumber] start process >>>");
+        String invoice ="";
+        try {
+            invoice = mappingJurnalDao.tipeJurnalByTransId(transId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.createInvoiceNumber] end process >>>");
+        return invoice;
+    }
+
+    @Override
     public String createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister){
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String status="success";
@@ -297,6 +310,5 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createClosingRawatJalanUmumTanpaObat]"+status);
             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
         }
-
     }
 }
