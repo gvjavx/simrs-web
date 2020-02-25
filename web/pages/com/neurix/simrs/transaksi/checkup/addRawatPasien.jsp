@@ -1030,6 +1030,7 @@
                             <%--from bpjs--%>
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
+                            <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
 
                             <div class="box-header with-border"></div>
                             <div class="box-body">
@@ -1498,12 +1499,14 @@
                         title = "Info!";
                         warnClass = "alert-success";
                         msg = response.message;
+                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
                     }else{
                         val = "tidak ditemukan";
                         icon = "fa-warning";
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
+                        $('#idPelayananBpjs').val("IGD");
                     }
 
                     var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
