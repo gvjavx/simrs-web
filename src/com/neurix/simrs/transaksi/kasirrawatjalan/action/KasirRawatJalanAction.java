@@ -367,7 +367,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya){
 
         CrudResponse response = new CrudResponse();
 
@@ -388,6 +388,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("biaya", new BigInteger(biaya));
 
         try {
             billingSystemBo.createJurnal(transId,hsCriteria,CommonUtil.userBranchLogin(),"Uang Muka untuk id_pasien : " + idPasien,"Y","");
