@@ -1110,25 +1110,24 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public List<HeaderCheckup> listDataPasien(String noCheckup, String idDetailCheckup) {
+    public HeaderCheckup listDataPasien(String idDetailCheckup) {
         logger.info("[CheckupAction.listDataPasien] start process >>>");
-
-        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+//        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-        headerCheckup.setIdDetailCheckup(idDetailCheckup);
+//        headerCheckup.setNoCheckup(noCheckup);
+//        headerCheckup.setIdDetailCheckup(idDetailCheckup);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
 
         try {
-            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
+            headerCheckup = checkupBo.getDataDetailPasien(idDetailCheckup);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.listDataPasien] Error when searching detail pasien, Found problem when searching data, please inform to your admin.", e);
         }
 
         logger.info("[CheckupAction.listDataPasien] end process >>>");
-        return headerCheckupList;
+        return headerCheckup;
 
     }
 

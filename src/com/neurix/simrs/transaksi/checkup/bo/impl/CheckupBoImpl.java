@@ -743,6 +743,21 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return result;
     }
 
+    @Override
+    public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException {
+        HeaderCheckup checkup = new HeaderCheckup();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                checkup = headerCheckupDao.getDataDetailPasien(idDetailCheckup);
+            }catch (HibernateException e){
+                logger.error("Found Erro when sear data pasien "+e.getMessage());
+            }
+        }
+
+        return checkup;
+    }
+
     private String getNextDetailCheckupId(){
         String id = "";
         try {

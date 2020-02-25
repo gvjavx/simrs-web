@@ -389,87 +389,151 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.add] start process >>>");
 
         //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+
         String id = getId();
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
         String jk = "";
-        if (id != null && !"".equalsIgnoreCase(id)) {
 
-            if (listOfResult != null) {
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found error when detail pasien " + e.getMessage());
+        }
 
-                for (HeaderDetailCheckup detailCheckup : listOfResult) {
-                    if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+        if (checkup != null) {
 
-                        detailCheckup.setStatusPeriksa("1");
-                        detailCheckup.setFlag("Y");
-                        detailCheckup.setAction("U");
-                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(checkup.getNoCheckup());
+            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
+            detailCheckup.setStatusPeriksa("1");
+            detailCheckup.setFlag("Y");
+            detailCheckup.setAction("U");
+            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
-                        try {
-                            checkupDetailBoProxy.saveEdit(detailCheckup);
-                        } catch (GeneralBOException e) {
-                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
-                        }
-
-                        HeaderCheckup headerCheckup = getHeaderCheckup(detailCheckup.getNoCheckup());
-                        detailCheckup.setIdPasien(headerCheckup.getIdPasien());
-                        detailCheckup.setNamaPasien(headerCheckup.getNama());
-                        detailCheckup.setAlamat(headerCheckup.getJalan());
-                        detailCheckup.setDesa(headerCheckup.getNamaDesa());
-                        detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
-                        detailCheckup.setKota(headerCheckup.getNamaKota());
-                        detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
-                        detailCheckup.setIdPelayanan(headerCheckup.getIdPelayanan());
-                        detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        if (headerCheckup.getJenisKelamin() != null) {
-                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-                                jk = "Perempuan";
-                            } else {
-                                jk = "laki-Laki";
-                            }
-                        }
-                        detailCheckup.setJenisKelamin(jk);
-                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
-                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-                        detailCheckup.setNik(headerCheckup.getNoKtp());
-                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
-                        detailCheckup.setTinggi(headerCheckup.getTinggi());
-                        detailCheckup.setBerat(headerCheckup.getBerat());
-                        detailCheckup.setNoSep(headerCheckup.getNoSep());
-
-                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-
-                        setHeaderDetailCheckup(detailCheckup);
-
-                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
-                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
-                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
-                        }
-
-                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
-
-                        try {
-                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
-                        } catch (GeneralBOException e) {
-                            logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
-                        }
-
-                        setTarifTotalTindakan(totalTarif);
-                        break;
-                    }
-                }
-
-            } else {
-                setHeaderDetailCheckup(new HeaderDetailCheckup());
+            try {
+                checkupDetailBoProxy.saveEdit(detailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.add] Error when update checkup detail");
             }
-        } else {
+
+            detailCheckup.setIdPasien(checkup.getIdPasien());
+            detailCheckup.setNamaPasien(checkup.getNama());
+            detailCheckup.setAlamat(checkup.getJalan());
+            detailCheckup.setDesa(checkup.getNamaDesa());
+            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
+            detailCheckup.setKota(checkup.getNamaKota());
+            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
+            detailCheckup.setIdPelayanan(checkup.getIdPelayanan());
+            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
+            if (checkup.getJenisKelamin() != null) {
+                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Perempuan";
+                } else {
+                    jk = "laki-Laki";
+                }
+            }
+            detailCheckup.setJenisKelamin(jk);
+            detailCheckup.setTempatLahir(checkup.getTempatLahir());
+            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            detailCheckup.setNik(checkup.getNoKtp());
+            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+            detailCheckup.setUrlKtp(checkup.getUrlKtp());
+            detailCheckup.setTinggi(checkup.getTinggi());
+            detailCheckup.setBerat(checkup.getBerat());
+            detailCheckup.setNoSep(checkup.getNoSep());
+            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            setHeaderDetailCheckup(detailCheckup);
+
+        }else{
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
+
+
+//        if (id != null && !"".equalsIgnoreCase(id)) {
+//
+//            if (listOfResult != null) {
+//
+//                for (HeaderDetailCheckup detailCheckup : listOfResult) {
+//                    if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+//
+//                        detailCheckup.setStatusPeriksa("1");
+//                        detailCheckup.setFlag("Y");
+//                        detailCheckup.setAction("U");
+//                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+//                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+//
+//                        try {
+//                            checkupDetailBoProxy.saveEdit(detailCheckup);
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
+//                        }
+//
+//                        HeaderCheckup headerCheckup = getHeaderCheckup(detailCheckup.getNoCheckup());
+//                        detailCheckup.setIdPasien(headerCheckup.getIdPasien());
+//                        detailCheckup.setNamaPasien(headerCheckup.getNama());
+//                        detailCheckup.setAlamat(headerCheckup.getJalan());
+//                        detailCheckup.setDesa(headerCheckup.getNamaDesa());
+//                        detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
+//                        detailCheckup.setKota(headerCheckup.getNamaKota());
+//                        detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
+//                        detailCheckup.setIdPelayanan(headerCheckup.getIdPelayanan());
+//                        detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+//                        if (headerCheckup.getJenisKelamin() != null) {
+//                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
+//                                jk = "Perempuan";
+//                            } else {
+//                                jk = "laki-Laki";
+//                            }
+//                        }
+//                        detailCheckup.setJenisKelamin(jk);
+//                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
+//                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
+//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+//                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
+//                        detailCheckup.setNik(headerCheckup.getNoKtp());
+//                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+//                        detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
+//                        detailCheckup.setTinggi(headerCheckup.getTinggi());
+//                        detailCheckup.setBerat(headerCheckup.getBerat());
+//                        detailCheckup.setNoSep(headerCheckup.getNoSep());
+//
+//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+//                        detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+//
+//                        setHeaderDetailCheckup(detailCheckup);
+//
+//                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
+//                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
+//                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
+//                        }
+//
+//                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+//
+//                        try {
+//                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
+//                        }
+//
+//                        setTarifTotalTindakan(totalTarif);
+//                        break;
+//                    }
+//                }
+//
+//            } else {
+//                setHeaderDetailCheckup(new HeaderDetailCheckup());
+//            }
+//        } else {
+//            setHeaderDetailCheckup(new HeaderDetailCheckup());
+//        }
 
         logger.info("[CheckupDetailAction.add] end process <<<");
 

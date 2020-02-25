@@ -78,7 +78,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[PembayaranUtangPiutangBoImpl.createInvoiceNumber] start process >>>");
         String invoice ="";
         try {
-            invoice = mappingJurnalDao.tipeJurnalByTransId(transId);
+            invoice = mappingJurnalDao.getNextInvoiceId(transId);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

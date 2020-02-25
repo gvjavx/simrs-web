@@ -399,33 +399,32 @@
             var url = '<s:url value="/pages/images/icon_payment.ico"/>';
             $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
 
-            CheckupAction.listDataPasien(idCheckup, function (response) {
-                dataPasien = response;
-                if (dataPasien != null) {
-                    $.each(dataPasien, function (i, item) {
-                        var tanggal = item.tglLahir;
+            CheckupAction.listDataPasien(idDetailCheckup, function (response) {
+                if (response != null) {
+                    // $.each(dataPasien, function (i, item) {
+                        var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                        noCheckup = item.noCheckup;
-                        nik = item.noKtp;
-                        namaPasien = item.nama;
+                        noCheckup = response.noCheckup;
+                        nik = response.noKtp;
+                        namaPasien = response.nama;
 
-                        if (item.jenisKelamin == "L") {
+                        if (response.jenisKelamin == "L") {
                             jenisKelamin = "Laki-Laki";
                         } else {
                             jenisKelamin = "Perempuan";
                         }
 
-                        tglLahir = item.tempatLahir + ", " + dateFormat;
-                        agama = item.agama;
-                        suku = item.suku;
-                        alamat = item.jalan;
-                        provinsi = item.namaProvinsi;
-                        kabupaten = item.namaKota;
-                        kecamatan = item.namaKecamatan;
-                        desa = item.namaDesa;
-                        noSep = item.noSep;
-                        jenisPasien = item.jenisTransaksi;
-                    });
+                        tglLahir = response.tempatLahir + ", " + dateFormat;
+                        agama = response.agama;
+                        suku = response.suku;
+                        alamat = response.jalan;
+                        provinsi = response.namaProvinsi;
+                        kabupaten = response.namaKota;
+                        kecamatan = response.namaKecamatan;
+                        desa = response.namaDesa;
+                        noSep = response.noSep;
+                        jenisPasien = response.idJenisPeriksaPasien;
+                    // });
                 }
             });
 
@@ -466,7 +465,7 @@
 
             $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
             $('#fin_no_sep').html(noSep);
-            $('#fin_no_checkup').html(idCheckup);
+            $('#fin_no_checkup').html(idDetailCheckup);
             $('#fin_nik').html(nik);
             $('#fin_nama').html(namaPasien);
             $('#fin_jenis_kelamin').html(jenisKelamin);
