@@ -240,7 +240,7 @@
     <section class="content-header">
         <h1>
             Absensi
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
 

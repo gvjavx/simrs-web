@@ -82,61 +82,75 @@
 	<pageHeader>
 		<band height="90" splitType="Stretch">
 			<textField>
-				<reportElement x="138" y="0" width="275" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="138" y="5" width="275" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="99" height="35" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="0" y="6" width="83" height="37" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="154" y="25" width="100" height="20" uuid="08a801a1-1352-4ccf-8317-e83b444634fd"/>
+				<reportElement x="154" y="30" width="100" height="20" uuid="08a801a1-1352-4ccf-8317-e83b444634fd"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalDari}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="301" y="25" width="100" height="20" uuid="974644d5-e392-478a-a3e2-6c43b6a05b51"/>
+				<reportElement x="301" y="30" width="100" height="20" uuid="974644d5-e392-478a-a3e2-6c43b6a05b51"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalSelesai}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="254" y="25" width="47" height="20" uuid="458665ae-75e6-44e2-b2c2-6b41190bd5cb"/>
+				<reportElement x="254" y="30" width="47" height="20" uuid="458665ae-75e6-44e2-b2c2-6b41190bd5cb"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[s/d]]></text>
 			</staticText>
 			<image>
-				<reportElement x="482" y="0" width="56" height="65" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="482" y="5" width="52" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Tanggal : " + new java.util.Date(),
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="1" y="30" width="288" height="20" uuid="2060a779-66e0-403e-ba1d-87ac237f6818"/>
+				<reportElement x="1" y="46" width="288" height="20" uuid="2060a779-66e0-403e-ba1d-87ac237f6818"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="44" width="288" height="20" uuid="baca9be7-fe04-4ff1-b328-6f3728d9112c"/>
+				<reportElement x="1" y="36" width="288" height="20" uuid="baca9be7-fe04-4ff1-b328-6f3728d9112c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PT. NUSANTARA MEDICA UTAMA]]></text>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
 			<line>
 				<reportElement x="3" y="72" width="552" height="1" uuid="07479d03-45f1-4646-82d2-719386d6697c"/>
 			</line>
+			<textField>
+				<reportElement x="516" y="55" width="80" height="20" uuid="93a638c5-92b1-457a-ac6b-3c1ef548e810"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="456" y="55" width="79" height="20" uuid="2e42b7a2-af46-4849-8a87-0d5b8f0c23cc"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

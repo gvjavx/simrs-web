@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
-	<property name="ireport.zoom" value="1.071794405000004"/>
+	<property name="ireport.zoom" value="1.7261356071965568"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -98,20 +98,20 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="90" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<textField>
-				<reportElement x="121" y="6" width="298" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="127" y="6" width="298" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="3" y="3" width="106" height="40" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="3" y="6" width="83" height="37" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="498" y="0" width="44" height="46" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="485" y="0" width="50" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "LAPORAN ABSENSI \n"+
@@ -141,28 +141,42 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[s/d]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="3" y="38" width="226" height="20" uuid="e812ef44-c275-408b-9c18-a9f71c63ecea"/>
+				<reportElement x="3" y="46" width="226" height="20" uuid="e812ef44-c275-408b-9c18-a9f71c63ecea"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="51" width="226" height="20" uuid="1e814b5a-41a3-4520-a93f-a43c299ecf2d"/>
+				<reportElement x="3" y="36" width="226" height="20" uuid="1e814b5a-41a3-4520-a93f-a43c299ecf2d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PT. NUSANTARA MEDICA UTAMA]]></text>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="81" width="552" height="1" uuid="8754ab75-3102-4ffd-8638-9d45d6a81ba6"/>
+				<reportElement x="0" y="70" width="552" height="1" uuid="8754ab75-3102-4ffd-8638-9d45d6a81ba6"/>
 			</line>
+			<staticText>
+				<reportElement x="456" y="50" width="79" height="20" uuid="19f5e08f-1ecf-403d-9393-b258902175cd"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="516" y="50" width="80" height="20" uuid="994c6535-aae3-4388-9d2e-1e59888649d9"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="483" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 1" stretchType="RelativeToTallestObject" mode="Opaque" x="3" y="85" width="524" height="284" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="2367c9ae-3a57-455f-a792-5e8afe44639f"/>
+				<reportElement key="table 1" stretchType="RelativeToTallestObject" mode="Opaque" x="3" y="96" width="524" height="284" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="2367c9ae-3a57-455f-a792-5e8afe44639f"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="itemDataset" uuid="88700ba6-8482-437c-849b-2aaaa14c0715">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>

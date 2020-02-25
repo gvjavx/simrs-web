@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contoh" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a8dcfcf1-63fd-4ab7-8dc0-ed8cc0ecc671">
-	<property name="ireport.zoom" value="1.7715610000000017"/>
+	<property name="ireport.zoom" value="1.771561000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="220"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.payrollId" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -327,18 +327,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{tunjangan_tambahan}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd-MMM-yyyy">
-				<reportElement x="372" y="237" width="141" height="20" uuid="94975d51-38f3-4253-9938-7cf0a082ed2f"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{reportParams.alamatSurat}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch">
-			<line>
-				<reportElement x="381" y="44" width="132" height="1" uuid="b0745854-7868-4835-bcfb-65091daabfbc"/>
-			</line>
-		</band>
+		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 </jasperReport>

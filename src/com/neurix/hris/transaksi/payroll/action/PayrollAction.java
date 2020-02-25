@@ -2897,6 +2897,7 @@ public class PayrollAction extends BaseMasterAction{
                 reportParams.put("tahun", payroll.getTahun());
                 reportParams.put("titleReport", "Slip Gaji");
                 reportParams.put("payrollId", id);
+                reportParams.put("date", stTanggal);
                 hasil = "success_print_report_payroll";
             }else if(tipe.equalsIgnoreCase("T")){
 
@@ -2967,6 +2968,7 @@ public class PayrollAction extends BaseMasterAction{
                     reportParams.put("nettoDiterima", nettoDiterima);
                     reportParams.put("tanggalAktif", tanggalAktif);
                     reportParams.put("positionId", positionId);
+                    reportParams.put("date", stTanggal);
 
                     hasil = "success_print_report_payroll_pensiun";
                 }
@@ -3045,6 +3047,7 @@ public class PayrollAction extends BaseMasterAction{
             reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("bulan", bulan);
             reportParams.put("tahun", tahun);
+            reportParams.put("date", stTanggal);
 
             try {
                 preDownload();

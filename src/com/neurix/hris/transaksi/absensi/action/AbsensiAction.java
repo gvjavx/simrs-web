@@ -2256,6 +2256,7 @@ public class AbsensiAction extends BaseMasterAction {
         reportParams.put("tanggalSelesai", getTglTo());
         reportParams.put("itemDataSource", itemData);
         reportParams.put("nip", getNip());
+        reportParams.put("date", stTanggal);
         reportParams.put("nama", nama);
         reportParams.put("posisi", posisi);
         if (golongan!=null){
@@ -2288,7 +2289,7 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[ReportAction.printReportRekapitulasiLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
         List<AbsensiPegawai> listDataAbsensi = new ArrayList();
-        String unit = "",bagian ="",golongan="";
+        String unit = "",bagian ="",golongan="", unitId="";
         bagian=getBagian();
 
 
@@ -2313,6 +2314,7 @@ public class AbsensiAction extends BaseMasterAction {
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
         for (Branch branch:branchList){
             unit=branch.getBranchName();
+            unitId=branch.getBranchId();
         }
         for (Biodata biodata :biodataList){
             AbsensiPegawai search = new AbsensiPegawai();
@@ -2594,7 +2596,25 @@ public class AbsensiAction extends BaseMasterAction {
         if (bagian==null){
             bagian="";
         }
-        reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+        Branch branch = new Branch();
+
+        try{
+            branch = branchBo.getBranchById(unitId,"Y");
+        }catch( HibernateException e){
+
+        }
+        String logo ="";
+        if (unitId.equalsIgnoreCase("RS01")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+        }else if (unitId.equalsIgnoreCase("RS02")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+        }else if (unitId.equalsIgnoreCase("RS03")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+        }else{
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+        }
+        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        reportParams.put("urlLogo", logo);
         reportParams.put("titleReport", "REKAPITULASI LEMBUR");
         reportParams.put("tanggalDari", getTglFrom());
         reportParams.put("tanggalSelesai", getTglTo());

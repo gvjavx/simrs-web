@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
-	<property name="ireport.zoom" value="1.464100000000004"/>
+	<property name="ireport.zoom" value="1.2100000000000035"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="366"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
 	<parameter name="reportParams.bulan" class="java.lang.String"/>
 	<parameter name="reportParams.tahun" class="java.lang.String"/>
+	<parameter name="reportParams.date" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   payroll.*,
@@ -169,11 +170,11 @@ and payroll.flag_payroll = 'Y']]>
 	<pageHeader>
 		<band height="73" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="3" width="77" height="28" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
+				<reportElement x="0" y="3" width="83" height="37" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="733" y="2" width="56" height="46" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
+				<reportElement x="733" y="2" width="50" height="50" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Bulan : " + $F{bulan}+"\nTahun : "+$F{tahun}+"\nNIP:"+$F{nip}
@@ -189,22 +190,36 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[SLIP GAJI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="23" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
+				<reportElement x="0" y="29" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="34" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
+				<reportElement x="0" y="40" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="61" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
+				<reportElement x="0" y="69" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
 			</line>
+			<textField>
+				<reportElement x="757" y="48" width="80" height="20" uuid="8e0ea27b-6977-4a15-86cd-1c8c84dd51a5"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="697" y="48" width="79" height="20" uuid="40a8fec0-1ac2-4838-9dcb-f9708c69676b"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

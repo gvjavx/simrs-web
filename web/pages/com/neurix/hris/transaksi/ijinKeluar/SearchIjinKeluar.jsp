@@ -97,7 +97,7 @@
     <section class="content-header">
         <h1>
             Dispensasi
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

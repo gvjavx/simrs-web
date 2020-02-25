@@ -184,9 +184,9 @@
                     <li><a tes = 'work' href="#keluarga">Keluarga</a></li>
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
                     <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
-                    <li><a href="#reward">Reward</a></li>
+                    <%--<li><a href="#reward">Reward</a></li>
                     <li><a href="#sertifikat">Sertifikat</a></li>
-                    <li><a href="#pelatihanJabatan">Pelatihan Jabatan</a></li>
+                    <li><a href="#pelatihanJabatan">Pelatihan Jabatan</a></li>--%>
 
                 </ul>
 

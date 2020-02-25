@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
 	<property name="ireport.zoom" value="1.6105100000000023"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="378"/>
+	<property name="ireport.x" value="107"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
 	<parameter name="reportParams.bulan" class="java.lang.String"/>
 	<parameter name="reportParams.tahun" class="java.lang.String"/>
 	<parameter name="reportParams.payrollId" class="java.lang.String"/>
+	<parameter name="reportParams.date" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   payroll.*,
@@ -171,7 +172,7 @@ and payroll.payroll_id = $P{reportParams.payrollId}]]>
 	<pageHeader>
 		<band height="73" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="3" width="77" height="28" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
+				<reportElement x="0" y="3" width="83" height="37" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
@@ -191,22 +192,36 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[SLIP GAJI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="23" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
+				<reportElement x="0" y="29" width="233" height="25" uuid="d84b4fd4-7b31-4449-919e-b3c1b878f811"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="34" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
+				<reportElement x="0" y="40" width="233" height="27" uuid="13c9f8eb-981f-4c18-9fb9-57a60e6bd036"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="61" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
+				<reportElement x="0" y="70" width="802" height="1" uuid="32fd2f80-bf3c-4844-9492-86e13f2d58a2"/>
 			</line>
+			<staticText>
+				<reportElement x="695" y="51" width="79" height="20" uuid="14fcd35d-1f6e-4e87-bf27-f90bd879e0f9"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="755" y="51" width="80" height="20" uuid="09168479-e85e-4e75-9139-fd25c542849b"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>

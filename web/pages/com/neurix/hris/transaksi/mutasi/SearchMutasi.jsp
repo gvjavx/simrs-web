@@ -51,7 +51,7 @@ To change this template use File | Settings | File Templates.
     <section class="content-header">
         <h1>
             Mutasi
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -273,7 +273,7 @@ To change this template use File | Settings | File Templates.
                                         <display:table name="listOfSppd" class=" tableSppd table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_mutasi.action" id="row" pagesize="14" style="font-size:10">
 
-                                            <display:column  title="Print">
+                                            <%--<display:column  title="Print">
                                                 <s:url var="urlPrint" namespace="/mutasi" action="printReportMutasi_mutasi" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.mutasiId"/></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
@@ -281,7 +281,7 @@ To change this template use File | Settings | File Templates.
                                                 <s:a href="%{urlPrint}">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                 </s:a>
-                                            </display:column>
+                                            </display:column>--%>
 
                                             <%--<display:column media="html" title="Download SK" style="align= center">
                                                 <s:if test="#attr.row.SK1">
