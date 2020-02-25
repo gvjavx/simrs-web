@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -388,7 +389,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("no_nota", noNota);
-        hsCriteria.put("biaya", new BigInteger(biaya));
+        hsCriteria.put("uang_muka", new BigDecimal(biaya));
 
         try {
             billingSystemBo.createJurnal(transId,hsCriteria,CommonUtil.userBranchLogin(),"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -462,7 +463,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            hsCriteria.put(obj.getString("type").toString(), new BigInteger(obj.getString("nilai").toString()));
+            hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getString("nilai").toString()));
         }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

@@ -217,7 +217,7 @@
                                             </s:a>
                                         </s:if>
                                         <s:else>
-                                            <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
+                                            <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
                                         </s:else>
                                     </td>
                                 </tr>
@@ -367,7 +367,7 @@
 
     }
 
-    function showInvoice(idCheckup, idDetailCheckup) {
+    function showInvoice(idCheckup, idDetailCheckup, pasiendId) {
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -386,6 +386,9 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var total = 0;
+        var idPasien = "";
+        var id = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -430,10 +433,9 @@
                 dataTindakan = response;
                 console.log(response);
                 if (dataTindakan != null) {
-                    var total = 0;
                     $.each(dataTindakan, function (i, item) {
                         var tanggal = "";
-                        var uangmuka    = "";
+                        var uangmuka    = 0;
 
 
                         if (item.createdDate != null && item.createdDate !=  '') {
@@ -448,9 +450,13 @@
                             "<td >"+formateDate(tanggal)+"</td>" +
                             "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
                             "</tr>";
+                        total = parseInt(total) + parseInt(uangmuka);
+                        id = item.id;
                     });
                 }
             });
+
+            console.log(total);
 
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();
@@ -460,7 +466,7 @@
 
             $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
             $('#fin_no_sep').html(noSep);
-            $('#fin_no_checkup').html(idDetailCheckup);
+            $('#fin_no_checkup').html(idCheckup);
             $('#fin_nik').html(nik);
             $('#fin_nama').html(namaPasien);
             $('#fin_jenis_kelamin').html(jenisKelamin);
@@ -474,7 +480,7 @@
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
+            $('#save_fin').attr('onclick','confirmSaveUangMuka(\''+id+'\',\''+pasiendId+'\',\''+total+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
         }, 100);
     }
@@ -488,46 +494,37 @@
         return tgl;
     }
 
-    <%--function detailResep(idResep, idRiwayat){--%>
+    function confirmSaveUangMuka(id, idPasien, uangmuka){
+        if(id != '' && idPasien != '' && uangmuka > 0){
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick','saveUangMuka(\''+id+'\',\''+idPasien+'\',\''+uangmuka+'\')');
+        }else{
+            $('#warning_fin').show().fadeOut(5000);
+            $('#msg_fin').text("Silahkan cek data yang diinput");
+        }
+    }
 
-        <%--var tbody = "";--%>
-        <%--KasirRawatJalanAction.getListDetailResep(idResep, function (response) {--%>
-            <%--if(response.length > 0){--%>
-
-                <%--$.each(response, function (i, item) {--%>
-                    <%--tbody += '<tr>' +--%>
-                        <%--'<td>'+item.namaObat+'</td>' +--%>
-                        <%--'<td align="center">'+item.qty+'</td>' +--%>
-                        <%--'<td>'+item.jenisSatuan+'</td>' +--%>
-                        <%--'<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +--%>
-                        <%--'</tr>';--%>
-                <%--});--%>
-            <%--}--%>
-        <%--});--%>
-
-        <%--var rowIndex = document.getElementById("row"+idRiwayat).rowIndex;--%>
-        <%--var table = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +--%>
-            <%--'<td>Nama Obat</td>' +--%>
-            <%--'<td align="center" width="10%">Qty</td>' +--%>
-            <%--'<td>Lembar</td>' +--%>
-            <%--'<td align="center">Tarif (Rp.)</td></tr>' +--%>
-            <%--'<tbody>'+tbody+'</tbody>'+--%>
-            <%--'</table>';--%>
-
-        <%--var newRow = $('<tr id="del'+idRiwayat+'"><td colspan="4">'+table+'</td></tr>');--%>
-        <%--newRow.insertAfter($('#tabel_tindakan_fin tr:nth('+rowIndex+')'));--%>
-        <%--var cancel = '<s:url value="/pages/images/icons8-cancel-25.png"/>';--%>
-        <%--$('#btn'+idRiwayat).attr('src',cancel);--%>
-        <%--$('#btn'+idRiwayat).attr('onclick', 'deleteRow(\''+idResep+'\',\''+idRiwayat+'\')');--%>
-
-    <%--}--%>
-
-    <%--function deleteRow(idResep, idRiwayat){--%>
-        <%--$('#del'+idRiwayat).remove();--%>
-        <%--var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';--%>
-        <%--$('#btn'+idRiwayat).attr('src',plus);--%>
-        <%--$('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');--%>
-    <%--}--%>
+    function saveUangMuka(id, idPasien, uangmuka){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_fin').hide();
+        $('#load_fin').show();
+        dwr.engine.setAsync(true);
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, {callback: function (response) {
+            if(response.status == "success"){
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#success_fin').show().fadeOut(10000);
+                $('#msg_fin2').text(response.msg);
+                $('#modal-invoice').modal('hide');
+                $('#info_dialog').dialog('open');
+            }else{
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#warning_fin').show().fadeOut(5000);
+                $('#msg_fin').text(response.msg);
+            }
+        }});
+    }
 
 </script>
 
