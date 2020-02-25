@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.statuspasien.bo.StatusPasienBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
 import java.math.BigInteger;
@@ -26,4 +27,6 @@ public interface CheckupDetailBo {
     public BigInteger getSumOfTindakanByNoCheckup(String idDetailCheckup) throws GeneralBOException;
 
     public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
+
+    public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException;
 }

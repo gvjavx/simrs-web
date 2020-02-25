@@ -864,6 +864,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return permintaanResepEntityList;
     }
 
+    @Override
+    public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException {
+        return checkupDetailDao.getListPembayaranUangMuka(bean);
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {

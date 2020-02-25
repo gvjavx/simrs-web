@@ -91,6 +91,24 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Bayar</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
+                                                  id="statusBayar"
+                                                  headerKey="" headerValue="Belum Dibayar" name="headerDetailCheckup.statusBayar"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Jenis Pembayaran</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'um':'Uang Muka'}" cssStyle="margin-top: 7px"--%>
+                                                  <%--id="jenisPembayaran"--%>
+                                                  <%--headerKey="tagihan" headerValue="Tagihan" name="headerDetailCheckup.jenisPembayaran"--%>
+                                                  <%--cssClass="form-control"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
                                         <div class="input-group date" style="margin-top: 7px">

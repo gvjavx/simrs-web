@@ -62,6 +62,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String dateTo = "";
 
             String jenisPasien = "%";
+            String statusBayar = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -95,6 +96,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 jenisPasien = bean.getIdJenisPeriksaPasien();
             }
 
+            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
+                statusBayar = "\n AND dt.status_bayar = '"+bean.getStatusBayar()+"'";
+            } else {
+                statusBayar = "\n AND dt.status_bayar is null";
+            }
 
             String SQL = "\n" +
                     "SELECT \n" +
@@ -120,13 +126,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                    "AND dt.status_periksa LIKE :status";
+                    "AND dt.status_periksa LIKE :status " + statusBayar;
+
+
+            String order = "\n ORDER BY dt.tgl_antrian ASC";
+            if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())){
+                order = "\n ORDER BY dt.last_update DESC";
+            }
 
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)){
 
-                SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')"+
-                        "\n ORDER BY dt.tgl_antrian ASC";
+                SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')"+ order;
+
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -141,7 +153,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             } else {
 
-                SQL = SQL + "\n  ORDER BY dt.tgl_antrian ASC";
+                SQL = SQL + order;
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -481,6 +493,65 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         }
 
         return result;
+    }
+
+    public List<HeaderDetailCheckup> getListPembayaranUangMuka(HeaderDetailCheckup bean){
+        String idUangMuka = "%";
+        String idDetail = "%";
+        String idPelayanan = "%";
+        String statusBayar = "";
+
+        if (bean.getIdDetailCheckup() != null){
+            idDetail = bean.getIdDetailCheckup();
+        }
+
+        if (bean.getIdPelayanan() != null){
+            idPelayanan = bean.getIdPelayanan();
+        }
+
+        if ("Y".equalsIgnoreCase(bean.getStatusBayar())){
+            statusBayar = "\n AND um.status_bayar = '"+bean.getStatusBayar()+"'";
+        }
+
+        String SQL = "SELECT\n" +
+                "um.id,\n" +
+                "dt.id_detail_checkup,\n" +
+                "ps.nama,\n" +
+                "pel.nama_pelayanan,\n" +
+                "um.jumlah,\n" +
+                "um.status_bayar,\n" +
+                "um.created_date\n" +
+                "FROM it_simrs_header_detail_checkup dt\n" +
+                "INNER JOIN it_simrs_header_checkup ck ON ck.no_checkup = dt.no_checkup\n" +
+                "INNER JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = dt.id_pelayanan\n" +
+                "WHERE dt.id_detail_checkup LIKE :idDetail\n" +
+                "AND dt.id_pelayanan LIKE :idPoli\n" +
+                "AND um.id LIKE :idUang" + statusBayar;
+
+        List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("idPoli", idPelayanan)
+                .setParameter("idUang", idUangMuka)
+                .list();
+
+        List<HeaderDetailCheckup> detailCheckups = new ArrayList<>();
+        HeaderDetailCheckup detailCheckup;
+        if (resuts.size() > 0){
+            for (Object[] obj : resuts){
+                detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setNoUangMuka(obj[0].toString());
+                detailCheckup.setIdDetailCheckup(obj[1].toString());
+                detailCheckup.setNamaPasien(obj[2].toString());
+                detailCheckup.setNamaPelayanan(obj[3].toString());
+                detailCheckup.setJumlahUangMuka(obj[4] == null ? null :(BigInteger) obj[4]);
+                detailCheckup.setStatusBayar(obj[5] == null ? "" : obj[5].toString());
+                detailCheckup.setCreatedDate((Timestamp) obj[6]);
+                detailCheckups.add(detailCheckup);
+            }
+        }
+        return detailCheckups;
     }
 
     public String getNextId(){
