@@ -358,6 +358,7 @@
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/ImSimrsRekamMedicLamaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/ImSimrsUploadRekamMedicLamaEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsTindakanPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUangMukaPendaftaranEntity.hbm.xml</value>
 
 
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->

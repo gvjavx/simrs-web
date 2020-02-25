@@ -129,6 +129,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+        headerDetailCheckup.setTypeTransaction("kasir");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -186,7 +187,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
         return riwayatTindakanList;
-
     }
 
     public List<TransaksiObatDetail> getListDetailResep(String idResep) {

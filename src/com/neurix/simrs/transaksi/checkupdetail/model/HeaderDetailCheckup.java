@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderDetailCheckup extends BaseModel implements Serializable{
+public class HeaderDetailCheckup extends BaseModel{
     private String idDetailCheckup;
     private String noCheckup;
     private String idPelayanan;
@@ -80,6 +80,42 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
 
     private BigDecimal tarifBpjs;
     private BigDecimal tarifTindakan;
+    private String typeTransaction;
+    private String jenisPembayaran;
+    private String noUangMuka;
+    private BigInteger jumlahUangMuka;
+
+    public BigInteger getJumlahUangMuka() {
+        return jumlahUangMuka;
+    }
+
+    public void setJumlahUangMuka(BigInteger jumlahUangMuka) {
+        this.jumlahUangMuka = jumlahUangMuka;
+    }
+
+    public String getNoUangMuka() {
+        return noUangMuka;
+    }
+
+    public void setNoUangMuka(String noUangMuka) {
+        this.noUangMuka = noUangMuka;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getTypeTransaction() {
+        return typeTransaction;
+    }
+
+    public void setTypeTransaction(String typeTransaction) {
+        this.typeTransaction = typeTransaction;
+    }
 
     private List<Tindakan> tindakanList;
 

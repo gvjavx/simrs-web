@@ -50,6 +50,7 @@
           p:dokterDao-ref="dokterDao"
           p:rekamMedicLamaDao-ref="rekamMedicLamaDao"
           p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
+          p:uangMukaDao-ref="uangMukaDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -101,5 +102,7 @@
     <bean id="tranfusiDao" class="com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="rekonsiliasiObatDao" class="com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="uangMukaDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>
