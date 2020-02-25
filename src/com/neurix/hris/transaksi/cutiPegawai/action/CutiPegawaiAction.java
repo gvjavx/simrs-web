@@ -24,6 +24,7 @@ import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
@@ -1533,7 +1534,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         String flag = getFlag();
         String stTanggalDari = getTglFrom();
         String stTanggalSelesai = getTglTo();
-        String nama = "",jabatan="",divisi="",unit="";
+        String nama = "",jabatan="",divisi="",unit="", unitId="";
 
         CutiPegawai result = new CutiPegawai();
         result.setNip(nip);
@@ -1581,11 +1582,31 @@ public class CutiPegawaiAction extends BaseMasterAction {
             jabatan=hasilBiodata.getPositionName();
             divisi=hasilBiodata.getDivisiName();
             unit=hasilBiodata.getBranchName();
+            unitId=hasilBiodata.getBranch();
             break;
         }
+        Branch branch = new Branch();
 
+        try{
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+            branch = branchBo.getBranchById(unitId,"Y");
+        }catch( HibernateException e){
+
+        }
+        String logo ="";
+        if (unitId.equalsIgnoreCase("RS01")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+        }else if (unitId.equalsIgnoreCase("RS02")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+        }else if (unitId.equalsIgnoreCase("RS03")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+        }else{
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+        }
+        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        reportParams.put("urlLogo", logo);
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listOfResult);
-        reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+        reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
         reportParams.put("titleReport","REPORT CUTI");
         reportParams.put("nama",nama);
         reportParams.put("jabatan",jabatan);
@@ -1777,7 +1798,19 @@ public class CutiPegawaiAction extends BaseMasterAction {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
         String stDate = dt1.format(dataDate);
 
-        reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+        String logo ="";
+        if (branch.getBranchId().equalsIgnoreCase("RS01")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+        }else if (branch.getBranchId().equalsIgnoreCase("RS02")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+        }else if (branch.getBranchId().equalsIgnoreCase("RS03")){
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+        }else{
+            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+        }
+        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        reportParams.put("urlLogo", logo);
+        reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
         reportParams.put("titleReport","REPORT REKAPITULASI CUTI");
         reportParams.put("bagian",bagian);
         reportParams.put("unit",unit);

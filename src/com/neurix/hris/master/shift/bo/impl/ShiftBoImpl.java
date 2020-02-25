@@ -240,8 +240,14 @@ public class ShiftBoImpl implements ShiftBo {
                         ImBranchesPK primaryKey = new ImBranchesPK();
                         primaryKey.setId(listEntity.getIdBranch());
 
-                        imBranches = branchDao.getById(primaryKey, "Y");
-                        returnData.setBranchName(imBranches.getBranchName());
+                        List<ImBranches> listBranch = new ArrayList<>();
+                        listBranch = branchDao.getListBranchById(listEntity.getIdBranch());
+                        if (listBranch.size()>0){
+                            for (ImBranches branchLoop: listBranch){
+                                returnData.setBranchName(branchLoop.getBranchName());
+                            }
+                        }
+//                        imBranches = branchDao.getListBranchById(listEntity.getIdBranch());
                     }else{
                         returnData.setBranchName("");
                     }

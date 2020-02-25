@@ -52,7 +52,7 @@
     <section class="content-header">
         <h1>
             Report Cuti
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->

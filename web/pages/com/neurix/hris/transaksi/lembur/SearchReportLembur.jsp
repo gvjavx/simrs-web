@@ -71,7 +71,7 @@
     <section class="content-header">
         <h1>
             Report Lembur
-            <small>HRIS</small>
+            <small>e-HEALTH</small>
         </h1>
     </section>
 

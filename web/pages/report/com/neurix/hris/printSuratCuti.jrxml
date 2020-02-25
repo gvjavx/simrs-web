@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratCuti" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbea96cd-ecc7-4290-ba68-3a506cc60cbd">
-	<property name="ireport.zoom" value="1.1000000000000074"/>
+	<property name="ireport.zoom" value="1.7715610000000124"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -32,20 +32,20 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="90" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<staticText>
-				<reportElement x="111" y="15" width="360" height="33" uuid="8894fb30-d647-4c10-a54f-de0ad19f740b"/>
+				<reportElement x="106" y="15" width="360" height="33" uuid="8894fb30-d647-4c10-a54f-de0ad19f740b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PERMOHONAN IJIN CUTI]]></text>
 			</staticText>
 			<image onErrorType="Blank">
-				<reportElement x="1" y="0" width="110" height="48" uuid="27f23dfe-5885-4d50-a600-71c969c401de"/>
+				<reportElement x="2" y="5" width="83" height="37" uuid="27f23dfe-5885-4d50-a600-71c969c401de"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="483" y="0" width="72" height="56" uuid="71dddfa3-4eef-48e3-a7f9-51a66a03e815"/>
+				<reportElement x="483" y="0" width="50" height="50" uuid="71dddfa3-4eef-48e3-a7f9-51a66a03e815"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Cuti Id    : " + $P{reportParams.cutiPegawaiId}+"\n"+
@@ -55,22 +55,36 @@ new com.google.zxing.qrcode.QRCodeWriter().encode(
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="0" y="56" width="354" height="21" uuid="fe7d99ed-c416-422b-917c-26afc371a047"/>
+				<reportElement x="0" y="45" width="354" height="21" uuid="fe7d99ed-c416-422b-917c-26afc371a047"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="77" width="555" height="1" uuid="dd704415-c3f2-4a38-ba7c-4a7cbc0eb025"/>
+				<reportElement x="0" y="71" width="555" height="1" uuid="dd704415-c3f2-4a38-ba7c-4a7cbc0eb025"/>
 			</line>
 			<staticText>
-				<reportElement x="1" y="45" width="201" height="20" uuid="5be352a2-cccf-46f4-a0d3-cf52473a737c"/>
+				<reportElement x="1" y="36" width="201" height="20" uuid="5be352a2-cccf-46f4-a0d3-cf52473a737c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PT. NUSANTARA MEDICA UTAMA]]></text>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="447" y="50" width="79" height="20" uuid="f8319fc6-a892-48c9-b6a4-6f6edaf9a979"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="507" y="50" width="80" height="20" uuid="fd63e335-cb60-4825-b5c1-ce53571a2953"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
@@ -296,13 +310,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	</detail>
 	<columnFooter>
 		<band height="250" splitType="Stretch">
-			<textField>
-				<reportElement x="361" y="31" width="184" height="20" uuid="a466ca50-c6dc-4151-b449-075b343e2548"/>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.alamatUni}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="357" y="141" width="181" height="20" uuid="141112af-d8f6-4fe2-b595-6143cc9a467e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

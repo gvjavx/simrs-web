@@ -95,8 +95,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\t(SELECT * FROM im_hris_shift) shift ON groupshift.shift_id = shift.shift_id LEFT JOIN\n" +
                 "\t(SELECT * FROM im_hris_pegawai) pegawai ON groupmember.nip = pegawai.nip\n" +
                 "WHERE\n" +
-                "\tkerja.tanggal >= :tanggalDari AND\n" +
-                "\tkerja.tanggal <= :tanggalSampai AND\n" +
+                "\tkerja.tanggal >= '"+tanggalDari+"' AND\n" +
+                "\tkerja.tanggal <= '"+tanggalSampai+"' AND\n" +
                 "\tkerja.flag ='Y'\n" +
                 "ORDER BY\n" +
                 "\tpegawai.nip,\n" +

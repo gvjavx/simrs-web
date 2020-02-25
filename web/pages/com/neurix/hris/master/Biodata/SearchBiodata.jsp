@@ -717,11 +717,11 @@
                                                 </a>
                                             </display:column>
 
-                                            <display:column style="text-align:center;" media="html" title="SPPD">
+                                            <%--<display:column style="text-align:center;" media="html" title="SPPD">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </a>
-                                            </display:column>
+                                            </display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Cuti">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
@@ -928,12 +928,10 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Bersih</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Rapel</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>Thr</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Pendidikan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jasprod</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Pensiun</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jubilium</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jasopr</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>SHT</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>PMP</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -946,9 +944,7 @@
                         '<td >' + item.totalB+ '</td>' +
                         '<td >' + item.pphGaji+ '</td>' +
                         '<td >' + item.totalGajiBersih+ '</td>' +
-                        '<td >' + item.totalRapel+ '</td>' +
                         '<td >' + item.totalThr+ '</td>' +
-                        '<td >' + item.totalPendidikan+ '</td>' +
                         '<td >' + item.totalJasProd+ '</td>' +
                         '<td >' + item.totalPensiun+ '</td>' +
                         '<td >' + item.totalJubileum+ '</td>' +
@@ -1046,11 +1042,9 @@
 
             $('#detailStatusGiling').val(listdata.statusGilingName);
             $('#detailGolongan').val(listdata.golonganName);
-            $('#detailPoin').val(listdata.point);
 
             $('#detailStatusPegawai').val(listdata.statusPegawaiName);
             $('#detailDanaPensiun').val(listdata.danaPensiun);
-            $('#detailZakat').val(listdata.zakatName);
 
             $('#detailNamaBank').val(listdata.namaBank);
             $('#detailCabangBank').val(listdata.cabangBank);
