@@ -424,12 +424,13 @@
         $('#btnSearchNota').click(function () {
             var masterId = $('#kode_vendor').val();
             var transaksiId = $('#tipe_transaksi').val();
-            if (masterId!=''&&transaksiId!=""){
+            var branchId = $('#branch_id').val();
+            if (masterId!=''&&transaksiId!=""&&branchId!=""){
                 $('#tabelDaftarNota').find('tbody').remove();
                 $('#tabelDaftarNota').find('thead').remove();
                 dwr.engine.setAsync(false);
                 var tmp_table = "";
-                PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,function (listdata) {
+                PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,function (listdata) {
                     tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
                         "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
@@ -463,6 +464,9 @@
                 }
                 if (transaksiId==""){
                     msg+="Tipe Transaksi belum dipilih \n";
+                }
+                if (branchId==""){
+                    msg+="Unit belum dipilih \n";
                 }
                 alert(msg);
             }

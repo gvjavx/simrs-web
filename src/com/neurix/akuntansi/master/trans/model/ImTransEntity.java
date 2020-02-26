@@ -14,7 +14,7 @@ public class ImTransEntity implements Serializable {
 
     private String transId;
     private String transName;
-    private String flagPembayaranUtangPiutang;
+    private String tipePembayaran;
 
     private String flag;
     private String action;
@@ -23,12 +23,13 @@ public class ImTransEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getFlagPembayaranUtangPiutang() {
-        return flagPembayaranUtangPiutang;
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
     }
 
-    public void setFlagPembayaranUtangPiutang(String flagPembayaranUtangPiutang) {
-        this.flagPembayaranUtangPiutang = flagPembayaranUtangPiutang;
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
     }
 
     public String getTransId() {

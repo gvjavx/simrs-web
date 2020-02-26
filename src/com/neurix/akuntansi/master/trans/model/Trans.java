@@ -12,14 +12,14 @@ import com.neurix.common.model.BaseModel;
 public class Trans extends BaseModel {
     private String transId;
     private String transName;
-    private String flagPembayaranUtangPiutang;
+    private String tipePembayaran;
 
-    public String getFlagPembayaranUtangPiutang() {
-        return flagPembayaranUtangPiutang;
+    public String getTipePembayaran() {
+        return tipePembayaran;
     }
 
-    public void setFlagPembayaranUtangPiutang(String flagPembayaranUtangPiutang) {
-        this.flagPembayaranUtangPiutang = flagPembayaranUtangPiutang;
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
     }
 
     public String getTransId() {

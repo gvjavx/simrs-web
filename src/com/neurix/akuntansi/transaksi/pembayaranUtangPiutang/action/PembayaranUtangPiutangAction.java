@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
@@ -408,11 +409,11 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 Map data = new HashMap();
                 data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
                 data.put("no_nota",pembayaranUtangPiutangDetail.getNoNota());
-                data.put("jml_pembayaran",jumlahPembayaran);
+                data.put("jml_bayar",jumlahPembayaran);
                 data.put("rekening_id",pembayaranUtangPiutangDetail.getRekeningId());
                 data.put("rekening_id_kas",pembayaranUtangPiutang.getRekeningIdKas());
                 try {
-                billingSystemBoProxy.createJurnal("11",data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N",noJurnal);
+                billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N",noJurnal);
                 }catch (GeneralBOException e) {
                     Long logId = null;
                     try {
@@ -458,6 +459,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfResultKodeRekening");
+        session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
         logger.info("[PembayaranUtangPiutangAction.search] end process <<<");
@@ -587,11 +589,11 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return status;
     }
 
-    public List<PembayaranUtangPiutangDetail> searchNotaPembayaran(String masterId,String transaksiId) {
+    public List<PembayaranUtangPiutangDetail> searchNotaPembayaran(String masterId,String transaksiId,String branchId) {
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId);
+        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = pembayaranUtangPiutangBo.getSearchNotaPembayaran(masterId,transaksiId,branchId);
         logger.info("[PembayaranUtangPiutangAction.searchNotaPembayaran] end process >>>");
         return pembayaranUtangPiutangDetailList;
     }
@@ -636,9 +638,10 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         List<PembayaranUtangPiutang> pembayaranUtangPiutangList;
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+
         PembayaranUtangPiutang data = getPembayaranUtangPiutang();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getBranchId());
         Branch branch = branchBo.getBranchById(data.getBranchId(),"Y");
@@ -647,14 +650,28 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         search.setPembayaranUtangPiutangId(data.getPembayaranUtangPiutangId());
         search.setFlag("Y");
         pembayaranUtangPiutangList=pembayaranUtangPiutangBo.getByCriteria(search);
+
+        //menambah printCount
+        pembayaranUtangPiutangBo.addPrintCount(data.getNoJurnal());
+
         for (PembayaranUtangPiutang result : pembayaranUtangPiutangList){
             reportParams.put("terbilang", CommonUtil.angkaToTerbilang(result.getBayar().longValue()));
             reportParams.put("uraian", result.getKeterangan());
-            reportParams.put("totalBayar", CommonUtil.numbericFormat(result.getBayar(),"###,###"));
+            reportParams.put("totalBayar", CommonUtil.numbericFormat(result.getBayar(),"###,###.##"));
             reportParams.put("coaKas", result.getKodeRekeningKas());
+            reportParams.put("noSlipBank", result.getNoSlipBank());
+
+            KodeRekening searchKodeRekening = new KodeRekening();
+            searchKodeRekening.setKodeRekening(result.getKodeRekeningKas());
+            searchKodeRekening.setFlag("Y");
+            List<KodeRekening> kodeRekeningList = kodeRekeningBo.getByCriteria(searchKodeRekening);
+            for (KodeRekening kodeRekening : kodeRekeningList){
+                reportParams.put("namaCoaKas", kodeRekening.getNamaKodeRekening());
+            }
         }
 
         reportParams.put("reportTitle", titleReport);
+        reportParams.put("reportName", "BUKTI BANK MASUK");
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", data.getBranchId());
         java.util.Date now = new java.util.Date();
@@ -681,6 +698,40 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         }
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] end process <<<");
         return "print_report_bukti_posting";
+    }
+
+    public PembayaranUtangPiutang getForModalPopUp(String pembayaranId) {
+        logger.info("[PembayaranUtangPiutangAction.getForModalPopUp] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        String itemId = pembayaranId;
+        String itemFlag = "Y";
+        PembayaranUtangPiutang modalPopUp = new PembayaranUtangPiutang();
+        List<PembayaranUtangPiutangDetail> listDetail = new ArrayList<>();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        try {
+            modalPopUp = init(itemId, itemFlag);
+            if (modalPopUp!=null){
+                listDetail = pembayaranUtangPiutangBo.getDetailPembayaran(pembayaranId);
+                session.setAttribute("listPembayaranDetailModal",listDetail);
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangBO.getAlatById");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.view] Error when retrieving delete data,", e1);
+            }
+            logger.error("[PembayaranUtangPiutangAction.view] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+        }
+        return modalPopUp;
+    }
+
+    public List<PembayaranUtangPiutangDetail> searchPembayaranDetail (){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        return (List<PembayaranUtangPiutangDetail>) session.getAttribute("listPembayaranDetailModal");
     }
     public String paging(){
         return SUCCESS;

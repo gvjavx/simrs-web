@@ -110,10 +110,11 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
     }
 
     // Generate surrogate id from postgre
-    public String getNextInvoiceId(Date date,String transId) throws HibernateException {
+    public String getNextInvoiceId(String transId) throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_invoice')");
         DateFormat dfTahun = new SimpleDateFormat("yy");
         DateFormat dfBulan = new SimpleDateFormat("MM");
+        Date date = new Date(new java.util.Date().getTime());
         String tahun = dfTahun.format(date);
         String bulan = dfBulan.format(date);
         String tipeJurnal = tipeJurnalByTransId(transId);
