@@ -97,7 +97,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Kartu Buku Besar Per Buku Bantu</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Mutasi Jurnal</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
