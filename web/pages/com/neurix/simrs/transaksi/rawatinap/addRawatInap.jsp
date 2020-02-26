@@ -659,7 +659,7 @@
                                         </a>
                                         <button class="btn btn-success" onclick="confirmSaveKeterangan()"
                                                 style="margin-top: 15px;" id="save_ket"><i
-                                                class="fa fa-arrow-right"></i> Save Keterangan
+                                                class="fa fa-arrow-right"></i> Close
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
