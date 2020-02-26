@@ -662,7 +662,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("bukti", noNota);
 
         String branchId = CommonUtil.userBranchLogin();
 
