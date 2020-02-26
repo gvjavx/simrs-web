@@ -252,8 +252,19 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             jurnalDetailEntity.setCreatedWho(userLogin);
                             jurnalDetailEntity.setLastUpdateWho(userLogin);
 
-                            jurnalDetailEntityList.add(jurnalDetailEntity);
+                            try {
+                                List<ItJurnalDetailEntity> listOfDuplicate = jurnalDetailDao.getListJurnalDetailDuplicate(jurnalDetailEntity.getRekeningId(),jurnalDetailEntity.getNoNota(),jurnalDetailEntity.getMasterId(),jurnalDetailEntity.getJumlahDebit(),jurnalDetailEntity.getJumlahKredit());
+                                if (listOfDuplicate.size()!=0){
+                                    status="ERROR : Ada duplikasi data pada data yang dikirim";
+                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                }
+                            } catch (HibernateException e) {
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            }
 
+                            jurnalDetailEntityList.add(jurnalDetailEntity);
                             // Total dari pembayaran debet dan kredit untuk nanti disamakan
                             totalBayar = totalBayar.add(jurnalDetailEntity.getJumlahDebit()).subtract(jurnalDetailEntity.getJumlahKredit());
                         }else{
@@ -276,7 +287,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             if (totalBayar.equals(new BigDecimal(0))){
                 for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                     /////////////////////// Save data ///////////////////////
-                     try {
+                    try {
                         jurnalDetailDao.addAndSave(jurnalDetailEntity);
                     } catch (HibernateException e) {
                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
