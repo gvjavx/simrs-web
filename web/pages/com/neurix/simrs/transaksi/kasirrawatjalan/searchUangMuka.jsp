@@ -91,6 +91,17 @@
                                         <s:hidden name="headerDetailCheckup.statusPeriksa" value="3"></s:hidden>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Bayar</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
+                                                  id="statusBayar"
+                                                  headerKey="" headerValue="Belum Dibayar" name="headerDetailCheckup.statusBayar"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">

@@ -259,14 +259,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Jalan Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin"></p>
-                </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
-                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    <p id="msg_fin2"></p>
-                </div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>
@@ -356,6 +348,15 @@
                         <tbody id="body_tindakan_fin">
                         </tbody>
                     </table>
+
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_fin"></p>
+                    </div>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_fin2"></p>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -635,7 +636,7 @@
                 $('#warning_fin').show().fadeOut(10000);
                 $('#msg_fin').text(response.msg);
             }
-        }});
+        });
     }
 
 </script>

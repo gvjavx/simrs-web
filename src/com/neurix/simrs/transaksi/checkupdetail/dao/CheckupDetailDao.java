@@ -517,6 +517,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if ("Y".equalsIgnoreCase(bean.getStatusBayar())){
             statusBayar = "\n AND um.status_bayar = '"+bean.getStatusBayar()+"'";
+        } else {
+            statusBayar = "\n AND um.status_bayar is null";
         }
 
         String SQL = "SELECT\n" +
