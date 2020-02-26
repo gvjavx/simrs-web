@@ -398,11 +398,13 @@
 <script type='text/javascript'>
 
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        } else {
+            return "0";
         }
 
     }
@@ -532,7 +534,8 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total});
+                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
                 }
             });
 

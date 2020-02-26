@@ -84,8 +84,17 @@ public class HeaderDetailCheckup extends BaseModel{
     private String jenisPembayaran;
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
+    private String noNota;
 
     private String noCheckupOnline;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
 
     public String getNoCheckupOnline() {
         return noCheckupOnline;

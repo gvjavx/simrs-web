@@ -14,6 +14,7 @@
           p:keteranganKeluarBoProxy-ref="keteranganKeluarBoProxy"
           p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
+          p:billingSystemBoProxy-ref="billingSystemBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
@@ -31,6 +32,7 @@
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:tindakanDao-ref="tindakanDao"
           p:antrianOnlineDao-ref="antrianOnlineDao"
+          p:uangMukaDao-ref="uangMukaDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"

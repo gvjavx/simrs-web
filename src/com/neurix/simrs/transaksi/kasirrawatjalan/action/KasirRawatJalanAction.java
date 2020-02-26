@@ -592,7 +592,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         CrudResponse response = new CrudResponse();
         System.out.println(hsCriteria);
-        response.setMsg(""+hsCriteria);
+//        response.setMsg(""+hsCriteria);
         if (!"Y".equalsIgnoreCase(withObat)){
             try {
                 billingSystemBo.createJurnal("04",hsCriteria,CommonUtil.userBranchLogin(),"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
