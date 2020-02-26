@@ -39,6 +39,92 @@
             display: block;
         }
 
+        .bungkus {
+            width: 600px;
+            height: 570px;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            background: #ddd;
+        }
+
+        /* Images */
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            -webkit-transition: opacity ease-out 0.5s;
+            transition: opacity ease-out 0.5s;
+        }
+
+        .carousel-img-displayed {
+            display: block;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .carousel-img-hidden {
+            display: block;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .carousel-img-noDisplay {
+            display: none;
+        }
+
+        /* Flèches de défilement */
+
+        .carousel-arrow {
+            z-index: 3;
+            display: block;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: 80px;
+            border-radius: 50%;
+            border: 0;
+            background-color: #fff;
+            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 16px 16px;
+            cursor: pointer;
+            -webkit-transition: background-size 0.15s ease-out;
+            transition: background-size 0.15s ease-out;
+        }
+
+        .carousel-arrow:hover,
+        .carousel-arrow:focus {
+            background-size: 22px 22px;
+        }
+
+        .carousel-arrow-next {
+            right: 20px;
+        }
+
+        .carousel-arrow-prev {
+            left: 20px;
+            -webkit-transform: rotateZ(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotateZ(180deg);
+        }
+
+        .modal { overflow-y: auto}
+
         /*.dropdown-content a:hover {background-color: #f1f1f1}*/
 
         /*.dropdown:hover .dropdown-content {*/
@@ -1063,19 +1149,43 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No Checkup</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Masuk</td>
-                        <td>Tanggal Keluar</td>
-                        <td>View Details RM</td>
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li><a href="#medik_baru" data-toggle="tab" onclick="getByTypeRekamMedic('baru')">Rekam Medik Baru</a></li>
+                        <li><a href="#medik_lama" data-toggle="tab" onclick="getByTypeRekamMedic('lama')">Rekam Medik Lama</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="medik_baru">
+                            <table class="table table-striped table-bordered">
+                                <thead id="label-rekam-medic-baru">
+                                </thead>
+                                <tbody id="body-rekam-medic-baru">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="medik_lama">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <table class="table table-striped table-bordered">
+                                        <thead id="label-rekam-medic-lama">
+                                        </thead>
+                                        <tbody id="body-rekam-medic-lama">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-content -->
                 </div>
+                <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>--%>
+                <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>--%>
+                <%--<table class="table table-striped table-bordered" id="tabel_rese_detail">--%>
+                <%--<thead id="label-rekam-medic">--%>
+                <%--</thead>--%>
+                <%--<tbody id="body-rekam-medic">--%>
+                <%--</tbody>--%>
+                <%--</table>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1165,25 +1275,27 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien</h4>
             </div>
             <div class="modal-body">
+                <div id="head-detail-rm"></div>
+                <hr/>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
+                        <li id="tab_1"><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('tppri')">TPPRI</a></li>
                         <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('igd')">IGD</a></li>
                         <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('ri')">RAWAT INAP</a></li>
                         <li><a href="#" data-toggle="tab" onclick="viewDetailRekamMedicByKategori('mon')">MONITORING</a></li>
                     </ul>
-                    <div class="tab-content">
-                        <table class="table">
-                            <tbody id="list-body-rekam-medic">
-                            </tbody>
-                        </table>
-                        <input type="hidden" id="rm-no-checkup" name="" value="">
+                    <div class="tab-content" id="list-body-rekam-medic">
+                        <%-- <table class="table">
+                          <tbody id="list-body-rekam-medic">
+                          </tbody>
+                        </table> --%>
                         <!-- /.tab-pane -->
                     </div>
+                    <input type="hidden" name="" id="rm-no-checkup">
                     <!-- /.tab-content -->
                 </div>
                 <!-- nav-tabs-custom -->
@@ -1192,8 +1304,64 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
-                        class="fa fa-arrow-right"></i> Save
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail-rekam-medic-lama">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Lama Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bungkus">
+                    <div class="carousel">
+                        <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
+                        <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
+                        <div id="body-img-rm"></div>
+                        <%--<img id="carousel-1" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/sea_ej0zoc.jpg" alt="Sea" />--%>
+                        <%--<img id="carousel-2" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/night_pw1bpm.jpg" alt="Night" />--%>
+                        <%--<img id="carousel-3" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/mountain_dekhfd.jpg" alt="Moutain" />--%>
+                        <%--<img id="carousel-4" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/desert_zy3uth.jpg" alt="Desert" />--%>
+                    </div>
+                </div>
+
+                <%--<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">--%>
+                <%--<ol class="carousel-indicators" id="indicator-img">--%>
+                <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
+                <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
+                <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
+                <%--</ol>--%>
+                <%--<div class="carousel-inner" id="body-img-rm">--%>
+                <%--<div class="carousel-item active">--%>
+                <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
+                <%--</div>--%>
+                <%--<div class="carousel-item">--%>
+                <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Second slide">--%>
+                <%--</div>--%>
+                <%--<div class="carousel-item">--%>
+                <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
+                <%--</div>--%>
+                <%--</div>--%>
+                <%--<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">--%>
+                <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
+                <%--<span class="sr-only">Previous</span>--%>
+                <%--</a>--%>
+                <%--<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">--%>
+                <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
+                <%--<span class="sr-only">Next</span>--%>
+                <%--</a>--%>
+                <%--</div>--%>
+                <%--<div id="body-img-rm">--%>
+
+                <%--</div>--%>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
@@ -1201,6 +1369,7 @@
 </div>
 
 <!-- /.content-wrapper -->
+<script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
 
     var idPelayanan = $('#poli').val();
@@ -1496,91 +1665,91 @@
         });
     }
 
-    function initRekamMedic() {
-        var idPasien = $("#id_pasien").val();
-        var table = "";
-        var namaPasien = "";
+    // function initRekamMedic() {
+    //     var idPasien = $("#id_pasien").val();
+    //     var table = "";
+    //     var namaPasien = "";
+    //
+    //     CheckupAction.listRekamMedic(idPasien, function (response) {
+    //         // console.log(response);
+    //         $.each(response, function (i, item) {
+    //             var noCheckup = "";
+    //             var dignosa = "";
+    //             var tanggal = "";
+    //             var dateFormatMasuk = "";
+    //             var dateFormatKeluar = "";
+    //
+    //             if(item.noCheckup != null){
+    //                 noCheckup = item.noCheckup;
+    //             }
+    //             if(item.diagnosa != null){
+    //                 dignosa = item.diagnosa;
+    //             }
+    //             if(item.stTglMasuk != null && item.stTglKeluar != null){
+    //                 tanggalMasuk = item.stTglMasuk;
+    //                 tanggalKeluar = item.stTglKeluar;
+    //                 dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
+    //                 dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
+    //             }
+    //             table += "<tr>" +
+    //                 "<td>" + noCheckup + "</td>" +
+    //                 "<td>" + dignosa + "</td>" +
+    //                 "<td align='center'>" + dateFormatMasuk + "</td>" +
+    //                 "<td align='center'>" + dateFormatKeluar + "</td>" +
+    //                 "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
+    //                 "</tr>";
+    //
+    //             namaPasien = item.namaPasien;
+    //         });
+    //
+    //         $("#modal-rekam-medic").modal('show');
+    //         $('#nama_medik').html(namaPasien);
+    //         $("#body-rekam-medic").html(table);
+    //     });
+    // }
 
-        CheckupAction.listRekamMedic(idPasien, function (response) {
-            // console.log(response);
-            $.each(response, function (i, item) {
-                var noCheckup = "";
-                var dignosa = "";
-                var tanggal = "";
-                var dateFormatMasuk = "";
-                var dateFormatKeluar = "";
+    // function viewDetailRekamMedic(noCheckup){
+    //     console.log("viewDetailRekamMedic ==> klik");
+    //     $("#rm-no-checkup").val(noCheckup);
+    //     $("#modal-detail-rekam-medic").modal("show");
+    // }
 
-                if(item.noCheckup != null){
-                    noCheckup = item.noCheckup;
-                }
-                if(item.diagnosa != null){
-                    dignosa = item.diagnosa;
-                }
-                if(item.stTglMasuk != null && item.stTglKeluar != null){
-                    tanggalMasuk = item.stTglMasuk;
-                    tanggalKeluar = item.stTglKeluar;
-                    dateFormatMasuk = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalMasuk));
-                    dateFormatKeluar = $.datepicker.formatDate('dd-mm-yy', new Date(tanggalKeluar));
-                }
-                table += "<tr>" +
-                    "<td>" + noCheckup + "</td>" +
-                    "<td>" + dignosa + "</td>" +
-                    "<td align='center'>" + dateFormatMasuk + "</td>" +
-                    "<td align='center'>" + dateFormatKeluar + "</td>" +
-                    "<td align='center'><button class=\"btn btn-primary\" onclick=\"viewDetailRekamMedic('"+item.noCheckup+"')\">View</button></td>" +
-                    "</tr>";
-
-                namaPasien = item.namaPasien;
-            });
-
-            $("#modal-rekam-medic").modal('show');
-            $('#nama_medik').html(namaPasien);
-            $("#body-rekam-medic").html(table);
-        });
-    }
-
-    function viewDetailRekamMedic(noCheckup){
-        console.log("viewDetailRekamMedic ==> klik");
-        $("#rm-no-checkup").val(noCheckup);
-        $("#modal-detail-rekam-medic").modal("show");
-    }
-
-    function viewDetailRekamMedicByKategori(kategori){
-        if (kategori == "ri") {
-            CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
-                // console.log(response);
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<tr>"+
-                        "<td>"+item.namaKategori+"</td>"+
-                        "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
-                        "</tr>";
-                });
-                $("#list-body-rekam-medic").html("");
-                $("#list-body-rekam-medic").html(str);
-            });
-        } else {
-            $("#list-body-rekam-medic").html("");
-            if (kategori == "mon") {
-
-                str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                $("#list-body-rekam-medic").html(str);
-
-            } else if (kategori == "igd") {
-                str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
-                    "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
-                    "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
-                    "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
-                $("#list-body-rekam-medic").html(str);
-            } else {
-
-            }
-        }
-    }
+    // function viewDetailRekamMedicByKategori(kategori){
+    //     if (kategori == "ri") {
+    //         CheckupAction.getListKategoriSkorRanapByHead(kategori, function (response) {
+    //             // console.log(response);
+    //             var str = "";
+    //             $.each(response, function(i, item) {
+    //                 str += "<tr>"+
+    //                     "<td>"+item.namaKategori+"</td>"+
+    //                     "<td align='center'><button class='btn btn-primary text-center' onclick=\"showDetailRm('ri')\">View</button></td>"+
+    //                     "</tr>";
+    //             });
+    //             $("#list-body-rekam-medic").html("");
+    //             $("#list-body-rekam-medic").html(str);
+    //         });
+    //     } else {
+    //         $("#list-body-rekam-medic").html("");
+    //         if (kategori == "mon") {
+    //
+    //             str = "<tr><td>Observasi Cairan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+    //                 "<tr><td>Observasi Vital Sign</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+    //                 "<tr><td>Observasi pemberian obat parenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+    //                 "<tr><td>Observasi pemberian obat nonparenteral</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+    //             $("#list-body-rekam-medic").html(str);
+    //
+    //         } else if (kategori == "igd") {
+    //             str = "<tr><td>Pemeriksaan Fisik</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','tppri')\">View</button></td></tr>"+
+    //                 "<tr><td>Psikosial</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','igd')\">View</button></td></tr>"+
+    //                 "<tr><td>Rencana Keperawatan</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','ri')\">View</button></td></tr>"+
+    //                 "<tr><td>Resiko Jatuh</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+    //             "<tr><td>Rekonsiliasi Obat</td><td align='center'><button class='btn btn-primary' onclick=\"showDetailRm('"+"noCheckup"+"','mon')\">View</button></td></tr>";
+    //             $("#list-body-rekam-medic").html(str);
+    //         } else {
+    //
+    //         }
+    //     }
+    // }
 
     function closeAlert() {
         $("#alert-pasien").attr("style", "display:none");

@@ -214,7 +214,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="namaDesa"/></td>
+                                    <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
@@ -223,7 +223,7 @@
                                         </a> --%>
                                         <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
                                             <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
-                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                             </s:url>
                                             <s:a href="%{add_rawat_jalan}">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">

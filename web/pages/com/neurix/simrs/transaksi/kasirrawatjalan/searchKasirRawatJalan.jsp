@@ -9,6 +9,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .modal { overflow-y: auto}
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
