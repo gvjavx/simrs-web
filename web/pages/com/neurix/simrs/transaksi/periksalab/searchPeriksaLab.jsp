@@ -100,7 +100,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stTglFrom" cssClass="form-control"
+                                            <s:textfield id="tgl_from" name="periksaLab.stTglFrom" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stTglTo" cssClass="form-control"
+                                            <s:textfield id="tgl_to" name="periksaLab.stTglTo" cssClass="form-control"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -168,7 +168,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
-                                <td>No Pelayanan</td>
+                                <td>ID Detail Checkup</td>
                                 <td>Nama Pasien</td>
                                 <td>Pemeriksaan</td>
                                 <td align="center">Action</td>
@@ -177,16 +177,16 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
-                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>
                                     <td align="center">
                                         <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPeriksaLab"/></s:param>
+                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_periksa_lab}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
                                         </s:a>
                                     </td>
                                 </tr>

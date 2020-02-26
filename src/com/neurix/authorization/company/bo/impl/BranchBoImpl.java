@@ -138,6 +138,13 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
                     resultBranch.setLogoName(imBranches.getLogoName());
 
+                    resultBranch.setPpkPelayanan(imBranches.getPpkPelayanan());
+                    resultBranch.setSuratSkdp(imBranches.getSuratSkdp());
+                    resultBranch.setKodeTarif(imBranches.getKodeTarif());
+                    resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
+                    resultBranch.setPayorCd(imBranches.getTarifPayorId());
+                    resultBranch.setCoderNik(imBranches.getCoderNik());
+
                     listOfResultBranch.add(resultBranch);
                 }
             }
@@ -392,6 +399,13 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setFlag(imBranches.getFlag());
             resultBranch.setAlamatSurat(imBranches.getAlamatSurat());
             resultBranch.setLogoName(imBranches.getLogoName());
+
+            resultBranch.setPpkPelayanan(imBranches.getPpkPelayanan());
+            resultBranch.setSuratSkdp(imBranches.getSuratSkdp());
+            resultBranch.setKodeTarif(imBranches.getKodeTarif());
+            resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
+            resultBranch.setPayorCd(imBranches.getTarifPayorId());
+            resultBranch.setCoderNik(imBranches.getCoderNik());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");
@@ -454,4 +468,5 @@ public class BranchBoImpl implements BranchBo {
         logger.info("[BranchBoImpl.findAllBranch] end process <<<");
         return branchers;
     }
+
 }

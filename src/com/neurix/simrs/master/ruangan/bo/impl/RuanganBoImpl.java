@@ -1,16 +1,19 @@
 package com.neurix.simrs.master.ruangan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
-import com.neurix.simrs.master.pasien.model.Pasien;
+
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,25 +40,32 @@ public class RuanganBoImpl implements RuanganBo {
 
         Map hsCriteria = new HashMap();
 
-        if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
+            hsCriteria.put("id_ruangan", bean.getIdRuangan());
+        }
+        if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())){
+        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
             hsCriteria.put("status_ruangan", bean.getStatusRuangan());
         }
-
-        hsCriteria.put("flag","Y");
+        if (bean.getSisaKuota() != null && !"".equalsIgnoreCase(bean.getSisaKuota().toString())) {
+            hsCriteria.put("sisa_kuota", bean.getSisaKuota());
+        }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+            hsCriteria.put("flag", "Y");
+        }
 
         List<MtSimrsRuanganEntity> mtSimrsRuanganEntityList = null;
         try {
             mtSimrsRuanganEntityList = ruanganDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RuanganBoImpl.getByCriteria] Error get ruangan data "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RuanganBoImpl.getByCriteria] Error get ruangan data " + e.getMessage());
         }
 
-        if (!mtSimrsRuanganEntityList.isEmpty()){
+        if (!mtSimrsRuanganEntityList.isEmpty()) {
             Ruangan ruangan;
-            for (MtSimrsRuanganEntity listEntity : mtSimrsRuanganEntityList){
+            for (MtSimrsRuanganEntity listEntity : mtSimrsRuanganEntityList) {
                 ruangan = new Ruangan();
                 ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setIdRuangan(listEntity.getIdRuangan());
@@ -80,11 +90,11 @@ public class RuanganBoImpl implements RuanganBo {
     public void saveAdd(Ruangan ruangan) throws GeneralBOException {
         logger.info("[RuanganBoImpl.saveAdd] Start >>>>>>>");
 
-        if (ruangan != null){
+        if (ruangan != null) {
             MtSimrsRuanganEntity mtSimrsRuanganEntity = new MtSimrsRuanganEntity();
             String id = getIdRuangan();
 
-            mtSimrsRuanganEntity.setIdRuangan("R"+id);
+            mtSimrsRuanganEntity.setIdRuangan("R" + id);
             mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
             mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
             mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
@@ -102,9 +112,9 @@ public class RuanganBoImpl implements RuanganBo {
 
             try {
                 ruanganDao.addAndSave(mtSimrsRuanganEntity);
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien", e);
-                throw new GeneralBOException(" Error when saving data pasien "+e.getMessage());
+                throw new GeneralBOException(" Error when saving data pasien " + e.getMessage());
             }
         } else {
             logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
@@ -118,13 +128,13 @@ public class RuanganBoImpl implements RuanganBo {
     public void saveEdit(Ruangan ruangan) throws GeneralBOException {
         logger.info("[PasienBoImpl.saveEdit] Start >>>>>>>");
 
-        if (ruangan != null && ruangan.getIdRuangan() != null && !"".equalsIgnoreCase(ruangan.getIdRuangan())){
+        if (ruangan != null && ruangan.getIdRuangan() != null && !"".equalsIgnoreCase(ruangan.getIdRuangan())) {
 
             Ruangan editRuangan = new Ruangan();
             editRuangan.setIdRuangan(ruangan.getIdRuangan());
             MtSimrsRuanganEntity mtSimrsRuanganEntity = getEntityByCriteria(editRuangan).get(0);
 
-            if (mtSimrsRuanganEntity != null){
+            if (mtSimrsRuanganEntity != null) {
 
                 mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                 mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
@@ -140,9 +150,9 @@ public class RuanganBoImpl implements RuanganBo {
 
                 try {
                     ruanganDao.updateAndSave(mtSimrsRuanganEntity);
-                } catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[RuanganBoImpl.saveAdd] Error when Updating data ruangan", e);
-                    throw new GeneralBOException(" Error when Updating data ruangan "+e.getMessage());
+                    throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
                 }
             } else {
                 logger.error("[RuanganBoImpl.saveAdd] Error when get entity ruangan is null");
@@ -161,7 +171,7 @@ public class RuanganBoImpl implements RuanganBo {
     public void saveDelete(Ruangan ruangan) throws GeneralBOException {
         logger.info("[RuanganBoImpl.saveDelete] start process");
 
-        if (ruangan!=null) {
+        if (ruangan != null) {
 
             String idRuangan = ruangan.getIdRuangan();
 
@@ -206,13 +216,51 @@ public class RuanganBoImpl implements RuanganBo {
         logger.info("[RuanganBoImpl.saveEdit] End <<<<<<<");
     }
 
-    public String getIdRuangan(){
+    @Override
+    public CheckResponse updateRuangan(Ruangan bean) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+        if (bean.getIdRuangan() != null) {
+
+            MtSimrsRuanganEntity entity = new MtSimrsRuanganEntity();
+
+            try {
+                entity = ruanganDao.getById("idRuangan", bean.getIdRuangan());
+            }catch (HibernateException e){
+                logger.error("Found Error when seach mt ruangan "+e.getMessage());
+            }
+
+            if(entity != null){
+
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                String user = CommonUtil.userLogin();
+
+                entity.setSisaKuota(entity.getSisaKuota() + 1);
+                entity.setLastUpdate(now);
+                entity.setLastUpdateWho(user);
+
+                if(entity.getSisaKuota() > 0){
+                    entity.setStatusRuangan("Y");
+                }
+
+                try {
+                    ruanganDao.updateAndSave(entity);
+                }catch (HibernateException e){
+                    logger.error("Found Error when update ruangan "+e.getMessage());
+                }
+
+            }
+
+        }
+        return response;
+    }
+
+    public String getIdRuangan() {
         logger.info("[RuanganBoImpl.getIdRuangan] Start >>>>>>>");
         String id = "";
 
         try {
             id = ruanganDao.getNextIdRuangan();
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[PasienBoImpl.getIdPasien] Error when get next id pasien");
         }
 
@@ -225,45 +273,45 @@ public class RuanganBoImpl implements RuanganBo {
         return null;
     }
 
-    public List<MtSimrsRuanganEntity> getEntityByCriteria(Ruangan bean) throws GeneralBOException{
+    public List<MtSimrsRuanganEntity> getEntityByCriteria(Ruangan bean) throws GeneralBOException {
         logger.info("[RuanganBoImpl.getEntityByCriteria] Start >>>>>>>");
         List<MtSimrsRuanganEntity> results = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("flag", "Y");
-        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-        if (bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())){
+        if (bean.getNamaRuangan() != null && !"".equalsIgnoreCase(bean.getNamaRuangan())) {
             hsCriteria.put("nama_ruangan", bean.getNamaRuangan());
         }
-        if (bean.getNoRuangan() != null && !"".equalsIgnoreCase(bean.getNoRuangan())){
+        if (bean.getNoRuangan() != null && !"".equalsIgnoreCase(bean.getNoRuangan())) {
             hsCriteria.put("no_ruangan", bean.getNoRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())){
+        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
             hsCriteria.put("status_ruangan", bean.getStatusRuangan());
         }
-        if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+        if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }
-        if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+        if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
             hsCriteria.put("keterangan", bean.getKeterangan());
         }
-        if (bean.getTarif() != null && !"".equalsIgnoreCase(String.valueOf(bean.getTarif()))){
+        if (bean.getTarif() != null && !"".equalsIgnoreCase(String.valueOf(bean.getTarif()))) {
             hsCriteria.put("tarif", bean.getTarif());
         }
-        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             hsCriteria.put("branch_id", bean.getBranchId());
         }
 
         List<MtSimrsRuanganEntity> mtSimrsRuanganEntities = null;
         try {
             mtSimrsRuanganEntities = ruanganDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RuanganBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RuanganBoImpl.getByByCriteria] Error when search pasien by criteria " + e.getMessage());
         }
 
-        if (!mtSimrsRuanganEntities.isEmpty()){
+        if (!mtSimrsRuanganEntities.isEmpty()) {
             results = mtSimrsRuanganEntities;
         }
 

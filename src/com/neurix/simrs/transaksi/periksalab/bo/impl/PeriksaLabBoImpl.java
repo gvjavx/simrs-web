@@ -10,6 +10,7 @@ import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao;
@@ -455,6 +456,37 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
         logger.info("[PeriksaLabBoImpl.saveDokterLab] End <<<<<<<<<");
     }
 
+    @Override
+    public CheckResponse updateFlagApprovePeriksaLab(PeriksaLab bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] START <<<<<<<<<");
+
+        CheckResponse response = new CheckResponse();
+        if(bean != null){
+            List<ItSimrsPeriksaLabEntity> entityList = getListEntityPeriksaLab(bean);
+            if(entityList.size() > 0){
+                for (ItSimrsPeriksaLabEntity entity: entityList){
+
+                    entity.setApproveFlag("Y");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        periksaLabDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil update periksa lab");
+                    }catch (HibernateException e){
+                        response.setMessage("error");
+                        response.setMessage("Error when update periksa lab : "+e.getMessage());
+                        logger.error("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] Error when update periksa lab ", e);
+                        throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] END <<<<<<<<<");
+        return response;
+    }
+
     private List<ItSimrsPeriksaLabDetailEntity> getListEntityPerikasDetailLab(PeriksaLabDetail bean) throws GeneralBOException{
         logger.info("[PeriksaLabBoImpl.getListEntityPerikasDetailLab] START >>>>>>>>> ");
         List<ItSimrsPeriksaLabDetailEntity> periksaLabDetailEntities = new ArrayList<>();
@@ -493,6 +525,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
 
         if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())){
             hsCriteria.put("status", bean.getStatusPeriksa());
+        }
+
+        if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
+            hsCriteria.put("approve_flag", bean.getApproveFlag());
         }
 
         hsCriteria.put("flag","Y");
@@ -670,4 +706,5 @@ public class PeriksaLabBoImpl implements PeriksaLabBo{
     public void setPeriksaRadiologiDao(PeriksaRadiologiDao periksaRadiologiDao) {
         this.periksaRadiologiDao = periksaRadiologiDao;
     }
+
 }

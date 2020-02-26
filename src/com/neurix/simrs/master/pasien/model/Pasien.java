@@ -41,6 +41,25 @@ public class Pasien {
     private String password;
     private String email;
 
+    private boolean isPasienLama = false;
+    private String imgKtp;
+
+    public String getImgKtp() {
+        return imgKtp;
+    }
+
+    public void setImgKtp(String imgKtp) {
+        this.imgKtp = imgKtp;
+    }
+
+    public boolean getIsPasienLama() {
+        return isPasienLama;
+    }
+
+    public void setIsPasienLama(boolean isPasienLama) {
+        this.isPasienLama = isPasienLama;
+    }
+
     public String getEmail() {
         return email;
     }

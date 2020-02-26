@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,9 @@ import java.util.Map;
 /**
  * Created by Toshiba on 21/10/2019.
  */
-public class BpjsController extends BpjsService implements ModelDriven<String> {
+public class BpjsController extends BpjsService implements ModelDriven<Object> {
+
+    private Collection<TindakanResponse> listOfTindakanResponse = new ArrayList<>();
 
     private String data;
     private String keyword;
@@ -206,6 +209,7 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         }
         for (PoliResponse poliResponse : poliResponseList){
             logger.info(poliResponse.getNamaPoliBpjs());
+            logger.info(poliResponse.getKodePoliBpjs());
         }
     }
     public void cekRujukan(String rujukanId,String tipeRujukan){
@@ -238,6 +242,8 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         for (TindakanResponse tindakanResponse : tindakanResponseList){
             logger.info(tindakanResponse.getNamaTindakanBpjs());
         }
+
+        listOfTindakanResponse.addAll(tindakanResponseList);
     }
     public void listDiagnosa(String key){
         List<DiagnosaResponse> diagnosaResponseList = new ArrayList<>();
@@ -463,8 +469,14 @@ public class BpjsController extends BpjsService implements ModelDriven<String> {
         }
     }
     @Override
-    public String getModel() {
-        return result;
+    public Object getModel() {
+        switch (data){
+            case "finger-register":
+                return result;
+            case "bpjs-tindakan":
+                return listOfTindakanResponse;
+            default: return null;
+        }
     }
 
 }

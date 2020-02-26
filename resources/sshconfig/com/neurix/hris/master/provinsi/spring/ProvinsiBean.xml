@@ -11,6 +11,19 @@
     <bean id="provinsiBo" class="com.neurix.hris.master.provinsi.bo.impl.ProvinsiBoImpl"
           p:provinsiDao-ref="provinsiDao" />
 
+    <bean id="provinsiController" class="com.neurix.simrs.mobileapi.ProvinsiController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="kotaController" class="com.neurix.simrs.mobileapi.KotaController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="kecamatanController" class="com.neurix.simrs.mobileapi.KecamatanController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="desaController" class="com.neurix.simrs.mobileapi.DesaController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+
     <bean id="provinsiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="provinsiBo">
         <property name="interceptorNames">

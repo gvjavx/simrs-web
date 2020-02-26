@@ -3,6 +3,7 @@ package com.neurix.simrs.master.ruangan.model;
 import com.neurix.common.model.BaseModel;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -23,6 +24,93 @@ public class Ruangan extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String namaKelasRuangan;
+
+
+    private String idDetailCheckup;
+    private String tglMasuk;
+    private BigDecimal tarifBpjs;
+    private BigDecimal tarifTindakan;
+
+    private String tipeTransaksi;
+    private BigDecimal nilaiPersen;
+
+    private Integer sisaKuota;
+    private Integer kuota;
+
+    private String namaPasien;
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public Integer getSisaKuota() {
+        return sisaKuota;
+    }
+
+    public void setSisaKuota(Integer sisaKuota) {
+        this.sisaKuota = sisaKuota;
+    }
+
+    public Integer getKuota() {
+        return kuota;
+    }
+
+    public void setKuota(Integer kuota) {
+        this.kuota = kuota;
+    }
+
+
+    public String getTipeTransaksi() {
+        return tipeTransaksi;
+    }
+
+    public void setTipeTransaksi(String tipeTransaksi) {
+        this.tipeTransaksi = tipeTransaksi;
+    }
+
+    public BigDecimal getNilaiPersen() {
+        return nilaiPersen;
+    }
+
+    public void setNilaiPersen(BigDecimal nilaiPersen) {
+        this.nilaiPersen = nilaiPersen;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getTglMasuk() {
+        return tglMasuk;
+    }
+
+    public void setTglMasuk(String tglMasuk) {
+        this.tglMasuk = tglMasuk;
+    }
 
     public String getIdRuangan() {
         return idRuangan;

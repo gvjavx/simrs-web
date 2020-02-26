@@ -12,6 +12,9 @@
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:keteranganKeluarBoProxy-ref="keteranganKeluarBoProxy"
+          p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+          p:billingSystemBoProxy-ref="billingSystemBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
@@ -22,6 +25,18 @@
           p:dokterTeamDao-ref="dokterTeamDao"
           p:ruanganDao-ref="ruanganDao"
           p:headerCheckupDao-ref="headerCheckupDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:periksaLabDao-ref="periksaLabDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:orderGiziDao-ref="orderGiziDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:antrianOnlineDao-ref="antrianOnlineDao"
+          p:uangMukaDao-ref="uangMukaDao"
+    />
+
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+        p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
     <bean id="checkupDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -647,8 +647,25 @@ public class ObatPoliAction extends BaseMasterAction {
             PermintaanObatPoli entity = permintaanObatPoliList.get(0);
             if(entity != null){
 
+                String branch = CommonUtil.userBranchLogin();
+                String logo = "";
+
+                switch (branch){
+                    case CommonConstant.BRANCH_RS01 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                        break;
+                    case CommonConstant.BRANCH_RS02 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                        break;
+                    case CommonConstant.BRANCH_RS03 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                        break;
+                }
+
+                reportParams.put("area", CommonUtil.userAreaName());
+                reportParams.put("unit", CommonUtil.userBranchNameLogin());
                 reportParams.put("permintaanId", idPermintaan);
-                reportParams.put("logo", CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                reportParams.put("logo", logo);
                 reportParams.put("namaPelayanan", entity.getNamaPelayanan());
                 reportParams.put("dariPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
             }

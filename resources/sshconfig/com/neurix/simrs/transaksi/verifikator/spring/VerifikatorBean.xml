@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="verifikatorAction" class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:rawatInapBoProxy-ref="rawatInapBoProxy"
+          p:verifikatorBoProxy-ref="verifikatorBoProxy"
+    />
+
+    <bean id="verifikatorBo" class="com.neurix.simrs.transaksi.verifikator.bo.impl.VerifikatorBoImpl"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
+          p:checkupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:rawatInapDao-ref="rawatInapDao"
+    />
+
+    <bean id="verifikatorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="verifikatorBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionObatDetailInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionObatDetailInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListAllTindakan">readOnly</prop>
+                <prop key="getListVerifikasiRawatInap">readOnly</prop>
+                <prop key="getListVerifikasiRawatJalan">PROPAGATION_REQUIRED</prop>
+                <prop key="updateFlagKlaim">PROPAGATION_REQUIRED</prop>
+                <prop key="updateKlaimBpjsFlag">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

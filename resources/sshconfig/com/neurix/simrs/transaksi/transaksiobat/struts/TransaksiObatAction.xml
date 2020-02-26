@@ -77,6 +77,20 @@
             <result name="init_bayar">/pages/com/neurix/simrs/transaksi/transaksiobat/prosesTransaksiObat.jsp</result>
             <result name="init_pembelian_obat">/pages/com/neurix/simrs/transaksi/transaksiobat/pembelianObat.jsp</result>
 
+            <result name="print_pembelian_obat" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printPembelianObat.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_struk_resep_pasien" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printStrukResepPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

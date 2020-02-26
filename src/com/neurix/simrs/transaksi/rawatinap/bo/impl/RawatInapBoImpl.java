@@ -1,14 +1,36 @@
 package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+
+import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
+import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
+import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
+import com.neurix.simrs.transaksi.monpemberianobat.dao.MonPemberianObatDao;
+import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
+import com.neurix.simrs.transaksi.monpemberianobat.model.MonPemberianObat;
+import com.neurix.simrs.transaksi.monvitalsign.dao.MonVitalSignDao;
+import com.neurix.simrs.transaksi.monvitalsign.model.ItSimrsMonVitalSignEntity;
+import com.neurix.simrs.transaksi.monvitalsign.model.MonVitalSign;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.KategoriSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.ParameterSkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao;
+import com.neurix.simrs.transaksi.skorrawatinap.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +43,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     private static transient Logger logger = Logger.getLogger(RawatInapBoImpl.class);
     private RawatInapDao rawatInapDao;
+    private KategoriSkorRanapDao kategoriSkorRanapDao;
+    private ParameterSkorRanapDao parameterSkorRanapDao;
+    private MasterSkorRanapDao masterSkorRanapDao;
+    private SkorRanapDao skorRanapDao;
+    private MonCairanDao monCairanDao;
+    private MonPemberianObatDao monPemberianObatDao;
+    private MonVitalSignDao monVitalSignDao;
 
     protected List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -40,8 +69,9 @@ public class RawatInapBoImpl implements RawatInapBo {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-
-        hsCriteria.put("flag", "Y");
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            hsCriteria.put("flag", bean.getFlag());
+        }
 
         try {
             entityList = rawatInapDao.getByCriteria(hsCriteria);
@@ -72,5 +102,505 @@ public class RawatInapBoImpl implements RawatInapBo {
         }
         logger.info("[RawatInapBoImpl.getSearchRawatInap] End <<<<<<<<");
         return results;
+    }
+
+    @Override
+    public List<SkorRanap> getListSkorRanap(SkorRanap bean) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getListSkorRanap] Start >>>>>>>");
+
+        List<SkorRanap> skorRanaps = new ArrayList<>();
+        List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+        if (bean != null){
+
+            Map hsCriteria = new HashMap();
+
+            if (bean.getNoCheckup() != null){
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
+            if (bean.getIdDetailCheckup() != null){
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if (bean.getIdKategori() != null){
+                hsCriteria.put("id_kategori", bean.getIdKategori());
+            }
+            if (bean.getGroupId() != null){
+                hsCriteria.put("group_id", bean.getGroupId());
+            }
+            if (bean.getStDate() != null){
+                hsCriteria.put("date", bean.getStDate());
+            }
+
+            if (bean.getGroupId() != null && !"".equalsIgnoreCase(bean.getGroupId())){
+                try {
+                    skorRanapEntities = skorRanapDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                }
+            }
+
+
+            if (skorRanapEntities.size() == 0){
+
+                hsCriteria = new HashMap();
+                hsCriteria.put("id_kategori", bean.getIdKategori());
+
+                List<ImSimrsParameterSkorRanapEntity> parameterSkorRanapEntities = new ArrayList<>();
+                try {
+                    parameterSkorRanapEntities = parameterSkorRanapDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                }
+
+                if (parameterSkorRanapEntities.size() > 0){
+                    SkorRanap skorRanap;
+                    for (ImSimrsParameterSkorRanapEntity parameter : parameterSkorRanapEntities){
+                        skorRanap = new SkorRanap();
+                        skorRanap.setIdKategori(parameter.getIdKategori());
+                        skorRanap.setIdParameter(parameter.getIdParameter());
+                        skorRanap.setNamaParameter(parameter.getNamaParameter());
+                        skorRanap.setType(parameter.getType());
+                        skorRanaps.add(skorRanap);
+                    }
+                }
+            } else {
+                SkorRanap skorRanap;
+                for (ItSimrsSkorRanapEntity skorRanapEntity : skorRanapEntities){
+                    skorRanap = new SkorRanap();
+                    skorRanap.setId(skorRanapEntity.getId());
+                    skorRanap.setGroupId(skorRanapEntity.getGroupId());
+                    skorRanap.setIdKategori(skorRanapEntity.getIdKategori());
+                    skorRanap.setIdParameter(skorRanapEntity.getIdParameter());
+                    skorRanap.setNamaParameter(skorRanapEntity.getNamaParameter());
+                    skorRanap.setSkor(skorRanapEntity.getSkor().toString());
+                    skorRanap.setKeterangan(skorRanapEntity.getKeterangan());
+                    skorRanap.setFlag(skorRanapEntity.getFlag());
+                    skorRanap.setAction(skorRanapEntity.getAction());
+                    skorRanap.setCreatedDate(skorRanapEntity.getCreatedDate());
+                    skorRanap.setCreatedWho(skorRanapEntity.getCreatedWho());
+                    skorRanap.setLastUpdate(skorRanapEntity.getLastUpdate());
+                    skorRanap.setLastUpdateWho(skorRanapEntity.getLastUpdateWho());
+                    skorRanap.setStDate(stringDate(skorRanapEntity.getCreatedDate()));
+                    skorRanaps.add(skorRanap);
+                }
+            }
+        }
+
+        logger.info("[RawatInapBoImpl.getListSkorRanap] End <<<<<<<<");
+        return skorRanaps;
+    }
+
+    @Override
+    public ImSimrsKategoriSkorRanapEntity kategoriSkorRanap(String id) {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_kategori", id);
+
+        List<ImSimrsKategoriSkorRanapEntity> kategoriSkorRanapEntities = new ArrayList<>();
+        try {
+            kategoriSkorRanapEntities = kategoriSkorRanapDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR"+e.getMessage());
+        }
+
+        ImSimrsKategoriSkorRanapEntity kategoriSkorRanapEntity = new ImSimrsKategoriSkorRanapEntity();
+        if (kategoriSkorRanapEntities.size() > 0){
+            kategoriSkorRanapEntity = kategoriSkorRanapEntities.get(0);
+        }
+
+        return kategoriSkorRanapEntity;
+    }
+
+    @Override
+    public List<ImSimrsSkorRanapEntity> getListMasterSkor(String id) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.getListMasterSkor] Start >>>>>>>");
+
+        List<ImSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_parameter", id);
+
+        skorRanapEntities = masterSkorRanapDao.getByCriteria(hsCriteria);
+        logger.info("[RawatInapBoImpl.getListMasterSkor] End <<<<<<<<");
+        return skorRanapEntities;
+    }
+
+    @Override
+    public CrudResponse saveAddSkorRanap(String noCheckup, String idDetail, List<ItSimrsSkorRanapEntity> skors) {
+
+        CrudResponse response = new CrudResponse();
+        if (skors.size() > 0){
+            String groupId = "GRS"+getNextGroupSkorRanap();
+            for (ItSimrsSkorRanapEntity entity : skors){
+                entity.setId("SKI"+getNextSkorRanap());
+                entity.setGroupId(groupId);
+
+                try {
+                    skorRanapDao.addAndSave(entity);
+                    response.setStatus("success");
+                } catch (HibernateException e){
+                    logger.error("[RawatInapBoImpl.saveAddSkorRanap] ERROR ",e);
+                    response.setStatus("error");
+                    response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonVitalSign> getListMonVitalSign(MonVitalSign bean) {
+
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonVitalSignEntity> monVitalSignEntities = new ArrayList<>();
+        try {
+            monVitalSignEntities = monVitalSignDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonVitalSign] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonVitalSign] ERROR"+e.getMessage());
+        }
+
+        List<MonVitalSign> monVitalSigns = new ArrayList<>();
+        if (monVitalSignEntities.size() > 0){
+            MonVitalSign monVitalSign;
+            for (ItSimrsMonVitalSignEntity entity : monVitalSignEntities){
+                monVitalSign = new MonVitalSign();
+                monVitalSign.setId(entity.getId());
+                monVitalSign.setNoCheckup(entity.getNoCheckup());
+                monVitalSign.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monVitalSign.setNadi(entity.getNadi());
+                monVitalSign.setNafas(entity.getNafas());
+                monVitalSign.setSuhu(entity.getSuhu());
+                monVitalSign.setTensi(entity.getTensi());
+                monVitalSign.setJam(entity.getJam());
+                monVitalSign.setFlag(entity.getFlag());
+                monVitalSign.setAction(entity.getAction());
+                monVitalSign.setCreatedDate(entity.getCreatedDate());
+                monVitalSign.setCreatedWho(entity.getCreatedWho());
+                monVitalSign.setLastUpdate(entity.getLastUpdate());
+                monVitalSign.setLastUpdateWho(entity.getLastUpdateWho());
+                monVitalSign.setStDate(stringDate(entity.getCreatedDate()));
+                monVitalSign.setTb(entity.getTb());
+                monVitalSign.setBb(entity.getBb());
+                monVitalSigns.add(monVitalSign);
+            }
+        }
+        return monVitalSigns;
+    }
+
+    @Override
+    public CrudResponse saveMonVitalSign(ItSimrsMonVitalSignEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonVitalSign] bean is null");
+        if (bean != null){
+            bean.setId("OVS"+getNextMonVitalSign());
+            try {
+                monVitalSignDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonVitalSign] ERROR "+ e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonCairan> getListMonCairan(MonCairan bean) {
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+
+        List<ItSimrsMonCairanEntity> monCairanEntities = new ArrayList<>();
+        try {
+            monCairanEntities = monCairanDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        }
+
+        List<MonCairan> monCairans = new ArrayList<>();
+        if (monCairanEntities.size() > 0){
+            MonCairan monCairan;
+            for (ItSimrsMonCairanEntity entity : monCairanEntities){
+                monCairan = new MonCairan();
+                monCairan.setId(entity.getId());
+                monCairan.setNoCheckup(entity.getNoCheckup());
+                monCairan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monCairan.setMacamCairan(entity.getMacamCairan());
+                monCairan.setMelalui(entity.getMelalui());
+                monCairan.setJumlah(entity.getJumlah());
+                monCairan.setJamMulai(entity.getJamMulai());
+                monCairan.setJamSelesai(entity.getJamSelesai());
+                monCairan.setCekTambahanObat(entity.getCekTambahanObat());
+                monCairan.setJamUkurBuang(entity.getJamUkurBuang());
+                monCairan.setDari(entity.getDari());
+                monCairan.setBalanceCairan(entity.getBalanceCairan());
+                monCairan.setKeterangan(entity.getKeterangan());
+                monCairan.setFlag(entity.getFlag());
+                monCairan.setAction(entity.getAction());
+                monCairan.setCreatedDate(entity.getCreatedDate());
+                monCairan.setCreatedWho(entity.getCreatedWho());
+                monCairan.setLastUpdate(entity.getLastUpdate());
+                monCairan.setLastUpdateWho(entity.getLastUpdateWho());
+                monCairan.setStDate(stringDate(entity.getCreatedDate()));
+                monCairans.add(monCairan);
+            }
+        }
+        return monCairans;
+    }
+
+    @Override
+    public CrudResponse saveMonCairan(ItSimrsMonCairanEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonCairan] bean is null");
+        if (bean != null){
+            bean.setId("OCR"+getNextMonCairan());
+            try {
+                monCairanDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonCairan] ERROR "+ e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonPemberianObat> getListPemberianObat(MonPemberianObat bean) {
+        Map hsCriteria = new HashMap();
+        if (bean.getNoCheckup() != null)
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+        if (bean.getIdDetailCheckup() != null)
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        if (bean.getId() != null)
+            hsCriteria.put("id", bean.getId());
+        if (bean.getKategori() != null)
+            hsCriteria.put("kategori", bean.getKategori());
+
+        List<ItSimrsMonPemberianObatEntity> pemberianObatEntities = new ArrayList<>();
+        try {
+            pemberianObatEntities = monPemberianObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        }
+
+        List<MonPemberianObat> monPemberianObats = new ArrayList<>();
+        if (pemberianObatEntities.size() > 0){
+            MonPemberianObat monPemberianObat;
+            for (ItSimrsMonPemberianObatEntity entity : pemberianObatEntities){
+                monPemberianObat = new MonPemberianObat();
+                monPemberianObat.setId(entity.getId());
+                monPemberianObat.setNoCheckup(entity.getNoCheckup());
+                monPemberianObat.setIdDetailCheckup(entity.getIdDetailCheckup());
+                monPemberianObat.setNamaObat(entity.getNamaObat());
+                monPemberianObat.setCaraPemberian(entity.getCaraPemberian());
+                monPemberianObat.setDosis(entity.getDosis());
+                monPemberianObat.setSkinTes(entity.getSkinTes());
+                monPemberianObat.setWaktu(entity.getWaktu());
+                monPemberianObat.setKeterangan(entity.getKeterangan());
+                monPemberianObat.setFlag(entity.getFlag());
+                monPemberianObat.setAction(entity.getAction());
+                monPemberianObat.setCreatedDate(entity.getCreatedDate());
+                monPemberianObat.setCreatedWho(entity.getCreatedWho());
+                monPemberianObat.setLastUpdate(entity.getLastUpdate());
+                monPemberianObat.setLastUpdateWho(entity.getLastUpdateWho());
+                monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
+                monPemberianObat.setKategori(entity.getKategori());
+                monPemberianObats.add(monPemberianObat);
+            }
+        }
+        return monPemberianObats;
+    }
+
+    @Override
+    public CrudResponse saveMonPemberianObat(ItSimrsMonPemberianObatEntity bean) {
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] bean is null");
+        if (bean != null){
+            bean.setId("POT"+getNextMonPemberianObat());
+            try {
+                monPemberianObatDao.addAndSave(bean);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] ERROR "+ e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<MonVitalSign> getListGraf(MonVitalSign bean) {
+
+        List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(bean);
+        if (monVitalSigns.size() > 0){
+            for (MonVitalSign monVitalSign : monVitalSigns){
+//                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+                SimpleDateFormat f = new SimpleDateFormat("MM/dd");
+                String stDate = f.format(monVitalSign.getCreatedDate());
+                monVitalSign.setStDate("tgl : "+stDate+", jam : "+monVitalSign.getJam());
+            }
+        }
+        return monVitalSigns;
+    }
+
+    @Override
+    public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head) {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("head", head);
+        return kategoriSkorRanapDao.getByCriteria(hsCriteria);
+    }
+
+    @Override
+    public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException {
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        if(bean != null){
+            List<ItSimrsRawatInapEntity> list = getListEntityByCriteria(bean);
+            if(list.size() > 0){
+                RawatInap rawatInap;
+                for (ItSimrsRawatInapEntity entity: list){
+                    rawatInap = new RawatInap();
+                    rawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    rawatInap.setIdRawatInap(entity.getIdRawatInap());
+                    rawatInap.setNoCheckup(entity.getNoCheckup());
+                    rawatInap.setIdRuangan(entity.getIdRuangan());
+                    rawatInap.setNamaRangan(entity.getNamaRangan());
+                    rawatInap.setTglMasuk(entity.getTglMasuk());
+                    rawatInap.setTglKeluar(entity.getTglKeluar());
+                    rawatInapList.add(rawatInap);
+                }
+            }
+        }
+        return rawatInapList;
+    }
+
+    private String stringDate(Timestamp datetime){
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        return f.format(datetime);
+    }
+
+    @Override
+    public List<Obat> getListObatParenteral(String idPelayanan) {
+        return monPemberianObatDao.getListObatParenteral(idPelayanan);
+    }
+
+    @Override
+    public List<Obat> getListObatNonParenteral(String idDetail, String kategori) {
+        return monPemberianObatDao.getListObatNonParenteral(idDetail, kategori);
+    }
+
+    @Override
+    public List<SkorRanap> getListSumSkorRanap(String noCheckup, String idDetail, String idkategori) {
+
+        List<SkorRanap> skorRanaps = new ArrayList<>();
+        try {
+            skorRanaps = skorRanapDao.getListSumSkorRanap(noCheckup, idDetail, idkategori);
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListSumSkorRanap] ERROR ",e);
+        }
+
+        return skorRanaps;
+    }
+
+    private String getNextSkorRanap(){
+        String id = "";
+        try {
+            id = skorRanapDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextSkorRanap] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextSkorRanap] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextGroupSkorRanap(){
+        String id = "";
+        try {
+            id = skorRanapDao.getNextGroupSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextMonCairan(){
+        String id = "";
+        try {
+            id = monCairanDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonCairan] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonCairan] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextMonPemberianObat(){
+        String id = "";
+        try {
+            id = monPemberianObatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+    private String getNextMonVitalSign(){
+        String id = "";
+        try {
+            id = monVitalSignDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq ",e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq "+e.getMessage());
+        }
+        return id;
+    }
+
+
+    public void setKategoriSkorRanapDao(KategoriSkorRanapDao kategoriSkorRanapDao) {
+        this.kategoriSkorRanapDao = kategoriSkorRanapDao;
+    }
+
+    public void setParameterSkorRanapDao(ParameterSkorRanapDao parameterSkorRanapDao) {
+        this.parameterSkorRanapDao = parameterSkorRanapDao;
+    }
+
+    public void setMasterSkorRanapDao(MasterSkorRanapDao masterSkorRanapDao) {
+        this.masterSkorRanapDao = masterSkorRanapDao;
+    }
+
+    public void setSkorRanapDao(SkorRanapDao skorRanapDao) {
+        this.skorRanapDao = skorRanapDao;
+    }
+
+    public void setMonCairanDao(MonCairanDao monCairanDao) {
+        this.monCairanDao = monCairanDao;
+    }
+
+    public void setMonPemberianObatDao(MonPemberianObatDao monPemberianObatDao) {
+        this.monPemberianObatDao = monPemberianObatDao;
+    }
+
+    public void setMonVitalSignDao(MonVitalSignDao monVitalSignDao) {
+        this.monVitalSignDao = monVitalSignDao;
     }
 }

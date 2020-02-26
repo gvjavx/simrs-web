@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface TindakanBo {
     public List<Tindakan> getByCriteria(Tindakan bean) throws GeneralBOException;
+    public List<Tindakan> getComboBoxTindakan(Tindakan bean) throws GeneralBOException;
 }

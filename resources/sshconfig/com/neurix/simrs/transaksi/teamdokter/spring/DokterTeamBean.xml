@@ -8,6 +8,9 @@
     <bean id="teamDokterAction" class="com.neurix.simrs.transaksi.teamdokter.action.TeamDokterAction"
           p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
+
     <bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"
           p:dokterSpesialisDao-ref="dokterSpesialisDao"
           p:dokterDao-ref="dokterDao"

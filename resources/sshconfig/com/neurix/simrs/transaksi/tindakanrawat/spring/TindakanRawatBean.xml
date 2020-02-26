@@ -9,6 +9,10 @@
         p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
     />
 
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+    />
+
     <bean id="tindakanRawatBo" class="com.neurix.simrs.transaksi.tindakanrawat.bo.impl.TindakanRawatBoImpl"
           p:tindakanRawatDao-ref="tindakanRawatDao"
           p:checkupDetailDao-ref="checkupDetailDao"

@@ -22,11 +22,30 @@ public class TindakanRawat extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String stDate;
 
     private String namaDokter;
     private String namaPerawat;
 
     private String idKategoriTindakan;
+
+    private String approveFlag;
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getIdKategoriTindakan() {
         return idKategoriTindakan;

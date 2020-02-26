@@ -45,6 +45,97 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
     private String kodeDiagnosa;
+    private String ketRujukan;
+    private String ketKeyakinan;
+    private String bantuanBahasa;
+    private String bahasa;
+    private String alatBantu;
+    private String gangguanLain;
+
+    public String getGangguanLain() {
+        return gangguanLain;
+    }
+
+    public void setGangguanLain(String gangguanLain) {
+        this.gangguanLain = gangguanLain;
+    }
+
+    public String getKetKeyakinan() {
+        return ketKeyakinan;
+    }
+
+    public void setKetKeyakinan(String ketKeyakinan) {
+        this.ketKeyakinan = ketKeyakinan;
+    }
+
+    public String getBantuanBahasa() {
+        return bantuanBahasa;
+    }
+
+    public void setBantuanBahasa(String bantuanBahasa) {
+        this.bantuanBahasa = bantuanBahasa;
+    }
+
+    public String getBahasa() {
+        return bahasa;
+    }
+
+    public void setBahasa(String bahasa) {
+        this.bahasa = bahasa;
+    }
+
+    public String getAlatBantu() {
+        return alatBantu;
+    }
+
+    public void setAlatBantu(String alatBantu) {
+        this.alatBantu = alatBantu;
+    }
+
+    public String getKetRujukan() {
+        return ketRujukan;
+    }
+
+    public void setKetRujukan(String ketRujukan) {
+        this.ketRujukan = ketRujukan;
+    }
+
+    private String noRujukan;
+    private String noPpkRujukan;
+    private Date tglRujukan;
+    private String klaimBpjsFlag;
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoRujukan() {
+        return noRujukan;
+    }
+
+    public void setNoRujukan(String noRujukan) {
+        this.noRujukan = noRujukan;
+    }
+
+    public String getNoPpkRujukan() {
+        return noPpkRujukan;
+    }
+
+    public void setNoPpkRujukan(String noPpkRujukan) {
+        this.noPpkRujukan = noPpkRujukan;
+    }
+
+    public Date getTglRujukan() {
+        return tglRujukan;
+    }
+
+    public void setTglRujukan(Date tglRujukan) {
+        this.tglRujukan = tglRujukan;
+    }
 
     public String getKodeDiagnosa() {
         return kodeDiagnosa;

@@ -1,16 +1,19 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
  */
-public class HeaderDetailCheckup extends BaseModel implements Serializable{
+public class HeaderDetailCheckup extends BaseModel{
     private String idDetailCheckup;
     private String noCheckup;
     private String idPelayanan;
@@ -64,6 +67,168 @@ public class HeaderDetailCheckup extends BaseModel implements Serializable{
     private String berat;
 
     private String status;
+
+    private String klaimBpjsFlag;
+
+    private String noSep;
+
+    private boolean cekApprove;
+
+    private String caraPasienPulang;
+    private String pendamping;
+    private String tempatTujuan;
+
+    private BigDecimal tarifBpjs;
+    private BigDecimal tarifTindakan;
+    private String typeTransaction;
+    private String jenisPembayaran;
+    private String noUangMuka;
+    private BigInteger jumlahUangMuka;
+
+    private String notLike;
+
+    public String getNotLike() {
+        return notLike;
+    }
+
+    public void setNotLike(String notLike) {
+        this.notLike = notLike;
+    }
+
+    private String noNota;
+
+    private String noCheckupOnline;
+    private String metodePembayaran;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
+    public BigInteger getJumlahUangMuka() {
+        return jumlahUangMuka;
+    }
+
+    public void setJumlahUangMuka(BigInteger jumlahUangMuka) {
+        this.jumlahUangMuka = jumlahUangMuka;
+    }
+
+    public String getNoUangMuka() {
+        return noUangMuka;
+    }
+
+    public void setNoUangMuka(String noUangMuka) {
+        this.noUangMuka = noUangMuka;
+    }
+
+    public String getJenisPembayaran() {
+        return jenisPembayaran;
+    }
+
+    public void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+    }
+
+    public String getTypeTransaction() {
+        return typeTransaction;
+    }
+
+    public void setTypeTransaction(String typeTransaction) {
+        this.typeTransaction = typeTransaction;
+    }
+
+    private List<Tindakan> tindakanList;
+
+    public List<Tindakan> getTindakanList() {
+        return tindakanList;
+    }
+
+    public void setTindakanList(List<Tindakan> tindakanList) {
+        this.tindakanList = tindakanList;
+    }
+
+    public BigDecimal getTarifTindakan() {
+        return tarifTindakan;
+    }
+
+    public void setTarifTindakan(BigDecimal tarifTindakan) {
+        this.tarifTindakan = tarifTindakan;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public String getCaraPasienPulang() {
+        return caraPasienPulang;
+    }
+
+    public void setCaraPasienPulang(String caraPasienPulang) {
+        this.caraPasienPulang = caraPasienPulang;
+    }
+
+    public String getPendamping() {
+        return pendamping;
+    }
+
+    public void setPendamping(String pendamping) {
+        this.pendamping = pendamping;
+    }
+
+    public String getTempatTujuan() {
+        return tempatTujuan;
+    }
+
+    public void setTempatTujuan(String tempatTujuan) {
+        this.tempatTujuan = tempatTujuan;
+    }
+
+    public boolean isCekApprove() {
+        return cekApprove;
+    }
+
+    public void setCekApprove(boolean cekApprove) {
+        this.cekApprove = cekApprove;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
 
     public String getStatus() {
         return status;

@@ -10,4 +10,5 @@ import java.util.List;
  * Created by Toshiba on 13/11/2019.
  */
 public interface StatusPasienBo {
+    public List<ImSimrsStatusPasienEntity> getListEntityStatusPasien(StatusPasien bean) throws GeneralBOException;
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="428"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -38,11 +38,14 @@
 	<parameter name="reportParams.alamat" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.listNewObat" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, c.qty_approve, c.jenis_satuan FROM mt_simrs_approval_transaksi_obat a
+		<![CDATA[SELECT a.id_approval_obat, b.id_permintaan_obat_vendor, c.id_obat, d.nama_obat, c.qty, e.qty_approve, c.jenis_satuan FROM mt_simrs_approval_transaksi_obat a
 INNER JOIN mt_simrs_permintaan_obat_vendor b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN mt_simrs_transaksi_obat_detail c ON a.id_approval_obat = c.id_approval_obat
-INNER JOIN im_simrs_obat d ON c.id_obat = d.id_obat
+INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) d ON c.id_obat = d.id_obat
+INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty_approve FROM mt_simrs_transaksi_obat_detail_batch
+GROUP BY id_transaksi_obat_detail) e ON c.id_transaksi_obat_detail = e.id_transaksi_obat_detail
 WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 	</queryString>
 	<field name="id_approval_obat" class="java.lang.String"/>
@@ -50,139 +53,177 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 	<field name="id_obat" class="java.lang.String"/>
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Long"/>
-	<field name="qty_approve" class="java.lang.Long"/>
+	<field name="qty_approve" class="java.math.BigDecimal"/>
 	<field name="jenis_satuan" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="211" splitType="Stretch">
-			<componentElement>
-				<reportElement x="388" y="0" width="167" height="20" uuid="67785d5f-b464-498b-ba36-7c91ce827318">
-					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[]]></propertyExpression>
-				</reportElement>
-				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
-				</jr:Code39>
-			</componentElement>
-			<staticText>
-				<reportElement x="388" y="20" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
-				<textElement>
-					<font fontName="Calibri" size="8"/>
-				</textElement>
-				<text><![CDATA[Printed date : ]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="446" y="20" width="100" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
-				<textElement>
-					<font fontName="Calibri" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="189" y="17" width="153" height="20" uuid="bc81f7c9-c28f-4030-861c-305cac8d2b33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Purchase Order Obat]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="37" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
 			<staticText>
 				<reportElement x="0" y="88" width="120" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Nama Vendor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="108" width="120" height="20" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="128" width="120" height="20" uuid="f460e830-099e-4f5e-8a66-6c0df7fc255d"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[No. Telepon]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="148" width="120" height="20" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="68" width="120" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[ID Vendor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="191" width="120" height="20" uuid="aa5e43ce-e967-4928-9a53-c8cab1710c00"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Daftar permintaan PO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="68" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="88" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="108" width="5" height="20" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="128" width="5" height="20" uuid="64e71867-e434-4315-9330-2660670831dd"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="148" width="5" height="20" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="125" y="68" width="189" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.idVendor} == null ? "" : $P{reportParams.idVendor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="125" y="88" width="189" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.namaVendor} == null ? "" : $P{reportParams.namaVendor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="125" y="108" width="189" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.email} == null ? "" : $P{reportParams.email}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="125" y="128" width="189" height="20" uuid="befa0515-1d3b-4974-8d29-6745a598e43e"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.noTelp} == null ? "" : $P{reportParams.noTelp}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="125" y="148" width="189" height="20" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
 				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.alamat} == null ? "" : $P{reportParams.alamat}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.permintaanId}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<staticText>
+				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="43" width="173" height="22" uuid="5b22349b-4183-4ef4-9b0e-18f54240279b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="8" width="268" height="20" uuid="89ca5627-7e73-4cd1-918e-9a81c49ef79d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Purchase Order Obat]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
+				<textElement>
+					<font fontName="Calibri" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 			<image>
-				<reportElement x="0" y="0" width="94" height="39" uuid="6ae1a02f-9efd-4d0f-9309-1ed42c3899da"/>
+				<reportElement x="0" y="0" width="94" height="39" uuid="aaabcd6f-4375-4904-9a2a-32f836da7868"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 		</band>
@@ -190,7 +231,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="120" height="25" backcolor="#CCFFCC" uuid="00885b2a-122c-42e3-be07-15a8cfb7d05e"/>
+				<reportElement mode="Opaque" x="0" y="0" width="120" height="25" backcolor="#FFFFFF" uuid="00885b2a-122c-42e3-be07-15a8cfb7d05e"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -199,12 +240,12 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ID Obat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="120" y="0" width="165" height="25" backcolor="#CCFFCC" uuid="1bcd118f-b012-4f3f-89ec-483c3e4fe591"/>
+				<reportElement mode="Opaque" x="120" y="0" width="165" height="25" backcolor="#FFFFFF" uuid="1bcd118f-b012-4f3f-89ec-483c3e4fe591"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -213,12 +254,12 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Obat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="285" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="8121d0f2-d6d7-4811-bf8f-182ca34f5e8e"/>
+				<reportElement mode="Opaque" x="285" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="8121d0f2-d6d7-4811-bf8f-182ca34f5e8e"/>
 				<box leftPadding="0">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -227,12 +268,12 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qty Request]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="465" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="02d0f82e-8ef9-48d6-b4fb-eb08df635953"/>
+				<reportElement mode="Opaque" x="465" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="02d0f82e-8ef9-48d6-b4fb-eb08df635953"/>
 				<box leftPadding="6">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -241,12 +282,12 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Jenis Satuan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="0" width="90" height="25" backcolor="#CCFFCC" uuid="328a3724-a9b4-4851-aa2f-84112355f45c"/>
+				<reportElement mode="Opaque" x="375" y="0" width="90" height="25" backcolor="#FFFFFF" uuid="328a3724-a9b4-4851-aa2f-84112355f45c"/>
 				<box leftPadding="0">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -255,7 +296,7 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Qty Approve]]></text>
 			</staticText>
@@ -272,7 +313,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{id_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -284,7 +327,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -296,7 +341,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -308,7 +355,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{qty_approve}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -320,7 +369,9 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{jenis_satuan}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -329,20 +380,17 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 		<band height="50"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="50"/>
+		<band height="37"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="126"/>
-	</lastPageFooter>
-	<summary>
-		<band height="114" splitType="Stretch">
+		<band height="75">
 			<staticText>
-				<reportElement x="342" y="32" width="120" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
+				<reportElement x="375" y="0" width="120" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[TTD]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="342" y="94" width="189" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
+				<reportElement x="375" y="55" width="180" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font isUnderline="true"/>
@@ -350,5 +398,8 @@ WHERE b.id_permintaan_obat_vendor LIKE $P{reportParams.permintaanId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
 			</textField>
 		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="114" splitType="Stretch"/>
 	</summary>
 </jasperReport>

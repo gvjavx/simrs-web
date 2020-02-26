@@ -165,11 +165,11 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Barang</td>
-                                <td>Expired Date</td>
+                                <td width="20%">Expired Date</td>
                                 <td>Nama Obat</td>
                                 <td>Jenis Obat</td>
-                                <td>Lembar/Box</td>
-                                <td>Biji/Lembar</td>
+                                <td>Lembar/ Box</td>
+                                <td>Biji/ Lembar</td>
                                 <td>Stok Box</td>
                                 <td>Stok Lembar</td>
                                 <td>Stok Biji</td>
@@ -177,10 +177,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
+                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
                                 <tr>
                                     <td><s:property value="idBarang"/></td>
-                                    <td><script>var tgl = '<s:property value="expiredDate"/>'; var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);</script></td>
+                                    <td><s:if test='#row.expiredDate != null'><script>var tgl = '<s:property value="expiredDate"/>'; if(tgl != null){var format = $.datepicker.formatDate('dd-mm-yy', new Date(tgl)); document.write(format);} </script></s:if></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property escape="false" value="jenisObat"/></td>
                                     <td><s:property value="lembarPerBox"/></td>
@@ -189,7 +189,8 @@
                                     <td><s:property value="qtyLembar"/></td>
                                     <td><s:property value="qtyBiji"/></td>
                                     <td align="center">
-                                        <img border="0" onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
+                                        <%--<img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">--%>
+                                        <img onclick="editObat('<s:property value="idSeqObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -416,7 +417,7 @@
         var hargaBiji   = $('#add_harga_biji').val();
 
 
-        if (nama != '' && jenis != null && parseInt(biji) > 0 && box != ''
+        if (nama != '' && jenis != null && biji != '' && box != ''
             && lembarBox != '' && lembar != '' && bijiLembar != '' && biji != '' && pabrik != ''
             && merek != '' && pabrik != '') {
 
@@ -425,7 +426,7 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                ObatAction.editObat(id, nama, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
+                ObatAction.editObat(id, nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#modal-obat').modal('hide');

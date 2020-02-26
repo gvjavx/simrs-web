@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkupdetail.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -27,6 +28,91 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private Timestamp tglAntrian;
     private Date tglCekup;
     private String keteranganCekupUlang;
+
+    private String caraPasienPulang;
+    private String pendamping;
+    private String tempatTujuan;
+
+    private String noSep;
+    private BigDecimal tarifBpjs;
+    private String klaimBpjsFlag;
+
+    private String noCheckupOnline;
+
+    private String metodePembayaran;
+    private String invoice;
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public String getCaraPasienPulang() {
+        return caraPasienPulang;
+    }
+
+    public void setCaraPasienPulang(String caraPasienPulang) {
+        this.caraPasienPulang = caraPasienPulang;
+    }
+
+    public String getPendamping() {
+        return pendamping;
+    }
+
+    public void setPendamping(String pendamping) {
+        this.pendamping = pendamping;
+    }
+
+    public String getTempatTujuan() {
+        return tempatTujuan;
+    }
+
+    public void setTempatTujuan(String tempatTujuan) {
+        this.tempatTujuan = tempatTujuan;
+    }
 
     public Date getTglCekup() {
         return tglCekup;

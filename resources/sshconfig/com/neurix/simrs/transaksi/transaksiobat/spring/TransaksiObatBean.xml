@@ -6,8 +6,12 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="transaksiObatAction" class="com.neurix.simrs.transaksi.transaksiobat.action.TransaksiObatAction"
-          p:transaksiObatBoProxy-ref="transaksiObatBo"
+          p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
+    />
+
+    <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.TransaksiApotekController"
+          p:transaksiObatBoProxy-ref="transaksiObatBo"
     />
 
     <bean id="transaksiObatBo" class="com.neurix.simrs.transaksi.transaksiobat.bo.impl.TransaksiObatBoImpl"

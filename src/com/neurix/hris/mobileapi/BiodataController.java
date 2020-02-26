@@ -97,6 +97,8 @@ public class BiodataController implements ModelDriven<Object> {
             model.setBidang(biodata.getDivisiName());
             model.setGolongan(biodata.getGolonganName());
             model.setGolonganId(biodata.getGolonganId());
+            model.setTipePegawaiId(biodata.getTipePegawai());
+            model.setTipePegawai(biodata.getTipePegawaiName());
         }
 
         logger.info("[BiodataController.find] end process POST /biodata/{id}/find <<<");

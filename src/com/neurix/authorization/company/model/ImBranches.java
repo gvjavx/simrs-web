@@ -51,6 +51,61 @@ public class ImBranches implements Serializable {
         this.alamatSurat = alamatSurat;
     }
 
+    private String ppkPelayanan;
+    private String suratSkdp;
+    private String kodeTarif;
+    private String tarifPayorId;
+    private String payorCd;
+    private String coderNik;
+
+    public String getPpkPelayanan() {
+        return ppkPelayanan;
+    }
+
+    public void setPpkPelayanan(String ppkPelayanan) {
+        this.ppkPelayanan = ppkPelayanan;
+    }
+
+    public String getSuratSkdp() {
+        return suratSkdp;
+    }
+
+    public void setSuratSkdp(String suratSkdp) {
+        this.suratSkdp = suratSkdp;
+    }
+
+    public String getKodeTarif() {
+        return kodeTarif;
+    }
+
+    public void setKodeTarif(String kodeTarif) {
+        this.kodeTarif = kodeTarif;
+    }
+
+    public String getTarifPayorId() {
+        return tarifPayorId;
+    }
+
+    public void setTarifPayorId(String tarifPayorId) {
+        this.tarifPayorId = tarifPayorId;
+    }
+
+    public String getPayorCd() {
+        return payorCd;
+    }
+
+    public void setPayorCd(String payorCd) {
+        this.payorCd = payorCd;
+    }
+
+    public String getCoderNik() {
+        return coderNik;
+    }
+
+    public void setCoderNik(String coderNik) {
+        this.coderNik = coderNik;
+    }
+
     public String getKeyEklaim() {
         return keyEklaim;
     }

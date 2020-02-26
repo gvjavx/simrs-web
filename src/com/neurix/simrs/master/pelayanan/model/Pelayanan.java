@@ -12,6 +12,7 @@ public class Pelayanan extends BaseModel implements Serializable {
 
     private String idPelayanan;
     private String namaPelayanan;
+    private String idDokter;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -20,12 +21,39 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String lastUpdateWho;
     private String notPoli;
 
+    private String tipePelayanan;
+    private String branchId;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getNotPoli() {
         return notPoli;
     }
 
     public void setNotPoli(String notPoli) {
         this.notPoli = notPoli;
+    }
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
     }
 
     public String getIdPelayanan() {

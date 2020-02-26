@@ -36,7 +36,7 @@
             <column name="jalan" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="suku">
-            <column name="tipe" sql-type="varchar" length="30" not-null="false"/>
+            <column name="suku" sql-type="varchar" length="30" not-null="false"/>
         </property>
         <property name="agama">
             <column name="agama" sql-type="varchar" length="100" not-null="false"/>
@@ -73,6 +73,9 @@
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="valid">
+            <column name="valid" sql-type="varchar" length="1" not-null="false" />
         </property>
 
 

@@ -184,6 +184,15 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/IgdAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/transaksiobat/struts/ResepPoliAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanVendorAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatInapAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRawatJalanAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/permintaangizi/struts/PermintaanGiziAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/struts/KasirRawatInapAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/KasirRawatJalanAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/transaksi/monitorruangan/struts/MonitorRuanganAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/UangMukaAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

@@ -7,6 +7,8 @@ import com.neurix.simrs.master.pasien.action.PasienAction;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
+import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsRegistrasiOnlineEntity;
+import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 

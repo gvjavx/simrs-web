@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.diagnosarawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
@@ -49,6 +50,7 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
         logger.info("[DiagnosaRawatBoImpl.getByCriteria] End <<<<<<<<<");
         return diagnosaRawatList;
+
     }
 
     @Override
@@ -153,5 +155,6 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
     public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
         this.diagnosaRawatDao = diagnosaRawatDao;
+
     }
 }

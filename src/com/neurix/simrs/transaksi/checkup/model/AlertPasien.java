@@ -9,9 +9,18 @@ public class AlertPasien
 {
     private String noCheckup;
     private String namaPasien;
-    private String stTgl;
+    private String stTglKeluar;
     private String diagnosa;
+    private String stTglMasuk;
     private List<String> listOfAlergi;
+
+    public String getStTglMasuk() {
+        return stTglMasuk;
+    }
+
+    public void setStTglMasuk(String stTglMasuk) {
+        this.stTglMasuk = stTglMasuk;
+    }
 
     public String getNoCheckup() {
         return noCheckup;
@@ -29,12 +38,12 @@ public class AlertPasien
         this.namaPasien = namaPasien;
     }
 
-    public String getStTgl() {
-        return stTgl;
+    public String getStTglKeluar() {
+        return stTglKeluar;
     }
 
-    public void setStTgl(String stTgl) {
-        this.stTgl = stTgl;
+    public void setStTglKeluar(String stTglKeluar) {
+        this.stTglKeluar = stTglKeluar;
     }
 
     public String getDiagnosa() {

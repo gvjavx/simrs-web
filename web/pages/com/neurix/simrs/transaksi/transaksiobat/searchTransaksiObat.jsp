@@ -77,7 +77,7 @@
                             </div>
                             <div class="col-md-3 pull-right">
                                 <div class="input-group date">
-                                    <input class="form-control" id="add_resep" placeholder="ID RESEP"
+                                    <input class="form-control" id="add_resep" placeholder="Antrian"
                                            onchange="saveAntrian()">
                                     <div class="input-group-addon btn btn-success" onclick="saveAntrian()"
                                          id="save_resep">
@@ -150,9 +150,6 @@
                                         <a type="button" class="btn btn-danger" href="initForm_transaksi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <%--<a type="button" class="btn btn-info" href="initForm_transaksi.action">--%>
-                                            <%--<i class="fa fa-history"></i> Riwayat Transaksi--%>
-                                        <%--</a>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -219,19 +216,21 @@
                                             </s:url>
                                             <s:a href="%{add_proses}">
                                                 <img border="0" class="hvr-grow"
-                                                     src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                     style="cursor: pointer; height: 25px; width: 25px">
+                                                     src="<s:url value="/pages/images/icons8-create-25.png"/>"
+                                                     style="cursor: pointer;">
                                             </s:a>
                                         </s:if>
                                         <s:else>
-                                            <s:url var="add_proses" namespace="/transaksi" action="searchResep_transaksi"
+                                            <s:url var="print_struk" namespace="/transaksi" action="printStrukResepPasien_transaksi"
                                                    escapeAmp="false">
-                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="idResep"><s:property value="idPermintaanResep"/></s:param>
+                                                <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
                                             </s:url>
-                                            <s:a href="%{add_proses}" cssClass="btn btn-info"><i class="fa fa-print"></i>
-                                                <%--<img border="0" class="hvr-grow"--%>
-                                                     <%--src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
-                                                     <%--style="cursor: pointer; height: 25px; width: 25px">--%>
+                                            <s:a href="%{print_struk}" target="_blank">
+                                                <img border="0" class="hvr-grow"
+                                                     src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                     style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
 

@@ -64,7 +64,7 @@ public interface BpjsBo{
     //----------------------------------------!! RUJUKAN !!-------------------------------------------//
     RujukanResponse caraRujukanBerdasarNomorBpjs(String noRujukan,String jenisCari, String unitId) throws GeneralBOException;
 
-    RujukanResponse caraRujukanBerdasarNomorkartuBpjs(String noRujukan, String jenisCari, String unitId) throws GeneralBOException;
+    RujukanResponse caraRujukanBerdasarNomorkartuBpjs(String noKartu, String jenisCari, String unitId) throws GeneralBOException;
 
     List<RujukanResponse> caraRujukanBerdasarNomorkartuBpjsList(String noRujukan, String jenisCari, String unitId) throws GeneralBOException;
 

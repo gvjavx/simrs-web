@@ -57,6 +57,92 @@ public class RawatInap {
     private String kelasRuanganName;
 
     private String urlKtp;
+    private String noSep;
+
+    private String branchId;
+
+    private boolean cekApprove;
+    private String klaimBpjsFlag;
+
+    private String idOrderGizi;
+    private String approveFlag;
+    private String diterimaFlag;
+
+    private String statusBayar;
+
+    private String metodePembayaran;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getStatusBayar() {
+        return statusBayar;
+    }
+
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
+
+    public String getDiterimaFlag() {
+        return diterimaFlag;
+    }
+
+    public void setDiterimaFlag(String diterimaFlag) {
+        this.diterimaFlag = diterimaFlag;
+    }
+
+    public String getIdOrderGizi() {
+        return idOrderGizi;
+    }
+
+    public void setIdOrderGizi(String idOrderGizi) {
+        this.idOrderGizi = idOrderGizi;
+    }
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
+
+    public String getKlaimBpjsFlag() {
+        return klaimBpjsFlag;
+    }
+
+    public void setKlaimBpjsFlag(String klaimBpjsFlag) {
+        this.klaimBpjsFlag = klaimBpjsFlag;
+    }
+
+    public boolean isCekApprove() {
+        return cekApprove;
+    }
+
+    public void setCekApprove(boolean cekApprove) {
+        this.cekApprove = cekApprove;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNoSep() {
+        return noSep;
+    }
+
+    public void setNoSep(String noSep) {
+        this.noSep = noSep;
+    }
 
     public String getUrlKtp() {
         return urlKtp;

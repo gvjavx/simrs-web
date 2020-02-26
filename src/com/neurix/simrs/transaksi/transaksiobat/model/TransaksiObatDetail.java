@@ -58,6 +58,26 @@ public class TransaksiObatDetail extends BaseModel {
     private String idBarang;
     private String idPelayanan;
 
+    private String stTotalbayar;
+
+    private String flagVerifikasi;
+
+    public String getFlagVerifikasi() {
+        return flagVerifikasi;
+    }
+
+    public void setFlagVerifikasi(String flagVerifikasi) {
+        this.flagVerifikasi = flagVerifikasi;
+    }
+
+    public String getStTotalbayar() {
+        return stTotalbayar;
+    }
+
+    public void setStTotalbayar(String stTotalbayar) {
+        this.stTotalbayar = stTotalbayar;
+    }
+
     public String getIdPelayanan() {
         return idPelayanan;
     }

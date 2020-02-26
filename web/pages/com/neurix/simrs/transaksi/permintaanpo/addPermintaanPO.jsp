@@ -359,17 +359,17 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="input-group" id="img_file">
-                                                    <span class="input-group-btn">
-                                                        <span class="btn btn-default btn-file">
-                                                            Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
-                                                                            onchange="$('#img_file').css('border','')"></s:file>
-                                                        </span>
-                                                    </span>
-                                    <input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">
-                                </div>
-                            </div>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="input-group" id="img_file">--%>
+                                                    <%--<span class="input-group-btn">--%>
+                                                        <%--<span class="btn btn-default btn-file">--%>
+                                                            <%--Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"--%>
+                                                                            <%--onchange="$('#img_file').css('border','')"></s:file>--%>
+                                                        <%--</span>--%>
+                                                    <%--</span>--%>
+                                    <%--<input type="text" class="form-control" readonly placeholder="Upload Dokumen PO">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div class="col-md-4">
                                 <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
                                         class="fa fa-arrow-left"></i>
@@ -482,7 +482,7 @@
                         '<td align="center">' + lembarPerBox + '</td>' +
                         '<td align="center">' + bijiPerLembar + '</td>' +
                         '<td align="right">' + harga + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/delete-flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" style="cursor: pointer;"></td>' +
                         '</tr>';
 
                 $('#body_po').append(row);

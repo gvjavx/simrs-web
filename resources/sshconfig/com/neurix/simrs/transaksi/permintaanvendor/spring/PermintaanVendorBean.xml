@@ -10,6 +10,10 @@
           p:vendorBoProxy-ref="vendorBoProxy"
     />
 
+    <bean id="purchaseOrderContoller" class="com.neurix.simrs.mobileapi.PurchaseOrderController"
+          p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
+    />
+
     <bean id="permintaanVendorBo" class="com.neurix.simrs.transaksi.permintaanvendor.bo.Impl.PermintaanVendorBoImpl"
          p:permintaanVendorDao-ref="permintaanVendorDao"
          p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"

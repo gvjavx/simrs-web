@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity" dynamic-update="true"
+           table="it_simrs_rekonsiliasi_obat" select-before-update="true" schema="public">
+
+
+        <id name="id">
+            <column name="id" sql-type="varchar" length="30" not-null="true" />
+        </id>
+        <property name="namaObat">
+            <column name="nama_obat" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
+        <property name="bentuk">
+            <column name="bentuk" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="dosis">
+            <column name="dosis" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="satuanDosis">
+            <column name="satuan_dosis" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="frekuensi">
+            <column name="frekuensi" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="rute">
+            <column name="rute" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="obatMasukFlag">
+            <column name="obat_masuk_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="obatDariRumahFlag">
+            <column name="obat_dari_rumah_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="noCheckup">
+            <column name="no_checkup" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+    </class>
+</hibernate-mapping>

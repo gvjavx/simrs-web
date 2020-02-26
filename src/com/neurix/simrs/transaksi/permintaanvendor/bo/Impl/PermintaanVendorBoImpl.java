@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.permintaanvendor.bo.Impl;
 
+import com.google.gson.Gson;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.dao.ObatDao;
@@ -87,7 +88,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                             if (permintaanVendor.getEnableApprove()) {
                                 permintaanVendor.setKeterangan("Telah Dikonfirmasi");
                             } else {
-                                permintaanVendor.setKeterangan("Prosess Verivikasi");
+                                permintaanVendor.setKeterangan("Proses Verifikasi");
+
                             }
 
 //                            permintaanVendor.setApprovalFlag(approvalEntity.getApprovalFlag());
@@ -112,7 +114,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                                 transaksiObatDetail = new TransaksiObatDetail();
                                 transaksiObatDetail.setIdTransaksiObatDetail(transaksiObatDetailEntity.getIdTransaksiObatDetail());
-                                transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
+                                if(obatEntity != null){
+                                    transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
+                                }
                                 transaksiObatDetail.setIdApprovalObat(transaksiObatDetailEntity.getIdApprovalObat());
                                 transaksiObatDetail.setIdObat(transaksiObatDetailEntity.getIdObat());
                                 transaksiObatDetail.setFlag(transaksiObatDetailEntity.getFlag());
@@ -134,7 +138,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
-                                transaksiObatDetail.setIdPabrik(transaksiObatDetailEntity.getIdPabrik());
+                                transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
                                 transaksiObatDetail.setMerek(transaksiObatDetailEntity.getMrek());
 
                                 if ("box".equalsIgnoreCase(transaksiObatDetailEntity.getJenisSatuan())) {
@@ -195,7 +199,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return permintaanVendorEntityList;
     }
 
-    private List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
+    public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.getListEntityTransObatDetail] START >>>>>>");
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
@@ -376,7 +380,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = transaksiObatDetailDao.getById("idTransaksiObatDetail", bean.getIdTransaksiObatDetail());
 
         if (bean.getNoBatch() != null && bean.getNoBatch().compareTo(0) == 1){
-
 
             MtSimrsTransaksiObatDetailBatchEntity batchEntity = getEntityObatBatchByIdTransObat(bean.getIdTransaksiObatDetail(), bean.getNoBatch(), bean.getExpDate());
 
@@ -583,7 +586,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatBatch.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatBatch.setNoBatch(obatDetail.getNoBatch());
 
-
                     List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
 
                     if (batchEntities.size() > 0){
@@ -710,7 +712,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
-        String userLogin = CommonUtil.userLogin();
+        String branchId = CommonUtil.userBranchLogin();
+//        String userLogin = CommonUtil.userLogin();
 
         Obat sumObat = new Obat();
         try {
@@ -807,10 +810,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setFlag("Y");
         newObatEntity.setAction("C");
         newObatEntity.setCreatedDate(time);
-        newObatEntity.setCreatedWho(userLogin);
+        newObatEntity.setCreatedWho(bean.getCreatedWho());
         newObatEntity.setLastUpdate(time);
-        newObatEntity.setLastUpdateWho(userLogin);
-        newObatEntity.setBranchId(CommonUtil.userBranchLogin());
+        newObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        newObatEntity.setBranchId(branchId);
 
         try {
             obatDao.addAndSave(newObatEntity);

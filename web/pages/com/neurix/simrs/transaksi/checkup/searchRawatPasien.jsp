@@ -44,7 +44,21 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group date">
+                                    <input class="form-control" id="id_antrian" placeholder="Antrian Online"
+                                           onchange="saveAntrian()">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
+                                        <button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -138,27 +152,27 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-
-                                        <a type="button" class="btn btn-primary" href="add_checkup.action"><i
-                                                class="fa fa-plus"></i> Tambah Rawat Pasien</a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=umum">
+                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
+                                                <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs">
+                                                    <i class="fa fa-user-plus"></i>Pasien Bpjs</a></li>
+                                            </ul>
+                                        </div>
+                                        <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
+                                                <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
                                                 class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-
-                                        <button type="button" class="btn btn-primary">Daftar Periksa</button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
-                                                data-toggle="dropdown" style="height: 34px">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="/simrs/checkup/add_checkup.action?tipe=umum"><i class="fa fa-plus"></i>
-                                                Pasien Umum</a></li>
-                                            <li><a href="/simrs/checkup/add_checkup.action?tipe=bpjs"><i class="fa fa-refresh"></i> Pasien
-                                                Bpjs</a></li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -181,6 +195,20 @@
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false" closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         $('#id_antrian').val('');
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
                                         </sj:dialog>
                                         <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
                                                    resizable="false" cssStyle="text-align:left;"
@@ -223,15 +251,16 @@
                                     <td><s:property value="namaRuangan"/></td>
                                     <td><s:property value="noRuangan"/></td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"
-                                             style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">
-                                        <s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">
-                                            <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{edit}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"
-                                                 style="cursor: pointer; width: 25px; height: 25px">
-                                        </s:a>
+                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                             src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>')">
+                                        <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
+                                        <%--</s:url>--%>
+                                        <%--<s:a href="%{edit}">--%>
+                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
+                                                 <%--style="cursor: pointer; width: 25px; height: 25px">--%>
+                                        <%--</s:a>--%>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -418,6 +447,130 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-antrian">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>No Checkup Online</b></td>
+                                    <td><span id="an_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="an_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>ID Pasien</b></td>
+                                    <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="an_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="an_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
+                                    <td><span id="an_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Agama</b></td>
+                                    <td><span id="an_agama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Suku</b></td>
+                                    <td><span id="an_suku"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="an_alamat"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="an_desa"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="an_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kabupaten</b></td>
+                                    <td><span id="an_kabupaten"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="an_provinsi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tanggal Daftar</b></td>
+                                    <td><span id="an_tgl_daftar"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tujuan Poli</b></td>
+                                    <td><span id="an_poli"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Dokter</b></td>
+                                    <td><span id="an_dokter"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button class="btn btn-success" id="save_aktif"><i class="fa fa-arrow-right"></i> Aktivasi</button>
+                <button class="btn btn-success" style="cursor: no-drop; display: none" id="load_aktif"><i class="fa fa-spinner fa-spin"></i> Sedang menyimpan...</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-validasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-warning"></i> Warning</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible">
+                        <p id="msg_app"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type='text/javascript'>
     function detail_pasien(idCheckup) {
         var table = "";
@@ -446,8 +599,8 @@
 
         setTimeout(function () {
 
-            var url = '<s:url value="/pages/images/search_flat.png"/>';
-            $('#v_'+idCheckup).attr('src',url).css('width', '25px', 'height', '25px');
+            var url = '<s:url value="/pages/images/icons8-search-25.png"/>';
+            $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
             CheckupAction.listDataPasien(idCheckup, function (response) {
                 dataPasien = response;
@@ -495,7 +648,6 @@
                             noRuangan = item.noRuangan;
                         }
 
-
                         table += "<tr>" +
                                 "<td>" + pelayanan + "</td>" +
                                 "<td>" + item.statusPeriksa + "</td>" +
@@ -523,9 +675,11 @@
             $('#modal-detail-pasien').modal('show');
         }, 100)
     }
+
     $('#btnFingerPrint').on('click',function() {
         $('#modal-add-finger').modal('show');
     });
+
     $('#btnSearchFingerPrint').on('click',function() {
         var idPasien = $('#fin_id_pas').val();
         if (idPasien==""){
@@ -535,6 +689,86 @@
             window.location.href = 'finspot:FingerspotVer;'+url;
         }
     });
+
+    function saveAntrian() {
+        var noAntrian = $('#id_antrian').val();
+        if(noAntrian != ''){
+            $('#load_resep').show();
+            $('#save_resep').hide();
+            dwr.engine.setAsync(true);
+            CheckupAction.getDetailAntrianOnline(noAntrian, {callback: function (response) {
+
+                    if (response.noCheckupOnline != null) {
+                        console.log(response);
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        var hh = today.getHours();
+                        var min = today.getMinutes();
+                        var sec = today.getSeconds();
+                        var time = hh + ':' + min;
+                        today = mm + '-' + dd + '-' + yyyy;
+
+                        var today2 = new Date(response.stTglCheckup);
+                        var dd2 = String(today2.getDate()).padStart(2, '0');
+                        var mm2 = String(today2.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy2 = today2.getFullYear();
+                        today2 = mm2 + '-' + dd2 + '-' + yyyy2;
+
+                        var time = response.jamAwal;
+                        var char = time.split(":");
+                        var hh2 = char[0];
+                        var min2 = char[1];
+
+                        var tglDaftar = new Date(yyyy2, mm2, dd2, hh2, min2);
+                        console.log(tglDaftar);
+
+                        tglDaftar.setMinutes(tglDaftar.getMinutes() - 30);
+
+                        var tglToday = new Date(yyyy, mm, dd, hh, min);
+
+                        console.log(tglDaftar);
+                        console.log(tglToday);
+
+                        if (tglToday <= tglDaftar) {
+                            console.log("true");
+                            var tipe = "";
+
+                            if (response.idJenisPeriksaPasien == "bpjs") {
+                                tipe = "bpjs";
+                            } else {
+                                tipe = "umum";
+                            }
+
+                            window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
+                            $('#load_resep').hide();
+                            $('#save_resep').show();
+
+                        } else {
+                            $('#load_resep').hide();
+                            $('#save_resep').show();
+                            $('#modal-validasi').modal('show');
+                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!");
+                            console.log("false");
+                        }
+                    } else {
+                        $('#load_resep').hide();
+                        $('#save_resep').show();
+                    }
+                }
+            });
+        }
+    }
+
+    function saveAktivasi(noCheckupOnline){
+        CheckupAction.aktivasiAntrianOnline(noCheckupOnline, function (response) {
+            if(response.status == "success"){
+                $('#modal-antrian').modal('hide');
+                $('#info_dialog').dialog('open');
+            }
+        })
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

@@ -77,6 +77,17 @@
                                     <s:hidden id="id_palayanan" name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
+                                    <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                        <tr>
+                                            <td width="45%"><b>No SEP</b></td>
+                                            <td style="vertical-align: middle;">
+                                                <table>
+                                                    <s:label cssClass="label label-success" name="headerDetailCheckup.noSep"></s:label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td width="45%"><b>No Checkup</b></td>
                                         <td>
@@ -116,11 +127,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td><b>Metode Pembayaran</b></td>
                                         <td>
-                                            <table>
-                                                <s:label name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
-                                            </table>
+                                            <table><s:label name="headerDetailCheckup.metodePembayaran"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -135,6 +144,15 @@
                                 <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
                                 <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
+                                    <tr>
+                                        <td><b>Jenis Pasien</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label id="jenis_periksa"
+                                                         name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td><b>Poli</b></td>
                                         <td>
@@ -240,11 +258,13 @@
                                 <div class="form-group">
                                     <label>&nbsp</label>
                                     <div>
-                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()" class="btn btn-success"><i
+                                        <button style="width: 150px" id="save_penunjang" onclick="savePenunjangPasien()"
+                                                class="btn btn-success"><i
                                                 class="fa fa-check"></i>
                                             Save
                                         </button>
-                                        <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                                        <button style="display: none; cursor: no-drop" type="button"
+                                                class="btn btn-success"
                                                 id="load_penunjang">
                                             <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                                         </button>
@@ -253,7 +273,7 @@
                             </div>
                         </div>
                         <%--<div class="form-group">--%>
-                            <%--<br>--%>
+                        <%--<br>--%>
 
                         <%--</div>--%>
                     </div>
@@ -304,12 +324,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            </div>
+                        </div>
                     </div>
 
                     <%--<div class="box-header with-border"></div>--%>
                     <%--<div class="box-header with-border">--%>
-                        <%----%>
+                    <%----%>
                     <%--</div>--%>
                     <%--<div class="box-body">--%>
 
@@ -338,6 +358,55 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div id="status_bpjs" style="display: none">
+                        <div class="box-header with-border">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <h5>
+                                        Cover Biaya Bpjs
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
+                                        </small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_cover_biaya">
+                                        </div>
+                                    </div>
+                                    <h5>
+                                        Total Biaya Tindakan
+                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                                id="b_tindakan"></span></small>
+                                    </h5>
+                                    <div class="progress">
+                                        <div id="sts_biaya_tindakan">
+                                        </div>
+                                    </div>
+                                    <ul style="list-style-type: none">
+                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                            50% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                            50% dan < 70% dari cover biaya Bpjs
+                                        </li>
+                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                            70% dari cover biaya Bpjs
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box-header with-border" id="pos_tin">
                     </div>
                     <div class="box-header with-border">
@@ -352,11 +421,11 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal</td>
                                 <td>Tindakan</td>
-                                <td>Dokter</td>
-                                <td>Perawat</td>
-                                <td align="right">Tarif</td>
+                                <%--<td>Dokter</td>--%>
+                                <%--<td>Perawat</td>--%>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Qty</td>
-                                <td align="right">Total</td>
+                                <td align="center">Total (Rp.)</td>
                                 <td align="center">Action</td>
                                 <input type="hidden" id="tin_id_dokter">
                             </tr>
@@ -438,11 +507,10 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan</h3>
+                        <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ket">
@@ -450,44 +518,25 @@
                             Silahkan cek kembali data inputan!
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-offset-1 col-md-5">
                                 <div class="form-group">
-                                    <label style="margin-top: 7px">Keterangan</label>
-                                    <select class="form-control select2" id="keterangan" style="width: 100%"
-                                            onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
-                                        <option value=''>[Select One]</option>
-                                        <option value='selesai'>Selesai</option>
-                                        <option value='pindah'>Pindah Poli Lain</option>
-                                        <option value='rujuk'>Rujuk Rawat Inap</option>
-                                    </select>
-                                </div>
-                                <div id="form-poli" style="display: none">
-                                    <div class="form-group">
-                                        <label style="margin-top: 7px">Poli</label>
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
-                                        <s:select
-                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
-                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                                listValue="namaPelayanan" cssStyle="width: 100%"
-                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
-                                                headerKey="" headerValue="[Select one]"
-                                                cssClass="form-control select2"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label style="margin-top: 7px">Dokter</label>
-                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
-                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
+                                    <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control select2" id="keterangan" style="width: 100%"
+                                                onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this)">
                                             <option value=''>[Select One]</option>
+                                            <option value='selesai'>Selesai</option>
+                                            <option value='pindah'>Pindah Poli Lain</option>
+                                            <option value='rujuk'>Rujuk Rawat Inap</option>
                                         </select>
-
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-md-5">
                                 <div id="form-selesai" style="display: none">
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Keterangan Selesai</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <div class="col-md-8">
                                         <s:action id="initComboKet" namespace="/checkupdetail"
                                                   name="getListComboKeteranganKeluar_checkupdetail"/>
                                         <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
@@ -496,12 +545,33 @@
                                                   onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this);"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
+                                        </div>
                                     </div>
                                 </div>
-
+                                <div id="form-cekup" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Tgl Ckp Ulang</label>
+                                        <div class="col-md-8">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Catatan</label>
+                                        <div class="col-md-8">
+                                        <s:textarea cssClass="form-control" rows="5" id="cekup_ket"
+                                                    style="margin-top: 7px"></s:textarea>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="kamar" style="display: none;">
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Kelas</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Kelas</label>
+                                        <div class="col-md-8">
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
                                         <s:select
@@ -511,64 +581,66 @@
                                                 listValue="namaKelasRuangan"
                                                 headerKey="" headerValue="[Select one]"
                                                 cssClass="form-control select2"/>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label style="margin-top: 7px">Kamar</label>
+                                        <label class="col-md-4" style="margin-top: 10px">Kamar</label>
+                                        <div class="col-md-8">
                                         <select class="form-control select2" id="kamar_detail" style="width: 100%"
                                                 onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
                                             <option value=''>[Select One]</option>
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <button class="btn btn-success" onclick="saveKeterangan()"
-                                            style="margin-top: 15px; width: 150px" id="save_ket"><i
-                                            class="fa fa-arrow-right"></i> Save
-                                    </button>
-                                    <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
-                                            class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
-                                        Sedang Menyimpan...
-                                    </button>
-                                </div>
-                            </div>
-                            <%--<div class="col-md-2">--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_catatan"><i class="fa fa-times"></i>required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_catatan"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-2"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-2"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                            <%--<label style="margin-top: 7px">&nbsp;</label>--%>
-                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_kolom-3"><i class="fa fa-times"></i> required</p>--%>
-                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_kolom-3"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-                            <div class="col-md-4" id="form-cekup" style="display: none;">
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Tanggal Checkup Ulang</label>
-                                    <div class="input-group date" style="margin-top: 7px">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="tgl_cekup" cssClass="form-control datepicker"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label style="margin-top: 7px">Catatan</label>
-                                    <s:textarea cssClass="form-control" rows="5" id="cekup_ket"
-                                                style="margin-top: 7px"></s:textarea>
+                                <div id="form-poli" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Poli</label>
+                                        <div class="col-md-8">
+                                        <s:action id="initComboPoli" namespace="/checkup"
+                                                  name="getComboPelayanan_checkup"/>
+                                        <s:select
+                                                list="#initComboPoli.listOfPelayanan" id="poli_lain"
+                                                name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                listValue="namaPelayanan" cssStyle="width: 100%"
+                                                onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; listDokterKeterangan(this)"
+                                                headerKey="" headerValue="[Select one]"
+                                                cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Dokter</label>
+                                        <div class="col-md-8">
+                                        <select id="list_dokter" class="form-control select2" style="width: 100%"
+                                                onchange="var warn =$('#war_kolom-3').is(':visible'); if (warn){$('#col_kolom-3').show().fadeOut(3000);$('#war_kolom-3').hide()}">
+                                            <option value=''>[Select One]</option>
+                                        </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-4 text-center">
+                                        <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
+                                        <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmSaveKeterangan()"><i class="fa fa-arrow-right"></i> Save Keterangan</a>
+                                        <button style="display: none; cursor: no-drop;" type="button"
+                                                class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
                 </div>
             </div>
         </div>
@@ -702,6 +774,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <%--<label style="margin-top: 7px"><s:property value="headerDetailCheckup.idJenisPeriksaPasien"/> </label>--%>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
@@ -716,25 +789,25 @@
                                id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
-                                    id="tin_id_perawat"
-                                    onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">
-                                <option value="">[select one]</option>
-                                <option value="1">Angel</option>
-                                <option value="2">Anya</option>
-                                <option value="3">Ayu</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_perawat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Nama Perawat</label>--%>
+                    <%--<div class="col-md-7">--%>
+                    <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
+                    <%--id="tin_id_perawat"--%>
+                    <%--onchange="var warn =$('#war_perawat').is(':visible'); if (warn){$('#cor_perawat').show().fadeOut(3000);$('#war_perawat').hide()}">--%>
+                    <%--<option value="">[select one]</option>--%>
+                    <%--<option value="1">Angel</option>--%>
+                    <%--<option value="2">Anya</option>--%>
+                    <%--<option value="3">Ayu</option>--%>
+                    <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_perawat">--%>
+                    <%--<i class="fa fa-times"></i> required</p>--%>
+                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                    <%--id="cor_perawat"><i class="fa fa-check"></i> correct</p>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
@@ -772,26 +845,80 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <div class="form-group">
+                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                        <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
-                            <s:action id="initComboDiagnosa" namespace="/checkupdetail"
-                                      name="getListComboDiagnosa_checkupdetail"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
-                                      list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
-                                      name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
-                                      listValue="descOfDiagnosa"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                        <s:textfield id="diagnosa_awal" style="margin-top: 7px"
+                                     name="headerCheckup.diagnosa"
+                                     onkeypress="$(this).css('border','')"
+                                     cssClass="form-control" required="false"/>
+                        <s:hidden name="headerCheckup.jenisTransaksi"/>
+                        <script>
+                            var menus, mapped;
+                            $('#diagnosa_awal').typeahead({
+                                minLength: 3,
+                                source: function (query, process) {
+                                    menus = [];
+                                    mapped = {};
+
+                                    var data = [];
+                                    dwr.engine.setAsync(false);
+                                    CheckupAction.getListBpjsDiagnosaAwal(query, function (listdata) {
+                                        data = listdata;
+                                    });
+
+                                    $.each(data, function (i, item) {
+                                        var labelItem = item.namaDiagnosaBpjs;
+                                        mapped[labelItem] = {
+                                            id: item.kodeDiagnosaBpjs,
+                                            label: labelItem,
+                                            name: item.namaDiagnosaBpjs
+                                        };
+                                        menus.push(labelItem);
+                                    });
+
+                                    process(menus);
+                                },
+                                updater: function (item) {
+                                    var selectedObj = mapped[item];
+                                    // insert to textarea diagnosa_ket
+                                    $("#diagnosa_ket").val(selectedObj.name);
+                                    return selectedObj.id;
+                                }
+                            });
+                        </script>
                         </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_diagnosa"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                        <div class="col-md-offset-3 col-md-7">
+                        <s:textarea rows="4" id="diagnosa_ket"
+                                    cssStyle="margin-top: 7px" readonly="true"
+                                    name="headerCheckup.namaDiagnosa"
+                                    cssClass="form-control"></s:textarea>
                         </div>
-                    </div>
+                        </div>
+                    </s:if>
+                    <s:else>
+                        <div class="form-group">
+                            <label class="col-md-3">Diagnosa</label>
+                            <div class="col-md-7">
+                                <s:action id="initComboDiagnosa" namespace="/checkupdetail"
+                                          name="getListComboDiagnosa_checkupdetail"/>
+                                <s:select cssStyle="margin-top: 7px; width: 100%"
+                                          onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"
+                                          list="#initComboDiagnosa.listOfComboDiagnosa" id="nosa_id_diagnosa"
+                                          name="headerDetailCheckup.idPelayanan" listKey="idDiagnosa"
+                                          listValue="descOfDiagnosa"
+                                          headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2"/>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_diagnosa"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_diagnosa"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </s:else>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">
@@ -1052,26 +1179,6 @@
                     <p id="msg_resep"></p>
                 </div>
                 <div class="row">
-                    <%--<div class="form-group">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>--%>
-                    <%--<div class="col-md-7">--%>
-                    <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                    <%--name="getListJenisObat_jenisobat"/>--%>
-                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                    <%--list="#initJenis.listOfJenisObat" id="resep_jenis"--%>
-                    <%--listKey="idJenisObat"--%>
-                    <%--onchange="var warn =$('#war_rep_jenis').is(':visible'); if (warn){$('#cor_rep_jenis').show().fadeOut(3000);$('#war_rep_jenis').hide()}; listSelectObat(this)"--%>
-                    <%--listValue="namaJenisObat"--%>
-                    <%--headerKey="" headerValue="[Select one]"--%>
-                    <%--cssClass="form-control select2"/>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-2">--%>
-                    <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                    <%--id="war_rep_jenis"><i class="fa fa-times"></i> required</p>--%>
-                    <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                    <%--id="cor_rep_jenis"><i class="fa fa-check"></i> correct</p>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                         <div class="col-md-7">
@@ -1098,15 +1205,6 @@
                                     id="resep_nama_obat">
                                 <option value="">[select one]</option>
                             </select>
-                            <%--<s:action id="initObat" namespace="/obat"--%>
-                            <%--name="getListObat_obat"/>--%>
-                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                            <%--list="#initObat.listOfObat" id="resep_nama_obat"--%>
-                            <%--listKey="idObat + '|' + namaObat + '|' + qty"--%>
-                            <%--onchange="var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this)"--%>
-                            <%--listValue="namaObat"--%>
-                            <%--headerKey="" headerValue="[Select one]"--%>
-                            <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1167,12 +1265,6 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Keterangan</label>
                         <div class="col-md-7">
-                            <%--<select onchange="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"--%>
-                            <%--class="form-control" id="resep_keterangan" style="margin-top: 7px">--%>
-                            <%--<option value="">[Select One]</option>--%>
-                            <%--<option value="2 x 1 /Hari">2 x 1 /Hari</option>--%>
-                            <%--<option value="3 x 1 /Hari">3 x 1 /Hari</option>--%>
-                            <%--</select>--%>
                             <textarea id="resep_keterangan" rows="4" class="form-control" style="margin-top: 7px"
                                       oninput="var warn =$('#war_rep_ket').is(':visible'); if (warn){$('#cor_rep_ket').show().fadeOut(3000);$('#war_rep_ket').hide()}"></textarea>
                         </div>
@@ -1277,6 +1369,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -1285,6 +1399,7 @@
     var idPoli = $('#id_palayanan').val();
     var idPasien = $('#id_pasien').val();
     var noCheckup = $('#no_checkup').val();
+    var jenisPeriksa = $('#jenis_periksa').text();
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -1317,8 +1432,61 @@
 
         });
 
+        hitungStatusBiaya();
 
     });
+
+    function printGelangPasien() {
+        window.open('printGelangPasien_checkupdetail.action?id=' + noCheckup, '_blank');
+    }
+
+    function hitungStatusBiaya() {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+            console.log(response);
+            if (response.idJenisPeriksaPasien == "bpjs") {
+                $('#status_bpjs').show();
+                if (response.tarifBpjs != null && response.tarifTindakan != null) {
+
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = response.tarifTindakan;
+
+                    var persen = "";
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                    } else {
+                        persen = 0;
+                    }
+
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if (parseInt(persen) > 70) {
+                        barClass = 'progress-bar-danger';
+                    } else if (parseInt(persen) > 50) {
+                        barClass = 'progress-bar-warning';
+                    } else {
+                        barClass = 'progress-bar-success';
+                    }
+
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
+
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                    if (coverBiaya != '') {
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                    }
+
+                    if (biayaTindakan != '') {
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                    }
+                }
+            } else {
+                $('#status_bpjs').hide();
+            }
+        });
+    }
 
     function saveAlergi(id) {
         var alergi = $('#alergi').val();
@@ -1368,7 +1536,7 @@
                 $.each(response, function (i, item) {
                     table += "<tr>" +
                             "<td>" + item.alergi + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
                 });
             }
@@ -1435,15 +1603,14 @@
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                 });
+                $('#kamar_detail').html(option);
             } else {
                 option = option;
             }
         });
-
-        $('#kamar_detail').html(option);
     }
 
-    function saveKeterangan() {
+    function confirmSaveKeterangan(){
         var idKtg = $("#keterangan").val();
         var noCheckup = $("#no_checkup").val();
         var poli = "";
@@ -1453,21 +1620,15 @@
         var ket_selesai = "";
         var tgl_cekup = "";
         var ket_cekup = "";
+        var jenisPasien = $('#jenis_pasien').val();
 
         if (idKtg != '') {
             if (idKtg == "pindah") {
                 poli = $("#poli_lain").val();
                 idDokter = $("#list_dokter").val();
                 if (poli != '' && idDokter != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     if (poli == '') {
@@ -1484,15 +1645,8 @@
                 kamar = $("#kamar_detail").val();
 
                 if (kelas != '' && kamar != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 }
                 else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1512,15 +1666,8 @@
                 ket_cekup = $('#cekup_ket').val();
 
                 if (ket_selesai != '') {
-                    $('#save_ket').hide();
-                    $('#load_ket').show();
-                    dwr.engine.setAsync(true);
-                    CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, function (response) {
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(6);
-                        $('#save_ket').show();
-                        $('#load_ket').hide();
-                    });
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\')');
+                    $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
                     $('#war_kolom-2').show();
@@ -1529,6 +1676,49 @@
         } else {
             $('#warning_ket').show().fadeOut(5000);
             $('#war_catatan').show();
+        }
+    }
+
+    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien) {
+        $('#modal-confirm-dialog').modal('hide');
+        var idDokter = $('#tin_id_dokter').val();
+        if(idKtg == "pindah"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+                if(response == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
+            });
+        }
+        if(idKtg == "rujuk"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(6);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            });
+        }
+        if(idKtg == "selesai"){
+            $('#save_ket').hide();
+            $('#load_ket').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(6);
+                $('#save_ket').show();
+                $('#load_ket').hide();
+            });
         }
     }
 
@@ -1609,7 +1799,6 @@
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
             $('#modal-lab').modal('show');
         } else if (select == 5) {
-//            $('#obat_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; listSelectObat(this);");
             $('#ob_id_obat').val('').trigger('change');
             $('#jenis_form').show();
             $('#nama_form').show();
@@ -1705,7 +1894,7 @@
                     table += "<tr>" +
                             "<td>" + item.idDokter + "</td>" +
                             "<td>" + item.namaDokter + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">' + "</td>" +
                             "</tr>";
                     dokter = item.idDokter;
                 });
@@ -1737,8 +1926,9 @@
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
         var idDokter = $('#tin_id_dokter').val();
-        var idPerawat = $('#tin_id_perawat').val();
+        var idPerawat = 1;
         var qty = $('#tin_qty').val();
+        var idJenisPeriksa = '<s:property value="headerDetailCheckup.idJenisPeriksaPasien"/>'
 
         if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && idPerawat != '' && qty > 0 && idKategori != '') {
 
@@ -1747,11 +1937,12 @@
 
             if (id != '') {
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, {
+                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDokter, idPerawat, qty, idJenisPeriksa, {
                     callback: function (response) {
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -1769,6 +1960,7 @@
                         if (response == "success") {
                             dwr.engine.setAsync(false);
                             listTindakan();
+                            hitungStatusBiaya();
                             $('#modal-tindakan').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#close_pos').val(2);
@@ -1832,6 +2024,7 @@
                     var tarifTotal = "-";
                     var trfTotal = 0;
                     var qtyTotal = 0;
+                    var perawat = "";
 
                     if (item.tarif != null) {
                         tarif = formatRupiah(item.tarif);
@@ -1844,21 +2037,22 @@
                     if (item.qty != null) {
                         qtyTotal += item.qty;
                     }
+                    if (item.idPerawat != null) {
+                        perawat = item.idPerawat;
+                    }
 
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + item.namaTindakan + "</td>" +
-                            "<td>" + item.namaDokter + "</td>" +
-                            "<td>" + item.idPerawat + "</td>" +
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>";
 
                 });
                 table = table + "<tr>" +
-                        "<td colspan='6'>Total</td>" +
+                        "<td colspan='4'>Total</td>" +
                         "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
                         "<td></td>" +
                         "</tr>";
@@ -1954,7 +2148,7 @@
                             "<td>" + id + "</td>" +
                             "<td>" + ket + "</td>" +
                             "<td>" + jen + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2013,7 +2207,7 @@
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
 
-        if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter) {
+        if (idDetailCheckup != '' && idKategori != '' && idLab != '') {
 
             $('#save_lab').hide();
             $('#load_lab').show();
@@ -2092,7 +2286,7 @@
                             "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2103,7 +2297,6 @@
 
     function saveObat(idInap) {
 
-//        var idJenis = $('#obat_jenis_obat').val();
         var jenisSatuan = $('#ob_jenis_satuan').val();
         var obat = $('#ob_id_obat').val();
         var qty = $('#ob_qty').val();
@@ -2265,7 +2458,7 @@
                             "<td>" + obat + "</td>" +
                             "<td align='center'>" + qty + "</td>" +
                             "<td>" + jenis + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editObat(\'' + item.idObatInap + '\',\'' + id + '\',\'' + qty + '\',\'' + jenis + '\',\'' + obat + '\',\'' + item.qtyBox + '\',\'' + item.qtyLembar + '\',\'' + item.qtyBiji + '\',\'' + item.lembarPerBox + '\',\'' + item.bijiPerLembar + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2285,19 +2478,6 @@
         var lembarPerBox = "";
         var bijiPerLembar = "";
 
-//        if (idObat != '') {
-//            ObatAction.getStokObat(idObat, function (response) {
-//                if (response != null) {
-//                    $.each(response, function (i, item) {
-//                        if (item.idObat == idObat) {
-//                            if (item.qty != null) {
-//                                stok = item.qty;
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
         if (idx > 0) {
 
             var obat = select.options[idx].value;
@@ -2367,20 +2547,21 @@
         $('#lab_parameter').val(idParameter).trigger('change');
         $('#modal-lab').modal('show');
     }
+
     function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
         var qtyBox1 = "";
         var qtyLembar1 = "";
         var qtyBiji1 = "";
 
-        if(qtyBox != 'null'){
+        if (qtyBox != 'null') {
             qtyBox1 = qtyBox;
         }
 
-        if(qtyLembar != 'null'){
+        if (qtyLembar != 'null') {
             qtyLembar1 = qtyLembar;
         }
 
-        if(qtyBiji != 'null'){
+        if (qtyBiji != 'null') {
             qtyBiji1 = qtyBiji;
         }
         $('#load_obat, #warning_obat, #war_ob_jenis_satuan, #war_obat, #war_qty_obat').hide();
@@ -2453,16 +2634,6 @@
         }
     }
 
-    //    function showFormCekup(select) {
-    //        var idx = select.selectedIndex;
-    //        var idKet = select.options[idx].value;
-    //        if (idKet == "Cekup Ulang") {
-    //            $('#form-cekup').show();
-    //        } else {
-    //            $('#form-cekup').hide();
-    //        }
-    //    }
-
     function addObatToList() {
 
         var apotek = $('#resep_apotek').val();
@@ -2522,11 +2693,6 @@
                 stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
             }
 
-            console.log(jenisSatuan);
-            console.log(obat);
-            console.log(stok);
-            console.log(lembarPerBox);
-            console.log(bijiPerLembar);
             if (parseInt(qty) <= parseInt(stok)) {
                 $.each(data, function (i, item) {
                     if (item.ID == id) {
@@ -2635,8 +2801,8 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
-                            ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/print_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                             "</td>" +
                             "</tr>"
                 });
@@ -2647,9 +2813,7 @@
     }
 
     function printResep(id) {
-
         window.open('printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id, '_blank');
-//        window.location.href = 'printResepPasien_checkupdetail.action?id=' + noCheckup + '&idResep=' + id;
     }
 
     function detailResep(id) {
@@ -2699,8 +2863,8 @@
                             '<option value="2 x 1 /Hari">2 x 1 /Hari</option>' +
                             '<option value="3 x 1 /Hari">3 x 1 /Hari</option>' +
                             '</select>' + "</td>" +
-                            "<td align='center'>" + '<img border="0" id=' + idObat + ' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">' +
-                            '<img border="0" id=save' + idObat + ' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/save_flat.png"/>" style="cursor: pointer; height: 25px; width: 25px; display: none">' + "</td>" +
+                            "<td align='center'>" + '<img border="0" id=' + idObat + ' class="hvr-grow" onclick="editObatResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + qty + '\',\'' + ket + '\',\'' + namaObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            '<img border="0" id=save' + idObat + ' class="hvr-grow" onclick="saveDetailResep(\'' + item.idTransaksiObatDetail + '\',\'' + idObat + '\',\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-save-25.png"/>" style="cursor: pointer; display: none">' + "</td>" +
                             "</tr>"
                 });
             }
@@ -2711,7 +2875,7 @@
 
     function editObatResep(id, idObat, qty, ket, namaObat) {
 
-        if ($('#' + idObat).attr('src') == '/simrs/pages/images/edit-flat-new.png') {
+        if ($('#' + idObat).attr('src') == '/simrs/pages/images/icons8-create-25.png') {
             var url = '<s:url value="/pages/images/cnacel-flat.png"/>';
             $('#' + idObat).attr('src', url);
             $('#obat' + idObat).hide();
@@ -2724,7 +2888,7 @@
             $('#save' + idObat).show();
 
         } else {
-            var url = '<s:url value="/pages/images/edit-flat-new.png"/>';
+            var url = '<s:url value="/pages/images/icons8-create-25.png"/>';
             $('#' + idObat).attr('src', url);
             $('#obat' + idObat).show();
             $('#qty' + idObat).show();
@@ -2867,6 +3031,33 @@
             option = "";
         }
         $('#resep_nama_obat').html(option);
+    }
+
+    function confirmSaveAllTindakan(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','saveAllTindakan()');
+    }
+
+    function saveAllTindakan(){
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_all').hide();
+        $('#load_all').show();
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.saveApproveAllTindakanRawatJalan(idDetailCheckup, {
+            callback : function (response) {
+                console.log(response);
+                if(response.status == "success"){
+                    $('#success_all').show().fadeOut(5000);
+                    $('#msg_all_suc').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }else{
+                    $('#warning_all').show().fadeOut(5000);
+                    $('#msg_all_war').text(response.message);
+                    $('#save_all').show();
+                    $('#load_all').hide();
+                }
+            }});
     }
 
 

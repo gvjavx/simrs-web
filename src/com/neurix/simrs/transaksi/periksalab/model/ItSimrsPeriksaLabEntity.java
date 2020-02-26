@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.periksalab.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -21,6 +22,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String statusPeriksa;
+    private String approveFlag;
+
+    public String getApproveFlag() {
+        return approveFlag;
+    }
+
+    public void setApproveFlag(String approveFlag) {
+        this.approveFlag = approveFlag;
+    }
 
     public String getIdLab() {
         return idLab;

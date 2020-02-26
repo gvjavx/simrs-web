@@ -534,6 +534,10 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"permintaan_obat_gudang\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Penerimaan Obat")) {
                         menuNameString = "<li id=\"penerimaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Jalan")) {
+                        menuNameString = "<li id=\"bayar_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Uang Muka")) {
+                        menuNameString = "<li id=\"pembayaran_uang_muka\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
                     }
@@ -576,15 +580,23 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"resep_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-text-o\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Purchase Order")) {
                             menuNameString = "<li id=\"permintaan_po\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
-                        }
-//                        else if (menuName.equalsIgnoreCase("Obat Poli")) {
-//                            menuNameString = "<li id=\"obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-//                        }
-                        else{
+                        }else if (menuName.equalsIgnoreCase("Verifikasi Rawat Jalan")) {
+                            menuNameString = "<li id=\"verifikasi_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Verifikasi Rawat Inap")) {
+                                menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
+                            menuNameString = "<li id=\"permintaan_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Pembayaran")) {
+                            menuNameString = "<li id=\"pembayaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
+                        }else if (menuName.equalsIgnoreCase("Ruangan")) {
+                            menuNameString = "<li id=\"monitor_ruangan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-television\"></i><span> " + menuName + "</span></a></li>";
+                        }else{
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
                         }
                     }else{
+
                         //sodiq 17-12-2019, dicomment agar tidak benrantakan di sidebar
+
 //                        if(i > 0){
 //                            itemMenuTmp = (List) listdownMenu.get(i - 1);
 //                            if(!itemMenuTmp.get(2).equals("2")){
@@ -608,6 +620,12 @@ public class UserBoImpl implements UserBo {
                             idLi = "obat_poli_active";
                             openLu = "obat_poli_open";
                         }
+                        else if (("Pembayaran").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-money\"></i>";
+                            idLi = "pembayaran_active";
+                            openLu = "pembayaran_open";
+                        }
+
                         menuNameString +=
                                 "<li class=\"treeview\" id="+idLi+"> " +
                                         "<a href=\"#\">"+icon+"<span> "+" "+ menuName+"</span>" +
@@ -1463,7 +1481,8 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setCompanyName(companyName);
             userDetailsLogin.setAreaId(areaId);
             userDetailsLogin.setAreaName(areaName);
-            userDetailsLogin.setJenisKelamin(biodata.getGender());
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+//            userDetailsLogin.setJenisKelamin(biodata.getGender());
 
         }
 

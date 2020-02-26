@@ -29,6 +29,25 @@ public class Notifikasi extends BaseModel {
     private String stTanggalPensiun;
     private String stTanggalAktif;
 
+    private String os;
+    private String channelId;
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
     public String getStTanggalAktif() {
         return stTanggalAktif;
     }
