@@ -435,6 +435,24 @@
                                         </table>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Profesi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>

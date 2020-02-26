@@ -540,7 +540,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\titPosisi.pjs_flag,\n" +
                 "\tpegawai.*,\n" +
                 "\tbagian.bagian_id,\n" +
-                "\tbagian.nama_bagian\n" +
+                "\tbagian.nama_bagian,\n" +
+                "\titPosisi.profesi_id\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -638,6 +639,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
             result.setBagianId((String) row[72]);
             result.setBagianName((String) row[73]);
+            result.setProfesiId((String)row[74]);
 
             listOfResult.add(result);
         }

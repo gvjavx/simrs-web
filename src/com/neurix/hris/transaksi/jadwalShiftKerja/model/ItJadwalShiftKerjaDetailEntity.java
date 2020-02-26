@@ -18,6 +18,8 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private String nip;
     private String shiftId;
     private String positionName;
+    private String profesiName;
+    private String profesiId;
     private String namaPegawai;
 
     private Timestamp createdDate;
@@ -26,6 +28,22 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getPositionName() {
         return positionName;

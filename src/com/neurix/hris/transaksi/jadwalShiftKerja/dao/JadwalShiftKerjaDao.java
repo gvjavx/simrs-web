@@ -44,9 +44,6 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             if (mapCriteria.get("branch_id")!=null) {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
-            if (mapCriteria.get("status_giling")!=null) {
-                criteria.add(Restrictions.eq("statusGiling", (String) mapCriteria.get("status_giling")));
-            }
             if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
                 criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
             }
