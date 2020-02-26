@@ -94,6 +94,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         userLogin = CommonUtil.userLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId=null;
+        String noNota = null;
+
+        if (data.get("bukti")!=null){
+            noNota = (String) data.get("bukti");
+        }
 
         //mencari tipe jurnal Id
         try {
@@ -122,7 +127,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 jurnalEntity.setMataUangId("032");
                 jurnalEntity.setKurs(BigDecimal.valueOf(1));
                 jurnalEntity.setKeterangan(catatanPembuatanJurnal);
-                jurnalEntity.setSumber("");
+                jurnalEntity.setSumber(noNota);
                 jurnalEntity.setPrintRegisterCount(BigDecimal.ZERO);
                 jurnalEntity.setPrintCount(BigDecimal.ZERO);
                 if (("Y").equalsIgnoreCase(flagRegister)){
