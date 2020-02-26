@@ -330,6 +330,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6">
+                        <input type="hidden" id="jumlah_um">
+                        <div class="col-md-6">Dibayar</div><div class="col-md-6"><input type="number" class="form-control" id="dibayar" onchange="hitungKembalian(this.value)"></div>
+                        <div class="col-md-6">Kembalian</div><div class="col-md-6"><input type="number" class="form-control" id="kembalian"></div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -462,6 +469,7 @@
                             "</tr>";
                         total = parseInt(total) + parseInt(uangmuka);
                         id = item.id;
+                        $("#jumlah_um").val(total);
                     });
                 }
             });
@@ -534,6 +542,13 @@
                 $('#msg_fin').text(response.msg);
             }
         }});
+    }
+
+    function hitungKembalian( jumlah ) {
+        console.log("hitungKembalian >>")
+        var um = $("#jumlah_um").val();
+        var total = jumlah - um;
+        $("#kembalian").val(total);
     }
 
 </script>

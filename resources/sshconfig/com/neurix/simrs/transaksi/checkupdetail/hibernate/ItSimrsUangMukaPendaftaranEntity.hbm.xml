@@ -15,6 +15,9 @@
         <property name="jumlah">
             <column name="jumlah" sql-type="bigint" not-null="false"/>
         </property>
+        <property name="jumlahDibayar">
+            <column name="jumlah_dibayar" sql-type="bigint" not-null="false"/>
+        </property>
         <property name="statusBayar">
             <column name="status_bayar" sql-type="varchar" length="1" not-null="false"/>
         </property>

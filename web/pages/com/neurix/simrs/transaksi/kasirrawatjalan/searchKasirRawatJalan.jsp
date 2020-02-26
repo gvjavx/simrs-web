@@ -312,6 +312,7 @@
 
                     </div>
                 </div>
+
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Uang Muka</h3>
@@ -347,7 +348,7 @@
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
-                        </tbody>
+                        </tbody>N
                     </table>
 
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">

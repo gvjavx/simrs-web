@@ -488,7 +488,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar){
 
         CrudResponse response = new CrudResponse();
 
@@ -517,6 +517,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
             uangMuka.setId(id);
+            uangMuka.setDibayar(new BigInteger(jumlahDibayar));
             uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             uangMuka.setLastUpdateWho(CommonUtil.userLogin());
 
