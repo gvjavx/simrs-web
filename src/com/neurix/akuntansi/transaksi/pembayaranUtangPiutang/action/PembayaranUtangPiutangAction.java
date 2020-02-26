@@ -408,7 +408,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
                 Map data = new HashMap();
                 data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
-                data.put("no_nota",pembayaranUtangPiutangDetail.getNoNota());
+                data.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
                 data.put("jml_bayar",jumlahPembayaran);
                 data.put("rekening_id",pembayaranUtangPiutangDetail.getRekeningId());
                 data.put("rekening_id_kas",pembayaranUtangPiutang.getRekeningIdKas());
