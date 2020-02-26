@@ -84,7 +84,19 @@ public class HeaderDetailCheckup extends BaseModel{
     private String jenisPembayaran;
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
+
+    private String notLike;
+
+    public String getNotLike() {
+        return notLike;
+    }
+
+    public void setNotLike(String notLike) {
+        this.notLike = notLike;
+    }
+
     private String noNota;
+
     private String noCheckupOnline;
     private String metodePembayaran;
 

@@ -462,6 +462,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setBerat(checkup.getBerat());
             detailCheckup.setNoSep(checkup.getNoSep());
             detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            detailCheckup.setMetodePembayaran(checkup.getMetodePembayaran());
             setHeaderDetailCheckup(detailCheckup);
 
         } else {

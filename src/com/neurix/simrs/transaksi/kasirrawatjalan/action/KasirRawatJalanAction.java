@@ -150,6 +150,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
         headerDetailCheckup.setTypeTransaction("kasir");
+        headerDetailCheckup.setNotLike("bpjs");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -592,7 +593,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("bukti", id);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("jumlah_uang_muka", new BigDecimal(jumlahDibayar));
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -658,11 +659,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String type) throws JSONException {
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("bukti", noNota);
+        hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("metode_bayar", metodeBayar);
+        hsCriteria.put("bank", kodeBank);
 
         String branchId = CommonUtil.userBranchLogin();
 
@@ -682,7 +685,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        response.setMsg(""+hsCriteria);
         if (!"Y".equalsIgnoreCase(withObat)){
             try {
-                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
+                String text="";
+                if (("transfer").equalsIgnoreCase(metodeBayar)){
+                    text=" pada Bank "+kodeBank;
+                }
+                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

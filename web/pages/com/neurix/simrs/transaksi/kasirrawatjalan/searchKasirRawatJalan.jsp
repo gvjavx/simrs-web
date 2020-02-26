@@ -323,7 +323,7 @@
                         <tr bgcolor="#90ee90">
                             <%--<td width="10%" align="center">Action</td>--%>
                             <td>Tanggal</td>
-                            <td>No Nota</td>
+                            <td>Bukti</td>
                             <td align="center" width="20%">Total Tarif (Rp.)</td>
                         </tr>
                         </thead>
@@ -358,6 +358,37 @@
                     <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_fin2"></p>
+                    </div>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
+                            <div class="col-md-8">
+                                <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)">
+                                    <option value="" >[Select One]</option>
+                                    <option value="tunai">Tunai</option>
+                                    <option value="transfer">Transfer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="display: none" id="pilih_bank">
+                        <div class="form-group">
+                            <label class="col-md-2" style="margin-top: 7px">Bank</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="bank">
+                                    <option value="" >[Select One]</option>
+                                    <option value="bri">BRI</option>
+                                    <option value="bni">BNI</option>
+                                    <option value="bca">BCA</option>
+                                    <option value="mandiri">Mandiri</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -398,8 +429,18 @@
 
 <script type='text/javascript'>
 
+    function pilihMetode(val){
+        console.log(val);
+        if(val != ''){
+            if(val == 'transfer'){
+                $('#pilih_bank').show();
+            }else{
+                $('#pilih_bank').hide();
+            }
+        }
+    }
     function formatRupiah(angka) {
-        if(angka != "" && angka > 0){
+        if(angka != "" && angka != null && parseInt(angka) > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
@@ -480,7 +521,7 @@
                 console.log(response);
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
+                    str += "<tr><td>"+item.stDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
@@ -620,6 +661,8 @@
         var noNota = $("#fin_no_nota").val();
         var idPasien = $("#fin_id_pasien").val();
         var idDetailCheckup = $("#fin_id_detail_checkup").val();
+        var metodeBayar = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
         var isResep = $("#fin_is_resep").val();
 
         $('#save_fin').hide();
@@ -627,19 +670,21 @@
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, function (response) {
-            console.log(response.msg);
-            if (response.status == "success"){
-                // alert("success");
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#modal-invoice').modal('hide');
-                $('#info_dialog').dialog('open');
-            }else{
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#warning_fin').show().fadeOut(10000);
-                $('#msg_fin').text(response.msg);
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, "JRJ", {
+            callback: function (response) {
+                console.log(response.msg);
+                if (response.status == "success") {
+                    // alert("success");
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#modal-invoice').modal('hide');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#warning_fin').show().fadeOut(10000);
+                    $('#msg_fin').text(response.msg);
+                }
             }
         });
     }

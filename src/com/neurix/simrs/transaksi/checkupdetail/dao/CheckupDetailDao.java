@@ -65,6 +65,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String jenisPasien = "%";
             String statusBayar = "";
 
+            String notLike = "";
+
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
             }
@@ -98,9 +100,13 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
 
             if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
-                statusBayar = "\n AND dt.status_bayar = '"+bean.getStatusBayar()+"'";
+                statusBayar = "\n AND dt.status_bayar = '"+bean.getStatusBayar()+"'\n";
             } else {
-                statusBayar = "\n AND dt.status_bayar is null";
+                statusBayar = "\n AND dt.status_bayar is null \n";
+            }
+
+            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
+                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
             }
 
             String uangMukaNotNull = "";
@@ -133,7 +139,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar + uangMukaNotNull;
+                    "AND dt.status_periksa LIKE :status " + statusBayar + uangMukaNotNull + notLike;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
