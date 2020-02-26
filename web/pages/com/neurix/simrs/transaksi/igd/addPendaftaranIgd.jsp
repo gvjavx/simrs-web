@@ -123,8 +123,6 @@
             transform: rotateZ(180deg);
         }
 
-        .modal { overflow-y: auto}
-
         /*.dropdown-content a:hover {background-color: #f1f1f1}*/
 
         /*.dropdown:hover .dropdown-content {*/

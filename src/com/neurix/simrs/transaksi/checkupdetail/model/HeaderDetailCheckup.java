@@ -87,6 +87,16 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String noCheckupOnline;
 
+    private String metodePembayaran;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
     public String getNoCheckupOnline() {
         return noCheckupOnline;
     }

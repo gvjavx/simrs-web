@@ -95,6 +95,9 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                     antrianItem.setCreatedWho(item.getCreatedWho());
                     antrianItem.setLastUpdate(item.getLastUpdate());
                     antrianItem.setLastUpdateWho(item.getLastUpdateWho());
+                    antrianItem.setJamAwal(item.getJamAwal());
+                    antrianItem.setJamAkhir(item.getJamAkhir());
+                    antrianItem.setTglCheckup(item.getTglCheckup().toString());
 
                     if (item.getIdPelayanan() != null && !"".equalsIgnoreCase(item.getIdPelayanan())) {
                         Pelayanan pelayanan = new Pelayanan();

@@ -76,6 +76,8 @@ function initRekamMedic() {
         });
 
         $("#modal-rekam-medic").modal('show');
+        $('#body-rekam-medic-baru').html('');
+        $('#body-rekam-medic-lama').html('');
         $('#nama_medik').html(namaPasien);
         $("#body-rekam-medic").html(thead+table);
     });

@@ -15,9 +15,59 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript'>
 
+        function formatRupiah(angka) {
+            if(angka != ""){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }
+
+        }
+
+        function formatRupiah2(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+
         $( document ).ready(function() {
             $('#pembayaran_uang_muka, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
+            var nominal = document.getElementById('nominal_uang_muka');
+            nominal.addEventListener('keyup', function (e) {
+                nominal.value = formatRupiah2(this.value);
+                var valBayar = nominal.value.replace(/[.]/g, '');
+                $('#val_uang_muka').val(valBayar);
+                var total = $('#total_uang_muka').val();
+
+                var a = parseInt(total);
+                var b = parseInt(valBayar);
+
+                console.log(total);
+                console.log(a);
+                console.log(b);
+
+                if (b >= a) {
+                    var kembalian = valBayar - total;
+                    // $('#kembalian').val("" + kembalian);
+                    $('#kembalian').val(formatRupiah(kembalian));
+                } else {
+                    $('#kembalian').val('');
+                    // $('#nominal_kembalian').val('');
+                }
+            });
+
         });
 
 
@@ -305,7 +355,7 @@
                 </div>
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-offset-3 col-md-6">
+                        <div class="col-md-6">
                             <table class="table table-bordered table-striped" id="tabel_tindakan_fin">
                                 <thead>
                                 <tr bgcolor="#90ee90">
@@ -316,6 +366,32 @@
                                 <tbody id="body_tindakan_fin">
                                 </tbody>
                             </table>
+                        </div>
+                        <input type="hidden" id="total_uang_muka">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3">Uang Muka</label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            Rp.
+                                        </div>
+                                        <input class="form-control" id="nominal_uang_muka">
+                                        <input type="hidden" class="form-control" id="val_uang_muka">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">kembalian</label>
+                                <div class="col-md-8">
+                                    <div class="input-group" style="margin-top: 7px">
+                                        <div class="input-group-addon">
+                                            Rp.
+                                        </div>
+                                        <input class="form-control" id="kembalian" readonly>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,15 +433,6 @@
 
 <script type='text/javascript'>
 
-    function formatRupiah(angka) {
-        if(angka != ""){
-            var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
-        }
-
-    }
 
     function showInvoice(idCheckup, idDetailCheckup, pasiendId) {
         var table = "";
@@ -478,6 +545,7 @@
             $('#fin_kecamatan').html(kecamatan);
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
+            $('#total_uang_muka').val(total);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
             $('#save_fin').attr('onclick','confirmSaveUangMuka(\''+id+'\',\''+pasiendId+'\',\''+total+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
