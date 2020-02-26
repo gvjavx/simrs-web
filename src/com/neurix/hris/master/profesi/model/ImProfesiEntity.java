@@ -1,4 +1,4 @@
-package com.neurix.hris.master.golongan.model;
+package com.neurix.hris.master.profesi.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -10,11 +10,10 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImGolonganEntity implements Serializable {
+public class ImProfesiEntity implements Serializable {
 
-    private String golonganId;
-    private String golonganName;
-    private Integer level;
+    private String profesiId;
+    private String profesiName;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -22,28 +21,20 @@ public class ImGolonganEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public Integer getLevel() {
-        return level;
+    public String getProfesiId() {
+        return profesiId;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
     }
 
-    public String getGolonganId() {
-        return golonganId;
+    public String getProfesiName() {
+        return profesiName;
     }
 
-    public void setGolonganId(String golonganId) {
-        this.golonganId = golonganId;
-    }
-
-    public String getGolonganName() {
-        return golonganName;
-    }
-
-    public void setGolonganName(String golonganName) {
-        this.golonganName = golonganName;
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
     }
 
     public String getFlag() {

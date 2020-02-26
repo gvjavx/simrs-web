@@ -322,7 +322,7 @@
                         <td>
                             <s:textarea rows="2" id="keterangan12" name="cutiPegawai.keterangan" required="true" cssClass="form-control"/>                        </td>
                     </tr>
-                    <tr>
+                    <%--<tr>
                         <td>
                             <label class="control-label"><small>Pegawai Pengganti Sementara :</small></label>
                         </td>
@@ -337,7 +337,7 @@
                         <td>
                             <s:textfield  id="pegawaiPenggantiSementara12" name="" readonly="true" required="false" cssClass="form-control"/>
                         </td>
-                    </tr>
+                    </tr>--%>
                 </table>
                 <br>
                 <div class="form-group">
