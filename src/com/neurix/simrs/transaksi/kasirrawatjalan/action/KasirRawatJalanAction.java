@@ -593,7 +593,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("bukti", id);
-        hsCriteria.put("jumlah_uang_muka", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -663,7 +663,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("bukti", noNota);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -680,21 +680,31 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         CrudResponse response = new CrudResponse();
-        System.out.println(hsCriteria);
 
+        String ketTerangan = "";
+        String transId = "";
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)){
+            transId = "18";
+            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
+        }
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+            transId = "19";
+            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+        }
 //        response.setMsg(""+hsCriteria);
-        if (!"Y".equalsIgnoreCase(withObat)){
+        if (!"".equalsIgnoreCase(transId)){
             try {
                 String text="";
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
+                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                detailCheckup.setNoNota(billingSystemBo.createInvoiceNumber(type, branchId));
 
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");

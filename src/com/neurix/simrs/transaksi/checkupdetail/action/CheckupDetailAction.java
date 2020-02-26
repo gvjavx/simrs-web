@@ -1044,8 +1044,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
             Map hsCriteria = new HashMap();
             hsCriteria.put("master_id", idPasien);
-            hsCriteria.put("no_nota", invoice);
-            hsCriteria.put("biaya", jumlah);
+            hsCriteria.put("bukti", invoice);
+            hsCriteria.put("kurang_bayar", jumlah);
 
             String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
             try {
