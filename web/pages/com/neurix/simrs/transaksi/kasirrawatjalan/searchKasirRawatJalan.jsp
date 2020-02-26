@@ -286,6 +286,7 @@
                                 <input type="hidden" id="fin_no_nota"/>
                                 <input type="hidden" id="fin_id_pasien"/>
                                 <input type="hidden" id="fin_is_resep"/>
+                                <input type="hidden" id="fin_metode_bayar"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -348,7 +349,7 @@
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
-                        </tbody>N
+                        </tbody>
                     </table>
 
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
@@ -475,6 +476,7 @@
         var cekTindakan = false;
         var jenisPasien = "";
         var uangMuka = 0;
+        var metode="";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -511,6 +513,7 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        metode = response.metodePembayaran;
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);
@@ -605,6 +608,7 @@
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
+            $('#fin_metode_bayar').val(metode);
 //            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
         }, 100);
@@ -664,13 +668,14 @@
         var metodeBayar = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
         var isResep = $("#fin_is_resep").val();
+        var metodeBayar = $('#fin_metode_bayar').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, "JRJ", {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, "JRJ",metodeBayar, {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {
