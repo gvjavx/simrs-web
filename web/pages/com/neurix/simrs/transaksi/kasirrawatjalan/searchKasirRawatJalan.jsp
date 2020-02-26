@@ -670,7 +670,7 @@
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, "JRJ", {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {
