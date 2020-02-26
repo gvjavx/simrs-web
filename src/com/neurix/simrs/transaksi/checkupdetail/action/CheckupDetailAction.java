@@ -452,7 +452,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             setHeaderDetailCheckup(detailCheckup);
 
-        }else{
+        } else {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
 
@@ -975,6 +975,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
+        updateFlagPeriksaAntrianOnline(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
@@ -2611,6 +2612,18 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         return total;
 
+    }
+
+    private void updateFlagPeriksaAntrianOnline(String idDetailCheckup) {
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+
+            try {
+                checkupDetailBoProxy.updateFlagPeriksaAntrianOnline(idDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when update antrian online");
+            }
+        }
     }
 
     @Override

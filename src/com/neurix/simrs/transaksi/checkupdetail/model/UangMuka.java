@@ -19,6 +19,17 @@ public class UangMuka extends BaseModel {
     private String lastUpdateWho;
     private String noNota;
 
+    private String stCreatedDate;
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
     public String getNoNota() {
         return noNota;
     }

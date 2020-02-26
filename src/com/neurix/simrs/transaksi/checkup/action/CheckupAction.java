@@ -894,6 +894,9 @@ public class CheckupAction extends BaseMasterAction {
                                     return ERROR;
                                 }
                             }
+                        }else{
+                            addActionError("Error, " + "Insert SEP failed");
+                            return ERROR;
                         }
 
                     }
@@ -947,6 +950,10 @@ public class CheckupAction extends BaseMasterAction {
                 checkup.setTglLahir(sqlDate);
             } catch (ParseException e) {
                 logger.error("[CheckupAction.saveAdd] Error Convert String Tgl Lahir to Date.", e);
+            }
+
+            if(getNoCheckupOnline() != null && !"".equalsIgnoreCase(getNoCheckupOnline())){
+                checkup.setNoCheckupOnline(getNoCheckupOnline());
             }
 
             Tindakan tindakan = new Tindakan();

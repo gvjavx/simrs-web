@@ -29,4 +29,7 @@ public interface CheckupDetailBo {
     public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
 
     public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException;
+
+    public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException;
+
 }

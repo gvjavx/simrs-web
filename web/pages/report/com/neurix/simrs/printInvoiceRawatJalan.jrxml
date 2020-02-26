@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -58,6 +58,7 @@
 	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.itemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="reportParams.listObatDetail" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -115,13 +116,6 @@
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="0" y="47" width="173" height="22" uuid="cc97ca5e-d6d9-4089-ab25-db92cf636e23"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="72" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
@@ -264,9 +258,17 @@
 				</jr:Code128>
 			</componentElement>
 			<textField>
-				<reportElement x="0" y="34" width="173" height="20" uuid="d2b3e75b-9224-4fbb-bff7-77fb9d422379"/>
+				<reportElement x="0" y="35" width="173" height="20" uuid="d2b3e75b-9224-4fbb-bff7-77fb9d422379"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="173" height="20" uuid="c4b0b4f6-54f6-4c3e-8cc3-fafff2503a26"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
@@ -287,8 +289,11 @@
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="25" uuid="1109da0f-f2e8-486c-8b86-711b41984e51"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Tanggal]]></text>
@@ -298,8 +303,11 @@
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="21" uuid="e7e59435-641e-4bb3-b4cd-a159e71bb93c"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -311,8 +319,11 @@
 							<textField>
 								<reportElement x="0" y="0" width="120" height="20" uuid="9eda7ca9-58f4-472d-99f1-2c35b2a079fd"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -327,8 +338,11 @@
 							<staticText>
 								<reportElement x="0" y="0" width="315" height="25" uuid="4f2e76e6-a020-4a6c-88db-b138655956e4"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Nama Tindakan]]></text>
@@ -338,8 +352,11 @@
 							<staticText>
 								<reportElement x="0" y="0" width="315" height="21" uuid="c1fb1978-62bb-4710-b90a-280e4f070d03"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[]]></text>
@@ -349,8 +366,11 @@
 							<textField>
 								<reportElement x="0" y="0" width="315" height="20" uuid="941e0027-2ae2-4f7b-8588-0a5ab826fa72"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -365,8 +385,11 @@
 							<staticText>
 								<reportElement x="0" y="0" width="117" height="25" uuid="efd9aa1c-def7-4612-99b0-7a1fc0721c27"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Tarif (Rp.)]]></text>
@@ -375,9 +398,12 @@
 						<jr:columnFooter height="21" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="117" height="21" uuid="0b3dafce-9216-4bb6-815a-08a0a8f986b4"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+								<box rightPadding="20">
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -388,9 +414,12 @@
 						<jr:detailCell height="20" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="117" height="20" uuid="ea679165-6daa-4fcc-b4bb-d4b7c2b12452"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+								<box rightPadding="20">
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -404,7 +433,7 @@
 		</band>
 		<band height="50">
 			<componentElement>
-				<reportElement key="table" style="table" x="0" y="0" width="555" height="50" uuid="8c823c57-9e40-4542-a86c-12175ad3213d"/>
+				<reportElement key="" x="0" y="0" width="555" height="50" uuid="8c823c57-9e40-4542-a86c-12175ad3213d"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="datasetobat" uuid="a57acc7b-d0ad-4642-8514-702327f88ece">
 						<dataSourceExpression><![CDATA[$P{reportParams.listObatDetail}]]></dataSourceExpression>
@@ -413,12 +442,12 @@
 						<jr:columnHeader height="25" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="161" height="25" uuid="c8c28435-9f3f-461d-badd-4821ebd28289"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Nama Obat]]></text>
@@ -427,12 +456,12 @@
 						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="161" height="20" uuid="9807ca8b-c2d9-4c4b-a5ea-fd732b48f2f3"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -443,12 +472,12 @@
 						<jr:detailCell height="19" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="161" height="19" uuid="d0bb6a7a-1311-4490-9531-30b6fe86d69c"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -461,12 +490,12 @@
 						<jr:columnHeader height="25" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="79" height="25" uuid="1636ed3b-4d9f-47d4-b88c-f6578a1cfd62"/>
-								<box leftPadding="0">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[Qty]]></text>
@@ -475,12 +504,12 @@
 						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="79" height="20" uuid="535a572f-eb48-49b4-9d3b-6251a5b78d5e"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[]]></text>
@@ -489,12 +518,12 @@
 						<jr:detailCell height="19" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="79" height="19" uuid="41413d1a-c2f4-4bb6-8044-95ebb2e5136e"/>
-								<box leftPadding="0">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
@@ -507,12 +536,12 @@
 						<jr:columnHeader height="25" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="98" height="25" uuid="ba1da3ff-4829-4432-ab7e-b36c24ff02ee"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Jenis Satuan]]></text>
@@ -521,12 +550,12 @@
 						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="98" height="20" uuid="4ea1e5c4-24ac-4b40-9bd0-5e1ac9368e06"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[]]></text>
@@ -535,12 +564,12 @@
 						<jr:detailCell height="19" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="98" height="19" uuid="f6bc4e4a-93c2-4cfe-b823-1f39ec0f5cfa"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
@@ -553,12 +582,12 @@
 						<jr:columnHeader height="25" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="110" height="25" uuid="7ae577ca-e1d2-45a5-96cc-eea89bf96a56"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Harga Satuan (Rp.)]]></text>
@@ -567,12 +596,12 @@
 						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="110" height="20" uuid="6dc79695-1c4e-4bd6-8d42-c73fa9b89aa7"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[]]></text>
@@ -582,11 +611,11 @@
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="110" height="19" uuid="e633fe26-88aa-4ded-822a-7b8db482aae3"/>
 								<box rightPadding="20">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -599,12 +628,12 @@
 						<jr:columnHeader height="25" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="106" height="25" uuid="2f7c30d9-549b-40f0-bcc5-cc224cdbfa9a"/>
-								<box leftPadding="6">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
 								<text><![CDATA[Total Harga (Rp.)]]></text>
@@ -613,7 +642,13 @@
 						<jr:columnFooter height="20" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="106" height="20" uuid="bf327fe2-fc8b-4111-88e5-32aa0fdf726c"/>
-								<box rightPadding="20"/>
+								<box rightPadding="20">
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
+								</box>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
@@ -624,11 +659,11 @@
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="106" height="19" uuid="4106f12a-fa9c-43a8-a986-4def57ac8401"/>
 								<box rightPadding="20">
-									<pen lineWidth="0.25"/>
-									<topPen lineWidth="0.25"/>
-									<leftPen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25"/>
-									<rightPen lineWidth="0.25"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>

@@ -227,8 +227,8 @@
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
-                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <%--<s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>--%>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">

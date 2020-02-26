@@ -37,6 +37,16 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private BigDecimal tarifBpjs;
     private String klaimBpjsFlag;
 
+    private String noCheckupOnline;
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
     public String getKlaimBpjsFlag() {
         return klaimBpjsFlag;
     }

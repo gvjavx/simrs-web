@@ -52,6 +52,7 @@
           p:rekamMedicLamaDao-ref="rekamMedicLamaDao"
           p:uploadRekamMedicLamaDao-ref="uploadRekamMedicLamaDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:antrianOnlineDao-ref="antrianOnlineDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

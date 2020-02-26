@@ -806,7 +806,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Uang Muka</label>
                                             <div class="col-md-8">
-                                                <s:textfield type="number" name="headerCheckup.uangMuka" cssClass="form-control"/>
+                                                <s:textfield type="number" cssStyle="margin-top: 7px" name="headerCheckup.uangMuka" cssClass="form-control"/>
                                             </div>
                                         </div>
                                     </div>

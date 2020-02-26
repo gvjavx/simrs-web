@@ -89,61 +89,106 @@ public class PeriksaLabAction extends BaseMasterAction {
         logger.info("[PeriksaLabAction.add] start process >>>");
 
         //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<PeriksaLab> listOfResult = (List) session.getAttribute("listOfResult");
 
         String id = getId();
         String jk = "";
         if (id != null && !"".equalsIgnoreCase(id)) {
 
-            if (listOfResult != null) {
+            HeaderCheckup checkup = new HeaderCheckup();
 
-                for (PeriksaLab periksaLab : listOfResult) {
-                    if (id.equalsIgnoreCase(periksaLab.getIdPeriksaLab())) {
+            try {
+                checkup = checkupBoProxy.getDataDetailPasien(id);
+            } catch (GeneralBOException e) {
+                logger.error("Found error when searc data detail " + e.getMessage());
+            }
 
-                        HeaderDetailCheckup headerDetailCheckup = getDetailCheckup(periksaLab.getIdDetailCheckup());
-                        periksaLab.setNoCheckup(headerDetailCheckup.getNoCheckup());
+            if (checkup != null) {
 
-                        HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
-                        periksaLab.setIdPasien(headerCheckup.getIdPasien());
-                        periksaLab.setNamaPasien(headerCheckup.getNama());
-                        periksaLab.setAlamat(headerCheckup.getJalan());
-                        periksaLab.setDesa(headerCheckup.getNamaDesa());
-                        periksaLab.setKecamatan(headerCheckup.getNamaKecamatan());
-                        periksaLab.setKota(headerCheckup.getNamaKota());
-                        periksaLab.setProvinsi(headerCheckup.getNamaProvinsi());
-                        periksaLab.setIdPelayanan(headerCheckup.getIdPelayanan());
-                        periksaLab.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        if (headerCheckup.getJenisKelamin() != null) {
-                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-                                jk = "Perempuan";
-                            } else {
-                                jk = "laki-Laki";
-                            }
-                        }
-                        periksaLab.setJenisKelamin(jk);
-                        periksaLab.setTempatLahir(headerCheckup.getTempatLahir());
-                        periksaLab.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-                        periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-                        periksaLab.setNik(headerCheckup.getNoKtp());
-                        periksaLab.setUrlKtp(headerCheckup.getUrlKtp());
-
-                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        periksaLab.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-
-                        setPeriksaLab(periksaLab);
-
-                        break;
+                PeriksaLab periksaLab = new PeriksaLab();
+                periksaLab.setNoCheckup(checkup.getNoCheckup());
+                periksaLab.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                periksaLab.setIdPasien(checkup.getIdPasien());
+                periksaLab.setNamaPasien(checkup.getNama());
+                periksaLab.setAlamat(checkup.getJalan());
+                periksaLab.setDesa(checkup.getNamaDesa());
+                periksaLab.setKecamatan(checkup.getNamaKecamatan());
+                periksaLab.setKota(checkup.getNamaKota());
+                periksaLab.setProvinsi(checkup.getNamaProvinsi());
+                periksaLab.setIdPelayanan(checkup.getIdPelayanan());
+                periksaLab.setNamaPelayanan(checkup.getNamaPelayanan());
+                if (checkup.getJenisKelamin() != null) {
+                    if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                        jk = "Perempuan";
+                    } else {
+                        jk = "laki-Laki";
                     }
                 }
+                periksaLab.setJenisKelamin(jk);
+                periksaLab.setTempatLahir(checkup.getTempatLahir());
+                periksaLab.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                periksaLab.setIdJenisPeriksa(checkup.getIdJenisPeriksaPasien());
+                periksaLab.setNik(checkup.getNoKtp());
+                periksaLab.setUrlKtp(checkup.getUrlKtp());
+                periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+
+                setPeriksaLab(periksaLab);
 
             } else {
                 setPeriksaLab(new PeriksaLab());
             }
-        } else {
-            setPeriksaLab(new PeriksaLab());
+
+//            if (listOfResult != null) {
+////
+////                for (PeriksaLab periksaLab : listOfResult) {
+////                    if (id.equalsIgnoreCase(periksaLab.getIdPeriksaLab())) {
+////
+////                        HeaderDetailCheckup headerDetailCheckup = getDetailCheckup(periksaLab.getIdDetailCheckup());
+////                        periksaLab.setNoCheckup(headerDetailCheckup.getNoCheckup());
+////
+////                        HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
+////                        periksaLab.setIdPasien(headerCheckup.getIdPasien());
+////                        periksaLab.setNamaPasien(headerCheckup.getNama());
+////                        periksaLab.setAlamat(headerCheckup.getJalan());
+////                        periksaLab.setDesa(headerCheckup.getNamaDesa());
+////                        periksaLab.setKecamatan(headerCheckup.getNamaKecamatan());
+////                        periksaLab.setKota(headerCheckup.getNamaKota());
+////                        periksaLab.setProvinsi(headerCheckup.getNamaProvinsi());
+////                        periksaLab.setIdPelayanan(headerCheckup.getIdPelayanan());
+////                        periksaLab.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+////                        if (headerCheckup.getJenisKelamin() != null) {
+////                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
+////                                jk = "Perempuan";
+////                            } else {
+////                                jk = "laki-Laki";
+////                            }
+////                        }
+////                        periksaLab.setJenisKelamin(jk);
+////                        periksaLab.setTempatLahir(headerCheckup.getTempatLahir());
+////                        periksaLab.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
+////                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+////                        periksaLab.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
+////                        periksaLab.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
+////                        periksaLab.setNik(headerCheckup.getNoKtp());
+////                        periksaLab.setUrlKtp(headerCheckup.getUrlKtp());
+////
+////                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+////                        periksaLab.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+////
+////                        setPeriksaLab(periksaLab);
+////
+////                        break;
+////                    }
+////                }
+////
+////            } else {
+////                setPeriksaLab(new PeriksaLab());
+////            }
+////        } else {
+////            setPeriksaLab(new PeriksaLab());
         }
 
         logger.info("[PeriksaLabAction.add] end process <<<");
@@ -510,7 +555,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + formatDate);
         reportParams.put("namaDokter", "");
         reportParams.put("diagnosa", jk);
-        String alamat = "Desa "+headerCheckup.getNamaDesa()+", Kec. "+headerCheckup.getNamaKecamatan()+"\n"+"Kab. "+headerCheckup.getNamaKota()+", "+headerCheckup.getNamaProvinsi();
+        String alamat = "Desa " + headerCheckup.getNamaDesa() + ", Kec. " + headerCheckup.getNamaKecamatan() + "\n" + "Kab. " + headerCheckup.getNamaKota() + ", " + headerCheckup.getNamaProvinsi();
         reportParams.put("alamat", alamat);
         reportParams.put("noLab", "");
         reportParams.put("noRegistrasi", "");
@@ -522,7 +567,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         reportParams.put("noCheckup", headerCheckup.getNoCheckup());
         reportParams.put("namaRs", "Rumah Sakit Toeloengredjo");
         reportParams.put("jalanRs", "Jln. Kusuma Bangsa No. 01 Kanigoro Blitar. Telepon (0549) 7878 89890 900");
-        reportParams.put("fox","Fox : (0354) 383883");
+        reportParams.put("fox", "Fox : (0354) 383883");
 
 
         try {

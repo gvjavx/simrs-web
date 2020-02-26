@@ -31,6 +31,7 @@ public class CommonConstant {
     public final static String DEFAULT_PASSWORD = "123456";
 
     //    public final static String RESOURCE_PATH_USER_PHOTO="/pages/images/";
+    public final static String RESOURCE_PATH_IMAGES = "/pages/images/";
     public final static String RESOURCE_PATH_USER_PHOTO = "/pages/upload/image/profile/";
     public final static String RESOURCE_PATH_UNKNOWN_PHOTO = "unknown-person.png";
     public final static String RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI = "unknown-person.png";
@@ -51,10 +52,10 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
     public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
-//    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
+    //    public final static String RESOURCE_PATH_IMG_ASSET = "/opt/tomcat/webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="C:\\Users\\Toshiba\\Pictures";
-    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY="/mnt/image";
-    public final static String EXTERNAL_IMG_URI="/simrs/images";
+    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "/mnt/image";
+    public final static String EXTERNAL_IMG_URI = "/simrs/images";
 
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -148,19 +149,19 @@ public class CommonConstant {
     public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
 
     //FINGER
-    public final static String baseUrl="http://localhost:8080/simrs/";
-    public final static String timeLimitReg="15";
-    public final static String timeLimitVer="10";
-    public final static String verAddress=baseUrl+"prosesLoginFinger.action";
-    public final static String regAddress=baseUrl+"prosesRegisterFinger.action";
-    public final static String addRawatPasien=baseUrl+"checkup/add_checkup.action";
+    public final static String baseUrl = "http://localhost:8080/simrs/";
+    public final static String timeLimitReg = "15";
+    public final static String timeLimitVer = "10";
+    public final static String verAddress = baseUrl + "prosesLoginFinger.action";
+    public final static String regAddress = baseUrl + "prosesRegisterFinger.action";
+    public final static String addRawatPasien = baseUrl + "checkup/add_checkup.action";
 
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
     public final static String LOGO_RS02 = "/pages/images/RS02.png";
     public final static String LOGO_RS03 = "/pages/images/RS03.png";
     public final static String LOGO_NMU = "/pages/images/logo-nmu-copy.png";
-    public final static String IMAGE_CARD  = "/pages/images/card.png";
+    public final static String IMAGE_CARD = "/pages/images/card.png";
 
     public final static String BRANCH_RS01 = "RS01";
     public final static String BRANCH_RS02 = "RS02";
@@ -168,16 +169,16 @@ public class CommonConstant {
 
     public final static String URL_IMAGE_CARD = "C:\\tomcat\\webapps\\simrs\\pages\\images\\card.png";
 
-    public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN="/pages/upload/image/pasien/";
+    public final static String RESOURCE_PATH_USER_UPLOAD_KTP_PASIEN = "/pages/upload/image/pasien/";
 
-    public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT="/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
-    public final static String RESOURCE_DOCUMENT_APB="/opt/tomcat/webapps/mnt/documents/simrs/";
-    public final static String RESOURCE_IMAGE_APB="/opt/tomcat/webapps/mnt/images/simrs/";
-    public final static String IMAGE_TYPE=".jpg";
+    public final static String RESOURCE_PATH_JRXML_QRCODE_ALAT = "/opt/tomcat/webapps/pmsapb/pages/report/com/neurix/apbpln/printQRCode.jrxml/";
+    public final static String RESOURCE_DOCUMENT_APB = "/opt/tomcat/webapps/mnt/documents/simrs/";
+    public final static String RESOURCE_IMAGE_APB = "/opt/tomcat/webapps/mnt/images/simrs/";
+    public final static String IMAGE_TYPE = ".jpg";
     public final static String DOC_TYPE = ".pdf";
 
-    public final static String URL_IMG="/images/";
-    public final static String URL_DOC="/documents/";
+    public final static String URL_IMG = "/images/";
+    public final static String URL_DOC = "/documents/";
     public final static String URL_IMG_RM = "rekam_medic";
 
 

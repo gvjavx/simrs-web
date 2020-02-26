@@ -11,6 +11,8 @@ import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
+import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -45,10 +47,7 @@ import org.hibernate.HibernateException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Toshiba on 13/11/2019.
@@ -66,6 +65,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private OrderGiziDao orderGiziDao;
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanDao tindakanDao;
+    private AntrianOnlineDao antrianOnlineDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -869,6 +869,53 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return checkupDetailDao.getListPembayaranUangMuka(bean);
     }
 
+    @Override
+    public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup);
+            }catch (HibernateException e){
+                logger.error("Found Error when search detail checkup "+e.getMessage());
+            }
+
+            if(entity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(entity.getNoCheckupOnline())){
+
+                List<ItSimrsAntianOnlineEntity> onlineEntityList = new ArrayList<>();
+                Map hsCriteria = new HashMap();
+
+                try {
+                    onlineEntityList = antrianOnlineDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    logger.error("Found Error when search antrian online "+e.getMessage());
+                }
+
+                ItSimrsAntianOnlineEntity onlineEntity = new ItSimrsAntianOnlineEntity();
+                if(onlineEntityList.size() > 0){
+                    onlineEntity = onlineEntityList.get(0);
+
+                    if(onlineEntity.getIdAntrianOnline() != null ){
+
+                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                        onlineEntity.setLastUpdateWho(CommonUtil.userLogin());
+                        onlineEntity.setLastUpdate(updateTime);
+                        onlineEntity.setFlagPeriksa("Y");
+
+                        try {
+                            antrianOnlineDao.updateAndSave(onlineEntity);
+                        }catch (HibernateException e){
+                            logger.error("Found Error when update save flag antrian online");
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
@@ -961,5 +1008,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setTindakanDao(TindakanDao tindakanDao) {
         this.tindakanDao = tindakanDao;
+    }
+
+    public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
+        this.antrianOnlineDao = antrianOnlineDao;
     }
 }

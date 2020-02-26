@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReturePermintaanObat" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="169"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -28,6 +28,7 @@
 	<parameter name="reportParams.namaPelayanan" class="java.lang.String"/>
 	<parameter name="reportParams.dariPelayanan" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT a.id_approval_obat, c.id_obat, e.nama_obat, c.qty, c.qty_approve, c.jenis_satuan, d.id_barang, d.qty_approve as qty_app
 FROM mt_simrs_approval_transaksi_obat a
@@ -122,13 +123,6 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				</textElement>
 				<text><![CDATA[Retur Permintaan Obat]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="43" width="173" height="22" uuid="bb52e45f-8164-4004-a6af-ffc046b34513"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
-			</staticText>
 			<componentElement>
 				<reportElement x="435" y="0" width="120" height="32" uuid="152b311d-ece4-4483-90dd-f6373fd2f26c"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
@@ -143,12 +137,20 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="33" width="173" height="20" uuid="fa6c4ea2-583e-4b36-9e28-650bab9e168c"/>
+				<reportElement x="0" y="45" width="173" height="20" uuid="fa6c4ea2-583e-4b36-9e28-650bab9e168c"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="173" height="20" uuid="6d05a846-c155-4d06-800e-970777d7f28b"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

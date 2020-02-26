@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -53,6 +55,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private String id;
     private String idDetailCheckup;
     private BillingSystemBo billingSystemBoProxy;
+    private BranchBo branchBoProxy;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public void setTransaksiObatBoProxy(TransaksiObatBo transaksiObatBoProxy) {
         this.transaksiObatBoProxy = transaksiObatBoProxy;
@@ -223,101 +230,198 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     public String printInvoice() {
 
+        HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
-        String idDetail = getIdDetailCheckup();
         String jk = "";
 
-        String branch = CommonUtil.userBranchLogin();
         String logo = "";
-        String unit = CommonUtil.userBranchNameLogin();
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
-        switch (branch) {
-            case CommonConstant.BRANCH_RS01:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                break;
-            case CommonConstant.BRANCH_RS02:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                break;
-            case CommonConstant.BRANCH_RS03:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                break;
-        }
+        if(id != null && !"".equalsIgnoreCase(id)) {
 
-        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-        riwayatTindakan.setIdDetailCheckup(idDetail);
-        riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
+            String branch = CommonUtil.userBranchLogin();
+            String unit = CommonUtil.userBranchNameLogin();
+            String area = CommonUtil.userAreaName();
 
-        try {
-            riwayatTindakanList = kasirRawatJalanBoProxy.getListAllTindakan(riwayatTindakan);
-        } catch (GeneralBOException e) {
-            logger.error("Foun error when search riwayat tindakan " + e.getMessage());
-        }
+            try {
+                checkup = checkupBoProxy.getDataDetailPasien(id);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search data detail pasien " + e.getMessage());
+            }
 
-        RiwayatTindakan result = new RiwayatTindakan();
-        List<TransaksiObatDetail> resultListObat = new ArrayList<>();
+            if (checkup != null) {
 
-        if (riwayatTindakanList.size() > 0) {
-            result = riwayatTindakanList.get(0);
+                Branch branches = new Branch();
 
-            for (RiwayatTindakan riwayat : riwayatTindakanList) {
-                if ("resep".equalsIgnoreCase(riwayat.getKeterangan())) {
-                    TransaksiObatDetail detail = new TransaksiObatDetail();
-                    detail.setIdPermintaanResep(riwayat.getIdTindakan());
+                try {
+                    branches = branchBoProxy.getBranchById(branch, "Y");
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when searhc branch logo");
+                }
 
-                    try {
-                        obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(detail);
-                    } catch (GeneralBOException e) {
-                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                if (branches != null) {
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+                }
+
+
+                RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                riwayatTindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
+
+                try {
+                    riwayatTindakanList = kasirRawatJalanBoProxy.getListAllTindakan(riwayatTindakan);
+                } catch (GeneralBOException e) {
+                    logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                }
+
+                RiwayatTindakan result = new RiwayatTindakan();
+                List<TransaksiObatDetail> resultListObat = new ArrayList<>();
+
+                if (riwayatTindakanList.size() > 0) {
+                    result = riwayatTindakanList.get(0);
+
+                    for (RiwayatTindakan riwayat : riwayatTindakanList) {
+                        if ("resep".equalsIgnoreCase(riwayat.getKeterangan())) {
+                            TransaksiObatDetail detail = new TransaksiObatDetail();
+                            detail.setIdPermintaanResep(riwayat.getIdTindakan());
+
+                            try {
+                                obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(detail);
+                            } catch (GeneralBOException e) {
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                            }
+
+                            resultListObat.addAll(obatDetailList);
+                        }
                     }
+                }
 
-                    resultListObat.addAll(obatDetailList);
+                JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
+                JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
+
+                reportParams.put("itemDataSource", itemData);
+                reportParams.put("listObatDetail", itemDataObat);
+                reportParams.put("unit", unit);
+                reportParams.put("area", area);
+                reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
+                reportParams.put("noCheckup", checkup.getNoCheckup());
+                reportParams.put("logo", logo);
+                reportParams.put("nik", checkup.getNoKtp());
+                reportParams.put("nama", checkup.getNama());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Laki-Laki";
+                } else {
+                    jk = "Perempuan";
+                }
+                reportParams.put("jenisKelamin", jk);
+                reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+                reportParams.put("poli", checkup.getNamaPelayanan());
+                reportParams.put("provinsi", checkup.getNamaProvinsi());
+                reportParams.put("kabupaten", checkup.getNamaKota());
+                reportParams.put("kecamatan", checkup.getNamaKecamatan());
+                reportParams.put("desa", checkup.getNamaDesa());
+
+
+                try {
+                    preDownload();
+                } catch (SQLException e) {
+                    logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                    return "search";
                 }
             }
         }
 
-        JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
-        JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
-
-        HeaderCheckup headerCheckup = getHeaderCheckup(id);
-        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-
-
-        reportParams.put("itemDataSource", itemData);
-        reportParams.put("listObatDetail", itemDataObat);
-        reportParams.put("unit", unit);
-        reportParams.put("idDetailCheckup", idDetail);
-        reportParams.put("noCheckup", id);
-        reportParams.put("logo", logo);
-        reportParams.put("nik", headerCheckup.getNoKtp());
-        reportParams.put("nama", headerCheckup.getNama());
-        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-        reportParams.put("tglLahir", headerCheckup.getTempatLahir() + ", " + formatDate);
-        if ("L".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-            jk = "Laki-Laki";
-        } else {
-            jk = "Perempuan";
-        }
-        reportParams.put("jenisKelamin", jk);
-        reportParams.put("jenisPasien", jenisPriksaPasien.getKeterangan());
-        reportParams.put("poli", headerCheckup.getNamaPelayanan());
-        reportParams.put("provinsi", headerCheckup.getNamaProvinsi());
-        reportParams.put("kabupaten", headerCheckup.getNamaKota());
-        reportParams.put("kecamatan", headerCheckup.getNamaKecamatan());
-        reportParams.put("desa", headerCheckup.getNamaDesa());
-
-
-        try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
-        }
-
         return "print_invoice";
     }
+    public String printBuktiUangMuka() {
+
+        String id = getId();
+        String jk = "";
+
+        List<UangMuka> uangMukaList = new ArrayList<>();
+        HeaderCheckup checkup = new HeaderCheckup();
+
+        if(id != null && !"".equalsIgnoreCase(id)){
+
+            String branch = CommonUtil.userBranchLogin();
+            String unit = CommonUtil.userBranchNameLogin();
+            String area = CommonUtil.userAreaName();
+
+            try {
+                checkup = checkupBoProxy.getDataDetailPasien(id);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data detail pasien "+e.getMessage());
+            }
+
+            if(checkup != null){
+
+                Branch branches = new Branch();
+
+                try {
+                    branches = branchBoProxy.getBranchById(branch, "Y");
+                }catch (GeneralBOException e){
+                    logger.error("Found Error when searhc branch logo");
+                }
+
+                String logo = "";
+
+                if(branches != null){
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES+branches.getLogoName();
+                }
+
+                UangMuka uangMuka = new UangMuka();
+                uangMuka.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                uangMuka.setStatusBayar("Y");
+
+                try {
+                    uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
+                } catch (GeneralBOException e) {
+                    logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                }
+
+                JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(uangMukaList);
+
+                reportParams.put("itemDataSource", itemData);
+                reportParams.put("unit", unit);
+                reportParams.put("area", area);
+                reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
+                reportParams.put("noCheckup", checkup.getNoCheckup());
+                reportParams.put("logo", logo);
+                reportParams.put("nik", checkup.getNoKtp());
+                reportParams.put("nama", checkup.getNama());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Laki-Laki";
+                } else {
+                    jk = "Perempuan";
+                }
+                reportParams.put("jenisKelamin", jk);
+                reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+                reportParams.put("poli", checkup.getNamaPelayanan());
+                reportParams.put("provinsi", checkup.getNamaProvinsi());
+                reportParams.put("kabupaten", checkup.getNamaKota());
+                reportParams.put("kecamatan", checkup.getNamaKecamatan());
+                reportParams.put("desa", checkup.getNamaDesa());
+
+
+                try {
+                    preDownload();
+                } catch (SQLException e) {
+                    logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                    return "search";
+                }
+            }
+        }
+
+        return "print_uang_muka";
+    }
+
 
     public String searchUangMuka() {
 

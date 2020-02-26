@@ -11,6 +11,7 @@
           p:riwayatTindakanBoProxy-ref="riwayatTindakanBoProxy"
           p:kasirRawatJalanBoProxy-ref="kasirRawatJalanBoProxy"
           p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"

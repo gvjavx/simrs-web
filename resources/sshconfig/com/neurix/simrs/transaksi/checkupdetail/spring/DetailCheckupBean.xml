@@ -29,6 +29,7 @@
           p:orderGiziDao-ref="orderGiziDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:tindakanDao-ref="tindakanDao"
+          p:antrianOnlineDao-ref="antrianOnlineDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
