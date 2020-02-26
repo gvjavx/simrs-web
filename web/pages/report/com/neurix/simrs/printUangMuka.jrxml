@@ -27,6 +27,7 @@
 		<field name="stCreatedDate" class="java.lang.String"/>
 		<field name="jumlah" class="java.lang.Integer"/>
 		<field name="noNota" class="java.lang.String"/>
+		<field name="id" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
@@ -306,7 +307,7 @@
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 								</box>
 								<textElement verticalAlignment="Middle"/>
-								<text><![CDATA[No Nota]]></text>
+								<text><![CDATA[Bukti]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
@@ -320,7 +321,7 @@
 								<textElement verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{noNota}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{id} == null ? "" : $F{id}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

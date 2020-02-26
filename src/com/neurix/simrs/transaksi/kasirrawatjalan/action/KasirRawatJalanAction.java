@@ -150,6 +150,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
         headerDetailCheckup.setTypeTransaction("kasir");
+        headerDetailCheckup.setNotLike("bpjs");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
@@ -653,11 +654,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup) throws JSONException {
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("no_nota", noNota);
+        hsCriteria.put("metode_bayar", metodeBayar);
+        hsCriteria.put("bank", kodeBank);
 
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {

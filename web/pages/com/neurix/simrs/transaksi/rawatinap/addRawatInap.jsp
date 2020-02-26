@@ -143,6 +143,12 @@
                                             <table><s:label name="rawatInap.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Metode Pembayaran</b></td>
+                                        <td>
+                                            <table><s:label name="rawatInap.metodePembayaran"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->

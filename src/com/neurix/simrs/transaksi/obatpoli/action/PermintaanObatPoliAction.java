@@ -241,6 +241,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 }
 
                 reportParams.put("unit", CommonUtil.userBranchNameLogin());
+                reportParams.put("area", CommonUtil.userAreaName());
                 reportParams.put("permintaanId", idPermintaan);
                 reportParams.put("logo", logo);
                 reportParams.put("namaPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
