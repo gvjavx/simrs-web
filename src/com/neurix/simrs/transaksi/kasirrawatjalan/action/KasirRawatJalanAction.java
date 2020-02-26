@@ -32,6 +32,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.soap.Detail;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -237,6 +238,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String logo = "";
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+        List<UangMuka> uangMukaList = new ArrayList<>();
 
         if(id != null && !"".equalsIgnoreCase(id)) {
 
@@ -297,11 +299,24 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     }
                 }
 
+                UangMuka uangMuka = new UangMuka();
+                uangMuka.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                uangMuka.setStatusBayar("Y");
+
+                try {
+                    uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
+                } catch (GeneralBOException e) {
+                    logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                }
+
+
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
                 JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
+                JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(uangMukaList);
 
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
+                reportParams.put("listUangMuka", itemDataUangMuka);
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
@@ -311,6 +326,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("nama", checkup.getNama());
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+
                 if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Laki-Laki";
                 } else {
@@ -558,7 +574,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat) throws JSONException{
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup) throws JSONException{
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
@@ -567,16 +583,26 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getString("nilai").toString()));
+            hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
         }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         CrudResponse response = new CrudResponse();
+        System.out.println(hsCriteria);
+        response.setMsg(""+hsCriteria);
         if (!"Y".equalsIgnoreCase(withObat)){
             try {
                 billingSystemBo.createJurnal("04",hsCriteria,CommonUtil.userBranchLogin(),"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
+
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(idDetailCheckup);
+                detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+
+                checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");
             } catch (GeneralBOException e){
                 response.setStatus("error");

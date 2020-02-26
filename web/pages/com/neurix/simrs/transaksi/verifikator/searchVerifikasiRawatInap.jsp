@@ -645,7 +645,7 @@
             var url = '<s:url value="/pages/images/icons8-create-25.png"/>';
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
-            CheckupAction.listDataPasien(idCheckup, idDetailCheckup, function (response) {
+            CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 // dataPasien = response;
                 if (response != null) {
                     // $.each(dataPasien, function (i, item) {
@@ -890,7 +890,7 @@
             var url = '<s:url value="/pages/images/icons8-test-passed-25-2.png"/>';
             $('#t_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
-            CheckupAction.listDataPasien(idCheckup,idDetailCheckup, function (response) {
+            CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 // dataPasien = response;
                 if (response != null) {
                     // $.each(dataPasien, function (i, item) {

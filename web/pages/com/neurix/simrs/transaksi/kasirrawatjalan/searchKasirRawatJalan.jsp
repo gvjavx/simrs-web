@@ -290,6 +290,8 @@
                                     <td><b>Nama</b></td>
                                     <td><span id="fin_nama"></span></td>
                                 </tr>
+                                <input type="hidden" id="fin_no_nota"/>
+                                <input type="hidden" id="fin_id_pasien"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -316,6 +318,25 @@
 
                     </div>
                 </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-medkit"></i> Uang Muka</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_uang_muka">
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <%--<td width="10%" align="center">Action</td>--%>
+                            <td>Tanggal</td>
+                            <td>No Nota</td>
+                            <td align="center" width="20%">Total Tarif (Rp.)</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_uang_muka">
+                        </tbody>
+                    </table>
+                </div>
+
                 <input type="hidden" id="fin_id_detail_checkup">
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
@@ -339,7 +360,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -384,6 +405,7 @@
     }
 
     var mapBiaya = [];
+    var noNota = "";
     function showInvoice(idCheckup, idDetailCheckup) {
 
         mapBiaya = [];
@@ -405,6 +427,7 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var uangMuka = 0;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -442,14 +465,21 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                     // });
+
+                    $("#fin_id_pasien").val(response.idPasien);
                 }
             });
 
             KasirRawatJalanAction.getListUangMuka(idDetailCheckup, "Y", function (response) {
                 console.log(response);
+                var str = "";
                 $.each(response, function(i, item){
+                    str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+                    $("#fin_no_nota").val(item.noNota);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
                 });
+                $("#body_uang_muka").html(str);
             });
 
             KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
@@ -495,7 +525,9 @@
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
+
                     mapBiaya.push({"type":"kurang_bayar","nilai":total});
                 }
             });
@@ -524,7 +556,7 @@
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
+//            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
         }, 100);
     }
@@ -568,6 +600,38 @@
         var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
         $('#btn'+idRiwayat).attr('src',plus);
         $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
+    }
+
+    function confirmSavePembayaranTagihan(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','savePembayaranTagihan()');
+    }
+
+    function savePembayaranTagihan() {
+        $('#modal-confirm-dialog').modal('hide');
+        var noNota = $("#fin_no_nota").val();
+        var idPasien = $("#fin_id_pasien").val();
+        var idDetailCheckup = $("#fin_id_detail_checkup").val();
+
+        $('#save_fin').hide();
+        $('#load_fin').show();
+        dwr.engine.setAsync(true);
+        var jsonString =  JSON.stringify(mapBiaya);
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, "N", idDetailCheckup, {callback: function (response) {
+            console.log(response.msg);
+            if (response.status == "success"){
+                // alert("success");
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#modal-invoice').modal('hide');
+                $('#info_dialog').dialog('open');
+            }else{
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#warning_fin').show().fadeOut(10000);
+                $('#msg_fin').text(response.msg);
+            }
+        }});
     }
 
 </script>

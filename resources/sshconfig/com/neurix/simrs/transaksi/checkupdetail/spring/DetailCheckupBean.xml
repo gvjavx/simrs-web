@@ -13,6 +13,7 @@
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:keteranganKeluarBoProxy-ref="keteranganKeluarBoProxy"
           p:tindakanRawatBoProxy-ref="tindakanRawatBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"

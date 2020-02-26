@@ -538,7 +538,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 ruanganEntity.setLastUpdate(bean.getCreatedDate());
                 ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
 
-                if(ruanganEntity.getSisaKuota() == 0){
+                if (ruanganEntity.getSisaKuota() == 0) {
                     ruanganEntity.setStatusRuangan("N");
                 }
 
@@ -870,33 +870,34 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
 
-        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
 
             ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
             try {
                 entity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup);
-            }catch (HibernateException e){
-                logger.error("Found Error when search detail checkup "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error when search detail checkup " + e.getMessage());
             }
 
-            if(entity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(entity.getNoCheckupOnline())){
+            if (entity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(entity.getNoCheckupOnline())) {
 
                 List<ItSimrsAntianOnlineEntity> onlineEntityList = new ArrayList<>();
                 Map hsCriteria = new HashMap();
 
                 try {
                     onlineEntityList = antrianOnlineDao.getByCriteria(hsCriteria);
-                }catch (HibernateException e){
-                    logger.error("Found Error when search antrian online "+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("Found Error when search antrian online " + e.getMessage());
                 }
 
                 ItSimrsAntianOnlineEntity onlineEntity = new ItSimrsAntianOnlineEntity();
-                if(onlineEntityList.size() > 0){
+                if (onlineEntityList.size() > 0) {
                     onlineEntity = onlineEntityList.get(0);
 
-                    if(onlineEntity.getIdAntrianOnline() != null ){
+                    if (onlineEntity.getIdAntrianOnline() != null) {
 
                         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                         onlineEntity.setLastUpdateWho(CommonUtil.userLogin());
@@ -905,13 +906,32 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                         try {
                             antrianOnlineDao.updateAndSave(onlineEntity);
-                        }catch (HibernateException e){
+                        } catch (HibernateException e) {
                             logger.error("Found Error when update save flag antrian online");
                         }
                     }
                 }
+            }
+        }
+    }
 
 
+    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(bean);
+        if (detailCheckupEntities.size() > 0) {
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+            if (bean.getIdDetailCheckup().equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
+                detailCheckupEntity.setStatusBayar("Y");
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when save status bayar. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when status bayar. ", e);
+                }
             }
         }
     }

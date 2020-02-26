@@ -32,4 +32,5 @@ public interface CheckupDetailBo {
 
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException;
 
+    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
 }

@@ -1488,9 +1488,12 @@
                 jenisRujukan = "R";
             }
 
+            console.log(perujuk);
+            console.log(jenisRujukan);
+
             $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
             dwr.engine.setAsync(true);
-            CheckupAction.checkSuratRujukan(noRujukan, "R", {
+            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
                 callback: function (response) {
                     console.log(response);
                     var warnClass = "";

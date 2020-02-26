@@ -920,28 +920,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-header with-border"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>
-                            </div>
-                            <div class="box-body">
-                                <s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>
-                                        </div>
-                                        <div class="form-group" style="margin-top: 20px">
-                                            <i class="fa fa-square" style="color: #286090"></i> Belum diisi
-                                            <i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div class="box-header with-border"></div>--%>
+                            <%--<div class="box-header with-border">--%>
+                                <%--<h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>--%>
+                            <%--</div>--%>
+                            <%--<div class="box-body">--%>
+                                <%--<s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>--%>
+                                <%--<div class="row">--%>
+                                    <%--<div class="col-md-12">--%>
+                                        <%--<div class="form-group">--%>
+                                            <%--<a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="form-group" style="margin-top: 20px">--%>
+                                            <%--<i class="fa fa-square" style="color: #286090"></i> Belum diisi--%>
+                                            <%--<i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
                                 <%--from bpjs--%>
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
+                            <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
 
                             <div class="box-header with-border"></div>
                             <div class="box-body">
@@ -1305,7 +1306,7 @@
 
             $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
             dwr.engine.setAsync(true);
-            CheckupAction.checkSuratRujukan(noRujukan, "R", {
+            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
                 callback: function (response) {
                     console.log(response);
                     var warnClass = "";
@@ -1320,12 +1321,14 @@
                         title = "Info!";
                         warnClass = "alert-success";
                         msg = response.message;
+                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
                     }else{
                         val = "tidak ditemukan";
                         icon = "fa-warning";
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
+                        $('#idPelayananBpjs').val("IGD");
                     }
 
                     var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
