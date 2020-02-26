@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Area;
@@ -101,6 +102,11 @@ public class CheckupAction extends BaseMasterAction {
     private RegistrasiOnlineBo registrasiOnlineBoProxy;
     private AntrianOnlineBo antrianOnlineBoProxy;
     private BranchBo branchBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -966,6 +972,11 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
+
+            // if uang muka is null or uang muka is 0 then generate invoice
+            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+                checkup.setNoNota(getInvoiceNumber("01"));
+            }
 //                checkup.setUrlKtp(checkup.getUrlKtp());
 
             String fileName = "";
@@ -1011,6 +1022,10 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveAdd] end process >>>");
         return "success_add";
 
+    }
+
+    private String getInvoiceNumber(String transId){
+        return billingSystemBoProxy.createInvoiceNumber(transId);
     }
 
     public String getComboJenisPeriksaPasien() {

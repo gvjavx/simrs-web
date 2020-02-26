@@ -102,6 +102,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 statusBayar = "\n AND dt.status_bayar is null";
             }
 
+            String uangMukaNotNull = "";
+            if ("0".equalsIgnoreCase(statusPeriksa)){
+                uangMukaNotNull = "\n AND um.id_detail_checkup is not null AND um.status_bayar = 'Y'";
+            }
+
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -120,13 +125,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
                     "AND hd.branch_id LIKE :branchId \n" +
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar;
+                    "AND dt.status_periksa LIKE :status " + statusBayar + uangMukaNotNull;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";

@@ -292,6 +292,7 @@
                                 </tr>
                                 <input type="hidden" id="fin_no_nota"/>
                                 <input type="hidden" id="fin_id_pasien"/>
+                                <input type="hidden" id="fin_is_resep"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -512,6 +513,7 @@
 
                         if(item.keterangan == "resep"){
                             btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                            $("#fin_is_resep").val("Y");
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
@@ -602,9 +604,10 @@
         var noNota = $("#fin_no_nota").val();
         var idPasien = $("#fin_id_pasien").val();
         var idDetailCheckup = $("#fin_id_detail_checkup").val();
+        var isResep = $("#fin_is_resep").val();
 
         var jsonString =  JSON.stringify(mapBiaya);
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, "N", idDetailCheckup, function (response) {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, function (response) {
             console.log(response.msg);
             if (response.status == "success"){
                 alert("success");

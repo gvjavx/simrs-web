@@ -470,23 +470,33 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     }
                 }
 
-                if (bean.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 1){
-                    ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-                    uangMukaPendaftaranEntity.setId("UMK"+uangMukaDao.getNextId());
-                    uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                // save uang muka
+                ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+                uangMukaPendaftaranEntity.setId("UMK"+uangMukaDao.getNextId());
+                uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                uangMukaPendaftaranEntity.setFlag("Y");
+                uangMukaPendaftaranEntity.setAction("C");
+                uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+                uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+                uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+                uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+
+                if (bean.getNoNota() != null){
+                    uangMukaPendaftaranEntity.setNoNota(bean.getNoNota());
+                    uangMukaPendaftaranEntity.setStatusBayar("Y");
+                }
+
+                if (bean.getUangMuka() == null || bean.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+                    uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
+                } else {
                     uangMukaPendaftaranEntity.setJumlah(bean.getUangMuka());
-                    uangMukaPendaftaranEntity.setFlag("Y");
-                    uangMukaPendaftaranEntity.setAction("C");
-                    uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
-                    uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
-                    uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
-                    uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
-                    try {
-                        uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
-                    } catch (HibernateException e){
-                        logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
-                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
-                    }
+                }
+
+                try {
+                    uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                } catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
                 }
             }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");

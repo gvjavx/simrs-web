@@ -92,6 +92,15 @@ public class HeaderCheckup {
 
     private String isOnline;
     private BigInteger uangMuka;
+    private String noNota;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
 
     public BigInteger getUangMuka() {
         return uangMuka;
