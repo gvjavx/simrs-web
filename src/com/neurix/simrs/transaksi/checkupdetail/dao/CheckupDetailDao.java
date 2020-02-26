@@ -10,6 +10,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -561,6 +562,52 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
         }
         return detailCheckups;
+    }
+
+    public BigDecimal getSumAllTarifTindakan(String idDetail){
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_riwayat_tindakan\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+
+        return jumlah;
+    }
+
+    public String getFindResepInRiwayatTrans(String idDetail){
+
+        String SQL = "SELECT id_detail_checkup, keterangan\n" +
+                "FROM it_simrs_riwayat_tindakan\n" +
+                "WHERE id_detail_checkup = :idDetail\n" +
+                "AND keterangan = 'resep'\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        String id = "N";
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                id = "Y";
+            }
+        }
+        return id;
     }
 
     public String getNextId(){

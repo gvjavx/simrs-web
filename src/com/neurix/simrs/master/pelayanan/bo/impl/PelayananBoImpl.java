@@ -128,6 +128,7 @@ public class PelayananBoImpl implements PelayananBo{
                     pelayanan.setTipePelayanan(entity.getTipePelayanan());
                     pelayanan.setNotPoli(entity.getIsPoli());
                     pelayanan.setBranchId(entity.getBranchId());
+                    pelayanan.setTipePelayanan(entity.getTipePelayanan());
                     result.add(pelayanan);
                 }
             }

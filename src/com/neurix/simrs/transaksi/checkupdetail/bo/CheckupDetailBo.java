@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -33,4 +34,7 @@ public interface CheckupDetailBo {
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException;
 
     public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
+
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup);
+    public String findResep(String idDetailCheckup);
 }

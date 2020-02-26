@@ -406,13 +406,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-6">
-                        <input type="hidden" id="jumlah_um">
-                        <div class="col-md-6">Dibayar</div><div class="col-md-6"><input type="number" class="form-control" id="dibayar" onchange="hitungKembalian(this.value)"></div>
-                        <div class="col-md-6">Kembalian</div><div class="col-md-6"><input type="number" class="form-control" id="kembalian"></div>
-                    </div>
-                </div>
+                <%--<div class="row">--%>
+                    <%--<div class="col-md-offset-3 col-md-6">--%>
+                        <%--<input type="hidden" id="jumlah_um">--%>
+                        <%--<div class="col-md-6">Dibayar</div><div class="col-md-6"><input type="number" class="form-control" id="dibayar" onchange="hitungKembalian(this.value)"></div>--%>
+                        <%--<div class="col-md-6">Kembalian</div><div class="col-md-6"><input type="number" class="form-control" id="kembalian"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -594,8 +594,9 @@
         $('#modal-confirm-dialog').modal('hide');
         $('#save_fin').hide();
         $('#load_fin').show();
+        var jumlah = $('#val_uang_muka').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();

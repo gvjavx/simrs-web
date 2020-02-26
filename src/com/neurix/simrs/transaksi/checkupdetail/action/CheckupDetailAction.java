@@ -31,6 +31,7 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -921,8 +922,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan) {
+    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         String status = "error";
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -954,6 +957,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
+            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
@@ -966,7 +970,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
@@ -990,6 +993,67 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
+    }
+
+    private String closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){
+
+        String branchId = CommonUtil.userBranchLogin();
+        String invoice = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setIdPelayanan(idPoli);
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        try {
+            pelayanans = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
+        }
+
+        String kode="";
+        String transId = "";
+        String ketPoli = "";
+        String ketResep = "";
+        if (pelayanans.size() > 0){
+            Pelayanan pelayananData = pelayanans.get(0);
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRJ";
+                ketPoli = "Rawat Jalan";
+            }
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRI";
+                ketPoli = "Rawat Inap";
+            }
+
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            if ("Y".equalsIgnoreCase(isResep)){
+                transId = "04";
+                ketResep = "Tanpa Obat";
+            } else {
+                transId = "05";
+                ketResep = "Dengan Obat";
+            }
+
+            BigDecimal jumlah = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup);
+
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("no_nota", invoice);
+            hsCriteria.put("biaya", jumlah);
+
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
+            try {
+              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+            }
+        }
+        return invoice;
     }
 
 //    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}

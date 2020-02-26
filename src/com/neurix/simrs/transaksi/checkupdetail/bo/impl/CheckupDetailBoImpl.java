@@ -213,6 +213,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCaraPasienPulang(bean.getCaraPasienPulang());
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
+            entity.setInvoice(bean.getNoNota());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -895,7 +896,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
@@ -959,6 +959,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
             }
         }
+    }
+
+    @Override
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup);
+    }
+
+    @Override
+    public String findResep(String idDetailCheckup) {
+        return checkupDetailDao.getFindResepInRiwayatTrans(idDetailCheckup);
     }
 
     private String getNextDetailCheckupId() {
