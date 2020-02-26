@@ -992,7 +992,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return status;
     }
 
-    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}
+//    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}
 
     private void pindahPoli(String noCheckup, String idDetailCheckup, String idPoli, String idDokter) {
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
@@ -1287,7 +1287,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 headerDetailCheckup.setLastUpdateWho(user);
                 headerDetailCheckup.setIdDokter(idDokter);
                 headerDetailCheckup.setNoSep(genNoSep);
-                headerDetailCheckup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
+//                headerDetailCheckup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
 
                 try {
                     checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1631,7 +1631,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
-                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
+//                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
 
                         try {
                             checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1646,32 +1646,32 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     }
 
-    private String createJurnalUangMuka(String idPasien, String jumlah){
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-
-        String transId = "01";
-
-        String noNota = "";
-        try {
-            noNota = billingSystemBo.createInvoiceNumber(transId);
-        } catch (GeneralBOException e){
-            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
-        }
-
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
-
-        try {
-            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
-        } catch (GeneralBOException e){
-            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
-        }
-
-        return noNota;
-    }
+//    private String createJurnalUangMuka(String idPasien, String jumlah){
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+//
+//        String transId = "01";
+//
+//        String noNota = "";
+//        try {
+//            noNota = billingSystemBo.createInvoiceNumber(transId);
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
+//
+//        try {
+//            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        return noNota;
+//    }
 
     private void cekRawatInap(String idDetailCheckup) {
 

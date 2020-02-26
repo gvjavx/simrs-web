@@ -51,7 +51,7 @@ public class UangMukaDao extends GenericDao<ItSimrsUangMukaPendaftaranEntity, St
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_uang_muka')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%08d", iter.next());
+        String sId = String.format("%05d", iter.next());
         return sId;
     }
 }

@@ -498,8 +498,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         String transId = "01";
         String noNota = "";
+
+        String branchId = CommonUtil.userBranchLogin();
         try {
-            noNota = billingSystemBo.createInvoiceNumber(transId);
+            noNota = billingSystemBo.createInvoiceNumber(transId, branchId);
         } catch (GeneralBOException e){
             response.setStatus("error");
             response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
@@ -507,12 +509,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
-        hsCriteria.put("uang_muka", new BigDecimal(biaya));
+        hsCriteria.put("bukti", id);
+        hsCriteria.put("jumlah_uang_muka", new BigDecimal(biaya));
 
         try {
-            billingSystemBo.createJurnal(transId,hsCriteria,CommonUtil.userBranchLogin(),"Uang Muka untuk id_pasien : " + idPasien,"Y","");
+            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -581,6 +586,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("no_nota", noNota);
 
+        String branchId = CommonUtil.userBranchLogin();
+
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
@@ -596,7 +603,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        response.setMsg(""+hsCriteria);
         if (!"Y".equalsIgnoreCase(withObat)){
             try {
-                billingSystemBo.createJurnal("04",hsCriteria,CommonUtil.userBranchLogin(),"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
+                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien,"Y","");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

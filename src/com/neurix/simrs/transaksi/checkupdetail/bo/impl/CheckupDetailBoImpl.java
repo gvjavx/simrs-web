@@ -339,26 +339,26 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         // insert into uang muka
-        if (bean.getNoNota() != null && !"".equalsIgnoreCase(bean.getNoNota())){
-            ItSimrsUangMukaPendaftaranEntity uangMuka = new ItSimrsUangMukaPendaftaranEntity();
-            uangMuka.setId("UMK"+uangMukaDao.getNextId());
-            uangMuka.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            uangMuka.setJumlah(new BigInteger(String.valueOf(0)));
-            uangMuka.setNoNota(bean.getNoNota());
-            uangMuka.setStatusBayar("Y");
-            uangMuka.setFlag("Y");
-            uangMuka.setAction("C");
-            uangMuka.setCreatedDate(bean.getCreatedDate());
-            uangMuka.setCreatedWho(bean.getCreatedWho());
-            uangMuka.setLastUpdate(bean.getLastUpdate());
-            uangMuka.setLastUpdateWho(bean.getLastUpdateWho());
-            try {
-                uangMukaDao.addAndSave(uangMuka);
-            } catch (HibernateException e){
-                logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka" + e.getMessage());
-                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka");
-            }
-        }
+//        if (bean.getNoNota() != null && !"".equalsIgnoreCase(bean.getNoNota())){
+//            ItSimrsUangMukaPendaftaranEntity uangMuka = new ItSimrsUangMukaPendaftaranEntity();
+//            uangMuka.setId("UMK"+uangMukaDao.getNextId());
+//            uangMuka.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//            uangMuka.setJumlah(new BigInteger(String.valueOf(0)));
+//            uangMuka.setNoNota(bean.getNoNota());
+//            uangMuka.setStatusBayar("Y");
+//            uangMuka.setFlag("Y");
+//            uangMuka.setAction("C");
+//            uangMuka.setCreatedDate(bean.getCreatedDate());
+//            uangMuka.setCreatedWho(bean.getCreatedWho());
+//            uangMuka.setLastUpdate(bean.getLastUpdate());
+//            uangMuka.setLastUpdateWho(bean.getLastUpdateWho());
+//            try {
+//                uangMukaDao.addAndSave(uangMuka);
+//            } catch (HibernateException e){
+//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka" + e.getMessage());
+//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka");
+//            }
+//        }
 
         // saving dokter
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {

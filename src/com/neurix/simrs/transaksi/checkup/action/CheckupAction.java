@@ -979,9 +979,9 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setTindakanList(tindakans);
 
             // if uang muka is null or uang muka is 0 then generate invoice
-            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
-                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
-            }
+//            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+//                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
+//            }
 //                checkup.setUrlKtp(checkup.getUrlKtp());
 
             String fileName = "";
@@ -1029,32 +1029,32 @@ public class CheckupAction extends BaseMasterAction {
 
     }
 
-    private String createJurnalUangMuka(String idPasien, String jumlah){
-//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-
-        String transId = "01";
-
-        String noNota = "";
-        try {
-            noNota = billingSystemBoProxy.createInvoiceNumber(transId);
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
-        }
-
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
-
-        try {
-            billingSystemBoProxy.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
-        } catch (GeneralBOException e){
-            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
-        }
-
-        return noNota;
-    }
+//    private String createJurnalUangMuka(String idPasien, String jumlah){
+////        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+////        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+//
+//        String transId = "01";
+//
+//        String noNota = "";
+//        try {
+//            noNota = billingSystemBoProxy.createInvoiceNumber(transId);
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
+//
+//        try {
+//            billingSystemBoProxy.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        return noNota;
+//    }
 
     public String getComboJenisPeriksaPasien() {
         List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();

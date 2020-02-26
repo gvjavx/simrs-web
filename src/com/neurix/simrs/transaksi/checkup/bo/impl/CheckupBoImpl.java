@@ -475,7 +475,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                 // save uang muka
                 ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-                uangMukaPendaftaranEntity.setId("UMK"+uangMukaDao.getNextId());
+                uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
                 uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                 uangMukaPendaftaranEntity.setFlag("Y");
                 uangMukaPendaftaranEntity.setAction("C");
@@ -535,6 +535,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
+    }
+
+    private String dateFormater(String type){
+        Date date = new Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     private List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {
