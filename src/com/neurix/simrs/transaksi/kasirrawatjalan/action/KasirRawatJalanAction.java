@@ -592,7 +592,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("bukti", id);
-        hsCriteria.put("jumlah_uang_muka", new BigDecimal(biaya));
+        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
