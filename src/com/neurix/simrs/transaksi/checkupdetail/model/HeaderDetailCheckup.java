@@ -85,6 +85,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
 
+    private String noCheckupOnline;
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
     public BigInteger getJumlahUangMuka() {
         return jumlahUangMuka;
     }

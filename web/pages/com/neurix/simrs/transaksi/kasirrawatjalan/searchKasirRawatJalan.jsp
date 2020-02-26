@@ -227,8 +227,8 @@
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
-                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <%--<s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>--%>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
@@ -361,7 +361,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin" onclick="savePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -428,6 +428,7 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var uangMuka = 0;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -477,6 +478,7 @@
                     str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
                 });
                 $("#body_uang_muka").html(str);
             });
@@ -525,7 +527,9 @@
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
+
                     mapBiaya.push({"type":"kurang_bayar","nilai":total});
                 }
             });
@@ -600,20 +604,38 @@
         $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
     }
 
+    function confirmSavePembayaranTagihan(){
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick','savePembayaranTagihan()');
+    }
+
     function savePembayaranTagihan() {
+        $('#modal-confirm-dialog').modal('hide');
         var noNota = $("#fin_no_nota").val();
         var idPasien = $("#fin_id_pasien").val();
         var idDetailCheckup = $("#fin_id_detail_checkup").val();
         var isResep = $("#fin_is_resep").val();
 
+        $('#save_fin').hide();
+        $('#load_fin').show();
+        dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
+
         KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, function (response) {
             console.log(response.msg);
             if (response.status == "success"){
-                alert("success");
-                $("#kasirjalanForm").submit();
+                // alert("success");
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#modal-invoice').modal('hide');
+                $('#info_dialog').dialog('open');
+            }else{
+                $('#save_fin').show();
+                $('#load_fin').hide();
+                $('#warning_fin').show().fadeOut(10000);
+                $('#msg_fin').text(response.msg);
             }
-        })
+        }});
     }
 
 </script>

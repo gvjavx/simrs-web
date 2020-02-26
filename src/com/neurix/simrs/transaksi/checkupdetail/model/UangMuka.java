@@ -28,6 +28,17 @@ public class UangMuka extends BaseModel {
         this.stDate = stDate;
     }
 
+    private String stCreatedDate;
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
     public String getNoNota() {
         return noNota;
     }

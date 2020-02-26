@@ -75,8 +75,8 @@
 
             <result name="search">/pages/com/neurix/simrs/transaksi/kasirrawatjalan/searchUangMuka.jsp</result>
 
-            <result name="print_invoice" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printInvoiceRawatJalan.jasper</param>
+            <result name="print_uang_muka" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printUangMuka.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

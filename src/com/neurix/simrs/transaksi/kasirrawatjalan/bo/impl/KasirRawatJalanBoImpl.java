@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +94,8 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     uangMuka.setFlag(entity.getFlag());
                     uangMuka.setStatusBayar(entity.getStatusBayar());
                     uangMuka.setNoNota(entity.getNoNota());
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(entity.getCreatedDate());
+                    uangMuka.setStCreatedDate(formatDate);
                     uangMuka.setStDate(entity.getCreatedDate().toString());
                     uangMukaList.add(uangMuka);
                 }

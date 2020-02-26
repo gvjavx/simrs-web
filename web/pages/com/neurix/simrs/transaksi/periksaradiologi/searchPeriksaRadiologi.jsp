@@ -168,7 +168,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
-                                <td>No Pelayanan</td>
+                                <td>ID Detail Checkup</td>
                                 <td>Nama Pasien</td>
                                 <td>Pemeriksaan</td>
                                 <td align="center">Action</td>
@@ -177,16 +177,16 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab">
                                 <tr>
-                                    <td><s:property value="createdDate"/></td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>
                                     <td align="center">
                                         <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPeriksaLab"/></s:param>
+                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                         </s:url>
                                         <s:a href="%{add_periksa_radiologi}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>" style="cursor: pointer; height: 25px; width: 25px;">
+                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:a>
                                     </td>
                                 </tr>

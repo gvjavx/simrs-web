@@ -102,6 +102,35 @@ public class HeaderCheckup {
         this.noNota = noNota;
     }
 
+    private String idRawatInap;
+    private String idRuangan;
+
+    private String noCheckupOnline;
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
     public BigInteger getUangMuka() {
         return uangMuka;
     }

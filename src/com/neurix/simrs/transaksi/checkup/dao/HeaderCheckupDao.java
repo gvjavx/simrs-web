@@ -517,7 +517,10 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "e.desa_name,\n" +
                     "f.kecamatan_name,\n" +
                     "g.kota_name,\n" +
-                    "h.provinsi_name\n" +
+                    "h.provinsi_name,\n" +
+                    "i.id_rawat_inap,\n" +
+                    "i.id_ruangan,\n" +
+                    "i.nama_ruangan\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -526,6 +529,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
                     "INNER JOIN im_hris_kota g ON f.kota_id = g.kota_id\n" +
                     "INNER JOIN im_hris_provinsi h ON g.provinsi_id = h.provinsi_id\n" +
+                    "LEFT JOIN it_simrs_rawat_inap i ON b.id_detail_checkup = i.id_detail_checkup\n" +
                     "WHERE b.id_detail_checkup = :id";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -567,6 +571,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaKecamatan(obj[22] == null ? "" : obj[22].toString());
                     checkup.setNamaKota(obj[23] == null ? "" : obj[23].toString());
                     checkup.setNamaProvinsi(obj[24] == null ? "" : obj[24].toString());
+                    checkup.setIdRawatInap(obj[25] == null ? "" : obj[25].toString());
+                    checkup.setIdRuangan(obj[26] == null ? "" : obj[26].toString());
+                    checkup.setNamaRuangan(obj[27] == null ? "" : obj[27].toString());
 
                 }
             }
