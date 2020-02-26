@@ -522,7 +522,7 @@
                 var str = "";
                 $.each(response, function(i, item){
                     str += "<tr><td>"+item.stDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
-                   mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+//                   mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
                 });
@@ -576,8 +576,8 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
-                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
+                    mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total-uangMuka});
+//                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
                 }
             });
 
