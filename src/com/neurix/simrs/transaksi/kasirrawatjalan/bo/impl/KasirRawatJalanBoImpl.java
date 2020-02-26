@@ -68,8 +68,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriterian.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(!"".equalsIgnoreCase(bean.getStatusBayar())){
+            if(bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
                 hsCriterian.put("status_bayar", bean.getStatusBayar());
+                hsCriterian.put("nota_not_null", "Y");
             }
 
             List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();
@@ -91,6 +92,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     uangMuka.setFlag(entity.getFlag());
                     uangMuka.setStatusBayar(entity.getStatusBayar());
                     uangMuka.setNoNota(entity.getNoNota());
+                    uangMuka.setStDate(entity.getCreatedDate().toString());
                     uangMukaList.add(uangMuka);
                 }
             }

@@ -18,6 +18,15 @@ public class UangMuka extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String noNota;
+    private String stDate;
+
+    public String getStDate() {
+        return stDate;
+    }
+
+    public void setStDate(String stDate) {
+        this.stDate = stDate;
+    }
 
     public String getNoNota() {
         return noNota;

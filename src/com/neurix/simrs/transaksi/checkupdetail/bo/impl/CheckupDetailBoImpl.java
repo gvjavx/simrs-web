@@ -869,6 +869,27 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return checkupDetailDao.getListPembayaranUangMuka(bean);
     }
 
+    @Override
+    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(bean);
+        if (detailCheckupEntities.size() > 0){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+            if (bean.getIdDetailCheckup().equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())){
+                detailCheckupEntity.setStatusBayar("Y");
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when save status bayar. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when status bayar. ", e);
+                }
+            }
+        }
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
