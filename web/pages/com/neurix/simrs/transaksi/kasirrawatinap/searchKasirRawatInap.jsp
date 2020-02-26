@@ -351,6 +351,7 @@
 
     }
 
+    var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
         var table = "";
         var dataTindakan = [];
@@ -370,6 +371,7 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var uangMuka = 0;
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -406,7 +408,21 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                     // });
+
+                    $("#fin_id_pasien").val(response.idPasien);
                 }
+            });
+
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, "Y", function (response) {
+                console.log(response);
+                var str = "";
+                $.each(response, function(i, item){
+                    str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
+                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+                    $("#fin_no_nota").val(item.noNota);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
+                });
+                $("#body_uang_muka").html(str);
             });
 
             KasirRawatInapAction.getListTindakanRawat(idDetailCheckup, function (response) {
@@ -452,7 +468,11 @@
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>';
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
+
+                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
                 }
             });
 
