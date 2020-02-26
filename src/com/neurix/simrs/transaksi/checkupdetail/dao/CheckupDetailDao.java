@@ -10,6 +10,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -108,6 +109,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
             }
 
+            String uangMukaNotNull = "";
+            if ("0".equalsIgnoreCase(statusPeriksa)){
+                uangMukaNotNull = "\n AND um.id_detail_checkup is not null AND um.status_bayar = 'Y'";
+            }
+
             String SQL = "\n" +
                     "SELECT \n" +
                     "dt.id_detail_checkup,\n" +
@@ -126,13 +132,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
                     "AND hd.branch_id LIKE :branchId \n" +
                     "AND hd.id_pasien LIKE :idPasien \n" +
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND hd.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
-                    "AND dt.status_periksa LIKE :status " + statusBayar + notLike;
+                    "AND dt.status_periksa LIKE :status " + statusBayar + uangMukaNotNull + notLike;
 
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
@@ -517,6 +524,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
         if ("Y".equalsIgnoreCase(bean.getStatusBayar())){
             statusBayar = "\n AND um.status_bayar = '"+bean.getStatusBayar()+"'";
+        } else {
+            statusBayar = "\n AND um.status_bayar is null";
         }
 
         String SQL = "SELECT\n" +
@@ -559,6 +568,52 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
         }
         return detailCheckups;
+    }
+
+    public BigDecimal getSumAllTarifTindakan(String idDetail){
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_riwayat_tindakan\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+
+        return jumlah;
+    }
+
+    public String getFindResepInRiwayatTrans(String idDetail){
+
+        String SQL = "SELECT id_detail_checkup, keterangan\n" +
+                "FROM it_simrs_riwayat_tindakan\n" +
+                "WHERE id_detail_checkup = :idDetail\n" +
+                "AND keterangan = 'resep'\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .list();
+
+        String id = "N";
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                id = "Y";
+            }
+        }
+        return id;
     }
 
     public String getNextId(){

@@ -25,12 +25,10 @@
     </style>
     <style>
         .pagebanner{
-            background-color: #ededed;
             width: 100%;
             font-size: 14px;
         }
         .pagelinks{
-            background-color: #ededed;
             width: 100%;
             font-size: 14px;
             margin-bottom: 30px;
@@ -107,14 +105,55 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label"><small>Nomor Jurnal :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="pembayaranUtangPiutang.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                        <s:textfield  id="nomorJurnal" name="pembayaranUtangPiutang.noJurnal" cssClass="form-control"/>
                                                     </table>
-
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Transaksi :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans"/>
+                                                        <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
+                                                                  onchange="$(this).css('border','')"
+                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tanggal :</small></label>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="tgl1" name="pembayaranUtangPiutang.stTanggalDari" cssClass="form-control pull-right"
+                                                                     required="false" size="7"  cssStyle=""/>
+                                                        <div class="input-group-addon">
+                                                            s/d
+                                                        </div>
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="tgl2" name="pembayaranUtangPiutang.stTanggalSelesai" cssClass="form-control pull-right"
+                                                                     required="false" size="7"  cssStyle=""/>
+                                                    </div>
+                                                    <script>
+                                                        $('#tgl1').datepicker({
+                                                            dateFormat: 'dd-mm-yy'
+                                                        });
+                                                        $('#tgl2').datepicker({
+                                                            dateFormat: 'dd-mm-yy'
+                                                        });
+                                                    </script>
                                                 </td>
                                             </tr>
                                         </table>
@@ -155,25 +194,20 @@
 
                                                         <s:set name="listOfPembayaranUtangPiutang" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPembayaranUtangPiutang" class="table table-condensed table-striped table-hover tablePembayaranUtangPiutang"
-                                                                       requestURI="paging_displaytag_pembayaranUtangPiutang.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_pembayaranUtangPiutang.action" export="true" id="row" pagesize="20" style="font-size:10">
                                                             <display:column media="html" title="View">
-                                                                <s:url var="urlView" namespace="/pembayaranUtangPiutang" action="view_pembayaranUtangPiutang" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.pembayaranUtangPiutangId"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-view">
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </sj:a>
+                                                                </a>
                                                             </display:column>
                                                             <display:column property="pembayaranUtangPiutangId" sortable="true" title="Tipe Jurnal ID" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
-                                                            <display:column property="tipeTransaksi" sortable="true" title="Tipe Transaksi"  />
-                                                            <display:column property="tanggal" sortable="true" title="Tanggal"  />
+                                                            <display:column property="stTipeTransaksi" sortable="true" title="Tipe Transaksi"  />
+                                                            <display:column property="stTanggal" sortable="true" title="Tanggal"  />
                                                             <display:column property="kodeRekeningKas" sortable="true" title="Kode Rekening Kas"  />
                                                             <display:column property="bayar" sortable="true" title="Total Bayar"  />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="noSlipBank" sortable="true" title="No. Slip Bank"  />
-                                                            <display:column property="lastUpdate" sortable="true" title="Last Update"/>
                                                             <display:column media="html" title="Posting"  style="text-align:center">
                                                                 <s:if test="#attr.row.flagPosting">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -226,11 +260,75 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Pembayaran Hutang Piutang Id</label>
+                                <label class="col-md-4" style="margin-top: 7px">Pembayaran Hutang Piutang Id</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="hutang_piutang_id" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control" cssStyle="margin-top: 7px" />
+                                    <s:textfield id="mod_pembayaran_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
                                     <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >No. Jurnal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_no_jurnal" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Tipe Transaksi</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tipe_transaksi" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Tanggal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"  />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Kode Rekening Kas</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_kode_rekening_kas" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Total Bayar</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">No. Slip bank</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_no_slip_bank" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Keterangan</label>
+                                <div class="col-md-6">
+                                    <s:textarea id="mod_keterangan" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"/>
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <table style="width: 100%;"
+                                           class="pembayaranTable table table-bordered">
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -247,9 +345,38 @@
 
 <script>
     $(document).ready(function () {
+        $('.tablePembayaranUtangPiutang').on('click', '.item-view', function() {
+            var pembayaranId = $(this).attr('data');
+            $('#mod_pembayaran_id').val(pembayaranId);
+            PembayaranUtangPiutangAction.getForModalPopUp(pembayaranId,function (data) {
+                $('#mod_no_jurnal').val(data.noJurnal);
+                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
+                $('#mod_tanggal').val(data.stTanggal);
+                $('#mod_kode_rekening_kas').val(data.kodeRekeningKas);
+                $('#mod_no_slip_bank').val(data.noSlipBank);
+                $('#mod_keterangan').val(data.keterangan);
+                $('#mod_total_bayar').val(data.stBayar);
+            });
+            loadPembayaran();
+            $("#btnPostingJurnal").hide();
+            $("#modal-posting-jurnal").find('.modal-title').text('View Pembayaran Hutang Piutang');
+            $("#modal-posting-jurnal").modal('show');
+        });
+
         $('.tablePembayaranUtangPiutang').on('click', '.item-posting', function() {
             var pembayaranId = $(this).attr('data');
-            $('#hutang_piutang_id').val(pembayaranId);
+            $('#mod_pembayaran_id').val(pembayaranId);
+            PembayaranUtangPiutangAction.getForModalPopUp(pembayaranId,function (data) {
+                $('#mod_no_jurnal').val(data.noJurnal);
+                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
+                $('#mod_tanggal').val(data.stTanggal);
+                $('#mod_kode_rekening_kas').val(data.kodeRekeningKas);
+                $('#mod_no_slip_bank').val(data.noSlipBank);
+                $('#mod_keterangan').val(data.keterangan);
+                $('#mod_total_bayar').val(data.stBayar);
+            });
+            loadPembayaran();
+            $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
             $("#modal-posting-jurnal").modal('show');
         });
         $('.tablePembayaranUtangPiutang').on('click', '.item-cetak-bukti', function() {
@@ -260,7 +387,7 @@
             window.open(url,'_blank');
         });
         $('#btnPostingJurnal').click(function () {
-            var pembayaranId =  $('#hutang_piutang_id').val();
+            var pembayaranId =  $('#mod_pembayaran_id').val();
             PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
                 alert(listdata);
                 window.location.reload();
@@ -268,5 +395,32 @@
         })
     });
 </script>
-
+<script>
+    window.loadPembayaran = function () {
+        $('.pembayaranTable').find('tbody').remove();
+        $('.pembayaranTable').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PembayaranUtangPiutangAction.searchPembayaranDetail(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail ID</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.pembayaranUtangPiutangDetailId + '</td>' +
+                    '<td align="center">' + item.masterId + '</td>' +
+                    '<td align="center">' + item.noNota + '</td>' +
+                    '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                    "</tr>";
+            });
+            $('.pembayaranTable').append(tmp_table);
+        });
+    };
+</script>
 

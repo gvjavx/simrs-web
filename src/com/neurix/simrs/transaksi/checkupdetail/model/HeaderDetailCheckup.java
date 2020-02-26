@@ -95,9 +95,18 @@ public class HeaderDetailCheckup extends BaseModel{
         this.notLike = notLike;
     }
 
-    private String noCheckupOnline;
+    private String noNota;
 
+    private String noCheckupOnline;
     private String metodePembayaran;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
 
     public String getMetodePembayaran() {
         return metodePembayaran;

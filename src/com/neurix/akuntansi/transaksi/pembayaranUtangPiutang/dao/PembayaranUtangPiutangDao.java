@@ -38,6 +38,26 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
             if (mapCriteria.get("pembayaran_id")!=null) {
                 criteria.add(Restrictions.eq("pembayaranUtangPiutangId", (String) mapCriteria.get("pembayaran_id")));
             }
+            if (mapCriteria.get("no_jurnal")!=null) {
+                criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
+            }
+            if (mapCriteria.get("tipe_transaksi")!=null) {
+                criteria.add(Restrictions.eq("tipeTransaksi", (String) mapCriteria.get("tipe_transaksi")));
+            }
+            if (mapCriteria.get("tanggal")!=null) {
+                criteria.add(Restrictions.eq("tanggal", (String) mapCriteria.get("tanggal")));
+            }
+            if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
+                criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
+            }
+            else {
+                if (mapCriteria.get("tanggal_dari")!=null) {
+                    criteria.add(Restrictions.ge("tanggal",mapCriteria.get("tanggal_dari")));
+                }
+                if (mapCriteria.get("tanggal_selesai")!=null) {
+                    criteria.add(Restrictions.le("tanggal",mapCriteria.get("tanggal_selesai")));
+                }
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -57,7 +77,7 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
 
         return "PUP"+sId;
     }
-    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi) throws HibernateException {
+    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi,String branchId) throws HibernateException {
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<PembayaranUtangPiutangDetail>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select \n" +
@@ -119,6 +139,7 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
                 "    where \n" +
                 "      a.flag = 'Y' \n" +
                 "      and a.registered_flag = 'Y' \n" +
+                "      and a.branch_id='"+branchId+"'" +
                 "    group by \n" +
                 "      b.no_nota, \n" +
                 "      a.mata_uang_id, \n" +

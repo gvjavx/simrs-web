@@ -112,6 +112,14 @@
                                         <table>
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
                                                 <td>

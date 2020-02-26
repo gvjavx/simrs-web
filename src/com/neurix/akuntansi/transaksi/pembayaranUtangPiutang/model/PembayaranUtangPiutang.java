@@ -28,8 +28,35 @@ public class PembayaranUtangPiutang extends BaseModel {
 
     private String stBayar;
     private String stTanggal;
+    private String stTipeTransaksi;
     private boolean flagPosting=false;
     private String rekeningIdKas;
+    private String stTanggalDari;
+    private String stTanggalSelesai;
+
+    public String getStTanggalSelesai() {
+        return stTanggalSelesai;
+    }
+
+    public void setStTanggalSelesai(String stTanggalSelesai) {
+        this.stTanggalSelesai = stTanggalSelesai;
+    }
+
+    public String getStTanggalDari() {
+        return stTanggalDari;
+    }
+
+    public void setStTanggalDari(String stTanggalDari) {
+        this.stTanggalDari = stTanggalDari;
+    }
+
+    public String getStTipeTransaksi() {
+        return stTipeTransaksi;
+    }
+
+    public void setStTipeTransaksi(String stTipeTransaksi) {
+        this.stTipeTransaksi = stTipeTransaksi;
+    }
 
     public String getRekeningIdKas() {
         return rekeningIdKas;

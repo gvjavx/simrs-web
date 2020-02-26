@@ -143,6 +143,17 @@
                                         <s:hidden name="headerDetailCheckup.statusPeriksa" value="3"></s:hidden>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Bayar</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
+                                                  id="statusBayar"
+                                                  headerKey="" headerValue="Belum Dibayar" name="headerDetailCheckup.statusBayar"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
@@ -397,6 +408,13 @@
                         </div>
                     </div>
                 </div>
+                <%--<div class="row">--%>
+                    <%--<div class="col-md-offset-3 col-md-6">--%>
+                        <%--<input type="hidden" id="jumlah_um">--%>
+                        <%--<div class="col-md-6">Dibayar</div><div class="col-md-6"><input type="number" class="form-control" id="dibayar" onchange="hitungKembalian(this.value)"></div>--%>
+                        <%--<div class="col-md-6">Kembalian</div><div class="col-md-6"><input type="number" class="form-control" id="kembalian"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -520,6 +538,7 @@
                             "</tr>";
                         total = parseInt(total) + parseInt(uangmuka);
                         id = item.id;
+                        $("#jumlah_um").val(total);
                     });
                 }
             });
@@ -577,8 +596,9 @@
         $('#modal-confirm-dialog').modal('hide');
         $('#save_fin').hide();
         $('#load_fin').show();
+        var jumlah = $('#val_uang_muka').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();
@@ -593,6 +613,13 @@
                 $('#msg_fin').text(response.msg);
             }
         }});
+    }
+
+    function hitungKembalian( jumlah ) {
+        console.log("hitungKembalian >>")
+        var um = $("#jumlah_um").val();
+        var total = jumlah - um;
+        $("#kembalian").val(total);
     }
 
 </script>

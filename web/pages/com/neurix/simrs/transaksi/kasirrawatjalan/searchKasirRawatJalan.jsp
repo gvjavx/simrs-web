@@ -260,14 +260,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Jalan Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin"></p>
-                </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
-                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    <p id="msg_fin2"></p>
-                </div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>
@@ -293,6 +285,7 @@
                                 </tr>
                                 <input type="hidden" id="fin_no_nota"/>
                                 <input type="hidden" id="fin_id_pasien"/>
+                                <input type="hidden" id="fin_is_resep"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -319,6 +312,7 @@
 
                     </div>
                 </div>
+
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Uang Muka</h3>
@@ -354,8 +348,17 @@
                         </tr>
                         </thead>
                         <tbody id="body_tindakan_fin">
-                        </tbody>
+                        </tbody>N
                     </table>
+
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_fin"></p>
+                    </div>
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_fin2"></p>
+                    </div>
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="row" style="margin-top: 15px">
@@ -442,8 +445,8 @@
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
-        }else{
-            return "";
+        } else {
+            return "0";
         }
 
     }
@@ -558,6 +561,7 @@
 
                         if(item.keterangan == "resep"){
                             btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                            $("#fin_is_resep").val("Y");
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
@@ -572,7 +576,8 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total});
+                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
                 }
             });
 
@@ -658,26 +663,30 @@
         var idDetailCheckup = $("#fin_id_detail_checkup").val();
         var metodeBayar = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
+        var isResep = $("#fin_is_resep").val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, "N", idDetailCheckup, metodeBayar, kodeBank, {callback: function (response) {
-            console.log(response.msg);
-            if (response.status == "success"){
-                // alert("success");
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#modal-invoice').modal('hide');
-                $('#info_dialog').dialog('open');
-            }else{
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#warning_fin').show().fadeOut(10000);
-                $('#msg_fin').text(response.msg);
+
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, noNota, isResep, idDetailCheckup, metodeBayar, kodeBank, {
+            callback: function (response) {
+                console.log(response.msg);
+                if (response.status == "success") {
+                    // alert("success");
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#modal-invoice').modal('hide');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#warning_fin').show().fadeOut(10000);
+                    $('#msg_fin').text(response.msg);
+                }
             }
-        }});
+        });
     }
 
 </script>

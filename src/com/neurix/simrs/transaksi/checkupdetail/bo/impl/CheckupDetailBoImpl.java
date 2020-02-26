@@ -19,8 +19,10 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
@@ -66,6 +68,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanDao tindakanDao;
     private AntrianOnlineDao antrianOnlineDao;
+    private UangMukaDao uangMukaDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -210,6 +213,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCaraPasienPulang(bean.getCaraPasienPulang());
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
+            entity.setInvoice(bean.getNoNota());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -334,6 +338,28 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
+
+        // insert into uang muka
+//        if (bean.getNoNota() != null && !"".equalsIgnoreCase(bean.getNoNota())){
+//            ItSimrsUangMukaPendaftaranEntity uangMuka = new ItSimrsUangMukaPendaftaranEntity();
+//            uangMuka.setId("UMK"+uangMukaDao.getNextId());
+//            uangMuka.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//            uangMuka.setJumlah(new BigInteger(String.valueOf(0)));
+//            uangMuka.setNoNota(bean.getNoNota());
+//            uangMuka.setStatusBayar("Y");
+//            uangMuka.setFlag("Y");
+//            uangMuka.setAction("C");
+//            uangMuka.setCreatedDate(bean.getCreatedDate());
+//            uangMuka.setCreatedWho(bean.getCreatedWho());
+//            uangMuka.setLastUpdate(bean.getLastUpdate());
+//            uangMuka.setLastUpdateWho(bean.getLastUpdateWho());
+//            try {
+//                uangMukaDao.addAndSave(uangMuka);
+//            } catch (HibernateException e){
+//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka" + e.getMessage());
+//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka");
+//            }
+//        }
 
         // saving dokter
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
@@ -870,7 +896,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
@@ -934,6 +959,16 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
             }
         }
+    }
+
+    @Override
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup);
+    }
+
+    @Override
+    public String findResep(String idDetailCheckup) {
+        return checkupDetailDao.getFindResepInRiwayatTrans(idDetailCheckup);
     }
 
     private String getNextDetailCheckupId() {
@@ -1032,5 +1067,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
         this.antrianOnlineDao = antrianOnlineDao;
+    }
+
+    public void setUangMukaDao(UangMukaDao uangMukaDao) {
+        this.uangMukaDao = uangMukaDao;
     }
 }

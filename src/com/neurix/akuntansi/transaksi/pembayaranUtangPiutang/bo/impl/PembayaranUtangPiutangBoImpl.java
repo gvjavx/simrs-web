@@ -3,6 +3,8 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.impl;
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.trans.dao.TransDao;
+import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
@@ -15,6 +17,7 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.ImPembayaranU
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -22,6 +25,7 @@ import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +46,15 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private KodeRekeningDao kodeRekeningDao;
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
+    private TransDao transDao;
+
+    public TransDao getTransDao() {
+        return transDao;
+    }
+
+    public void setTransDao(TransDao transDao) {
+        this.transDao = transDao;
+    }
 
     public JurnalDetailDao getJurnalDetailDao() {
         return jurnalDetailDao;
@@ -222,7 +235,23 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             if (searchBean.getPembayaranUtangPiutangId() != null && !"".equalsIgnoreCase(searchBean.getPembayaranUtangPiutangId())) {
                 hsCriteria.put("pembayaran_id", searchBean.getPembayaranUtangPiutangId());
             }
-
+            if (searchBean.getNoJurnal() != null && !"".equalsIgnoreCase(searchBean.getNoJurnal())) {
+                hsCriteria.put("no_jurnal", searchBean.getNoJurnal());
+            }
+            if (searchBean.getTanggal() != null) {
+                hsCriteria.put("tanggal", searchBean.getTanggal());
+            }
+            if (searchBean.getTipeTransaksi() != null && !"".equalsIgnoreCase(searchBean.getTipeTransaksi())) {
+                hsCriteria.put("tipe_transaksi", searchBean.getTipeTransaksi());
+            }
+            if (searchBean.getStTanggalDari() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalDari()))) {
+                Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalDari());
+                hsCriteria.put("tanggal_dari", tanggalDari);
+            }
+            if (searchBean.getStTanggalSelesai() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalSelesai()))) {
+                Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalSelesai());
+                hsCriteria.put("tanggal_selesai", tanggalSelesai);
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -235,7 +264,6 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
             List<ImPembayaranUtangPiutangEntity> imPembayaranUtangPiutangEntity = null;
             try {
-
                 imPembayaranUtangPiutangEntity = pembayaranUtangPiutangDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
@@ -250,8 +278,10 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setPembayaranUtangPiutangId(pembayaranUtangPiutangEntity.getPembayaranUtangPiutangId());
                     returnPembayaranUtangPiutang.setTipeTransaksi(pembayaranUtangPiutangEntity.getTipeTransaksi());
                     returnPembayaranUtangPiutang.setTanggal(pembayaranUtangPiutangEntity.getTanggal());
+                    returnPembayaranUtangPiutang.setStTanggal(CommonUtil.convertDateToString(pembayaranUtangPiutangEntity.getTanggal()));
                     returnPembayaranUtangPiutang.setKodeRekeningKas(pembayaranUtangPiutangEntity.getKodeRekeningKas());
                     returnPembayaranUtangPiutang.setBayar(pembayaranUtangPiutangEntity.getBayar());
+                    returnPembayaranUtangPiutang.setStBayar(CommonUtil.numbericFormat(pembayaranUtangPiutangEntity.getBayar(), "###,###"));
                     returnPembayaranUtangPiutang.setKeterangan(pembayaranUtangPiutangEntity.getKeterangan());
                     returnPembayaranUtangPiutang.setNoSlipBank(pembayaranUtangPiutangEntity.getNoSlipBank());
                     returnPembayaranUtangPiutang.setBranchId(pembayaranUtangPiutangEntity.getBranchId());
@@ -262,6 +292,17 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                             returnPembayaranUtangPiutang.setFlagPosting(true);
                         }
                     }
+                    if (pembayaranUtangPiutangEntity.getTipeTransaksi()!=null){
+                        ImTransEntity transEntity;
+                        try {
+                            transEntity = transDao.getById("transId",pembayaranUtangPiutangEntity.getTipeTransaksi());
+                            returnPembayaranUtangPiutang.setStTipeTransaksi(transEntity.getTransName());
+                        } catch (HibernateException e) {
+                            logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                    }
+
                     returnPembayaranUtangPiutang.setRegisteredFlag(pembayaranUtangPiutangEntity.getRegisteredFlag());
                     returnPembayaranUtangPiutang.setCreatedWho(pembayaranUtangPiutangEntity.getCreatedWho());
                     returnPembayaranUtangPiutang.setCreatedDate(pembayaranUtangPiutangEntity.getCreatedDate());
@@ -278,14 +319,14 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     }
 
     @Override
-    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId) throws GeneralBOException {
+    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.getSearchNotaPembayaran] start process >>>");
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
 
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList ;
         try {
 
-            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId);
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,branchId);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -361,6 +402,32 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 throw new GeneralBOException("Error, not found data PembayaranUtangPiutang with request id, please check again your data ...");
             }
         }
+        logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
+    }
+
+
+    @Override
+    public void addPrintCount(String noJurnal) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.addPrintCount] start process >>>");
+        ItJurnalEntity jurnalEntity;
+        try {
+            // Update into database
+            jurnalEntity=jurnalDao.getById("noJurnal",noJurnal);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+        jurnalEntity.setPrintRegisterCount(jurnalEntity.getPrintRegisterCount().add(new BigDecimal(1)));
+
+        try {
+            // Update into database
+            jurnalDao.updateAndSave(jurnalEntity);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+        }
+
+
         logger.info("[PembayaranUtangPiutangBoImpl.postingJurnal] end process <<<");
     }
 
@@ -470,5 +537,37 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         }
         logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] end process <<<");
         return jurnalId;
+    }
+
+    @Override
+    public List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.getDetailPembayaran] start process >>>");
+        List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<>();
+
+        List<ImPembayaranUtangPiutangDetailEntity> pembayaranUtangPiutangDetailList ;
+        try {
+
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDetailDao.getByPembayaranId(pembayaranId);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.getDetailPembayaran] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if(pembayaranUtangPiutangDetailList != null){
+            PembayaranUtangPiutangDetail returnPembayaranUtangPiutangDetail;
+            // Looping from dao to object and save in collection
+            for(ImPembayaranUtangPiutangDetailEntity pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                returnPembayaranUtangPiutangDetail = new PembayaranUtangPiutangDetail();
+                returnPembayaranUtangPiutangDetail.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetail.getPembayaranUtangPiutangDetailId());
+                returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
+                returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
+                returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
+                returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
+                listOfResult.add(returnPembayaranUtangPiutangDetail);
+            }
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.getDetailPembayaran] end process <<<");
+
+        return listOfResult;
     }
 }

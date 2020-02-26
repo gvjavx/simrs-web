@@ -86,6 +86,9 @@
         <property name="metodePembayaran">
             <column name="metode_pembayaran" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="invoice">
+            <column name="invoice" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
 
     </class>

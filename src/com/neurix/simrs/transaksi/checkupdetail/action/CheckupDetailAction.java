@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkupdetail.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
@@ -30,6 +31,7 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -82,9 +84,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class CheckupDetailAction extends BaseMasterAction {
 
@@ -110,6 +110,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
     private BranchBo branchBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
 
 
     private File fileUpload;
@@ -124,6 +125,10 @@ public class CheckupDetailAction extends BaseMasterAction {
     private BigInteger tarifCoverBpjs;
     private BigInteger tarifTotalTindakan;
     private String tipe;
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -918,8 +923,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan) {
+    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         String status = "error";
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -951,6 +958,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
+            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
@@ -963,7 +971,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
@@ -988,6 +995,69 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
     }
+
+    private String closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){
+
+        String branchId = CommonUtil.userBranchLogin();
+        String invoice = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setIdPelayanan(idPoli);
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        try {
+            pelayanans = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
+        }
+
+        String kode="";
+        String transId = "";
+        String ketPoli = "";
+        String ketResep = "";
+        if (pelayanans.size() > 0){
+            Pelayanan pelayananData = pelayanans.get(0);
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRJ";
+                ketPoli = "Rawat Jalan";
+            }
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRI";
+                ketPoli = "Rawat Inap";
+            }
+
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            if ("Y".equalsIgnoreCase(isResep)){
+                transId = "04";
+                ketResep = "Tanpa Obat";
+            } else {
+                transId = "05";
+                ketResep = "Dengan Obat";
+            }
+
+            BigDecimal jumlah = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup);
+
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("no_nota", invoice);
+            hsCriteria.put("biaya", jumlah);
+
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
+            try {
+              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+            }
+        }
+        return invoice;
+    }
+
+//    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}
 
     private void pindahPoli(String noCheckup, String idDetailCheckup, String idPoli, String idDokter) {
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
@@ -1282,6 +1352,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 headerDetailCheckup.setLastUpdateWho(user);
                 headerDetailCheckup.setIdDokter(idDokter);
                 headerDetailCheckup.setNoSep(genNoSep);
+//                headerDetailCheckup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
 
                 try {
                     checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1292,54 +1363,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
-
-//    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar){
-//        logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
-//
-//        Timestamp now = new Timestamp(System.currentTimeMillis());
-//        String user = CommonUtil.userLogin();
-//
-//        if (!"".equalsIgnoreCase(noCheckup) &&
-//                !"".equalsIgnoreCase(idDetailCheckup))
-//        {
-//            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-//
-//            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-//            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-//            detailCheckup.setIdDetailCheckup(idDetailCheckup);
-//
-//            try {
-//                detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
-//            } catch (GeneralBOException e){
-//                logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
-//            }
-//
-//
-//            if (!detailCheckupList.isEmpty()){
-//                detailCheckup = detailCheckupList.get(0);
-//                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-//                headerDetailCheckup.setNoCheckup(noCheckup);
-//                headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-//                headerDetailCheckup.setIdPelayanan(detailCheckup.getIdPelayanan());
-//                headerDetailCheckup.setIdRuangan(kamar);
-//                headerDetailCheckup.setStatusPeriksa("1");
-//                headerDetailCheckup.setCreatedDate(now);
-//                headerDetailCheckup.setCreatedWho(user);
-//                headerDetailCheckup.setLastUpdate(now);
-//                headerDetailCheckup.setLastUpdateWho(user);
-//                headerDetailCheckup.setRawatInap(true);
-//
-//                try {
-//                    checkupDetailBo.saveAdd(headerDetailCheckup);
-//                } catch (GeneralBOException e){
-//                    logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
-//                }
-//            }
-//        }
-//        logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
-//
-//    }
 
     private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
@@ -1372,7 +1395,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
             }
-
 
             if (!detailCheckupList.isEmpty()) {
 
@@ -1674,6 +1696,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
+//                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
 
                         try {
                             checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1687,6 +1710,33 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
 
     }
+
+//    private String createJurnalUangMuka(String idPasien, String jumlah){
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+//
+//        String transId = "01";
+//
+//        String noNota = "";
+//        try {
+//            noNota = billingSystemBo.createInvoiceNumber(transId);
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
+//
+//        try {
+//            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        return noNota;
+//    }
 
     private void cekRawatInap(String idDetailCheckup) {
 

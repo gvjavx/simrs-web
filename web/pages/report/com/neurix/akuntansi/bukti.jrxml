@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiJKM" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a49a14d5-e3a4-4699-826c-3b998a58d949">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.3579476910000077"/>
-	<property name="ireport.x" value="253"/>
-	<property name="ireport.y" value="955"/>
+	<property name="ireport.zoom" value="1.0000000000000044"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -37,6 +37,7 @@
 	<parameter name="reportParams.coaKas" class="java.lang.String"/>
 	<parameter name="reportParams.nomorTrans" class="java.lang.String"/>
 	<parameter name="reportParams.namaCoaKas" class="java.lang.String"/>
+	<parameter name="reportParams.noSlipBank" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from it_akun_jurnal where no_jurnal = $P{noJurnal}]]>
 	</queryString>
@@ -81,14 +82,11 @@
 	</background>
 	<title>
 		<band height="664" splitType="Stretch">
-			<rectangle>
-				<reportElement x="436" y="354" width="99" height="55" uuid="7fc9d7d9-1f7c-40c8-b240-1c8462c59d9b"/>
-			</rectangle>
 			<line>
-				<reportElement key="line-1" x="0" y="354" width="535" height="1" uuid="3482d4cd-980e-4de2-8f83-57f78276a90f"/>
+				<reportElement key="line-1" x="0" y="481" width="535" height="1" uuid="3482d4cd-980e-4de2-8f83-57f78276a90f"/>
 			</line>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="76" width="533" height="263" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
+				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="201" width="528" height="263" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
 				<subreportParameter name="noJurnal">
 					<subreportParameterExpression><![CDATA[$P{noJurnal}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -137,144 +135,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[PT. NUSANTARA MEDIKA UTAMA]]></text>
 			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="134" y="15" width="242" height="15" uuid="34ab2435-87f6-4a5d-9725-ab58c0e6cf00"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[BUKTI BANK MASUK]]></text>
-			</staticText>
 			<line>
-				<reportElement key="line-1" x="-2" y="61" width="537" height="1" uuid="ceef2fc1-6745-473f-8faf-24b674c224c9"/>
+				<reportElement key="line-1" x="-2" y="63" width="537" height="1" uuid="ceef2fc1-6745-473f-8faf-24b674c224c9"/>
 			</line>
 			<staticText>
-				<reportElement key="staticText-37" x="332" y="20" width="68" height="11" uuid="128d3967-caa7-4c3b-895d-8efeeab0676b"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[No/Nama Perk.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-41" x="400" y="20" width="2" height="11" uuid="c1d16523-0dd5-4d4b-ad4c-46e9de1ff93f"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-24" x="402" y="20" width="74" height="11" uuid="24e9112e-e93e-41c6-b44d-bdd83adc6d22"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.coaKas}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement key="staticText-41" x="400" y="31" width="2" height="11" uuid="d61e0711-748a-48cb-a2e7-d7692d22dfa7"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-24" x="402" y="31" width="74" height="11" uuid="4e8d5520-f1ba-4f99-b91e-21d3d1dd1901"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.namaCoaKas}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement key="staticText-37" x="332" y="31" width="68" height="11" uuid="4c0350ac-63ee-426f-a5e8-b383bfd4c042"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Ch/Gb/Srt Nbo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-41" x="400" y="9" width="2" height="11" uuid="076ead2b-ce9c-4f7a-931e-5cc9384db011"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-24" x="402" y="9" width="74" height="11" uuid="3dcb5e0f-7512-4bd7-9a0b-4cf7956c1f5a"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nomorTrans}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement key="staticText-37" x="332" y="9" width="68" height="11" uuid="287d0ee9-02f2-4a14-a7a1-02cf44d0977a"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[No.]]></text>
-			</staticText>
-			<rectangle>
-				<reportElement x="0" y="354" width="128" height="55" uuid="2ec416e8-6102-4e2a-bbaa-43988703e157"/>
-			</rectangle>
-			<staticText>
-				<reportElement key="staticText-1" x="1" y="362" width="126" height="15" uuid="7b3ecfab-8e8c-4dbd-9200-e4b34396c181"/>
+				<reportElement key="staticText-1" x="1" y="495" width="126" height="15" uuid="7b3ecfab-8e8c-4dbd-9200-e4b34396c181"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -287,7 +152,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[JUMLAH UANG]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="1" y="377" width="126" height="15" uuid="c6f5e9b7-09ff-442c-944e-1e35604ae4e7"/>
+				<reportElement key="staticText-1" x="1" y="510" width="126" height="15" uuid="c6f5e9b7-09ff-442c-944e-1e35604ae4e7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -299,24 +164,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[( dengan huruf )]]></text>
 			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="129" y="362" width="126" height="15" uuid="c666b9c6-e470-4d33-bdab-783865308365"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[JUMLAH UANG]]></text>
-			</staticText>
-			<rectangle>
-				<reportElement x="128" y="354" width="308" height="55" uuid="580b5ea7-9e18-4306-8f8c-8a57685b1349"/>
-			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="129" y="363" width="307" height="18" uuid="c1cc7714-bbd1-4133-b371-b90fb69ea7d1"/>
+				<reportElement key="textField-13" x="134" y="496" width="254" height="29" uuid="c1cc7714-bbd1-4133-b371-b90fb69ea7d1"/>
 				<box leftPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -329,7 +178,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{terbilang}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="436" y="363" width="99" height="18" uuid="2a1e3b99-7dc6-451e-b36e-d1599df78032"/>
+				<reportElement key="textField-13" x="411" y="495" width="99" height="29" uuid="2a1e3b99-7dc6-451e-b36e-d1599df78032"/>
 				<box rightPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -342,38 +191,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{reportParams.totalBayar}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-1" x="-1" y="421" width="537" height="1" uuid="7d5f2fb2-bfc7-46ae-a4b5-3e62037ed526"/>
-			</line>
-			<rectangle>
-				<reportElement x="-1" y="435" width="70" height="83" uuid="e8a1bfe4-b9d5-4e5a-be5b-99f28dff85fc"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="69" y="435" width="70" height="83" uuid="da08293b-e3fe-43ab-b053-732d3f440b85"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="139" y="435" width="70" height="83" uuid="435fd5b9-9202-4000-bf78-889b228044a5"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="209" y="435" width="70" height="83" uuid="7a3808ac-7840-4680-b598-bb56ddfad4a3"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="279" y="435" width="70" height="83" uuid="3a427553-8d24-48a5-bd84-7f3d8bb37ac3"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="349" y="435" width="70" height="83" uuid="9c0d1da4-dc57-475c-8d84-2679d7447240"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="419" y="435" width="116" height="83" uuid="62da0d06-eec8-47a3-b9fc-0c17c5bb087f"/>
-			</rectangle>
-			<line>
-				<reportElement key="line-1" x="-1" y="453" width="420" height="1" uuid="a40e48e5-af84-478e-b3ae-70a3e854c81a"/>
+				<reportElement key="line-1" x="-1" y="548" width="537" height="1" uuid="7d5f2fb2-bfc7-46ae-a4b5-3e62037ed526"/>
 			</line>
 			<staticText>
-				<reportElement key="staticText-1" x="-1" y="438" width="70" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
+				<reportElement key="staticText-1" x="1" y="565" width="65" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -382,11 +207,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Pembuat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="69" y="438" width="70" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
+				<reportElement key="staticText-1" x="70" y="565" width="65" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -395,11 +220,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diperiksa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="139" y="438" width="70" height="15" uuid="76b1196a-9431-414a-a1fe-97aa5c8e3b36"/>
+				<reportElement key="staticText-1" x="139" y="565" width="65" height="15" uuid="76b1196a-9431-414a-a1fe-97aa5c8e3b36"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -408,11 +233,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diketahui]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="209" y="438" width="70" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
+				<reportElement key="staticText-1" x="209" y="565" width="65" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -421,11 +246,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Disetujui]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="279" y="438" width="70" height="15" uuid="db22dad8-d292-4477-96e6-33c65b512ff8"/>
+				<reportElement key="staticText-1" x="279" y="565" width="65" height="15" uuid="db22dad8-d292-4477-96e6-33c65b512ff8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -434,11 +259,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diterima]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="349" y="438" width="70" height="15" uuid="cb8b936b-5c96-478c-82d5-ba25b4a7c135"/>
+				<reportElement key="staticText-1" x="349" y="565" width="65" height="15" uuid="cb8b936b-5c96-478c-82d5-ba25b4a7c135"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -446,19 +271,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[Dibukukan]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="419" y="438" width="117" height="15" uuid="506b3846-aae7-46d5-931f-c4dff89d54a5"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.alamatSurat}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement key="staticText-1" x="419" y="452" width="116" height="15" uuid="b472d498-22b2-486b-aee9-bab92314a5cf"/>
+				<reportElement key="staticText-1" x="445" y="565" width="65" height="15" uuid="b472d498-22b2-486b-aee9-bab92314a5cf"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -466,6 +284,380 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[Penyetor]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="134" y="15" width="225" height="20" uuid="2ae9b0e8-3fbe-465e-876b-d126a4bfeac6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{reportParams.reportName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="448" y="649" width="65" height="1" uuid="32807995-71f3-4a6b-9d43-1bb7fa81218d"/>
+			</line>
+			<line>
+				<reportElement x="349" y="649" width="65" height="1" uuid="addc2216-dd64-4a4f-a926-12bafee9bfb7"/>
+			</line>
+			<line>
+				<reportElement x="279" y="649" width="65" height="1" uuid="33370513-adab-4774-a006-c306ca6b3210"/>
+			</line>
+			<line>
+				<reportElement x="210" y="649" width="65" height="1" uuid="5efb8dbd-fc9f-4827-8e9e-c649f45a82f2"/>
+			</line>
+			<line>
+				<reportElement x="139" y="649" width="65" height="1" uuid="d6a56b6e-e0c5-4a3c-8c32-98b8643f306e"/>
+			</line>
+			<line>
+				<reportElement x="70" y="649" width="65" height="1" uuid="18ca2de9-9f21-4cc1-9071-416fd80e1619"/>
+			</line>
+			<line>
+				<reportElement x="1" y="649" width="65" height="1" uuid="3123d373-acaf-45a8-b4d1-30cd4be23281"/>
+			</line>
+			<line>
+				<reportElement key="line-1" x="0" y="188" width="537" height="1" uuid="886ef042-676b-4482-b0cd-8b5e267e3ef4"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-38" x="17" y="136" width="98" height="20" uuid="604c7d43-5a16-4164-8c5b-602fd0c59679"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Rekening Kas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="17" y="96" width="98" height="20" uuid="502742e7-a99b-4678-935c-501aabab0045"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Terbilang]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-5" x="130" y="96" width="401" height="20" uuid="890d3ea7-af56-48d3-bc6e-92b45097d7f7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{terbilang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-37" x="17" y="116" width="98" height="20" uuid="5c7cf297-b444-4414-bdba-7a668ac3cad8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Uraian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-30" positionType="Float" x="1" y="96" width="16" height="20" uuid="2c681401-d2b0-49bd-9d81-6f49df7122b3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" positionType="Float" x="1" y="136" width="16" height="20" uuid="f00d8538-493c-473f-af46-44bddd9534bf"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-24" x="130" y="116" width="397" height="20" uuid="3b71a768-494e-4376-8e17-ab41a90c0057"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{uraian}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-31" positionType="Float" x="1" y="116" width="16" height="20" uuid="f69c0db4-1554-4bcf-8739-578e4a35c078"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-39" x="115" y="96" width="15" height="20" uuid="bf7d2508-1e9a-41fd-b1ff-bd9f48d2fcb8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-35" stretchType="RelativeToTallestObject" x="17" y="73" width="98" height="23" uuid="4a9d9cff-f48c-480c-8a2d-86565d41ed3e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Jumlah Biaya]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-25" x="130" y="136" width="397" height="20" uuid="1c084881-8d43-4d0c-bc8d-fc5c71cf8dcf"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{reportParams.namaCoaKas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-29" stretchType="RelativeToTallestObject" x="1" y="73" width="16" height="23" uuid="4821992f-9e95-4cea-882e-e98bd15006e0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-23" x="130" y="73" width="397" height="23" uuid="6cd47795-9969-45c0-96a5-0651005a34ab"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isItalic="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.totalBayar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-40" stretchType="RelativeToTallestObject" x="115" y="73" width="15" height="23" uuid="5d08ef00-a235-4b54-9262-eace6459dd3b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-42" x="115" y="136" width="15" height="20" uuid="f2d893ff-98ed-441d-b357-34fe25b60cab"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-41" x="115" y="116" width="15" height="20" uuid="b9e581ae-a549-48ef-ae88-86cc71ab8fc7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-25" x="130" y="156" width="397" height="20" uuid="5d076db9-4d88-4366-a180-7f59797409ae"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{reportParams.noSlipBank}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-42" x="115" y="156" width="15" height="20" uuid="5b17b437-eaaf-44c1-b9ca-e04e8c175d4c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" positionType="Float" x="1" y="156" width="16" height="20" uuid="ff2026b9-e268-4237-9e67-4f2bcf747185"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-38" x="17" y="156" width="98" height="20" uuid="9f6e36c9-4e01-4960-94c3-e0019a211e49"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No. Slip Bank]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="328" y="19" width="100" height="13" uuid="aa20d3d2-cd96-43c4-94ab-efa447a8f797"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="374" y="32" width="100" height="13" uuid="b9b8bdeb-9661-4df0-9c48-82c4d641b549"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-11" x="328" y="32" width="100" height="13" uuid="0269a5b8-c0e4-46b2-be29-1762c2854f57"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" x="328" y="7" width="100" height="13" uuid="4892f8db-b72f-48a0-921b-a8cd1600a4d4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd-MM-yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="374" y="19" width="100" height="13" uuid="6f48bcd6-c9e0-4c84-9084-4518c5a462f3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-12" x="445" y="7" width="29" height="13" uuid="446703b4-16a9-4f08-94e0-81d10254aae4"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="376" y="7" width="88" height="13" uuid="7aa43e26-435a-4ddf-9fa9-b14c82b119ee"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

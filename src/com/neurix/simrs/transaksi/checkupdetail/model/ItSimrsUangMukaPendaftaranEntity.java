@@ -12,6 +12,7 @@ public class ItSimrsUangMukaPendaftaranEntity implements Serializable {
     private String id;
     private String idDetailCheckup;
     private BigInteger jumlah;
+    private BigInteger jumlahDibayar;
     private String statusBayar;
     private String flag;
     private String action;
@@ -20,6 +21,14 @@ public class ItSimrsUangMukaPendaftaranEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String noNota;
+
+    public BigInteger getJumlahDibayar() {
+        return jumlahDibayar;
+    }
+
+    public void setJumlahDibayar(BigInteger jumlahDibayar) {
+        this.jumlahDibayar = jumlahDibayar;
+    }
 
     public String getId() {
         return id;

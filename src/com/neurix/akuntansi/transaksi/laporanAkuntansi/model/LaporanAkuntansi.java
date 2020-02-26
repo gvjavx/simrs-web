@@ -30,6 +30,15 @@ public class LaporanAkuntansi extends BaseModel {
     private String kodeRekening;
     private String rekeningId;
     private String tipeJurnalId;
+    private String tipeLaporanName;
+
+    public String getTipeLaporanName() {
+        return tipeLaporanName;
+    }
+
+    public void setTipeLaporanName(String tipeLaporanName) {
+        this.tipeLaporanName = tipeLaporanName;
+    }
 
     public String getTipeJurnalId() {
         return tipeJurnalId;

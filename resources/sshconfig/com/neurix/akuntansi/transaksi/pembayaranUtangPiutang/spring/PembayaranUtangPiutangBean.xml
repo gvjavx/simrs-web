@@ -17,6 +17,7 @@
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:transDao-ref="transDao"
     />
 
     <bean id="pembayaranUtangPiutangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

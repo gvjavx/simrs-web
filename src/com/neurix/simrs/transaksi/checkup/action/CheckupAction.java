@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Area;
@@ -79,9 +80,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class CheckupAction extends BaseMasterAction {
 
@@ -101,6 +100,11 @@ public class CheckupAction extends BaseMasterAction {
     private RegistrasiOnlineBo registrasiOnlineBoProxy;
     private AntrianOnlineBo antrianOnlineBoProxy;
     private BranchBo branchBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -970,6 +974,11 @@ public class CheckupAction extends BaseMasterAction {
             checkup.setStatusPeriksa("0");
             checkup.setNoSep(genNoSep);
             checkup.setTindakanList(tindakans);
+
+            // if uang muka is null or uang muka is 0 then generate invoice
+//            if (checkup.getUangMuka() == null || checkup.getUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+//                checkup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
+//            }
 //                checkup.setUrlKtp(checkup.getUrlKtp());
 
             String fileName = "";
@@ -1016,6 +1025,33 @@ public class CheckupAction extends BaseMasterAction {
         return "success_add";
 
     }
+
+//    private String createJurnalUangMuka(String idPasien, String jumlah){
+////        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+////        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+//
+//        String transId = "01";
+//
+//        String noNota = "";
+//        try {
+//            noNota = billingSystemBoProxy.createInvoiceNumber(transId);
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
+//
+//        try {
+//            billingSystemBoProxy.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        return noNota;
+//    }
 
     public String getComboJenisPeriksaPasien() {
         List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();

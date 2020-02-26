@@ -568,8 +568,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya) {
-
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar){
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -578,25 +577,31 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         String transId = "01";
         String noNota = "";
+
+        String branchId = CommonUtil.userBranchLogin();
         try {
-            noNota = billingSystemBo.createInvoiceNumber(transId);
-        } catch (GeneralBOException e) {
+            noNota = billingSystemBo.createInvoiceNumber(transId, branchId);
+        } catch (GeneralBOException e){
             response.setStatus("error");
             response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " + e);
             return response;
         }
 
         Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
-        hsCriteria.put("uang_muka", new BigDecimal(biaya));
+        hsCriteria.put("bukti", id);
+        hsCriteria.put("jumlah_uang_muka", new BigDecimal(jumlahDibayar));
 
         try {
-            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka untuk id_pasien : " + idPasien, "Y", "");
+            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
             uangMuka.setId(id);
+            uangMuka.setDibayar(new BigInteger(jumlahDibayar));
             uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             uangMuka.setLastUpdateWho(CommonUtil.userLogin());
 
@@ -662,6 +667,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
+        String branchId = CommonUtil.userBranchLogin();
+
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
@@ -674,10 +681,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         CrudResponse response = new CrudResponse();
         System.out.println(hsCriteria);
-        response.setMsg("" + hsCriteria);
-        if (!"Y".equalsIgnoreCase(withObat)) {
+
+//        response.setMsg(""+hsCriteria);
+        if (!"Y".equalsIgnoreCase(withObat)){
             try {
-                billingSystemBo.createJurnal("04", hsCriteria, CommonUtil.userBranchLogin(), "Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien, "Y", "");
+                String text="";
+                if (("transfer").equalsIgnoreCase(metodeBayar)){
+                    text=" pada Bank "+kodeBank;
+                }
+                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

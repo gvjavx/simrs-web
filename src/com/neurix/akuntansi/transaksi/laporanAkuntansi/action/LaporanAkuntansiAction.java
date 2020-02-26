@@ -306,12 +306,36 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
-
+        switch(laporanAkuntansi.getTipeLaporan()) {
+            case "hutang_usaha":
+                laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
+                break;
+            case "piutang_usaha":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
+                break;
+            case "uang_muka":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                break;
+            default:
+                laporanAkuntansi.setTipeLaporanName("NOT FOUND");
+        }
         return "search_laporan_ikhitisar_sub_buku_besar";
     }
     public String searchReportAging() {
         logger.info("[LaporanAkuntansiAction.searchReportAging] start process >>>");
-
+        switch(laporanAkuntansi.getTipeLaporan()) {
+            case "hutang_usaha":
+                laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
+                break;
+            case "piutang_usaha":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
+                break;
+            case "uang_muka":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                break;
+            default:
+                laporanAkuntansi.setTipeLaporanName("NOT FOUND");
+        }
         return "search_laporan_aging";
     }
 

@@ -19,6 +19,15 @@ public class UangMuka extends BaseModel {
     private String lastUpdateWho;
     private String noNota;
     private String stDate;
+    private BigInteger dibayar;
+
+    public BigInteger getDibayar() {
+        return dibayar;
+    }
+
+    public void setDibayar(BigInteger dibayar) {
+        this.dibayar = dibayar;
+    }
 
     public String getStDate() {
         return stDate;

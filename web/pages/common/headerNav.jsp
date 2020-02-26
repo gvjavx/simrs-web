@@ -306,9 +306,7 @@
     }
 
     .pagelinks a{
-        color: #FFF;
         padding: 5px;
-        background-color: #50d4a3;
         border-radius: 3px;
     }
 
