@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface BillingSystemBo {
 
-    String createInvoiceNumber(String transId);
+    String createInvoiceNumber(String jurnalId,String branchId);
 
     //jurnal untuk pembayaran utang piutang
     String createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister,String noJurnal);
