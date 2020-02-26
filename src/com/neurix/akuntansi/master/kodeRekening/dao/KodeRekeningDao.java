@@ -89,4 +89,27 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         List<ImKodeRekeningEntity> results = criteria.list();
         return results;
     }
+
+    //for search bank in billing
+    public String searchRekeningIdBankLikeName(String namaBank){
+        String result="";
+        String query = "select \n" +
+                "  \trekening_id \n" +
+                "\tfrom \n" +
+                "\tim_akun_kode_rekening \n" +
+                "\twhere \n" +
+                "\tnama_kode_rekening ilike 'bank "+namaBank+"%' \n" +
+                "\tand kode_rekening ilike '1.%'\n" +
+                "\tand length(kode_rekening)=14\n" +
+                "\torder by rekening_id\n" +
+                "\tlimit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
 }

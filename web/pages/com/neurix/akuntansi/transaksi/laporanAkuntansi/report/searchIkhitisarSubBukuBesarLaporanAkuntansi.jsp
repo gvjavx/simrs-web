@@ -81,7 +81,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Ikhitisar Buku Besar Per Buku Bantu
+            Laporan Ikhitisar
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -91,7 +91,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhitisar Buku Besar Per Buku Bantu</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhitisar</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">

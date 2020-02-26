@@ -96,8 +96,20 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         String tipeJurnalId=null;
         String noNota = null;
 
+        //memberi bukti sumber
         if (data.get("bukti")!=null){
             noNota = (String) data.get("bukti");
+        }
+
+        //untuk closing pembayaran catatan diganti
+        if (data.get("metode_bayar")!=null){
+            String metodeBayar = (String) data.get("metode_bayar");
+            // tunai / transfer
+            if (("transfer").equalsIgnoreCase(metodeBayar)){
+                String bank = (String) data.get("bank");
+                catatanPembuatanJurnal="Pembayaran "+metodeBayar+" ke dalam Kas Bank "+bank;
+
+            }
         }
 
         //mencari tipe jurnal Id
@@ -183,22 +195,43 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         String masterId = null;
         String noNota = null;
-
-        //untuk pembayaran
-        boolean pembayaran = false;
-        String rekeningIdPembayaran="";
-        String rekeningIdKasPembayaran="";
-
         if (data.get("master_id")!=null){
             masterId = (String) data.get("master_id");
         }
         if (data.get("bukti")!=null){
             noNota = (String) data.get("bukti");
         }
+
+        //untuk pembayaran utang piutang
+        boolean pembayaran = false;
+        String rekeningIdPembayaran="";
+        String rekeningIdKasPembayaran="";
+
         if (data.get("rekening_id")!=null){
             rekeningIdPembayaran = (String) data.get("rekening_id");
             rekeningIdKasPembayaran = (String) data.get("rekening_id_kas");
             pembayaran=true;
+        }
+
+        //untuk closing pembayaran
+        boolean closing = false;
+        if (data.get("metode_bayar")!=null){
+            String metodeBayar = (String) data.get("metode_bayar");
+            // tunai / transfer
+            if (("transfer").equalsIgnoreCase(metodeBayar)){
+                String bank = (String) data.get("bank");
+                String rekeningIdKasClosing;
+                try {
+                    rekeningIdKasClosing = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if (rekeningIdKasClosing!=null){
+                    rekeningIdKasPembayaran=rekeningIdKasClosing;
+                    closing=true;
+                }
+            }
         }
 
         if (mappingJurnal.size()!=0){
@@ -214,6 +247,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             rekeningId=rekeningIdKasPembayaran;
                         }else if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("Y").equalsIgnoreCase(mapping.getBukti())){
                             rekeningId=rekeningIdPembayaran;
+                        }
+                    ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
+                    }else if (closing){
+                        if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
+                            rekeningId=rekeningIdKasPembayaran;
                         }
                     }else{
                     /////////////////////JIKA DARI JURNAL OTOMATIS //////////////////////////////////////////////////
@@ -269,9 +307,10 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                             }
 
-                            jurnalDetailEntityList.add(jurnalDetailEntity);
                             // Total dari pembayaran debet dan kredit untuk nanti disamakan
                             totalBayar = totalBayar.add(jurnalDetailEntity.getJumlahDebit()).subtract(jurnalDetailEntity.getJumlahKredit());
+                            jurnalDetailEntityList.add(jurnalDetailEntity);
+
                         }else{
                             status="ERROR : tidak bisa menemukan biaya pada map yang dikirim";
                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);

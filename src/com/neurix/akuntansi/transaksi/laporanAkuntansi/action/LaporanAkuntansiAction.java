@@ -693,9 +693,9 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
                 Integer tglCetak = Integer.parseInt(jumlahTanggalTemp);
                 Integer tglJurnal =Integer.parseInt(periodeJurnalArrTemp[0]);
-                Integer blnCetak = Integer.parseInt(periodeTitle[1]);
+                Integer blnCetak = Integer.parseInt(periodeTitle[0]);
                 Integer blnJurnal =Integer.parseInt(periodeJurnalArrTemp[1]);
-                Integer thnCetak = Integer.parseInt(periodeTitle[0]);
+                Integer thnCetak = Integer.parseInt(periodeTitle[1]);
                 Integer thnJurnal =Integer.parseInt(periodeJurnalArrTemp[2]);
 
                 if(thnCetak > thnJurnal){

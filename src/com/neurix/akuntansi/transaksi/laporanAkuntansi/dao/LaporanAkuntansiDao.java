@@ -69,7 +69,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      f.nilai_kurs as kurs\n" +
                 "    from \n" +
                 "      (\n" +
-                "\t\t-- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal\n" +
+                "\t\t-- mencari semua data di jurnal yang di joinkan dengan setting aging jurnal \n" +
                 "        select \n" +
                 "          * \n" +
                 "        from \n" +
@@ -90,7 +90,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\t\t\tim_akun_setting_aging_tipe_jurnal\n" +
                 "\t\tWHERE\n" +
                 "\t\t  tipe_aging='"+tipeAging+"' AND flag='Y'\n" +
-                "\t  ) saj ON saj.tipe_jurnal_id=a.tipe_jurnal_id\n" +
+                "\t  ) saj ON saj.tipe_jurnal_id=a.tipe_jurnal_id AND saj.rekening_id=b.rekening_id\n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
