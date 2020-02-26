@@ -18,9 +18,13 @@ import java.util.List;
 public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPiutang> {
     public void saveDelete(PembayaranUtangPiutang bean) throws GeneralBOException;
 
-    List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId) throws GeneralBOException;
+    List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String transaksiId,String branchId) throws GeneralBOException;
 
     void postingJurnal(PembayaranUtangPiutang bean) throws GeneralBOException;
 
+    void addPrintCount(String noJurnal) throws GeneralBOException;
+
     String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException;
+
+    List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
 }

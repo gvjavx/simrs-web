@@ -166,8 +166,8 @@ public class TransBoImpl implements TransBo {
             if (searchBean.getTransName() != null && !"".equalsIgnoreCase(searchBean.getTransName())) {
                 hsCriteria.put("trans_name", searchBean.getTransName());
             }
-            if (searchBean.getFlagPembayaranUtangPiutang() != null && !"".equalsIgnoreCase(searchBean.getFlagPembayaranUtangPiutang())) {
-                hsCriteria.put("flag_pembayaran", searchBean.getFlagPembayaranUtangPiutang());
+            if (searchBean.getTipePembayaran() != null && !"".equalsIgnoreCase(searchBean.getTipePembayaran())) {
+                hsCriteria.put("tipe_pembayaran", searchBean.getTipePembayaran());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {

@@ -13,8 +13,8 @@
         <property name="transName">
             <column name="trans_name" sql-type="varchar" length="100" not-null="true" />
         </property>
-        <property name="flagPembayaranUtangPiutang">
-            <column name="flag_pembayaran_utang_piutang" sql-type="varchar" length="1" not-null="false" />
+        <property name="tipePembayaran">
+            <column name="tipe_pembayaran" sql-type="varchar" length="5" not-null="false" />
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

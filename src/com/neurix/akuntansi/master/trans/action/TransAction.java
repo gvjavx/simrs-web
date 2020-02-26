@@ -414,7 +414,7 @@ public class TransAction extends BaseMasterAction {
         Trans search = new Trans();
         List<Trans> listOfSearchTrans = new ArrayList();
         search.setFlag("Y");
-        search.setFlagPembayaranUtangPiutang("Y");
+        search.setTipePembayaran("Y");
         try {
             listOfSearchTrans = transBoProxy.getByCriteria(search);
         } catch (GeneralBOException e) {

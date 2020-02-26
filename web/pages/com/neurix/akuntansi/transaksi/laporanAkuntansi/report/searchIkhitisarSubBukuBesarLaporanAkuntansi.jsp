@@ -81,7 +81,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Ikhitisar buku besar Per Buku Bantu
+            Laporan Ikhitisar Buku Besar Per Buku Bantu
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -91,7 +91,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhitisar buku besar Per Buku Bantu</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhitisar Buku Besar Per Buku Bantu</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -107,6 +107,14 @@
                                             </tr>
                                         </table>
                                         <table>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
@@ -140,7 +148,6 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
                                         </table>
                                         <br>
                                         <div id="actions" class="form-actions">

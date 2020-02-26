@@ -70,4 +70,12 @@ public class PembayaranUtangPiutangDetailDao extends GenericDao<ImPembayaranUtan
                 .list();
         return results;
     }
+    public List<ImPembayaranUtangPiutangDetailEntity> getByPembayaranId(String id) throws HibernateException {
+        List<ImPembayaranUtangPiutangDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPembayaranUtangPiutangDetailEntity.class)
+                .add(Restrictions.eq("pembayaranUtangPiutangId", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("pembayaranUtangPiutangDetailId"))
+                .list();
+        return results;
+    }
 }
