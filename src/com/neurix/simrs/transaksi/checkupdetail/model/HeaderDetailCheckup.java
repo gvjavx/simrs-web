@@ -85,8 +85,8 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
     private String noNota;
-
     private String noCheckupOnline;
+    private String metodePembayaran;
 
     public String getNoNota() {
         return noNota;
@@ -94,6 +94,14 @@ public class HeaderDetailCheckup extends BaseModel{
 
     public void setNoNota(String noNota) {
         this.noNota = noNota;
+    }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
     }
 
     public String getNoCheckupOnline() {

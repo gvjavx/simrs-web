@@ -240,7 +240,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<UangMuka> uangMukaList = new ArrayList<>();
 
-        if(id != null && !"".equalsIgnoreCase(id)) {
+        if (id != null && !"".equalsIgnoreCase(id)) {
 
             String branch = CommonUtil.userBranchLogin();
             String unit = CommonUtil.userBranchNameLogin();
@@ -314,9 +314,18 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
                 JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(uangMukaList);
 
+                BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
+                BigInteger tarifUangMuka = hitungTotalUangMuka(uangMukaList);
+
+                BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
+                totalJasa = tarifJasa.subtract(new BigDecimal(tarifUangMuka));
+                String terbilang = angkaToTerbilang(totalJasa.longValue());
+
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
+                reportParams.put("totalJasa", totalJasa);
+                reportParams.put("terbilang", terbilang);
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
@@ -353,6 +362,76 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         return "print_invoice";
     }
+
+    private BigDecimal hitungTotalJasa(List<RiwayatTindakan> riwayatTindakanList) {
+
+        BigDecimal total = new BigDecimal(String.valueOf("0"));
+        if (riwayatTindakanList != null && riwayatTindakanList.size() > 0) {
+            for (RiwayatTindakan trans : riwayatTindakanList) {
+                total = total.add(trans.getTotalTarif());
+            }
+        }
+        return total;
+    }
+
+    private BigInteger hitungTotalUangMuka(List<UangMuka> uangMukaList) {
+
+        BigInteger total = new BigInteger(String.valueOf("0"));
+        if (uangMukaList != null && uangMukaList.size() > 0) {
+            for (UangMuka trans : uangMukaList) {
+                total = total.add(trans.getJumlah());
+            }
+        }
+        return total;
+    }
+
+    public String angkaToTerbilang(Long angka) {
+
+        String[] huruf = {"", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"};
+
+        if (angka < 12) {
+            return huruf[angka.intValue()];
+        }
+
+        if (angka >= 12 && angka <= 19) {
+            return huruf[angka.intValue() % 10] + " Belas";
+        }
+
+        if (angka >= 20 && angka <= 99) {
+            return angkaToTerbilang(angka / 10) + " Puluh " + huruf[angka.intValue() % 10];
+        }
+
+        if (angka >= 100 && angka <= 199) {
+            return "Seratus " + angkaToTerbilang(angka % 100);
+        }
+        if (angka >= 200 && angka <= 999) {
+            return angkaToTerbilang(angka / 100) + " Ratus " + angkaToTerbilang(angka % 100);
+        }
+        if (angka >= 1000 && angka <= 1999) {
+            return "Seribu " + angkaToTerbilang(angka % 1000);
+        }
+        if (angka >= 2000 && angka <= 999999) {
+            return angkaToTerbilang(angka / 1000) + " Ribu " + angkaToTerbilang(angka % 1000);
+        }
+        if (angka >= 1000000 && angka <= 999999999) {
+            return angkaToTerbilang(angka / 1000000) + " Juta " + angkaToTerbilang(angka % 1000000);
+        }
+        if (angka >= 1000000000 && angka <= 999999999999L) {
+            return angkaToTerbilang(angka / 1000000000) + " Milyar " + angkaToTerbilang(angka % 1000000000);
+        }
+
+        if (angka >= 1000000000000L && angka <= 999999999999999L) {
+            return angkaToTerbilang(angka / 1000000000000L) + " Triliun " + angkaToTerbilang(angka % 1000000000000L);
+        }
+
+        if (angka >= 1000000000000000L && angka <= 999999999999999999L) {
+            return angkaToTerbilang(angka / 1000000000000000L) + " Quadrilyun " + angkaToTerbilang(angka % 1000000000000000L);
+        }
+
+        return "";
+    }
+
+
     public String printBuktiUangMuka() {
 
         String id = getId();
@@ -361,7 +440,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<UangMuka> uangMukaList = new ArrayList<>();
         HeaderCheckup checkup = new HeaderCheckup();
 
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
 
             String branch = CommonUtil.userBranchLogin();
             String unit = CommonUtil.userBranchNameLogin();
@@ -369,24 +448,24 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
             try {
                 checkup = checkupBoProxy.getDataDetailPasien(id);
-            }catch (GeneralBOException e){
-                logger.error("Found Error when search data detail pasien "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search data detail pasien " + e.getMessage());
             }
 
-            if(checkup != null){
+            if (checkup != null) {
 
                 Branch branches = new Branch();
 
                 try {
                     branches = branchBoProxy.getBranchById(branch, "Y");
-                }catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     logger.error("Found Error when searhc branch logo");
                 }
 
                 String logo = "";
 
-                if(branches != null){
-                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES+branches.getLogoName();
+                if (branches != null) {
+                    logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
                 }
 
                 UangMuka uangMuka = new UangMuka();
@@ -489,7 +568,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     }
 
     public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar){
-
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -504,7 +582,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             noNota = billingSystemBo.createInvoiceNumber(transId, branchId);
         } catch (GeneralBOException e){
             response.setStatus("error");
-            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " + e);
             return response;
         }
 
@@ -529,9 +607,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             kasirRawatJalanBo.updateNotaUangMukaById(uangMuka);
 
             response.setStatus("success");
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             response.setStatus("error");
-            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " +e);
+            response.setMsg("[KasirRawatJalanAction.saveUangMuka] ERROR " + e);
         }
         return response;
     }
@@ -580,7 +658,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup) throws JSONException{
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
@@ -600,6 +678,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         CrudResponse response = new CrudResponse();
         System.out.println(hsCriteria);
+
 //        response.setMsg(""+hsCriteria);
         if (!"Y".equalsIgnoreCase(withObat)){
             try {
@@ -612,9 +691,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
-                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR " +e);
+                response.setMsg("[KasirRawatJalanAction.savePembayaranTagihan] ERROR " + e);
             }
         } else {
             response.setStatus("error");

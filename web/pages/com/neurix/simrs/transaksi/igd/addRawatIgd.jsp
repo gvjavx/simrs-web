@@ -44,12 +44,14 @@
         });
     </script>
     <style>
+
         .btn{
             margin-top: 7px;
         }
         .form-control{
             margin-bottom: 7px;
         }
+
     </style>
 </head>
 

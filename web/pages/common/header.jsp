@@ -364,6 +364,7 @@ apply the skin class to the body tag so the changes take effect.
         -webkit-animation-delay: .33s;
         -webkit-animation-duration: 2.2s;
     }
+    .modal { overflow-y: auto}
 
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>

@@ -447,6 +447,7 @@ public class CheckupAction extends BaseMasterAction {
                     checkup.setNamaKota(online.getNamaKota());
                     checkup.setNamaProvinsi(online.getNamaProvinsi());
                     checkup.setAgama(online.getAgama());
+                    checkup.setNoCheckupOnline(online.getNoCheckupOnline());
 
                     List<HeaderCheckup> checkups = new ArrayList<>();
                     HeaderCheckup header = new HeaderCheckup();
@@ -954,10 +955,6 @@ public class CheckupAction extends BaseMasterAction {
                 checkup.setTglLahir(sqlDate);
             } catch (ParseException e) {
                 logger.error("[CheckupAction.saveAdd] Error Convert String Tgl Lahir to Date.", e);
-            }
-
-            if(getNoCheckupOnline() != null && !"".equalsIgnoreCase(getNoCheckupOnline())){
-                checkup.setNoCheckupOnline(getNoCheckupOnline());
             }
 
             Tindakan tindakan = new Tindakan();
@@ -2194,6 +2191,9 @@ public class CheckupAction extends BaseMasterAction {
                     oline.setNamaDokter(antianOnline.getNamaDokter());
                     String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(antianOnline.getLastUpdate());
                     oline.setTglDaftar(formatDate);
+                    oline.setJamAwal(antianOnline.getJamAwal());
+                    oline.setJamAkhir(antianOnline.getJamAkhir());
+                    oline.setStTglCheckup(antianOnline.getTglCheckup());
 
                 }
             }

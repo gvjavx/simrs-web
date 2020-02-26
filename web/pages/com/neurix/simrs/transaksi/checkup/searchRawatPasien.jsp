@@ -52,8 +52,8 @@
                                 <div class="input-group date">
                                     <input class="form-control" id="id_antrian" placeholder="Antrian Online"
                                            onchange="saveAntrian()">
-                                    <div class="input-group-btn" onclick="saveAntrian()">
-                                        <button class="btn btn-success" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
                                         <button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>
                                     </div>
                                 </div>
@@ -482,7 +482,7 @@
                                     <td><span id="an_jenis_kelamin"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="an_tgl"></span></td>
                                 </tr>
                                 <tr>
@@ -542,6 +542,29 @@
                 </button>
                 <button class="btn btn-success" id="save_aktif"><i class="fa fa-arrow-right"></i> Aktivasi</button>
                 <button class="btn btn-success" style="cursor: no-drop; display: none" id="load_aktif"><i class="fa fa-spinner fa-spin"></i> Sedang menyimpan...</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-validasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-warning"></i> Warning</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible">
+                        <p id="msg_app"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
             </div>
         </div>
     </div>
@@ -667,47 +690,72 @@
         }
     });
 
-
-    function  saveAntrian() {
+    function saveAntrian() {
         var noAntrian = $('#id_antrian').val();
         if(noAntrian != ''){
-            CheckupAction.getDetailAntrianOnline(noAntrian, function (response) {
-                if(response.noCheckupOnline != null){
-                    var tipe = "";
-                    if(response.idJenisPeriksaPasien == "bpjs"){
-                        tipe = "bpjs";
-                    }else{
-                        tipe = "umum";
+            $('#load_resep').show();
+            $('#save_resep').hide();
+            dwr.engine.setAsync(true);
+            CheckupAction.getDetailAntrianOnline(noAntrian, {callback: function (response) {
+
+                    if (response.noCheckupOnline != null) {
+                        console.log(response);
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        var hh = today.getHours();
+                        var min = today.getMinutes();
+                        var sec = today.getSeconds();
+                        var time = hh + ':' + min;
+                        today = mm + '-' + dd + '-' + yyyy;
+
+                        var today2 = new Date(response.stTglCheckup);
+                        var dd2 = String(today2.getDate()).padStart(2, '0');
+                        var mm2 = String(today2.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy2 = today2.getFullYear();
+                        today2 = mm2 + '-' + dd2 + '-' + yyyy2;
+
+                        var time = response.jamAwal;
+                        var char = time.split(":");
+                        var hh2 = char[0];
+                        var min2 = char[1];
+
+                        var tglDaftar = new Date(yyyy2, mm2, dd2, hh2, min2);
+                        console.log(tglDaftar);
+
+                        tglDaftar.setMinutes(tglDaftar.getMinutes() - 30);
+
+                        var tglToday = new Date(yyyy, mm, dd, hh, min);
+
+                        console.log(tglDaftar);
+                        console.log(tglToday);
+
+                        if (tglToday <= tglDaftar) {
+                            console.log("true");
+                            var tipe = "";
+
+                            if (response.idJenisPeriksaPasien == "bpjs") {
+                                tipe = "bpjs";
+                            } else {
+                                tipe = "umum";
+                            }
+
+                            window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
+                            $('#load_resep').hide();
+                            $('#save_resep').show();
+
+                        } else {
+                            $('#load_resep').hide();
+                            $('#save_resep').show();
+                            $('#modal-validasi').modal('show');
+                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!");
+                            console.log("false");
+                        }
+                    } else {
+                        $('#load_resep').hide();
+                        $('#save_resep').show();
                     }
-
-                    window.location.href = 'add_checkup.action?tipe='+tipe+'&noCheckupOnline='+response.noCheckupOnline;
-
-                    // $('#modal-antrian').modal({show:true, backdrop:'static'});
-                    // $('#an_no_checkup').text(response.noCheckupOnline);
-                    // $('#an_nik').text(response.noKtp);
-                    // $('#an_id_pasien').text(response.idPasien);
-                    // $('#an_nama').text(response.nama);
-                    // if(response.jenisKelamin == "P"){
-                    //     jenis = "Perempuan";
-                    // }else{
-                    //     jenis = "Laki-Laki";
-                    // }
-                    // $('#an_jenis_kelamin').text(jenis);
-                    // $('#an_tgl').text(response.tempatLahir+", "+$.datepicker.formatDate("dd-mm-yy",response.tglLahir));
-                    // $('#an_agama').text(response.agama);
-                    // $('#an_suku').text(response.suku);
-                    // $('#an_alamat').text(response.jalan);
-                    // $('#an_desa').text(response.namaDesa);
-                    // $('#an_kecamatan').text(response.namaKecamatan);
-                    // $('#an_kabupaten').text(response.namaKota);
-                    // $('#an_provinsi').text(response.namaProvinsi);
-                    // $('#an_tgl_daftar').text(response.tglDaftar);
-                    // $('#an_poli').text(response.namaPelayanan);
-                    // $('#an_dokter').text(response.namaDokter);
-                    //
-                    // $('#save_aktif').attr('onclick','saveAktivasi(\''+response.noCheckupOnline+'\')');
-                }else{
-
                 }
             });
         }

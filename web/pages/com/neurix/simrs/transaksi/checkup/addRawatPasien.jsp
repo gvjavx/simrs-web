@@ -131,6 +131,7 @@
             -ms-transform: rotate(180deg);
             transform: rotateZ(180deg);
         }
+
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -283,6 +284,22 @@
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', '');
 
+        }
+
+        function formatRupiah2(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
         }
 
 
@@ -803,12 +820,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Uang Muka</label>
-                                            <div class="col-md-8">
-                                                <s:textfield type="number" cssStyle="margin-top: 7px" name="headerCheckup.uangMuka" cssClass="form-control"/>
-                                            </div>
-                                        </div>
+                                        <%--<div class="form-group">--%>
+                                            <%--<label class="col-md-4" style="margin-top: 7px">Uang Muka</label>--%>
+                                            <%--<div class="col-md-8">--%>
+                                                <%--<s:textfield type="number" cssStyle="margin-top: 7px" name="headerCheckup.uangMuka" cssClass="form-control"/>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -977,7 +994,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">No PPK Rujukan</label>
                                             <div class="col-md-8">
-                                                <s:textfield name="headerCheckup.noPpkRujukan"
+                                                <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
@@ -988,7 +1005,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield name="headerCheckup.tglRujukan"
+                                                    <s:textfield name="headerCheckup.tglRujukan" id="tgl_rujukan"
                                                                  cssClass="form-control datepicker"
                                                                  onchange="$('#st_tgl_lahir').css('border','')"/>
                                                 </div>
@@ -1037,6 +1054,44 @@
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
+                            <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
+
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Metode pembayaran</label>
+                                            <div class="col-md-8">
+                                                <s:select
+                                                        list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                        cssStyle="margin-top: 7px"
+                                                        name="headerCheckup.metodePembayaran"
+                                                        headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+
+                                            <div class="col-md-8">
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        Rp.
+                                                    </div>
+                                                    <s:hidden name="headerCheckup.uangMuka" id="uang_muka_val"></s:hidden>
+                                                    <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="box-header with-border"></div>
                             <div class="box-body">
@@ -1427,6 +1482,18 @@
         initListDokter();
         console.log(isOnline);
 
+        var nominal = document.getElementById('uang_muka');
+        nominal.addEventListener('keyup', function (e) {
+            nominal.value = formatRupiah2(this.value);
+            var valBayar = nominal.value.replace(/[.]/g, '');
+
+            if(valBayar != ''){
+                $('#uang_muka_val').val(valBayar);
+            }else{
+                $('#uang_muka_val').val('');
+            }
+        });
+
 
     });
 
@@ -1507,8 +1574,11 @@
                         icon = "fa-info";
                         title = "Info!";
                         warnClass = "alert-success";
-                        msg = response.message;
+                        msg = "Nomor Rujukan Berhasil Diverifikasi..!";
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
+                        $('#ppk_rujukan').val(response.kdProviderProvUmum);
+                        $('#intansi_perujuk').val(response.namaProvPerujuk);
+                        $('#tgl_rujukan').val(response.tglCetakKartu);
                     }else{
                         val = "tidak ditemukan";
                         icon = "fa-warning";
