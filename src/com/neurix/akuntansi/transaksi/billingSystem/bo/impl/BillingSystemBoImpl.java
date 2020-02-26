@@ -101,17 +101,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             noNota = (String) data.get("bukti");
         }
 
-        //untuk closing pembayaran catatan diganti
-        if (data.get("metode_bayar")!=null){
-            String metodeBayar = (String) data.get("metode_bayar");
-            // tunai / transfer
-            if (("transfer").equalsIgnoreCase(metodeBayar)){
-                String bank = (String) data.get("bank");
-                catatanPembuatanJurnal="Pembayaran "+metodeBayar+" ke dalam Kas Bank "+bank;
-
-            }
-        }
-
         //mencari tipe jurnal Id
         try {
             tipeJurnalId = mappingJurnalDao.tipeJurnalByTransId(transId);
@@ -249,22 +238,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             rekeningId=rekeningIdPembayaran;
                         }
                     ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
-                    }else if (closing){
+                    }
+                    if (closing){
                         if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
                             rekeningId=rekeningIdKasPembayaran;
+                        }else{
+                            rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
                         }
                     }else{
-                    /////////////////////JIKA DARI JURNAL OTOMATIS //////////////////////////////////////////////////
-                        List<ImKodeRekeningEntity> kodeRekeningEntityList;
-                        try {
-                            kodeRekeningEntityList = kodeRekeningDao.getIdByCoa(mapping.getKodeRekening());
-                        } catch (HibernateException e) {
-                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                        }
-                        for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntityList){
-                            rekeningId = kodeRekeningEntity.getRekeningId();
-                        }
+                        rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
                     }
 
                     if (rekeningId !=null){
@@ -278,7 +260,13 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 jurnalDetailEntity.setMasterId(masterId);
                             }
                             if (("Y").equalsIgnoreCase(mapping.getBukti())){
-                                jurnalDetailEntity.setNoNota(noNota);
+                                if (noNota==null){
+                                    status="ERROR : dibutuhkan bukti ( Invoice )";
+                                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                }else{
+                                    jurnalDetailEntity.setNoNota(noNota);
+                                }
                             }
                             if (("D").equalsIgnoreCase(mapping.getPosisi())){
                                 jurnalDetailEntity.setJumlahDebit(biayaPembayaran);
@@ -348,5 +336,20 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
         }
+    }
+    private String getRekeningForMappingOtomatis(String kodeRekening){
+        String rekeningId=null;
+        /////////////////////JIKA DARI JURNAL OTOMATIS //////////////////////////////////////////////////
+        List<ImKodeRekeningEntity> kodeRekeningEntityList;
+        try {
+            kodeRekeningEntityList = kodeRekeningDao.getIdByCoa(kodeRekening);
+        } catch (HibernateException e) {
+            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntityList){
+            rekeningId = kodeRekeningEntity.getRekeningId();
+        }
+        return rekeningId;
     }
 }
