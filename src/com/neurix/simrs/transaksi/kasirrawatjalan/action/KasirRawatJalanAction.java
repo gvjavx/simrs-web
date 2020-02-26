@@ -658,7 +658,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup) throws JSONException {
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String type) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
@@ -688,6 +688,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                detailCheckup.setNoNota(billingSystemBo.createInvoiceNumber(type, branchId));
 
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");
