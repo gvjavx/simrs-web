@@ -952,6 +952,10 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
 
+
+        closingJurnalNonTunai(idDetailCheckup, poli, idPasien);
+
+
         if ("selesai".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai(ket);
             headerDetailCheckup.setCaraPasienPulang(caraPulang);
@@ -959,7 +963,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
-            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
+//            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
