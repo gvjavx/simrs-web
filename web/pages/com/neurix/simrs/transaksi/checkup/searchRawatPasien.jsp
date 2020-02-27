@@ -253,7 +253,7 @@
                                     <td align="center">
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                              src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>')">
+                                             style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')">
                                         <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
                                             <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
                                         <%--</s:url>--%>
@@ -572,7 +572,7 @@
 
 
 <script type='text/javascript'>
-    function detail_pasien(idCheckup) {
+    function detail_pasien(idCheckup, idDetail) {
         var table = "";
         var dataRiwayat = [];
         var dataPasien = [];
@@ -602,31 +602,31 @@
             var url = '<s:url value="/pages/images/icons8-search-25.png"/>';
             $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
 
-            CheckupAction.listDataPasien(idCheckup, function (response) {
-                dataPasien = response;
-                if (dataPasien != null) {
-                    $.each(dataPasien, function (i, item) {
-                        var tanggal = item.tglLahir;
+            CheckupAction.listDataPasien(idDetail, function (response) {
+                // dataPasien = response;
+                if (response != null) {
+                //     $.each(dataPasien, function (i, item) {
+                        var tanggal = response.tglLahir;
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                        noCheckup = item.noCheckup;
-                        nik = item.noKtp;
-                        namaPasien = item.nama;
+                        noCheckup = response.noCheckup;
+                        nik = response.noKtp;
+                        namaPasien = response.nama;
 
-                        if (item.jenisKelamin == "L") {
+                        if (response.jenisKelamin == "L") {
                             jenisKelamin = "Laki-Laki";
                         } else {
                             jenisKelamin = "Perempuan";
                         }
 
-                        tglLahir = item.tempatLahir + ", " + dateFormat;
-                        agama = item.agama;
-                        suku = item.suku;
-                        alamat = item.jalan;
-                        provinsi = item.namaProvinsi;
-                        kabupaten = item.namaKota;
-                        kecamatan = item.namaKecamatan;
-                        desa = item.namaDesa;
-                    });
+                        tglLahir = response.tempatLahir + ", " + dateFormat;
+                        agama = response.agama;
+                        suku = response.suku;
+                        alamat = response.jalan;
+                        provinsi = response.namaProvinsi;
+                        kabupaten = response.namaKota;
+                        kecamatan = response.namaKecamatan;
+                        desa = response.namaDesa;
+                    // });
                 }
             });
 
@@ -746,10 +746,11 @@
                             $('#save_resep').show();
 
                         } else {
+                            $('#id_antrian').val('');
                             $('#load_resep').hide();
                             $('#save_resep').show();
                             $('#modal-validasi').modal('show');
-                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!");
+                            $('#msg_app').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan daftar manual.");
                             console.log("false");
                         }
                     } else {
