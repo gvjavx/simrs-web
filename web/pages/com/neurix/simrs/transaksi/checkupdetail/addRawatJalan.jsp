@@ -1775,7 +1775,7 @@
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 $('#info_dialog').dialog('open');
                 $('#close_pos').val(6);
                 $('#save_ket').show();
@@ -1786,7 +1786,7 @@
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 $('#info_dialog').dialog('open');
                 $('#close_pos').val(6);
                 $('#save_ket').show();

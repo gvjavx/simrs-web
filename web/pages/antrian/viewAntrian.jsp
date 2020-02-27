@@ -193,25 +193,19 @@
 
             CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
-
-                    var tes = "";
+                    var pol = "";
                     $.each(response, function (i, item) {
-
-                        var pelayanan = "";
-                        // console.log(tes);
-                        // console.log(tes2);
-                        tes = item.namaPelayanan;
-
-                        if(tes == item.namaPelayanan){
-                            tes = "";
+                        if(response.length = 0){
+                            pol = item.namaPelayanan;
                         }else{
-                            tes = item.namaPelayanan;
-
+                            if(response[response.length - 1] == item.namaPelayanan){
+                                pol = "";
+                            }else{
+                                pol = item.namaPelayanan;
+                            }
                         }
+                        console.log(pol);
 
-                        console.log(tes);
-                        // if(item[i].namaPelayan);
-                        console.log();
                         tableAntrian += '<tr>' +
                             '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+

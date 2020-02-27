@@ -968,8 +968,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("rujuk".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
             headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
-//            headerDetailCheckup.setMetodePembayaran(metodeBayar);
-//            headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
