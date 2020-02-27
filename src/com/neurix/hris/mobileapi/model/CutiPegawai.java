@@ -22,6 +22,15 @@ public class CutiPegawai implements Serializable {
     private String sisaCuti;
     private String keteranganReject;
     private String keteranganCuti;
+    private String profesiId;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public void setKeteranganReject(String keteranganReject) {
         this.keteranganReject = keteranganReject;
