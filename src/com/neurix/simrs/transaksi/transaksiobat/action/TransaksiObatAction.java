@@ -8,7 +8,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -692,6 +694,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         obatDetail.setLastUpdateWho(userLogin);
 
         try {
+
+            // create jurnal Pengeluaran Obat Apotik
+            response = createJurnalPengeluaranObatApotik(idApproval);
+            if ("error".equalsIgnoreCase(response.getStatus())){
+                return response;
+            }
+
             transaksiObatBo.saveApproveResepPoli(obatDetail);
 
             response.setStatus(SUCCESS);
@@ -706,6 +715,59 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
+        return response;
+    }
+
+    private CheckObatResponse createJurnalPengeluaranObatApotik(String idApprove){
+
+        CheckObatResponse response = new CheckObatResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        BigDecimal biayaPersediaan = new BigDecimal(0);
+        List<Map> listMapPersediaan = new ArrayList<>();
+        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListRiwayatPembelianObat(idApprove);
+        if (transaksiObatDetails.size() > 0){
+            for (TransaksiObatDetail trans : transaksiObatDetails){
+
+                BigDecimal hargaRata = new BigDecimal(0);
+                ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(trans.getIdBarang());
+                if (obatEntity != null){
+                    if ("box".equalsIgnoreCase(trans.getJenisSatuan()))
+                        hargaRata = obatEntity.getAverageHargaBox();
+                    if ("lembar".equalsIgnoreCase(trans.getJenisSatuan()))
+                        hargaRata = obatEntity.getAverageHargaLembar();
+                    if ("biji".equalsIgnoreCase(trans.getJenisSatuan()))
+                        hargaRata = obatEntity.getAverageHargaBiji();
+                }
+
+                BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+                biayaPersediaan = biayaPersediaan.add(hargaTotal);
+
+                Map mapPersediaanObat = new HashMap();
+                mapPersediaanObat.put("kd_barang", trans.getIdBarang());
+                mapPersediaanObat.put("nilai", hargaTotal);
+                listMapPersediaan.add(mapPersediaanObat);
+            }
+        }
+
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("biaya_persediaan_obat", biayaPersediaan);
+        mapJurnal.put("persediaan_apotik", listMapPersediaan);
+
+        String branchId = CommonUtil.userBranchLogin();
+        String catatan = "Pengeluaran Obat Apotik "+branchId;
+        try {
+            billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y", "");
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            response.setStatus("error");
+            response.setMessage("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR when search list obat, " + e.getMessage());
+            logger.error("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR when search list obat, ", e);
+            return response;
+        }
         return response;
     }
 

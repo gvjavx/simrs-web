@@ -2,6 +2,7 @@ package com.neurix.simrs.master.obat.bo;
 
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 
@@ -23,4 +24,6 @@ public interface ObatBo{
 
     public List<Obat> getEntityObatByCriteria(Obat bean) throws GeneralBOException;
     public List<Obat> getListObatGroup(Obat bean) throws GeneralBOException;
+    public List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException;
+    public ImSimrsObatEntity getObatByIdBarang(String idBarang) throws GeneralBOException;
 }
