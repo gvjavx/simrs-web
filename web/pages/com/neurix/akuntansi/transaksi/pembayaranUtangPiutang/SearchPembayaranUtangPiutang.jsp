@@ -214,7 +214,7 @@
                                                                 </s:if>
                                                                 <s:else>
                                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-posting">
-                                                                        <img border="0" src="<s:url value="/pages/images/tambah_flat.png"/>" name="icon_edit" style="width: 30px">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_closed.ico"/>" name="icon_edit" style="width: 30px">
                                                                     </a>
                                                                 </s:else>
                                                             </display:column>

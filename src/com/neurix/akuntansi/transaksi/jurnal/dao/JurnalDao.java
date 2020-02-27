@@ -63,8 +63,8 @@ public class JurnalDao extends GenericDao<ItJurnalEntity, String> {
         String tahun = dfTahun.format(date);
         String bulan = dfBulan.format(date);
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%07d", iter.next());
+        String sId = String.format("%05d", iter.next());
 
-        return "J"+tahun+bulan+sId;
+        return tahun+bulan+sId;
     }
 }

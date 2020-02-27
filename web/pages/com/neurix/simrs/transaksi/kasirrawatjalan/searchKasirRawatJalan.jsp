@@ -580,10 +580,10 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
-                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
-                    mapBiaya.push({"type":"total_obat", "nilai":totalObat});
-                    mapBiaya.push({"type":"ppn", "nilai":totalObat*0.1});
+                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
+                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
                 }
             });
 
@@ -634,8 +634,6 @@
                         '</tr>';
                 });
 
-                mapBiaya.push({"type":"total_obat", "nilai":total});
-                mapBiaya.push({"type":"ppn", "nilai":ppn});
             }
         });
 

@@ -570,7 +570,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return detailCheckups;
     }
 
-    public BigDecimal getSumAllTarifTindakan(String idDetail){
+    public BigDecimal getSumAllTarifTindakan(String idDetail, String ket){
         String SQL = "SELECT \n" +
                 "id_detail_checkup,\n" +
                 "SUM(total_tarif) as total_tarif\n" +
@@ -578,10 +578,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "it_simrs_riwayat_tindakan\n" +
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
+                "AND keterangan = :ket" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetail)
+                .setParameter("ket", ket)
                 .list();
 
         BigDecimal jumlah = new BigDecimal(0);

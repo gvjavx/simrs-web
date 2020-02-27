@@ -504,28 +504,6 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 pembayaranUtangPiutangDetailEntity.setCreatedDate(bean.getCreatedDate());
                 pembayaranUtangPiutangDetailEntity.setLastUpdate(bean.getLastUpdate());
 
-
-                // Cek apakah nota sudah pernah dibayarkan sebelumnya
-                Map hsCriteria = new HashMap();
-                hsCriteria.put("rekening_id",data.getRekeningId());
-                hsCriteria.put("master_id",data.getMasterId());
-                hsCriteria.put("no_nota",data.getNoNota());
-                hsCriteria.put("flag","Y");
-
-                try {
-                    List<ItJurnalDetailEntity> jurnalDetailEntityList = jurnalDetailDao.getByCriteria(hsCriteria);
-                    if (jurnalDetailEntityList.size()!=0){
-                        for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
-                            jurnalId=null;
-                            logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, duplicate pembayaran");
-                            throw new GeneralBOException("sudah pernah dibayarkan dengan nomor jurnal "+jurnalDetailEntity.getNoJurnal()+", please info to your admin...");
-                        }
-                    }
-                } catch (HibernateException e) {
-                    logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
-                }
-
                 try {
                     // insert into database
                     pembayaranUtangPiutangDetailDao.addAndSave(pembayaranUtangPiutangDetailEntity);
