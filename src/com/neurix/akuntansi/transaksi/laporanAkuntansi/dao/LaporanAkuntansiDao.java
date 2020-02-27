@@ -84,14 +84,6 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      inner join im_akun_master d on b.master_id = d.nomor_master \n" +
                 "\t  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id\n" +
                 "      INNER JOIN (\n" +
-                "\t  \tSELECT\n" +
-                "\t\t  *\n" +
-                "\t\tFROM\n" +
-                "\t\t\tim_akun_setting_aging_tipe_jurnal\n" +
-                "\t\tWHERE\n" +
-                "\t\t  tipe_aging='"+tipeAging+"' AND flag='Y'\n" +
-                "\t  ) saj ON saj.tipe_jurnal_id=a.tipe_jurnal_id AND saj.rekening_id=b.rekening_id\n" +
-                "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
                 "        from \n" +
@@ -108,8 +100,15 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    cast(tgljurnal as TEXT), \n" +
                 "    'MM-yyyy'\n" +
                 "  ) < (\n" +
-                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month'\n" +
-                "  ) \n" +
+                "    to_date('"+periode+"', 'MM-yyyy')+ Interval '1 month') " +
+                "and rekening_id IN (\n" +
+                "                select\n" +
+                "                    rekening_id\n" +
+                "                from\n" +
+                "                    im_akun_report_detail\n" +
+                "                where\n" +
+                "                    report_id='"+reportId+"'\n" +
+                "            )\n" +
                 tipeWhere +
                 "order by \n" +
                 "  mastergrp, \n" +

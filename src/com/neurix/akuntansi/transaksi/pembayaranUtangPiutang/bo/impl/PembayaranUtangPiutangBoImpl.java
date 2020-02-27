@@ -279,7 +279,8 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setTipeTransaksi(pembayaranUtangPiutangEntity.getTipeTransaksi());
                     returnPembayaranUtangPiutang.setTanggal(pembayaranUtangPiutangEntity.getTanggal());
                     returnPembayaranUtangPiutang.setStTanggal(CommonUtil.convertDateToString(pembayaranUtangPiutangEntity.getTanggal()));
-                    returnPembayaranUtangPiutang.setKodeRekeningKas(pembayaranUtangPiutangEntity.getKodeRekeningKas());
+                    returnPembayaranUtangPiutang.setMetodePembayaran(pembayaranUtangPiutangEntity.getMetodeBayar());
+                    returnPembayaranUtangPiutang.setBank(pembayaranUtangPiutangEntity.getBank());
                     returnPembayaranUtangPiutang.setBayar(pembayaranUtangPiutangEntity.getBayar());
                     returnPembayaranUtangPiutang.setStBayar(CommonUtil.numbericFormat(pembayaranUtangPiutangEntity.getBayar(), "###,###"));
                     returnPembayaranUtangPiutang.setKeterangan(pembayaranUtangPiutangEntity.getKeterangan());
@@ -325,8 +326,8 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
 
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList ;
         try {
-
-            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,branchId);
+            String tipeBayar = transDao.getTipeBayarByTransId(transaksiId);
+            pembayaranUtangPiutangDetailList = pembayaranUtangPiutangDao.getSearchNotaPembayaran(masterId,transaksiId,branchId,tipeBayar);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.getSearchPembayaranUtangPiutangByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -342,6 +343,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(",","."));
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(returnPembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(" ",""));
+                returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(returnPembayaranUtangPiutangDetail.getStJumlahPembayaran().replace("-",""));
                 listOfResult.add(returnPembayaranUtangPiutangDetail);
             }
         }
@@ -463,7 +465,8 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             imPembayaranUtangPiutangEntity.setPembayaranUtangPiutangId(pembayaranUtangPiutangId);
             imPembayaranUtangPiutangEntity.setTipeTransaksi(bean.getTipeTransaksi());
             imPembayaranUtangPiutangEntity.setTanggal(bean.getTanggal());
-            imPembayaranUtangPiutangEntity.setKodeRekeningKas(bean.getKodeRekeningKas());
+            imPembayaranUtangPiutangEntity.setMetodeBayar(bean.getMetodePembayaran());
+            imPembayaranUtangPiutangEntity.setBank(bean.getBank());
             imPembayaranUtangPiutangEntity.setBayar(bean.getBayar());
             imPembayaranUtangPiutangEntity.setKeterangan(bean.getKeterangan());
             imPembayaranUtangPiutangEntity.setNoSlipBank(bean.getNoSlipBank());

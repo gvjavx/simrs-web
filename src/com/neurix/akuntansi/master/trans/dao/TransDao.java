@@ -61,4 +61,17 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
 
         return sId;
     }
+
+    public String getTipeBayarByTransId(String transId){
+        String result="";
+        String query = "  select tipe_pembayaran from im_akun_trans where trans_id='"+transId+"' and flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
 }
