@@ -210,7 +210,7 @@
                                         </div>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>
                                         <s:hidden name="transaksiObatDetail.totalBayar" id="total_bayar"/>
-                                        <s:hidden name="transaksiObatDetail.ppnBayar" id="total_bayar"/>
+                                        <s:hidden name="transaksiObatDetail.ppnBayar" id="ppn_bayar"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
