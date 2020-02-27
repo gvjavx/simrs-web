@@ -963,9 +963,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public BigDecimal getSumJumlahTindakan(String idDetailCheckup) {
-        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup);
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup, ket);
     }
+
 
     @Override
     public String findResep(String idDetailCheckup) {
