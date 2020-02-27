@@ -388,7 +388,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 }
             }
             //Pengecekan apakah antara debet dan kredit sudah balance
-            if (totalBayar.equals(new BigDecimal(0))){
+            if (totalBayar.compareTo(new BigDecimal(0)) == 0){
                 for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                     /////////////////////// Save data ///////////////////////
                     try {
