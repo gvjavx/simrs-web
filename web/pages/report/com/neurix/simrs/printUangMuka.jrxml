@@ -28,6 +28,7 @@
 		<field name="jumlah" class="java.lang.Integer"/>
 		<field name="noNota" class="java.lang.String"/>
 		<field name="id" class="java.lang.String"/>
+		<field name="dibayar" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
@@ -283,7 +284,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="21" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="120" height="21" uuid="e73d1cb5-2de8-481d-8cfc-9e83be7f7c9f"/>
 								<box>
@@ -311,7 +312,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="21" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="131" height="21" uuid="5ed829cf-a134-4a1b-a8c2-645235f8411a"/>
 								<box>
@@ -339,7 +340,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="21" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="185" height="21" uuid="941e0027-2ae2-4f7b-8588-0a5ab826fa72"/>
 								<box>
@@ -367,7 +368,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="21" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="117" height="21" uuid="4057451f-1b9e-4504-aadd-3313e7807948"/>
 								<box rightPadding="20">
@@ -377,7 +378,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{dibayar} == null ? '' : $F{dibayar}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

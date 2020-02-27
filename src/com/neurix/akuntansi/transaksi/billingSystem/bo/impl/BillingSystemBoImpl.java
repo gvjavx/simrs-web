@@ -389,7 +389,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             }
             //Pengecekan apakah antara debet dan kredit sudah balance
             BigDecimal balance = totalDebit.subtract(totalKredit);
-            if (balance.equals(new BigDecimal(0))){
+            if (balance.compareTo(new BigDecimal(0)) == 0){
                 for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                     /////////////////////// Save data ///////////////////////
                     try {

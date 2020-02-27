@@ -193,31 +193,26 @@
 
             CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
-
+                    var pol = "";
                     $.each(response, function (i, item) {
 
-                        var pelayanan = "";
+                        if(i == 0){
 
-                        // if(item.namaPelayanan != null){
-                        //     pelayanan = item.namaPelayanan;
-                        //     poli = item.namaPelayanan;
-                        // }
-
-                        if(poli != ''){
+                            pol = item.namaPelayanan;
 
                         }else{
-                            poli
+                            var tes = item.namaPelayanan;
+                            var tes2 = response[i - 1]["namaPelayanan"];
+
+                            if(tes == tes2){
+                                pol = "";
+                            }else{
+                                pol = item.namaPelayanan;
+                            }
                         }
 
-                        // if(poli == pelayanan){
-                        //     poli = "kosong";
-                        // }
-                        console.log(poli);
-
-                        // if()
-
                         tableAntrian += '<tr>' +
-                            '<td>'+pelayanan.toUpperCase()+'</td>'+
+                            '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
                             '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +

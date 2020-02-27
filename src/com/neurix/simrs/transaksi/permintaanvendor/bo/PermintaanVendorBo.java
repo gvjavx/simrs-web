@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -26,4 +27,6 @@ public interface PermintaanVendorBo {
     public List<TransaksiObatDetail> getListTransByBatchSorted(List<TransaksiObatDetail> obatDetails, Integer noBatch, String isApprove) throws GeneralBOException;
     public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, Date expDate) throws GeneralBOException;
     public List<TransaksiObatDetail> getListApprovedBatch(String idPermintaanObat, Integer noBatch) throws GeneralBOException;
+
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor) throws GeneralBOException;
 }

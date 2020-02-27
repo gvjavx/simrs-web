@@ -169,7 +169,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 					<jr:codeExpression><![CDATA[$P{reportParams.resepId}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
-			<image>
+			<image onErrorType="Icon">
 				<reportElement x="0" y="0" width="94" height="39" uuid="3db88b72-b9cb-4b42-a98b-e14127f84db9"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>

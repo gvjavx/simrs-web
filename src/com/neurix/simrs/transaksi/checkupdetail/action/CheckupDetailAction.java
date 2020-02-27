@@ -43,6 +43,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -923,7 +924,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien) {
+    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -958,14 +959,21 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
-            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
         }
         if ("rujuk".equalsIgnoreCase(idKtg)) {
+            headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
             headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
+        }
+
+        // save approve tindakan
+        saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
+        // create jurnal if non tunai
+        if ("non_tunai".equalsIgnoreCase(jenisBayar)){
+            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -983,13 +991,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
             status = "sukses";
         } else if ("rujuk".equalsIgnoreCase(idKtg)) {
-            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar);
+            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
             status = "sukses";
         } else {
             status = "sukses";
         }
 
-        saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
         updateFlagPeriksaAntrianOnline(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
@@ -1021,33 +1028,110 @@ public class CheckupDetailAction extends BaseMasterAction {
         String ketResep = "";
         if (pelayanans.size() > 0){
             Pelayanan pelayananData = pelayanans.get(0);
-            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setStatusBayar("Y");
+            List<HeaderDetailCheckup> detailCheckupUangMuka = checkupDetailBo.getListUangPendaftaran(headerDetailCheckup);
+
+
+            // mencari jumlah um dan no bukti uang muka
+            BigDecimal jumlahUm = new BigDecimal(0);
+            String idUm = "";
+            if (detailCheckupUangMuka.size() > 0){
+                for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka){
+                    jumlahUm = new BigDecimal(detailCheckup.getJumlahUangMukaDibayar());
+                    idUm = detailCheckup.getNoUangMuka();
+                }
+            }
+
+            // get all sum tindakan, sum resep
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
+            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal ppnObat = new BigDecimal(0);
+            if (jumlahResep.compareTo(new BigDecimal(0)) == 1){
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.01));
+            }
+
+            // jumlah tindakan saja. tindakan total - jumlah resep
+            jumlahTindakan = jumlahTindakan.subtract(jumlahResep);
+
+            Map mapUangMuka = new HashMap();
+            mapUangMuka.put("bukti", idUm);
+            mapUangMuka.put("nilai", jumlahUm);
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+            // jumlah debit uang muka
+            hsCriteria.put("uang_muka", mapUangMuka);
+
+            BigDecimal jumlah = new BigDecimal(0);
+
+            if ("Y".equalsIgnoreCase(isResep) && "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
+                ketResep = "Dengan Obat";
+
+                // kredit jumlah obat
+                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
+                // kredit ppn
+                hsCriteria.put("jumlah_ppn_obat", ppnObat);
+
+                // jika ada resep dan ppn untuk debit piutang
+                jumlah = jumlah.add(jumlahResep.add(ppnObat));
+            } else {
+                ketResep = "Tanpa Obat";
+            }
+
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())){
                 kode = "JRJ";
                 ketPoli = "Rawat Jalan";
             }
-            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
                 kode = "JRI";
                 ketPoli = "Rawat Inap";
             }
 
-            String isResep = checkupDetailBo.findResep(idDetailCheckup);
-            if ("Y".equalsIgnoreCase(isResep)){
-                transId = "04";
-                ketResep = "Tanpa Obat";
-            } else {
-                transId = "05";
-                ketResep = "Dengan Obat";
+            // tambahkan jumlah tindakan juga untuk debit piutang
+            jumlah = jumlah.add(jumlahTindakan);
+
+            // create invoice nummber
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+            if ("JRJ".equalsIgnoreCase(kode)) {
+
+                // create list map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
+
+                if ("Y".equalsIgnoreCase(isResep)){
+                    transId = "05";
+                } else {
+                    transId = "04";
+                }
+
+            }
+            if ("JRI".equalsIgnoreCase(kode)) {
+
+                // create map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_inap_non_bpjs", jumlahTindakan);
+                transId = "07";
             }
 
-            BigDecimal jumlah = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup);
-
-            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
-            hsCriteria.put("bukti", invoice);
-            hsCriteria.put("kurang_bayar", jumlah);
-
-            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No RM Pasien "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
             } catch (GeneralBOException e){
@@ -1364,7 +1448,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
 
-    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar) {
+    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1649,7 +1733,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                     //=====START SET TARIF BPJS DARI E-KLAIM====
 
                                                     headerDetailCheckup.setTarifBpjs(tarifCbg);
-                                                    headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
 
                                                     //=====END SET TARIF BPJS DARI E-KLAIM=====
 
@@ -1696,6 +1779,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
+                        headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+
+                        if(uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
+                            headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
+                        }
+
+                        headerDetailCheckup.setMetodePembayaran(metodeBayar);
 //                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
 
                         try {

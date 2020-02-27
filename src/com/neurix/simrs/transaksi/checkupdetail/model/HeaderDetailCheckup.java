@@ -84,6 +84,7 @@ public class HeaderDetailCheckup extends BaseModel{
     private String jenisPembayaran;
     private String noUangMuka;
     private BigInteger jumlahUangMuka;
+    private BigInteger jumlahUangMukaDibayar;
 
     private String notLike;
 
@@ -99,6 +100,23 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String noCheckupOnline;
     private String metodePembayaran;
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public BigInteger getJumlahUangMukaDibayar() {
+        return jumlahUangMukaDibayar;
+    }
+
+    public void setJumlahUangMukaDibayar(BigInteger jumlahUangMukaDibayar) {
+        this.jumlahUangMukaDibayar = jumlahUangMukaDibayar;
+    }
 
     public String getNoNota() {
         return noNota;

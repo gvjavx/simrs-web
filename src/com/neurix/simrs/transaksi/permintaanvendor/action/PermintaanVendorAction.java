@@ -8,6 +8,8 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
+import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -373,6 +375,8 @@ public class PermintaanVendorAction extends BaseMasterAction {
         logger.info("[PermintaanVendorAction.search] END process <<<");
         return "search";
     }
+
+
 
     @Override
     public String initForm() {
@@ -927,6 +931,33 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
         logger.info("[PermintaanVendorAction.getListDetailObatApproved] END <<<<<<<");
         return obatDetailList;
+    }
+
+    public CrudResponse closeAndCreateJurnal(String idPreOrder){
+
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
+
+        return response;
+    }
+
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor){
+
+        CrudResponse response = new CrudResponse();
+        if(idPermintaanVendor != null && !"".equalsIgnoreCase(idPermintaanVendor)){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+            try {
+                response = permintaanVendorBo.tutupPurchaseOrder(idPermintaanVendor);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search permintaan vendor "+e.getMessage());
+            }
+        }
+        return response;
     }
 
     @Override

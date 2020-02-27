@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.2100000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="281"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -67,6 +67,7 @@
 		<field name="jumlah" class="java.lang.Integer"/>
 		<field name="noNota" class="java.lang.String"/>
 		<field name="id" class="java.lang.String"/>
+		<field name="dibayar" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
@@ -88,6 +89,7 @@
 	<parameter name="reportParams.listUangMuka" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="reportParams.totalJasa" class="java.lang.Integer"/>
 	<parameter name="reportParams.terbilang" class="java.lang.String"/>
+	<parameter name="reportParams.invoice" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -302,6 +304,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="415" y="54" width="123" height="20" uuid="078997e0-f254-4fd2-83a5-b0a2fa873cfb"/>
+				<box leftPadding="0" bottomPadding="5"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.invoice} == null ? "" : $P{reportParams.invoice}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
@@ -416,7 +426,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{dibayar}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

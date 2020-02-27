@@ -322,6 +322,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 totalJasa = tarifJasa.subtract(new BigDecimal(tarifUangMuka));
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
+                reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
@@ -380,7 +381,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BigInteger total = new BigInteger(String.valueOf("0"));
         if (uangMukaList != null && uangMukaList.size() > 0) {
             for (UangMuka trans : uangMukaList) {
-                total = total.add(trans.getJumlah());
+                total = total.add(trans.getDibayar());
             }
         }
         return total;
@@ -568,7 +569,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank){
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -588,12 +589,16 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
-//        hsCriteria.put("master_id", idPasien);
-//        hsCriteria.put("no_nota", noNota);
-//        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("bukti", id);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("metode_bayar", metodeBayar);
+        hsCriteria.put("bank", kodeBank);
+
+        Map mapUangMuka = new HashMap();
+        mapUangMuka.put("bukti", id);
+        mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
+
+        hsCriteria.put("uang_muka", mapUangMuka);
+        hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y");
@@ -659,37 +664,92 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type) throws JSONException {
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("no_nota", noNota);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
         String branchId = CommonUtil.userBranchLogin();
 
+        BigDecimal uangMuka = new BigDecimal(0);
+        BigDecimal uangPiutang = new BigDecimal(0);
+        BigDecimal uangPendapatan = new BigDecimal(0);
+
+        // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
+
+            if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())){
+                uangMuka = new BigDecimal(obj.getLong("nilai"));
+            } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())){
+                uangPiutang = new BigDecimal(obj.getLong("nilai"));
+            } else {
+                hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
+            }
         }
+
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         CrudResponse response = new CrudResponse();
-        System.out.println(hsCriteria);
 
-//        response.setMsg(""+hsCriteria);
-        if (!"Y".equalsIgnoreCase(withObat)){
+        String ketTerangan = "";
+        String transId = "";
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)){
+            transId = "18";
+            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
+        }
+        if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+            transId = "19";
+            ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+        }
+        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+            transId = "20";
+            ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
+        }
+
+        // jika piutang
+        String invNumber = "";
+        if ("non_tunai".equalsIgnoreCase(jenis)){
+            transId = "11";
+            ketTerangan = "Pembayaran Piutang Pasien Umum";
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+            List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getByCriteria(detailCheckup);
+            if (detailCheckups.size() > 0){
+                for (HeaderDetailCheckup data : detailCheckups){
+                    invNumber = data.getNoNota();
+                }
+            }
+
+            // map piutang
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", invNumber);
+            mapPiutang.put("nilai", uangPiutang);
+
+            hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+        } else {
+            // jika bukan piutang maka pakai map uang muka
+            Map mapUangMuka = new HashMap();
+            mapUangMuka.put("bukti", noNota);
+            mapUangMuka.put("nilai", uangMuka);
+
+            hsCriteria.put("uang_muka", mapUangMuka);
+        }
+
+        if (!"".equalsIgnoreCase(transId)){
             try {
                 String text="";
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y");
+                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk RM pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
