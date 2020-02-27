@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.2100000000000009"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="3"/>
+	<property name="ireport.y" value="88"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -151,14 +151,14 @@
 				<reportElement x="0" y="72" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="100" width="120" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
+				<reportElement x="0" y="120" width="120" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="120" width="120" height="20" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
+				<reportElement x="0" y="140" width="120" height="20" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
@@ -179,28 +179,28 @@
 				<text><![CDATA[Jenis Pasien]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="80" width="120" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
+				<reportElement x="0" y="100" width="120" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[NIK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="80" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
+				<reportElement x="120" y="100" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="100" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
+				<reportElement x="120" y="120" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="120" width="5" height="20" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
+				<reportElement x="120" y="140" width="5" height="20" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
@@ -221,7 +221,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="125" y="80" width="189" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<reportElement x="125" y="100" width="189" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
@@ -229,7 +229,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="125" y="100" width="189" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<reportElement x="125" y="120" width="189" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
@@ -237,7 +237,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="125" y="120" width="189" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<reportElement x="125" y="140" width="189" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
@@ -305,13 +305,27 @@
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="54" width="123" height="20" uuid="078997e0-f254-4fd2-83a5-b0a2fa873cfb"/>
-				<box leftPadding="0" bottomPadding="5"/>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
+				<reportElement x="125" y="80" width="189" height="20" uuid="82e85134-9b7e-4742-a76e-1e742cb18676"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.invoice} == null ? "" : $P{reportParams.invoice}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="120" y="80" width="5" height="20" uuid="34a3a4fa-b227-4cf6-9f36-5c8682746ad7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="120" height="20" uuid="6dd2b8ef-6ede-4428-a003-bf62a697d1e5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[No Invoice]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
