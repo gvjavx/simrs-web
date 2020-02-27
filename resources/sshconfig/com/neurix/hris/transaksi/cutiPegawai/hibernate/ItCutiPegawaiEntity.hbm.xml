@@ -80,6 +80,9 @@
         <property name="bagianId">
             <column name="bagian_id" sql-type="varchar" length="10"  />
         </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="10"  />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

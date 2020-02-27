@@ -53,8 +53,13 @@
             var cutiid = document.getElementById("cutiId").value;
             var tanggalAwal    = document.getElementById("tgl2").value;
             var tanggalAkhir  = document.getElementById("tgl1").value;
+            var sisaCuti  = document.getElementById("sisaCuti").value;
+            var lamaCuti  = document.getElementById("lamaCuti").value;
             var ket="";
             var cek="";
+            var intSisaCuti = parseInt(sisaCuti);
+            var intLamaCuti = parseInt(lamaCuti);
+            var todayDate = new Date().toISOString().slice(0,10);
             LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
                 if (data != "") {
                     ket=data;
@@ -65,47 +70,65 @@
                   cek = data;
               }
             });
-            if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
-                }
-            } else {
-                event.originalEvent.options.submit = false;
-                var msg = "";
-                if ( unitid == '') {
-                    msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
-                }
-                if ( nipid == '') {
-                    msg += 'Field <strong>NIP</strong> is required.' + '<br/>';
-                }
-                if ( cutiid == '') {
-                    msg += 'Field <strong>Cuti</strong> is required.' + '<br/>';
-                }
-                if ( tanggalAwal == '') {
-                    msg += 'Field <strong>Tanggal awal</strong> is required.' + '<br/>';
-                }
-                if ( tanggalAkhir == '') {
-                    msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
-                }
-                if (ket != "") {
-                    $('#tgl1').val("");
-                    $('#tgl2').val("");
-                    $('#lamaCuti').val("");
-                    msg += '<strong>'+ket+'</strong>' + '<br/>';
-                }
-                if ( cek != '') {
-                    msg += 'Ada cuti yang masih di ajukan<br/>';
-                }
-                document.getElementById('errorMessageAddCuti').innerHTML = msg;
-
+            if (intSisaCuti - intLamaCuti <=0){
+                var sisaCutiMsg ='Maaf, Cuti Yg Anda Ajukan melebihi Sisa Cuti Anda';
+                document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
                 $.publish('showErrorValidationDialog');
+                event.originalEvent.options.submit = false;
 
             }
+            else{
+                CutiPegawaiAction.cekStatusTanggal(tanggalAwal, function(data){
+                    if (data=='boleh'){
+                        if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        } else {
+                            event.originalEvent.options.submit = false;
+                            var msg = "";
+                            if ( unitid == '') {
+                                msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                            }
+                            if ( nipid == '') {
+                                msg += 'Field <strong>NIP</strong> is required.' + '<br/>';
+                            }
+                            if ( cutiid == '') {
+                                msg += 'Field <strong>Cuti</strong> is required.' + '<br/>';
+                            }
+                            if ( tanggalAwal == '') {
+                                msg += 'Field <strong>Tanggal awal</strong> is required.' + '<br/>';
+                            }
+                            if ( tanggalAkhir == '') {
+                                msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
+                            }
+                            if (ket != "") {
+                                $('#tgl1').val("");
+                                $('#tgl2').val("");
+                                $('#lamaCuti').val("");
+                                msg += '<strong>'+ket+'</strong>' + '<br/>';
+                            }
+                            if ( cek != '') {
+                                msg += 'Ada cuti yang masih di ajukan<br/>';
+                            }
+                            document.getElementById('errorMessageAddCuti').innerHTML = msg;
+                            $.publish('showErrorValidationDialog');
+                        }
+                    }else{
+                        var msg2 ='Maaf, Tanggal Pengajuan Cuti Harus Kurang Dari Tanggal Awal Cuti';
+                        document.getElementById('errorMessageAddCuti').innerHTML = msg2;
+                        $.publish('showErrorValidationDialog');
+                        event.originalEvent.options.submit = false;
+                    }
+                });
+
+            }
+
         });
 
         $.subscribe('beforeProcessDeleteCuti', function (event, data) {
@@ -199,6 +222,19 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>Bidang :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                <s:select list="#comboDivisi.listComboDepartment" id="divisiId12" name="cutiPegawai.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                <s:textfield  id="divisiId33" name="cutiPegawai.divisiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Jabatan :</small></label>
                         </td>
                         <td>
@@ -212,14 +248,14 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Bidang :</small></label>
+                            <label class="control-label"><small>Profesi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                <s:select list="#comboDivisi.listComboDepartment" id="divisiId12" name="cutiPegawai.divisiId" disabled="true"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
-                                <s:textfield  id="divisiId33" name="cutiPegawai.divisiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                <s:select list="#comboProfesi.listComboProfesi" id="profesiid12" name="cutiPegawai.profesiId" disabled="true" readonly="true"
+                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                <s:textfield  id="profesiid33" name="cutiPegawai.profesiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -259,7 +295,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tanggal Awal Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Awal Cuti :</small></label>
                         </td>
                         <td>
                             <table>
@@ -275,7 +311,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tanggal Selesai Cuti :</small></label>
+                            <label class="control-label"><small>Tgl. Selesai Cuti :</small></label>
                         </td>
                         <td>
                             <table>
@@ -568,7 +604,7 @@
                     });
                     $.each(data, function (i, item) {
                         var labelItem = item.nip+" "+item.namaPegawai;
-                        mapped[labelItem] = { id: item.nip,nama:item.namaPegawai, label: labelItem,divisi: item.divisi,branch:item.branch,positionId:item.positionId,golonganId:item.golonganId , tanggalaktif:item.stTanggalAktif};
+                        mapped[labelItem] = { id: item.nip,nama:item.namaPegawai, label: labelItem,divisi: item.divisi,branch:item.branch,positionId:item.positionId,golonganId:item.golonganId , tanggalaktif:item.stTanggalAktif, profesiId:item.profesiId};
                         functions.push(labelItem);
                     });
                     process(functions);
@@ -584,6 +620,8 @@
                 $('#positionid33').val(selectedObj.positionId).change();
                 $('#divisiId12').val(selectedObj.divisi).change();
                 $('#divisiId33').val(selectedObj.divisi).change();
+                $('#profesiid12').val(selectedObj.profesiId).change();
+                $('#profesiid33').val(selectedObj.profesiId).change();
                 document.getElementById("golonganId12").value=selectedObj.golonganId;
                 dwr.engine.setAsync(false);
                 CutiPegawaiAction.initComboSetCuti(selectedObj.id, function (listdata) {
