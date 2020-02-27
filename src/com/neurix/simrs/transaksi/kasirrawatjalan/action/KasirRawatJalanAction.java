@@ -588,15 +588,16 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
-//        hsCriteria.put("master_id", idPasien);
-//        hsCriteria.put("no_nota", noNota);
-//        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
+
+        Map mapUangMuka = new HashMap();
+        mapUangMuka.put("bukti", id);
+        mapUangMuka.put("nilai", new BigDecimal(jumlahDibayar));
+
+        hsCriteria.put("uang_muka", mapUangMuka);
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
-        hsCriteria.put("bukti", id);
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -666,18 +667,28 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-//        hsCriteria.put("uang_muka", noNota);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
-        hsCriteria.put("bukti", noNota);
 
         String branchId = CommonUtil.userBranchLogin();
 
+        BigDecimal uangMuka = new BigDecimal(0);
+        BigDecimal uangPiutang = new BigDecimal(0);
+
+        // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
+
+            if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())){
+                uangMuka = new BigDecimal(obj.getString("nilai").toString());
+            } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())){
+                uangPiutang = new BigDecimal(obj.getString("nilai").toString());
+            } else {
+                hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
+            }
         }
+
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
@@ -700,6 +711,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
 
+        // jika piutang
         String invNumber = "";
         if ("non_tunai".equalsIgnoreCase(jenis)){
             transId = "11";
@@ -714,11 +726,21 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
             }
 
-            hsCriteria.put("bukti", noNota);
+            // map piutang
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", invNumber);
+            mapPiutang.put("nilai", uangPiutang);
+
+            hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
         } else {
-            hsCriteria.put("bukti", invNumber);
+            // jika bukan piutang maka pakai map uang muka
+            Map mapUangMuka = new HashMap();
+            mapUangMuka.put("bukti", noNota);
+            mapUangMuka.put("nilai", uangMuka);
+
+            hsCriteria.put("uang_muka", mapUangMuka);
         }
-//        response.setMsg(""+hsCriteria);
+
         if (!"".equalsIgnoreCase(transId)){
             try {
                 String text="";

@@ -740,9 +740,14 @@ public class VerifikatorAction extends BaseMasterAction {
                 ketObat = "tanpa Obat";
             }
 
+            String invNumber = billingSystemBo.createInvoiceNumber(kode, unitId);
+            Map mapPiutang = new HashMap();
+            mapPiutang.put("bukti", invNumber);
+            mapPiutang.put("nilai", jumlah );
+
             if ("JRJ".equalsIgnoreCase(kode)){
                 // debit jumlah untuk piutang pasien bpjs
-                hsCriteria.put("piutang_pasien_bpjs", jumlah);
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_jalan_bpjs", jmlOnlyTindakan);
                 ketPoli = "Rawat Jalan";
@@ -750,7 +755,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             if ("JRI".equalsIgnoreCase(kode)) {
                 // debit jumlah untuk piutang pasien bpjs
-                hsCriteria.put("piutang_pasien_bpjs", jumlah);
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_inap_bpjs", jmlOnlyTindakan);
 
@@ -763,8 +768,7 @@ public class VerifikatorAction extends BaseMasterAction {
             if ("N".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
                 transId = "02";
 
-            String invNumber = billingSystemBo.createInvoiceNumber(kode, unitId);
-            hsCriteria.put("bukti", invNumber);
+
             String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" id Pasien :"+idPasien;
 
             try {
