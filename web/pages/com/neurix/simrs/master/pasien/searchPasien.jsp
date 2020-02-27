@@ -142,7 +142,7 @@ To change this template use File | Settings | File Templates.
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary" onclick="showModalUpload()">
-                                                        <i class="fa fa-plus"></i> Upload Rekam Medic Lama
+                                                        <i class="fa fa-plus"></i> Upload Rekam Medik Lama
                                                     </button>
                                                 </td>
                                             </tr>
@@ -271,15 +271,29 @@ To change this template use File | Settings | File Templates.
                         <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="box">
-                            <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
+                            <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal" onsubmit="cekData()">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">ID Pasien</label>
-                                    <div class="col-md-8">
-                                        <s:textfield id="upload_pasien" name="pasien.idPasien"
-                                                     onkeypress="$(this).css('border','');"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <s:textfield id="upload_pasien" name="pasien.idPasien"
+                                                         onkeypress="$(this).css('border','');"
+                                                         cssClass="form-control"/>
+                                            <div class="input-group-btn">
+                                                <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
+                                    <div class="col-md-7">
+                                        <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
+                                                     cssStyle="margin-top: 7px"
+                                                         onkeypress="$(this).css('border','');"
+                                                         cssClass="form-control" readonly="true"/>
+                                    </div>
+                                </div>
                                     <script>
                                         function tesPasien(val) {
                                             $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
@@ -319,28 +333,25 @@ To change this template use File | Settings | File Templates.
                                             },
                                             updater: function (item) {
                                                 var selectedObj = mapped[item];
+                                                $('#upload_nama_pasien').val(selectedObj.nama);
                                                 return selectedObj.id;
                                             }
                                         });
                                     </script>
-                                </div>
-                                <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
                                 <br/>
                                 <div id="body-rm">
-
                                 </div>
                             </s:form>
-                        </div>
+                    </div>
                     <div class="modal-footer" style="background-color: #cacaca">
                         <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                         </button>
-                        <sj:submit type="button" cssClass="btn btn-primary" formIds="uploadForm" id="save" name="save"
+                        <sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"
                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
-                            <i class="fa fa-search"></i>
+                            <i class="fa fa-arrow-right"></i>
                             Save
                         </sj:submit>
                     </div>
-                </div>
             </div>
         </div>
 
@@ -385,9 +396,9 @@ To change this template use File | Settings | File Templates.
 
         var str = "";
         str += '<div class="form-group">'+
-                '<label class="col-md-4" style="margin-top: 7px">Upload Foto Rekam Medic '+i+'</label>'+
-                '<div class="col-md-8">'+
-                '<input type="file" name="fileUploadImage" class="form form-control">'+
+                '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
+                '<div class="col-md-7">'+
+                '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
                 <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
                 '</div>'+
                 '</div>';
@@ -398,6 +409,16 @@ To change this template use File | Settings | File Templates.
         }
         n++;
         i++;
+    }
+
+    function cekData(){
+        var idPasien = $('#upload_pasien').val();
+        if(idPasien != null){
+
+        }else{
+            document.uploadForm.action = false;
+            alert("tes");
+        }
     }
 
     /*function user_register(user_id, user_name) {
