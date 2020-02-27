@@ -568,7 +568,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank){
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -592,7 +592,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        hsCriteria.put("no_nota", noNota);
 //        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("uang_muka", id);
+        hsCriteria.put("metode_bayar", metodeBayar);
+        hsCriteria.put("bank", kodeBank);
+        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {

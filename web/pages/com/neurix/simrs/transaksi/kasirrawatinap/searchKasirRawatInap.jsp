@@ -491,8 +491,8 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kurang_bayar","nilai":total-uangMuka});
-                    mapBiaya.push({"type":"jumlah_bayar","nilai":total});
+                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
                 }
             });
 
@@ -536,6 +536,9 @@
                         '<td>'+item.jenisSatuan+'</td>' +
                         '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
                         '</tr>';
+
+                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":total});
+                    mapBiaya.push({"type":"ppn_keluaran", "nilai":ppn});
                 });
             }
         });
