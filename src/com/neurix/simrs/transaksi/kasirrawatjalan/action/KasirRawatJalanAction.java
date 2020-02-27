@@ -674,6 +674,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         BigDecimal uangMuka = new BigDecimal(0);
         BigDecimal uangPiutang = new BigDecimal(0);
+        BigDecimal uangPendapatan = new BigDecimal(0);
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -681,9 +682,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             JSONObject obj = json.getJSONObject(i);
 
             if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())){
-                uangMuka = new BigDecimal(obj.getString("nilai").toString());
+                uangMuka = new BigDecimal(obj.getLong("nilai"));
             } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())){
-                uangPiutang = new BigDecimal(obj.getString("nilai").toString());
+                uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else {
                 hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
             }
