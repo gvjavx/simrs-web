@@ -493,6 +493,8 @@
 
                     mapBiaya.push({"type":"kas","nilai":total-uangMuka});
                     mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
+                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
                 }
             });
 
@@ -537,8 +539,8 @@
                         '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
                         '</tr>';
 
-                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":total});
-                    mapBiaya.push({"type":"ppn_keluaran", "nilai":ppn});
+//                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":total});
+//                    mapBiaya.push({"type":"ppn_keluaran", "nilai":ppn});
                 });
             }
         });
