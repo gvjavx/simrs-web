@@ -43,6 +43,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -1021,6 +1022,33 @@ public class CheckupDetailAction extends BaseMasterAction {
         String ketResep = "";
         if (pelayanans.size() > 0){
             Pelayanan pelayananData = pelayanans.get(0);
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setStatusBayar("Y");
+            List<HeaderDetailCheckup> detailCheckupUangMuka = checkupDetailBo.getListUangPendaftaran(headerDetailCheckup);
+
+
+            String idUm = "";
+            if (detailCheckupUangMuka.size() > 0){
+                for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka){
+                    idUm = detailCheckup.getNoUangMuka();
+                }
+            }
+
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
+            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal ppnObat = new BigDecimal(0);
+            if (jumlahResep.compareTo(new BigDecimal(0)) == 1){
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.01));
+            }
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("uang_muka", idUm);
+
+
             if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
                 kode = "JRJ";
                 ketPoli = "Rawat Jalan";
@@ -1030,24 +1058,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ketPoli = "Rawat Inap";
             }
 
-            String isResep = checkupDetailBo.findResep(idDetailCheckup);
             if ("Y".equalsIgnoreCase(isResep)){
                 transId = "04";
                 ketResep = "Tanpa Obat";
+
+                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
+                hsCriteria.put("jumlah_ppn_obat", ppnObat);
             } else {
                 transId = "05";
                 ketResep = "Dengan Obat";
             }
 
-            BigDecimal jumlah = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup);
-
             invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
-            hsCriteria.put("bukti", invoice);
-            hsCriteria.put("kurang_bayar", jumlah);
 
-            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
+            hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
+            hsCriteria.put("piutang_pasien_non_bpjs", invoice);
+
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
             } catch (GeneralBOException e){

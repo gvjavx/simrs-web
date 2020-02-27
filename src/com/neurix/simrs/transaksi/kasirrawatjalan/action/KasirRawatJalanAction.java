@@ -592,8 +592,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //        hsCriteria.put("no_nota", noNota);
 //        hsCriteria.put("uang_muka", new BigDecimal(biaya));
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("bukti", id);
-        hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("uang_muka", id);
+        hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -663,7 +663,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("bukti", noNota);
+        hsCriteria.put("uang_muka", noNota);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -690,6 +690,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         if ("tunai".equalsIgnoreCase(jenis) && "JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
             transId = "19";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+        }
+        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+            transId = "20";
+            ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
 //        response.setMsg(""+hsCriteria);
         if (!"".equalsIgnoreCase(transId)){

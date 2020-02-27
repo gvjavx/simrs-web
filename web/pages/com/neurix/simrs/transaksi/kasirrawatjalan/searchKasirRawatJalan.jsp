@@ -633,6 +633,9 @@
                         '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
                         '</tr>';
                 });
+
+                mapBiaya.push({"type":"total_obat", "nilai":total});
+                mapBiaya.push({"type":"ppn", "nilai":ppn});
             }
         });
 
