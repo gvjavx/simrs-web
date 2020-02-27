@@ -14,6 +14,7 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
@@ -150,110 +151,215 @@ public class RawatInapAction extends BaseMasterAction {
         logger.info("[RawatInapAction.add] start process >>>");
 
         //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
 
         String id = getId();
         String jk = "";
+
         if (id != null && !"".equalsIgnoreCase(id)) {
 
-            if (listOfResult != null) {
+            HeaderCheckup checkup = new HeaderCheckup();
 
-                for (RawatInap rawatInap : listOfResult) {
-                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+            try {
+                checkup = checkupBoProxy.getDataDetailPasien(id);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search data detail pasien " + e.getMessage());
+            }
 
-                        HeaderCheckup headerCheckup = getHeaderCheckup(rawatInap.getNoCheckup());
-                        rawatInap.setIdPasien(headerCheckup.getIdPasien());
-                        rawatInap.setNamaPasien(headerCheckup.getNama());
-                        rawatInap.setAlamat(headerCheckup.getJalan());
-                        rawatInap.setDesa(headerCheckup.getNamaDesa());
-                        rawatInap.setKecamatan(headerCheckup.getNamaKecamatan());
-                        rawatInap.setKota(headerCheckup.getNamaKota());
-                        rawatInap.setProvinsi(headerCheckup.getNamaProvinsi());
-                        rawatInap.setIdPelayanan(headerCheckup.getIdPelayanan());
-                        rawatInap.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        if (headerCheckup.getJenisKelamin() != null) {
-                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-                                jk = "Perempuan";
-                            } else {
-                                jk = "laki-Laki";
-                            }
-                        }
-                        rawatInap.setJenisKelamin(jk);
-                        rawatInap.setTempatLahir(headerCheckup.getTempatLahir());
-                        rawatInap.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-                        rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
-                        rawatInap.setNik(headerCheckup.getNoKtp());
-                        rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
-                        rawatInap.setNoSep(headerCheckup.getNoSep());
+            if (checkup != null) {
 
-                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+                List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
 
-                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+                try {
+                    riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(checkup.getIdDetailCheckup());
+                } catch (GeneralBOException e) {
+                    logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" + e);
+                }
 
-                        try {
-                            riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(rawatInap.getIdDetailCheckup());
-                        }catch (GeneralBOException e){
-                            logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" +e);
-                        }
+                if (riwayatTindakanList.isEmpty()) {
 
-                        if(riwayatTindakanList.isEmpty()){
+                    List<Ruangan> ruanganList = new ArrayList<>();
+                    Ruangan ruangan = new Ruangan();
+                    ruangan.setIdRuangan(checkup.getIdRuangan());
 
-                            List<Ruangan> ruanganList = new ArrayList<>();
-                            Ruangan ruangan = new Ruangan();
-                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
+                    try {
+                        ruanganList = ruanganBoProxy.getByCriteria(ruangan);
+                    } catch (GeneralBOException e) {
+                        logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" + e);
+                    }
+
+                    if (!ruanganList.isEmpty()) {
+                        ruangan = ruanganList.get(0);
+
+                        if (ruanganList != null) {
+
+                            String user = CommonUtil.userLogin();
+                            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+                            RiwayatTindakan tindakan = new RiwayatTindakan();
+                            tindakan.setIdTindakan(ruangan.getIdRuangan());
+                            tindakan.setNamaTindakan("Tarif Kamar " + ruangan.getNamaRuangan() + " No. " + ruangan.getNoRuangan());
+                            tindakan.setKeterangan("kamar");
+                            tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
+                            tindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                            tindakan.setJenisPasien(checkup.getIdJenisPeriksaPasien());
+                            tindakan.setAction("C");
+                            tindakan.setFlag("Y");
+                            tindakan.setCreatedDate(now);
+                            tindakan.setCreatedWho(user);
+                            tindakan.setLastUpdate(now);
+                            tindakan.setLastUpdateWho(user);
+                            tindakan.setTanggalTindakan(now);
 
                             try {
-                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
-                            }catch (GeneralBOException e){
-                                logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" +e);
-                            }
-
-                            if(!ruanganList.isEmpty()){
-                                ruangan = ruanganList.get(0);
-
-                                if(ruanganList != null){
-
-                                    String user = CommonUtil.userLogin();
-                                    Timestamp now = new Timestamp(System.currentTimeMillis());
-
-                                    RiwayatTindakan tindakan = new RiwayatTindakan();
-                                    tindakan.setIdTindakan(ruangan.getIdRuangan());
-                                    tindakan.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan()+ " No. " +ruangan.getNoRuangan());
-                                    tindakan.setKeterangan("kamar");
-                                    tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
-                                    tindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
-                                    tindakan.setJenisPasien(rawatInap.getIdJenisPeriksa());
-                                    tindakan.setAction("C");
-                                    tindakan.setFlag("Y");
-                                    tindakan.setCreatedDate(now);
-                                    tindakan.setCreatedWho(user);
-                                    tindakan.setLastUpdate(now);
-                                    tindakan.setLastUpdateWho(user);
-                                    tindakan.setTanggalTindakan(now);
-
-                                    try {
-                                        riwayatTindakanBoProxy.saveAdd(tindakan);
-                                    }catch (GeneralBOException e){
-                                        logger.error("[RawatInapAction] Found Error when save add riwayat tindakan "+e);
-                                    }
-                                }
+                                riwayatTindakanBoProxy.saveAdd(tindakan);
+                            } catch (GeneralBOException e) {
+                                logger.error("[RawatInapAction] Found Error when save add riwayat tindakan " + e);
                             }
                         }
-                        setRawatInap(rawatInap);
-                        break;
                     }
                 }
 
-            } else {
+                RawatInap rawatInap = new RawatInap();
+
+                rawatInap.setNoCheckup(checkup.getNoCheckup());
+                rawatInap.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                rawatInap.setIdRawatInap(checkup.getIdRawatInap());
+                rawatInap.setIdRuangan(checkup.getIdRuangan());
+                rawatInap.setNamaRangan(checkup.getNamaRuangan());
+                rawatInap.setIdPasien(checkup.getIdPasien());
+                rawatInap.setNamaPasien(checkup.getNama());
+                rawatInap.setAlamat(checkup.getJalan());
+                rawatInap.setDesa(checkup.getNamaDesa());
+                rawatInap.setKecamatan(checkup.getNamaKecamatan());
+                rawatInap.setKota(checkup.getNamaKota());
+                rawatInap.setProvinsi(checkup.getNamaProvinsi());
+                rawatInap.setIdPelayanan(checkup.getIdPelayanan());
+                rawatInap.setNamaPelayanan(checkup.getNamaPelayanan());
+                if (checkup.getJenisKelamin() != null) {
+                    if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                        jk = "Perempuan";
+                    } else {
+                        jk = "laki-Laki";
+                    }
+                }
+                rawatInap.setJenisKelamin(jk);
+                rawatInap.setTempatLahir(checkup.getTempatLahir());
+                rawatInap.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                rawatInap.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                rawatInap.setIdJenisPeriksa(checkup.getIdJenisPeriksaPasien());
+                rawatInap.setNik(checkup.getNoKtp());
+                rawatInap.setUrlKtp(checkup.getUrlKtp());
+                rawatInap.setNoSep(checkup.getNoSep());
+                rawatInap.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+                rawatInap.setMetodePembayaran(checkup.getMetodePembayaran());
+
+                setRawatInap(rawatInap);
+            }else{
                 setRawatInap(new RawatInap());
             }
-        } else {
-            setRawatInap(new RawatInap());
         }
+//        if (id != null && !"".equalsIgnoreCase(id)) {
+//
+//            if (listOfResult != null) {
+//
+//                for (RawatInap rawatInap : listOfResult) {
+//                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+//
+//                        HeaderCheckup headerCheckup = getHeaderCheckup(rawatInap.getNoCheckup());
+//                        rawatInap.setIdPasien(headerCheckup.getIdPasien());
+//                        rawatInap.setNamaPasien(headerCheckup.getNama());
+//                        rawatInap.setAlamat(headerCheckup.getJalan());
+//                        rawatInap.setDesa(headerCheckup.getNamaDesa());
+//                        rawatInap.setKecamatan(headerCheckup.getNamaKecamatan());
+//                        rawatInap.setKota(headerCheckup.getNamaKota());
+//                        rawatInap.setProvinsi(headerCheckup.getNamaProvinsi());
+//                        rawatInap.setIdPelayanan(headerCheckup.getIdPelayanan());
+//                        rawatInap.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+//                        if (headerCheckup.getJenisKelamin() != null) {
+//                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
+//                                jk = "Perempuan";
+//                            } else {
+//                                jk = "laki-Laki";
+//                            }
+//                        }
+//                        rawatInap.setJenisKelamin(jk);
+//                        rawatInap.setTempatLahir(headerCheckup.getTempatLahir());
+//                        rawatInap.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
+//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+//                        rawatInap.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
+//                        rawatInap.setIdJenisPeriksa(headerCheckup.getIdJenisPeriksaPasien());
+//                        rawatInap.setNik(headerCheckup.getNoKtp());
+//                        rawatInap.setUrlKtp(headerCheckup.getUrlKtp());
+//                        rawatInap.setNoSep(headerCheckup.getNoSep());
+//
+//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+//                        rawatInap.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+//
+//                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+//
+//                        try {
+//                            riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(rawatInap.getIdDetailCheckup());
+//                        }catch (GeneralBOException e){
+//                            logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" +e);
+//                        }
+//
+//                        if(riwayatTindakanList.isEmpty()){
+//
+//                            List<Ruangan> ruanganList = new ArrayList<>();
+//                            Ruangan ruangan = new Ruangan();
+//                            ruangan.setIdRuangan(rawatInap.getIdRuangan());
+//
+//                            try {
+//                                ruanganList = ruanganBoProxy.getByCriteria(ruangan);
+//                            }catch (GeneralBOException e){
+//                                logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" +e);
+//                            }
+//
+//                            if(!ruanganList.isEmpty()){
+//                                ruangan = ruanganList.get(0);
+//
+//                                if(ruanganList != null){
+//
+//                                    String user = CommonUtil.userLogin();
+//                                    Timestamp now = new Timestamp(System.currentTimeMillis());
+//
+//                                    RiwayatTindakan tindakan = new RiwayatTindakan();
+//                                    tindakan.setIdTindakan(ruangan.getIdRuangan());
+//                                    tindakan.setNamaTindakan("Tarif Kamar "+ruangan.getNamaRuangan()+ " No. " +ruangan.getNoRuangan());
+//                                    tindakan.setKeterangan("kamar");
+//                                    tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
+//                                    tindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+//                                    tindakan.setJenisPasien(rawatInap.getIdJenisPeriksa());
+//                                    tindakan.setAction("C");
+//                                    tindakan.setFlag("Y");
+//                                    tindakan.setCreatedDate(now);
+//                                    tindakan.setCreatedWho(user);
+//                                    tindakan.setLastUpdate(now);
+//                                    tindakan.setLastUpdateWho(user);
+//                                    tindakan.setTanggalTindakan(now);
+//
+//                                    try {
+//                                        riwayatTindakanBoProxy.saveAdd(tindakan);
+//                                    }catch (GeneralBOException e){
+//                                        logger.error("[RawatInapAction] Found Error when save add riwayat tindakan "+e);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        setRawatInap(rawatInap);
+//                        break;
+//                    }
+//                }
+//
+//            } else {
+//                setRawatInap(new RawatInap());
+//            }
+//        } else {
+//            setRawatInap(new RawatInap());
+//        }
 
         logger.info("[RawatInapAction.add] end process <<<");
         return "init_add";
@@ -389,15 +495,15 @@ public class RawatInapAction extends BaseMasterAction {
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
 
-        switch (branch){
-            case CommonConstant.BRANCH_RS01 :
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+        switch (branch) {
+            case CommonConstant.BRANCH_RS01:
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
                 break;
-            case CommonConstant.BRANCH_RS02 :
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+            case CommonConstant.BRANCH_RS02:
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
                 break;
-            case CommonConstant.BRANCH_RS03 :
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+            case CommonConstant.BRANCH_RS03:
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
                 break;
         }
 
@@ -433,7 +539,7 @@ public class RawatInapAction extends BaseMasterAction {
         return "print_resep";
     }
 
-    public List<SkorRanap> getListParameterByKategori(String noCheckup, String idDetailCheckup, String kategori){
+    public List<SkorRanap> getListParameterByKategori(String noCheckup, String idDetailCheckup, String kategori) {
         logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
 
         List<SkorRanap> skorRanapEntities = new ArrayList<>();
@@ -452,7 +558,7 @@ public class RawatInapAction extends BaseMasterAction {
         return skorRanapEntities;
     }
 
-    public List<ImSimrsSkorRanapEntity> getListSkorRanapByParam(String iParameter){
+    public List<ImSimrsSkorRanapEntity> getListSkorRanapByParam(String iParameter) {
         logger.info("[RawatInapAction.getListSkorByKategori] start process >>>");
 
         List<ImSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
@@ -466,7 +572,7 @@ public class RawatInapAction extends BaseMasterAction {
         return skorRanapEntities;
     }
 
-    public CrudResponse saveSkorRanapByKategori(String noCheckup, String idDetail, String kategori, String jsonString) throws JSONException{
+    public CrudResponse saveSkorRanapByKategori(String noCheckup, String idDetail, String kategori, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -505,7 +611,7 @@ public class RawatInapAction extends BaseMasterAction {
         return response;
     }
 
-    public List<SkorRanap> getListGroupSkorRanap(String noCheckup, String idDetail, String kategori){
+    public List<SkorRanap> getListGroupSkorRanap(String noCheckup, String idDetail, String kategori) {
         logger.info("[RawatInapAction.getListGroupSkorRanap] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -515,7 +621,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListSumSkorRanap(noCheckup, idDetail, kategori);
     }
 
-    public ImSimrsKategoriSkorRanapEntity getKategoriSkorRanap(String id){
+    public ImSimrsKategoriSkorRanapEntity getKategoriSkorRanap(String id) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
@@ -523,7 +629,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.kategoriSkorRanap(id);
     }
 
-    public List<SkorRanap> getListViewSkorRanapByGrupId(String groupId){
+    public List<SkorRanap> getListViewSkorRanapByGrupId(String groupId) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
@@ -535,7 +641,7 @@ public class RawatInapAction extends BaseMasterAction {
     }
 
 
-    public String printGelangPasien(){
+    public String printGelangPasien() {
 
         String id = getId();
 
@@ -551,10 +657,10 @@ public class RawatInapAction extends BaseMasterAction {
                     if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
 
                         HeaderCheckup headerCheckup = getHeaderCheckup(id);
-                        reportParams.put("noCheckup",id);
-                        reportParams.put("idDetailCheckup",rawatInap.getIdDetailCheckup());
-                        reportParams.put("nama",headerCheckup.getNama());
-                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        reportParams.put("noCheckup", id);
+                        reportParams.put("idDetailCheckup", rawatInap.getIdDetailCheckup());
+                        reportParams.put("nama", headerCheckup.getNama());
+                        reportParams.put("ruang", rawatInap.getNamaRangan() + " [" + rawatInap.getNoRuangan() + "]");
                         break;
                     }
                 }
@@ -590,7 +696,7 @@ public class RawatInapAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<MonVitalSign> getListMonVitalSign(String noCheckup, String idDetailCheckup, String id){
+    public List<MonVitalSign> getListMonVitalSign(String noCheckup, String idDetailCheckup, String id) {
 
         MonVitalSign monVitalSign = new MonVitalSign();
 
@@ -609,7 +715,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListMonVitalSign(monVitalSign);
     }
 
-    public CrudResponse saveMonVitalSign(String noCheckup, String idDetail, String jsonString) throws JSONException{
+    public CrudResponse saveMonVitalSign(String noCheckup, String idDetail, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -642,7 +748,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.saveMonVitalSign(monVitalSignEntity);
     }
 
-    public List<MonCairan> getListMonCairan(String noCheckup, String idDetailCheckup, String id){
+    public List<MonCairan> getListMonCairan(String noCheckup, String idDetailCheckup, String id) {
 
         MonCairan monCairan = new MonCairan();
         if (!"".equalsIgnoreCase(noCheckup))
@@ -660,7 +766,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListMonCairan(monCairan);
     }
 
-    public CrudResponse saveMonCairan(String noCheckup, String idDetail, String jsonString) throws JSONException{
+    public CrudResponse saveMonCairan(String noCheckup, String idDetail, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -696,7 +802,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.saveMonCairan(monCairanEntity);
     }
 
-    public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String kategori, String id){
+    public List<MonPemberianObat> getListMonPemberianObat(String noCheckup, String idDetailCheckup, String kategori, String id) {
 
         MonPemberianObat monPemberianObat = new MonPemberianObat();
         if (!"".equalsIgnoreCase(noCheckup))
@@ -708,7 +814,7 @@ public class RawatInapAction extends BaseMasterAction {
         if (!"".equalsIgnoreCase(id))
             monPemberianObat.setId(id);
 
-        if (!"".equalsIgnoreCase(kategori)){
+        if (!"".equalsIgnoreCase(kategori)) {
             monPemberianObat.setKategori(kategori);
         }
 
@@ -718,7 +824,7 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.getListPemberianObat(monPemberianObat);
     }
 
-    public CrudResponse saveMonPemberianObat(String noCheckup, String idDetail, String jsonString) throws JSONException{
+    public CrudResponse saveMonPemberianObat(String noCheckup, String idDetail, String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -750,19 +856,19 @@ public class RawatInapAction extends BaseMasterAction {
         return rawatInapBo.saveMonPemberianObat(monPemberianObatEntity);
     }
 
-    public List<Obat> getListObatParenteral(String id){
+    public List<Obat> getListObatParenteral(String id) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListObatParenteral(id);
     }
 
-    public List<Obat> getListObatNonParenteral(String id, String kategori){
+    public List<Obat> getListObatNonParenteral(String id, String kategori) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         return rawatInapBo.getListObatNonParenteral(id, kategori);
     }
 
-    public List<MonVitalSign> getListGraf(String idDetail, String noCheckup){
+    public List<MonVitalSign> getListGraf(String idDetail, String noCheckup) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");

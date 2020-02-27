@@ -48,15 +48,90 @@
             width: 100%;
         }
 
-        /*.dropdown-content a:hover {background-color: #f1f1f1}*/
+        .bungkus {
+            width: 600px;
+            height: 570px;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
 
-        /*.dropdown:hover .dropdown-content {*/
-        /*display: block;*/
-        /*}*/
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            background: #ddd;
+        }
 
-        /*.dropdown:hover .dropbtn {*/
-        /*background-color: #3e8e41;*/
-        /*}*/
+        /* Images */
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            -webkit-transition: opacity ease-out 0.5s;
+            transition: opacity ease-out 0.5s;
+        }
+
+        .carousel-img-displayed {
+            display: block;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .carousel-img-hidden {
+            display: block;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .carousel-img-noDisplay {
+            display: none;
+        }
+
+        /* Flèches de défilement */
+
+        .carousel-arrow {
+            z-index: 3;
+            display: block;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: 80px;
+            border-radius: 50%;
+            border: 0;
+            background-color: #fff;
+            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 16px 16px;
+            cursor: pointer;
+            -webkit-transition: background-size 0.15s ease-out;
+            transition: background-size 0.15s ease-out;
+        }
+
+        .carousel-arrow:hover,
+        .carousel-arrow:focus {
+            background-size: 22px 22px;
+        }
+
+        .carousel-arrow-next {
+            right: 20px;
+        }
+
+        .carousel-arrow-prev {
+            left: 20px;
+            -webkit-transform: rotateZ(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotateZ(180deg);
+        }
+
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -209,6 +284,22 @@
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', '');
 
+        }
+
+        function formatRupiah2(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
         }
 
 
@@ -729,6 +820,12 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <%--<div class="form-group">--%>
+                                            <%--<label class="col-md-4" style="margin-top: 7px">Uang Muka</label>--%>
+                                            <%--<div class="col-md-8">--%>
+                                                <%--<s:textfield type="number" cssStyle="margin-top: 7px" name="headerCheckup.uangMuka" cssClass="form-control"/>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -897,7 +994,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">No PPK Rujukan</label>
                                             <div class="col-md-8">
-                                                <s:textfield name="headerCheckup.noPpkRujukan"
+                                                <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
@@ -908,7 +1005,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield name="headerCheckup.tglRujukan"
+                                                    <s:textfield name="headerCheckup.tglRujukan" id="tgl_rujukan"
                                                                  cssClass="form-control datepicker"
                                                                  onchange="$('#st_tgl_lahir').css('border','')"/>
                                                 </div>
@@ -956,6 +1053,45 @@
                             <%--from bpjs--%>
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
+                            <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
+                            <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
+
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Metode pembayaran</label>
+                                            <div class="col-md-8">
+                                                <s:select
+                                                        list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                        cssStyle="margin-top: 7px"
+                                                        name="headerCheckup.metodePembayaran"
+                                                        headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+
+                                            <div class="col-md-8">
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        Rp.
+                                                    </div>
+                                                    <s:hidden name="headerCheckup.uangMuka" id="uang_muka_val"></s:hidden>
+                                                    <s:textfield type="text" id="uang_muka" cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="box-header with-border"></div>
                             <div class="box-body">
@@ -1076,17 +1212,44 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
-                <div class="box">
-                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>
-                    <button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead id="label-rekam-medic">
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li><a href="#medik_baru" data-toggle="tab" onclick="getByTypeRekamMedic('baru')">Rekam Medik Baru</a></li>
+                            <li><a href="#medik_lama" data-toggle="tab" onclick="getByTypeRekamMedic('lama')">Rekam Medik Lama</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="medik_baru">
+                                <table class="table table-striped table-bordered">
+                                <thead id="label-rekam-medic-baru">
+                                </thead>
+                                <tbody id="body-rekam-medic-baru">
+                                </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="medik_lama">
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-md-8">
+                                        <table class="table table-striped table-bordered">
+                                            <thead id="label-rekam-medic-lama">
+                                            </thead>
+                                            <tbody id="body-rekam-medic-lama">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('baru')"><i class="fa fa-search"></i> Rekam Medic Baru</button>--%>
+                    <%--<button class="btn btn-primary" onclick="getByTypeRekamMedic('lama')"><i class="fa fa-search"></i> Rekam Medic Lama</button>--%>
+                    <%--<table class="table table-striped table-bordered" id="tabel_rese_detail">--%>
+                        <%--<thead id="label-rekam-medic">--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body-rekam-medic">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
                 </div>
-            </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -1175,7 +1338,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien</h4>
             </div>
             <div class="modal-body">
                 <div id="head-detail-rm"></div>
@@ -1215,17 +1378,28 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medic Lama Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Lama Pasien</h4>
             </div>
             <div class="modal-body">
+                <div class="bungkus">
+                    <div class="carousel">
+                        <button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
+                        <button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
+                        <div id="body-img-rm"></div>
+                        <%--<img id="carousel-1" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/sea_ej0zoc.jpg" alt="Sea" />--%>
+                        <%--<img id="carousel-2" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/night_pw1bpm.jpg" alt="Night" />--%>
+                        <%--<img id="carousel-3" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/mountain_dekhfd.jpg" alt="Moutain" />--%>
+                        <%--<img id="carousel-4" class="carousel-img carousel-img-noDisplay" src="http://res.cloudinary.com/dnqehhgmu/image/upload/v1509718497/desert_zy3uth.jpg" alt="Desert" />--%>
+                    </div>
+                </div>
 
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators" id="indicator-img">
+                <%--<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">--%>
+                    <%--<ol class="carousel-indicators" id="indicator-img">--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>--%>
                         <%--<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>--%>
-                    </ol>
-                    <div class="carousel-inner" id="body-img-rm">
+                    <%--</ol>--%>
+                    <%--<div class="carousel-inner" id="body-img-rm">--%>
                         <%--<div class="carousel-item active">--%>
                             <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="First slide">--%>
                         <%--</div>--%>
@@ -1235,16 +1409,16 @@
                         <%--<div class="carousel-item">--%>
                             <%--<img class="d-block w-100" src="/simrs/images/rekam_medic/RS01_P0000020_00000007_picture.jpg" alt="Third slide">--%>
                         <%--</div>--%>
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
+                    <%--</div>--%>
+                    <%--<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">--%>
+                        <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
+                        <%--<span class="sr-only">Previous</span>--%>
+                    <%--</a>--%>
+                    <%--<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">--%>
+                        <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
+                        <%--<span class="sr-only">Next</span>--%>
+                    <%--</a>--%>
+                <%--</div>--%>
                 <%--<div id="body-img-rm">--%>
 
                 <%--</div>--%>
@@ -1308,6 +1482,19 @@
         initListDokter();
         console.log(isOnline);
 
+        var nominal = document.getElementById('uang_muka');
+        nominal.addEventListener('keyup', function (e) {
+            nominal.value = formatRupiah2(this.value);
+            var valBayar = nominal.value.replace(/[.]/g, '');
+
+            if(valBayar != ''){
+                $('#uang_muka_val').val(valBayar);
+            }else{
+                $('#uang_muka_val').val('');
+            }
+        });
+
+
     });
 
     function setFormAdmisi() {
@@ -1368,9 +1555,12 @@
                 jenisRujukan = "R";
             }
 
+            console.log(perujuk);
+            console.log(jenisRujukan);
+
             $('#btn-cek-rujukan').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...')
             dwr.engine.setAsync(true);
-            CheckupAction.checkSuratRujukan(noRujukan, "R", {
+            CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
                 callback: function (response) {
                     console.log(response);
                     var warnClass = "";
@@ -1384,13 +1574,18 @@
                         icon = "fa-info";
                         title = "Info!";
                         warnClass = "alert-success";
-                        msg = response.message;
+                        msg = "Nomor Rujukan Berhasil Diverifikasi..!";
+                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
+                        $('#ppk_rujukan').val(response.kdProviderProvUmum);
+                        $('#intansi_perujuk').val(response.namaProvPerujuk);
+                        $('#tgl_rujukan').val(response.tglCetakKartu);
                     }else{
                         val = "tidak ditemukan";
                         icon = "fa-warning";
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
+                        $('#idPelayananBpjs').val("IGD");
                     }
 
                     var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +

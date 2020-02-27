@@ -11,11 +11,13 @@
           p:riwayatTindakanBoProxy-ref="riwayatTindakanBoProxy"
           p:kasirRawatJalanBoProxy-ref="kasirRawatJalanBoProxy"
           p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="kasirRawatJalanBo" class="com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl.KasirRawatJalanBoImpl"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:uangMukaDao-ref="uangMukaDao"
     />
 
     <bean id="kasirRawatJalanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

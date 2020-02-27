@@ -461,12 +461,28 @@
       <convert converter="bean" match="com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline"/>
       <convert converter="bean" match="com.neurix.simrs.master.pasien.model.RekamMedicLama"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UangMuka"/>
 
       <!--bpjs-->
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.DiagnosaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.PesertaResponse"/>
       <convert converter="bean" match="com.neurix.simrs.bpjs.vclaim.model.RujukanResponse"/>
 
+
+      <!--AKUNTANSI-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.kodeRekening.action.KodeRekeningAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.KodeRekening"/>
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.master.action.MasterAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.master.model.Master"/>
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
+      <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
   </allow>
 
 </dwr>

@@ -1,5 +1,6 @@
 package com.neurix.hris.mobileapi;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
@@ -17,10 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -35,6 +39,15 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private String userId;
     private String RegTemp;
     private String result;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getResult() {
         return result;
@@ -48,6 +61,15 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private List<Poli> listOfPoli = new ArrayList<>();
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+
+    public BillingSystemBo getBillingSystemBoProxy() {
+        return billingSystemBoProxy;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public String getRegTemp() {
         return RegTemp;
@@ -158,6 +180,21 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "insert-sep":
                 sendSep();
                 break;
+            case "cek-rujukan":
+                cekRujukan(keyword,tipe);
+                break;
+            case "cek-rujukan-bpjs":
+                cekRujukanNoBpjs(keyword,tipe);
+                break;
+            case "create-jurnal-bpjs-1":
+                createJurnalBillingCase1();
+                break;
+            case "create-jurnal-bpjs-2":
+                createJurnalBillingCase2();
+                break;
+            case "create-jurnal-bpjs-3":
+                createJurnalBillingCase3();
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -174,6 +211,26 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             logger.info(poliResponse.getNamaPoliBpjs());
             logger.info(poliResponse.getKodePoliBpjs());
         }
+    }
+    public void cekRujukan(String rujukanId,String tipeRujukan){
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        try {
+            rujukanResponse= bpjsBoProxy.caraRujukanBerdasarNomorBpjs(rujukanId,tipeRujukan,"RS01");
+        }catch (Exception e){
+            logger.error("[BpjsController.listPoli] Error : " + "[" + e + "]");
+        }
+        logger.info(rujukanResponse);
+
+    }
+    public void cekRujukanNoBpjs(String noBpjs,String tipeRujukan){
+        RujukanResponse rujukanResponse = new RujukanResponse();
+        try {
+            rujukanResponse= bpjsBoProxy.caraRujukanBerdasarNomorkartuBpjs(noBpjs,tipeRujukan,"RS01");
+        }catch (Exception e){
+            logger.error("[BpjsController.listPoli] Error : " + "[" + e + "]");
+        }
+        logger.info(rujukanResponse);
+
     }
     public void listTindakan(String key){
         List<TindakanResponse> tindakanResponseList = new ArrayList<>();
@@ -361,6 +418,55 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         logger.info(result);
         logger.info("[BpjsController.registerFingerProses] end process <<<");
         return result;
+    }
+
+
+    //case 1 jika hanya 1 parameter
+    //untuk case kembar
+    public void createJurnalBillingCase1(){
+        Map data = new HashMap();
+        data.put("master_id","1111");
+        data.put("bukti","IV000001111");
+        data.put("jml_bayar", new BigDecimal(90000));
+
+        try {
+            billingSystemBoProxy.createJurnal("02",data,"RS02","TEST 1 : untuk case duplikat","N","");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
+        }
+    }
+
+    //case 2 jika ada 2 debit parameter
+    // case 2 untuk yang debit tidak balance dengan kredit
+    public void createJurnalBillingCase2 (){
+        Map data = new HashMap();
+        data.put("master_id","3213213");
+        data.put("bukti","CB0983283");
+        data.put("uang_muka", new BigDecimal(90000));
+        data.put("kurang_bayar", new BigDecimal(90000));
+        data.put("jumlah_bayar", new BigDecimal(90000));
+
+        try {
+            billingSystemBoProxy.createJurnal("04",data,"RS02","TEST 2 : untuk yang debit tidak balance dengan kredit","N","");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase2] Error : " + "[" + e + "]");
+        }
+    }
+    //case 3
+    // untuk pembayaran yang masuk ke dalam bank
+    public void createJurnalBillingCase3 (){
+        Map data = new HashMap();
+        data.put("master_id","9888888");
+        data.put("bukti","CB000099");
+        data.put("uang_muka", new BigDecimal(80000));
+        data.put("metode_bayar","transfer");
+        data.put("bank","mandiri");
+
+        try {
+            billingSystemBoProxy.createJurnal("01",data,"RS02","TEST 3 : untuk pembayaran yang masuk ke dalam bank","N","");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
     }
     @Override
     public Object getModel() {

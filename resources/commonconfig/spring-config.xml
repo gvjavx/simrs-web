@@ -182,10 +182,19 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikator/spring/VerifikatorBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/riwayattindakan/spring/RiwayatTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/permintaangizi/spring/PermintaanGiziBean.xml"/>
-
     <import resource="sshconfig/com/neurix/simrs/transaksi/kasirrawatinap/spring/KasirRawatInapBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/spring/KasirRawatJalanBean.xml"/>
-
     <import resource="sshconfig/com/neurix/simrs/transaksi/monitorruangan/spring/MonitorRuanganBean.xml"/>
+
+    <!--BEAN AKUNTANSI HERE-->
+    <import resource="sshconfig/com/neurix/akuntansi/master/kodeRekening/spring/KodeRekeningBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/tipeJurnal/spring/TipeJurnalBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/tipeRekening/spring/TipeRekeningBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/trans/spring/TransBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/master/spring/MasterBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/spring/LaporanAkuntansiBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/jurnal/spring/JurnalBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/spring/PembayaranUtangPiutangBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/spring/BillingSystemBean.xml"/>
 
 </beans>

@@ -8,6 +8,7 @@ import com.neurix.simrs.transaksi.checkup.model.CheckupAlergi;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSImrsCheckupAlergiEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
@@ -65,4 +66,6 @@ public interface CheckupBo {
 
     public List<HeaderCheckup> getListAntrian(String branch, String poli) throws GeneralBOException;
     public List<HeaderCheckup> getListPeriksa(String branch, String poli) throws GeneralBOException;
+
+    public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException;
 }

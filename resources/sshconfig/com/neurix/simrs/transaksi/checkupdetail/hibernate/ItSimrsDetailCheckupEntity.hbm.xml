@@ -79,6 +79,17 @@
             <column name="klaim_bpjs_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
 
+        <property name="noCheckupOnline">
+            <column name="no_checkup_online" sql-type="varchar" length="30" not-null="false" />
+        </property>
+
+        <property name="metodePembayaran">
+            <column name="metode_pembayaran" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="invoice">
+            <column name="invoice" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
 
     </class>
 </hibernate-mapping>

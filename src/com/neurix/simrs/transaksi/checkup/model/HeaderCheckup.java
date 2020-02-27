@@ -91,6 +91,73 @@ public class HeaderCheckup {
     private String noMr;
 
     private String isOnline;
+    private BigInteger uangMuka;
+    private String noNota;
+
+    public String getNoNota() {
+        return noNota;
+    }
+
+    public void setNoNota(String noNota) {
+        this.noNota = noNota;
+    }
+
+    private String idRawatInap;
+    private String idRuangan;
+
+    private String noCheckupOnline;
+
+    private String metodePembayaran;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getNoCheckupOnline() {
+        return noCheckupOnline;
+    }
+
+    public void setNoCheckupOnline(String noCheckupOnline) {
+        this.noCheckupOnline = noCheckupOnline;
+    }
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
+    public BigInteger getUangMuka() {
+        return uangMuka;
+    }
+
+    public void setUangMuka(BigInteger uangMuka) {
+        this.uangMuka = uangMuka;
+    }
+
+    private String idPelayananBpjs;
+
+    public String getIdPelayananBpjs() {
+        return idPelayananBpjs;
+    }
+
+    public void setIdPelayananBpjs(String idPelayananBpjs) {
+        this.idPelayananBpjs = idPelayananBpjs;
+    }
 
     public String getIsOnline() {
         return isOnline;

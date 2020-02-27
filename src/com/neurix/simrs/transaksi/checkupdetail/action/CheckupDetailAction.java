@@ -1,5 +1,8 @@
 package com.neurix.simrs.transaksi.checkupdetail.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -28,6 +31,7 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -39,6 +43,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -80,9 +85,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class CheckupDetailAction extends BaseMasterAction {
 
@@ -107,6 +110,8 @@ public class CheckupDetailAction extends BaseMasterAction {
     private DokterBo dokterBoProxy;
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
+    private BranchBo branchBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
 
 
     private File fileUpload;
@@ -121,6 +126,14 @@ public class CheckupDetailAction extends BaseMasterAction {
     private BigInteger tarifCoverBpjs;
     private BigInteger tarifTotalTindakan;
     private String tipe;
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public DokterBo getDokterBoProxy() {
         return dokterBoProxy;
@@ -389,87 +402,152 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.add] start process >>>");
 
         //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<HeaderDetailCheckup> listOfResult = (List) session.getAttribute("listOfResult");
+
         String id = getId();
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+
         String jk = "";
-        if (id != null && !"".equalsIgnoreCase(id)) {
 
-            if (listOfResult != null) {
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found error when detail pasien " + e.getMessage());
+        }
 
-                for (HeaderDetailCheckup detailCheckup : listOfResult) {
-                    if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+        if (checkup != null) {
 
-                        detailCheckup.setStatusPeriksa("1");
-                        detailCheckup.setFlag("Y");
-                        detailCheckup.setAction("U");
-                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(checkup.getNoCheckup());
+            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
+            detailCheckup.setStatusPeriksa("1");
+            detailCheckup.setFlag("Y");
+            detailCheckup.setAction("U");
+            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
-                        try {
-                            checkupDetailBoProxy.saveEdit(detailCheckup);
-                        } catch (GeneralBOException e) {
-                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
-                        }
-
-                        HeaderCheckup headerCheckup = getHeaderCheckup(detailCheckup.getNoCheckup());
-                        detailCheckup.setIdPasien(headerCheckup.getIdPasien());
-                        detailCheckup.setNamaPasien(headerCheckup.getNama());
-                        detailCheckup.setAlamat(headerCheckup.getJalan());
-                        detailCheckup.setDesa(headerCheckup.getNamaDesa());
-                        detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
-                        detailCheckup.setKota(headerCheckup.getNamaKota());
-                        detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
-                        detailCheckup.setIdPelayanan(headerCheckup.getIdPelayanan());
-                        detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
-                        if (headerCheckup.getJenisKelamin() != null) {
-                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
-                                jk = "Perempuan";
-                            } else {
-                                jk = "laki-Laki";
-                            }
-                        }
-                        detailCheckup.setJenisKelamin(jk);
-                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
-                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
-                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
-                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
-                        detailCheckup.setNik(headerCheckup.getNoKtp());
-                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
-                        detailCheckup.setTinggi(headerCheckup.getTinggi());
-                        detailCheckup.setBerat(headerCheckup.getBerat());
-                        detailCheckup.setNoSep(headerCheckup.getNoSep());
-
-                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-                        detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
-
-                        setHeaderDetailCheckup(detailCheckup);
-
-                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
-                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
-                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
-                        }
-
-                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
-
-                        try {
-                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
-                        } catch (GeneralBOException e) {
-                            logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
-                        }
-
-                        setTarifTotalTindakan(totalTarif);
-                        break;
-                    }
-                }
-
-            } else {
-                setHeaderDetailCheckup(new HeaderDetailCheckup());
+            try {
+                checkupDetailBoProxy.saveEdit(detailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.add] Error when update checkup detail");
             }
+
+            detailCheckup.setIdPasien(checkup.getIdPasien());
+            detailCheckup.setNamaPasien(checkup.getNama());
+            detailCheckup.setAlamat(checkup.getJalan());
+            detailCheckup.setDesa(checkup.getNamaDesa());
+            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
+            detailCheckup.setKota(checkup.getNamaKota());
+            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
+            detailCheckup.setIdPelayanan(checkup.getIdPelayanan());
+            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
+            if (checkup.getJenisKelamin() != null) {
+                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Perempuan";
+                } else {
+                    jk = "laki-Laki";
+                }
+            }
+            detailCheckup.setJenisKelamin(jk);
+            detailCheckup.setTempatLahir(checkup.getTempatLahir());
+            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            detailCheckup.setNik(checkup.getNoKtp());
+            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+            detailCheckup.setUrlKtp(checkup.getUrlKtp());
+            detailCheckup.setTinggi(checkup.getTinggi());
+            detailCheckup.setBerat(checkup.getBerat());
+            detailCheckup.setNoSep(checkup.getNoSep());
+            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
+            detailCheckup.setMetodePembayaran(checkup.getMetodePembayaran());
+            setHeaderDetailCheckup(detailCheckup);
+
         } else {
             setHeaderDetailCheckup(new HeaderDetailCheckup());
         }
+
+
+//        if (id != null && !"".equalsIgnoreCase(id)) {
+//
+//            if (listOfResult != null) {
+//
+//                for (HeaderDetailCheckup detailCheckup : listOfResult) {
+//                    if (id.equalsIgnoreCase(detailCheckup.getNoCheckup())) {
+//
+//                        detailCheckup.setStatusPeriksa("1");
+//                        detailCheckup.setFlag("Y");
+//                        detailCheckup.setAction("U");
+//                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+//                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+//
+//                        try {
+//                            checkupDetailBoProxy.saveEdit(detailCheckup);
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[CheckupDetailAction.add] Error when update checkup detail");
+//                        }
+//
+//                        HeaderCheckup headerCheckup = getHeaderCheckup(detailCheckup.getNoCheckup());
+//                        detailCheckup.setIdPasien(headerCheckup.getIdPasien());
+//                        detailCheckup.setNamaPasien(headerCheckup.getNama());
+//                        detailCheckup.setAlamat(headerCheckup.getJalan());
+//                        detailCheckup.setDesa(headerCheckup.getNamaDesa());
+//                        detailCheckup.setKecamatan(headerCheckup.getNamaKecamatan());
+//                        detailCheckup.setKota(headerCheckup.getNamaKota());
+//                        detailCheckup.setProvinsi(headerCheckup.getNamaProvinsi());
+//                        detailCheckup.setIdPelayanan(headerCheckup.getIdPelayanan());
+//                        detailCheckup.setNamaPelayanan(headerCheckup.getNamaPelayanan());
+//                        if (headerCheckup.getJenisKelamin() != null) {
+//                            if ("P".equalsIgnoreCase(headerCheckup.getJenisKelamin())) {
+//                                jk = "Perempuan";
+//                            } else {
+//                                jk = "laki-Laki";
+//                            }
+//                        }
+//                        detailCheckup.setJenisKelamin(jk);
+//                        detailCheckup.setTempatLahir(headerCheckup.getTempatLahir());
+//                        detailCheckup.setTglLahir(headerCheckup.getTglLahir() == null ? null : headerCheckup.getTglLahir().toString());
+//                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(headerCheckup.getTglLahir());
+//                        detailCheckup.setTempatTglLahir(headerCheckup.getTempatLahir() + ", " + formatDate);
+//                        detailCheckup.setNik(headerCheckup.getNoKtp());
+//                        detailCheckup.setIdJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+//                        detailCheckup.setUrlKtp(headerCheckup.getUrlKtp());
+//                        detailCheckup.setTinggi(headerCheckup.getTinggi());
+//                        detailCheckup.setBerat(headerCheckup.getBerat());
+//                        detailCheckup.setNoSep(headerCheckup.getNoSep());
+//
+//                        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+//                        detailCheckup.setJenisPeriksaPasien(jenisPriksaPasien.getKeterangan());
+//
+//                        setHeaderDetailCheckup(detailCheckup);
+//
+//                        if (headerCheckup.getTarifBpjs() != null && headerCheckup.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
+//                            String stTarifCoverBpjs = headerCheckup.getTarifBpjs().toString();
+//                            setTarifCoverBpjs(new BigInteger(stTarifCoverBpjs));
+//                        }
+//
+//                        BigInteger totalTarif = new BigInteger(String.valueOf(0));
+//
+//                        try {
+//                            totalTarif = checkupDetailBoProxy.getSumOfTindakanByNoCheckup(id);
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[CheckupDetailAction.add] Error when get total tarif " + e.getMessage());
+//                        }
+//
+//                        setTarifTotalTindakan(totalTarif);
+//                        break;
+//                    }
+//                }
+//
+//            } else {
+//                setHeaderDetailCheckup(new HeaderDetailCheckup());
+//            }
+//        } else {
+//            setHeaderDetailCheckup(new HeaderDetailCheckup());
+//        }
 
         logger.info("[CheckupDetailAction.add] end process <<<");
 
@@ -846,8 +924,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan) {
+    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         String status = "error";
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -879,6 +959,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
+            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
@@ -891,7 +972,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         try {
@@ -911,10 +991,100 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
+        updateFlagPeriksaAntrianOnline(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
         return status;
     }
+
+    private String closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){
+
+        String branchId = CommonUtil.userBranchLogin();
+        String invoice = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setIdPelayanan(idPoli);
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        try {
+            pelayanans = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error when pelayanan, ", e);
+        }
+
+        String kode="";
+        String transId = "";
+        String ketPoli = "";
+        String ketResep = "";
+        if (pelayanans.size() > 0){
+            Pelayanan pelayananData = pelayanans.get(0);
+
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setStatusBayar("Y");
+            List<HeaderDetailCheckup> detailCheckupUangMuka = checkupDetailBo.getListUangPendaftaran(headerDetailCheckup);
+
+
+            String idUm = "";
+            if (detailCheckupUangMuka.size() > 0){
+                for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka){
+                    idUm = detailCheckup.getNoUangMuka();
+                }
+            }
+
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
+            BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal ppnObat = new BigDecimal(0);
+            if (jumlahResep.compareTo(new BigDecimal(0)) == 1){
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.01));
+            }
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("uang_muka", idUm);
+
+
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRJ";
+                ketPoli = "Rawat Jalan";
+            }
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
+                kode = "JRI";
+                ketPoli = "Rawat Inap";
+            }
+
+            if ("Y".equalsIgnoreCase(isResep)){
+                transId = "04";
+                ketResep = "Tanpa Obat";
+
+                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
+                hsCriteria.put("jumlah_ppn_obat", ppnObat);
+            } else {
+                transId = "05";
+                ketResep = "Dengan Obat";
+            }
+
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+
+            hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
+            hsCriteria.put("piutang_pasien_non_bpjs", invoice);
+
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang "+idPasien;
+            try {
+              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
+            } catch (GeneralBOException e){
+                logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+            }
+        }
+        return invoice;
+    }
+
+//    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}
 
     private void pindahPoli(String noCheckup, String idDetailCheckup, String idPoli, String idDokter) {
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
@@ -1209,6 +1379,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 headerDetailCheckup.setLastUpdateWho(user);
                 headerDetailCheckup.setIdDokter(idDokter);
                 headerDetailCheckup.setNoSep(genNoSep);
+//                headerDetailCheckup.setNoNota(createJurnalUangMuka(checkup.getIdPasien(), "0"));
 
                 try {
                     checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1219,54 +1390,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
-
-//    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar){
-//        logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
-//
-//        Timestamp now = new Timestamp(System.currentTimeMillis());
-//        String user = CommonUtil.userLogin();
-//
-//        if (!"".equalsIgnoreCase(noCheckup) &&
-//                !"".equalsIgnoreCase(idDetailCheckup))
-//        {
-//            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-//
-//            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-//            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-//            detailCheckup.setIdDetailCheckup(idDetailCheckup);
-//
-//            try {
-//                detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
-//            } catch (GeneralBOException e){
-//                logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
-//            }
-//
-//
-//            if (!detailCheckupList.isEmpty()){
-//                detailCheckup = detailCheckupList.get(0);
-//                HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-//                headerDetailCheckup.setNoCheckup(noCheckup);
-//                headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-//                headerDetailCheckup.setIdPelayanan(detailCheckup.getIdPelayanan());
-//                headerDetailCheckup.setIdRuangan(kamar);
-//                headerDetailCheckup.setStatusPeriksa("1");
-//                headerDetailCheckup.setCreatedDate(now);
-//                headerDetailCheckup.setCreatedWho(user);
-//                headerDetailCheckup.setLastUpdate(now);
-//                headerDetailCheckup.setLastUpdateWho(user);
-//                headerDetailCheckup.setRawatInap(true);
-//
-//                try {
-//                    checkupDetailBo.saveAdd(headerDetailCheckup);
-//                } catch (GeneralBOException e){
-//                    logger.error("[CheckupDetailAction.rujukRawatInap] Error when saving add new detail poli, ", e);
-//                }
-//            }
-//        }
-//        logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
-//
-//    }
 
     private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
@@ -1299,7 +1422,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.rujukRawatInap] Error when geting data detail poli, ", e);
             }
-
 
             if (!detailCheckupList.isEmpty()) {
 
@@ -1601,6 +1723,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
+//                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
 
                         try {
                             checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -1614,6 +1737,33 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.rujukRawatInap] end process >>>");
 
     }
+
+//    private String createJurnalUangMuka(String idPasien, String jumlah){
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+//
+//        String transId = "01";
+//
+//        String noNota = "";
+//        try {
+//            noNota = billingSystemBo.createInvoiceNumber(transId);
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("master_id", idPasien);
+//        hsCriteria.put("no_nota", noNota);
+//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
+//
+//        try {
+//            billingSystemBo.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
+//        } catch (GeneralBOException e){
+//            logger.error("[CheckupDetailAction.createJurnalUangMuka] Error create uang muka, ", e);
+//        }
+//
+//        return noNota;
+//    }
 
     private void cekRawatInap(String idDetailCheckup) {
 
@@ -1820,6 +1970,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
             List<Pasien> pasienList = new ArrayList<>();
+            List<Branch> branchList = new ArrayList<>();
             Pasien pasien = new Pasien();
             pasien.setIdPasien(checkup.getIdPasien());
             pasien.setFlag("Y");
@@ -1833,175 +1984,94 @@ public class CheckupDetailAction extends BaseMasterAction {
                 return ERROR;
             }
 
-            if (pasienList.size() > 0) {
+            Branch branch = new Branch();
+            branch.setBranchId(userArea);
+            branch.setFlag("Y");
 
-                Pasien getPasien = pasienList.get(0);
+            try {
+                branchList = branchBoProxy.getByCriteria(branch);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when search id pasien, please inform to your admin.\n" + e.getMessage());
+                return ERROR;
+            }
 
-                SepRequest sepRequest = new SepRequest();
-                sepRequest.setNoKartu(getPasien.getNoBpjs());
-                sepRequest.setTglSep(dateToday);
-                sepRequest.setPpkPelayanan("1311R003");//cons id rumah sakit
-                sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
-                sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
-                sepRequest.setNoMr(checkup.getIdPasien());//id pasien
-                sepRequest.setAsalRujukan("1");//
-                sepRequest.setTglRujukan(checkup.getTglRujukan());
-                sepRequest.setNoRujukan(checkup.getNoRujukan());
-                sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
-                sepRequest.setCatatan("");
-                sepRequest.setDiagAwal(checkup.getDiagnosa());
-                sepRequest.setPoliTujuan("IGD");
-                sepRequest.setPoliEksekutif("0");
-                sepRequest.setCob("0");
-                sepRequest.setKatarak("0");
-                sepRequest.setLakaLantas("0");
-                sepRequest.setPenjamin("");
-                sepRequest.setTglKejadian("");
-                sepRequest.setKeterangan("");
-                sepRequest.setSuplesi("0");
-                sepRequest.setNoSepSuplesi("");
-                sepRequest.setKdProvinsiLakaLantas("");
-                sepRequest.setKdKecamatanLakaLantas("");
-                sepRequest.setKdKabupatenLakaLantas("");
-                sepRequest.setNoSuratSkdp("000002");
-                sepRequest.setKodeDpjp("31661");
-                sepRequest.setNoTelp(getPasien.getNoTelp());
-                sepRequest.setUserPembuatSep(userLogin);
+            Branch getBranch = new Branch();
 
-                SepResponse response = new SepResponse();
+            if (branchList.size() > 0) {
+                getBranch = branchList.get(0);
 
-                try {
-                    response = bpjsBoProxy.insertSepBpjs(sepRequest, userArea);
-                } catch (Exception e) {
-                    Long logId = null;
-                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when insert SEP.\n" + e.getMessage());
-                    return ERROR;
-                }
+                if (getBranch.getPpkPelayanan() != null) {
+                    if (pasienList.size() > 0) {
 
-                if (response.getNoSep() != null) {
+                        Pasien getPasien = pasienList.get(0);
 
-                    genNoSep = response.getNoSep();
-                    logger.info("[CheckupAction.saveAdd] NO. SEP : " + genNoSep);
+                        SepRequest sepRequest = new SepRequest();
+                        sepRequest.setNoKartu(getPasien.getNoBpjs());
+                        sepRequest.setTglSep(dateToday);
+                        sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
+                        sepRequest.setJnsPelayanan("2");//jenis rawat inap apa jalan
+                        sepRequest.setKlsRawat(checkup.getKelasPasien());//kelas rawat dari bpjs
+                        sepRequest.setNoMr(checkup.getIdPasien());//id pasien
+                        sepRequest.setAsalRujukan("1");//
+                        sepRequest.setTglRujukan(checkup.getTglRujukan());
+                        sepRequest.setNoRujukan(checkup.getNoRujukan());
+                        sepRequest.setPpkRujukan(checkup.getNoPpkRujukan());
+                        sepRequest.setCatatan("");
+                        sepRequest.setDiagAwal(checkup.getDiagnosa());
+                        sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs());
+                        sepRequest.setPoliEksekutif("0");
+                        sepRequest.setCob("0");
+                        sepRequest.setKatarak("0");
+                        sepRequest.setLakaLantas("0");
+                        sepRequest.setPenjamin("");
+                        sepRequest.setTglKejadian("");
+                        sepRequest.setKeterangan("");
+                        sepRequest.setSuplesi("0");
+                        sepRequest.setNoSepSuplesi("");
+                        sepRequest.setKdProvinsiLakaLantas("");
+                        sepRequest.setKdKecamatanLakaLantas("");
+                        sepRequest.setKdKabupatenLakaLantas("");
+                        sepRequest.setNoSuratSkdp(getBranch.getSuratSkdp());
+                        sepRequest.setKodeDpjp("31661");
+                        sepRequest.setNoTelp(getPasien.getNoTelp());
+                        sepRequest.setUserPembuatSep(userLogin);
 
-                    KlaimRequest klaimRequest = new KlaimRequest();
-                    klaimRequest.setNoSep(genNoSep);
-                    klaimRequest.setNoKartu(getPasien.getNoBpjs());
-                    klaimRequest.setNoRm(getPasien.getIdPasien());
-                    klaimRequest.setNamaPasien(getPasien.getNama());
-                    klaimRequest.setTglLahir(getPasien.getTglLahir());
-                    klaimRequest.setGender(getPasien.getJenisKelamin());
+                        SepResponse response = new SepResponse();
 
-                    KlaimResponse responseNewClaim = new KlaimResponse();
-                    try {
-                        responseNewClaim = eklaimBoProxy.insertNewClaimEklaim(klaimRequest, userArea);
-                    } catch (GeneralBOException e) {
-                        Long logId = null;
-                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                        return ERROR;
-                    }
-
-                    List<Tindakan> tindakanList = new ArrayList<>();
-                    Tindakan tindakan = new Tindakan();
-                    tindakan.setIdTindakan("03");
-
-                    try {
-                        tindakanList = tindakanBoProxy.getByCriteria(tindakan);
-                    } catch (GeneralBOException e) {
-                        Long logId = null;
-                        logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                        addActionError("Error, " + "[code=" + logId + "] Found problem when search tindakan, please inform to your admin.\n" + e.getMessage());
-                        return ERROR;
-                    }
-
-                    if (tindakanList.size() > 0) {
-                        tindakan = tindakanList.get(0);
-                    }
-
-                    if (responseNewClaim.getPatientId() != null) {
-                        KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
-                        klaimDetailRequest.setNomorSep(genNoSep);
-                        klaimDetailRequest.setNomorKartu(getPasien.getNoKtp());
-                        klaimDetailRequest.setTglMasuk(updateTime.toString());
-                        klaimDetailRequest.setTglPulang(updateTime.toString());
-                        klaimDetailRequest.setJenisRawat("2");
-                        klaimDetailRequest.setKelasRawat(checkup.getKelasPasien());
-                        klaimDetailRequest.setAdlChronic("");
-                        klaimDetailRequest.setIcuIndikator("");
-                        klaimDetailRequest.setIcuLos("");
-                        klaimDetailRequest.setVentilatorHour("");
-                        klaimDetailRequest.setUpgradeClassInd("");
-                        klaimDetailRequest.setUpgradeClassClass("");
-                        klaimDetailRequest.setUpgradeClassLos("");
-                        klaimDetailRequest.setAddPaymentPct("");
-                        klaimDetailRequest.setBirthWeight("0");
-                        klaimDetailRequest.setDischargeStatus("1");
-                        klaimDetailRequest.setDiagnosa(checkup.getDiagnosa());
-                        klaimDetailRequest.setProcedure("");
-
-                        klaimDetailRequest.setTarifRsNonBedah("");
-                        klaimDetailRequest.setTarifRsProsedurBedah("");
-
-                        klaimDetailRequest.setTarifRsKonsultasi(tindakan.getTarifBpjs().toString());
-                        klaimDetailRequest.setTarifRsTenagaAhli("");
-                        klaimDetailRequest.setTarifRsKeperawatan("");
-                        klaimDetailRequest.setTarifRsPenunjang("");
-                        klaimDetailRequest.setTarifRsRadiologi("");
-                        klaimDetailRequest.setTarifRsLaboratorium("");
-                        klaimDetailRequest.setTarifRsPelayananDarah("");
-                        klaimDetailRequest.setTarifRsRehabilitasi("");
-                        klaimDetailRequest.setTarifRsKamar("");
-                        klaimDetailRequest.setTarifRsRawatIntensif("");
-                        klaimDetailRequest.setTarifRsObat("");
-                        klaimDetailRequest.setTarifRsObatKronis("");
-                        klaimDetailRequest.setTarifRsObatKemoterapi("");
-                        klaimDetailRequest.setTarifRsAlkes("");
-                        klaimDetailRequest.setTarifRsBmhp("");
-                        klaimDetailRequest.setTarifRsSewaAlat("");
-
-                        List<Dokter> dokterList = new ArrayList<>();
-                        Dokter dokter = new Dokter();
-                        dokter.setIdDokter(checkup.getIdDokter());
-                        dokter.setFlag("Y");
                         try {
-                            dokterList = dokterBoProxy.getByCriteria(dokter);
-                        } catch (GeneralBOException e) {
+                            response = bpjsBoProxy.insertSepBpjs(sepRequest, userArea);
+                        } catch (Exception e) {
                             Long logId = null;
                             logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                            addActionError("Error, " + "[code=" + logId + "] Found problem when insert SEP.\n" + e.getMessage());
                             return ERROR;
                         }
 
-                        String namaDokter = "";
-                        if (dokterList.size() > 0) {
-                            namaDokter = dokterList.get(0).getNamaDokter();
-                        }
+                        if (response.getNoSep() != null) {
 
-                        klaimDetailRequest.setTarifPoliEks("");
-                        klaimDetailRequest.setNamaDokter(namaDokter);
-                        klaimDetailRequest.setKodeTarif("AP");
-                        klaimDetailRequest.setTarifRsPayorId("3");
-                        klaimDetailRequest.setPayorCd("JKN");
-                        klaimDetailRequest.setCobCd("");
-                        klaimDetailRequest.setCoderNik("123456");
+                            genNoSep = response.getNoSep();
+                            logger.info("[CheckupAction.saveAdd] NO. SEP : " + genNoSep);
 
-                        KlaimDetailResponse claimEklaimResponse = new KlaimDetailResponse();
-                        try {
-                            claimEklaimResponse = eklaimBoProxy.updateDataClaimEklaim(klaimDetailRequest, userArea);
-                        } catch (GeneralBOException e) {
-                            Long logId = null;
-                            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                            return ERROR;
-                        }
+                            KlaimRequest klaimRequest = new KlaimRequest();
+                            klaimRequest.setNoSep(genNoSep);
+                            klaimRequest.setNoKartu(getPasien.getNoBpjs());
+                            klaimRequest.setNoRm(getPasien.getIdPasien());
+                            klaimRequest.setNamaPasien(getPasien.getNama());
+                            klaimRequest.setTglLahir(getPasien.getTglLahir());
+                            String jk = "";
 
-                        if ("200".equalsIgnoreCase(claimEklaimResponse.getStatus())) {
+                            if ("L".equalsIgnoreCase(getPasien.getJenisKelamin())) {
+                                jk = "1";
+                            } else {
+                                jk = "2";
+                            }
+                            klaimRequest.setGender(jk);
 
-                            Grouping1Response grouping1Response = new Grouping1Response();
-
+                            KlaimResponse responseNewClaim = new KlaimResponse();
                             try {
-                                grouping1Response = eklaimBoProxy.groupingStage1Eklaim(genNoSep, userArea);
+                                responseNewClaim = eklaimBoProxy.insertNewClaimEklaim(klaimRequest, userArea);
                             } catch (GeneralBOException e) {
                                 Long logId = null;
                                 logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
@@ -2009,49 +2079,164 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 return ERROR;
                             }
 
-                            // jika mendapatkan cbgCode dan tarif cbg maka update ke table checkup untuk mengisi total tarif
-                            if (grouping1Response.getCbgCode() != null && grouping1Response.getCbgTarif() != null) {
+                            List<Tindakan> tindakanList = new ArrayList<>();
+                            Tindakan tindakan = new Tindakan();
+                            tindakan.setIdTindakan("03");
 
-                                BigDecimal tarifCbg = new BigDecimal(0);
-                                if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
-                                    if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
-                                        tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
-                                    }
-                                }
-
-                                //======START SET TARIF BPJS=========
-
-                                checkup.setTarifBpjs(tarifCbg);
-
-                                //======END SET TARIF BPJS=========
-
-
-                                // jika ada special cmg maka proses grouping stage 2
-                                if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
-
-                                    for (Grouping1SpecialCmgResponse specialCmgResponse : grouping1Response.getSpecialCmgResponseList()) {
-
-                                        Grouping2Response grouping2Response = new Grouping2Response();
-                                        try {
-                                            grouping2Response = eklaimBoProxy.groupingStage2Eklaim(genNoSep, specialCmgResponse.getCode(), userArea);
-                                        } catch (GeneralBOException e) {
-                                            Long logId = null;
-                                            logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                                            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                                            return ERROR;
-                                        }
-                                    }
-                                }
+                            try {
+                                tindakanList = tindakanBoProxy.getByCriteria(tindakan);
+                            } catch (GeneralBOException e) {
+                                Long logId = null;
+                                logger.error("[CheckupAction.saveAdd] Error when search item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                                addActionError("Error, " + "[code=" + logId + "] Found problem when search tindakan, please inform to your admin.\n" + e.getMessage());
+                                return ERROR;
                             }
 
+                            if (tindakanList.size() > 0) {
+                                tindakan = tindakanList.get(0);
+                            }
+
+                            if (responseNewClaim.getPatientId() != null) {
+                                KlaimDetailRequest klaimDetailRequest = new KlaimDetailRequest();
+                                klaimDetailRequest.setNomorSep(genNoSep);
+                                klaimDetailRequest.setNomorKartu(getPasien.getNoKtp());
+                                klaimDetailRequest.setTglMasuk(updateTime.toString());
+                                klaimDetailRequest.setTglPulang(updateTime.toString());
+                                klaimDetailRequest.setJenisRawat("2");
+                                klaimDetailRequest.setKelasRawat(checkup.getKelasPasien());
+                                klaimDetailRequest.setAdlChronic("");
+                                klaimDetailRequest.setIcuIndikator("");
+                                klaimDetailRequest.setIcuLos("");
+                                klaimDetailRequest.setVentilatorHour("");
+                                klaimDetailRequest.setUpgradeClassInd("");
+                                klaimDetailRequest.setUpgradeClassClass("");
+                                klaimDetailRequest.setUpgradeClassLos("");
+                                klaimDetailRequest.setAddPaymentPct("");
+                                klaimDetailRequest.setBirthWeight("0");
+                                klaimDetailRequest.setDischargeStatus("1");
+                                klaimDetailRequest.setDiagnosa(checkup.getDiagnosa());
+                                klaimDetailRequest.setProcedure("");
+
+                                klaimDetailRequest.setTarifRsNonBedah("");
+                                klaimDetailRequest.setTarifRsProsedurBedah("");
+
+                                klaimDetailRequest.setTarifRsKonsultasi(tindakan.getTarifBpjs().toString());
+                                klaimDetailRequest.setTarifRsTenagaAhli("");
+                                klaimDetailRequest.setTarifRsKeperawatan("");
+                                klaimDetailRequest.setTarifRsPenunjang("");
+                                klaimDetailRequest.setTarifRsRadiologi("");
+                                klaimDetailRequest.setTarifRsLaboratorium("");
+                                klaimDetailRequest.setTarifRsPelayananDarah("");
+                                klaimDetailRequest.setTarifRsRehabilitasi("");
+                                klaimDetailRequest.setTarifRsKamar("");
+                                klaimDetailRequest.setTarifRsRawatIntensif("");
+                                klaimDetailRequest.setTarifRsObat("");
+                                klaimDetailRequest.setTarifRsObatKronis("");
+                                klaimDetailRequest.setTarifRsObatKemoterapi("");
+                                klaimDetailRequest.setTarifRsAlkes("");
+                                klaimDetailRequest.setTarifRsBmhp("");
+                                klaimDetailRequest.setTarifRsSewaAlat("");
+
+                                List<Dokter> dokterList = new ArrayList<>();
+                                Dokter dokter = new Dokter();
+                                dokter.setIdDokter(checkup.getIdDokter());
+                                dokter.setFlag("Y");
+                                try {
+                                    dokterList = dokterBoProxy.getByCriteria(dokter);
+                                } catch (GeneralBOException e) {
+                                    Long logId = null;
+                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                                    return ERROR;
+                                }
+
+                                String namaDokter = "";
+                                if (dokterList.size() > 0) {
+                                    namaDokter = dokterList.get(0).getNamaDokter();
+                                }
+
+                                klaimDetailRequest.setTarifPoliEks("");
+                                klaimDetailRequest.setNamaDokter(namaDokter);
+                                klaimDetailRequest.setKodeTarif(getBranch.getKodeTarif());
+                                klaimDetailRequest.setTarifRsPayorId(getBranch.getTarifPayorId());
+                                klaimDetailRequest.setPayorCd(getBranch.getPayorCd());
+                                klaimDetailRequest.setCobCd("");
+                                klaimDetailRequest.setCoderNik(getBranch.getCoderNik());
+
+                                KlaimDetailResponse claimEklaimResponse = new KlaimDetailResponse();
+                                try {
+                                    claimEklaimResponse = eklaimBoProxy.updateDataClaimEklaim(klaimDetailRequest, userArea);
+                                } catch (GeneralBOException e) {
+                                    Long logId = null;
+                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                                    return ERROR;
+                                }
+
+                                if ("200".equalsIgnoreCase(claimEklaimResponse.getStatus())) {
+
+                                    Grouping1Response grouping1Response = new Grouping1Response();
+
+                                    try {
+                                        grouping1Response = eklaimBoProxy.groupingStage1Eklaim(genNoSep, userArea);
+                                    } catch (GeneralBOException e) {
+                                        Long logId = null;
+                                        logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                                        return ERROR;
+                                    }
+
+                                    // jika mendapatkan cbgCode dan tarif cbg maka update ke table checkup untuk mengisi total tarif
+                                    if (grouping1Response.getCbgCode() != null && grouping1Response.getCbgTarif() != null) {
+
+                                        BigDecimal tarifCbg = new BigDecimal(0);
+                                        if (!"".equalsIgnoreCase(grouping1Response.getCbgTarif()) && grouping1Response.getCbgTarif() != null) {
+                                            if (!"0".equalsIgnoreCase(grouping1Response.getCbgTarif())) {
+                                                tarifCbg = new BigDecimal(grouping1Response.getCbgTarif());
+                                            }
+                                        }
+
+                                        //======START SET TARIF BPJS=========
+
+                                        checkup.setTarifBpjs(tarifCbg);
+
+                                        //======END SET TARIF BPJS=========
+
+
+                                        // jika ada special cmg maka proses grouping stage 2
+                                        if (grouping1Response.getSpecialCmgResponseList().size() > 0) {
+
+                                            for (Grouping1SpecialCmgResponse specialCmgResponse : grouping1Response.getSpecialCmgResponseList()) {
+
+                                                Grouping2Response grouping2Response = new Grouping2Response();
+                                                try {
+                                                    grouping2Response = eklaimBoProxy.groupingStage2Eklaim(genNoSep, specialCmgResponse.getCode(), userArea);
+                                                } catch (GeneralBOException e) {
+                                                    Long logId = null;
+                                                    logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                                                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                                                    return ERROR;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
+                                    addActionError("Error, " + " Found problem when saving add data, please inform to your admin. update claim not success. \n" + claimEklaimResponse.getMessage());
+                                    return ERROR;
+                                }
+                            }
                         } else {
-                            logger.error("[CheckupAction.saveAdd] Error when adding item ,update claim not success " + claimEklaimResponse.getMessage());
-                            addActionError("Error, " + " Found problem when saving add data, please inform to your admin. update claim not success. \n" + claimEklaimResponse.getMessage());
+                            addActionError("Error, " + "Generate SEP failed");
                             return ERROR;
                         }
-                    }
-                }
 
+                    }
+                } else {
+                    addActionError("Error, " + "PPK Pelayanan Tidak Ada");
+                    return ERROR;
+                }
             }
         }
 
@@ -2078,15 +2263,15 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         try {
 
-            try {
-                JSONObject obj = new JSONObject(checkup.getAdmisi());
-                checkup.setKetKeyakinan(obj.getString("keyakinan"));
-                checkup.setBahasa(obj.getString("penerjemah"));
-                checkup.setAlatBantu(obj.getString("alatBantu"));
-                checkup.setAlergi(obj.getString("alergi"));
-            } catch (JSONException e) {
-                logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
-            }
+//            try {
+//                JSONObject obj = new JSONObject(checkup.getAdmisi());
+//                checkup.setKetKeyakinan(obj.getString("keyakinan"));
+//                checkup.setBahasa(obj.getString("penerjemah"));
+//                checkup.setAlatBantu(obj.getString("alatBantu"));
+//                checkup.setAlergi(obj.getString("alergi"));
+//            } catch (JSONException e) {
+//                logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
+//            }
 
             String tgl_lahir = checkup.getStTglLahir();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -2547,6 +2732,19 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         return total;
 
+    }
+
+    private void updateFlagPeriksaAntrianOnline(String idDetailCheckup) {
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+            try {
+                checkupDetailBo.updateFlagPeriksaAntrianOnline(idDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when update antrian online");
+            }
+        }
     }
 
     @Override

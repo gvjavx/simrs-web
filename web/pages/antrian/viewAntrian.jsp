@@ -187,12 +187,31 @@
 
         detailBranch(branchId);
 
-        setInterval(function () {
+        // setInterval(function () {
             var tableAntrian = "";
+            var poli = "";
+
             CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
                 if(response.length > 0){
 
+                    var tes = "";
                     $.each(response, function (i, item) {
+
+                        var pelayanan = "";
+                        // console.log(tes);
+                        // console.log(tes2);
+                        tes = item.namaPelayanan;
+
+                        if(tes == item.namaPelayanan){
+                            tes = "";
+                        }else{
+                            tes = item.namaPelayanan;
+
+                        }
+
+                        console.log(tes);
+                        // if(item[i].namaPelayan);
+                        console.log();
                         tableAntrian += '<tr>' +
                             '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
@@ -223,7 +242,7 @@
                     $('#body_periksa').html("");
                 }
             });
-        },1000);
+        // },1000);
     }
 
     function detailBranch(branch) {

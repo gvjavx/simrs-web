@@ -126,7 +126,7 @@ group by
 			</textField>
 			<image>
 				<reportElement x="10" y="9" width="95" height="50" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
-				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+				<imageExpression><![CDATA["/opt/tomcat/webapps/hris/pages/images/LOGO-RW.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="899" y="0" width="69" height="70" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>

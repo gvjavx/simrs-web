@@ -35,6 +35,78 @@ public class ImBranches implements Serializable {
     private String kdAplikasi;
     private String eklaimAddress; //example : "http://192.168.1.1/"
     private String keyEklaim;
+    private String logoName;
+
+    public String getLogoName() {
+        return logoName;
+    }
+
+    public void setLogoName(String logoName) {
+        this.logoName = logoName;
+    }
+
+    public String getAlamatSurat() {
+        return alamatSurat;
+    }
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
+
+    private String ppkPelayanan;
+    private String suratSkdp;
+    private String kodeTarif;
+    private String tarifPayorId;
+    private String payorCd;
+    private String coderNik;
+
+    public String getPpkPelayanan() {
+        return ppkPelayanan;
+    }
+
+    public void setPpkPelayanan(String ppkPelayanan) {
+        this.ppkPelayanan = ppkPelayanan;
+    }
+
+    public String getSuratSkdp() {
+        return suratSkdp;
+    }
+
+    public void setSuratSkdp(String suratSkdp) {
+        this.suratSkdp = suratSkdp;
+    }
+
+    public String getKodeTarif() {
+        return kodeTarif;
+    }
+
+    public void setKodeTarif(String kodeTarif) {
+        this.kodeTarif = kodeTarif;
+    }
+
+    public String getTarifPayorId() {
+        return tarifPayorId;
+    }
+
+    public void setTarifPayorId(String tarifPayorId) {
+        this.tarifPayorId = tarifPayorId;
+    }
+
+    public String getPayorCd() {
+        return payorCd;
+    }
+
+    public void setPayorCd(String payorCd) {
+        this.payorCd = payorCd;
+    }
+
+    public String getCoderNik() {
+        return coderNik;
+    }
+
+    public void setCoderNik(String coderNik) {
+        this.coderNik = coderNik;
+    }
 
     private BigDecimal faktorKali;
     private BigDecimal multifikator;
@@ -59,14 +131,6 @@ public class ImBranches implements Serializable {
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
-
-    public String getAlamatSurat() {
-        return alamatSurat;
-    }
-
-    public void setAlamatSurat(String alamatSurat) {
-        this.alamatSurat = alamatSurat;
-    }
 
     public BigDecimal getMaxBpjsKs() {
         return maxBpjsKs;
