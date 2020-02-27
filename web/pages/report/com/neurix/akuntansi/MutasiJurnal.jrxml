@@ -524,7 +524,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-39" x="35" y="18" width="99" height="18" uuid="30bfa65b-4285-447e-8e19-fcf7b51053b1"/>
+				<reportElement key="staticText-39" x="35" y="18" width="106" height="18" uuid="30bfa65b-4285-447e-8e19-fcf7b51053b1"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

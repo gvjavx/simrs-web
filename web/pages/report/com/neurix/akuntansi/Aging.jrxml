@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Aging" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="f9432a24-ee5d-45d2-a0d1-74b3397bc672">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5892034107948287"/>
+	<property name="ireport.zoom" value="2.139837529582503"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="91"/>
+	<property name="ireport.y" value="125"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -686,7 +686,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-12" x="25" y="3" width="87" height="17" uuid="f5ed434d-1ecb-4153-87a7-21a073569ed2"/>
+				<reportElement key="staticText-12" x="25" y="3" width="99" height="17" uuid="f5ed434d-1ecb-4153-87a7-21a073569ed2"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -699,7 +699,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[SUMBER]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-14" x="154" y="3" width="105" height="17" uuid="80c8ac58-8bd7-42c6-b347-54a0219f6915"/>
+				<reportElement key="staticText-14" x="178" y="3" width="81" height="17" uuid="80c8ac58-8bd7-42c6-b347-54a0219f6915"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -803,7 +803,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[> 2 thn]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-38" x="113" y="3" width="65" height="17" uuid="23b442ce-31ed-4f6b-bdba-87ebcf463989"/>
+				<reportElement key="staticText-38" x="124" y="3" width="65" height="17" uuid="23b442ce-31ed-4f6b-bdba-87ebcf463989"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -844,7 +844,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$V{nomor}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-20" x="25" y="-1" width="87" height="15" uuid="16005409-e43d-4976-af44-1ad1c02bd3b5"/>
+				<reportElement key="textField-20" x="25" y="-1" width="99" height="15" uuid="16005409-e43d-4976-af44-1ad1c02bd3b5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -943,7 +943,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{jumlah7}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-46" x="113" y="-1" width="65" height="15" uuid="d0c37acf-2235-44b1-99c1-68d374fc3358"/>
+				<reportElement key="textField-46" x="124" y="-1" width="65" height="15" uuid="d0c37acf-2235-44b1-99c1-68d374fc3358"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
