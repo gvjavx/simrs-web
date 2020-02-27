@@ -772,7 +772,7 @@ public class VerifikatorAction extends BaseMasterAction {
             String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" id Pasien :"+idPasien;
 
             try {
-                billingSystemBo.createJurnal(transId, hsCriteria, unitId, catatan, "Y", "");
+                billingSystemBo.createJurnal(transId, hsCriteria, unitId, catatan, "Y");
                 response.setStatus("success");
             } catch (GeneralBOException e){
                 logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);

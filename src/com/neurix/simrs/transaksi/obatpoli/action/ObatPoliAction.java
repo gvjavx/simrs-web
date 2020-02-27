@@ -354,7 +354,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
                     String catatan = "Pengiriman Barang Gudang ke Apotik";
                     try {
-                        billingSystemBo.createJurnal("15", jurnalMap, branchId, catatan, "Y", "");
+                        billingSystemBo.createJurnal("15", jurnalMap, branchId, catatan, "Y");
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
                         return e.getMessage();

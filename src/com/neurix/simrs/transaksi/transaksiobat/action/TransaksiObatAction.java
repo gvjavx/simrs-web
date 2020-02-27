@@ -760,7 +760,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         String catatan = "Pengeluaran Obat Apotik "+branchId;
         try {
-            billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y", "");
+            billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y");
             response.setStatus("success");
         } catch (GeneralBOException e){
             response.setStatus("error");
@@ -947,7 +947,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         hsCriteria.put("ppn_keluaran", transaksiObatDetail.getPpnBayar());
 
         try {
-            billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y", "");
+            billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y");
         } catch (GeneralBOException e){
             logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR. ", e);
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR. " + e.getMessage());
