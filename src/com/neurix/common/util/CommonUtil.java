@@ -435,6 +435,17 @@ public class CommonUtil {
         return sql;
     }
 
+    public static Date convertStringToDate2(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date sql = null;
+        try{
+            java.util.Date parsed = format.parse(date);
+            sql = new java.sql.Date(parsed.getTime());
+        }catch (Exception E){
+        }
+        return sql;
+    }
+
     public static Date convertToDate(String stDate) {
         if (stDate != null && !"".equalsIgnoreCase(stDate)) {
             String sDay;

@@ -1566,10 +1566,10 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
         //P = Pcare ----untuk klinik
         switch (jenisCari){
             case "R":
-                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/"+noRujukan;
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"Rujukan/RS/"+noRujukan;
             break;
             case "P":
-                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/"+noRujukan;
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"Rujukan/"+noRujukan;
             break;
         }
         if (!feature.equalsIgnoreCase("")){
@@ -1765,10 +1765,10 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
         //P = Pcare
         switch (jenisCari){
             case "R":
-                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/RS/Peserta/"+noRujukan;
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"Rujukan/RS/Peserta/"+noRujukan;
                 break;
             case "P":
-                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"/Rujukan/Peserta/"+noRujukan;
+                feature = CommonConstant.BPJS_BASE_URL + CommonConstant.BPJS_SERVICE_VKLAIM +"Rujukan/Peserta/"+noRujukan;
                 break;
         }
         if (!feature.equalsIgnoreCase("")){

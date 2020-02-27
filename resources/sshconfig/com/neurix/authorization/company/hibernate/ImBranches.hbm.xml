@@ -93,6 +93,7 @@
         <property name="keyEklaim">
             <column name="key_eklaim" sql-type="varchar" length="100"/>
         </property>
+<<<<<<< HEAD
 
         <property name="minBpjsKs">
             <column name="min_bpjs_ks" sql-type="numeric" length="10"/>
@@ -119,6 +120,32 @@
             <column name="percent_tk_pers" sql-type="numeric" length="10"/>
         </property>
 
+=======
+        <property name="alamatSurat">
+            <column name="alamat_surat" sql-type="varchar" length="100"/>
+        </property>
+        <property name="logoName">
+            <column name="logo_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="ppkPelayanan">
+            <column name="ppk_pelayanan" sql-type="varchar" length="100"/>
+        </property>
+        <property name="suratSkdp">
+            <column name="surat_skdp" sql-type="varchar" length="100"/>
+        </property>
+        <property name="kodeTarif">
+            <column name="kode_tarif" sql-type="varchar" length="100"/>
+        </property>
+        <property name="tarifPayorId">
+            <column name="tarif_payor_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="payorCd">
+            <column name="payor_cd" sql-type="varchar" length="100"/>
+        </property>
+        <property name="coderNik">
+            <column name="coder_nik" sql-type="varchar" length="100"/>
+        </property>
+>>>>>>> sodiq/editor
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>
                 <column name="branch_id"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="816" leftMargin="6" rightMargin="20" topMargin="20" bottomMargin="7" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.0000000000000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="113"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -213,7 +213,7 @@
 		<band height="70" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="95" height="50" uuid="8b897ea6-1e66-4664-ac03-e652875c4c11"/>
-				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+				<imageExpression><![CDATA["/opt/tomcat/webapps/hris/pages/images/LOGO-RW.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="264" y="17" width="263" height="20" uuid="2380af8e-28c7-40fc-a5b9-d262c0e7b397"/>

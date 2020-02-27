@@ -70,6 +70,16 @@ public class RawatInap {
 
     private String statusBayar;
 
+    private String metodePembayaran;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
     public String getStatusBayar() {
         return statusBayar;
     }

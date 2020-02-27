@@ -126,6 +126,12 @@
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Metode Pembayaran</b></td>
+                                        <td>
+                                            <table><s:label name="headerDetailCheckup.metodePembayaran"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->

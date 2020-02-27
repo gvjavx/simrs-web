@@ -11,14 +11,18 @@ import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.antrianonline.dao.AntrianOnlineDao;
+import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
@@ -45,10 +49,7 @@ import org.hibernate.HibernateException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Toshiba on 13/11/2019.
@@ -66,6 +67,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private OrderGiziDao orderGiziDao;
     private RiwayatTindakanDao riwayatTindakanDao;
     private TindakanDao tindakanDao;
+    private AntrianOnlineDao antrianOnlineDao;
+    private UangMukaDao uangMukaDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -210,6 +213,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCaraPasienPulang(bean.getCaraPasienPulang());
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
+            entity.setInvoice(bean.getNoNota());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -334,6 +338,28 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup" + e.getMessage());
             throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving data detail checkup");
         }
+
+        // insert into uang muka
+//        if (bean.getNoNota() != null && !"".equalsIgnoreCase(bean.getNoNota())){
+//            ItSimrsUangMukaPendaftaranEntity uangMuka = new ItSimrsUangMukaPendaftaranEntity();
+//            uangMuka.setId("UMK"+uangMukaDao.getNextId());
+//            uangMuka.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//            uangMuka.setJumlah(new BigInteger(String.valueOf(0)));
+//            uangMuka.setNoNota(bean.getNoNota());
+//            uangMuka.setStatusBayar("Y");
+//            uangMuka.setFlag("Y");
+//            uangMuka.setAction("C");
+//            uangMuka.setCreatedDate(bean.getCreatedDate());
+//            uangMuka.setCreatedWho(bean.getCreatedWho());
+//            uangMuka.setLastUpdate(bean.getLastUpdate());
+//            uangMuka.setLastUpdateWho(bean.getLastUpdateWho());
+//            try {
+//                uangMukaDao.addAndSave(uangMuka);
+//            } catch (HibernateException e){
+//                logger.error("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka" + e.getMessage());
+//                throw new GeneralBOException("[CheckupDetailBoImpl.saveAdd] Error When Saving uang muka");
+//            }
+//        }
 
         // saving dokter
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
@@ -538,7 +564,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 ruanganEntity.setLastUpdate(bean.getCreatedDate());
                 ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
 
-                if(ruanganEntity.getSisaKuota() == 0){
+                if (ruanganEntity.getSisaKuota() == 0) {
                     ruanganEntity.setStatusRuangan("N");
                 }
 
@@ -864,6 +890,87 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return permintaanResepEntityList;
     }
 
+    @Override
+    public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException {
+        return checkupDetailDao.getListPembayaranUangMuka(bean);
+    }
+
+    @Override
+    public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup);
+            } catch (HibernateException e) {
+                logger.error("Found Error when search detail checkup " + e.getMessage());
+            }
+
+            if (entity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(entity.getNoCheckupOnline())) {
+
+                List<ItSimrsAntianOnlineEntity> onlineEntityList = new ArrayList<>();
+                Map hsCriteria = new HashMap();
+
+                try {
+                    onlineEntityList = antrianOnlineDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e) {
+                    logger.error("Found Error when search antrian online " + e.getMessage());
+                }
+
+                ItSimrsAntianOnlineEntity onlineEntity = new ItSimrsAntianOnlineEntity();
+                if (onlineEntityList.size() > 0) {
+                    onlineEntity = onlineEntityList.get(0);
+
+                    if (onlineEntity.getIdAntrianOnline() != null) {
+
+                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                        onlineEntity.setLastUpdateWho(CommonUtil.userLogin());
+                        onlineEntity.setLastUpdate(updateTime);
+                        onlineEntity.setFlagPeriksa("Y");
+
+                        try {
+                            antrianOnlineDao.updateAndSave(onlineEntity);
+                        } catch (HibernateException e) {
+                            logger.error("Found Error when update save flag antrian online");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(bean);
+        if (detailCheckupEntities.size() > 0) {
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+            if (bean.getIdDetailCheckup().equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
+                detailCheckupEntity.setStatusBayar("Y");
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when save status bayar. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when status bayar. ", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup) {
+        return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup);
+    }
+
+    @Override
+    public String findResep(String idDetailCheckup) {
+        return checkupDetailDao.getFindResepInRiwayatTrans(idDetailCheckup);
+    }
+
     private String getNextDetailCheckupId() {
         String id = "";
         try {
@@ -956,5 +1063,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setTindakanDao(TindakanDao tindakanDao) {
         this.tindakanDao = tindakanDao;
+    }
+
+    public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
+        this.antrianOnlineDao = antrianOnlineDao;
+    }
+
+    public void setUangMukaDao(UangMukaDao uangMukaDao) {
+        this.uangMukaDao = uangMukaDao;
     }
 }

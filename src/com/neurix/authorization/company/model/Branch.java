@@ -36,16 +36,84 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
+    private String logoName;
+    private String logoBranch;
+
+    private String ppkPelayanan;
+    private String suratSkdp;
+    private String kodeTarif;
+    private String tarifPayorId;
+    private String payorCd;
+    private String coderNik;
 
     public void setAreaId(String areaId) {
         this.areaId = areaId;
+    }
+
+    public String getLogoName() {
+        return logoName;
+    }
+
+    public void setLogoName(String logoName) {
+        this.logoName = logoName;
     }
 
     public String getAlamatSurat() {
         return alamatSurat;
     }
 
-    private String logoBranch;
+
+    public void setAlamatSurat(String alamatSurat) {
+        this.alamatSurat = alamatSurat;
+    }
+
+    public String getPpkPelayanan() {
+        return ppkPelayanan;
+    }
+
+    public void setPpkPelayanan(String ppkPelayanan) {
+        this.ppkPelayanan = ppkPelayanan;
+    }
+
+    public String getSuratSkdp() {
+        return suratSkdp;
+    }
+
+    public void setSuratSkdp(String suratSkdp) {
+        this.suratSkdp = suratSkdp;
+    }
+
+    public String getKodeTarif() {
+        return kodeTarif;
+    }
+
+    public void setKodeTarif(String kodeTarif) {
+        this.kodeTarif = kodeTarif;
+    }
+
+    public String getTarifPayorId() {
+        return tarifPayorId;
+    }
+
+    public void setTarifPayorId(String tarifPayorId) {
+        this.tarifPayorId = tarifPayorId;
+    }
+
+    public String getPayorCd() {
+        return payorCd;
+    }
+
+    public void setPayorCd(String payorCd) {
+        this.payorCd = payorCd;
+    }
+
+    public String getCoderNik() {
+        return coderNik;
+    }
+
+    public void setCoderNik(String coderNik) {
+        this.coderNik = coderNik;
+    }
 
     public String getLogoBranch() {
         return logoBranch;
@@ -57,10 +125,6 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
 
     public String getAreaId() {
         return areaId;
-    }
-
-    public void setAlamatSurat(String alamatSurat) {
-        this.alamatSurat = alamatSurat;
     }
 
     public BigDecimal getMaxBpjsKs() {
