@@ -17,7 +17,8 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private String pembayaranUtangPiutangId;
     private String tipeTransaksi;
     private Date tanggal;
-    private String kodeRekeningKas;
+    private String metodeBayar;
+    private String bank;
     private BigDecimal bayar;
     private String keterangan;
     private String noSlipBank;
@@ -33,6 +34,22 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getMetodeBayar() {
+        return metodeBayar;
+    }
+
+    public void setMetodeBayar(String metodeBayar) {
+        this.metodeBayar = metodeBayar;
+    }
 
     public String getRegisteredFlag() {
         return registeredFlag;
@@ -96,14 +113,6 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
 
     public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
-    }
-
-    public String getKodeRekeningKas() {
-        return kodeRekeningKas;
-    }
-
-    public void setKodeRekeningKas(String kodeRekeningKas) {
-        this.kodeRekeningKas = kodeRekeningKas;
     }
 
     public BigDecimal getBayar() {

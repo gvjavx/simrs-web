@@ -37,7 +37,7 @@
             var tipeLaporan = document.getElementById("tipeLaporan").value;
             var master = document.getElementById("masterId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&master!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
                 window.open(url,'_blank');
@@ -52,6 +52,8 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }if ( master== '') {
+                    msg += 'Field <strong>Vendor </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -153,7 +155,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Master :</small></label>
+                                                    <label class="control-label"><small>Vendor :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>

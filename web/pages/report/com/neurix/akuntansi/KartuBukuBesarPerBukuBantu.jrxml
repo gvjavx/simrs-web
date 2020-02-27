@@ -24,7 +24,7 @@
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="rekening_id" class="java.lang.String"/>
 	<parameter name="reportParams.reportTitle" class="java.lang.String"/>
-	<parameter name="reportParams.cabangId" class="java.lang.String">
+	<parameter name="reportParams.branchId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.urlLogo" class="java.lang.String">
@@ -49,13 +49,14 @@ from
     left outer join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
     left outer join im_akun_master z on y.master_id = z.nomor_master
     left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id
-    left outer join m_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
+    left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
 where
     to_char(x.created_date, 'MM-yyyy') = $P{periode}
     and y.rekening_id = $P{rekening_id}
     and y.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'
-    and x.registered_flag = 'Y']]>
+    and x.registered_flag = 'Y'
+and x.branch_id=$P{reportParams.branchId}]]>
 	</queryString>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
 	<field name="no_jurnal" class="java.lang.String"/>
@@ -69,7 +70,8 @@ where
 	<field name="jumlahdebit" class="java.math.BigDecimal"/>
 	<field name="jumlahkredit" class="java.math.BigDecimal"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<variable name="SUM_jumlahDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>

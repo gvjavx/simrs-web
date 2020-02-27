@@ -397,7 +397,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                     Map data = new HashMap();
                     data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
                     data.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                    data.put("jml_bayar",jumlahPembayaran);
+                    data.put("hutang_usaha",jumlahPembayaran);
+                    data.put("kas",jumlahPembayaran);
                     data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
                     data.put("bank",pembayaranUtangPiutang.getBank());
                     try {
@@ -544,19 +545,19 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.searchDetailPembayaran] end process >>>");
         return pembayaranUtangPiutangDetailList;
     }
-    public String cekBeforeSave(String tipeTransaksi,String tanggal,String kodeRekeningKas,String bayar,String keterangan,String noslipBank,String branchId){
+    public String cekBeforeSave(String tipeTransaksi,String tanggal,String metodeBayar,String bayar,String keterangan,String noslipBank,String branchId){
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
 
-        if (tipeTransaksi.equalsIgnoreCase("")||tanggal.equalsIgnoreCase("")||kodeRekeningKas.equalsIgnoreCase("")||bayar.equalsIgnoreCase("")||branchId.equalsIgnoreCase("")){
+        if (tipeTransaksi.equalsIgnoreCase("")||tanggal.equalsIgnoreCase("")||metodeBayar.equalsIgnoreCase("")||bayar.equalsIgnoreCase("")||branchId.equalsIgnoreCase("")){
             if (tipeTransaksi.equalsIgnoreCase("")){
                 status+="Tipe transaksi masih kosong <br>";
             }
             if (tanggal.equalsIgnoreCase("")){
                 status+="Tanggal masih kosong <br>";
             }
-            if (kodeRekeningKas.equalsIgnoreCase("")){
+            if (metodeBayar.equalsIgnoreCase("")){
                 status+="Kode rekening kas masih kosong <br>";
             }
             if (bayar.equalsIgnoreCase("")){
@@ -659,11 +660,11 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             reportParams.put("terbilang", CommonUtil.angkaToTerbilang(result.getBayar().longValue()));
             reportParams.put("uraian", result.getKeterangan());
             reportParams.put("totalBayar", CommonUtil.numbericFormat(result.getBayar(),"###,###.##"));
-            reportParams.put("coaKas", result.getKodeRekeningKas());
+//            reportParams.put("coaKas", result.getKodeRekeningKas());
             reportParams.put("noSlipBank", result.getNoSlipBank());
 
             KodeRekening searchKodeRekening = new KodeRekening();
-            searchKodeRekening.setKodeRekening(result.getKodeRekeningKas());
+//            searchKodeRekening.setKodeRekening(result.getKodeRekeningKas());
             searchKodeRekening.setFlag("Y");
             List<KodeRekening> kodeRekeningList = kodeRekeningBo.getByCriteria(searchKodeRekening);
             for (KodeRekening kodeRekening : kodeRekeningList){

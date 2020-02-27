@@ -16,7 +16,6 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String pembayaranUtangPiutangId;
     private String tipeTransaksi;
     private Date tanggal;
-    private String kodeRekeningKas;
     private BigDecimal bayar;
     private String keterangan;
     private String noSlipBank;
@@ -170,14 +169,6 @@ public class PembayaranUtangPiutang extends BaseModel {
 
     public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
-    }
-
-    public String getKodeRekeningKas() {
-        return kodeRekeningKas;
-    }
-
-    public void setKodeRekeningKas(String kodeRekeningKas) {
-        this.kodeRekeningKas = kodeRekeningKas;
     }
 
     public BigDecimal getBayar() {
