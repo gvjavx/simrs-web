@@ -951,6 +951,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckupEntity.setAction("U");
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setInvoice(bean.getNoNota());
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
                 } catch (HibernateException e) {
@@ -962,7 +963,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public BigDecimal getSumJumlahTindakan(String idDetailCheckup) {
+    public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket) {
         return checkupDetailDao.getSumAllTarifTindakan(idDetailCheckup);
     }
 
