@@ -217,7 +217,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
             entity.setInvoice(bean.getNoNota());
-            entity.setMetodePembayaran(bean.getMetodePembayaran());
+//            entity.setMetodePembayaran(bean.getMetodePembayaran());
 
             try {
                 checkupDetailDao.updateAndSave(entity);

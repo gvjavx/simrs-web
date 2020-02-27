@@ -535,7 +535,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "pel.nama_pelayanan,\n" +
                 "um.jumlah,\n" +
                 "um.status_bayar,\n" +
-                "um.created_date, ps.id_pasien\n" +
+                "um.created_date, ps.id_pasien,\n" +
                 "um.jumlah_dibayar\n" +
                 "FROM it_simrs_header_detail_checkup dt\n" +
                 "INNER JOIN it_simrs_header_checkup ck ON ck.no_checkup = dt.no_checkup\n" +

@@ -9,6 +9,7 @@ import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -939,6 +940,23 @@ public class PermintaanVendorAction extends BaseMasterAction {
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
         VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
 
+        return response;
+    }
+
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor){
+
+        CrudResponse response = new CrudResponse();
+        if(idPermintaanVendor != null && !"".equalsIgnoreCase(idPermintaanVendor)){
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+            try {
+                response = permintaanVendorBo.tutupPurchaseOrder(idPermintaanVendor);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search permintaan vendor "+e.getMessage());
+            }
+        }
         return response;
     }
 

@@ -187,7 +187,7 @@
 
         detailBranch(branchId);
 
-        // setInterval(function () {
+        setInterval(function () {
             var tableAntrian = "";
             var poli = "";
 
@@ -195,19 +195,24 @@
                 if(response.length > 0){
                     var pol = "";
                     $.each(response, function (i, item) {
-                        if(response.length = 0){
+
+                        if(i == 0){
+
                             pol = item.namaPelayanan;
+
                         }else{
-                            if(response[response.length - 1] == item.namaPelayanan){
+                            var tes = item.namaPelayanan;
+                            var tes2 = response[i - 1]["namaPelayanan"];
+
+                            if(tes == tes2){
                                 pol = "";
                             }else{
                                 pol = item.namaPelayanan;
                             }
                         }
-                        console.log(pol);
 
                         tableAntrian += '<tr>' +
-                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
                             '<td style="vertical-align: middle"><label class="label label-warning"> Selanjutnya</label></td>' +
@@ -236,7 +241,7 @@
                     $('#body_periksa').html("");
                 }
             });
-        // },1000);
+        },1000);
     }
 
     function detailBranch(branch) {

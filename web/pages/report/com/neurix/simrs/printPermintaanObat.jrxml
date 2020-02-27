@@ -105,7 +105,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.dariPelayanan} == null ? "" : $P{reportParams.dariPelayanan}]]></textFieldExpression>
 			</textField>
-			<image>
+			<image onErrorType="Icon">
 				<reportElement x="0" y="0" width="94" height="39" uuid="dae03b5a-8e5d-4056-8b91-3f17772d252c"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>

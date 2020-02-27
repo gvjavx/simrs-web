@@ -959,7 +959,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setTempatTujuan(tujuan);
             headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
             headerDetailCheckup.setStatus(idKtg);
-            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
             cekRawatInap(idDetailCheckup);
         }
         if ("pindah".equalsIgnoreCase(idKtg)) {
@@ -968,6 +967,11 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("rujuk".equalsIgnoreCase(idKtg)) {
             headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
             headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
+        }
+
+        // create jurnal if non tunai
+        if ("non_tunai".equalsIgnoreCase(jenisBayar)){
+            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -1052,12 +1056,14 @@ public class CheckupDetailAction extends BaseMasterAction {
             // jumlah tindakan saja. tindakan total - jumlah resep
             jumlahTindakan = jumlahTindakan.subtract(jumlahResep);
 
+            Map mapUangMuka = new HashMap();
+            mapUangMuka.put("bukti", idUm);
+            mapUangMuka.put("nilai", jumlahUm);
+
             Map hsCriteria = new HashMap();
             hsCriteria.put("master_id", idPasien);
             // jumlah debit uang muka
-            hsCriteria.put("uang_muka", jumlahUm);
-            // no bukti uang muka
-            hsCriteria.put("bukti", idUm);
+            hsCriteria.put("uang_muka", mapUangMuka);
 
             BigDecimal jumlah = new BigDecimal(0);
 
@@ -1075,14 +1081,29 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ketResep = "Tanpa Obat";
             }
 
+            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())){
+                kode = "JRJ";
+                ketPoli = "Rawat Jalan";
+            }
+            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
+                kode = "JRI";
+                ketPoli = "Rawat Inap";
+            }
+
             // tambahkan jumlah tindakan juga untuk debit piutang
             jumlah.add(jumlahTindakan);
 
-            if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
-                kode = "JRJ";
-                ketPoli = "Rawat Jalan";
+            // create invoice nummber
+            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
+            if ("JRJ".equalsIgnoreCase(kode)) {
+
+                // create list map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
                 // debit piutang pasien
-                hsCriteria.put("piutang_pasien_non_bpjs", jumlah.subtract(jumlahUm));
+                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
 
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
@@ -1094,19 +1115,22 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
 
             }
-            if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
-                kode = "JRI";
-                ketPoli = "Rawat Inap";
+            if ("JRI".equalsIgnoreCase(kode)) {
+
+                // create map piutang
+                Map mapPiutang = new HashMap();
+                mapPiutang.put("bukti", invoice);
+                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
+
                 // debit piutang pasien
-                hsCriteria.put("piutang_pasien_non_bpjs", jumlah.subtract(jumlahUm));
+                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
 
                 // kredit jumlah tindakan
                 hsCriteria.put("pendapatan_rawat_inap_non_bpjs", jumlahTindakan);
                 transId = "07";
             }
 
-            invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
-            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang "+idPasien;
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No RM Pasien "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
             } catch (GeneralBOException e){
