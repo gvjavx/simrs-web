@@ -13,10 +13,12 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#pembayaran').addClass('active');
+            $('#bayar_rawat_inap, #pembayaran_active').addClass('active');
+            $('#pembayaran_open').addClass('menu-open');
         });
 
 
@@ -34,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kasir Rawat Jalan
+            Kasir Rawat Inap
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -227,10 +229,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Inap Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin"></p>
-                </div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_fin">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     <p id="msg_fin2"></p>
@@ -261,6 +259,12 @@
                             </table>
                         </div>
                         <!-- /.col -->
+
+                        <input type="hidden" id="fin_id_pasien"/>
+                        <input type="hidden" id="fin_is_resep"/>
+                        <input type="hidden" id="fin_metode_bayar"/>
+                        <input type="hidden" id="fin_bukti"/>
+
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
@@ -323,11 +327,46 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin"></p>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
+                            <div class="col-md-8">
+                                <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)">
+                                    <option value="" >[Select One]</option>
+                                    <option value="tunai">Tunai</option>
+                                    <option value="transfer">Transfer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="display: none" id="pilih_bank">
+                            <div class="form-group">
+                                <label class="col-md-2" style="margin-top: 7px">Bank</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="bank">
+                                        <option value="" >[Select One]</option>
+                                        <option value="bri">BRI</option>
+                                        <option value="bni">BNI</option>
+                                        <option value="bca">BCA</option>
+                                        <option value="mandiri">Mandiri</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="confirmSavePembayaranTagihan()"><i class="fa fa-arrow-right"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -361,18 +400,32 @@
 
 <script type='text/javascript'>
 
+    function pilihMetode(val){
+        console.log(val);
+        if(val != ''){
+            if(val == 'transfer'){
+                $('#pilih_bank').show();
+            }else{
+                $('#pilih_bank').hide();
+            }
+        }
+    }
+
     function formatRupiah(angka) {
-        if(angka != ""){
+        if(angka != "" && angka != null && parseInt(angka) > 0){
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        } else {
+            return "0";
         }
 
     }
 
     var mapBiaya = [];
     function showInvoice(idCheckup, idDetailCheckup) {
+        $('#pilih_bank').hide();
         var table = "";
         var dataTindakan = [];
         var dataPasien = [];
@@ -392,6 +445,8 @@
         var cekTindakan = false;
         var jenisPasien = "";
         var uangMuka = 0;
+        var bukti = "";
+        var metode = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -427,6 +482,8 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
+                        metode = response.metodeBayar;
+
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);
@@ -441,6 +498,7 @@
                     mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
+                    bukti = item.id;
                 });
                 $("#body_uang_muka").html(str);
             });
@@ -450,10 +508,11 @@
                 console.log(response);
                 if (dataTindakan != null) {
                     var total = 0;
+                    var totalObat = 0;
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
                         var tarif    = "";
-                        var kategori = ""
+                        var kategori = "";
                         var btn = "";
                         var tgl = "";
 
@@ -477,6 +536,8 @@
 
                         if(item.keterangan == "resep"){
                             btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                            totalObat = parseInt(totalObat) + parseInt(item.totalTarif);
+                            $("#fin_is_resep").val("Y");
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
@@ -518,9 +579,11 @@
             $('#fin_kabupaten').html(kabupaten);
             $('#fin_kecamatan').html(kecamatan);
             $('#fin_desa').html(desa);
+            $('#fin_bukti').val(bukti);
+            $('#fin_metode_bayar').val(metode);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
+            // $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
             $('#modal-invoice').modal({show:true, backdrop:'static'});
         }, 100);
     }
@@ -567,6 +630,64 @@
         var plus = '<s:url value="/pages/images/icons8-plus-25.png"/>';
         $('#btn'+idRiwayat).attr('src',plus);
         $('#btn'+idRiwayat).attr('onclick', 'detailResep(\''+idResep+'\',\''+idRiwayat+'\')');
+    }
+
+    function confirmSavePembayaranTagihan(){
+        var metodeBayarDiAkhir = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+
+        if(metodeBayarDiAkhir != ''){
+
+            if(metodeBayarDiAkhir == "transfer"){
+                if(kodeBank != ''){
+                    $('#modal-confirm-dialog').modal('show');
+                    $('#save_con').attr('onclick','savePembayaranTagihan()');
+                }else{
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text("Silahkan pilih bank terlebih dahulu..!");
+                }
+            }else{
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick','savePembayaranTagihan()');
+            }
+        }else{
+            $('#warning_fin').show().fadeOut(5000);
+            $('#msg_fin').text("Silahkan pilih metode pembayaran terlebih dahulu..!");
+        }
+    }
+
+    function savePembayaranTagihan() {
+        $('#modal-confirm-dialog').modal('hide');
+        var idPasien = $("#fin_id_pasien").val();
+        var idDetailCheckup = $("#fin_id_detail_checkup").val();
+        var metodeBayarDiAkhir = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
+        var isResep = $("#fin_is_resep").val();
+        var metodeBayarDiAwal = $('#fin_metode_bayar').val();
+        var bukti = $('#fin_bukti').val();
+
+        $('#save_fin').hide();
+        $('#load_fin').show();
+        dwr.engine.setAsync(true);
+        var jsonString =  JSON.stringify(mapBiaya);
+
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRI",metodeBayarDiAwal, {
+            callback: function (response) {
+                console.log(response.msg);
+                if (response.status == "success") {
+                    // alert("success");
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#modal-invoice').modal('hide');
+                    $('#info_dialog').dialog('open');
+                } else {
+                    $('#save_fin').show();
+                    $('#load_fin').hide();
+                    $('#warning_fin').show().fadeOut(5000);
+                    $('#msg_fin').text(response.msg);
+                }
+            }
+        });
     }
 
 </script>

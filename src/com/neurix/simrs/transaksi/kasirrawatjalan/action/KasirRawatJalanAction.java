@@ -596,6 +596,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("bank", kodeBank);
         hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
+        hsCriteria.put("bukti", id);
 
         try {
             billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
@@ -665,9 +666,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("master_id", idPasien);
-        hsCriteria.put("uang_muka", noNota);
+//        hsCriteria.put("uang_muka", noNota);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
+        hsCriteria.put("bukti", noNota);
 
         String branchId = CommonUtil.userBranchLogin();
 

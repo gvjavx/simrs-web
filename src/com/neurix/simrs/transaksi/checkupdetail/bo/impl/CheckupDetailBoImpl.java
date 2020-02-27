@@ -49,6 +49,8 @@ import org.hibernate.HibernateException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -214,6 +216,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
             entity.setInvoice(bean.getNoNota());
+            entity.setMetodePembayaran(bean.getMetodePembayaran());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -289,6 +292,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
         logger.info("[CheckupDetailBoImpl.saveEdit] End <<<<<<<<");
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     private List<ItSimrsHeaderChekupEntity> getListEntityCheckup(HeaderCheckup bean) throws GeneralBOException {
@@ -476,6 +485,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                     }
                 }
+            }
+        }
+
+        if(!"bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            // save uang muka
+            ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+            uangMukaPendaftaranEntity.setId("UM"+bean.getBranchId()+dateFormater("MM")+dateFormater("yy")+uangMukaDao.getNextId());
+            uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+            uangMukaPendaftaranEntity.setFlag("Y");
+            uangMukaPendaftaranEntity.setAction("C");
+            uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+            uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+
+            if (bean.getNoNota() != null){
+                uangMukaPendaftaranEntity.setNoNota(bean.getNoNota());
+                uangMukaPendaftaranEntity.setStatusBayar("Y");
+            }
+
+            if ("".equalsIgnoreCase(bean.getJumlahUangMuka().toString()) || bean.getJumlahUangMuka() == null || bean.getJumlahUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0){
+                uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
+            } else {
+                uangMukaPendaftaranEntity.setJumlah(bean.getJumlahUangMuka());
+            }
+
+            try {
+                uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+            } catch (HibernateException e){
+                logger.error("[CheckupBoImpl.saveAdd] Error When Saving" +e.getMessage());
+                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving"+ e.getMessage());
             }
         }
 

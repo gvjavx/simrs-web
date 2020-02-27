@@ -283,8 +283,9 @@
                                                         <td align="left" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><s:if test='#row.tarifTindakan'><script>var tar = '<s:property value="tarifTindakan"/>'; if(tar != null){document.write('<i class="fa fa-square" style="font-size:8px"></i> '+"Rp. "+formatRupiah(tar))}</script></s:if><s:else>&nbsp;</s:else></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><s:if test='#row.tipeTransaksi == "bpjs"'><label class="label label-info"><s:property value="tipeTransaksi"/></label></s:if><s:else><label class="label label-primary"><s:property value="tipeTransaksi"/></label></s:else></td>
+                                                        <td align="right" colspan="2" style="color: white; font-size: 9px; margin-top: 3px"><s:if test='#row.tipeTransaksi == "bpjs"'><img src="<s:url value="/pages/images/logo_bpjs.png"/>" style="width: 25px; height: 25px"></s:if><s:else><label class="label label-primary"><s:property value="tipeTransaksi"/></label></s:else></td>
                                                     </tr>
+                                                    <%--<label class="label label-info"><s:property value="tipeTransaksi"/></label>--%>
                                                 </table>
                                             </div>
                                         </div>

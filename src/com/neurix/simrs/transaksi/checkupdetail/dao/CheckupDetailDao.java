@@ -578,7 +578,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "it_simrs_riwayat_tindakan\n" +
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
-                "AND keterangan = :ket" +
+                "AND keterangan = :ket\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
