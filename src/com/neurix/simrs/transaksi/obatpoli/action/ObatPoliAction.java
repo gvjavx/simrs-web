@@ -297,7 +297,7 @@ public class ObatPoliAction extends BaseMasterAction {
             String idPelayanan = CommonUtil.userPelayananIdLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
-            ObatBo obatBo = (ObatBo) ctx.getBean("obatPoliBoProxy");
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
             BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
@@ -354,7 +354,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
                     String catatan = "Pengiriman Barang Gudang ke Apotik";
                     try {
-                        billingSystemBo.createJurnal("15", jurnalMap, branchId, catatan, "Y", "");
+                        billingSystemBo.createJurnal("15", jurnalMap, branchId, catatan, "Y");
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
                         return e.getMessage();

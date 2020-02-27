@@ -969,6 +969,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
         }
 
+        // save approve tindakan
+        saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
         // create jurnal if non tunai
         if ("non_tunai".equalsIgnoreCase(jenisBayar)){
             headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
@@ -995,7 +997,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             status = "sukses";
         }
 
-        saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
         updateFlagPeriksaAntrianOnline(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
@@ -1091,7 +1092,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             // tambahkan jumlah tindakan juga untuk debit piutang
-            jumlah.add(jumlahTindakan);
+            jumlah = jumlah.add(jumlahTindakan);
 
             // create invoice nummber
             invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
@@ -1132,7 +1133,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No RM Pasien "+idPasien;
             try {
-              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
+              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
             } catch (GeneralBOException e){
                 logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
             }
