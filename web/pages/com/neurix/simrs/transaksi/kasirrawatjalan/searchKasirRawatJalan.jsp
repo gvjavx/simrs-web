@@ -524,7 +524,6 @@
                 var str = "";
                 $.each(response, function(i, item){
                     str += "<tr><td>"+item.stCreatedDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
-                   mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
                 });
@@ -580,10 +579,23 @@
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
-                    mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
-                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
-                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
+//                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
+//                    mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
+//                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+//                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
+
+                    var metodebayar = $("#metode_bayar").val();
+                    if(metodebayar == "tunai"){
+                        mapBiaya.push({"type":"uang_muka", "nilai":uangMuka});
+                        mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
+
+                        mapBiaya.push({"type":"kas","nilai":total-uangMuka});
+                        mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+                        mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
+                    } else {
+                        mapBiaya.push({"type":"kas","nilai":total+totalObat+(totalObat*0.1)});
+                        mapBiaya.push({"type":"piutang_pasien_non_bpjs","nilai":total+totalObat+(totalObat*0.1)});
+                    }
                 }
             });
 

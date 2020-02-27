@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.verifikator.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -11,6 +12,8 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -34,15 +37,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class VerifikatorAction extends BaseMasterAction {
-
 
     protected static transient Logger logger = Logger.getLogger(VerifikatorAction.class);
     private HeaderDetailCheckup headerDetailCheckup;
@@ -643,7 +644,7 @@ public class VerifikatorAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse finalClaim(String idDetailCheckup) {
+    public CheckResponse finalClaim(String idDetailCheckup, String idPasien) {
         logger.info("[VerifikatorAction.finalClaim] START process <<<");
 
         CheckResponse response = new CheckResponse();
@@ -654,6 +655,7 @@ public class VerifikatorAction extends BaseMasterAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
         HeaderDetailCheckup detail = new HeaderDetailCheckup();
         detail.setIdDetailCheckup(idDetailCheckup);
@@ -693,9 +695,108 @@ public class VerifikatorAction extends BaseMasterAction {
                     }
                 }
             }
+
+            // create jurnal
+
+            String typePelayanan = detail.getTipePelayanan();
+
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("master_id", idPasien);
+
+            String kode = "";
+            String transId = "";
+            String ketPoli = "";
+            String ketObat = "";
+            if (!"".equalsIgnoreCase(typePelayanan) && typePelayanan != null){
+                if ("rawat_jalan".equalsIgnoreCase(typePelayanan) || "igd".equalsIgnoreCase(typePelayanan))
+                    kode = "JRJ";
+                    ketPoli = "Rawat Jalan";
+                if ("rawat_inap".equalsIgnoreCase(typePelayanan))
+                    kode = "JRI";
+                    ketPoli = "Rawat Inap";
+            }
+
+            String isResep = checkupDetailBo.findResep(idDetailCheckup);
+            BigDecimal jumlah = new BigDecimal(0);
+            BigDecimal jmlAllTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
+            BigDecimal jmlResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
+            BigDecimal jmlOnlyTindakan = jmlAllTindakan.subtract(jmlResep);
+
+            // jika ada resep atau rawat inap
+            if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(typePelayanan)) {
+                // hitung ppn
+                BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.01));
+
+                // kredit pendapatan obat dan ppn obat
+                hsCriteria.put("pendapatan_obat_bpjs", jmlResep);
+                hsCriteria.put("ppn_keluaran", ppn);
+
+                // debit jumlah untuk piutang pasien bpjs
+                jumlah = jumlah.add(jmlAllTindakan.add(ppn));
+                ketObat = "dengan Obat";
+            } else {
+                // debit jumlah untuk piutang pasien bpjs
+                jumlah = jumlah.add(jmlOnlyTindakan);
+                ketObat = "tanpa Obat";
+            }
+
+            if ("JRJ".equalsIgnoreCase(kode)){
+                // debit jumlah untuk piutang pasien bpjs
+                hsCriteria.put("piutang_pasien_bpjs", jumlah);
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_jalan_bpjs", jmlOnlyTindakan);
+                ketPoli = "Rawat Jalan";
+            }
+
+            if ("JRI".equalsIgnoreCase(kode)) {
+                // debit jumlah untuk piutang pasien bpjs
+                hsCriteria.put("piutang_pasien_bpjs", jumlah);
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_inap_bpjs", jmlOnlyTindakan);
+
+                transId = "06";
+                ketPoli = "Rawat Inap";
+            }
+
+            if ("Y".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
+                transId = "03";
+            if ("N".equalsIgnoreCase(isResep) && "JRJ".equalsIgnoreCase(kode))
+                transId = "02";
+
+            String invNumber = billingSystemBo.createInvoiceNumber(kode, unitId);
+            hsCriteria.put("bukti", invNumber);
+            String catatan = "Closing Pasien "+ketPoli+" BPJS "+ketObat+" id Pasien :"+idPasien;
+
+            try {
+                billingSystemBo.createJurnal(transId, hsCriteria, unitId, catatan, "Y", "");
+                response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
+                response.setStatus("error");
+                response.setMessage("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim "+ e);
+            }
+
+            // update invoice to detailcheckup
+            response = updateDetailCheckupInvoice(idDetailCheckup, invNumber);
         }
 
         logger.info("[VerifikatorAction.finalClaim] END process <<<");
+        return response;
+    }
+
+    private CheckResponse updateDetailCheckupInvoice(String idDetailCheckup, String invNumber){
+        CheckResponse response = new CheckResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        try {
+            response = checkupDetailBo.updateInvoiceBpjs(idDetailCheckup, invNumber);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorAction.updateDetailCheckupInvoice] Error ", e);
+            response.setStatus("error");
+            response.setMessage("[VerifikatorAction.updateDetailCheckupInvoice] Error "+ e);
+        }
         return response;
     }
 

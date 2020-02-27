@@ -1029,13 +1029,17 @@ public class CheckupDetailAction extends BaseMasterAction {
             List<HeaderDetailCheckup> detailCheckupUangMuka = checkupDetailBo.getListUangPendaftaran(headerDetailCheckup);
 
 
+            // mencari jumlah um dan no bukti uang muka
+            BigDecimal jumlahUm = new BigDecimal(0);
             String idUm = "";
             if (detailCheckupUangMuka.size() > 0){
                 for (HeaderDetailCheckup detailCheckup : detailCheckupUangMuka){
+                    jumlahUm = new BigDecimal(detailCheckup.getJumlahUangMukaDibayar());
                     idUm = detailCheckup.getNoUangMuka();
                 }
             }
 
+            // get all sum tindakan, sum resep
             String isResep = checkupDetailBo.findResep(idDetailCheckup);
             BigDecimal jumlahResep = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "resep");
             BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
@@ -1044,36 +1048,63 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ppnObat = jumlahResep.multiply(new BigDecimal(0.01));
             }
 
+            // jumlah tindakan saja. tindakan total - jumlah resep
+            jumlahTindakan = jumlahTindakan.subtract(jumlahResep);
+
             Map hsCriteria = new HashMap();
             hsCriteria.put("master_id", idPasien);
-            hsCriteria.put("uang_muka", idUm);
+            // jumlah debit uang muka
+            hsCriteria.put("uang_muka", jumlahUm);
+            // no bukti uang muka
+            hsCriteria.put("bukti", idUm);
 
+            BigDecimal jumlah = new BigDecimal(0);
+
+            if ("Y".equalsIgnoreCase(isResep) && "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
+                ketResep = "Dengan Obat";
+
+                // kredit jumlah obat
+                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
+                // kredit ppn
+                hsCriteria.put("jumlah_ppn_obat", ppnObat);
+
+                // jika ada resep dan ppn untuk debit piutang
+                jumlah = jumlah.add(jumlahResep.add(ppnObat));
+            } else {
+                ketResep = "Tanpa Obat";
+            }
+
+            // tambahkan jumlah tindakan juga untuk debit piutang
+            jumlah.add(jumlahTindakan);
 
             if ("rawat_jalan".equalsIgnoreCase(pelayananData.getTipePelayanan()) || "igd".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
                 kode = "JRJ";
                 ketPoli = "Rawat Jalan";
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_non_bpjs", jumlah.subtract(jumlahUm));
+
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
+
+                if ("Y".equalsIgnoreCase(isResep)){
+                    transId = "05";
+                } else {
+                    transId = "04";
+                }
+
             }
             if ("rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())) {
                 kode = "JRI";
                 ketPoli = "Rawat Inap";
-            }
+                // debit piutang pasien
+                hsCriteria.put("piutang_pasien_non_bpjs", jumlah.subtract(jumlahUm));
 
-            if ("Y".equalsIgnoreCase(isResep)){
-                transId = "04";
-                ketResep = "Tanpa Obat";
-
-                hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
-                hsCriteria.put("jumlah_ppn_obat", ppnObat);
-            } else {
-                transId = "05";
-                ketResep = "Dengan Obat";
+                // kredit jumlah tindakan
+                hsCriteria.put("pendapatan_rawat_inap_non_bpjs", jumlahTindakan);
+                transId = "07";
             }
 
             invoice = billingSystemBo.createInvoiceNumber(kode, branchId);
-
-            hsCriteria.put("pendapatan_rawat_jalan_non_bpjs", jumlahTindakan);
-            hsCriteria.put("piutang_pasien_non_bpjs", invoice);
-
             String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");

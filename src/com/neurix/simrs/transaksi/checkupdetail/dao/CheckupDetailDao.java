@@ -536,6 +536,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "um.jumlah,\n" +
                 "um.status_bayar,\n" +
                 "um.created_date, ps.id_pasien\n" +
+                "um.jumlah_dibayar\n" +
                 "FROM it_simrs_header_detail_checkup dt\n" +
                 "INNER JOIN it_simrs_header_checkup ck ON ck.no_checkup = dt.no_checkup\n" +
                 "INNER JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
@@ -560,10 +561,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 detailCheckup.setIdDetailCheckup(obj[1].toString());
                 detailCheckup.setNamaPasien(obj[2].toString());
                 detailCheckup.setNamaPelayanan(obj[3].toString());
-                detailCheckup.setJumlahUangMuka(obj[4] == null ? null :(BigInteger) obj[4]);
+                detailCheckup.setJumlahUangMuka(obj[4] == null ? new BigInteger(String.valueOf(0)) :(BigInteger) obj[4]);
                 detailCheckup.setStatusBayar(obj[5] == null ? "" : obj[5].toString());
                 detailCheckup.setCreatedDate((Timestamp) obj[6]);
                 detailCheckup.setIdPasien(obj[7] == null ? "" : obj[7].toString());
+                detailCheckup.setJumlahUangMukaDibayar(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
                 detailCheckups.add(detailCheckup);
             }
         }
@@ -571,6 +573,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
     }
 
     public BigDecimal getSumAllTarifTindakan(String idDetail, String ket){
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)){
+            keterangan = ket;
+        }
         String SQL = "SELECT \n" +
                 "id_detail_checkup,\n" +
                 "SUM(total_tarif) as total_tarif\n" +
@@ -578,12 +585,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "it_simrs_riwayat_tindakan\n" +
                 "WHERE \n" +
                 "id_detail_checkup = :idDetail\n" +
-                "AND keterangan = :ket" +
+                "AND keterangan LIKE :ket\n" +
                 "GROUP BY id_detail_checkup";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetail)
-                .setParameter("ket", ket)
+                .setParameter("ket", keterangan)
                 .list();
 
         BigDecimal jumlah = new BigDecimal(0);
@@ -592,7 +599,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 jumlah = (BigDecimal) obj[1];
             }
         }
-
         return jumlah;
     }
 
