@@ -22,6 +22,11 @@
     />
 
 
+    <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
+
 
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"

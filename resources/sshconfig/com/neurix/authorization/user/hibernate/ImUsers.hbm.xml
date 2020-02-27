@@ -48,6 +48,9 @@
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1"/>
         </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="30"/>
+        </property>
 
         <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
                      insert="false" update="false" fetch="select" cascade="all">
