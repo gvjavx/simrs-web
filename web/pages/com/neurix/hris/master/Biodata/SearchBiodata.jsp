@@ -744,7 +744,8 @@
 
                                             <display:column property="nip" sortable="true" title="NIP" />
                                             <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
-                                            <display:column property="noKtp" sortable="true" title="No KTP" />
+                                            <display:column property="positionName" sortable="true" title="Jabatan" />
+                                            <display:column property="profesiName" sortable="true" title="Profesi" />
                                             <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>

@@ -18,6 +18,7 @@ public class PengalamanKerja extends BaseModel {
     private String namaPerusahaan;
     private String branchId;
     private String posisiId;
+    private String profesiId;
     private String divisiId;
     private String tipePegawaiId;
     private String golonganId;
@@ -38,7 +39,24 @@ public class PengalamanKerja extends BaseModel {
     private String pjsFlag;
     private String divisiName;
     private String positionName;
+    private String profesiName;
     private String flagJabatanAktif;
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getDivisiId() {
         return divisiId;

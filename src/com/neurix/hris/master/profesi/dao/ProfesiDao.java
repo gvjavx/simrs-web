@@ -73,6 +73,16 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
 
         return results;
     }
+    public List<ImProfesiEntity> getProfesiById(String profesiId) throws HibernateException {
+
+        List<ImProfesiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProfesiEntity.class)
+                .add(Restrictions.ilike("profesiId",profesiId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("profesiId"))
+                .list();
+
+        return results;
+    }
 
 
 }

@@ -49,11 +49,20 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
     private String tanggal;
     private String bagianId;
     private String bidangId;
+    private String profesiId;
     private String divisiName;
     private String bagianName;
     private String perusahaanLain;
     private String jabatanLain;
     private String tanggalKeluar;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getTanggalKeluar() {
         return tanggalKeluar;

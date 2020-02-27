@@ -43,6 +43,25 @@ public class HistoryJabatanPegawai extends BaseModel {
     private String perusahaanLain;
     private String jabatanLain;
 
+    private String profesiId;
+    private String profesiName;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
+
     private ImPosition imPosition;
 
     private String tanggalKeluar;

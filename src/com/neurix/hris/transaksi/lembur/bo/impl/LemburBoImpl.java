@@ -898,18 +898,10 @@ public class LemburBoImpl implements LemburBo {
         cal.setTime(new java.util.Date());
         cal.add(Calendar.DAY_OF_MONTH, -1);
         java.sql.Date now = new java.sql.Date(cal.getTime().getTime());
-        /*if (tanggalAwal.before(now)||tanggalAkhir.before(now)){
-            status = "Tanggal tidak boleh sebelum tanggal sekarang";
-        }else if (tanggalAwal.compareTo(tanggalAkhir)>0){
-            status="tanggal mulai tidak boleh melebihi tanggal selesai";
-
-        } else{*/
             List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
             List<LemburEntity> lemburEntityList = new ArrayList<>();
             List<ItHrisTrainingPersonEntity> trainingPersonEntityList = new ArrayList<>();
-            List<ItHrisTrainingEntity> trainingEntityList = new ArrayList<>();
             List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
-            List<ItSppdPersonEntity> sppdPersonEntityList = new ArrayList<>();
             try {
                 Calendar start = Calendar.getInstance();
                 start.setTime(tanggalAwal);
@@ -921,14 +913,8 @@ public class LemburBoImpl implements LemburBo {
                 Date tanggal = new Date(date.getTime());
                     cutiPegawaiEntityList = cutiPegawaiDao.getListTestTanggal(tanggal,nip);
                     lemburEntityList = lemburDao.getListLemburTestTanggal(tanggal,nip);
-                    trainingEntityList = trainingDao.getListTrainingByNipAndTanggalForTest(tanggal);
-                    for (ItHrisTrainingEntity itHrisTrainingEntity : trainingEntityList){
-                        trainingPersonEntityList = trainingPersonDao.getListTrainingByNipAndId(itHrisTrainingEntity.getTrainingId(),nip);
-                    }
                     ijinKeluarEntityList = ijinKeluarDao.getListTestTanggal(tanggal,nip);
-                    sppdPersonEntityList = sppdPersonDao.getListTestTanggal(tanggal,nip);
-
-                    if (cutiPegawaiEntityList.size()!=0||lemburEntityList.size()!=0||trainingPersonEntityList.size()!=0||ijinKeluarEntityList.size()!=0||sppdPersonEntityList.size()!=0){
+                    if (cutiPegawaiEntityList.size()!=0||lemburEntityList.size()!=0||trainingPersonEntityList.size()!=0||ijinKeluarEntityList.size()!=0){
                         break;
                     }
                 }
@@ -943,12 +929,8 @@ public class LemburBoImpl implements LemburBo {
                 status =  "Maaf Sudah mengajukan Cuti di tanggal ini.";
             }else if(lemburEntityList.size()!=0){
                 status =  "Maaf Sudah mengajukan Lembur di tanggal ini.";
-            }else if(trainingPersonEntityList.size()!=0){
-                status =  "Maaf Sudah mengajukan Training di tanggal ini.";
             }else if (ijinKeluarEntityList.size()!=0){
                 status =  "Maaf Sudah mengajukan Ijin Tidak Masuk di tanggal ini.";
-            }else if (sppdPersonEntityList.size()!=0){
-                status =  "Maaf Sudah mengajukan SPPD di tanggal ini.";
             }else {
                 status = "";
             }

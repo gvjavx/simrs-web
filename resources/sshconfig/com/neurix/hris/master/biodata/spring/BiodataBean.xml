@@ -40,6 +40,7 @@
           p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:golonganPkwtDao-ref="golonganPkwtDao"
+          p:profesiDao-ref="profesiDao"
     />
 
     <bean id="biodataBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

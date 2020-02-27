@@ -26,6 +26,8 @@ import com.neurix.hris.master.keluarga.model.Keluarga;
 import com.neurix.hris.master.payrollDanaPensiun.dao.PayrollDanaPensiunDao;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.*;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
+import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 import com.neurix.hris.master.provinsi.model.ImProvinsiEntity;
 import com.neurix.hris.master.reward.dao.RewardDao;
@@ -112,6 +114,23 @@ public class BiodataBoImpl implements BiodataBo {
     private PayrollDao payrollDao;
     private PositionBagianDao positionBagianDao;
     private GolonganPkwtDao golonganPkwtDao;
+    private ProfesiDao profesiDao;
+
+    public ProfesiDao getProfesiDao() {
+        return profesiDao;
+    }
+
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
+
+    public List<StrukturJabatan> getStrukturJabatanList() {
+        return strukturJabatanList;
+    }
+
+    public void setStrukturJabatanList(List<StrukturJabatan> strukturJabatanList) {
+        this.strukturJabatanList = strukturJabatanList;
+    }
 
     public GolonganPkwtDao getGolonganPkwtDao() {
         return golonganPkwtDao;
@@ -451,8 +470,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusGiling(bean.getStatusGiling());
                 imBiodataEntity.setMt(bean.getMt());
                 imBiodataEntity.setGolongan(bean.getGolongan());
-                imBiodataEntity.setPoint(bean.getPoint());
-                imBiodataEntity.setPoinLebih(bean.getPoinLebih());
                 imBiodataEntity.setPin(bean.getPin());
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());
@@ -470,8 +487,6 @@ public class BiodataBoImpl implements BiodataBo {
                 if(bean.getFotoUpload() != null){
                     imBiodataEntity.setFotoUpload(bean.getFotoUpload());
                 }
-                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
-
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
                 imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -482,6 +497,7 @@ public class BiodataBoImpl implements BiodataBo {
                         itPerson.setBranchId(bean.getBranch());
                         itPerson.setDivisiId(bean.getDivisi());
                         itPerson.setPositionId(bean.getPositionId());
+                        itPerson.setProfesiId(bean.getProfesiId());
                         itPerson.setPjs(bean.getPjs());
                         itPerson.setFlag(bean.getFlag());
                         itPerson.setAction(bean.getAction());
@@ -596,6 +612,7 @@ public class BiodataBoImpl implements BiodataBo {
             imBiodataEntity.setStatusCaption(bean.getStatusCaption());
             imBiodataEntity.setKeterangan(bean.getKeterangan());
             imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
+            imBiodataEntity.setTanggalMasuk(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
             imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
             imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
             imBiodataEntity.setGolongan(bean.getGolongan());
@@ -616,18 +633,13 @@ public class BiodataBoImpl implements BiodataBo {
             imBiodataEntity.setNoBpjsKetenagakerjaan(bean.getNoBpjsKetenagakerjaan());
             imBiodataEntity.setNoBpjsKetenagakerjaanPensiun(bean.getNoBpjsKetenagakerjaanPensiun());
             imBiodataEntity.setNoBpjsKesehatan(bean.getNoBpjsKesehatan());
-            imBiodataEntity.setStatusGiling(bean.getStatusGiling());
             imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
             if(bean.getGaji() != null && !"".equalsIgnoreCase(bean.getGaji())){
                 imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
             }else{
                 imBiodataEntity.setGaji(BigDecimal.valueOf(0));
             }
-            imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
-            imBiodataEntity.setPoint(bean.getPoint());
-            imBiodataEntity.setPoinLebih(bean.getPoinLebih());
             imBiodataEntity.setAgama(bean.getAgama());
-            imBiodataEntity.setPoinLebih(0);
             imBiodataEntity.setMt(bean.getMt());
             imBiodataEntity.setPin(bean.getPin());
             imBiodataEntity.setNamaBank(bean.getNamaBank());
@@ -1093,6 +1105,23 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());
+                    List<ImProfesiEntity> listOfProfesi = new ArrayList<>();
+                    if (personalEntity.getProfesiId()!=null){
+                        if (!personalEntity.getProfesiId().equalsIgnoreCase("")){
+                            listOfProfesi = profesiDao.getProfesiById(personalEntity.getProfesiId());
+                            if (listOfProfesi.size()>0){
+                                for (ImProfesiEntity profesiLoop: listOfProfesi){
+                                    returnBiodata.setProfesiName(profesiLoop.getProfesiName());
+                                }
+                            }else{
+                                returnBiodata.setProfesiName("-");
+                            }
+                        }else{
+                            returnBiodata.setProfesiName("-");
+                        }
+                    }else{
+                        returnBiodata.setProfesiName("-");
+                    }
 
                     itPersonilPositionEntity = personilPositionDao.getById("nip",personalEntity.getNip(),"Y" );
                     Map hsCriteria2 = new HashMap();
@@ -1355,6 +1384,7 @@ public class BiodataBoImpl implements BiodataBo {
                 itemComboBiodata.setPjs(imBiodataEntity.getPjs());
                 itemComboBiodata.setPositionId(imBiodataEntity.getPosisiId());
                 itemComboBiodata.setDivisi(imBiodataEntity.getDivisiId());
+                itemComboBiodata.setProfesiId(imBiodataEntity.getProfesiId());
                 itemComboBiodata.setBagianId(imBiodataEntity.getBagianId());
 
                 if (itemComboBiodata.getDivisi()==null){
@@ -2333,7 +2363,6 @@ public class BiodataBoImpl implements BiodataBo {
                 }
                 tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(bean.getTipePegawaiId());
 
-
                 historyJabatanPegawai = historyJabatanPegawaiDao.geyBagianByPositionId(bean.getPositionId());
                 if (historyJabatanPegawai.size() >0){
                     for (HistoryJabatanPegawai result: historyJabatanPegawai){
@@ -2363,6 +2392,7 @@ public class BiodataBoImpl implements BiodataBo {
             historyJabatan.setTanggalKeluar(bean.getTanggalKeluar());
             historyJabatan.setBidangId(bean.getDivisiId());
             historyJabatan.setBidangName(divisiName);
+            historyJabatan.setProfesiId(bean.getProfesiId());
 
             historyJabatan.setFlag(bean.getFlag());
             historyJabatan.setAction(bean.getAction());
@@ -2705,6 +2735,18 @@ public class BiodataBoImpl implements BiodataBo {
                 pengalamanKerja.setNamaPerusahaan(historyLoop.getBranchName());
                 pengalamanKerja.setNip(historyLoop.getNip());
                 pengalamanKerja.setJabatan(historyLoop.getPositionName());
+                pengalamanKerja.setProfesiId(historyLoop.getProfesiId());
+                if (historyLoop.getProfesiId()!=null){
+                    ImProfesiEntity profesiEntity = new ImProfesiEntity();
+                    if (!historyLoop.getProfesiId().equalsIgnoreCase("")){
+                        profesiEntity = profesiDao.getById("profesiId",historyLoop.getProfesiId());
+                        pengalamanKerja.setProfesiName(profesiEntity.getProfesiName());
+                    }else{
+                        pengalamanKerja.setProfesiName("-");
+                    }
+                }else{
+                    pengalamanKerja.setProfesiName("-");
+                }
                 if (historyLoop.getTahun()!=null){
                     if(!historyLoop.getTahun().equalsIgnoreCase("")){
                         pengalamanKerja.setStTtahunMasuk(historyLoop.getTahun());

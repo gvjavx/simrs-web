@@ -62,8 +62,17 @@ public class ItCutiPegawaiEntity implements Serializable {
     private String divisiId;
     private String posisiId;
     private String bagianId;
+    private String profesiId;
 
     private String flagPerbaikan;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getFlagPerbaikan() {
         return flagPerbaikan;
