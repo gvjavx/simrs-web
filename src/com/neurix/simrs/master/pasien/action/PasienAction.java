@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.method.P;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -588,6 +589,36 @@ public class PasienAction extends BaseMasterAction {
         }
 
         return "search";
+    }
+
+    public Pasien getDataPasien(String idPasien){
+
+        Pasien pasien = new Pasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        List<Pasien> pasienList = new ArrayList<>();
+
+        if(!"".equalsIgnoreCase(idPasien) && idPasien != null){
+
+            Pasien listPasien = new Pasien();
+            listPasien.setIdPasien(idPasien);
+
+            try {
+                pasienList = pasienBo.getByCriteria(listPasien);
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data pasien "+e.getMessage());
+            }
+
+            if(pasienList.size() > 0 ){
+                pasien = pasienList.get(0);
+
+                if(!"".equalsIgnoreCase(pasien.getIdPasien()) && pasien.getIdPasien() != null ){
+                    setPasien(pasien);
+                }
+            }
+        }
+
+        return pasien;
     }
 
     public String getTipe() {

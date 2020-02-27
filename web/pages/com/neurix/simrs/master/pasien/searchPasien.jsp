@@ -186,13 +186,13 @@ To change this template use File | Settings | File Templates.
                                                     <display:table name="listOfPasien" class="tablePasien table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_rekruitmen.action" export="true" id="row" pagesize="14" style="font-size:12">
                                                         <display:column media="html" title="Edit">
-                                                                <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </sj:a>
+                                                            <s:url var="urlEdit" namespace="/pasien" action="edit_pasien" escapeAmp="false">
+                                                                <s:param name="id"><s:property value="#attr.row.idPasien"/></s:param>
+                                                                <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                            </s:url>
+                                                            <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                            </sj:a>
                                                         </display:column>
                                                         <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                             <s:url var="urlViewDelete" namespace="/pasien" action="delete_pasien" escapeAmp="false">
@@ -232,7 +232,7 @@ To change this template use File | Settings | File Templates.
                                                                     <s:param name="tipe">edit</s:param>
                                                                 </s:url>
                                                                 <sj:a cssClass="btn btn-primary" onClickTopics="showDialogMenuUser" href="%{urlViewDelete}">
-                                                                   <i class="fa fa-edit"></i> Edit Password
+                                                                    <i class="fa fa-edit"></i> Edit Password
                                                                 </sj:a>
                                                             </s:else>
                                                         </display:column>
@@ -271,77 +271,77 @@ To change this template use File | Settings | File Templates.
                         <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
                     </div>
                     <div class="modal-body">
-                            <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal" onsubmit="cekData()">
-                                <div class="form-group">
+                        <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal" onsubmit="cekData()">
+                            <div class="form-group">
                                 <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
-                                    <div class="col-md-7">
-                                        <div class="input-group">
-                                            <s:textfield id="upload_pasien" name="pasien.idPasien"
-                                                         onkeypress="$(this).css('border','');"
-                                                         cssClass="form-control"/>
-                                            <div class="input-group-btn">
-                                                <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
-                                            </div>
+                                <div class="col-md-7">
+                                    <div class="input-group">
+                                        <s:textfield id="upload_pasien" name="pasien.idPasien"
+                                                     onkeypress="$(this).css('border','');"
+                                                     cssClass="form-control"/>
+                                        <div class="input-group-btn">
+                                            <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
-                                    <div class="col-md-7">
-                                        <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
-                                                     cssStyle="margin-top: 7px"
-                                                         onkeypress="$(this).css('border','');"
-                                                         cssClass="form-control" readonly="true"/>
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
+                                <div class="col-md-7">
+                                    <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
+                                                 cssStyle="margin-top: 7px"
+                                                 onkeypress="$(this).css('border','');"
+                                                 cssClass="form-control" readonly="true"/>
                                 </div>
-                                    <script>
-                                        function tesPasien(val) {
-                                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
-                                        }
-                                    </script>
-                                    <script type="application/javascript">
-                                        var functions, mapped;
-                                        $('#upload_pasien').typeahead({
-                                            minLength: 1,
-                                            source: function (query, process) {
-                                                functions = [];
-                                                mapped = {};
+                            </div>
+                            <script>
+                                function tesPasien(val) {
+                                    $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
+                                }
+                            </script>
+                            <script type="application/javascript">
+                                var functions, mapped;
+                                $('#upload_pasien').typeahead({
+                                    minLength: 1,
+                                    source: function (query, process) {
+                                        functions = [];
+                                        mapped = {};
 
-                                                var data = [];
-                                                dwr.engine.setAsync(false);
+                                        var data = [];
+                                        dwr.engine.setAsync(false);
 
-                                                PasienAction.getListComboPasien(query, function (listdata) {
-                                                    data = listdata;
-                                                });
-
-                                                $.each(data, function (i, item) {
-                                                    var labelItem = "";
-
-                                                    if (item.noBpjs != '' && item.noBpjs != null) {
-                                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
-                                                    } else {
-                                                        labelItem = item.noKtp + "-" + item.nama;
-                                                    }
-                                                    mapped[labelItem] = {
-                                                        id: item.idPasien,
-                                                        nama: item.nama
-                                                    };
-                                                    functions.push(labelItem);
-                                                });
-                                                process(functions);
-
-                                            },
-                                            updater: function (item) {
-                                                var selectedObj = mapped[item];
-                                                $('#upload_nama_pasien').val(selectedObj.nama);
-                                                return selectedObj.id;
-                                            }
+                                        PasienAction.getListComboPasien(query, function (listdata) {
+                                            data = listdata;
                                         });
-                                    </script>
-                                <br/>
-                                <div id="body-rm">
-                                </div>
-                            </s:form>
+
+                                        $.each(data, function (i, item) {
+                                            var labelItem = "";
+
+                                            if (item.noBpjs != '' && item.noBpjs != null) {
+                                                labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
+                                            } else {
+                                                labelItem = item.noKtp + "-" + item.nama;
+                                            }
+                                            mapped[labelItem] = {
+                                                id: item.idPasien,
+                                                nama: item.nama
+                                            };
+                                            functions.push(labelItem);
+                                        });
+                                        process(functions);
+
+                                    },
+                                    updater: function (item) {
+                                        var selectedObj = mapped[item];
+                                        $('#upload_nama_pasien').val(selectedObj.nama);
+                                        return selectedObj.id;
+                                    }
+                                });
+                            </script>
+                            <br/>
+                            <div id="body-rm">
+                            </div>
+                        </s:form>
                     </div>
                     <div class="modal-footer" style="background-color: #cacaca">
                         <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -352,20 +352,20 @@ To change this template use File | Settings | File Templates.
                             Save
                         </sj:submit>
                     </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
+            <!-- Your Page Content Here -->
+            <div class="row">
+                <div class="col-md-12">
 
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
 
+                </div>
             </div>
-        </div>
     </section>
     <!-- /.content -->
 </div>
@@ -396,12 +396,12 @@ To change this template use File | Settings | File Templates.
 
         var str = "";
         str += '<div class="form-group">'+
-                '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
-                '<div class="col-md-7">'+
-                '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
-                <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
-                '</div>'+
-                '</div>';
+            '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
+            '<div class="col-md-7">'+
+            '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
+            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
+            '</div>'+
+            '</div>';
         if (n > 0){
             $("#body-rekam-medic-"+n+"").html(str+'<div id="body-rekam-medic-'+i+'"></div>');
         } else {
@@ -416,8 +416,7 @@ To change this template use File | Settings | File Templates.
         if(idPasien != null){
 
         }else{
-            document.uploadForm.action = false;
-            alert("tes");
+
         }
     }
 
