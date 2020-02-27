@@ -538,6 +538,8 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"bayar_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Uang Muka")) {
                         menuNameString = "<li id=\"pembayaran_uang_muka\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
+                        menuNameString = "<li id=\"bayar_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-files-o\"></i><span> " + menuName + "</span></a></li>";
                     }

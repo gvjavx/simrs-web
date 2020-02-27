@@ -924,7 +924,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien) {
+    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -970,7 +970,10 @@ public class CheckupDetailAction extends BaseMasterAction {
             headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
         }
         if ("rujuk".equalsIgnoreCase(idKtg)) {
+            headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
             headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
+//            headerDetailCheckup.setMetodePembayaran(metodeBayar);
+//            headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -988,7 +991,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
             status = "sukses";
         } else if ("rujuk".equalsIgnoreCase(idKtg)) {
-            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar);
+            rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
             status = "sukses";
         } else {
             status = "sukses";
@@ -1426,7 +1429,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.pindahPoli] end process >>>");
     }
 
-    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar) {
+    private void rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1711,7 +1714,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                     //=====START SET TARIF BPJS DARI E-KLAIM====
 
                                                     headerDetailCheckup.setTarifBpjs(tarifCbg);
-                                                    headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
 
                                                     //=====END SET TARIF BPJS DARI E-KLAIM=====
 
@@ -1758,6 +1760,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setRawatInap(true);
                         headerDetailCheckup.setNoSep(genNoSep);
                         headerDetailCheckup.setTindakanList(tindakans);
+                        headerDetailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+
+                        if(uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
+                            headerDetailCheckup.setJumlahUangMuka(new BigInteger(uangMuka));
+                        }
+
+                        headerDetailCheckup.setMetodePembayaran(metodeBayar);
 //                        headerDetailCheckup.setNoNota(createJurnalUangMuka(detailCheckup.getIdPasien(), "0"));
 
                         try {

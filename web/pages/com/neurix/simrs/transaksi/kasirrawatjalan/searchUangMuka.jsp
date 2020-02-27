@@ -383,7 +383,7 @@
                         <input type="hidden" id="total_uang_muka">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-3">Uang Muka</label>
+                                <label class="col-md-4">Uang Muka</label>
                                 <div class="col-md-8">
                                     <div class="input-group">
                                         <div class="input-group-addon">
@@ -394,16 +394,40 @@
                                     </div>
                                 </div>
                             </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-3" style="margin-top: 7px">kembalian</label>--%>
+                                <%--<div class="col-md-8">--%>
+                                    <%--<div class="input-group" style="margin-top: 7px">--%>
+                                        <%--<div class="input-group-addon">--%>
+                                            <%--Rp.--%>
+                                        <%--</div>--%>
+                                        <%--<input class="form-control" id="kembalian" readonly>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div class="form-group">
-                                <label class="col-md-3" style="margin-top: 7px">kembalian</label>
+                                <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
                                 <div class="col-md-8">
-                                    <div class="input-group" style="margin-top: 7px">
-                                        <div class="input-group-addon">
-                                            Rp.
-                                        </div>
-                                        <input class="form-control" id="kembalian" readonly>
-                                    </div>
+                                        <select style="margin-top: 7px" id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)">
+                                            <option value="" >[Select One]</option>
+                                            <option value="tunai">Tunai</option>
+                                            <option value="transfer">Transfer</option>
+                                        </select>
                                 </div>
+                            </div>
+                            <div style="display: none" id="pilih_bank">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Bank</label>
+                                <div class="col-md-8">
+                                        <select style="margin-top: 7px" class="form-control" id="bank">
+                                            <option value="" >[Select One]</option>
+                                            <option value="bri">BRI</option>
+                                            <option value="bni">BNI</option>
+                                            <option value="bca">BCA</option>
+                                            <option value="mandiri">Mandiri</option>
+                                        </select>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -453,6 +477,16 @@
 
 <script type='text/javascript'>
 
+    function pilihMetode(val){
+        console.log(val);
+        if(val != ''){
+            if(val == 'transfer'){
+                $('#pilih_bank').show();
+            }else{
+                $('#pilih_bank').hide();
+            }
+        }
+    }
 
     function showInvoice(idCheckup, idDetailCheckup, pasiendId) {
         var table = "";
@@ -597,8 +631,10 @@
         $('#save_fin').hide();
         $('#load_fin').show();
         var jumlah = $('#val_uang_muka').val();
+        var metodeBayar = $('#metode_bayar').val();
+        var kodeBank = $('#bank').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();
@@ -609,7 +645,7 @@
             }else{
                 $('#save_fin').show();
                 $('#load_fin').hide();
-                $('#warning_fin').show().fadeOut(5000);
+                $('#warning_fin').show().fadeOut(10000);
                 $('#msg_fin').text(response.msg);
             }
         }});

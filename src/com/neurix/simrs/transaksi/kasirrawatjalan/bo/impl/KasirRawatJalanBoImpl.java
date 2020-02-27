@@ -72,7 +72,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
             }
             if(bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
                 hsCriterian.put("status_bayar", bean.getStatusBayar());
-                hsCriterian.put("nota_not_null", "Y");
+//                hsCriterian.put("nota_not_null", "Y");
             }
 
             List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();

@@ -308,6 +308,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String dateTo       = "";
             String branchId = "%";
             String jenisPeriksa = "%";
+            String notLike = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -357,6 +358,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
+            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
+                notLike = "\n AND a.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
+            }
 
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
@@ -392,7 +396,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'";
+                    "AND a.flag = 'Y'\n" + notLike;
 
             List<Object[]> results = new ArrayList<>();
 
@@ -522,7 +526,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         }
                     }
 
-                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
+//                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
                     rawatInap.setAlamat(jalan);
                     rawatInapList.add(rawatInap);
                 }

@@ -72,6 +72,16 @@ public class RawatInap {
 
     private String metodePembayaran;
 
+    private String notLike;
+
+    public String getNotLike() {
+        return notLike;
+    }
+
+    public void setNotLike(String notLike) {
+        this.notLike = notLike;
+    }
+
     public String getMetodePembayaran() {
         return metodePembayaran;
     }
