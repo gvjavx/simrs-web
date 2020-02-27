@@ -230,6 +230,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 antrian.setNoCheckup(item.getNoCheckup());
                 antrian.setIdDetailCheckup(item.getIdDetailCheckup());
                 antrian.setTglCheckup(item.getTglCheckup());
+                antrian.setFlagPeriksa(item.getFlagPeriksa());
 
                 listOfAntrianOnline.add(antrian);
             }
@@ -246,8 +247,10 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             }
 
             if (result.size() > 0){
+                int i = 1;
                 for (HeaderCheckup item :result){
                     HeaderCheckupMobile headerCheckupMobile = new HeaderCheckupMobile();
+                    headerCheckupMobile.setNoAntrian(String.valueOf(i));
                     headerCheckupMobile.setIdPasien(item.getIdPasien());
                     headerCheckupMobile.setNama(item.getNama());
                     headerCheckupMobile.setNamaDesa(item.getNamaDesa());
@@ -257,6 +260,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                     headerCheckupMobile.setNoCheckup(item.getNoCheckup());
 
                     listOfHeaderCheckup.add(headerCheckupMobile);
+                    i++;
                 }
             }
         }

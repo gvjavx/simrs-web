@@ -14,6 +14,7 @@ import java.util.List;
  * Wednesday, 26/02/20 14:29
  */
 public class HeaderCheckupMobile implements Serializable {
+    private String noAntrian;
     private String noCheckup;
     private String idPasien;
     private String nama;
@@ -92,6 +93,14 @@ public class HeaderCheckupMobile implements Serializable {
     private String noMr;
 
     private String isOnline;
+
+    public String getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(String noAntrian) {
+        this.noAntrian = noAntrian;
+    }
 
     public String getNoCheckup() {
         return noCheckup;
