@@ -84,6 +84,7 @@
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanHistoryEntity.hbm.xml</value>

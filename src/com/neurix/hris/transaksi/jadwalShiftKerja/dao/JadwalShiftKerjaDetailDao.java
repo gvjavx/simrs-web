@@ -69,20 +69,22 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
         List<Object[]> results = new ArrayList<Object[]>();
         String tipeWhere = "";
         if(!("").equalsIgnoreCase(kelompokPositionId)){
-            tipeWhere += "AND position.kelompok_id = '"+kelompokPositionId+"' \n";
+            tipeWhere += "AND position.profesi_id = '"+kelompokPositionId+"' \n";
         }
-        if(!("").equalsIgnoreCase(kelompokPositionId)){
+        if(!("").equalsIgnoreCase(branchId)){
             tipeWhere += "AND posisi.branch_id = '"+branchId+"' \n";
         }
         String query = "SELECT\n" +
                 "pegawai.nip,\n" +
                 "\tpegawai.nama_pegawai,\n" +
-                "\tposition.position_name\n" +
+                "\tposition.profesi_name,\n" +
+                "\tposition_pegawai.position_name\n" +
                 "FROM\n" +
-                "\tim_position position \n" +
-                "\tLEFT JOIN it_hris_pegawai_position posisi ON position.position_id = posisi.position_id \n" +
+                "\tim_hris_profesi_pegawai position \n" +
+                "\tLEFT JOIN it_hris_pegawai_position posisi ON position.profesi_id = posisi.profesi_id \n" +
                 "\tLEFT JOIN im_hris_pegawai pegawai ON pegawai.nip = posisi.nip\n" +
-                "\tLEFT JOIN im_hris_kelompok_position kelompok ON kelompok.kelompok_id=position.kelompok_id\n" +
+                "\tLEFT JOIN im_hris_profesi_pegawai profesi ON profesi.profesi_id=position.profesi_id\n" +
+                "\tLEFT JOIN im_position position_pegawai ON posisi.position_id = position_pegawai.position_id\n" +
                 "WHERE\n" +
                 "\tpegawai.flag='Y' AND\n" +
                 "\tposisi.flag='Y' AND\n" +
@@ -98,7 +100,8 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
             JadwalShiftKerjaDetail result = new JadwalShiftKerjaDetail();
             result.setNip((String) row[0]);
             result.setNamaPegawai((String) row[1]);
-            result.setPositionName((String) row[2]);
+            result.setProfesiName((String) row[2]);
+            result.setPositionName((String) row[3]);
 
             listOfResult.add(result);
         }

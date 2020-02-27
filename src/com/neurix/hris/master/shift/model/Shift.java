@@ -13,7 +13,7 @@ public class Shift extends BaseModel implements Serializable {
     private String idBranch;
     private String jamAwal;
     private String jamAkhir;
-    private String kelompokPositionId;
+    private String profesiId;
 
     private String jamAwalJam;
     private String jamAkhirJam;
@@ -21,7 +21,7 @@ public class Shift extends BaseModel implements Serializable {
     private String jamAkhirMenit;
 
     private String branchName;
-    private String kelompokPositionName;
+    private String profesiName;
 
     public String getBranchName() {
         return branchName;
@@ -31,20 +31,20 @@ public class Shift extends BaseModel implements Serializable {
         this.branchName = branchName;
     }
 
-    public String getKelompokPositionName() {
-        return kelompokPositionName;
+    public String getProfesiId() {
+        return profesiId;
     }
 
-    public void setKelompokPositionName(String kelompokPositionName) {
-        this.kelompokPositionName = kelompokPositionName;
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
     }
 
-    public String getKelompokPositionId() {
-        return kelompokPositionId;
+    public String getProfesiName() {
+        return profesiName;
     }
 
-    public void setKelompokPositionId(String kelompokPositionId) {
-        this.kelompokPositionId = kelompokPositionId;
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
     }
 
     public String getIdBranch() {

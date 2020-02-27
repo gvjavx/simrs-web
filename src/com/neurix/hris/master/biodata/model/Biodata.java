@@ -53,6 +53,7 @@ public class Biodata extends BaseModel {
     private String branchName;
     private String tipePegawaiName;
     private String positionId;
+    private String profesiId;
     private String positionId2;
     private String positionName;
     private String divisiName;
@@ -117,6 +118,14 @@ public class Biodata extends BaseModel {
     private String flagTunjLokasi;
     private String flagTunjSiaga;
     private String flagTunjProfesional;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getFlagTunjLokasi() {
         return flagTunjLokasi;

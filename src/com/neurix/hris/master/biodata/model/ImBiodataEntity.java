@@ -28,6 +28,7 @@ public class ImBiodataEntity implements Serializable {
     private String branchId;
     private String divisiId;
     private String posisiId;
+    private String profesiId;
     private int batih;
     private int noAnggota;
 
@@ -66,6 +67,14 @@ public class ImBiodataEntity implements Serializable {
     private Integer masaKerjaGolongan;
     private String branchIdTerakhir;
     private String positionIdTerakhir;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getBranchIdTerakhir() {
         return branchIdTerakhir;

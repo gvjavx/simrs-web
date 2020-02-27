@@ -25,6 +25,7 @@ public class ItPersonilPositionEntity implements Serializable {
     private String divisiId;
     private String divisiName;
     private String positionId;
+    private String profesiId;
     private String positionName;
     private String pjs;
 
@@ -43,6 +44,14 @@ public class ItPersonilPositionEntity implements Serializable {
     private ImPosition imPosition ;
 
     private Timestamp tanggalAktif;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public Timestamp getTanggalAktif() {
         return tanggalAktif;

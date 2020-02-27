@@ -564,6 +564,7 @@ public class BiodataBoImpl implements BiodataBo {
             itPersonilPositionEntity.setNip(bean.getNip());
             itPersonilPositionEntity.setBranchId(bean.getBranch());
             itPersonilPositionEntity.setPositionId(bean.getPositionId());
+            itPersonilPositionEntity.setProfesiId(bean.getProfesiId());
             itPersonilPositionEntity.setPjs(bean.getPjs());
             itPersonilPositionEntity.setFlag(bean.getFlag());
             itPersonilPositionEntity.setAction(bean.getAction());
@@ -573,6 +574,7 @@ public class BiodataBoImpl implements BiodataBo {
             itPersonilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
             imBiodataEntity.setNip(bean.getNip());
+            imBiodataEntity.setProfesiId(bean.getProfesiId());
             imBiodataEntity.setNamaPegawai(bean.getNamaPegawai());
             imBiodataEntity.setGelarDepan(bean.getGelarDepan());
             imBiodataEntity.setGelarBelakang(bean.getGelarBelakang());
@@ -1090,6 +1092,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
                     returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
+                    returnBiodata.setProfesiId(personalEntity.getProfesiId());
 
                     itPersonilPositionEntity = personilPositionDao.getById("nip",personalEntity.getNip(),"Y" );
                     Map hsCriteria2 = new HashMap();

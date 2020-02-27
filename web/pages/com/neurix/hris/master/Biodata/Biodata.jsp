@@ -435,6 +435,24 @@
                                         </table>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Profesi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>
@@ -812,18 +830,18 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Golongan :</small></label>
+                                        <label class="control-label"><small>Level :</small></label>
                                     </td>
                                     <td id="golongan1Group">
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>

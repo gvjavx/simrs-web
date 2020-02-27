@@ -6,6 +6,8 @@ import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
+import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.bo.ShiftBo;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
@@ -28,6 +30,15 @@ public class ShiftBoImpl implements ShiftBo {
     private ShiftDao shiftDao;
     private BranchDao branchDao;
     private KelompokPositionDao kelompokPositionDao;
+    private ProfesiDao profesiDao;
+
+    public ProfesiDao getProfesiDao() {
+        return profesiDao;
+    }
+
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
 
     public KelompokPositionDao getKelompokPositionDao() {
         return kelompokPositionDao;
@@ -84,7 +95,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setCreatedDate(bean.getCreatedDate());
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
-            entityData.setKelompokPositionId(bean.getKelompokPositionId());
+            entityData.setProfesiId(bean.getProfesiId());
 
             try {
                 shiftDao.updateAndSave(entityData);
@@ -124,7 +135,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setId(id);
             entityData.setIdBranch(bean.getIdBranch());
-            entityData.setKelompokPositionId(bean.getKelompokPositionId());
+            entityData.setProfesiId(bean.getProfesiId());
             try {
                 shiftDao.addAndSaveHistory(entityData);
             } catch (HibernateException e) {
@@ -164,7 +175,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setCreatedDate(bean.getCreatedDate());
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
-            entityData.setKelompokPositionId(bean.getKelompokPositionId());
+            entityData.setProfesiId(bean.getProfesiId());
 
             try {
                 shiftDao.addAndSave(entityData);
@@ -191,8 +202,8 @@ public class ShiftBoImpl implements ShiftBo {
             if (searchBean.getShiftId() != null && !"".equalsIgnoreCase(searchBean.getShiftId())) {
                 hsCriteria.put("shift_id", searchBean.getShiftId());
             }
-            if (searchBean.getKelompokPositionId() != null && !"".equalsIgnoreCase(searchBean.getKelompokPositionId())) {
-                hsCriteria.put("kelompok_id", searchBean.getKelompokPositionId());
+            if (searchBean.getProfesiId() != null && !"".equalsIgnoreCase(searchBean.getProfesiId())) {
+                hsCriteria.put("profesi_id", searchBean.getProfesiId());
             }
             if (searchBean.getShiftName() != null && !"".equalsIgnoreCase(searchBean.getShiftName())) {
                 hsCriteria.put("shift_name", searchBean.getShiftName());
@@ -233,7 +244,7 @@ public class ShiftBoImpl implements ShiftBo {
                     returnData.setFlag(listEntity.getFlag());
                     returnData.setAction(listEntity.getAction());
                     returnData.setIdBranch(listEntity.getIdBranch());
-                    returnData.setKelompokPositionId(listEntity.getKelompokPositionId());
+                    returnData.setProfesiId(listEntity.getProfesiId());
 
                     if (listEntity.getIdBranch()!=null){
                         ImBranches imBranches = null;
@@ -252,12 +263,12 @@ public class ShiftBoImpl implements ShiftBo {
                         returnData.setBranchName("");
                     }
 
-                    if (listEntity.getKelompokPositionId()!=null){
+                    if (listEntity.getProfesiId()!=null){
 
-                        ImKelompokPositionEntity kelompokPositionEntity = kelompokPositionDao.getById("kelompokId",listEntity.getKelompokPositionId());
-                        returnData.setKelompokPositionName(kelompokPositionEntity.getKelompokName());
+                        ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",listEntity.getProfesiId());
+                        returnData.setProfesiName(profesiEntity.getProfesiName());
                     }else{
-                        returnData.setKelompokPositionName("");
+                        returnData.setProfesiName("");
                     }
 
                     listOfResult.add(returnData);
