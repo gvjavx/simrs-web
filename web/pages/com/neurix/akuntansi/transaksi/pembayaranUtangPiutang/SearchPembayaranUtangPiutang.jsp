@@ -390,10 +390,12 @@
         });
         $('#btnPostingJurnal').click(function () {
             var pembayaranId =  $('#mod_pembayaran_id').val();
-            PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
-                alert(listdata);
-                window.location.reload();
-            })
+            if (confirm("apakah anda ingin memposting pembayaran dengan pembayaran id "+pembayaranId +" ?")){
+                PembayaranUtangPiutangAction.postingJurnal(pembayaranId,function (listdata) {
+                    alert(listdata);
+                    window.location.reload();
+                })
+            }
         })
     });
 </script>
