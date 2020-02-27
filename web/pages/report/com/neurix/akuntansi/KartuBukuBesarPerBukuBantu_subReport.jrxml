@@ -25,7 +25,7 @@
 from
 	it_akun_jurnal_detail a
     inner join it_akun_jurnal b on a.no_jurnal = b.no_jurnal
-	left outer join m_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
+	left outer join im_akun_mata_uang mu ON (b.mata_uang_id = mu.mata_uang_id)
 where
 	b.created_date < to_date($P{periode}, 'MM-yyyy')
     and a.rekening_id = $P{rekening_id}
