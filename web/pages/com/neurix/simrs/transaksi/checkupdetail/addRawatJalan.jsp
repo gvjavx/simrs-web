@@ -95,6 +95,7 @@
                                     <s:hidden id="no_detail_checkup" name="headerDetailCheckup.idDetailCheckup"/>
                                     <s:hidden id="id_pasien" name="headerDetailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="headerDetailCheckup.idJenisPeriksaPasien"/>
+                                    <s:hidden id="jenis_bayar" name="headerDetailCheckup.metodePembayaran"/>
                                     <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -1684,6 +1685,7 @@
         var jenisPasien = $('#jenis_pasien').val();
         var metodeBayar = "";
         var uangMuka = "";
+        var idPasien = $('#id_pasien').val();
 
 
         if (idKtg != '') {
@@ -1691,7 +1693,7 @@
                 poli = $("#poli_lain").val();
                 idDokter = $("#list_dokter").val();
                 if (poli != '' && idDokter != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',"","","", \''+idPasien+'\', \''+metodeBayar+'\', \''+uangMuka+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\', \''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1710,8 +1712,11 @@
                 metodeBayar = $("#metode_bayar").val();
                 uangMuka = $("#uang_muka_val").val();
 
+                console.log(metodeBayar);
+                console.log(uangMuka);
+
                 if (kelas != '' && kamar != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',"","","", \''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 }
                 else {
@@ -1732,7 +1737,7 @@
                 ket_cekup = $('#cekup_ket').val();
 
                 if (ket_selesai != '') {
-                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',"","","", \''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
+                    $('#save_con').attr('onclick','saveKeterangan(\''+idKtg+'\', \''+poli+'\', \''+kelas+'\', \''+kamar+'\', \''+ket_selesai+'\', \''+tgl_cekup+'\', \''+ket_cekup+'\', \''+jenisPasien+'\',\''+idPasien+'\',\''+metodeBayar+'\', \''+uangMuka+'\')');
                     $('#modal-confirm-dialog').modal('show');
                 } else {
                     $('#warning_ket').show().fadeOut(5000);
@@ -1745,14 +1750,16 @@
         }
     }
 
-    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien) {
+    function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, idPasien, metodeBayar, uangMuka) {
         $('#modal-confirm-dialog').modal('hide');
         var idDokter = $('#tin_id_dokter').val();
+        var jenisBayar = $('#jenis_bayar').val();
+
         if(idKtg == "pindah"){
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
                 if(response == "success"){
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
@@ -1768,7 +1775,7 @@
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, function (response) {
                 $('#info_dialog').dialog('open');
                 $('#close_pos').val(6);
                 $('#save_ket').show();
@@ -1779,7 +1786,7 @@
             $('#save_ket').hide();
             $('#load_ket').show();
             dwr.engine.setAsync(true);
-            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", function (response) {
+            CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, function (response) {
                 $('#info_dialog').dialog('open');
                 $('#close_pos').val(6);
                 $('#save_ket').show();

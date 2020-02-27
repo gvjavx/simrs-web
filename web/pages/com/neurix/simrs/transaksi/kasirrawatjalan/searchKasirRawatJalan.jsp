@@ -527,7 +527,6 @@
                 var str = "";
                 $.each(response, function(i, item){
                     str += "<tr><td>"+item.stCreatedDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>";
-                   mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
                     bukti = item.id;
@@ -545,13 +544,13 @@
 
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
-                        var tarif    = "";
+                        var tarif = "";
                         var kategori = ""
                         var btn = "";
                         var tgl = "";
 
 
-                        if (item.namaTindakan != null && item.namaTindakan !=  '') {
+                        if (item.namaTindakan != null && item.namaTindakan != '') {
                             tindakan = item.namaTindakan;
                         }
 
@@ -559,44 +558,53 @@
                             kategori = item.kategoriTindakanBpjs;
                         }
 
-                        if(item.totalTarif != null && item.totalTarif != ''){
+                        if (item.totalTarif != null && item.totalTarif != '') {
                             tarif = item.totalTarif;
                             total = (parseInt(total) + parseInt(tarif));
                         }
 
-                        if(item.stTglTindakan != null){
+                        if (item.stTglTindakan != null) {
                             tgl = item.stTglTindakan;
                         }
 
-                        if(item.keterangan == "resep"){
-                            btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
+                        if (item.keterangan == "resep") {
+                            btn = '<img id="btn' + item.idRiwayatTindakan + '"  class="hvr-grow" onclick="detailResep(\'' + item.idTindakan + '\',\'' + item.idRiwayatTindakan + '\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
                             $("#fin_is_resep").val("Y");
                             totalObat = parseInt(totalObat) + parseInt(item.totalTarif);
                             cekResep = true;
                         }
 
-                        table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
-                            "<td align='center'>"+btn+"</td>" +
-                            "<td >"+tgl+"</td>" +
+                        table += '<tr id="row' + item.idRiwayatTindakan + '" >' +
+                            "<td align='center'>" + btn + "</td>" +
+                            "<td >" + tgl + "</td>" +
                             "<td>" + tindakan + "</td>" +
-                            "<td align='right' style='padding-right: 20px'>" +formatRupiah(tarif) + "</td>" +
+                            "<td align='right' style='padding-right: 20px'>" + formatRupiah(tarif) + "</td>" +
                             "</tr>";
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>' +
-                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">' + formatRupiah(total) + '</td></tr>' +
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka) + '</td></tr>';
 
-                    if(cekResep){
-                        //rawat jalan dengan obat
-                        mapBiaya.push({"type":"kas","nilai":((total-uangMuka)+(totalObat +(totalObat*0.1)))});
-                        mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
-                        mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
-                        mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
-                    }else{
-                        //rawat jalan tanpa obat
-                        mapBiaya.push({"type":"kas","nilai":total-uangMuka});
-                        mapBiaya.push({"type":"pendapatan_rawat_jalan_non_bpjs","nilai":total});
+                    //tunai
+                    if (metode == "tunai") {
+                        if (cekResep) {
+                            //rawat jalan dengan obat
+                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + (totalObat + (totalObat * 0.1)))});
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
+                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalObat * 0.1});
+                        } else {
+                            //rawat jalan tanpa obat
+                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+                            mapBiaya.push({"type": "kas", "nilai": total - uangMuka});
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                        }
+                    //non_tunai
+                    } else {
+                        mapBiaya.push({"type": "kas", "nilai": total + totalObat + (totalObat * 0.1)});
+                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": total + totalObat + (totalObat * 0.1)});
                     }
                 }
             });

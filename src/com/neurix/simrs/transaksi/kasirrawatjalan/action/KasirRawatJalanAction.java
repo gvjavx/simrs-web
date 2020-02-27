@@ -699,6 +699,25 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             transId = "20";
             ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
+
+        String invNumber = "";
+        if ("non_tunai".equalsIgnoreCase(jenis)){
+            transId = "11";
+            ketTerangan = "Pembayaran Piutang Pasien Umum";
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+            List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getByCriteria(detailCheckup);
+            if (detailCheckups.size() > 0){
+                for (HeaderDetailCheckup data : detailCheckups){
+                    invNumber = data.getNoNota();
+                }
+            }
+
+            hsCriteria.put("bukti", noNota);
+        } else {
+            hsCriteria.put("bukti", invNumber);
+        }
 //        response.setMsg(""+hsCriteria);
         if (!"".equalsIgnoreCase(transId)){
             try {

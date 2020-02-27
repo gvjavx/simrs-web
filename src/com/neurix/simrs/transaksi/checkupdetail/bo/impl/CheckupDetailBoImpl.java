@@ -151,6 +151,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setLastUpdateWho(entity.getLastUpdateWho());
             detailCheckup.setTarifBpjs(entity.getTarifBpjs());
             detailCheckup.setNoSep(entity.getNoSep());
+            detailCheckup.setNoNota(entity.getInvoice());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -183,8 +184,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
             if (pelayananEntity != null) {
                 detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+                detailCheckup.setTipePelayanan(pelayananEntity.getTipePelayanan());
             }
-
             results.add(detailCheckup);
         }
 
@@ -1000,6 +1001,32 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 }
             }
         }
+    }
+
+    @Override
+    public CheckResponse updateInvoiceBpjs(String idDetailCheckup, String invNumber) {
+
+        CheckResponse response = new CheckResponse();
+
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setIdDetailCheckup(idDetailCheckup);
+        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(detailCheckup);
+
+        if (detailCheckupEntities.size()>0){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
+            detailCheckupEntity.setInvoice(invNumber);
+            try {
+                checkupDetailDao.updateAndSave(detailCheckupEntity);
+                response.setStatus("success");
+            } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMessage("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. "+ e);
+                logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR. ", e);
+            }
+        }
+
+        return response;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -41,7 +42,9 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TransaksiObatAction extends BaseMasterAction {
 
@@ -54,10 +57,15 @@ public class TransaksiObatAction extends BaseMasterAction {
     private CheckupBo checkupBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
     private ObatPoliBo obatPoliBoProxy;
     private String id;
     private String idResep;
     private String idApprove;
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public String getIdApprove() {
         return idApprove;
@@ -855,11 +863,12 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         String idPoli = CommonUtil.userPelayananIdLogin();
         String userLogin = CommonUtil.userLogin();
+        String branchId = CommonUtil.userBranchLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         TransaksiObatDetail transaksiObatDetail = getTransaksiObatDetail();
         transaksiObatDetail.setLastUpdate(time);
         transaksiObatDetail.setLastUpdateWho(userLogin);
-        transaksiObatDetail.setBranchId(CommonUtil.userBranchLogin());
+        transaksiObatDetail.setBranchId(branchId);
         transaksiObatDetail.setIdPelayanan(idPoli);
 
         try {
@@ -867,6 +876,19 @@ public class TransaksiObatAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. ", e);
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. " + e.getMessage());
+        }
+
+        // create jurnal
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("kas", transaksiObatDetail.getTotalBayar());
+        hsCriteria.put("pendapatan_obat_non_bpjs", transaksiObatDetail.getTotalBayar().subtract(transaksiObatDetail.getPpnBayar()));
+        hsCriteria.put("ppn_keluaran", transaksiObatDetail.getPpnBayar());
+
+        try {
+            billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y", "");
+        } catch (GeneralBOException e){
+            logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR. ", e);
+            addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR. " + e.getMessage());
         }
 
         logger.info("[TransaksiObatAction.pembayaranObatBaru] END <<<<<<<");
