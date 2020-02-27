@@ -473,6 +473,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("kode_rekening",data.getKodeRekening());
         reportParams.put("nomor_master",data.getMasterId());
+        reportParams.put("branch_id",data.getUnit());
         reportParams.put("rekening_id",data.getRekeningId());
         reportParams.put("reportTitle", "KARTU BUKU BESAR PER BUKU BANTU");
 

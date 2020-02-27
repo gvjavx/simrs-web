@@ -77,8 +77,21 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
 
         return "PUP"+sId;
     }
-    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi,String branchId) throws HibernateException {
+    public List<PembayaranUtangPiutangDetail> getSearchNotaPembayaran(String masterId,String tipeTransaksi,String branchId,String tipeBayar) throws HibernateException {
         List<PembayaranUtangPiutangDetail> listOfResult = new ArrayList<PembayaranUtangPiutangDetail>();
+        String debit="";
+        switch (tipeBayar){
+            case "PP":
+                debit="foo.debit > 0 \n";
+                break;
+            case "PH":
+                debit="foo.debit < 0 \n";
+                break;
+            case "UM":
+                debit="foo.debit < 0 \n";
+
+        }
+
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select \n" +
                 "  master_id, \n" +
@@ -112,7 +125,9 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
                 "\t\t\t\t  im_akun_mapping_jurnal\n" +
                 "\t\t\t\tWHERE\n" +
                 "\t\t\t\t  trans_id='"+tipeTransaksi+"' AND\n" +
-                "\t\t\t\t  flag='Y'\n" +
+                "\t\t\t\t  flag='Y' and\n" +
+                "\t\t\t\t  master_id='Y'\n" +
+                "" +
                 "\t\t\t  ) mapping\n" +
                 "\t\t\t  ON kr.kode_rekening=mapping.kode_rekening\n" +
                 "\t\t  ) \n" +
@@ -147,7 +162,7 @@ public class PembayaranUtangPiutangDao extends GenericDao<ImPembayaranUtangPiuta
                 "      b.rekening_id\n" +
                 "  ) foo \n" +
                 "where \n" +
-                "  foo.debit > 0 \n" +
+                debit +
                 "  and master_id like '%' || '"+masterId+"' || '%' ";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

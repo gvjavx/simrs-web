@@ -18,6 +18,7 @@
 	<parameter name="reportParams.reportTitle" class="java.lang.String"/>
 	<parameter name="reportParams.periodeTitle" class="java.lang.String"/>
 	<parameter name="reportParams.kota" class="java.lang.String"/>
+	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
   a.no_jurnal,
@@ -42,14 +43,15 @@ FROM
   LEFT OUTER JOIN im_akun_kode_rekening c ON (b.rekening_id = c.rekening_id)
   LEFT OUTER JOIN im_akun_master d ON (b.master_id = d.nomor_master)
   LEFT OUTER JOIN im_akun_sumber_dana e ON (a.sumber_dana_id = e.sumber_dana_id)
-  LEFT OUTER JOIN m_mata_uang f ON (a.mata_uang_id = f.mata_uang_id)
-  LEFT OUTER JOIN mt_kurs g
+  LEFT OUTER JOIN im_akun_mata_uang f ON (a.mata_uang_id = f.mata_uang_id)
+  LEFT OUTER JOIN mt_akun_kurs g
   	ON ((f.mata_uang_id = g.mata_uang_id)
     	AND (g.flag = 'A'))
 WHERE
   h.tipe_jurnal_id = $P{jurnalType}
   AND to_char(a.tanggal_jurnal, 'MM-yyyy') = $P{periode}
   and a.registered_flag = 'Y' and a.flag='Y'
+and a.branch_id=$P{reportParams.branchId}
   order by a.no_jurnal,a.tanggal_jurnal,b.jumlah_kredit,c.kode_rekening]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>

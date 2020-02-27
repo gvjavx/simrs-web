@@ -17,13 +17,13 @@
 
             var tipeTransaksi          = $('#tipe_transaksi').val();
             var tanggal        = $('#tanggal').val();
-            var kodeRekeningKas           = $('#kode_rekening_kas').val();
+            var metodeBayar           = $('#metode_bayar').val();
             var bayar      = $('#bayar').val();
             var keterangan    = $('#keterangan').val();
             var noslipBank     = $('#no_slip_bank').val();
             var branchId     = $('#branch_id').val();
             var status ="";
-            PembayaranUtangPiutangAction.cekBeforeSave(tipeTransaksi,tanggal,kodeRekeningKas,bayar,keterangan,noslipBank,branchId,function (result) {
+            PembayaranUtangPiutangAction.cekBeforeSave(tipeTransaksi,tanggal,metodeBayar,bayar,keterangan,noslipBank,branchId,function (result) {
                 status=result;
             })
 
