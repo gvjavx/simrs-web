@@ -11,6 +11,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
@@ -200,7 +201,8 @@ public class ObatBoImpl implements ObatBo {
         return obats;
     }
 
-    private List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException{
+    @Override
+    public List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException{
         logger.info("[ObatBoImpl.getListEntityObat] Start >>>>>>>");
 
         Map hsCriteria = new HashMap();
@@ -225,6 +227,9 @@ public class ObatBoImpl implements ObatBo {
         }
         if (bean.getIdSeqObat() != null && !"".equalsIgnoreCase(bean.getIdSeqObat())){
             hsCriteria.put("id_squen", bean.getIdSeqObat());
+        }
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+            hsCriteria.put("id_barang", bean.getIdObat());
         }
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();
@@ -792,6 +797,24 @@ public class ObatBoImpl implements ObatBo {
 
         logger.info("[ObatPoliBoImpl.getListObatGroup] END <<<<<<<<<<");
         return obatList;
+    }
+
+    @Override
+    public ImSimrsObatEntity getObatByIdBarang(String idBarang) throws GeneralBOException {
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_barang", idBarang);
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getObatByIdBarang] ERROR, "+e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.getObatByIdBarang] ERROR, "+e.getMessage());
+        }
+
+        if (obatEntities.size() > 0){
+            return obatEntities.get(0);
+        }
+        return null;
     }
 
     private String getIdNextObatGejala() throws GeneralBOException{

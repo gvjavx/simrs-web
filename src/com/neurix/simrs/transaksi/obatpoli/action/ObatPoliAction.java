@@ -1,10 +1,13 @@
 package com.neurix.simrs.transaksi.obatpoli.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
@@ -22,12 +25,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Toshiba on 12/12/2019.
@@ -295,7 +297,8 @@ public class ObatPoliAction extends BaseMasterAction {
             String idPelayanan = CommonUtil.userPelayananIdLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
-
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatPoliBoProxy");
+            BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdApprovalObat(idApproval);
@@ -306,6 +309,8 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
 
+
+            List<Map> listOfObat = new ArrayList<>();
             try {
                 List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                 if (request != null && !"".equalsIgnoreCase(request)) {
@@ -322,7 +327,37 @@ public class ObatPoliAction extends BaseMasterAction {
                         detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
                         detail.setJenisSatuan(obj.getString("Jenis Satuan"));
 
+                        ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(detail.getIdBarang());
+                        if (obatEntity != null){
+
+                            BigDecimal hargaRata = new BigDecimal(0);
+                            if ("box".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaBox();
+                            if ("lembar".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaLembar();
+                            if ("biji".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaBiji();
+
+                            Map mapPersedianGudang = new HashMap();
+                            mapPersedianGudang.put("kd_barang", detail.getIdBarang());
+                            mapPersedianGudang.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
+                            listOfObat.add(mapPersedianGudang);
+                        }
+
                         transaksiObatDetails.add(detail);
+                    }
+
+                    // create jurnal
+                    Map jurnalMap = new HashMap();
+                    jurnalMap.put("persediaan_apotik", listOfObat);
+                    jurnalMap.put("persediaan_gudang", listOfObat);
+
+                    String catatan = "Pengiriman Barang Gudang ke Apotik";
+                    try {
+                        billingSystemBo.createJurnal("15", jurnalMap, branchId, catatan, "Y", "");
+                    } catch (GeneralBOException e){
+                        logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+                        return e.getMessage();
                     }
                 }
                 obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
@@ -336,7 +371,6 @@ public class ObatPoliAction extends BaseMasterAction {
             return e.getMessage();
         }
         logger.info("[ObatPoliAction.saveKonfirmasiDiterima] END process <<<");
-
         return SUCCESS;
     }
 
@@ -682,7 +716,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return "print_reture_permintaan_obat";
     }
 
-    public String  updateDiterimaFlagBatch(BigInteger idBatch, String flag){
+    public String updateDiterimaFlagBatch(BigInteger idBatch, String flag){
 
         logger.info("[ObatPoliAction.updateDiterimaFlagBatch] START process >>>");
 
