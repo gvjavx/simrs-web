@@ -204,7 +204,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
-
             }else if (("tunai").equalsIgnoreCase(metodeBayar)){
                 try {
                     rekeningIdKas = kodeRekeningDao.searchRekeningIdTunaiLikeName("Kas Tunai");
@@ -225,11 +224,10 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             BigDecimal totalBayar= new BigDecimal(0);
             for (ImMappingJurnalEntity mapping : mappingJurnal){
                 if (mapping.getKeterangan()!=null){
-
                     String rekeningId = null;
                     ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN  //////////////////////////////
                      if (pembayaran){
-                        if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
+                        if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
                             rekeningId=rekeningIdKasPembayaran;
                         }else{
                             rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());

@@ -361,6 +361,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -397,6 +398,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -434,6 +436,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -476,6 +479,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("branch_id",data.getUnit());
         reportParams.put("rekening_id",data.getRekeningId());
         reportParams.put("reportTitle", "KARTU BUKU BESAR PER BUKU BANTU");
+        reportParams.put("areaId", CommonUtil.userAreaName());
 
         try {
             preDownload();
@@ -531,6 +535,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("jurnalType",data.getTipeJurnalId());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -585,6 +590,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
+        reportParams.put("areaId",CommonUtil.userAreaName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -763,6 +769,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             reportParams.put("periode",periode);
             reportParams.put("kota",branch.getBranchName());
             reportParams.put("alamatSurat",branch.getAlamatSurat());
+            reportParams.put("areaId",CommonUtil.userAreaName());
             try {
                 preDownload();
             } catch (SQLException e) {
