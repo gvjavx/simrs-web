@@ -193,34 +193,36 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         //untuk pembayaran utang piutang
         boolean pembayaran = false;
-        String rekeningIdPembayaran="";
         String rekeningIdKasPembayaran="";
 
-        if (data.get("rekening_id")!=null){
-            rekeningIdPembayaran = (String) data.get("rekening_id");
-            rekeningIdKasPembayaran = (String) data.get("rekening_id_kas");
-            pembayaran=true;
-        }
-
-        //untuk closing pembayaran
-        boolean closing = false;
+        //untuk pembayaran
         if (data.get("metode_bayar")!=null){
             String metodeBayar = (String) data.get("metode_bayar");
             // tunai / transfer
+            String rekeningIdKas = null;
+
             if (("transfer").equalsIgnoreCase(metodeBayar)){
                 String bank = (String) data.get("bank");
-                String rekeningIdKasClosing;
                 try {
-                    rekeningIdKasClosing = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
+                    rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
                 } catch (HibernateException e) {
                     logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
-                if (rekeningIdKasClosing!=null){
-                    rekeningIdKasPembayaran=rekeningIdKasClosing;
-                    closing=true;
+
+            }else if (("tunai").equalsIgnoreCase(metodeBayar)){
+                try {
+                    rekeningIdKas = kodeRekeningDao.searchRekeningIdTunaiLikeName("Kas Tunai");
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
             }
+            if (rekeningIdKas!=null){
+                rekeningIdKasPembayaran=rekeningIdKas;
+                pembayaran=true;
+            }
+
         }
 
         if (mappingJurnal.size()!=0){
@@ -230,16 +232,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             for (ImMappingJurnalEntity mapping : mappingJurnal){
                 if (mapping.getKeterangan()!=null){
                     String rekeningId = null;
-                    ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
-                    if (pembayaran){
-                        if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
-                            rekeningId=rekeningIdKasPembayaran;
-                        }else if (("Y").equalsIgnoreCase(mapping.getMasterId())&&("Y").equalsIgnoreCase(mapping.getBukti())){
-                            rekeningId=rekeningIdPembayaran;
-                        }
-                    ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN HUTANG PIUTANG //////////////////////////////
-                    }
-                    if (closing){
+                    ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN  //////////////////////////////
+                     if (pembayaran){
                         if (!("Y").equalsIgnoreCase(mapping.getMasterId())&&!("Y").equalsIgnoreCase(mapping.getBukti())){
                             rekeningId=rekeningIdKasPembayaran;
                         }else{

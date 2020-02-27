@@ -65,6 +65,6 @@ public class JurnalDao extends GenericDao<ItJurnalEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%05d", iter.next());
 
-        return "J"+tahun+bulan+sId;
+        return tahun+bulan+sId;
     }
 }

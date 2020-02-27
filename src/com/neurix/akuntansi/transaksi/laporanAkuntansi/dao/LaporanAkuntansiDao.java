@@ -80,7 +80,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\t\t  and branch_id='"+branchId+"'\n" +
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
-                "      inner join m_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
+                "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
                 "      inner join im_akun_master d on b.master_id = d.nomor_master \n" +
                 "\t  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id\n" +
                 "      INNER JOIN (\n" +
@@ -95,7 +95,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        select \n" +
                 "          * \n" +
                 "        from \n" +
-                "          mt_kurs \n" +
+                "          mt_akun_kurs \n" +
                 "        where \n" +
                 "          flag = 'A'\n" +
                 "      ) f on f.mata_uang_id = a.mata_uang_id \n" +

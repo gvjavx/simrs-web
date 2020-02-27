@@ -93,16 +93,38 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
     //for search bank in billing
     public String searchRekeningIdBankLikeName(String namaBank){
         String result="";
-        String query = "select \n" +
-                "  \trekening_id \n" +
-                "\tfrom \n" +
-                "\tim_akun_kode_rekening \n" +
-                "\twhere \n" +
-                "\tnama_kode_rekening ilike 'bank "+namaBank+"%' \n" +
-                "\tand kode_rekening ilike '1.%'\n" +
-                "\tand length(kode_rekening)=14\n" +
-                "\torder by rekening_id\n" +
-                "\tlimit 1";
+        String query = "select  \n" +
+                "                  rekening_id  \n" +
+                "                from  \n" +
+                "                im_akun_kode_rekening  \n" +
+                "                where  \n" +
+                "                nama_kode_rekening ilike '"+namaBank+"%'  \n" +
+                "                and kode_rekening ilike '1.1.01%' \n" +
+                "                and length(kode_rekening)=12 \n" +
+                "                order by rekening_id \n" +
+                "                limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result=null;
+        }
+        return result;
+    }
+    //for search bank in billing
+    public String searchRekeningIdTunaiLikeName(String namaTunai){
+        String result="";
+        String query = "select  \n" +
+                "                  rekening_id  \n" +
+                "                from  \n" +
+                "                im_akun_kode_rekening  \n" +
+                "                where  \n" +
+                "                nama_kode_rekening like 'Kas Tunai'  \n" +
+                "                and kode_rekening ilike '1.1.01%' \n" +
+                "                and length(kode_rekening)=12 \n" +
+                "                order by rekening_id \n" +
+                "                limit 1";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
