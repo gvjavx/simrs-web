@@ -384,6 +384,38 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         try {
            noJurnal= pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+
+            //////////////////////////////////////////
+            ///////    MEMBUAT BILLING   /////////////
+            //////////////////////////////////////////
+
+            //Jika pembayaran berhasil
+            if (noJurnal!=null){
+                //MEMBUAT BILLING
+                for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
+                    BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
+                    Map data = new HashMap();
+                    data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
+                    data.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
+                    data.put("jml_bayar",jumlahPembayaran);
+                    data.put("metode_bayar",pembayaranUtangPiutang.getMetodePembayaran());
+                    data.put("bank",pembayaranUtangPiutang.getBank());
+                    try {
+                        billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N",noJurnal);
+                    }catch (GeneralBOException e) {
+                        Long logId = null;
+                        try {
+                            logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.createJurnalPembayaran");
+                        } catch (GeneralBOException e1) {
+                            logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when saving error,", e1);
+                            return ERROR;
+                        }
+                        logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                        addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                        return ERROR;
+                    }
+                }
+            }
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -397,37 +429,6 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             return ERROR;
         }
 
-        //////////////////////////////////////////
-        ///////    MEMBUAT BILLING   /////////////
-        //////////////////////////////////////////
-
-        //Jika pembayaran berhasil
-        if (noJurnal!=null){
-            //MEMBUAT BILLING
-            for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail : pembayaranUtangPiutangDetailList){
-                BigDecimal jumlahPembayaran = new BigDecimal(pembayaranUtangPiutangDetail.getStJumlahPembayaran().replace(".",""));
-                Map data = new HashMap();
-                data.put("master_id",pembayaranUtangPiutangDetail.getMasterId());
-                data.put("bukti",pembayaranUtangPiutangDetail.getNoNota());
-                data.put("jml_bayar",jumlahPembayaran);
-                data.put("rekening_id",pembayaranUtangPiutangDetail.getRekeningId());
-                data.put("rekening_id_kas",pembayaranUtangPiutang.getRekeningIdKas());
-                try {
-                billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N",noJurnal);
-                }catch (GeneralBOException e) {
-                    Long logId = null;
-                    try {
-                        logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.createJurnalPembayaran");
-                    } catch (GeneralBOException e1) {
-                        logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when saving error,", e1);
-                        return ERROR;
-                    }
-                    logger.error("[PembayaranUtangPiutangAction.createJurnalPembayaran] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-                    return ERROR;
-                }
-            }
-        }
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfResultPembayaranDetail");
 

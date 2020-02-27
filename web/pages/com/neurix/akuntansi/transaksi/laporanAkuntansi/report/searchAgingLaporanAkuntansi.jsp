@@ -157,7 +157,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control" maxLength="10"/>
+                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control"/>
                                                     </table>
                                                     <script>
                                                         $(document).ready(function() {

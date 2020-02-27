@@ -140,50 +140,45 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kode Rekening Kas</label>
-                                            <div class="col-md-3">
-                                                <s:textfield id="kode_rekening_kas" name="pembayaranUtangPiutang.kodeRekeningKas" onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                                <script>
-                                                    $(document).ready(function() {
-                                                        var functions, mapped;
-                                                        $('#kode_rekening_kas').typeahead({
-                                                            minLength: 1,
-                                                            source: function (query, process) {
-                                                                functions = [];
-                                                                mapped = {};
-                                                                var data = [];
-                                                                dwr.engine.setAsync(false);
-                                                                KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                                                    data = listdata;
-                                                                });
-                                                                $.each(data, function (i, item) {
-                                                                    var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                                                    mapped[labelItem] = {
-                                                                        id: item.kodeRekening,
-                                                                        nama: item.namaKodeRekening,
-                                                                        rekeningId:item.rekeningId
-                                                                    };
-                                                                    functions.push(labelItem);
-                                                                });
-                                                                process(functions);
-                                                            },
-                                                            updater: function (item) {
-                                                                var selectedObj = mapped[item];
-                                                                $('#nama_kode_rekening').val(selectedObj.nama);
-                                                                $('#rekeningId').val(selectedObj.rekeningId);
-                                                                return selectedObj.id;
-                                                            }
-                                                        });
-                                                    });
-                                                </script>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <s:textfield id="nama_kode_rekening" onkeypress="$(this).css('border','')" readonly="true"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px" />
-                                                <s:hidden id="rekeningId" name="pembayaranUtangPiutang.rekeningIdKas"/>
+                                            <label class="col-md-4" style="margin-top: 7px">Metode Bayar</label>
+                                            <div class="col-md-8" style="margin-top: 7px" >
+                                                <div class="col-md-4">
+                                                    <select id="metode_bayar" class="form-control" onchange="pilihMetode(this.value)"  name="pembayaranUtangPiutang.metodePembayaran">
+                                                        <option value="" >[Select One]</option>
+                                                        <option value="tunai">Tunai</option>
+                                                        <option value="transfer">Transfer</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div style="display: none" id="pilih_bank">
+                                                        <div class="form-group">
+                                                            <label class="col-md-2" style="margin-top: 7px">Bank</label>
+                                                            <div class="col-md-10">
+                                                                <select class="form-control" id="bank"  name="pembayaranUtangPiutang.bank">
+                                                                    <option value="" >[Select One]</option>
+                                                                    <option value="bri">BRI</option>
+                                                                    <option value="bni">BNI</option>
+                                                                    <option value="bca">BCA</option>
+                                                                    <option value="mandiri">Mandiri</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                            <script>
+                                                function pilihMetode(val){
+                                                    console.log(val);
+                                                    if(val != ''){
+                                                        if(val == 'transfer'){
+                                                            $('#pilih_bank').show();
+                                                        }else{
+                                                            $('#pilih_bank').hide();
+                                                        }
+                                                    }
+                                                }
+                                            </script>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Bayar</label>
                                             <div class="col-md-8">
@@ -343,7 +338,6 @@
                                             </sj:submit>
                                         </div>
                                     </sj:dialog>
-
                                     <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog"
                                                modal="true"
                                                resizable="false"

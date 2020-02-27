@@ -33,6 +33,24 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String rekeningIdKas;
     private String stTanggalDari;
     private String stTanggalSelesai;
+    private String metodePembayaran;
+    private String bank;
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
 
     public String getStTanggalSelesai() {
         return stTanggalSelesai;

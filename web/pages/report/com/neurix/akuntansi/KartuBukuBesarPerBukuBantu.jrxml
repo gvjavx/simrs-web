@@ -225,7 +225,7 @@ where
 				</textElement>
 				<text><![CDATA[KARTU BUKU BESAR PER BUKU BANTU]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-5" x="56" y="57" width="187" height="12" uuid="82b073c5-2955-48a0-af51-c0630a2372fd"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
