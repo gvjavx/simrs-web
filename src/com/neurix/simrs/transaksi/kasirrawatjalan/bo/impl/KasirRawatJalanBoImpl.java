@@ -89,6 +89,7 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     uangMuka.setIdDetailCheckup(entity.getIdDetailCheckup());
                     uangMuka.setId(entity.getId());
                     uangMuka.setJumlah(entity.getJumlah());
+                    uangMuka.setDibayar(entity.getJumlahDibayar());
                     uangMuka.setCreatedDate(entity.getCreatedDate());
                     uangMuka.setCreatedWho(entity.getCreatedWho());
                     uangMuka.setFlag(entity.getFlag());

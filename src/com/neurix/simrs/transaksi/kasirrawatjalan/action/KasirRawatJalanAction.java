@@ -322,6 +322,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 totalJasa = tarifJasa.subtract(new BigDecimal(tarifUangMuka));
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
+                reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
@@ -380,7 +381,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         BigInteger total = new BigInteger(String.valueOf("0"));
         if (uangMukaList != null && uangMukaList.size() > 0) {
             for (UangMuka trans : uangMukaList) {
-                total = total.add(trans.getJumlah());
+                total = total.add(trans.getDibayar());
             }
         }
         return total;
@@ -681,9 +682,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             JSONObject obj = json.getJSONObject(i);
 
             if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())){
-                uangMuka = new BigDecimal(obj.getString("nilai").toString());
+                uangMuka = new BigDecimal(obj.getLong("nilai"));
             } else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())){
-                uangPiutang = new BigDecimal(obj.getString("nilai").toString());
+                uangPiutang = new BigDecimal(obj.getLong("nilai"));
             } else {
                 hsCriteria.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
             }
@@ -747,7 +748,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
+                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk RM pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y","");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

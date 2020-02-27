@@ -526,9 +526,9 @@
                 console.log(response);
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr><td>"+item.stCreatedDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>";
+                    str += "<tr><td>"+item.stCreatedDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.dibayar)+"</td></tr>";
                     $("#fin_no_nota").val(item.noNota);
-                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.dibayar);
                     bukti = item.id;
                 });
                 $("#body_uang_muka").html(str);

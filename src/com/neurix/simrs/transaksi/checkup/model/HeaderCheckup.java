@@ -94,6 +94,16 @@ public class HeaderCheckup {
     private BigInteger uangMuka;
     private String noNota;
 
+    private String invoice;
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
+
     public String getNoNota() {
         return noNota;
     }
