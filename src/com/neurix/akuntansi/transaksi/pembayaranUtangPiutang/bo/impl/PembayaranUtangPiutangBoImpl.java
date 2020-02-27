@@ -446,14 +446,12 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     @Override
     public String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException {
         logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] start process >>>");
-        String jurnalId = null;
 
         if (bean!=null) {
             String pembayaranUtangPiutangId;
 
             try {
                 // Generating ID, get from postgre sequence
-                jurnalId=jurnalDao.getNextJurnalId();
                 pembayaranUtangPiutangId = pembayaranUtangPiutangDao.getNextPembayaranUtangPiutangId();
             } catch (HibernateException e) {
                 logger.error("[PembayaranUtangPiutangBoImpl.saveAdd] Error, " + e.getMessage());
@@ -471,7 +469,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             imPembayaranUtangPiutangEntity.setKeterangan(bean.getKeterangan());
             imPembayaranUtangPiutangEntity.setNoSlipBank(bean.getNoSlipBank());
             imPembayaranUtangPiutangEntity.setBranchId(bean.getBranchId());
-            imPembayaranUtangPiutangEntity.setNoJurnal(jurnalId);
+            imPembayaranUtangPiutangEntity.setNoJurnal(bean.getNoJurnal());
 
             imPembayaranUtangPiutangEntity.setFlag(bean.getFlag());
             imPembayaranUtangPiutangEntity.setAction(bean.getAction());
@@ -517,7 +515,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             }
         }
         logger.info("[PembayaranUtangPiutangBoImpl.saveAdd] end process <<<");
-        return jurnalId;
+        return null;
     }
 
     @Override

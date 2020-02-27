@@ -596,7 +596,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("uang_muka", new BigDecimal(jumlahDibayar));
 
         try {
-            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y","");
+            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -689,7 +689,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y","");
+                billingSystemBo.createJurnal("04", hsCriteria, branchId ,"Closing Pasien Rawat Jalan Umum tanpa Obat untuk id_pasien : " + idPasien +"menggunakan metode "+metodeBayar+text,"Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

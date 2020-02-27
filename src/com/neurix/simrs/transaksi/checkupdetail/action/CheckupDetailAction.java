@@ -1049,7 +1049,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Non Tunai "+idPasien;
             try {
-              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y", "");
+              billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
             } catch (GeneralBOException e){
                 logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
             }
