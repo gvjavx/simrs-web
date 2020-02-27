@@ -17,6 +17,7 @@
     <script type='text/javascript'>
 
         function formatRupiah(angka) {
+            console.log(angka);
             if (angka != '' && angka != null) {
                 var reverse = angka.toString().split('').reverse().join(''),
                         ribuan = reverse.match(/\d{1,3}/g);
@@ -47,12 +48,17 @@
 
             $('#transaksi_obat').addClass('active');
             var total = $('#total_bayar').val();
-            var ppn = (parseInt(total)*0.1);
-            $('#ppn_bayar').val(ppn);
-            var totalPlusPpn = parseInt(total) + parseInt(ppn);
-            console.log(ppn);
+            var ppn = "";
+            var totalPlusPpn = "";
+
+            if(total != null && total != ''){
+                ppn = (parseInt(total)*0.1);
+                totalPlusPpn = parseInt(total) + parseInt(ppn);
+                $('#ppn_bayar').val(ppn);
+            }
+
             $('#show_nominal').val(formatRupiah(totalPlusPpn));
-            $('#show_ppn').val(ppn);
+            $('#show_ppn').val(formatRupiah(ppn));
 
             var nominal = document.getElementById('nominal_dibayar');
             nominal.addEventListener('keyup', function (e) {
