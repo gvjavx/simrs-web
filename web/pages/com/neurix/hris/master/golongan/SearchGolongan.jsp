@@ -189,6 +189,7 @@
                                             </display:column>
                                             <display:column property="golonganId" sortable="true" title="Golongan ID" />
                                             <display:column property="golonganName" sortable="true" title="Nama"  />
+                                            <display:column property="stLevel" sortable="true" title="Grade Level"  />
 
                                             <display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>

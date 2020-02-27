@@ -116,6 +116,7 @@ public class GolonganBoImpl implements GolonganBo {
                 imGolonganHistoryEntity.setId(historyId);
                 imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
                 imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
                 imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
                 imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
                 imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
@@ -125,6 +126,7 @@ public class GolonganBoImpl implements GolonganBo {
 
                 imGolonganEntity.setGolonganId(bean.getGolonganId());
                 imGolonganEntity.setGolonganName(bean.getGolonganName());
+                imGolonganEntity.setLevel(Integer.parseInt(bean.getStLevel()));
                 imGolonganEntity.setFlag(bean.getFlag());
                 imGolonganEntity.setAction(bean.getAction());
                 imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -169,6 +171,7 @@ public class GolonganBoImpl implements GolonganBo {
 
             imGolonganEntity.setGolonganId(golonganId);
             imGolonganEntity.setGolonganName(bean.getGolonganName());
+            imGolonganEntity.setLevel(Integer.parseInt(bean.getStLevel()));
             imGolonganEntity.setFlag(bean.getFlag());
             imGolonganEntity.setAction(bean.getAction());
             imGolonganEntity.setCreatedWho(bean.getCreatedWho());
