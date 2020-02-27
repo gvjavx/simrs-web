@@ -461,9 +461,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         logger.info("[TransaksiObatAction.resetobat] START >>>>>>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultObat");
-        searchResep();
+        pembelianObat();
         logger.info("[TransaksiObatAction.resetobat] END <<<<<<<");
-        return "init_bayar";
+        return "init_pembelian_obat";
     }
 
 

@@ -28,8 +28,7 @@
 		<field name="jumlah" class="java.lang.Integer"/>
 		<field name="noNota" class="java.lang.String"/>
 		<field name="id" class="java.lang.String"/>
-		<field name="field1" class="java.lang.String"/>
-		<field name="dibayar" class="java.lang.String"/>
+		<field name="dibayar" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
@@ -273,7 +272,7 @@
 					</datasetRun>
 					<jr:column width="120" uuid="59aea5b5-bada-407b-92fd-7166f34293b0">
 						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader height="26" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="26" uuid="1109da0f-f2e8-486c-8b86-711b41984e51"/>
 								<box>
@@ -285,7 +284,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="30" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="120" height="21" uuid="e73d1cb5-2de8-481d-8cfc-9e83be7f7c9f"/>
 								<box>
@@ -301,7 +300,7 @@
 					</jr:column>
 					<jr:column width="131" uuid="e7e1d345-cd34-411d-9716-3a45891cd1bf">
 						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader height="26" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="131" height="26" uuid="f6c40331-00a7-4bb1-9788-123c3da77d67"/>
 								<box>
@@ -313,7 +312,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="30" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="131" height="21" uuid="5ed829cf-a134-4a1b-a8c2-645235f8411a"/>
 								<box>
@@ -329,7 +328,7 @@
 					</jr:column>
 					<jr:column width="185" uuid="5cf70ae2-345a-41f0-b63e-7bc142b70f46">
 						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader height="26" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="185" height="26" uuid="4f2e76e6-a020-4a6c-88db-b138655956e4"/>
 								<box>
@@ -341,7 +340,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="30" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="185" height="21" uuid="941e0027-2ae2-4f7b-8588-0a5ab826fa72"/>
 								<box>
@@ -357,7 +356,7 @@
 					</jr:column>
 					<jr:column width="117" uuid="fbaea428-29e4-49ec-99d2-722b7d067103">
 						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader height="26" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="117" height="26" uuid="efd9aa1c-def7-4612-99b0-7a1fc0721c27"/>
 								<box>
@@ -369,7 +368,7 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="30" rowSpan="1">
+						<jr:detailCell height="22" rowSpan="1">
 							<textField pattern="#,##0">
 								<reportElement x="0" y="0" width="117" height="21" uuid="4057451f-1b9e-4504-aadd-3313e7807948"/>
 								<box rightPadding="20">

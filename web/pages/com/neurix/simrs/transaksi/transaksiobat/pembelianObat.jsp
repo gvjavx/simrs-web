@@ -47,7 +47,12 @@
 
             $('#transaksi_obat').addClass('active');
             var total = $('#total_bayar').val();
-            $('#show_nominal').val(formatRupiah(total));
+            var ppn = (parseInt(total)*0.1);
+            $('#ppn_bayar').val(ppn);
+            var totalPlusPpn = parseInt(total) + parseInt(ppn);
+            console.log(ppn);
+            $('#show_nominal').val(formatRupiah(totalPlusPpn));
+            $('#show_ppn').val(ppn);
 
             var nominal = document.getElementById('nominal_dibayar');
             nominal.addEventListener('keyup', function (e) {
@@ -55,11 +60,11 @@
                 var valBayar = nominal.value.replace(/[.]/g, '');
                 $('#total_dibayar').val(valBayar);
 
-                var a = parseInt(total);
+                var a = parseInt(totalPlusPpn);
                 var b = parseInt(valBayar);
 
                 if (b >= a) {
-                    var kembalian = valBayar - total;
+                    var kembalian = valBayar - totalPlusPpn;
                     $('#kembalian').val("" + kembalian);
                     $('#nominal_kembalian').val(formatRupiah(kembalian));
                 } else {
@@ -202,15 +207,26 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Total</label>
                                     <div class="col-sm-4">
-                                        <div class="input-group date">
+                                        <div class="input-group">
                                             <div class="input-group-addon">
                                                 Rp.
                                             </div>
-                                            <s:textfield id="show_nominal" cssClass="form-control" readOnly="true"/>
+                                            <s:textfield  id="show_nominal" cssClass="form-control" readOnly="true"/>
                                         </div>
                                         <s:hidden name="transaksiObatDetail.idPermintaanResep"/>
                                         <s:hidden name="transaksiObatDetail.totalBayar" id="total_bayar"/>
-                                        <s:hidden name="transaksiObatDetail.ppnBayar" id="total_bayar"/>
+                                        <s:hidden name="transaksiObatDetail.ppnBayar" id="ppn_bayar"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" style="margin-top: 7px">Ppn</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                Rp.
+                                            </div>
+                                            <s:textfield id="show_ppn" cssClass="form-control" readOnly="true"/>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -644,9 +660,10 @@
                     <p id="loading_data_barang" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
                 </div>
                 <div class="box-header with-border"></div>
-                <div class="row">
+                <div class="row">#ccc
                     <div class="col-md-4"><i class="fa fa-square" style="color: #eea236"></i> Expired Date Kurang dari 30 hari</div>
                     <div class="col-md-4"><i class="fa fa-square" style="color: #dd4b39"></i> Expired Date Kurang dari 10 hari</div>
+                    <div class="col-md-4"><i class="fa fa-square" style="color: #ccc"></i> Expired Date Telah Habis</div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -719,8 +736,14 @@
 
                             var warna = "";
                             var color = "";
+                            var disabled = "";
 
-                            if (diffDays < 10) {
+                            if(Math.abs(date1) > Math.abs(date2)){
+                                warna = '#ccc';
+                                color = '#fff';
+                                disabled = 'disabled';
+
+                            }else if (diffDays < 10) {
                                 warna = '#dd4b39';
                                 color = 'white';
 
@@ -746,7 +769,7 @@
                                     '<td align="center">' + qtyBiji + '</td>' +
                                     '<td>' +
                                     '<div class="input-group">' +
-                                    '<input class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
+                                    '<input '+disabled+' class="form-control" onchange="cekIdBarang(\'' + i + '\',this.value)">' +
                                     '<div class="input-group-addon">' +
                                     '<span id=loading' + i + '></span> ' +
                                     '</div>' +
@@ -1231,10 +1254,10 @@
     }
 
     function resetobat() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var id = url.searchParams.get("id");
-        window.location.href = "resetobat_transaksi.action?id="+id;
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        // var id = url.searchParams.get("id");
+        window.location.href = "pembelianObat_transaksi.action";
     }
 
     function setStokObat(select) {
