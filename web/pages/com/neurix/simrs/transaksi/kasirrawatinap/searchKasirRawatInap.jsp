@@ -494,10 +494,10 @@
                 console.log(response);
                 var str = "";
                 $.each(response, function(i, item){
-                    str += "<tr><td>"+item.stDate+"</td><td>"+item.noNota+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.jumlah)+"</td></tr>"
-                    mapBiaya.push({"type":"uang_muka", "nilai":item.jumlah});
+                    str += "<tr><td>"+item.stDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.dibayar)+"</td></tr>"
+                    mapBiaya.push({"type":"uang_muka", "nilai":item.dibayar});
                     $("#fin_no_nota").val(item.noNota);
-                    uangMuka = parseInt(uangMuka) + parseInt(item.jumlah);
+                    uangMuka = parseInt(uangMuka) + parseInt(item.dibayar);
                     bukti = item.id;
                 });
                 $("#body_uang_muka").html(str);

@@ -15,6 +15,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +28,15 @@ public class ObatAction extends BaseMasterAction {
     private ObatBo obatBoProxy;
     private Obat obat;
     private List<Obat> listOfObat = new ArrayList<>();
+    private String idPabrik;
+
+    public String getIdPabrik() {
+        return idPabrik;
+    }
+
+    public void setIdPabrik(String idPabrik) {
+        this.idPabrik = idPabrik;
+    }
 
     public List<Obat> getListOfObat() {
         return listOfObat;
@@ -381,6 +391,26 @@ public class ObatAction extends BaseMasterAction {
         logger.info("[ObatAction.getListNamaObat] end process >>>");
         return obatList;
 
+    }
+
+    public String printIDPabrik() {
+
+        logger.info("[PermintaanVendorAction.printBarcodeBarang] START process <<<");
+
+        String idPabrik = getIdPabrik();
+
+        reportParams.put("idPabrik", idPabrik);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printBarcodeBarang] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[PermintaanVendorAction.printBarcodeBarang] END process <<<");
+        return "print_barcode_id_pabrik";
     }
 
 }

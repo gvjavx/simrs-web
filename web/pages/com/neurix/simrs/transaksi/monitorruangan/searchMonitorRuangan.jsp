@@ -9,7 +9,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
 
-    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
     <style>
@@ -250,7 +250,7 @@
                         <div class="row">
                             <div class="col-md-12" style="display:inline; padding-left: 5%">
                                 <s:iterator value="#session.listOfResult" var="row">
-                                <div class="btn-wrapper">
+                                <div class="btn-wrapper" onclick="detailTindakan('<s:property value="idDetailCheckup"/>')">
                                     <s:if test='#row.namaPasien != null'>
                                         <s:if test='#row.nilaiPersen > 70'>
                                             <div id="id_box" class="blink_me btn-trans box-red">
@@ -306,169 +306,283 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Order Gizi Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_gizi">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tin">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_gizi"></p>
+                    <p id="msg_tin"></p>
                 </div>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_gizi">
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_tin">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    <p id="msg_gizi2"></p>
+                    <p id="msg_tin2"></p>
+                </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>
                 <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_gizi">
-                        <thead>
-                        <tr>
-                            <td>Tanggal Order</td>
-                            <td>Diet Pagi</td>
-                            <td>Diet Siang</td>
-                            <td>Diet Malam</td>
-                            <td align="center" rowspan="2">Status</td>
-                            <td align="center" rowspan="2">Action</td>
-                        </tr>
-                        </thead>
-                        <tbody id="body_gizi">
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr id="show_sep">
+                                    <td><b>No SEP</b></td>
+                                    <td style="vertical-align: middle"><span class="label label-success" id="det_no_sep"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>No Checkup</b></td>
+                                    <td><span id="det_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NIK</b></td>
+                                    <td><span id="det_nik"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama</b></td>
+                                    <td><span id="det_nama"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><span id="det_jenis_kelamin"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><span id="det_tgl"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Alamat</b></td>
+                                    <td><span id="det_desa"></span>, <span id="det_kecamatan"></span></td>
+                                </tr>
+                                <%--<tr>--%>
+                                <%--<td><b>Provinsi</b></td>--%>
+                                <%--<td><span id="det_provinsi"></span></td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                <%--<td><b>Kabupaten</b></td>--%>
+                                <%--<td></span></td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                <%--<td><b>Kecamatan</b></td>--%>
+                                <%--<td><span id="det_kecamatan"></span></td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                <%--<td><b>Desa</b></td>--%>
+                                <%--<td></span></td>--%>
+                                <%--</tr>--%>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="hidden" id="tin_id_detail_checkup">
+                <div class="box-body">
+                    <div id="bar_bpjs">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>
+                                Cover Biaya Bpjs
+                                <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_bpjs"></span>
+                                </small>
+                            </h5>
+                            <div class="progress">
+                                <div id="sts_cover_biaya">
+                                </div>
+                            </div>
+                            <h5>
+                                Total Biaya Tindakan
+                                <small class="pull-right" style="margin-top: 7px">Rp. <span
+                                        id="b_tindakan"></span></small>
+                            </h5>
+                            <div class="progress">
+                                <div id="sts_biaya_tindakan">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p style="margin-top: 20px">Keterangan</p>
+                            <small>
+                                <ul style="list-style-type: none">
+                                    <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Bpjs
+                                    </li>
+                                    <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
+                                        50%
+                                    </li>
+                                    <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
+                                        50% dan < 70%
+                                    </li>
+                                    <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
+                                        70%
+                                    </li>
+                                </ul>
+                            </small>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_gizi" onclick="saveVerif()"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
-                        id="load_gizi"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
             </div>
         </div>
     </div>
 </div>
-
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function listOrderGizi(idRawatInap, noCheckup) {
-        $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
-        var table = "";
-        dwr.engine.setAsync(true);
-        PermintaanGiziAction.getListOrderGizi(idRawatInap, {
-            callback: function (response) {
-                $.each(response, function (i, item) {
+    function formatRupiah(angka) {
+        if(angka != "" && angka != null){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }else{
+            return "0";
+        }
 
-                    var tanggal = $.datepicker.formatDate("dd-mm-yy", new Date(item.createdDate));
-                    var jenisPagi = "";
-                    var bentukPagi = "";
-                    var jenisSiang = "";
-                    var bentukSiang = "";
-                    var jenisMalam = "";
-                    var bentukMalam = "";
-                    var label = "";
-                    var btn = "";
+    }
 
-                    if (item.bentukMakanPagi != null) {
-                        bentukPagi = item.bentukMakanPagi;
-                    }
-                    if (item.dietPagi != null) {
-                        jenisPagi = item.dietPagi;
-                    }
-                    if (item.bentukMakanSiang != null) {
-                        bentukSiang = item.bentukMakanSiang;
-                    }
-                    if (item.dietSiang != null) {
-                        jenisSiang = item.dietSiang;
-                    }
-                    if (item.dietMalam != null) {
-                        bentukMalam = item.bentukMakanMalam;
-                    }
-                    if (item.bentukMakanMalam != null) {
-                        jenisMalam = item.dietMalam;
-                    }
+    function hitungStatusBiaya(idDetailCheckup) {
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, function (response) {
+            if (response.idJenisPeriksaPasien == "bpjs") {
+                if (response.tarifBpjs != null && response.tarifTindakan != null) {
 
-                    if (item.approveFlag == "Y") {
-                        label = '<label class="label label-info"> siap kirim</label>';
-                        btn = '<img onclick="printBarcodeGizi(\'' + noCheckup + '\',\'' + item.idOrderGizi + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;">';
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = response.tarifTindakan;
+
+                    var persen = "";
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                     } else {
-                        label = '<label class="label label-warning"> menunggu</label>';
-                        btn = '<img id="bot' + item.idOrderGizi + '" onclick="saveApprove(\'' + item.idOrderGizi + '\',\'' + idRawatInap + '\',\'' + noCheckup + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-edit-25.png"/>" style="cursor: pointer;">';
+                        persen = 0;
                     }
 
-                    if (item.diterimaFlag == "Y") {
-                        label = '<label class="label label-success"> selesai</label>';
-                        btn = '';
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if (parseInt(persen) > 70) {
+                        barClass = 'progress-bar-danger';
+                    } else if (parseInt(persen) > 50) {
+                        barClass = 'progress-bar-warning';
+                    } else {
+                        barClass = 'progress-bar-success';
                     }
-                    table += '<tr>' +
-                        '<td>' + tanggal + '</td>' +
-                        '<td>' + bentukPagi + '</td>' +
-                        '<td>' + bentukSiang + '</td>' +
-                        '<td>' + bentukMalam + '</td>' +
-                        '<td style="vertical-align: middle" align="center">' + label + '</td>' +
-                        '<td align="center">' + btn + '</td>' +
-                        '</tr>'
-                });
-                $('#body_gizi').html(table);
-            }
-        });
-    }
 
-    function saveApprove(idOrder, idRawatInap, noCheckup) {
-        var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#bot' + idOrder).attr('src', url).css('width', '30px', 'height', '40px');
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
 
-        setTimeout(function () {
-            PermintaanGiziAction.updateApproveFLag(idOrder, function (response) {
-                if (response.status == "success") {
-                    $('#bot' + idOrder).removeAttr("src");
-                    $('#success_gizi').show().fadeOut(5000);
-                    $('#msg_gizi2').text(response.message);
-                    listOrderGizi(idRawatInap, noCheckup);
-                } else {
-                    $('#bot' + idOrder).removeAttr("src");
-                    $('#warning_gizi').show().fadeOut(5000);
-                    $('#msg_gizi').text(response.message);
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                    if (coverBiaya != '') {
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                        $('#fin_sts_cover_biaya').html(barBpjs);
+                        $('#fin_b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                    }
+
+                    if (biayaTindakan != '') {
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        $('#fin_sts_biaya_tindakan').html(barTindakan);
+                        $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                    }
                 }
-            });
-        }, 200);
-    }
-
-    function printBarcodeGizi(noCheckup, idorderGizi) {
-        window.open('printBarcodeGizi_ordergizi.action?id=' + noCheckup + '&order=' + idorderGizi, '_blank');
-    }
-
-    function saveVerif() {
-        $('#save_gizi').hide();
-        $('#load_gizi').show();
-        setTimeout(function () {
-            $('#save_gizi').show();
-            $('#load_gizi').hide();
-            $('#modal-detail-pasien').modal('hide');
-            $('#info_dialog').dialog('open');
-        }, 500);
-    }
-
-    function listSelectRuangan(id) {
-        var idx = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var flag = false;
-        var option = "";
-        CheckupDetailAction.listRuangan(idKelas, flag, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
-                });
-                $('#ruangan_ruang').html(option);
             } else {
-                $('#ruangan_ruang').html(option);
-                ;
             }
         });
-
     }
+
+    function detailTindakan(idDetailCheckup) {
+        setTimeout(function () {
+        if(idDetailCheckup != ''){
+            $('#sts_cover_biaya').html('');
+            $('#b_bpjs').html('');
+            $('#sts_biaya_tindakan').html('');
+            $('#b_tindakan').html('');
+            hitungStatusBiaya(idDetailCheckup);
+            var table = "";
+            var dataTindakan = [];
+            var dataPasien = [];
+            var noCheckup = "";
+            var nik = "";
+            var namaPasien = "";
+            var jenisKelamin = "";
+            var tglLahir = "";
+            var agama = "";
+            var suku = "";
+            var alamat = "";
+            var provinsi = "";
+            var kabupaten = "";
+            var kecamatan = "";
+            var desa = "";
+            var noSep;
+            var total = 0;
+            var cekTindakan = false;
+
+            var url = '<s:url value="/pages/images/spinner.gif"/>';
+            // $('#v_'+idCheckup).attr('src',url).css('width', '30px', 'height', '40px');
+
+                var url = '<s:url value="/pages/images/icons8-create-25.png"/>';
+                // $('#v_'+idCheckup).attr('src',url).css('width', '', 'height', '');
+
+                CheckupAction.listDataPasien(idDetailCheckup, function (response) {
+                    if (response != null) {
+                        var tanggal = response.tglLahir;
+                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        noCheckup = response.noCheckup;
+                        nik = response.noKtp;
+                        namaPasien = response.nama;
+
+                        if (response.jenisKelamin == "L") {
+                            jenisKelamin = "Laki-Laki";
+                        } else {
+                            jenisKelamin = "Perempuan";
+                        }
+
+                        tglLahir = response.tempatLahir + ", " + dateFormat;
+                        agama = response.agama;
+                        suku = response.suku;
+                        alamat = response.jalan;
+                        provinsi = response.namaProvinsi;
+                        kabupaten = response.namaKota;
+                        kecamatan = response.namaKecamatan;
+                        desa = response.namaDesa;
+                        noSep = response.noSep;
+
+                        if(response.idJenisPeriksaPasien == "bpjs"){
+                            $('#show_sep, #bar_bpjs').show();
+                        }else{
+                            $('#show_sep, #bar_bpjs').hide();
+                        }
+                    }
+                });
+
+
+                $('#det_no_sep').html(noSep);
+                $('#det_no_checkup').html(noCheckup);
+                $('#det_nik').html(nik);
+                $('#det_nama').html(namaPasien);
+                $('#det_jenis_kelamin').html(jenisKelamin);
+                $('#det_tgl').html(tglLahir);
+                $('#det_agama').html(agama);
+                $('#det_suku').html(suku);
+                $('#det_alamat').html(alamat);
+                $('#det_provinsi').html(provinsi);
+                $('#det_kabupaten').html(kabupaten);
+                $('#det_kecamatan').html(kecamatan);
+                $('#det_desa').html(desa);
+                $('#body_tindakan').html(table);
+                $('#tin_id_detail_checkup').val(idDetailCheckup);
+                $('#modal-detail-pasien').modal({show:true, backdrop:'static'});
+        }else{
+        }
+        }, 100);
+    }
+
+
 
 
 </script>

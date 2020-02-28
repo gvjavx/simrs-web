@@ -191,6 +191,12 @@
                                     <td align="center">
                                         <%--<img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">--%>
                                         <img onclick="editObat('<s:property value="idSeqObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="averageHargaBox"/>','<s:property value="averageHargaLembar"/>','<s:property value="averageHargaBiji"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
+                                                <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_id_pabrik}" target="_blank">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
                                     </td>
                                 </tr>
                             </s:iterator>

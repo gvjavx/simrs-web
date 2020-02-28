@@ -1322,8 +1322,10 @@ public class CheckupAction extends BaseMasterAction {
         HeaderCheckup result = new HeaderCheckup();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
         try {
-            result = checkupBo.completeBpjs(idBpjs, "RS01");
+            result = checkupBo.completeBpjs(idBpjs, branchId);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.completeBpjs] Error when searching data, Found problem when searching data, please inform to your admin.", e);
         }
