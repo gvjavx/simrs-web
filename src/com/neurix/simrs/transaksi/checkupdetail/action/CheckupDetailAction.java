@@ -1059,7 +1059,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
             BigDecimal ppnObat = new BigDecimal(0);
             if (jumlahResep.compareTo(new BigDecimal(0)) == 1){
-                ppnObat = jumlahResep.multiply(new BigDecimal(0.01)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
             }
 
             // jumlah tindakan saja. tindakan total - jumlah resep

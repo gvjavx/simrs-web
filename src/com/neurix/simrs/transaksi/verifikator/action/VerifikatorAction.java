@@ -725,7 +725,7 @@ public class VerifikatorAction extends BaseMasterAction {
             // jika ada resep atau rawat inap
             if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(typePelayanan)) {
                 // hitung ppn
-                BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.01));
+                BigDecimal ppn = jmlResep.multiply(new BigDecimal(0.1));
 
                 // kredit pendapatan obat dan ppn obat
                 hsCriteria.put("pendapatan_obat_bpjs", jmlResep);
