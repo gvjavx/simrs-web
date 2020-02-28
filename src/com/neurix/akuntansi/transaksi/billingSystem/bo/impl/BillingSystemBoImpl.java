@@ -90,18 +90,12 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     @Override
     public String createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister){
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
-        String noJurnal=null;
-        String status=null;
+        String noJurnal;
+        String status;
         userLogin = CommonUtil.userLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        String tipeJurnalId=null;
-        String noNota = null;
-        String sumber = null;
-
-        //memberi bukti sumber
-        if (data.get("bukti")!=null){
-            noNota = (String) data.get("bukti");
-        }
+        String tipeJurnalId;
+        String sumber;
 
         //mencari tipe jurnal Id
         try {
@@ -163,16 +157,16 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnal]"+status);
             throw new GeneralBOException("Found problem when "+status+", please info to your admin...");
         }
-
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] End process <<<");
         return noJurnal;
     }
-
 
     //////////////////////////////////////// DETAIL BILLING PER TRANS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId ){
         //MEMBUAT JURNAL DETAIL
         String status;
+        String metodeBayar=null;
+        String bank=null;
         List<ImMappingJurnalEntity> mappingJurnal ;
         try {
             mappingJurnal = mappingJurnalDao.getMappingByTipeJurnalIdNTransId(tipeJurnalId,transId);
@@ -180,23 +174,18 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-
         String masterId = null;
         if (data.get("master_id")!=null){
             masterId = (String) data.get("master_id");
         }
 
-        //untuk pembayaran utang piutang
-        boolean pembayaran = false;
-        String rekeningIdKasPembayaran="";
-
         //untuk pembayaran
+        String rekeningIdKas = null;
         if (data.get("metode_bayar")!=null){
-            String metodeBayar = (String) data.get("metode_bayar");
+            metodeBayar = (String) data.get("metode_bayar");
             // tunai / transfer
-            String rekeningIdKas = null;
             if (("transfer").equalsIgnoreCase(metodeBayar)){
-                String bank = (String) data.get("bank");
+                bank = (String) data.get("bank");
                 try {
                     rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
                 } catch (HibernateException e) {
@@ -211,10 +200,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
             }
-            if (rekeningIdKas!=null){
-                rekeningIdKasPembayaran=rekeningIdKas;
-                pembayaran=true;
-            }
         }
 
         if (mappingJurnal.size()!=0){
@@ -226,11 +211,21 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 if (mapping.getKeterangan()!=null){
                     String rekeningId = null;
                     ///////////////////////DIGUNAKAN UNTUK PEMBAYARAN  //////////////////////////////
-                     if (pembayaran){
-                        if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
-                            rekeningId=rekeningIdKasPembayaran;
-                        }else{
-                            rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
+                    if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
+                        if (metodeBayar!=null){
+                            if (("tunai").equalsIgnoreCase(metodeBayar)){
+                                rekeningId=rekeningIdKas;
+                            }else if ((bank!=null)){
+                                rekeningId=rekeningIdKas;
+                            }else{
+                                status="ERROR : Metode pembayaran transfer tetapi belum memilih bank";
+                                logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                            }
+                        }else {
+                            status="ERROR : Metode pembayaran kas tidak ada";
+                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                         }
                     }else{
                         rekeningId=getRekeningForMappingOtomatis(mapping.getKodeRekening());
