@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="2.5937424601000036"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="reportParams.idBarang" class="java.lang.String"/>
+	<parameter name="reportParams.idPabrik" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -35,9 +35,9 @@
 	<detail>
 		<band height="60" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="0" width="110" height="55" uuid="03ebd133-b4a8-4ece-93de-1d52b9b68681"/>
+				<reportElement x="0" y="0" width="110" height="46" uuid="03ebd133-b4a8-4ece-93de-1d52b9b68681"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.idBarang}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$P{reportParams.idPabrik}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 		</band>

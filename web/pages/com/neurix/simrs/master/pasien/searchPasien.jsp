@@ -175,7 +175,7 @@
                                         <s:a href="%{print_card}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                         </s:a>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/finger.png"/>" name="icon-register-finger">
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/finger.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -578,12 +578,25 @@
     }
 
     $('.tablePasien').on('click', '.item-register-finger', function() {
+
+
         var idPasien = $(this).attr('data');
         var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
         console.log(url);
         var href ='finspot:FingerspotReg;'+url;
         window.location.href =href ;
     });
+
+    function registrasiFinger(idPasien){
+        if(idPasien != ''){
+            console.log(idPasien);
+            var url=btoa('http://localhost:8080/simrs/registerFinger.action?userId='+idPasien);
+            console.log(url);
+            var href ='finspot:FingerspotReg;'+url;
+            console.log(href);
+            window.location.href =href ;
+        }
+    }
 
     function showModalUpload(){
         $("#modal-upload").modal("show");

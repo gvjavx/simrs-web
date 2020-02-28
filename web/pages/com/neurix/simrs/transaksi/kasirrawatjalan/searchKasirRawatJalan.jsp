@@ -541,6 +541,8 @@
                     var total = 0;
                     var totalObat = 0;
                     var cekResep = false;
+                    var ppn = "";
+                    var ppnObat= 0;
 
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
@@ -583,8 +585,13 @@
                         jenisPasien = item.jenisPasien;
                     });
 
-                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">' + formatRupiah(total) + '</td></tr>' +
-                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka) + '</td></tr>';
+                    if(cekResep){
+                        ppn = '<tr><td colspan="3">Ppn Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalObat * 0.1) + '</td></tr>';
+                        ppnObat = (totalObat * 0.1);
+                    }
+
+                    table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">' + formatRupiah(total) + '</td></tr>' +ppn+
+                        '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
 
                     //tunai
                     if (metode == "tunai") {
