@@ -316,7 +316,7 @@ and x.branch_id=$P{reportParams.branchId}]]>
 				<textElement>
 					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Unit : " + $P{kota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{kota}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="0" y="-21" width="95" height="50" uuid="7fc006a8-3c3c-4389-8339-765fe387eab6"/>

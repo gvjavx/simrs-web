@@ -159,7 +159,12 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     public List<Aging> getAging(String branch, String periode, String masterId,String tipeAging,String reportId) throws GeneralBOException {
         List<Aging> agingList = new ArrayList<>();
         try {
-            agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,tipeAging,reportId);
+            if (("usaha").equalsIgnoreCase(tipeAging)){
+                agingList = laporanAkuntansiDao.getAging(branch,periode,masterId,reportId);
+            }else if (("pasien").equalsIgnoreCase(tipeAging)){
+                agingList = laporanAkuntansiDao.getAgingPasien(branch,periode,masterId,reportId);
+
+            }
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

@@ -515,7 +515,6 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
-                        // metode = response.metodePembayaran;
 
                         if(response.metodePembayaran == "tunai"){
                             metode = "tunai";
@@ -524,6 +523,7 @@
                         }else{
                             metode = "bpjs";
                         }
+
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);

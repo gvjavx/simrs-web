@@ -21,6 +21,15 @@ public class JurnalDetail extends BaseModel {
     private BigDecimal jumlahDebit;
     private BigDecimal jumlahKredit;
     private String biaya;
+    private String pasienId;
+
+    public String getPasienId() {
+        return pasienId;
+    }
+
+    public void setPasienId(String pasienId) {
+        this.pasienId = pasienId;
+    }
 
     public String getJurnalDetailId() {
         return jurnalDetailId;
