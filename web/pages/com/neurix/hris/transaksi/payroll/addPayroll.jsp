@@ -69,19 +69,18 @@
 
             $.subscribe('beforeProcessSave', function (event, data) {
                 var branch = document.getElementById("branchId").value;
-                var bulanInsentifMulai = document.getElementById("insentifBulanMulai").value;
-                var bulanInsentifSampai = document.getElementById("insentifBulanSampai").value;
-                var insentifTahun = document.getElementById("insentifTahun").value;
+//                var insentifTahun = document.getElementById("insentifTahun").value;
                 var bulan = document.getElementById("bulanPayroll").value;
                 var tahun = document.getElementById("tahunPayroll").value;
                 var thr = document.getElementById("flagThr").value;
                 var insentifTipe = document.getElementById("flagInsentif").value;
-                var thrTipe = document.getElementById("tipeThr").value;
-
+                var thrTipe = 'y';
                 var hasil = cekApprove(branch, bulan, tahun, thrTipe);
                 //alert(hasil);
                 if (branch != '' && bulan != '0' && tahun != '0') {
                     if(thr == 'Y'){
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
                         if(thrTipe != ''){
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
@@ -93,42 +92,6 @@
 
                             $.publish('showErrorValidationDialog');
                         }
-                    }else if(insentifTipe == 'Y')
-                    {
-                        if(bulanInsentifMulai != '0' && bulanInsentifSampai != '0' && insentifTahun != '0'){
-                            if (confirm('Do you want to search this record?')) {
-                                var hasil = "";
-                                if(bulanInsentifMulai <= bulanInsentifSampai){
-                                    PayrollAction.cekTunjanganInsentif(bulanInsentifMulai, bulanInsentifSampai, insentifTahun, branch, function(listdata) {
-                                        if(listdata == "-"){
-                                            event.originalEvent.options.submit = true;
-                                            $.publish('showDialog');
-                                        }else{
-                                            event.originalEvent.options.submit = false;
-                                            var msg = "";
-                                            msg += listdata + '<br/>';
-                                            document.getElementById('errorValidationMessage').innerHTML = msg;
-                                            $.publish('showErrorValidationDialog');
-                                        }
-                                    });
-                                }else{
-                                    event.originalEvent.options.submit = false;
-                                    var msg = "";
-                                    msg += "Bulan Mulai tidak boleh melebihi dari bulan sampai" + '<br/>';
-                                    document.getElementById('errorValidationMessage').innerHTML = msg;
-                                    $.publish('showErrorValidationDialog');
-                                }
-                            } else {
-                                event.originalEvent.options.submit = false;
-                            }
-                        }else{
-                            event.originalEvent.options.submit = false;
-                            var msg = "";
-                            msg += 'Bulan Mulai Insentif dan Bulan Sampai Insentif Harus Diisi.' + '<br/>';
-                            document.getElementById('errorValidationMessage').innerHTML = msg;
-                            $.publish('showErrorValidationDialog');
-                        }
-
                     }else{
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -255,690 +218,66 @@
 
                                 <tr>
                                     <td>
-                                        <input type="checkbox" id="checkRapel" class="checkApprove" value="rapel">
-                                            <%--onchange="changeRapel(this)--%>
+                                        <input type="checkbox" id="checkCutiTahunan" class="checkApprove" value="cutiTahunan"
+                                               onchange="changeCutiTahunan(this)">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Rapel :</small></label>
+                                        <label class="control-label"><small>Cuti Tahunan :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                 '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanRapel" disabled="true"
+                                                      id="bulanCutiTahunan" disabled="true"
                                                       headerKey="0" headerValue="Bulan" cssClass="form-control" />
                                         </table>
                                     </td>
                                     <td>
                                         <table>
                                             <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunRapel" disabled="true"
+                                                      id="tahunCutiTahunan" disabled="true"
                                                       headerKey="0" headerValue="Tahun" cssClass="form-control" />
                                         </table>
                                     </td>
-
-                                    <td style="display: ">
-                                        <table>
-                                            <a href="javascript:;" class="detailRapel" >
-                                                <span style="font-size: 25px" class="glyphicon glyphicon-check"></span>
-                                            </a>
-                                        </table>
-                                    </td>
-
                                     <td style="display: none">
                                         <table>
-                                            <s:textfield  id="flagRapel" name="payroll.flagRapel" required="false"
+                                            <s:textfield  id="flagCutiTahunan" name="payroll.flagCutiTahunan" required="false"
                                                           cssClass="form-control" value="N"/>
                                         </table>
                                     </td>
                                 </tr>
-
-                                <div id="" style="display: none">
-                                    <tr id="tempatPilihanRapelGadas" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelGadas" name="payroll.flagRapelGadas" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelGadasTanggal1" name="payroll.flagRapelGadasTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelGadasTanggal2" name="payroll.flagRapelGadasTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelGadas" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelGadas(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Gaji Golongan:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelStruktural" name="payroll.flagRapelStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelStrukturalTanggal1" name="payroll.flagRapelStrukturalTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelStrukturalTanggal2" name="payroll.flagRapelStrukturalTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input id="checkRapelStruktural" type="checkbox" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelStruktural(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Struktural:</small></label>
-                                        </td>
-
-                                    </tr>
-                                    <tr id="tempatPilihanRapelUmk" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelUmk" name="payroll.flagRapelUmk" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelUmkTanggal1" name="payroll.flagRapelUmkTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelUmkTanggal2" name="payroll.flagRapelUmkTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelUmk" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelUmk(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Umk:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelJabatanStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJabatanStruktural" name="payroll.flagRapelJabatanStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelJabatanStrukturalTanggal1" name="payroll.flagRapelJabatanStrukturalTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelJabatanStrukturalTanggal2" name="payroll.flagRapelJabatanStrukturalTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelJabatanStruktural" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelJabatanStruktural(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jabatan Struktural:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelStrategis" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelStrategis" name="payroll.flagRapelStrategis" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelStrategisTanggal1" name="payroll.flagRapelStrategisTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelStrategisTanggal2" name="payroll.flagRapelStrategisTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelStrategis" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelStrategis(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Strategis:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelAirListrik" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelAirListrik" name="payroll.flagRapelAirListrik" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelAirListrikTanggal1" name="payroll.flagRapelAirListrikTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelAirListrikTanggal2" name="payroll.flagRapelAirListrikTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelAirListrik" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelAirListrik(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Air Listrik:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelPerumahan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPerumahan" name="payroll.flagRapelPerumahan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelPerumahanTanggal1" name="payroll.flagRapelPerumahanTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelPerumahanTanggal2" name="payroll.flagRapelPerumahanTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelPerumahan" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelPerumahan(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Perumahan :</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelPeralihan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPeralihan" name="payroll.flagRapelPeralihan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelPeralihanTanggal1" name="payroll.flagRapelPeralihanTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelPeralihanTanggal2" name="payroll.flagRapelPeralihanTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelPerumahan" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelPerumahan(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Peralihan :</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelLembur" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelLembur" name="payroll.flagRapelLembur" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelLemburTanggal1" name="payroll.flagRapelLemburTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelLemburTanggal2" name="payroll.flagRapelLemburTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelPerumahan" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelPerumahan(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Lembur :</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelThr" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThr" name="payroll.flagRapelThr" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelThrTanggal1" name="payroll.flagRapelThrTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelThrTanggal2" name="payroll.flagRapelThrTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr :</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelThrGadas" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrGadas" name="payroll.flagRapelThrGadas" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr Gadas:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelThrStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrStruktural" name="payroll.flagRapelThrStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr Struktural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelThrJabStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrJabStruktural" name="payroll.flagRapelThrJabStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr JabStruktural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelThrUmk" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrUmk" name="payroll.flagRapelThrUmk" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr Umk:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelThrStrategis" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrStrategis" name="payroll.flagRapelThrStrategis" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr Strategis:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelThrPeralihan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelThrPeralihan" name="payroll.flagRapelThrPeralihan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Thr Peralihan:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelPendidikan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikan" name="payroll.flagRapelPendidikan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelPendidikanTanggal1" name="payroll.flagRapelPendidikanTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelPendidikanTanggal2" name="payroll.flagRapelPendidikanTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanGadas" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanGadas" name="payroll.flagRapelPendidikanGadas" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Gadas:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanStruktural" name="payroll.flagRapelPendidikanStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Struktural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanUmk" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanUmk" name="payroll.flagRapelPendidikanUmk" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Umk:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanJabStruktrural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanJabStruktural" name="payroll.flagRapelPendidikanJabStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Jab Struktrural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanStrategis" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanStrategis" name="payroll.flagRapelPendidikanStrategis" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Strategis:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanPeralihan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanPeralihan" name="payroll.flagRapelPendidikanPeralihan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan Peralihan:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelPendidikanAirListrik" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelPendidikanAirListrik" name="payroll.flagRapelPendidikanAirListrik" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Pendidikan AirListrik:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelInsentif" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentif" name="payroll.flagRapelInsentif" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelInsentifTanggal1" name="payroll.flagRapelInsentifTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelInsentifTanggal2" name="payroll.flagRapelInsentifTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                                <%--<input type="checkbox" id="checkRapelPerumahan" class="checkApprove" value="rapel"
-                                                       onchange="changeRapelPerumahan(this)" style="float: right; padding-right: 100px">--%>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifGadas" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifGadas" name="payroll.flagRapelInsentifGadas" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Gadas:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifStruktural" name="payroll.flagRapelInsentifStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Struktural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifUmk" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifUmk" name="payroll.flagRapelInsentifUmk" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Umk:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifJabStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifJabStruktural" name="payroll.flagRapelInsentifJabStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Jab Struktural:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifStrategis" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifStrategis" name="payroll.flagRapelInsentifStrategis" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Strategis:</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelInsentifPeralihan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelInsentifPeralihan" name="payroll.flagRapelInsentifPeralihan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Insentif Peralihan:</small></label>
-                                        </td>
-                                    </tr>
-
-                                    <tr id="tempatPilihanRapelJubileum" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileum" name="payroll.flagRapelJubileum" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                                <s:textfield style="display: " id="flagRapelJubileumTanggal1" name="payroll.flagRapelJubileumTanggal1" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                                <s:textfield style="display: " id="flagRapelJubileumTanggal2" name="payroll.flagRapelJubileumTanggal2" required="false"
-                                                             cssClass="form-control" value="-"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelJubileumGadas" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileumGadas" name="payroll.flagRapelJubileumGadas" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum Gadas :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelJubileumStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileumStruktural" name="payroll.flagRapelJubileumStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum Struktural :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelJubileumUmk" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileumUmk" name="payroll.flagRapelJubileumUmk" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum Umk :</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr id="tempatPilihanRapelJubileumJabStruktural" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileumJabStruktural" name="payroll.flagRapelJubileumJabStruktural" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum JabStruktural :</small></label>
-                                        </td>
-                                    </tr>
-                                        <%--<tr id="tempatPilihanRapelJubileumStrategis" style="display: ">
-                                            <td style="display: ">
-                                                <table>
-                                                    <s:textfield style="display: " id="flagRapelJubileumStrategis" name="payroll.flagRapelJubileumStrategis" required="false"
-                                                                  cssClass="form-control" value="Y"/>
-                                                </table>
-                                            </td>
-                                            <td></td>
-                                            <td>
-
-                                            </td>
-                                            <td>
-                                                <label id="" class="control-label"><small>Tunjangan Jubileum Strategis :</small></label>
-                                            </td>
-                                        </tr>--%>
-                                    <tr id="tempatPilihanRapelJubileumPeralihan" style="display: none">
-                                        <td style="display: ">
-                                            <table>
-                                                <s:textfield style="display: " id="flagRapelJubileumPeralihan" name="payroll.flagRapelJubileumPeralihan" required="false"
-                                                             cssClass="form-control" value="Y"/>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-                                            <label id="" class="control-label"><small>Tunjangan Jubileum Peralihan :</small></label>
-                                        </td>
-                                    </tr>
-
-                                </div>
-
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="checkCutiPanjang" class="checkApprove" value="cutiPanjang"
+                                               onchange="changeCutiPanjang(this)">
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <label class="control-label"><small>Cuti Panjang :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                      id="bulanCutiPanjang" disabled="true"
+                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
+                                                      id="tahunCutiPanjang" disabled="true"
+                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
+                                        </table>
+                                    </td>
+                                    <td style="display: none">
+                                        <table>
+                                            <s:textfield  id="flagCutiPanjang" name="payroll.flagCutiPanjang" required="false"
+                                                          cssClass="form-control" value="N"/>
+                                        </table>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <input type="checkbox" id="checkThr" class="checkApprove" value="thr"
@@ -969,45 +308,6 @@
                                                           cssClass="form-control" value="N"/>
                                         </table>
                                     </td>
-                                    <td style="display: none" id="tempatTipeThr">
-                                        <table>
-                                            <s:select list="#{'idulFitri':'Idul Fitri', 'natal' : 'Natal'}"
-                                                      id="tipeThr" name="payroll.tipeThr"
-                                                      headerKey="" headerValue="Pilih -" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" id="checkPendidikan" class="checkApprove" value="pendidikan"
-                                               onchange="changePendidikan(this)">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <label class="control-label"><small>Pendidikan :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
-                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                      id="bulanPendidikan" disabled="true"
-                                                      headerKey="0" headerValue="Bulan" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:select list="#{'2017':'2017', '2018' : '2018', '2019':'2019', '2020':'2020', '2021':'2021', '2022':'2022', '2023':'2023'}"
-                                                      id="tahunPendidikan" disabled="true"
-                                                      headerKey="0" headerValue="Tahun" cssClass="form-control" />
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="flagPendidikan" name="payroll.flagPendidikan" required="false"
-                                                          cssClass="form-control" value="N"/>
-                                        </table>
-                                    </td>
                                 </tr>
 
                                 <tr>
@@ -1017,7 +317,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Jasprod :</small></label>
+                                        <label class="control-label"><small>Jasopr :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1049,7 +349,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Jubileum :</small></label>
+                                        <label class="control-label"><small>PMP :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1081,7 +381,7 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <label class="control-label"><small>Pesangon :</small></label>
+                                        <label class="control-label"><small>SHT :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1105,10 +405,9 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <input type="checkbox" id="checkInsentif" class="checkApprove" value="insentif"
+                                        <input type="checkbox" id="checkInsentif" class="checkApprove" value="jasprod"
                                                onchange="changeInsentif(this)">
                                     </td>
                                     <td></td>
@@ -1130,39 +429,14 @@
                                                       headerKey="0" headerValue="Tahun" cssClass="form-control" />
                                         </table>
                                     </td>
-                                    <td style="display: ">
-                                        <table>
-                                            <a href="javascript:;" class="detailInsentif" >
-                                                <span style="font-size: 25px" class="glyphicon glyphicon-check"></span>
-                                            </a>
-                                        </table>
-                                    </td>
                                     <td style="display: none">
                                         <table>
                                             <s:textfield  id="flagInsentif" name="payroll.flagInsentif" required="false"
                                                           cssClass="form-control" value="N"/>
                                         </table>
                                     </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="insentifBulanMulai" name="payroll.bulanInsentifMulai" required="false"
-                                                          cssClass="form-control" value="0"/>
-                                        </table>
-                                    </td>
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="insentifBulanSampai" name="payroll.bulanInsentifSampai" required="false"
-                                                          cssClass="form-control" value="0"/>
-                                        </table>
-                                    </td>
-
-                                    <td style="display: none">
-                                        <table>
-                                            <s:textfield  id="insentifTahun" name="payroll.insentifTahun" required="false"
-                                                          cssClass="form-control" value="0"/>
-                                        </table>
-                                    </td>
                                 </tr>
+
 
                             </table>
 
@@ -2153,7 +1427,7 @@
             $('#modal-setting-rapel-jubileum').modal('show');
         });
 
-        $('.detailInsentif').on('click', function(){
+        /*$('.detailInsentif').on('click', function(){
             var bulanMulai = document.getElementById("insentifBulanMulai").value ;
             var bulanSampai = document.getElementById("insentifBulanSampai").value ;
             var tahunInsentif = document.getElementById("insentifTahun").value ;
@@ -2164,7 +1438,7 @@
 
             $('#modal-setting-insentif').find('.modal-title').text('Detail Insentif');
             $('#modal-setting-insentif').modal('show');
-        });
+        });*/
 
         $('#btnSave').click(function() {
             if (confirm('Are you sure you want to save this Record?')) {
@@ -2486,117 +1760,29 @@
         }
     }
 
-    window.changeRapelGadas = function (id) {
-        if($('#checkRapelGadas').is(":checked")){
-            document.getElementById("flagRapelGadas").value = "Y";
-        }else{
-            document.getElementById("flagRapelGadas").value = "N";
-        }
-    }
-
-    window.changeRapelStruktural = function (id) {
-        if($('#checkRapelStruktural').is(":checked")){
-            document.getElementById("flagRapelStruktural").value = "Y";
-        }else{
-            document.getElementById("flagRapelStruktural").value = "N";
-        }
-    }
-
-    window.changeRapelUmk = function (id) {
-        if($('#checkRapelUmk').is(":checked")){
-            document.getElementById("flagRapelUmk").value = "Y";
-        }else{
-            document.getElementById("flagRapelUmk").value = "N";
-        }
-    }
-
-    window.changeRapelJabatanStruktural = function (id) {
-        if($('#checkRapelJabatanStruktural').is(":checked")){
-            document.getElementById("flagRapelJabatanStruktural").value = "Y";
-        }else{
-            document.getElementById("flagRapelJabatanStruktural").value = "N";
-        }
-    }
-
-    window.changeRapelStrategis = function (id) {
-        if($('#checkRapelStrategis').is(":checked")){
-            document.getElementById("flagRapelStrategis").value = "Y";
-        }else{
-            document.getElementById("flagRapelStrategis").value = "N";
-        }
-    }
-
-    window.changeRapelAirListrik = function (id) {
-        if($('#checkRapelAirListrik').is(":checked")){
-            document.getElementById("flagRapelAirListrik").value = "Y";
-        }else{
-            document.getElementById("flagRapelAirListrik").value = "N";
-        }
-    }
-
-    window.changeRapelLembur= function (id) {
-        if($('#checkRapelLembur').is(":checked")){
-            document.getElementById("flagRapelLembur").value = "Y";
-        }else{
-            document.getElementById("flagRapelLembur").value = "N";
-        }
-    }
-
-    window.changeRapelThr = function (id) {
-        if($('#checkRapelThr').is(":checked")){
-            document.getElementById("flagRapelThr").value = "Y";
-        }else{
-            document.getElementById("flagRapelThr").value = "N";
-        }
-    }
-
-    window.changeRapelPendidikan = function (id) {
-        if($('#checkRapelPendidikan').is(":checked")){
-            document.getElementById("flagRapelPendidikan").value = "Y";
-        }else{
-            document.getElementById("flagRapelPendidikan").value = "N";
-        }
-    }
-
-    window.changeRapelInsentif = function (id) {
-        if($('#checkRapelInsentif').is(":checked")){
-            document.getElementById("flagRapelInsentif").value = "Y";
-        }else{
-            document.getElementById("flagRapelInsentif").value = "N";
-        }
-    }
-
-    window.changeRapelJubileum = function (id) {
-        if($('#checkRapelJubileum').is(":checked")){
-            document.getElementById("flagRapelJubileum").value = "Y";
-        }else{
-            document.getElementById("flagRapelJubileum").value = "N";
-        }
-    }
-
-    window.changeRapelPerumahan = function (id) {
-        if($('#checkRapelPerumahan').is(":checked")){
-            document.getElementById("flagRapelPerumahan").value = "Y";
-        }else{
-            document.getElementById("flagRapelPerumahan").value = "N";
-        }
-    }
-
     window.changeThr = function (id) {
-        if($('#checkThr').is(":checked")){
+        document.getElementById("flagThr").value = "Y";
+        /*if($('#checkThr').is(":checked")){
             document.getElementById("flagThr").value = "Y";
             $('#tempatTipeThr').show();
         }else{
             $('#tempatTipeThr').hide();
             document.getElementById("flagThr").value = "N";
-        }
+        }*/
     }
 
-    window.changePendidikan = function (id) {
-        if($('#checkPendidikan').is(":checked")){
-            document.getElementById("flagPendidikan").value = "Y";
+    window.changeCutiTahunan = function (id) {
+        if($('#checkCutiTahunan').is(":checked")){
+            document.getElementById("flagCutiTahunan").value = "Y";
         }else{
-            document.getElementById("flagPendidikan").value = "N";
+            document.getElementById("flagCutiTahunan").value = "N";
+        }
+    }
+    window.changeCutiPanjang = function (id) {
+        if($('#checkCutiPanjang').is(":checked")){
+            document.getElementById("flagCutiPanjang").value = "Y";
+        }else{
+            document.getElementById("flagCutiPanjang").value = "N";
         }
     }
 
@@ -2633,9 +1819,9 @@
     }
 
     window.changeBulan = function (id) {
-        $('#bulanRapel').val(id.value).change();
+        $('#bulanCutiTahunan').val(id.value).change();
         $('#bulanThr').val(id.value).change();
-        $('#bulanPendidikan').val(id.value).change();
+        $('#bulanCutiPanjang').val(id.value).change();
         $('#bulanJasprod').val(id.value).change();
         $('#bulanJubileum').val(id.value).change();
         $('#bulanPesangon').val(id.value).change();
@@ -2643,16 +1829,16 @@
     }
 
     window.changeTahun = function (id) {
-        $('#tahunRapel').val(id.value).change();
+        $('#tahunCutiTahunan').val(id.value).change();
+        $('#tahunCutiPanjang').val(id.value).change();
         $('#tahunThr').val(id.value).change();
-        $('#tahunPendidikan').val(id.value).change();
         $('#tahunJasprod').val(id.value).change();
         $('#tahunJubileum').val(id.value).change();
         $('#tahunPesangon').val(id.value).change();
         $('#tahunInsentif').val(id.value).change();
     }
 
-    $('#btnSaveDetailInsentif').click(function() {
+    /*$('#btnSaveDetailInsentif').click(function() {
         if (confirm('Are you sure you want to save this Record?')) {
             $('#insentifBulanMulai').val($('#insentifModalBulanMulai').val());
             $('#insentifBulanSampai').val($('#insentifModalBulanSampai').val());
@@ -2661,7 +1847,7 @@
             alert('Data tersimpan');
             $('#modal-setting-insentif').modal('hide');
         }
-    });
+    });*/
 
 
 

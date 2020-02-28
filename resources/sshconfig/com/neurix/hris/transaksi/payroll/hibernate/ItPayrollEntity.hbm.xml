@@ -63,7 +63,7 @@
             <column name="nilai_faktor_keluarga" sql-type="numeric" length="5" precision="2" not-null="false" />
         </property>
         <property name="gajiPensiun">
-            <column name="gaji_pensiun" sql-type="numeric" length="10" precision="2" not-null="false" />
+            <column name="gaji_pensiun" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
         <property name="multifikator">
             <column name="multifikator" sql-type="varchar" length="20" not-null="false" />
@@ -104,15 +104,11 @@
         <property name="tunjanganPerumahan">
             <column name="tunjangan_perumahan" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="tunjanganPph">
-            <column name="tunjangan_pph" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+
         <property name="tunjanganBajuDinas">
             <column name="tunjangan_baju_dinas" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
-        <property name="tunjanganLain">
-            <column name="tunjangan_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
-        </property>
+
         <property name="tunjanganLembur">
             <column name="tunjangan_lembur" sql-type="numeric" length="10" precision="2" not-null="false" />
         </property>
@@ -187,14 +183,14 @@
         <property name="flagPayroll">
             <column name="flag_payroll" sql-type="varchar" length="1" not-null="false" />
         </property>
-        <property name="flagRapel">
-            <column name="flag_rapel" sql-type="varchar" length="1" not-null="false" />
+        <property name="flagCutiPanjang">
+            <column name="flag_cuti_panjang" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flagThr">
             <column name="flag_thr" sql-type="varchar" length="1" not-null="false" />
         </property>
-        <property name="flagPendidikan">
-            <column name="flag_pendidikan" sql-type="varchar" length="1" not-null="false" />
+        <property name="flagCutiTahunan">
+            <column name="flag_cuti_tahunan" sql-type="varchar" length="1" not-null="false" />
         </property>
         <property name="flagJasprod">
             <column name="flag_jasprod" sql-type="varchar" length="1" not-null="false" />
@@ -274,6 +270,131 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+
+
+
+        <!--Tambahan Irfan-->
+        <!--Data Pegawai-->
+        <property name="masaKerjaGol">
+            <column name="masa_kerja_gol" sql-type="integer" length="5" precision="2" not-null="false" />
+        </property>
+        <property name="golonganDapenId">
+            <column name="golongan_dapen_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="golonganDapenName">
+            <column name="golongan_dapen_name" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <!--Tunjangan - tunjangan-->
+        <property name="tunjanganLain">
+            <column name="tunjangan_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganDapen">
+            <column name="tunjangan_dapen" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganTambahan">
+            <column name="tunjangan_tambahan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPph">
+            <column name="tunjangan_pph" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganBpjsKs">
+            <column name="tunjangan_bpjs_ks" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganBpjsTk">
+            <column name="tunjangan_bpjs_tk" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganSosialLain">
+            <column name="tunjangan_sosial_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="pemondokan">
+            <column name="pemondokan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tambahanLain">
+            <column name="tambahan_lain" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+        <!--Tunjangan RLAB-->
+        <property name="tunjanganRumah">
+            <column name="tunjangan_rumah" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property><property name="tunjanganListrik">
+            <column name="tunjangan_listrik" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganAir">
+            <column name="tunjangan_air" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganBBM">
+            <column name="tunjangan_bbm" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
+        <!--Iuran Dana Pensiun-->
+        <property name="iuranDapenPeg">
+            <column name="iuran_dapen_peg" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="iuranDapenPersh">
+            <column name="iuran_dapen_persh" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
+        <!--Iuran Bpjs-->
+        <property name="iuranBpjsTkKary">
+            <column name="iuran_bpjs_tk_kary" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property><property name="iuranBpjsTkPers">
+            <column name="iuran_bpjs_tk_pers" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
+        <property name="iuranBpjsKsKary">
+            <column name="iuran_bpjs_ks_kary" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="iuranBpjsKsPers">
+            <column name="iuran_bpjs_ks_pers" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <!--iuran Ypks-->
+        <property name="iuranYpks">
+            <column name="iuran_ypks" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <!--Potongan Rincian C-->
+        <property name="totalPotonganLain">
+            <column name="total_potongan_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="gajiKotor">
+            <column name="gaji_kotor" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="kopkar">
+            <column name="kopkar" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="iuranSp">
+            <column name="iuran_sp" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="iuranPiikb">
+            <column name="iuran_piikb" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="bankBri">
+            <column name="bank_bri" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="bankMandiri">
+            <column name="bank_mandiri" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="infaq">
+            <column name="infaq" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="PerkesDanObat">
+            <column name="perkes_dan_obat" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="listrik">
+            <column name="listrik" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="iuranProfesi">
+            <column name="iuran_profesi" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="potonganLain">
+            <column name="potongan_lain" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
 
         <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
                      insert="false" update="false" fetch="select" cascade="all">

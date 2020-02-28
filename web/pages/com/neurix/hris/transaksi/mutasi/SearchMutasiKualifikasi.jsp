@@ -105,7 +105,7 @@
 </div>
 
 <div id="modal-absensi" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog " style="width:900px;">
 
         <!-- Modal content-->
         <div class="modal-content">
@@ -119,7 +119,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-1" >Bulan</label>
                         <input type="text" id="nipAbsensi" style="display:none;">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <select class="form-control" id="bulanAbsensi">
                                 <option value="01"> Januari </option>
                                 <option value="02"> Februari </option>
@@ -140,6 +140,14 @@
 
                         <div class="col-sm-3">
                             <select id="tahunAbsensi" class="form-control" ></select>
+                        </div>
+
+                        <label class="control-label col-sm-1" >Status</label>
+
+                        <div class="col-sm-3">
+                            <s:select list="#{'00':'Mangkir','01':'Sesuai','02':'Telat masuk','03':'Pulang/Masuk tidak Izin','04':'Sesuai Lebih','05':'Sesuai dengan Ijin','06':'Tidak Sesuai Ijin','07':'Ijin Lebih Dari Sehari','08':'Cuti','09':'Lembur','10':'Blokir','11':'Ijin Tidak Masuk','12':'SPPD','13':'Training'}"
+                                      id="statusAbsensi"
+                                      headerKey="" headerValue="" cssClass="form-control" />
                         </div>
 
                         <div class="col-sm-3">
@@ -168,7 +176,7 @@
     <section class="content-header">
         <h1>
             Kualifikasi Calon Pejabat
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
 
@@ -318,6 +326,9 @@
                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </a>
                                             </display:column>
+
+
+                                            <display:column property="statusPromosi" sortable="true" title="Status"  />
 
                                         </display:table>
                                     </td>
@@ -672,6 +683,7 @@
         var bulan = document.getElementById("bulanAbsensi").value;
         var tahun = document.getElementById("tahunAbsensi").value;
         var nip = document.getElementById("nipAbsensi").value;
+        var statusAbsensi = document.getElementById("statusAbsensi").value;
 
         $('.tableAbsensi').find('tbody').remove();
         $('.tableAbsensi').find('thead').remove();
@@ -679,7 +691,7 @@
         var tmp_table = "";
 
         var blnThn = tahun +"-"+bulan;
-        AbsensiAction.cariAbseni(nip, blnThn, function(listdata) {
+        AbsensiAction.cariAbseni(nip, blnThn,statusAbsensi, function(listdata) {
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
                     "<th style='text-align: center; background-color:  #3c8dbc''>In</th>"+
@@ -766,13 +778,13 @@
                 if(item.status!= null){
                     status = item.status;
                 }
-                if(item.pjsFlag!= null){
-                    if(item.pjsFlag == "Y"){
-                        pjs = "Iya";
-                    }else{
-                        pjs = 'Tidak';
-                    }
+
+                if(item.pjsFlag == "Y"){
+                    pjs = "Ya";
+                }else{
+                    pjs = 'Tidak';
                 }
+
                 tmp_table += '<tr  style="font-size: 12px">' +
                         '<td >' + bidang + '</td>' +
                         '<td >' + branchName+ '</td>' +
@@ -789,31 +801,63 @@
         $('#modal-jabatan').modal('show');
     });
     
+//    window.loadTraining = function(nip){
+//        //alert(nip);
+//        $('.tableTraining').find('tbody').remove();
+//        $('.tableTraining').find('thead').remove();
+//        dwr.engine.setAsync(false);
+//        var tmp_table = "";
+//        TrainingAction.searchData(nip, function(listdata) {
+//
+//            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Training</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Awal</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Akhir</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Instansi</th>"+
+//                    "<th style='text-align: center; background-color:  #3c8dbc''>Kota</th>"+
+//                    "</tr></thead>";
+//            var i = i ;
+//            $.each(listdata, function (i, item) {
+//                tmp_table += '<tr style="font-size: 12px;" ">' +
+//                        '<td align="center">' + (i + 1) + '</td>' +
+//                        '<td >' + item.tipeTraining + '</td>' +
+//                        '<td align="center">' + item.stTrainingStartdate+ '</td>' +
+//                        '<td align="center">' + item.stTrainingEndDate+ '</td>' +
+//                        '<td align="center">' + item.instansi+ '</td>' +
+//                        '<td align="center">' + item.kota+ '</td>' +
+//                        "</tr>";
+//            });
+//            $('.tableTraining').append(tmp_table);
+//        });
+//    }
+
     window.loadTraining = function(nip){
         //alert(nip);
         $('.tableTraining').find('tbody').remove();
         $('.tableTraining').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        TrainingAction.searchData(nip, function(listdata) {
-
-            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Training</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Awal</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Akhir</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Instansi</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Kota</th>"+
+        BiodataAction.searchDataPelatihanJabatan(nip, function (listdata) {
+            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Lembaga</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Angkatan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tahun</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
                     "</tr></thead>";
-            var i = i ;
+            var i = i;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td >' + item.tipeTraining + '</td>' +
-                        '<td align="center">' + item.stTrainingStartdate+ '</td>' +
-                        '<td align="center">' + item.stTrainingEndDate+ '</td>' +
-                        '<td align="center">' + item.instansi+ '</td>' +
-                        '<td align="center">' + item.kota+ '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.pelatihanJabatanName+ '</td>' +
+                        '<td >' + item.lembaga + '</td>' +
+                        '<td align="center">' + item.angkatan+ '</td>' +
+                        '<td align="center">' + item.tahun+ '</td>' +
+                        '<td align="center">' + item.status+ '</td>' +
+                        '<td align="center">' + item.nilai+ '</td>' +
                         "</tr>";
             });
             $('.tableTraining').append(tmp_table);

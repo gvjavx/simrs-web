@@ -788,7 +788,7 @@ public class NotifikasiAction extends BaseMasterAction{
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
         try {
-            listOfResult = notifikasiBo.getByCriteria(notif);
+            listOfResult = notifikasiBo.getByCriteriaForNotif(notif);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -826,6 +826,33 @@ public class NotifikasiAction extends BaseMasterAction{
         }
         return listOfResult;
     }
+
+
+    public List<Notifikasi> searchJubilium(){
+        List<Notifikasi> listOfResult = new ArrayList<Notifikasi>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        try {
+            listOfResult = notifikasiBo.getJubilium();
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = notifikasiBo.saveErrorMessage(e.getMessage(), "NotifikasiBo.searchCutiPensiun");
+            } catch (GeneralBOException e1) {
+                logger.error("[NotifikasiBo.searchCutiPensiun] Error when saving error,", e1);
+//                return ERROR;
+            }
+            logger.error("[NotifikasiBo.searchCutiPensiun] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+//            return ERROR;
+        }
+        return listOfResult;
+    }
+
+
+
     public List<Notifikasi> searchCutiTahunan(){
         List<Notifikasi> listOfResult = new ArrayList<Notifikasi>();
 
@@ -1164,6 +1191,12 @@ public class NotifikasiAction extends BaseMasterAction{
                     }
 
                     if (("KL03").equalsIgnoreCase(biodata.getKelompokId())){
+                        if (("Y").equalsIgnoreCase(listPerson.getApprovalFlag())){
+                            if (listPerson.getApprovalBosFlag() == null || listPerson.getApprovalBosFlag().equalsIgnoreCase("")){
+                                listPerson.setApproveKepala(true);
+                            }
+                        }
+                    }else if(userLoginId.equalsIgnoreCase("0001")){
                         if (("Y").equalsIgnoreCase(listPerson.getApprovalFlag())){
                             if (listPerson.getApprovalBosFlag() == null || listPerson.getApprovalBosFlag().equalsIgnoreCase("")){
                                 listPerson.setApproveKepala(true);

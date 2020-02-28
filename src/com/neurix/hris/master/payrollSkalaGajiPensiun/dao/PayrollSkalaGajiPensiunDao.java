@@ -68,5 +68,14 @@ public class PayrollSkalaGajiPensiunDao extends GenericDao<ImPayrollSkalaGajiPen
         return results;
     }
 
+    public List<ImPayrollSkalaGajiPensiunEntity> getSkalaGajiPensiunSimRs(String golonganId) throws HibernateException {
+        List<ImPayrollSkalaGajiPensiunEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunEntity.class)
+                .add(Restrictions.eq("golonganId", golonganId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
 
 }

@@ -38,6 +38,50 @@
             window.location.href="<s:url action='initForm_ijinKeluar'/>";
         }
         var unit = '<s:property value="CutiPegawai.unitId"/>'
+
+
+        $(document).ready(function(){
+            $.subscribe('beforeProcessSaveCutiBersama', function (event, data) {
+                var tanggalAwal  = document.getElementById("tglAwal3").value;
+                var tanggalAkhir = document.getElementById("tglAkhir3").value;
+                var keterangan = document.getElementById("keterangan5").value;
+
+                var nilai;
+                nilai = $('input:checkbox:checked').length;
+                nilai=nilai-1;
+                if (nilai!=0) {
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        event.originalEvent.options.submit = false;
+                    }
+                }else{
+                    event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (nilai == 0) {
+                        msg+='tidak ada pegawai yang di ceklist \n';
+                    }
+                    if (tanggalAwal == "") {
+                        msg+='tanggal awal masih kosong \n';
+                    }
+                    if (tanggalAkhir == "") {
+                        msg+='tanggal akhir masih kosong \n';
+                    }
+                    if (keterangan == "") {
+                        msg+='keterangan masih kosong \n';
+                    }
+                    alert(msg);
+                }
+            });
+
+            $.subscribe('successDialog2', function (event, data) {
+                if (event.originalEvent.request.status == 200) {
+                    alert('data berhasil disimpan');
+                    $('#modal-list').modal('hide');
+                }
+            });
+        })
     </script>
 </head>
 
@@ -231,6 +275,22 @@
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
+                                                    <s:if test="isAdmin()">
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                                                    <i class="fa fa-cogs"></i>
+                                                                    Utility
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li id="btnDispensasiMasal">
+                                                                        <s:a href="#"><i class="fa fa-search"></i>Dispensasi Masal</s:a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </s:if>
                                                 </tr>
                                             </table>
                                         </div>
@@ -295,6 +355,15 @@
                                                                         <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                                     </s:a>
                                                                 </s:elseif>
+                                                            </display:column>
+                                                            <display:column media="html" title="Edit" style="text-align:center;font-size:9">
+                                                                <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                </s:url>
+                                                                <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
+                                                                </sj:a>
                                                             </display:column>
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <s:url var="urlViewDelete" namespace="/ijinKeluar" action="delete_ijinKeluar" escapeAmp="false">
@@ -481,7 +550,240 @@
         </div>
     </div>
 </div>
+
+
+<div id="modal-list" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detail Cuti Karyawan</h4>
+            </div>
+            <div class="modal-body">
+                <s:form id="saveCutiBersama" method="post" theme="simple" namespace="/ijinKeluar" action="saveDispensasiMasal_ijinKeluar.action" cssClass="form-horizontal">
+                    <div class="container">
+                        <div class="col-md-offset-2">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Ijin :</small></label> </div>
+                                    <div class="col-md-4">
+                                        <s:action id="initComboIjin" namespace="/ijin" name="initComboIjin_ijin"/>
+                                        <s:select list="#initComboIjin.listOfComboIjin" id="ijinId3" name="" disabled="true"
+                                                  listKey="ijinId" listValue="ijinName" headerKey="" headerValue="" cssClass="form-control" />
+                                        <s:textfield  id="ijinName3" name="ijinKeluar.ijinName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                        <s:textfield  id="ijinId23" name="ijinKeluar.ijinId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#ijinId3').change(function() {
+                                                var namaijin= $('#ijinId3').val();
+                                                dwr.engine.setAsync(false);
+                                                IjinAction.initComboLamaIjin(namaijin, function (listdata) {
+                                                    data = listdata;
+                                                });
+                                                $.each(data, function (i, item) {
+                                                    $('#maxIjin3').val(item.jumlahIjin).change();
+                                                    $('#ijinName3').val(item.ijinName).change();
+                                                });
+                                            })
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Max Ijin:</small></label> </div>
+                                    <div class="col-md-4">
+                                        <s:textfield  id="maxIjin3" name="" required="false"  readonly="true" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Tanggal Awal:</small></label> </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tglAwal3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
+                                                         required="false"  cssStyle=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Tanggal Akhir:</small></label> </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tglAkhir3" name="ijinKeluar.stTanggalAkhir" cssClass="form-control pull-right"
+                                                         required="false"  cssStyle=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Lama Ijin:</small></label> </div>
+                                    <div class="col-md-4">
+                                        <s:textfield  id="lamaId5" name="ijinKeluar.lamaIjin" required="false"  readonly="true" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="col-md-3"><label class="control-label"><small>Keterangan :</small></label> </div>
+                                    <div class="col-md-4">
+                                        <s:textarea rows="2" id="keterangan5" name="ijinKeluar.keterangan" required="true" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <center>
+                        <br>
+                        <br>
+                        <table id="showdata2" width="80%">
+                            <tr>
+                                <td align="center" colspan="4">
+                                    <table style="width: 100%;" class="listDispensasiTable table table-bordered" id="listDispensasiTable">
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </center>
+                    <center>
+                    <sj:submit targets="crud" type="button" cssClass="btn btn-success"
+                               formIds="saveCutiBersama" id="btnSaveCutiBersama" name="save"
+                               onBeforeTopics="beforeProcessSaveCutiBersama"
+                               onCompleteTopics="closeDialog,successDialog2"
+                               onSuccessTopics="successDialog2"
+                               onErrorTopics="errorDialog">
+                        <i class="fa fa-check"></i>
+                        Save Dispensasi Masal
+                    </sj:submit>
+                </center>
+            </div>
+            <br>
+            </s:form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $('#tglAwal3').datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+    $('#tglAkhir3').datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+    $('#tglAkhir3').on('change',function(){
+        var tglawal=document.getElementById("tglAwal3").value;
+        var tglakhir = document.getElementById("tglAkhir3").value;
+        var startdate =$('#tglAwal3').datepicker('getDate');
+        var enddate =$('#tglAkhir3').datepicker('getDate');
+        var days = calcBusinessDays(startdate,enddate);
+        var jmllibur;
+        dwr.engine.setAsync(false);
+        IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
+            jmllibur = listdata;
+        });
+        $('#lamaId5').val(days);
+        var max =parseInt(document.getElementById("maxIjin3").value);
+        if (enddate<startdate){
+            alert ('Tanggal yang dipilih salah');
+            $('#tglAkhir3').val("");
+            $('#lamaId5').val("");
+        }
+//        if (days>max){
+//            alert ("maaf anda melebihi ijin maksimal");
+//            $('#lamaId5').val("");
+//            $('#tglAkhir3').val("");
+//        }
+    });
+
+
+    function calcBusinessDays(dDate1, dDate2) { // input given as Date objects
+        var iWeeks, iDateDiff, iAdjust = 0;
+        if (dDate2 < dDate1) return -1; // error code if dates transposed
+        var iWeekday1 = dDate1.getDay(); // day of week
+        var iWeekday2 = dDate2.getDay();
+        iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+        iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+        if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
+        iWeekday1 = (iWeekday1 > 5) ? 5 : iWeekday1; // only count weekdays
+        iWeekday2 = (iWeekday2 > 5) ? 5 : iWeekday2;
+
+        // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+        iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000);
+
+        if (iWeekday1 <= iWeekday2) {
+            iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1)
+        } else {
+            iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2)
+        }
+
+        iDateDiff -= iAdjust // take into account both days on weekend
+
+        return (iDateDiff + 1); // add 1 because dates are inclusive
+    }
+
+
+    $('#btnDispensasiMasal').on('click', function () {
+        $('.listDispensasiTable').find('tbody').remove();
+        $('.listDispensasiTable').find('thead').remove();
+        dwr.engine.setAsync(false);
+
+        $('#tglAwal3').val("");
+        $('#tglAkhir3').val("");
+        $('#ijinId3').val("IJ017");
+        $('#ijinId23').val("IJ017");
+        $('#ijinName3').val("Acara Perusahaan");
+        $('#maxIjin3').val("0");
+        $('#keterangan5').val("");
+
+
+        var tmp_table = "";
+        var unit=$('#branchid').val();
+        if(unit!=""){
+            IjinKeluarAction.listDispensasiMasal(unit,function(listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                        "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    var combo = '<input type="checkbox" id="check" name="IjinKeluar.checkedValue" value="'+item.nip+'" class="check" >';
+                    tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + combo + '</td>' +
+                            '<td align="center">' + item.nip + '</td>' +
+                            '<td align="center">' + item.namaPegawai + '</td>' +
+                            "</tr>";
+                });
+                $('.listDispensasiTable').append(tmp_table);
+                $("#checkAll").change(function(){
+                    $('input:checkbox').not(this).prop('checked', this.checked);
+                });
+            });
+            $('#modal-list').find('.modal-title').text('Dispensasi Masal');
+            $('#modal-list').modal('show');
+        }else{
+            alert("Unit belum diisi")
+        }
+    });
+
+
 
     $('#btnApprove').click(function(){
         var who = $('#myForm').attr('action');

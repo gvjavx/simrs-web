@@ -27,6 +27,25 @@
             <column name="position_id" sql-type="varchar" length="100" not-null="false"/>
         </property>
 
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="bidangId">
+            <column name="divisi_id" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date" not-null="false"/>
+        </property>
+        <property name="jamKeluar">
+            <column name="jam_keluar" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+        <property name="jamKembali">
+            <column name="jam_kembali" sql-type="varchar" length="5" not-null="false"/>
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

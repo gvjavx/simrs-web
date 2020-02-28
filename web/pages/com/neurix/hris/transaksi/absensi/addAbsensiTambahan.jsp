@@ -135,7 +135,7 @@
     <section class="content-header">
         <h1>
             Add Absensi Pegawai Tambahan
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <section class="content">

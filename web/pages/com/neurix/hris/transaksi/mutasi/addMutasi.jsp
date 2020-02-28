@@ -60,7 +60,7 @@
 
                 if (tanggalEfektif != '') {
                     if (isNaN(mydate) == false) {
-                        if(date <= mydate){
+//                        if(date <= mydate){
                             if(cekDataMutasi() == 'berhasil'){
                                 if (confirm('Do you want to save this record?')) {
                                     event.originalEvent.options.submit = true;
@@ -72,13 +72,13 @@
                                 alert(cekDataMutasi());
                                 event.originalEvent.options.submit = false;
                             }
-                        }else{
-                            event.originalEvent.options.submit = false;
-                            var msg = "";
-                            msg += '<strong>Tanggal Mutasi tidak dapat kurang dari tanggal sekarang </strong>.' + '<br/>';
-                            document.getElementById('errorValidationMessage').innerHTML = msg;
-                            $.publish('showErrorValidationDialog');
-                        }
+//                        }else{
+//                            event.originalEvent.options.submit = false;
+//                            var msg = "";
+//                            msg += '<strong>Tanggal Mutasi tidak dapat kurang dari tanggal sekarang </strong>.' + '<br/>';
+//                            document.getElementById('errorValidationMessage').innerHTML = msg;
+//                            $.publish('showErrorValidationDialog');
+//                        }
                     }else{
                         event.originalEvent.options.submit = false;
                         var msg = "";
@@ -337,6 +337,7 @@
                                 <option value="M">Move</option>
                                 <option value="R">Resign</option>
                                 <option value="P">Pensiun</option>
+                                <option value="MH">Move Holding</option>
                             </select>
                         </div>
                     </div>
@@ -344,14 +345,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Nama : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="nip" name="nip">
+                            <input type="text" class="form-control nip" id="nip2" name="nip">
                             <input style="display: none" type="text" class="form-control" id="nip1" name="nip1">
                             <input style="display: none" type="text" class="form-control" id="nipOld" name="nip1">
                         </div>
                         <script type='text/javascript'>
                             var functions, mapped;
                             // var prov = document.getElementById("provinsi1").value;
-                            $('#nip').typeahead({
+                            $('#nip2').typeahead({
                                 minLength: 1,
                                 source: function (query, process) {
                                     functions = [];
@@ -359,7 +360,7 @@
 
                                     var data = [];
                                     dwr.engine.setAsync(false);
-                                    MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
+                                    MutasiAction.initComboPersonil(query,'', function (listdata) {
                                         data = listdata;
                                         //alert('aa');
                                     });
@@ -413,7 +414,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="positionLamaId1">Position Lama:</label>
+                        <label class="control-label col-sm-4" for="positionLamaId1">Posisi Lama:</label>
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                             <s:select list="#comboPosition.listOfComboPosition" id="positionLamaId1" name="mutasi.positionLamaId" disabled="true"
@@ -432,22 +433,30 @@
                         <label class="control-label col-sm-4" for="branchBaruId1">Unit Baru:</label>
                         <div class="col-sm-8">
                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                            <s:select list="#initComboBranch.listOfComboBranch" id="branchBaruId1" name="mutasi.branchBaruId" onchange="listPosisi()"
+                            <s:select list="#initComboBranch.listOfComboBranch" id="branchBaruId1" name="mutasi.branchBaruId" onchange="listDivisi()"
                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="divisiBaruId1">Bagian Baru:</label>
+                        <label class="control-label col-sm-4" for="divisiBaruId2">Bagian Baru:</label>
                         <div class="col-sm-8">
-                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                            <s:select list="#comboDivisi.listComboDepartment" id="divisiBaruId1" name="mutasi.divisiBaruId" onchange="listPosisi()"
-                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                            <%--<s:action id="comboDivisi" namespace="/department" name="searchDepartment2_department"/>--%>
+                            <%--<s:select list="#comboDivisi.listComboDepartment" id="divisiBaruId2" name="mutasi.divisiBaruId" onchange="listPosisi()"--%>
+                                      <%--listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />--%>
+
+                            <s:action id="comboDivisi" namespace="/department"
+                                      name="searchDepartment2_department"/>
+                            <s:select list="#comboDivisi.listComboDepartment" id="divisiBaruId2"
+                                      name="mutasi.divisiBaruId" onchange="listPosisi()"
+                                      listKey="departmentId" listValue="departmentName"
+                                      headerKey="" headerValue=""
+                                      cssClass="form-control"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Position Baru:</label>
+                        <label class="control-label col-sm-4" >Posisi Baru:</label>
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                             <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange="cekJabatan()"
@@ -484,6 +493,20 @@
 </html>
 
 <script>
+
+    window.listDivisi= function(){
+        var branch = document.getElementById("branchBaruId1").value;
+        $('#divisiBaruId2').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#divisiBaruId2').append($("<option></option>")
+                        .attr("value",item.departmentId)
+                        .text(item.departmentName));
+            });
+        });
+        listPosisi();
+
+    };
 
     window.loadPerson =  function(){
         //alert(nip);
@@ -537,7 +560,7 @@
                         '<td align="center">' + item.divisiBaruName+ '</td>' +
                         '<td align="center">' + item.positionBaruName+ '</td>' +
                         '<td align="center">' + item.pjs+ '</td>' +
-                        '<td align="center">' + item.status+ '</td>' +
+                        '<td align="center">' + item.statusName+ '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
@@ -551,7 +574,7 @@
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            minDate: 0,
+//            minDate: 0,
         });
 
 
@@ -559,12 +582,12 @@
             $('#positionBaruId').empty();
             $('#positionBaruId1').empty();
             $('#penggantiId').empty();
-            $("#nip").prop("readonly", false);
+            $("#nip2").prop("readonly", false);
             $("#statusMutasi").prop("disabled", false);
             cekStatusMutasi();
             $("#branchBaruId1").prop("readonly", false);
             $("#positionBaruId1").prop("readonly", false);
-            $("#divisiBaruId1").prop("readonly", false);
+            $("#divisiBaruId2").prop("readonly", false);
             $('#myForm')[0].reset();
             $("#btnSave").html('Save');
             $('#modal-edit').modal('show');
@@ -575,18 +598,18 @@
     });
 
     $('.sppdPersonTable').on('click', '.item-edit', function(){
-        $("#nip").attr("readonly", false);
+        $("#nip2").attr("readonly", false);
         /*$("#branchLamaId1").attr("disabled", false);
         $("#positionLamaId1").attr("disabled", false);
         $("#divisiLamaId1").attr("disabled", false);*/
         $("#branchBaruId1").prop("disabled", false);
-        $("#divisiBaruId1").prop("disabled", false);
+        $("#divisiBaruId2").prop("disabled", false);
         $("#positionBaruId1").prop("disabled", false);
         $("#penggantiId").prop("disabled", false);
         $("#pjsBaru").prop("disabled", false);
 
         $('#branchBaruId1').val('').change();
-        $('#divisiBaruId1').val('').change();
+        $('#divisiBaruId2').val('').change();
         $('#positionBaruId1').val('').change();
         $('#penggantiId').val('').change();
 
@@ -606,14 +629,14 @@
                 if(item.status == "R" || item.status == "P"){
                     $("#branchBaruId1").prop("disabled", true);
                     $("#positionBaruId1").prop("disabled", true);
-                    $("#divisiBaruId1").prop("disabled", true);
+                    $("#divisiBaruId2").prop("disabled", true);
                     $("#penggantiId").prop("disabled", true);
                     $("#pjsBaru").prop("disabled", true);
                 }else{
                     //alert(item.positionBaruId);
                     listPosisi(item.branchBaruId, item.divisiBaruId);
                     $('#branchBaruId1').val(item.branchBaruId).change();
-                    $('#divisiBaruId1').val(item.divisiBaruId).change();
+                    $('#divisiBaruId2').val(item.divisiBaruId).change();
                     $('#positionBaruId1').val(item.positionBaruId).change();
                     $('#penggantiId').val(item.penggantiNip).change();
                 }
@@ -661,7 +684,7 @@
 
                 //listPosisi(item.branchBaruId, item.divisiBaruId);
                 $('#branchBaruId1').val(item.branchBaruId).change();
-                $('#divisiBaruId1').val(item.divisiBaruId).change();
+                $('#divisiBaruId2').val(item.divisiBaruId).change();
                 $('#positionBaruId1').val(item.positionBaruId).change();
 
 
@@ -685,13 +708,13 @@
             });
         });
 
-        $("#nip").prop("readonly", true);
+        $("#nip2").prop("readonly", true);
         $("#branchLamaId1").prop("disabled", true);
         $("#positionLamaId1").prop("disabled", true);
         $("#divisiLamaId1").prop("disabled", true);
         $("#branchBaruId1").prop("disabled", true);
         $("#positionBaruId1").prop("disabled", true);
-        $("#divisiBaruId1").prop("disabled", true);
+        $("#divisiBaruId2").prop("disabled", true);
         $("#penggantiId").prop("disabled", true);
         $("#btnSave").html('Delete');
         $('#modal-edit').find('.modal-title').text('Delete Data Anggota');
@@ -705,7 +728,7 @@
         var data = $('#myForm').serialize();
 
         var nip         = document.getElementById("nip1").value;
-        var personName  = document.getElementById("nip").value;
+        var personName  = document.getElementById("nip2").value;
         var nipOld      = document.getElementById("nipOld").value;
 
         var branchLamaId  = document.getElementById("branchLamaId1").value;
@@ -720,18 +743,18 @@
         var menggantikanId      = document.getElementById("penggantiId").value;
         var menggantikanNama    = $('#penggantiId option:selected').text();
         var branchBaruId        = document.getElementById("branchBaruId1").value;
-        var divisiBaruId        = document.getElementById("divisiBaruId1").value;
+        var divisiBaruId        = document.getElementById("divisiBaruId2").value;
         var positionBaruId      = document.getElementById("positionBaruId1").value;
         var txtPjsBaru          = document.getElementById("txtPjsBaru").value;
         var status = document.getElementById("statusMutasi").value;
 
         var branchBaruName      = $('#branchBaruId1 option:selected').text();
-        var divisiBaruName      = $('#divisiBaruId1 option:selected').text();
+        var divisiBaruName      = $('#divisiBaruId2 option:selected').text();
         var positionBaruName    = $('#positionBaruId1 option:selected').text();
 
         if(url == 'addPerson'){
             if(nip != ''){
-                if(status == 'M' && branchBaruId != ''){
+                if(status == 'M' && branchBaruId != '' ||status == 'MH' && branchBaruId != '' ){
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
                         MutasiAction.saveAnggotaAdd(nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName, txtPjsLama,
@@ -830,7 +853,7 @@
 
     function cekJabatan(){
         var branchBaruId  = document.getElementById("branchBaruId1").value;
-        var divisiBaruId  = document.getElementById("divisiBaruId1").value;
+        var divisiBaruId  = document.getElementById("divisiBaruId2").value;
         var positionBaruId= document.getElementById("positionBaruId1").value;
         if(branchBaruId != ''  && positionBaruId !=''){
             var ada = "N" ;
@@ -859,7 +882,7 @@
 
     window.listPosisi = function(branch, divisi){
         var branch = document.getElementById("branchBaruId1").value;
-        var divisi = document.getElementById("divisiBaruId1").value;
+        var divisi = document.getElementById("divisiBaruId2").value;
 
         $('#positionBaruId1').empty();
         PositionAction.searchPositionMutasi(branch, divisi, function(listdata){
@@ -875,18 +898,18 @@
         var status = document.getElementById("statusMutasi").value;
 
         var branch = document.getElementById("branchBaruId1").value;
-        var divisi = document.getElementById("divisiBaruId1").value;
+        var divisi = document.getElementById("divisiBaruId2").value;
         var posisi = document.getElementById("positionBaruId1").value;
 
-        if(status == 'R' || status == 'P'){
+        if(status == 'R' || status == 'P' || status == 'MH'){
             $( "#branchBaruId1" ).prop( "disabled", true );
-            $( "#divisiBaruId1" ).prop( "disabled", true );
+            $( "#divisiBaruId2" ).prop( "disabled", true );
             $( "#positionBaruId1" ).prop( "disabled", true );
             $( "#pjsBaru" ).prop( "disabled", true );
             $("#penggantiId").prop("disabled", true);
         }else{
             $( "#branchBaruId1" ).prop( "disabled", false);
-            $( "#divisiBaruId1" ).prop( "disabled", false);
+            $( "#divisiBaruId2" ).prop( "disabled", false);
             $( "#positionBaruId1" ).prop( "disabled",false);
             $( "#pjsBaru" ).prop( "disabled",false);
             $("#penggantiId").prop("disabled", false);

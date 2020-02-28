@@ -52,8 +52,11 @@
     <include file="sshconfig/com/neurix/hris/master/pengaliFaktorLembur/struts/PengaliFaktorLemburAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/tipelibur/struts/TipeLiburAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/golongan/struts/GolonganAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/golonganDapen/struts/GolonganDapenAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/golonganPkwt/struts/GolonganPkwtAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/updateGolongan/struts/UpdateGolonganAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/department/struts/DepartmentAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/profesi/struts/ProfesiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/strukturJabatan/struts/StrukturJabatanAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/ijin/struts/IjinAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/tipeNotif/struts/TipeNotifAction.xml"/>
@@ -114,6 +117,7 @@
 
     <include file="sshconfig/com/neurix/hris/transaksi/payroll/struts/PayrollAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGaji/struts/PayrollSkalaGajiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/struts/PayrollSkalaGajiPkwtAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/struts/PayrollSkalaGajiPensiunAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/branchTunjangan/struts/BranchTunjanganAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollBajuDinas/struts/PayrollBajuDinasAction.xml"/>

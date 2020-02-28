@@ -76,5 +76,13 @@ public class PayrollTunjanganJabatanStrukturalDao extends GenericDao<ImPayrollTu
 
         return results;
     }
+    public List<ImPayrollTunjanganJabatanStrukturalEntity> getTunjanganJabatanStruktural(String kelompokId) throws HibernateException {
+        List<ImPayrollTunjanganJabatanStrukturalEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollTunjanganJabatanStrukturalEntity.class)
+                .add(Restrictions.eq("kelompokId", kelompokId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
 
 }

@@ -20,6 +20,9 @@
         <property name="positionId">
             <column name="position_Id" sql-type="varchar" length="3" />
         </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" />
+        </property>
         <property name="pjs">
             <column name="pjs_flag" sql-type="varchar" length="3" />
         </property>

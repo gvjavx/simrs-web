@@ -144,11 +144,11 @@
                                                             <i class="fa fa-calendar-plus-o"></i> Tambah Otomatis
                                                         </button>
                                                     </td>--%>
-                                                    <td>
+                                                    <%--<td>
                                                         <button type="button" class="btn btn-warning" id="btnCetakJadwal">
                                                             <i class="fa fa-print"></i> Print Jadwal Kerja
                                                         </button>
-                                                    </td>
+                                                    </td>--%>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jadwalShiftKerja"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -205,6 +205,7 @@
                                                             <display:column property="tanggal" sortable="true" title="Tanggal"  />
                                                             <display:column property="namaPegawai" sortable="true" title="Nama"  />
                                                             <display:column property="positionName" sortable="true" title="Posisi"  />
+                                                            <display:column property="profesiName" sortable="true" title="Profesi"  />
                                                             <display:column property="shiftName" sortable="true" title="Shift"  />
                                                         </display:table>
                                                     </td>

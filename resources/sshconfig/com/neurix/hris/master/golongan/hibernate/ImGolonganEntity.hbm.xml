@@ -14,6 +14,9 @@
         <property name="golonganName">
             <column name="golongan_name" sql-type="varchar" length="100" not-null="true" />
         </property>
+        <property name="level">
+            <column name="grade_level" sql-type="integer" not-null="true" />
+        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

@@ -16,20 +16,111 @@ public class PengalamanKerja extends BaseModel {
     private String pengalamanId;
     private String nip;
     private String namaPerusahaan;
-    private String jabatan;
-    private Date tahunMasuk;
-    private Date tahunKeluar;
-    private String stTtahunMasuk;
     private String branchId;
-    private String stTahunKeluar;
-    private String tipePegawai;
+    private String posisiId;
+    private String profesiId;
+    private String divisiId;
     private String tipePegawaiId;
-    private String GolonganId;
-    private String GolonganName;
+    private String golonganId;
     private String point;
     private String pointLebih;
     private String nilaiSmk;
     private String gradeSmk;
+    private Date tahunMasuk;
+
+    private String jabatan;
+    private Date tahunKeluar;
+    private String stTtahunMasuk;
+    private String stTahunKeluar;
+    private String tipePegawai;
+    private String GolonganName;
+    private String tanggalMasuk;
+    private String tanggalKeluar;
+    private String pjsFlag;
+    private String divisiName;
+    private String positionName;
+    private String profesiName;
+    private String flagJabatanAktif;
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getFlagJabatanAktif() {
+        return flagJabatanAktif;
+    }
+
+    public void setFlagJabatanAktif(String flagJabatanAktif) {
+        this.flagJabatanAktif = flagJabatanAktif;
+    }
+
+    public String getPjsFlag() {
+        return pjsFlag;
+    }
+
+    public void setPjsFlag(String pjsFlag) {
+        this.pjsFlag = pjsFlag;
+    }
+
+    public String getPosisiId() {
+        return posisiId;
+    }
+
+    public void setPosisiId(String posisiId) {
+        this.posisiId = posisiId;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
+    public String getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(String tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
+    public String getTanggalMasuk() {
+        return tanggalMasuk;
+    }
+
+    public void setTanggalMasuk(String tanggalMasuk) {
+        this.tanggalMasuk = tanggalMasuk;
+    }
 
     public String getTipePegawaiId() {
         return tipePegawaiId;
@@ -48,11 +139,11 @@ public class PengalamanKerja extends BaseModel {
     }
 
     public String getGolonganId() {
-        return GolonganId;
+        return golonganId;
     }
 
     public void setGolonganId(String golonganId) {
-        GolonganId = golonganId;
+        this.golonganId = golonganId;
     }
 
     public String getGolonganName() {

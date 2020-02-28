@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
-	<property name="ireport.zoom" value="1.071794405000004"/>
+	<property name="ireport.zoom" value="1.7261356071965568"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -84,6 +84,7 @@
 	<parameter name="reportParams.pembuat" class="java.lang.String"/>
 	<parameter name="reportParams.stTanggalDari" class="java.lang.String"/>
 	<parameter name="reportParams.stTanggalSelesai" class="java.lang.String"/>
+	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM it_hris_absensi_pegawai LIMIT 1]]>
 	</queryString>
@@ -97,20 +98,20 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="157" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<textField>
-				<reportElement x="121" y="6" width="298" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="127" y="6" width="298" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="3" y="6" width="140" height="60" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="3" y="6" width="83" height="37" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="452" y="0" width="69" height="70" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="485" y="0" width="50" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "LAPORAN ABSENSI \n"+
@@ -118,52 +119,6 @@ new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Bidang : " + $P{reportParams.divisi},
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="3" y="70" width="95" height="20" uuid="b2b9d5ba-16be-42d3-be0c-9c59659d62d9"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[NAMA		:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="3" y="90" width="95" height="20" uuid="c890603e-76e4-458a-987f-9fe9f09f11ad"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[POSISI		:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="415" y="66" width="75" height="20" uuid="2d0ec431-e91e-4252-8af2-d09095afa144"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Printed Date :]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="490" y="66" width="65" height="20" uuid="cc1f775f-7690-4415-8268-cc735f156035"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="3" y="110" width="95" height="20" uuid="3b3b6658-1b27-4cd0-8c59-1ba18bcb4f1b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[BIDANG		:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="98" y="70" width="226" height="20" uuid="7c47f14e-b4a1-4503-be31-3f92443d04bc"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="98" y="90" width="226" height="20" uuid="ffe1cee0-87b9-4b42-9ce4-a4ee9c980a37"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.jabatan}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="98" y="110" width="226" height="20" uuid="b4b71007-ae77-4028-930e-6b5454fc3c29"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.divisi}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="304" y="26" width="100" height="20" uuid="4df2ee1f-caa3-4a5a-b918-2e32273b2d8b"/>
 				<textElement>
@@ -185,24 +140,43 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[s/d]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="3" y="129" width="95" height="20" uuid="b449dbbe-22a6-4186-bf3b-e1e5a35ffbba"/>
+			<textField>
+				<reportElement x="3" y="46" width="226" height="20" uuid="e812ef44-c275-408b-9c18-a9f71c63ecea"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[UNIT		:]]></text>
+				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="36" width="226" height="20" uuid="1e814b5a-41a3-4520-a93f-a43c299ecf2d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="70" width="552" height="1" uuid="8754ab75-3102-4ffd-8638-9d45d6a81ba6"/>
+			</line>
+			<staticText>
+				<reportElement x="456" y="50" width="79" height="20" uuid="19f5e08f-1ecf-403d-9393-b258902175cd"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="98" y="129" width="226" height="20" uuid="d2ca2176-d149-48b3-87d1-6433526e3367"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
+				<reportElement x="516" y="50" width="80" height="20" uuid="994c6535-aae3-4388-9d2e-1e59888649d9"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="483" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 1" stretchType="RelativeToTallestObject" mode="Opaque" x="5" y="28" width="524" height="414" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="2367c9ae-3a57-455f-a792-5e8afe44639f"/>
+				<reportElement key="table 1" stretchType="RelativeToTallestObject" mode="Opaque" x="3" y="96" width="524" height="284" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="2367c9ae-3a57-455f-a792-5e8afe44639f"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="itemDataset" uuid="88700ba6-8482-437c-849b-2aaaa14c0715">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
@@ -502,26 +476,74 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<staticText>
+				<reportElement x="3" y="26" width="95" height="20" uuid="c890603e-76e4-458a-987f-9fe9f09f11ad"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[POSISI		:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="46" width="95" height="20" uuid="3b3b6658-1b27-4cd0-8c59-1ba18bcb4f1b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[BIDANG		:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="26" width="226" height="20" uuid="ffe1cee0-87b9-4b42-9ce4-a4ee9c980a37"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.jabatan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="46" width="226" height="20" uuid="b4b71007-ae77-4028-930e-6b5454fc3c29"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.divisi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="65" width="95" height="20" uuid="b449dbbe-22a6-4186-bf3b-e1e5a35ffbba"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[UNIT		:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="65" width="226" height="20" uuid="d2ca2176-d149-48b3-87d1-6433526e3367"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="6" width="95" height="20" uuid="b2b9d5ba-16be-42d3-be0c-9c59659d62d9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[NAMA		:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="6" width="226" height="20" uuid="7c47f14e-b4a1-4503-be31-3f92443d04bc"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="123">
 			<textField>
-				<reportElement x="403" y="9" width="74" height="20" uuid="c94b09db-6811-4d13-87dd-65740f0c7062"/>
+				<reportElement x="362" y="9" width="165" height="20" uuid="c94b09db-6811-4d13-87dd-65740f0c7062"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.alamatSurat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="390" y="29" width="100" height="20" uuid="d213665b-c3a4-47f6-ba40-b9fc121e2086"/>
+				<reportElement x="362" y="29" width="165" height="20" uuid="d213665b-c3a4-47f6-ba40-b9fc121e2086"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Pembuat]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="385" y="92" width="113" height="20" uuid="a1eda8e7-1ae2-4d1b-8c53-fccfd93dd1ba"/>
+				<reportElement x="362" y="97" width="165" height="20" uuid="a1eda8e7-1ae2-4d1b-8c53-fccfd93dd1ba"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>

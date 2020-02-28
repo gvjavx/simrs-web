@@ -12,6 +12,8 @@ import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.mobileapi.model.Lembur;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -36,6 +38,7 @@ public class    LemburController implements ModelDriven<Object> {
     private UserBo userBoProxy;
     private JamKerjaBo jamKerjaBoProxy;
     private BiodataBo biodataBoProxy;
+    private NotifikasiBo notifikasiBoProxy;
 
     private String nip;
     private String idLembur;
@@ -48,6 +51,14 @@ public class    LemburController implements ModelDriven<Object> {
     private String tanggalAkhir;
     private String jamAwal;
     private String jamAkhir;
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
 
     public String getNip() {
         return nip;
@@ -123,7 +134,7 @@ public class    LemburController implements ModelDriven<Object> {
         try {
             com.neurix.hris.transaksi.lembur.model.Lembur editLembur = new com.neurix.hris.transaksi.lembur.model.Lembur();
             editLembur.setLemburId(idLembur);
-            if(who.equals("atasan")){
+            if (who.equals("atasan")){
                 if(statusApprove.equals("Y")){
                     editLembur.setApprovalFlag(statusApprove);
                 }else{
@@ -153,7 +164,11 @@ public class    LemburController implements ModelDriven<Object> {
             editLembur.setApprovalId(id);
             editLembur.setApprovalName(model.getNamaPegawai());
 
-            lemburBoProxy.saveApprove(editLembur);
+            List<Notifikasi> notifikasiList = lemburBoProxy.saveApprove(editLembur);
+
+            for (Notifikasi notifikasi: notifikasiList){
+                notifikasiBoProxy.sendNotif(notifikasi);
+            }
 
         } catch (GeneralBOException e) {
             Long logId = null;

@@ -304,11 +304,49 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Pejabat Sementara : </label>
+                        <label class="control-label col-sm-3" >Pegawai Pengganti Sementara : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="PejabatSementara1" readonly name="nip">
+                            <input type="text" class="form-control nip" id="PejabatSementara1" name="nip">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Nama Pegawai Pengganti Sementara : </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control nip" id="PejabatSementara12" readonly name="nip">
+                        </div>
+                    </div>
+                    <script>
+                        $('#PejabatSementara1').typeahead({
+                            minLength: 1,
+                            source: function (query, process) {
+                                functions = [];
+                                mapped = {};
+                                var data = [];
+                                var unit = $('#Unit321').val();
+                                if (unit=="") {
+                                    alert("Unit is empty");
+                                    $('#PejabatSementara12').val("");
+                                    $('#PejabatSementara1').val("");
+                                }else{
+                                    dwr.engine.setAsync(false);
+                                    CutiPegawaiAction.initComboPersonil(query, unit, function (listdata) {
+                                        data = listdata;
+                                    });
+                                    $.each(data, function (i, item) {
+                                        var labelItem = item.nip+" "+item.namaPegawai;
+                                        mapped[labelItem] = { id: item.nip,nama:item.namaPegawai, label: labelItem,divisi: item.divisi,branch:item.branch,positionId:item.positionId,golonganId:item.golonganId , tanggalaktif:item.stTanggalAktif};
+                                        functions.push(labelItem);
+                                    });
+                                    process(functions);
+                                }
+                            },
+                            updater: function (item) {
+                                var selectedObj = mapped[item];
+                                $('#PejabatSementara12').val(selectedObj.nama);
+                                return selectedObj.id;
+                            }
+                        });
+                    </script>
 
                 </form>
                 <table style="width: 100%;" class="sppdPersonTable table table-bordered">

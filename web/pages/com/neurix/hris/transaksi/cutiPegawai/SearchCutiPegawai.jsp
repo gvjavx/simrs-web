@@ -263,7 +263,7 @@
                                                             $('#nip32').val("");
                                                         }else {
                                                             dwr.engine.setAsync(false);
-                                                            CutiPegawaiAction.initComboPersonil(query, unit, function (listdata) {
+                                                            CutiPegawaiAction.initComboAllPersonil(query, unit, function (listdata) {
                                                                 data = listdata;
                                                             });
 
@@ -307,19 +307,19 @@
                                                     </table>
                                                 </td>
                                             </tr>--%>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Bidang :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                                        <s:select list="#comboDivisi.listComboDepartment" id="divisiId" name="cutiPegawai.divisiId"
-                                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
-                                                    </table>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Bidang :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>--%>
+                                                        <%--<s:select list="#comboDivisi.listComboDepartment" id="divisiId" name="cutiPegawai.divisiId"--%>
+                                                                  <%--listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />--%>
+                                                    <%--</table>--%>
 
-                                                </td>
-                                            </tr>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <%--<tr>
                                                 <td>
                                                     <label class="control-label"><small>Bagian :</small></label>
@@ -407,6 +407,9 @@
                                                                     </li>
                                                                     <li id="btnCutiMinus">
                                                                         <s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>
+                                                                    </li>
+                                                                    <li id="btnCetakSisaCuti">
+                                                                        <s:a href="#"><i class="fa fa-search"></i> Cetak Sisa Cuti</s:a>
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -903,7 +906,7 @@
                     "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
                     "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
                     "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
+                    "<th style='text-align: center; color: #fff; background-color:  #bc6a3c'>Sisa Cuti Panjang</th>"+
                     "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
@@ -934,43 +937,60 @@
         dwr.engine.setAsync(false);
         var tmp_table = "";
         var unit=$('#branchid').val();
-        if(unit!=""){
-            CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
-                if (listdata!=""){
-                    tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAllTahunan'></th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
-                        "</tr></thead>";
-                    var i = i;
-                    $.each(listdata, function (i, item) {
-                        var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.setelahResetCutiTahunan+'" class="check" >';
-                        tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' + combo + '</td>' +
-                            '<td align="center">' + item.nip + '</td>' +
-                            '<td align="center">' + item.namaPegawai + '</td>' +
-                            '<td align="center">' + item.sisaCutiTahunan + '</td>' +
-                            '<td align="center">' + item.setelahResetCutiTahunan + '</td>' +
-                            "</tr>";
-                    });
-                    $('.listResetTahunanTable').append(tmp_table);
-                    $("#checkAllTahunan").change(function(){
-                        $('input:checkbox').not(this).prop('checked', this.checked);
-                    });
+        var today = new Date();
+        var month = today.getMonth()+1;
+//        alert(date);
+//        if(month == 1){
+//            alert(cutiAktif);
+            if(unit!=""){
+                var cutiAktif="";
+                CutiPegawaiAction.getCutiAktif(unit,function(listdata){
+                    cutiAktif = listdata;
+                });
+                if( cutiAktif =='N'){
+                    CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
+                        if (listdata!=""){
+                            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAllTahunan'></th>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
+                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
+                                    "</tr></thead>";
+                            var i = i;
+                            $.each(listdata, function (i, item) {
+                                var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.setelahResetCutiTahunan+'" class="check" >';
+                                tmp_table += '<tr style="font-size: 12px;" ">' +
+                                        '<td align="center">' + (i + 1) + '</td>' +
+                                        '<td align="center">' + combo + '</td>' +
+                                        '<td align="center">' + item.nip + '</td>' +
+                                        '<td align="center">' + item.namaPegawai + '</td>' +
+                                        '<td align="center">' + item.sisaCutiTahunan + '</td>' +
+                                        '<td align="center">' + item.setelahResetCutiTahunan + '</td>' +
+                                        "</tr>";
+                            });
+                            $('.listResetTahunanTable').append(tmp_table);
+                            $("#checkAllTahunan").change(function(){
+                                $('input:checkbox').not(this).prop('checked', this.checked);
+                            });
 
-                    $('#modal-reset').find('.modal-title').text('Reset Cuti Tahunan Karyawan');
-                    $('#modal-reset').modal('show');
+                            $('#modal-reset').find('.modal-title').text('Reset Cuti Tahunan Karyawan');
+                            $('#modal-reset').modal('show');
+                        }else{
+                            alert("tidak ada data untuk di reset ");
+                        }
+                    });
                 }else{
-                    alert("tidak ada data untuk di reset ");
+                    alert(cutiAktif);
                 }
-            });
-        }else{
-            alert("Unit belum diisi")
-        }
+            }else{
+                alert("Unit belum diisi")
+            }
+//        }else{
+//            alert('Reset Cuti Tahunan Hanya Bisa Dilakukan di bulan Januari');
+//        }
+
     });
     $('.tableCutiPegawai').on('click', '.item-edit', function() {
         var CutiPegawaiId = $(this).val().replace(/\n|\r/g, "");
@@ -1071,43 +1091,51 @@
         var tmp_table = "";
         var unit=$('#branchid').val();
         if(unit!=""){
-            CutiPegawaiAction.searchResetPanjang(unit,function(listdata) {
-                if (listdata!=""){
-                    tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAllPanjang'></th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal Aktif</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
-                        "</tr></thead>";
-                    var i = i;
-                    $.each(listdata, function (i, item) {
-                        var combo = '<input type="checkbox" id="checkPanjang" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiPanjang+':'+item.setelahResetCutiPanjang+'" class="check">';
-                        tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i + 1) + '</td>' +
-                            '<td align="center">' + combo + '</td>' +
-                            '<td align="center">' + item.nip + '</td>' +
-                            '<td align="center">' + item.namaPegawai + '</td>' +
-                            '<td align="center">' + item.stTanggalAktif + '</td>' +
-                            '<td align="center">' + item.sisaCutiTahunan + '</td>' +
-                            '<td align="center">' + item.sisaCutiPanjang + '</td>' +
-                            '<td align="center">' + item.setelahResetCutiPanjang + '</td>' +
-                            "</tr>";
-                    });
-                    $('.listResetPanjangTable').append(tmp_table);
-                    $("#checkAllPanjang").change(function(){
-                        $('input:checkbox').not(this).prop('checked', this.checked);
-                    });
-                    $('#modal-reset-panjang').find('.modal-title').text('Reset Cuti Panjang Karyawan');
-                    $('#modal-reset-panjang').modal('show');
-                } else{
-                    alert("tidak ada data untuk di reset");
-                }
+//            var cutiAktif="";
+//            CutiPegawaiAction.getCutiAktif(unit,function(listdata){
+//                cutiAktif = listdata;
+//            });
+//            if( cutiAktif =='N'){
+                CutiPegawaiAction.searchResetPanjang(unit,function(listdata) {
+                    if (listdata!=""){
+                        tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAllPanjang'></th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal Aktif</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
+                                "</tr></thead>";
+                        var i = i;
+                        $.each(listdata, function (i, item) {
+                            var combo = '<input type="checkbox" id="checkPanjang" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiPanjang+':'+item.setelahResetCutiPanjang+'" class="check">';
+                            tmp_table += '<tr style="font-size: 12px;" ">' +
+                                    '<td align="center">' + (i + 1) + '</td>' +
+                                    '<td align="center">' + combo + '</td>' +
+                                    '<td align="center">' + item.nip + '</td>' +
+                                    '<td align="center">' + item.namaPegawai + '</td>' +
+                                    '<td align="center">' + item.stTanggalAktif + '</td>' +
+                                    '<td align="center">' + item.sisaCutiTahunan + '</td>' +
+                                    '<td align="center">' + item.sisaCutiPanjang + '</td>' +
+                                    '<td align="center">' + item.setelahResetCutiPanjang + '</td>' +
+                                    "</tr>";
+                        });
+                        $('.listResetPanjangTable').append(tmp_table);
+                        $("#checkAllPanjang").change(function(){
+                            $('input:checkbox').not(this).prop('checked', this.checked);
+                        });
+                        $('#modal-reset-panjang').find('.modal-title').text('Reset Cuti Panjang Karyawan');
+                        $('#modal-reset-panjang').modal('show');
+                    } else{
+                        alert("tidak ada data untuk di reset");
+                    }
 
-            });
+                });
+//            }else{
+//                alert(cutiAktif);
+//            }
 
         }else{
             alert("Unit belum diisi");
@@ -1290,6 +1318,23 @@
             alert("Unit belum diisi");
         }
 
+    });
+
+    $('#btnCetakSisaCuti').on('click', function () {
+        var nip= $('#nip32').val();
+        var nama= $('#namaId').val();
+        $('.listViewCuti').find('tbody').remove();
+        $('.listViewCuti').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        if (nip!=""){
+            var msg='Apakah Anda ingin mencetak Sisa Cuti '+nama+'  ?';
+            if (confirm(msg)) {
+                window.location.href = "cetakSisaCutiPegawai_cutiPegawai.action?nip="+nip;
+            }
+        } else {
+            alert("NIP masih kosong.");
+        }
     });
 </script>
 

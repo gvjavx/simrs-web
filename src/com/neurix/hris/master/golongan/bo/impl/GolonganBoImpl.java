@@ -233,6 +233,8 @@ public class GolonganBoImpl implements GolonganBo {
                     returnGolongan = new Golongan();
                     returnGolongan.setGolonganId(golonganEntity.getGolonganId());
                     returnGolongan.setGolonganName(golonganEntity.getGolonganName());
+                    returnGolongan.setLevel(golonganEntity.getLevel());
+                    returnGolongan.setStLevel(golonganEntity.getLevel().toString());
 
                     returnGolongan.setCreatedWho(golonganEntity.getCreatedWho());
                     returnGolongan.setCreatedDate(golonganEntity.getCreatedDate());

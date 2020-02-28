@@ -35,6 +35,15 @@ public class JadwalShiftKerja extends BaseModel {
     private String nip;
     private String namaPegawai;
     private String positionName;
+    private String profesiName;
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getStTanggal() {
         return stTanggal;

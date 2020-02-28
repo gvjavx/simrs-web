@@ -102,6 +102,15 @@ public class AbsensiPegawai extends BaseModel {
     private String terlambatLebih60;
     private String tidakAbsenMasuk;
     private String tidakAbsenPulang;
+    private String cekPegawaiStatus;
+
+    public String getCekPegawaiStatus() {
+        return cekPegawaiStatus;
+    }
+
+    public void setCekPegawaiStatus(String cekPegawaiStatus) {
+        this.cekPegawaiStatus = cekPegawaiStatus;
+    }
 
     public String getKeteranganSesuaikan() {
         return keteranganSesuaikan;

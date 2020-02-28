@@ -778,7 +778,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         result.setNip(nip);
         result.setNamaPegawai(nama);
         result.setPositionName(posisi);
-        result.setKelompokName(grup);
+        result.setProfesiName(grup);
         result.setShiftName(shift);
         result.setShiftId(shiftId);
         listOfResult.add(result);

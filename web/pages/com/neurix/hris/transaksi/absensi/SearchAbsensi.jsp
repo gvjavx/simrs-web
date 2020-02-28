@@ -34,6 +34,190 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        /** SPINNER CREATION **/
+
+        .loader {
+            position: relative;
+            text-align: center;
+            margin: 15px auto 35px auto;
+            z-index: 9999;
+            display: block;
+            width: 80px;
+            height: 80px;
+            border: 10px solid rgba(116, 185, 255,1.0);
+            border-radius: 50%;
+            border-top-color: rgba(9, 132, 227,1.0);
+            animation: spin 1s ease-in-out infinite;
+            -webkit-animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+
+        /** MODAL STYLING **/
+
+        .modal-content {
+            border-radius: 0px;
+            box-shadow: 0 0 20px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.75;
+        }
+
+        #success_tic .page-body{
+            max-width:300px;
+            background-color:#FFFFFF;
+            margin:10% auto;
+        }
+        #success_tic .page-body .head{
+            text-align:center;
+        }
+        /* #success_tic .tic{
+          font-size:186px;
+        } */
+        #success_tic .close{
+            opacity: 1;
+            position: absolute;
+            right: 0px;
+            font-size: 30px;
+            padding: 3px 15px;
+            margin-bottom: 10px;
+        }
+        #success_tic .checkmark-circle {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .checkmark-circle .background {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #1ab394;
+            position: absolute;
+        }
+        #success_tic .checkmark-circle .checkmark {
+            border-radius: 5px;
+        }
+        #success_tic .checkmark-circle .checkmark.draw:after {
+            -webkit-animation-delay: 300ms;
+            -moz-animation-delay: 300ms;
+            animation-delay: 300ms;
+            -webkit-animation-duration: 1s;
+            -moz-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-timing-function: ease;
+            -moz-animation-timing-function: ease;
+            animation-timing-function: ease;
+            -webkit-animation-name: checkmark;
+            -moz-animation-name: checkmark;
+            animation-name: checkmark;
+            -webkit-transform: scaleX(-1) rotate(135deg);
+            -moz-transform: scaleX(-1) rotate(135deg);
+            -ms-transform: scaleX(-1) rotate(135deg);
+            -o-transform: scaleX(-1) rotate(135deg);
+            transform: scaleX(-1) rotate(135deg);
+            -webkit-animation-fill-mode: forwards;
+            -moz-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+        }
+        #success_tic .checkmark-circle .checkmark:after {
+            opacity: 1;
+            height: 75px;
+            width: 37.5px;
+            -webkit-transform-origin: left top;
+            -moz-transform-origin: left top;
+            -ms-transform-origin: left top;
+            -o-transform-origin: left top;
+            transform-origin: left top;
+            border-right: 15px solid #fff;
+            border-top: 15px solid #fff;
+            border-radius: 2.5px !important;
+            content: '';
+            left: 35px;
+            top: 80px;
+            position: absolute;
+        }
+
+        @-webkit-keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 37.5px;
+                opacity: 1;
+            }
+            40% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+            100% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+        }
+        @-moz-keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 37.5px;
+                opacity: 1;
+            }
+            40% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+            100% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+        }
+        @keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 37.5px;
+                opacity: 1;
+            }
+            40% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+            100% {
+                height: 75px;
+                width: 37.5px;
+                opacity: 1;
+            }
+        }
+
     </style>
     <script type='text/javascript'>
 
@@ -264,9 +448,9 @@
                                                                 <li>
                                                                     <s:a href="add_absensi.action"><i class="fa fa-plus"></i> Add Absensi</s:a>
                                                                 </li>
-                                                                <li>
+                                                                <%--<li>
                                                                     <s:a href="addTambahan_absensi.action"><i class="fa fa-plus"></i> Add Absensi Tambahan</s:a>
-                                                                </li>
+                                                                </li>--%>
                                                                     <%--<li id="btnRefreshAll">
                                                                         <s:a href="#"><i class="fa fa-refresh"></i> Refresh Data Absensi</s:a>
                                                                     </li>--%>
@@ -334,6 +518,17 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
+                                                            <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:if test="#attr.row.cekAdmin">--%>
+                                                                    <%--<s:url var="urlEdit" namespace="/absensi" action="editAbsensi_absensi" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                    <%--</s:url>--%>
+                                                                    <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlEdit}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">--%>
+                                                                    <%--</sj:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <s:url var="urlViewDelete" namespace="/absensi" action="view_absensi" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
@@ -412,7 +607,39 @@
 
 </body>
 </html>
+<!-- Modal -->
+<div class="modal fade" id="onLoading" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="loader"></div>
+                <div class="loader-txt">
+                    <p>Please wait <br><br><small>Server is processing your request ...</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="success_tic" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <a class="close" href="#" data-dismiss="modal">&times;</a>
+            <div class="page-body">
+                <div class="head">
+                    <h3 style="margin-top:5px;">SUCCESS</h3>
+                    <h4>Sync dengan mesin sukses</h4>
+                </div>
+                <h1 style="text-align:center;"><div class="checkmark-circle">
+                    <div class="background"></div>
+                    <div class="checkmark draw"></div>
+                </div></h1>
+            </div>
+        </div>
+    </div>
 
+</div>
 <script>
     $(document).ready(function() {
         $('#tgl1').datepicker({
@@ -492,10 +719,16 @@
         });
         $('#btnSync').click(function(){
             if(confirm("apakah anda ingin melakukan sinkronisasi data dengan mesin absensi ?")){
-                dwr.engine.setAsync(false);
-                AbsensiAction.getDataFromMesin(tgl1,tgl2,function(status) {
-                    if (status=="00"){
-                        alert("Sync Success");
+                $("#onLoading").modal({
+                    backdrop: "static", //remove ability to close modal with click
+                    keyboard: false, //remove option to close with keyboard
+                    show: true //Display loader!
+                });
+                dwr.engine.setAsync(true);
+                AbsensiAction.getDataFromMesin({
+                    callback : function(response){
+                        $("#onLoading").modal("hide");
+                        $("#success_tic").modal("show");
                     }
                 });
             }

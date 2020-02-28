@@ -128,5 +128,10 @@
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/transaksi/ijinKeluarKantor/SearchIjinKeluarKantor.jsp</result>
         </action>
+        <action name="paging_displaytag_anggota"
+                class="com.neurix.hris.transaksi.ijinKeluar.action.IjinKeluarAction" method="paging_anggota">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/hris/transaksi/ijinKeluarKantor/viewIjinKeluarKantor.jsp</result>
+        </action>
     </package>
 </struts>

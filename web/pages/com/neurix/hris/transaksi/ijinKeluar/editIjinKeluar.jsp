@@ -119,21 +119,20 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="nip" name="ijinKeluar.nip" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="nipId" name="ijinKeluar.nip" required="true" readonly="true" cssClass="form-control"/>
                                     <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
 
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Nama :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="nama" name="ijinKeluar.nama" required="false" readonly="true" cssClass="form-control"/>
-                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
-
+                                <s:textfield  id="namaId1" name="ijinKeluar.namaPegawai" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -143,33 +142,35 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="unit" name="ijinKeluar.unitId" required="false" readonly="true" cssClass="form-control"/>
-                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select disabled="true" cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="ijinKeluar.unitId" required="true" readonly="true"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
 
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Divisi :</small></label>
+                            <label class="control-label"><small>Bidang :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="divisi" name="ijinKeluar.divisiId" required="false" readonly="true" cssClass="form-control"/>
-                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
+                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                <s:select list="#comboDivisi.listComboDepartment" id="divisiId12" name="ijinKeluar.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
 
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Posisi :</small></label>
+                            <label class="control-label"><small>Jabatan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="posisi" name="ijinKeluar.posisiId" required="false" readonly="true" cssClass="form-control"/>
-                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
-
+                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                <s:select list="#comboPosition.listOfComboPosition" id="positionId12" name="ijinKeluar.positionId" readonly="true" disabled="true"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -180,38 +181,43 @@
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#comboGolongan.listComboGolongan" id="golonganId12" name="ijinKeluar.golonganId"
+                                <s:select list="#comboGolongan.listComboGolongan" id="golonganId12" name="ijinKeluar.golonganId" disabled="true"
                                           listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Cuti :</small></label>
+                            <label class="control-label"><small>Ijin :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
-                                <s:select list="#comboCuti.listComboCuti" id="cuti" name="ijinKeluar.cutiId" readonly="true" disabled="true"
-                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                <s:action id="initComboIjin" namespace="/ijin" name="initComboIjin_ijin"/>
+                                <s:select disabled="true" list="#initComboIjin.listOfComboIjin" id="ijinId1" name="ijinKeluar.ijinId"
+                                          listKey="ijinId" listValue="ijinName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Sisa Cuti :</small></label>
+                            <label class="control-label"><small>Tanggal Awal Ijin :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="sisaCuti" name="ijinKeluar.sisaCuti" required="false" readonly="true" cssClass="form-control"/>
-                                    <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <s:textfield id="tgl2" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
+                                                 required="false"  cssStyle=""/>
+                                </div>
 
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tanggal Awal Cuti :</small></label>
+                            <label class="control-label"><small>Tanggal Selesai Ijin :</small></label>
                         </td>
                         <td>
                             <table>
@@ -219,7 +225,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tgl2" name="ijinKeluar.tanggalDari" cssClass="form-control pull-right"
+                                    <s:textfield id="tgl1" name="ijinKeluar.stTanggalAkhir" cssClass="form-control pull-right"
                                                  required="false"  cssStyle=""/>
                                 </div>
                             </table>
@@ -227,35 +233,49 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tanggal Selesai Cuti :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <s:textfield id="tgl1" name="ijinKeluar.tanggalSelesai" cssClass="form-control pull-right"
-                                                 required="false"  cssStyle=""/>
-                                </div>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Lama Cuti :</small></label>
+                            <label class="control-label"><small>Lama Ijin :</small></label>
                         </td>
                         <td>
                             <table>
                                 <tr>
                                     <td width="60px">
-                                        <s:textfield  id="lamaCuti" name="ijinKeluar.lamaHariCuti" required="false" readonly="true" cssClass="form-control"/>
+                                        <s:textfield  id="lamaCuti" name="ijinKeluar.lamaIjin" required="false" readonly="true" cssClass="form-control"/>
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td>
                                         hari
                                     </td>
                                 </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Keterangan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea id="keterangan" name="ijinKeluar.keterangan" required="false" cssClass="form-control" rows="3"></s:textarea>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Not Approve Note :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea id="notApprove" name="ijinKeluar.notApprovalNote" required="false" cssClass="form-control" rows="3"></s:textarea>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Keterangan Batal :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textarea id="cancelNote" name="ijinKeluar.cancelNote" required="false" cssClass="form-control" rows="3"></s:textarea>
                             </table>
                         </td>
                     </tr>
@@ -372,10 +392,10 @@
             $('#info_dialog').dialog('close');
         };
         $('#tgl1').datepicker({
-            dateFormat: 'dd/mm/yy',
+            dateFormat: 'dd-mm-yy',
         });
         $('#tgl2').datepicker({
-            dateFormat: 'dd/mm/yy',
+            dateFormat: 'dd-mm-yy',
         });
     });
 
@@ -395,10 +415,7 @@
         var hariini = new Date();
         var startdate = $('#tgl2').datepicker('getDate');
         var enddate = $('#tgl1').datepicker('getDate');
-        if (startdate<hariini){
-            alert ("tanggal mulai kurang dari tanggal sekarang , mohon ulangi ");
-        }
-        else if(startdate<enddate) {
+        if(startdate<enddate) {
             var days   = (enddate - startdate)/1000/60/60/24;
             $('#lamaCuti').val(days);
         }

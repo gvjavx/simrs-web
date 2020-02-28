@@ -11,15 +11,18 @@
             <column name="tunj_jab_struktur_id" sql-type="varchar" length="8" not-null="true" />
         </id>
 
-        <property name="positionId">
-            <column name="position_id" sql-type="varchar" length="5" not-null="true" />
+
+        <property name="kelompokId">
+            <column name="kelompok_id" sql-type="varchar" length="5" not-null="true" />
         </property>
-        <property name="branchId">
-            <column name="branch_id" sql-type="varchar" length="5" not-null="true" />
+        <property name="tunjJabatan">
+            <column name="tunj_jabatan" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
-        <property name="nilai">
-            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        <property name="tunjStruktural">
+            <column name="tunj_struktural" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>
+
+
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

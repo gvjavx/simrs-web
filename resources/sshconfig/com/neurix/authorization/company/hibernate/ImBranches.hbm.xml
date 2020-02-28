@@ -33,6 +33,9 @@
         <property name="branchAddress">
             <column name="branch_address" sql-type="varchar" length="1000"/>
         </property>
+        <property name="alamatSurat">
+            <column name="alamat_surat" sql-type="varchar" length="100"/>
+        </property>
         <property name="masaTanam">
             <column name="mt" sql-type="varchar" length="100"/>
         </property>
@@ -90,9 +93,32 @@
         <property name="keyEklaim">
             <column name="key_eklaim" sql-type="varchar" length="100"/>
         </property>
-        <property name="alamatSurat">
-            <column name="alamat_surat" sql-type="varchar" length="100"/>
+
+        <property name="minBpjsKs">
+            <column name="min_bpjs_ks" sql-type="numeric" length="10"/>
         </property>
+        <property name="maxBpjsKs">
+            <column name="max_bpjs_ks" sql-type="numeric" length="10"/>
+        </property>
+        <property name="minBpjsTk">
+            <column name="min_bpjs_tk" sql-type="numeric" length="10"/>
+        </property>
+        <property name="maxBpjsTk">
+            <column name="max_bpjs_tk" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentKsKary">
+            <column name="percent_ks_kary" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentKsPers">
+            <column name="percent_ks_pers" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentTkKary">
+            <column name="percent_tk_kary" sql-type="numeric" length="10"/>
+        </property>
+        <property name="percentTkPers">
+            <column name="percent_tk_pers" sql-type="numeric" length="10"/>
+        </property>
+
         <property name="logoName">
             <column name="logo_name" sql-type="varchar" length="100"/>
         </property>

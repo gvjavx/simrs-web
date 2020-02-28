@@ -241,6 +241,8 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     itJadwalShiftKerjaDetailEntity.setNip(jadwalShiftKerjaDetail.getNip());
                     itJadwalShiftKerjaDetailEntity.setNamaPegawai(jadwalShiftKerjaDetail.getNamaPegawai());
                     itJadwalShiftKerjaDetailEntity.setPositionName(jadwalShiftKerjaDetail.getPositionName());
+                    itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
+                    itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
                     itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
 
                     itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
@@ -279,9 +281,6 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
                 hsCriteria.put("branch_id", searchBean.getBranchId());
             }
-            if (searchBean.getStatusGiling() != null && !"".equalsIgnoreCase(searchBean.getStatusGiling())) {
-                hsCriteria.put("status_giling", searchBean.getStatusGiling());
-            }
             if (searchBean.getStTanggalAwal() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalAwal()))) {
                 Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalAwal());
                 hsCriteria.put("tanggal_dari", tanggalDari);
@@ -317,7 +316,6 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                             returnJadwalShiftKerja.setJadwalShiftKerjaId("");
                             returnJadwalShiftKerja.setTanggal(null);
                             returnJadwalShiftKerja.setBranchId("");
-                            returnJadwalShiftKerja.setStatusGiling("");
                             returnJadwalShiftKerja.setTamp(false);
                         } else {
                             jadwalKerjaId=jadwalShiftKerjaEntity.getJadwalShiftKerjaId();
@@ -325,7 +323,6 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                             returnJadwalShiftKerja.setJadwalShiftKerjaName(jadwalShiftKerjaEntity.getJadwalShiftKerjaName());
                             returnJadwalShiftKerja.setTanggal(jadwalShiftKerjaEntity.getTanggal());
                             returnJadwalShiftKerja.setBranchId(jadwalShiftKerjaEntity.getBranchId());
-                            returnJadwalShiftKerja.setStatusGiling(jadwalShiftKerjaEntity.getStatusGiling());
                             returnJadwalShiftKerja.setKeterangan(jadwalShiftKerjaEntity.getKeterangan());
 
                             if (jadwalShiftKerjaEntity.getBranchId()!=null){
@@ -342,6 +339,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                         returnJadwalShiftKerja.setShiftName(imHrisShiftEntity.getShiftName());
                         returnJadwalShiftKerja.setNamaPegawai(itJadwalShiftKerjaDetailEntity.getNamaPegawai());
                         returnJadwalShiftKerja.setPositionName(itJadwalShiftKerjaDetailEntity.getPositionName());
+                        returnJadwalShiftKerja.setProfesiName(itJadwalShiftKerjaDetailEntity.getProfesiName());
                         returnJadwalShiftKerja.setAction(jadwalShiftKerjaEntity.getAction());
                         returnJadwalShiftKerja.setFlag(jadwalShiftKerjaEntity.getFlag());
                         returnJadwalShiftKerja.setCreatedWho(jadwalShiftKerjaEntity.getCreatedWho());

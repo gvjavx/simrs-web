@@ -79,8 +79,9 @@
             $.subscribe('beforeProcessSaveAbsensi', function (event, data) {
                 var tanggal2 = $('#tanggal2').val();
                 var tanggal1 = $('#tanggal1').val();
+                var statusPegawai = $('#statusPegawai').val();
 
-                if (tanggal1 != ''&&tanggal2 != '' ) {
+                if (tanggal1 != ''&&tanggal2 != '') {
                     if (confirm('Do you want to Inquiry this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -179,6 +180,17 @@
                                                         <s:textfield id="tanggal2" name="absensiPegawai.stTanggalAkhir" cssClass="form-control pull-right"
                                                                      required="false" size="7"  cssStyle=""/>
                                                     </div>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Status Pegawai :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'Y':'Pegawai Shift','N':'Pegawai Kantor'}" id="statusPegawai" name="absensiPegawai.cekPegawaiStatus"
+                                                              headerKey="" headerValue="Semua Pegawai" cssClass="form-control" />
                                                 </table>
                                             </td>
                                         </tr>

@@ -297,8 +297,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             pelayanan = poli;
         }
 
-        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
-                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian\n" +
+        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan, \n" +
+                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian,  b.no_checkup, b.id_detail_checkup\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -325,6 +325,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 checkup.setNamaDesa(obj[3].toString());
                 checkup.setNamaPelayanan(obj[5].toString());
                 checkup.setNamaKecamatan(obj[7].toString());
+                checkup.setNoCheckup(obj[9].toString());
+                checkup.setIdDetailCheckup(obj[10].toString());
                 listOfResult.add(checkup);
             }
         }

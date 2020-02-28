@@ -45,6 +45,29 @@
             <column name="bulan_aktif" sql-type="integer" not-null="false" />
         </property>
 
+        <!--Tambahan Irfan-->
+        <property name="pemondokan">
+            <column name="pemondokan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganTambahan">
+            <column name="tunjangan_tambahan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganLain">
+            <column name="tunjangan_lain" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pphThr">
+            <column name="pph_thr" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="thp">
+            <column name="thp" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

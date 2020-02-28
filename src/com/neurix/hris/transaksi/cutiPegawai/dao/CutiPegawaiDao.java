@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.cutiPegawai.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
@@ -307,6 +309,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
+//                .add(Restrictions.eq("flagPerbaikan", "Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.le("tanggalDari",tanggal))
@@ -319,6 +322,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("cancelFlag","N"))
+                .add(Restrictions.eq("flagPerbaikan","N"))
                 .add(Restrictions.le("tanggalSelesai",tanggal2))
                 .add(Restrictions.ge("tanggalDari",tanggal1))
                 .list();
@@ -370,6 +374,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.le("tanggalDari",tanggal))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.eq("flagPerbaikan","Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
@@ -448,7 +453,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 }
             }
 
-            String query = "SELECT cuti.* FROM  \n" +
+            String query = "SELECT DISTINCT cuti.* FROM  \n" +
                     "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
                     "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
                     " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
@@ -492,6 +497,210 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
             }
         }
         return listOfResult;
+    }
+
+    public List<Biodata> getBranchDivisiPosisi(String nip) throws HibernateException {
+        List<Biodata> listOfResult = new ArrayList<Biodata>();
+
+
+
+        String query = "select distinct it_hris_pegawai_position.branch_id, im_position.department_id, it_hris_pegawai_position.position_id,im_position.bagian_id \n" +
+                "from it_hris_pegawai_position\n" +
+                "inner join im_position on it_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "where\n" +
+                "it_hris_pegawai_position.flag = 'Y'\n" +
+                "and nip = '"+nip+"'";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        Biodata biodata;
+        for(Object[] rows: results){
+            biodata = new Biodata();
+            biodata.setBranch(rows[0].toString());
+            biodata.setDivisi(rows[1].toString());
+            biodata.setPositionId(rows[2].toString());
+            biodata.setBagianId(rows[3].toString());
+            listOfResult.add(biodata);
+        }
+        return listOfResult;
+    }
+
+    public String findCutiAktif(String branchId){
+        String listOfResult="";
+        String query ="SELECT * FROM \n" +
+                "it_hris_cuti_pegawai cuti\n" +
+                "\tINNER JOIN it_hris_pegawai_position posisi ON cuti.nip=posisi.nip \n" +
+                "WHERE\n" +
+                "\tposisi.branch_id='"+branchId+"' AND\n" +
+                "\tcuti.approval_flag is null";
+
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+        if (results.size()>0){
+            listOfResult="Masih ada "+results.size()+" Cuti yang Aktif";
+        } else {
+            listOfResult="N";
+        }
+        return listOfResult;
+
+    }
+
+    public String findCutiToBatal(String nip){
+        String listOfResult="";
+        String query = "select max(cuti_pegawai_id) from it_hris_cuti_pegawai where cancel_flag = 'N' and nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            listOfResult = results.toString();
+        }else {
+            listOfResult=null;
+        }
+        return listOfResult;
+    }
+
+    public String getBagianPegawai(String positionId){
+        String result="";
+        String query ="select nama_bagian" +
+                " from im_hris_position_bagian, im_position" +
+                " where im_position.bagian_id = im_hris_position_bagian.bagian_id and im_position.position_id = '"+positionId+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
+    }
+
+    public List<CutiPegawai> getDataPerusahaanPegawai(String nip){
+        List<CutiPegawai> listOfResult = new ArrayList<CutiPegawai>();
+
+        String query="select\n" +
+                "\tbranch_name, position_name, nama_bagian, department_name, im_branches.branch_id \n" +
+                "from\n" +
+                "\tit_hris_pegawai_position, im_branches, im_position, im_hris_position_bagian, im_hris_department\n" +
+                "where\n" +
+                "\tit_hris_pegawai_position.branch_id = im_branches.branch_id\n" +
+                "and\n" +
+                "\tit_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "and\n" +
+                "\tim_position.bagian_id = im_hris_position_bagian.bagian_id\n" +
+                "and\n" +
+                "\tim_position.department_id = im_hris_department.department_id\n" +
+                "and\n" +
+                "\tit_hris_pegawai_position.nip = '"+nip+"'\n" +
+                "and\n" +
+                "\tit_hris_pegawai_position.flag ='Y'";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+        CutiPegawai cutiPegawai;
+        if (results.size()>0){
+            for(Object[] rows: results){
+                cutiPegawai = new CutiPegawai();
+                cutiPegawai.setUnitName(rows[0].toString());
+                cutiPegawai.setPosisiName(rows[1].toString());
+                cutiPegawai.setBagian(rows[2].toString());
+                cutiPegawai.setDivisiName(rows[3].toString());
+                cutiPegawai.setUnitId(rows[4].toString());
+                listOfResult.add(cutiPegawai);
+            }
+        }
+
+        return listOfResult;
+    }
+
+
+    public String cekIfKomisaris(String nip){
+        String result="";
+        String query ="select position_id from it_hris_pegawai_position where nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results !=null){
+            if (results.toString().equalsIgnoreCase("00")||results.toString().equalsIgnoreCase("01")||results.toString().equalsIgnoreCase("02")){
+                result = "ya";
+            }else {
+                result="tidak";
+            }
+        }
+        return result;
+    }
+
+    public String cekIfAbsensi(String nip, Date tgl){
+        String result="";
+        String query ="select absensi_pegawai_id from it_hris_absensi_pegawai where nip = '"+nip+"' and tanggal = '"+tgl+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = "ya";
+        }else {
+            result="tidak";
+        }
+        return result;
+    }
+
+    public String getLatesCutiPegawaiData(String nip){
+        String result="";
+        String query ="select cuti_pegawai_id\n" +
+                "from it_hris_cuti_pegawai\n" +
+                "where nip ='"+nip+"'\n" +
+                "order by cuti_pegawai_id DESC\n" +
+                "limit 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
+    }
+
+    public String getKabid(String branchId){
+        String result="";
+        String query ="select nama_pegawai\n" +
+                "from im_hris_pegawai, it_hris_pegawai_position \n" +
+                "where it_hris_pegawai_position.position_id ='9' \n" +
+                "and it_hris_pegawai_position.nip = im_hris_pegawai.nip\n" +
+                "and it_hris_pegawai_position.flag = 'Y'\n" +
+                "and branch_id ='"+branchId+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="(                   )";
+        }
+        return result;
+    }
+
+    public String getTanggalPensiun(String nip){
+        String result="";
+        String query ="select tanggal_pensiun from im_hris_pegawai where nip ='"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="-";
+        }
+        return result;
+    }
+    public String getUnitByNip(String nip){
+        String result="";
+        String query ="select branch_id from it_hris_pegawai_position where nip = '"+nip+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="-";
+        }
+        return result;
     }
 
 }

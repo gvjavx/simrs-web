@@ -48,8 +48,6 @@
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1"/>
         </property>
-
-        <!--sodiq, 10/12/2019, Penambahan attribut id pelayanan-->
         <property name="idPelayanan">
             <column name="id_pelayanan" sql-type="varchar" length="30"/>
         </property>

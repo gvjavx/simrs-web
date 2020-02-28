@@ -17,9 +17,164 @@ public class ItPayrollInsentifEntity implements Serializable {
     private String insentifId;
     private String nip;
     private String payrollId;
+    private String bulan;
+    private String tahun;
+
+    private BigDecimal totalInsentif;
+    private BigDecimal totalInsentifBersih;
+    private BigDecimal pphInsentif;
+    private BigDecimal totalThp;
+
+
+    private BigDecimal gaji;
+    private BigDecimal sankhus;
+    private BigDecimal tunjJabatan;
+    private BigDecimal tunjStrutural;
+    private BigDecimal tunjFungsional;
+    private BigDecimal tunjPeralihan;
+    private BigDecimal tunjTambahan;
+    private BigDecimal tunjRumah;
+    private BigDecimal tunjListrik;
+    private BigDecimal tunjAir;
+    private BigDecimal tunjBbm;
+
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private Timestamp lastUpdate;
+    private String createdWho;
+    private String lastUpdateWho;
+
+    public BigDecimal getTotalThp() {
+        return totalThp;
+    }
+
+    public void setTotalThp(BigDecimal totalThp) {
+        this.totalThp = totalThp;
+    }
+
+    public BigDecimal getTunjTambahan() {
+        return tunjTambahan;
+    }
+
+    public void setTunjTambahan(BigDecimal tunjTambahan) {
+        this.tunjTambahan = tunjTambahan;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public BigDecimal getGaji() {
+        return gaji;
+    }
+
+    public void setGaji(BigDecimal gaji) {
+        this.gaji = gaji;
+    }
+
+    public BigDecimal getPphInsentif() {
+        return pphInsentif;
+    }
+
+    public void setPphInsentif(BigDecimal pphInsentif) {
+        this.pphInsentif = pphInsentif;
+    }
+
+    public BigDecimal getSankhus() {
+        return sankhus;
+    }
+
+    public void setSankhus(BigDecimal sankhus) {
+        this.sankhus = sankhus;
+    }
+
+    public BigDecimal getTotalInsentif() {
+        return totalInsentif;
+    }
+
+    public void setTotalInsentif(BigDecimal totalInsentif) {
+        this.totalInsentif = totalInsentif;
+    }
+
+    public BigDecimal getTotalInsentifBersih() {
+        return totalInsentifBersih;
+    }
+
+    public void setTotalInsentifBersih(BigDecimal totalInsentifBersih) {
+        this.totalInsentifBersih = totalInsentifBersih;
+    }
+
+    public BigDecimal getTunjAir() {
+        return tunjAir;
+    }
+
+    public void setTunjAir(BigDecimal tunjAir) {
+        this.tunjAir = tunjAir;
+    }
+
+    public BigDecimal getTunjBbm() {
+        return tunjBbm;
+    }
+
+    public void setTunjBbm(BigDecimal tunjBbm) {
+        this.tunjBbm = tunjBbm;
+    }
+
+    public BigDecimal getTunjFungsional() {
+        return tunjFungsional;
+    }
+
+    public void setTunjFungsional(BigDecimal tunjFungsional) {
+        this.tunjFungsional = tunjFungsional;
+    }
+
+    public BigDecimal getTunjJabatan() {
+        return tunjJabatan;
+    }
+
+    public void setTunjJabatan(BigDecimal tunjJabatan) {
+        this.tunjJabatan = tunjJabatan;
+    }
+
+    public BigDecimal getTunjListrik() {
+        return tunjListrik;
+    }
+
+    public void setTunjListrik(BigDecimal tunjListrik) {
+        this.tunjListrik = tunjListrik;
+    }
+
+    public BigDecimal getTunjPeralihan() {
+        return tunjPeralihan;
+    }
+
+    public void setTunjPeralihan(BigDecimal tunjPeralihan) {
+        this.tunjPeralihan = tunjPeralihan;
+    }
+
+    public BigDecimal getTunjRumah() {
+        return tunjRumah;
+    }
+
+    public void setTunjRumah(BigDecimal tunjRumah) {
+        this.tunjRumah = tunjRumah;
+    }
+
+    public BigDecimal getTunjStrutural() {
+        return tunjStrutural;
+    }
+
+    public void setTunjStrutural(BigDecimal tunjStrutural) {
+        this.tunjStrutural = tunjStrutural;
+    }
+
     private String nama;
     private String branchId;
-    private String tahun;
     private String branchName;
     private BigDecimal jumlahInsentif ;
     private BigDecimal jumlahPph ;
@@ -43,12 +198,7 @@ public class ItPayrollInsentifEntity implements Serializable {
     private int bulanSampai;
     private int tahunInsentif;
 
-    private String flag;
-    private String action;
-    private Timestamp createdDate;
-    private Timestamp lastUpdate;
-    private String createdWho;
-    private String lastUpdateWho;
+
 
     public int getBulanMulai() {
         return bulanMulai;

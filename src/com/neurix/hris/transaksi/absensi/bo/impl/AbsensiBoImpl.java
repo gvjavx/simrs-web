@@ -19,6 +19,8 @@ import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.master.payrollTunjanganUmk.dao.PayrollTunjanganUmkDao;
 import com.neurix.hris.master.payrollTunjanganUmk.model.ImPayrollTunjanganUmkEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
@@ -101,6 +103,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     private JamLemburDao jamLemburDao;
     private PayrollDao payrollDao;
     private PayrollSkalaGajiDao payrollSkalaGajiDao;
+    private PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao;
     private DepartmentDao departmentDao;
     private CutiPegawaiDao cutiPegawaiDao;
     private IndisiplinerDao indisiplinerDao;
@@ -114,6 +117,14 @@ public class AbsensiBoImpl implements AbsensiBo {
     private PegawaiTambahanDao pegawaiTambahanDao;
     private PegawaiTambahanAbsensiDao pegawaiTambahanAbsensiDao;
     private ShiftDao shiftDao;
+
+    public PayrollSkalaGajiPkwtDao getPayrollSkalaGajiPkwtDao() {
+        return payrollSkalaGajiPkwtDao;
+    }
+
+    public void setPayrollSkalaGajiPkwtDao(PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao) {
+        this.payrollSkalaGajiPkwtDao = payrollSkalaGajiPkwtDao;
+    }
 
     public AbsensiDashboardDao getAbsensiDashboardDao() {
         return absensiDashboardDao;
@@ -404,7 +415,40 @@ public class AbsensiBoImpl implements AbsensiBo {
 
     @Override
     public void saveEdit(AbsensiPegawai bean) throws GeneralBOException {
+        logger.info("[absensiBoimpl.saveDelete] start process >>>");
 
+        if (bean!=null) {
+            String absensiPegawaiId = bean.getAbsensiPegawaiId();
+            AbsensiPegawaiEntity absensiPegawaiEntity = null;
+            try {
+                // Get data from database by ID
+                absensiPegawaiEntity = absensiPegawaiDao.getById("absensiPegawaiId", absensiPegawaiId);
+            } catch (HibernateException e) {
+                logger.error("[absensiBoimpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode Absensi, please inform to your admin...," + e.getMessage());
+            }
+            if (absensiPegawaiEntity != null) {
+                // Modify from bean to entity serializable
+                absensiPegawaiEntity.setFlag(bean.getFlag());
+                absensiPegawaiEntity.setAction(bean.getAction());
+                absensiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                absensiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
+                absensiPegawaiEntity.setJamMasuk(bean.getJamMasuk());
+                absensiPegawaiEntity.setJamKeluar(bean.getJamKeluar());
+                absensiPegawaiEntity.setStatusAbsensi(bean.getStatusAbsensi());
+                try {
+                    // Delete (Edit) into database
+                    absensiPegawaiDao.updateAndSave(absensiPegawaiEntity);
+                } catch (HibernateException e) {
+                    logger.error("[absensiBoimpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data absensi, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[absensiBoimpl.saveDelete] Error, not found data alat with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data absensi with request id, please check again your data ...");
+            }
+        }
+        logger.info("[absensiBoimpl.saveDelete] end process <<<");
     }
     @Override
     public void saveApprove(AbsensiPegawai bean) throws GeneralBOException {
@@ -915,6 +959,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             absensiPegawaiEntity.setStTanggal(bean.getStTanggal());
             absensiPegawaiEntity.setNama(bean.getNama());
             absensiPegawaiEntity.setStatusName(bean.getStatusName());
+
             absensiPegawaiEntity.setRealisasiJamLembur(bean.getRealisasiJamLembur());
             absensiPegawaiEntity.setTipePegawai(bean.getTipePegawai());
             absensiPegawaiEntity.setStatusGiling(bean.getStatusGiling());
@@ -994,6 +1039,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                             }
                             iJamAwalLemburKerja= Integer.parseInt(lemburEntity.getJamAwal().replace(":",""));
                             iJamAkhirLemburKerja= Integer.parseInt(lemburEntity.getJamAkhir().replace(":",""));
+
+                            if (iJamAkhirKerja<=iJamAwalLemburKerja&&iJamAkhirKerja>=400){
+                                absensiPegawaiEntity.setRealisasiJamLembur((double) 0);
+                            }
                         }
 
                         if (bean.getRealisasiJamLembur() <= lamaLembur) {
@@ -1033,9 +1082,17 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("tahun", "2019");
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
-                        payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
-                        for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
+                        if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan());
+                            for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
+                                upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            }
+                        }else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
+                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan());
+                            for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
+                                upahLembur = skalaGajiLoop.getGajiPokok().doubleValue();
+                            }
                         }
 
                         double jamLembur = 0;
@@ -1070,7 +1127,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
                         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                         String strDate = dateFormat.format(bean.getTanggal());
@@ -1083,7 +1139,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         for (ItPayrollEntity itPayrollEntity : payrollEntityList){
                             peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
                         }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+                        upahLembur = (upahLembur+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1582,10 +1638,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setTanggal(absensiPegawaiEntity.getTanggal());
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     returnAbsensi.setStTanggal(df.format(absensiPegawaiEntity.getTanggal()));
-                    returnAbsensi.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
+//                    returnAbsensi.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
                     returnAbsensi.setLembur(absensiPegawaiEntity.getLembur());
                     returnAbsensi.setJamMasuk(absensiPegawaiEntity.getJamMasuk());
                     returnAbsensi.setJamKeluar(absensiPegawaiEntity.getJamKeluar());
+                    returnAbsensi.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
                     if (absensiPegawaiEntity.getLembur().equalsIgnoreCase("Y")) {
                         //Get Jam Kerja
                         List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
@@ -2125,6 +2182,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     Map hsCriteria2 = new HashMap();
 
                     returnAbsensi.setNip(absensiPegawaiEntity.getNip());
+                    returnAbsensi.setBranchId(absensiPegawaiEntity.getBranchId());
                     returnAbsensi.setTanggal(absensiPegawaiEntity.getTanggal());
                     returnAbsensi.setStTanggal(df.format(absensiPegawaiEntity.getTanggal()));
 
@@ -2378,8 +2436,8 @@ public class AbsensiBoImpl implements AbsensiBo {
         boolean isSession;
         String inputLine;
         StringBuffer response = new StringBuffer();
+        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
         do {
-            List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
             byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
             int postDataLength = postData.length;
             URL obj = new URL(url);
@@ -2416,41 +2474,41 @@ public class AbsensiBoImpl implements AbsensiBo {
                 mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
                 mesinAbsensiDetailList.add(mesinAbsensiDetail);
             }
-            //Save To mesin Absensi Detail List
-            for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-                List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                Map hsCriteria = new HashMap();
-                hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-                hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-                hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-                hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-                hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-                hsCriteria.put("flag", "Y");
-                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-                if (mesinAbsensiDetailEntityList.size() == 0) {
-                    MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                    String userLogin = CommonUtil.userLogin();
-                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                    mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                    mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                    mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                    mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                    mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                    mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                    mesinAbsensiDetailEntity.setAction("C");
-                    mesinAbsensiDetailEntity.setFlag("Y");
-                    mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                    mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                    mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                    mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
-                }
-            }
             response.append(responseTemp);
         }
         while (isSession);
 
+        //Save To mesin Absensi Detail List
+        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
+            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
+            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
+            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
+            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
+            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
+            hsCriteria.put("flag", "Y");
+            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+            if (mesinAbsensiDetailEntityList.size() == 0) {
+                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
+                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                String userLogin = CommonUtil.userLogin();
+                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
+                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
+                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
+                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
+                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
+                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
+                mesinAbsensiDetailEntity.setAction("C");
+                mesinAbsensiDetailEntity.setFlag("Y");
+                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
+                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
+                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
+                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
+                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+            }
+        }
         // END OF CODING ASLI //
 
 
@@ -3096,7 +3154,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal) throws Exception {
+    public List<MesinAbsensi> inquiry(String tanggal, Boolean awalTanggal, String statusPegawai) throws Exception {
         List<ImBiodataEntity> pegawaiList = new ArrayList<>();
         List<MesinAbsensi> absensiFinal = new ArrayList<>();
         List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
@@ -3104,7 +3162,16 @@ public class AbsensiBoImpl implements AbsensiBo {
         int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
 
         try {
-            pegawaiList = biodataDao.getAbsensiPerson();
+            if (statusPegawai!=null){
+                if (!statusPegawai.equalsIgnoreCase("")){
+                    pegawaiList = biodataDao.getAbsensiPersonShift(statusPegawai);
+                }
+                else {
+                    pegawaiList = biodataDao.getAbsensiPerson();
+                }
+            }else {
+                pegawaiList = biodataDao.getAbsensiPerson();
+            }
         } catch (HibernateException e) {
             logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
@@ -3694,7 +3761,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                             List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
                             if (lemburEntityList.size()!=0) {
                                 hasilInquiry.setLembur("Y");
-                                Double hasil = SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
+                                Double hasil;
+                                if (hasilInquiry.getJamMasuk()==null||hasilInquiry.getJamKeluar()==null ){
+                                    hasil = Double.parseDouble("0");
+                                }else {
+                                    hasil = SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
+                                }
                                 hasilInquiry.setRealisasiJamLembur(hasil);
                             }else{
                                 hasilInquiry.setRealisasiJamLembur((double) 0);
@@ -3972,7 +4044,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     String tipePegawai="";
                     String golongan="";
                     int point=0;
-                    List<ImBiodataEntity> biodataList = biodataDao.getDataBiodata(nip,"","","","","Y");
+                    List<ImBiodataEntity> biodataList = biodataDao.getDataBiodataHris(nip,"","","","","Y","");
                     for (ImBiodataEntity biodata:biodataList){
                         tipePegawai=biodata.getTipePegawai();
                         golongan=biodata.getGolongan();
@@ -4171,7 +4243,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     String tipePegawai="";
                     String golongan="";
                     int point=0;
-                    List<ImBiodataEntity> biodataList = biodataDao.getDataBiodata(nip,"","","","","Y");
+                    List<ImBiodataEntity> biodataList = biodataDao.getDataBiodataHris(nip,"","","","","Y","");
                     for (ImBiodataEntity biodata:biodataList){
                         tipePegawai=biodata.getTipePegawai();
                         golongan=biodata.getGolongan();
@@ -4405,7 +4477,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             String tipePegawai="";
             String golongan="";
             int point=0;
-            List<ImBiodataEntity> biodataList = biodataDao.getDataBiodata(nip,"","","","","Y");
+            List<ImBiodataEntity> biodataList = biodataDao.getDataBiodataHris(nip,"","","","","Y","");
             for (ImBiodataEntity biodata:biodataList){
                 tipePegawai=biodata.getTipePegawai();
                 golongan=biodata.getGolongan();
@@ -4655,14 +4727,24 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List<AbsensiPegawai> cariAbseniSys(String nip, String tanggal) throws GeneralBOException {
+    public List<AbsensiPegawai> cariAbseniSys(String nip, String tanggal, String statusabsensi) throws GeneralBOException {
         List<AbsensiPegawai> listAbsensi = new ArrayList<>();
         List<AbsensiPegawaiEntity> absensiPegawai = null;
 
         java.util.Date Awal = java.sql.Date.valueOf(tanggal + "-01");
         java.util.Date  Akhir = java.sql.Date.valueOf(tanggal + "-31");
+        if(statusabsensi!=null){
+            if(!statusabsensi.equalsIgnoreCase("")){
+                absensiPegawai = absensiPegawaiDao.cariAbsensiSysStatusAbsensi(nip, Awal, Akhir, statusabsensi);
+            }else {
+                absensiPegawai = absensiPegawaiDao.cariAbsensiSys(nip, Awal, Akhir);
+            }
 
-        absensiPegawai = absensiPegawaiDao.cariAbsensiSys(nip, Awal, Akhir);
+        }
+        else {
+            absensiPegawai = absensiPegawaiDao.cariAbsensiSys(nip, Awal, Akhir);
+
+        }
 
         if(absensiPegawai.size() > 0){
             for(AbsensiPegawaiEntity absenEntity: absensiPegawai){
@@ -4672,7 +4754,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 absensi.setJamMasuk(absenEntity.getJamMasuk());
                 absensi.setJamKeluar(absenEntity.getJamKeluar());
                 absensi.setStatusAbsensi(absenEntity.getStatusAbsensi());
-                absenEntity.setStatusName(CommonUtil.statusName(absenEntity.getStatusAbsensi()));
+                absensi.setStatusName(CommonUtil.statusName(absenEntity.getStatusAbsensi()));
                 listAbsensi.add(absensi);
             }
         }
@@ -5253,18 +5335,30 @@ public class AbsensiBoImpl implements AbsensiBo {
         Date tanggalAwal = CommonUtil.convertToDate(stTanggalAwal);
         Date tanggalAkhir = CommonUtil.convertToDate(stTanggalAkhir);
 
-        //menghitung hari kerja
-        int days=0;
-        try {
-            List<ImLiburEntity> liburEntityList = liburDao.getLiburRange(tanggalAwal,tanggalAkhir);
-            days = CommonUtil.countDays(stTanggalAwal,stTanggalAkhir);
-            int jumlahLibur=liburEntityList.size();
-            days=days-jumlahLibur;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         for (Biodata pegawai:daftarKaryawan){
+            int days=0;
+            if (tanggalAwal.after(pegawai.getTanggalAktif())){
+                //menghitung hari kerja
+                try {
+                    List<ImLiburEntity> liburEntityList = liburDao.getLiburRange(tanggalAwal,tanggalAkhir);
+                    days = CommonUtil.countDays(stTanggalAwal,stTanggalAkhir);
+                    int jumlahLibur=liburEntityList.size();
+                    days=days-jumlahLibur;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                String stTanggalAktif = CommonUtil.convertDateToString(pegawai.getTanggalAktif());
+                //menghitung hari kerja
+                try {
+                    List<ImLiburEntity> liburEntityList = liburDao.getLiburRange(tanggalAwal,tanggalAkhir);
+                    days = CommonUtil.countDays(stTanggalAktif,stTanggalAkhir);
+                    int jumlahLibur=liburEntityList.size();
+                    days=days-jumlahLibur;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             AbsensiTriwulanDTO result = new AbsensiTriwulanDTO();
             int masukSebelumJadwal=0,terlambatKurang60=0,terlambatLebih60=0,pulangTidakSesuai=0,masukKerja=0,tidakAbsenMasuk=0,tidakAbsenPulang=0,sakit=0,cuti=0,dinas=0,lain2=0,tanpaKeterangan=0,totalTidakMasuk=0;
             result.setNip(pegawai.getNip());
@@ -5280,7 +5374,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
             List<AbsensiPegawaiEntity> absensiPegawaiEntityList;
             try {
-                absensiPegawaiEntityList = absensiPegawaiDao.getDataLemburByNip(pegawai.getNip(),tanggalAwal,tanggalAkhir);
+                absensiPegawaiEntityList = absensiPegawaiDao.getDataForAbsensiTriwulan(pegawai.getNip(),tanggalAwal,tanggalAkhir);
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -5339,12 +5433,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 }
                                 break;
                             }
+                            totalTidakMasuk=totalTidakMasuk+1;
                         }else if (("08").equalsIgnoreCase(hasilAbsensi.getStatusAbsensi())){
                             cuti=cuti+1;
+                            totalTidakMasuk=totalTidakMasuk+1;
                         }else if (("12").equalsIgnoreCase(hasilAbsensi.getStatusAbsensi())){
                             dinas=dinas+1;
+                            totalTidakMasuk=totalTidakMasuk+1;
                         }
-                        totalTidakMasuk=totalTidakMasuk+1;
                     }else{
                         tanpaKeterangan=tanpaKeterangan+1;
                     }

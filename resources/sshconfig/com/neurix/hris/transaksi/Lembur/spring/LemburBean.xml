@@ -10,10 +10,14 @@
           p:userBoProxy-ref="userBoProxy"
     p:biodataBoProxy-ref="biodataBoProxy"
     p:jamKerjaBoProxy-ref="jamKerjaBoProxy"
-    p:liburBoProxy-ref="liburBoProxy"/>
+    p:liburBoProxy-ref="liburBoProxy"
+    p:notifikasiBoProxy-ref="notifikasiBoProxy"
+    />
 
     <bean id="lemburAction" class="com.neurix.hris.transaksi.lembur.action.LemburAction"
           p:lemburBoProxy-ref="lemburBoProxy" />
+
+
     <bean id="ijinFormLemburController" class="com.neurix.hris.mobileapi.LemburFormController"
           p:lemburBoProxy-ref="lemburBoProxy" />
 

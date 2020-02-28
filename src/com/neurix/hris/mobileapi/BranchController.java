@@ -32,8 +32,11 @@ public class BranchController implements ModelDriven<Object> {
         logger.info("[BranchController.index] end process POST /branch <<<");
 
         List<com.neurix.authorization.company.model.Branch> modelBranch = null;
+        com.neurix.authorization.company.model.Branch bean = new com.neurix.authorization.company.model.Branch();
+        bean.setFlag("Y");
+
         try {
-            modelBranch = branchBoProxy.findAllBranch();
+            modelBranch = branchBoProxy.getByCriteria(bean);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

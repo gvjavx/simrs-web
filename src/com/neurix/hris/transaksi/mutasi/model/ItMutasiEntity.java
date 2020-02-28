@@ -38,6 +38,15 @@ public class ItMutasiEntity implements Serializable {
     private String pjs;
     private String menggantikanNip;
     private String tipeMutasi;
+    private Timestamp tanggalAktif;
+
+    public Timestamp getTanggalAktif() {
+        return tanggalAktif;
+    }
+
+    public void setTanggalAktif(Timestamp tanggalAktif) {
+        this.tanggalAktif = tanggalAktif;
+    }
 
     public String getTipeMutasi() {
         return tipeMutasi;

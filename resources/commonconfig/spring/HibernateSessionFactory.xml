@@ -38,11 +38,15 @@
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>
 
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_hcm2</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
+                <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs25022020</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">postgres</prop>-->
+                <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
             </props>
         </property>
@@ -68,14 +72,19 @@
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItUserSessionLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/authorization/user/hibernate/ItBusinessObjectLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/libur/hibernate/ImLiburEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/biodata/hibernate/ItTunjLainPegEntity.hbm.xml</value>
 
 
 
                 <value>sshconfig/com/neurix/hris/master/tipelibur/hibernate/ImHrisTipeLiburEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/golonganDapen/hibernate/ImGolonganDapenEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/golonganPkwt/hibernate/ImGolonganPkwtEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/hris/master/golongan/hibernate/ImGolonganHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/updateGolongan/hibernate/ImtUpdateGolonganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/profesi/hibernate/ImProfesiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/department/hibernate/ImDepartmentHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/strukturJabatan/hibernate/ImStrukturJabatanHistoryEntity.hbm.xml</value>
@@ -179,12 +188,14 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganJabatanStrukturalEntity.hbm.xml</value>
 
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganStrategisEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollTunjanganLainEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganPerumahan/hibernate/ImPayrollTunjanganPerumahanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollRapelEntity.hbm.xml</value>
@@ -198,8 +209,12 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJubileumEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPphEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJasprodEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollJasoprEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollCutiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollPtkpEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollInsentifEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/hris/master/payrollBajuDinas/hibernate/ImPayrollBajuDinasEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollAirListrik/hibernate/ImPayrollAirListrikEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollTunjanganUmk/hibernate/ImPayrollTunjanganUmkEntity.hbm.xml</value>
@@ -211,7 +226,7 @@
 
                 <value>sshconfig/com/neurix/hris/master/branchTunjangan/hibernate/ImBranchTunjanganHistoryEntity.hbm.xml</value>
 
-                <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>
+                <!--<value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/imPayrolInsentifNilaiSmkEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPotonganLainEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollPensiunEntity.hbm.xml</value>

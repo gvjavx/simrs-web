@@ -20,6 +20,7 @@ public class ImPengalamanKerjaEntity implements Serializable {
     private String jabatan;
     private Date tahunMasuk;
     private Date tahunKeluar;
+    private String profesiId;
 
     private String flag;
     private String action;
@@ -27,6 +28,14 @@ public class ImPengalamanKerjaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getPengalamanId() {
         return pengalamanId;

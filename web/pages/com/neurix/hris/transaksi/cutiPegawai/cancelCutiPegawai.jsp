@@ -10,14 +10,24 @@
         $.subscribe('beforeProcessSaveCancelCutiPegawai', function (event, data) {
             var keterangan;
             keterangan = document.getElementById("keteranganBatal").value;
+            var nip = document.getElementById("nipId").value;
+            var tglDari = document.getElementById("tgl2").value;
+            var tglSelesai = document.getElementById("tgl1").value;
             if (keterangan!=="") {
-                if (confirm('Do you want to cancel this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialogCancelCutiPegawai');
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
-                }
+                CutiPegawaiAction.cekIfAbsensi(nip, tglDari, tglSelesai, function(listdata){
+                    if (listdata=="tidak"){
+                        if (confirm('Do you want to cancel this record?')) {
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialogCancelCutiPegawai');
+                        } else {
+                            // Cancel Submit comes with 1.8.0
+                            event.originalEvent.options.submit = false;
+                        }
+                    }else {
+                        alert("Data Tersebut Tidak Bisa Dibatalkan Karena Telah Masuk Absensi")
+                        event.originalEvent.options.submit = false;
+                    }
+                });
             }
             else {
                 event.originalEvent.options.submit = false;

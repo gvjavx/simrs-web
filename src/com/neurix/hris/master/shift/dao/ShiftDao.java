@@ -32,8 +32,8 @@ public class ShiftDao extends GenericDao<ImHrisShiftEntity,String> {
             if (mapCriteria.get("shift_id")!=null) {
                 criteria.add(Restrictions.eq("shiftId", (String) mapCriteria.get("shift_id")));
             }
-            if (mapCriteria.get("kelompok_id")!=null) {
-                criteria.add(Restrictions.eq("kelompokPositionId", (String) mapCriteria.get("kelompok_id")));
+            if (mapCriteria.get("profesi_id")!=null) {
+                criteria.add(Restrictions.eq("profesiId", (String) mapCriteria.get("profesi_id")));
             }
             if (mapCriteria.get("shift_name")!=null) {
                 criteria.add(Restrictions.ilike("shiftName", "%" + (String)mapCriteria.get("shift_name") + "%"));

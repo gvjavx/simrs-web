@@ -29,6 +29,7 @@
           p:golonganDao-ref="golonganDao"
           p:notifikasiFcmDao-ref="notifikasiFcmDao"
           p:ijinDao-ref="ijinDao"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
     />
 
     <bean id="ijinKeluarBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

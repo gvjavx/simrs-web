@@ -161,7 +161,7 @@
     <section class="content-header">
         <h1>
             Proses Absensi
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
     <section class="content">
