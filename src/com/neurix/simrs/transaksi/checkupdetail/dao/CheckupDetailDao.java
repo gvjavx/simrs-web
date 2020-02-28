@@ -105,9 +105,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 statusBayar = "\n AND dt.status_bayar is null \n";
             }
 
-            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
-                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
-            }
+//            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
+//                notLike = "\n AND hd.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
+//            }
 
             String uangMukaNotNull = "";
 //            if ("0".equalsIgnoreCase(statusPeriksa)){
@@ -182,142 +182,142 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 HeaderDetailCheckup headerDetailCheckup;
                 for (Object[] obj : results){
                     headerDetailCheckup = new HeaderDetailCheckup();
-                    if("0".equalsIgnoreCase(obj[7].toString())){
-                        if("bpjs".equalsIgnoreCase(obj[12].toString())){
-                            headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                            headerDetailCheckup.setNoCheckup(obj[1].toString());
-                            headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                            headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                            String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                            headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                            headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                            headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                            headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                            headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                            headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                            headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-
-                            if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
-                                List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                if (!objDesaList.isEmpty()){
-                                    for (Object[] objDesa : objDesaList){
-
-                                        String alamatLengkap =
-                                                "Desa. "+ objDesa[0].toString() +
-                                                        " Kec. " + objDesa[1].toString() +
-                                                        " " + objDesa[2].toString() +
-                                                        " Prov. " + objDesa[3].toString();
-
-                                        if (!"".equalsIgnoreCase(jalan)){
-                                            jalan = jalan + ", " + alamatLengkap;
-                                        } else {
-                                            jalan = alamatLengkap;
-                                        }
-
-                                        headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                        headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                    }
-                                }
-                            }
-
-                            headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
-                            headerDetailCheckup.setAlamat(jalan);
-                        }else{
-
-                            if(bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())){
-                                headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                                headerDetailCheckup.setNoCheckup(obj[1].toString());
-                                headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                                headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                                String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                                headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                                headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                                headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                                headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                                headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                                headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                                headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-
-                                if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
-                                    List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                    if (!objDesaList.isEmpty()){
-                                        for (Object[] objDesa : objDesaList){
-
-                                            String alamatLengkap =
-                                                    "Desa. "+ objDesa[0].toString() +
-                                                            " Kec. " + objDesa[1].toString() +
-                                                            " " + objDesa[2].toString() +
-                                                            " Prov. " + objDesa[3].toString();
-
-                                            if (!"".equalsIgnoreCase(jalan)){
-                                                jalan = jalan + ", " + alamatLengkap;
-                                            } else {
-                                                jalan = alamatLengkap;
-                                            }
-
-                                            headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                            headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                        }
-                                    }
-                                }
-
-                                headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
-                                headerDetailCheckup.setAlamat(jalan);
-                            }else{
-                                if(obj[12] != null){
-                                    if("Y".equalsIgnoreCase(obj[12].toString())){
-                                        headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
-                                        headerDetailCheckup.setNoCheckup(obj[1].toString());
-                                        headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
-                                        headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
-                                        String jalan = obj[4] == null ? "" : obj[4].toString();
-
-                                        headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
-                                        headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                                        headerDetailCheckup.setStatusPeriksa(obj[7].toString());
-                                        headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
-                                        headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                                        headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
-                                        headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
-
-                                        if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
-                                            List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
-                                            if (!objDesaList.isEmpty()){
-                                                for (Object[] objDesa : objDesaList){
-
-                                                    String alamatLengkap =
-                                                            "Desa. "+ objDesa[0].toString() +
-                                                                    " Kec. " + objDesa[1].toString() +
-                                                                    " " + objDesa[2].toString() +
-                                                                    " Prov. " + objDesa[3].toString();
-
-                                                    if (!"".equalsIgnoreCase(jalan)){
-                                                        jalan = jalan + ", " + alamatLengkap;
-                                                    } else {
-                                                        jalan = alamatLengkap;
-                                                    }
-
-                                                    headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
-                                                    headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
-
-                                                }
-                                            }
-                                        }
-
-                                        headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
-                                        headerDetailCheckup.setAlamat(jalan);
-                                    }
-                                }
-                            }
-                        }
-                    }else{
+//                    if("0".equalsIgnoreCase(obj[7].toString())){
+//                        if("bpjs".equalsIgnoreCase(obj[12].toString())){
+//                            headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
+//                            headerDetailCheckup.setNoCheckup(obj[1].toString());
+//                            headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+//                            headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+//
+//                            String jalan = obj[4] == null ? "" : obj[4].toString();
+//
+//                            headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+//                            headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
+//                            headerDetailCheckup.setStatusPeriksa(obj[7].toString());
+//                            headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
+//                            headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+//                            headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+//                            headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+//
+//                            if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
+//                                List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
+//                                if (!objDesaList.isEmpty()){
+//                                    for (Object[] objDesa : objDesaList){
+//
+//                                        String alamatLengkap =
+//                                                "Desa. "+ objDesa[0].toString() +
+//                                                        " Kec. " + objDesa[1].toString() +
+//                                                        " " + objDesa[2].toString() +
+//                                                        " Prov. " + objDesa[3].toString();
+//
+//                                        if (!"".equalsIgnoreCase(jalan)){
+//                                            jalan = jalan + ", " + alamatLengkap;
+//                                        } else {
+//                                            jalan = alamatLengkap;
+//                                        }
+//
+//                                        headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+//                                        headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
+//
+//                                    }
+//                                }
+//                            }
+//
+//                            headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
+//                            headerDetailCheckup.setAlamat(jalan);
+//                        }else{
+//
+//                            if(bean.getStatusBayar() != null){
+//                                headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
+//                                headerDetailCheckup.setNoCheckup(obj[1].toString());
+//                                headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+//                                headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+//
+//                                String jalan = obj[4] == null ? "" : obj[4].toString();
+//
+//                                headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+//                                headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
+//                                headerDetailCheckup.setStatusPeriksa(obj[7].toString());
+//                                headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
+//                                headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+//                                headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+//                                headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+//
+//                                if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
+//                                    List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
+//                                    if (!objDesaList.isEmpty()){
+//                                        for (Object[] objDesa : objDesaList){
+//
+//                                            String alamatLengkap =
+//                                                    "Desa. "+ objDesa[0].toString() +
+//                                                            " Kec. " + objDesa[1].toString() +
+//                                                            " " + objDesa[2].toString() +
+//                                                            " Prov. " + objDesa[3].toString();
+//
+//                                            if (!"".equalsIgnoreCase(jalan)){
+//                                                jalan = jalan + ", " + alamatLengkap;
+//                                            } else {
+//                                                jalan = alamatLengkap;
+//                                            }
+//
+//                                            headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+//                                            headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
+//
+//                                        }
+//                                    }
+//                                }
+//
+//                                headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
+//                                headerDetailCheckup.setAlamat(jalan);
+//                            }else{
+//                                if(obj[13] != null){
+//                                    if("Y".equalsIgnoreCase(obj[13].toString())){
+//                                        headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
+//                                        headerDetailCheckup.setNoCheckup(obj[1].toString());
+//                                        headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
+//                                        headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
+//
+//                                        String jalan = obj[4] == null ? "" : obj[4].toString();
+//
+//                                        headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+//                                        headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
+//                                        headerDetailCheckup.setStatusPeriksa(obj[7].toString());
+//                                        headerDetailCheckup.setStatusPeriksaName(obj[8].toString());
+//                                        headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
+//                                        headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
+//                                        headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+//
+//                                        if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())){
+//                                            List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
+//                                            if (!objDesaList.isEmpty()){
+//                                                for (Object[] objDesa : objDesaList){
+//
+//                                                    String alamatLengkap =
+//                                                            "Desa. "+ objDesa[0].toString() +
+//                                                                    " Kec. " + objDesa[1].toString() +
+//                                                                    " " + objDesa[2].toString() +
+//                                                                    " Prov. " + objDesa[3].toString();
+//
+//                                                    if (!"".equalsIgnoreCase(jalan)){
+//                                                        jalan = jalan + ", " + alamatLengkap;
+//                                                    } else {
+//                                                        jalan = alamatLengkap;
+//                                                    }
+//
+//                                                    headerDetailCheckup.setDesa(objDesa[0] == null ? "" : objDesa[0].toString());
+//                                                    headerDetailCheckup.setKecamatan(objDesa[1] == null ? "" : objDesa[1].toString());
+//
+//                                                }
+//                                            }
+//                                        }
+//
+//                                        headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
+//                                        headerDetailCheckup.setAlamat(jalan);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }else{
                         headerDetailCheckup.setIdDetailCheckup(obj[0].toString());
                         headerDetailCheckup.setNoCheckup(obj[1].toString());
                         headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
@@ -359,7 +359,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
                         headerDetailCheckup.setCekApprove(cekApproveFlag(obj[0].toString()));
                         headerDetailCheckup.setAlamat(jalan);
-                    }
+//                    }
                     checkupList.add(headerDetailCheckup);
                 }
             }

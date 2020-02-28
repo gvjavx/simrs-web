@@ -1056,6 +1056,7 @@
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
                             <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
 
+                            <s:if test='tipe != "bpjs"'>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
@@ -1092,7 +1093,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            </s:if>
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="row">

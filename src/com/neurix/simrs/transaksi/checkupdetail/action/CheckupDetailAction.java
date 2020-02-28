@@ -1566,7 +1566,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                     SepRequest sepRequest = new SepRequest();
                                     sepRequest.setNoKartu(getPasien.getNoBpjs());
                                     sepRequest.setTglSep(now.toString());
-                                    sepRequest.setPpkPelayanan("1311R003");//cons id rumah sakit
+                                    sepRequest.setPpkPelayanan("0215R004");//cons id rumah sakit
                                     sepRequest.setJnsPelayanan("2");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
                                     sepRequest.setKlsRawat("3");//kelas rawat dari bpjs
                                     sepRequest.setNoMr(getPasien.getIdPasien());//id pasien
