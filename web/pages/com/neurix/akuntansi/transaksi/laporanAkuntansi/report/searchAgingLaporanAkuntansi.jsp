@@ -53,7 +53,7 @@
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
                 }if ( master== '') {
-                    msg += 'Field <strong>Vendor </strong> masih belum dipilih' + '<br/>';
+                    msg += 'Field <strong>Vendor </strong> masih belum diisi' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 

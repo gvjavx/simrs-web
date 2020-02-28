@@ -131,8 +131,20 @@
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
+            <result name="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/IkhtisarPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
             <result name="print_report_akuntansi_aging" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/Aging.jasper</param>
+                <param name="format">PDF</param>
+                <param name="dataSource">myList</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_akuntansi_aging_pasien" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/AgingPasien.jasper</param>
                 <param name="format">PDF</param>
                 <param name="dataSource">myList</param>
                 <param name="reportParameters">reportParams</param>

@@ -317,8 +317,14 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case "piutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
                 break;
+            case "piutang_pasien":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
+                break;
             case "uang_muka":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                break;
+            case "uang_muka_p":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
                 break;
             default:
                 laporanAkuntansi.setTipeLaporanName("NOT FOUND");
@@ -336,6 +342,12 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 break;
             case "uang_muka":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                break;
+            case "piutang_pasien":
+                laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
+                break;
+            case "uang_muka_p":
+                laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
                 break;
             default:
                 laporanAkuntansi.setTipeLaporanName("NOT FOUND");
@@ -575,18 +587,36 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
         String reportId="";
+        String report="";
 
-        if (data.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
-            titleReport="IKHTISAR HUTANG USAHA";
-            reportId="RPT04";
-        }else if (data.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
-            titleReport="IKHTISAR PIUTANG USAHA";
-            reportId="RPT05";
-        }else if (data.getTipeLaporan().equalsIgnoreCase("uang_muka")){
-            titleReport="IKHTISAR UANG MUKA";
-            reportId="RPT06";
-        }else{
-            reportId="NOTHING";
+        switch (data.getTipeLaporan()){
+            case ("hutang_usaha"):
+                titleReport="IKHTISAR HUTANG USAHA";
+                reportId="RPT04";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case("piutang_usaha"):
+                titleReport="IKHTISAR PIUTANG USAHA";
+                reportId="RPT05";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case ("uang_muka"):
+                titleReport="IKHTISAR UANG MUKA";
+                reportId="RPT06";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar";
+                break;
+            case ("uang_muka_p"):
+                titleReport="IKHTISAR UANG MUKA PASIEN";
+                reportId="RPT15";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
+                break;
+            case ("piutang_pasien"):
+                titleReport="IKHTISAR PIUTANG PASIEN";
+                reportId="RPT13";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
+                break;
+                default:
+                    titleReport="";
         }
 
         reportParams.put("reportTitle", titleReport);
@@ -617,7 +647,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportIkhtisarSubBukuBesar] end process <<<");
-        return "print_report_akuntansi_ikhitisar_sub_buku_besar";
+        return report;
     }
 
     public String printReportIkhtisarPendapatan(){
@@ -673,20 +703,39 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String periode =dataLaporan.getBulan()+"-"+dataLaporan.getTahun();
         String titleReport="";
         String reportId="";
+        String tipeAging ="";
 
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("hutang_usaha")){
-            titleReport="AGING HUTANG USAHA";
-            reportId="RPT07";
+        switch (dataLaporan.getTipeLaporan()){
+            case("hutang_usaha") :
+                titleReport="AGING HUTANG USAHA";
+                reportId="RPT07";
+                tipeAging ="usaha";
+                break;
+            case ("piutang_usaha"):
+                titleReport="AGING PIUTANG USAHA";
+                reportId="RPT08";
+                tipeAging ="usaha";
+                break;
+            case ("uang_muka"):
+                titleReport="AGING UANG MUKA";
+                reportId="RPT09";
+                tipeAging ="usaha";
+                break;
+            case ("uang_muka_p"):
+                titleReport="AGING UANG MUKA PASIEN";
+                reportId="RPT16";
+                tipeAging ="pasien";
+                break;
+            case ("piutang_pasien"):
+                titleReport="AGING PIUTANG PASIEN";
+                reportId="RPT14";
+                tipeAging ="pasien";
+                break;
+                default:
+                    titleReport="";
         }
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("piutang_usaha")){
-            titleReport="AGING PIUTANG USAHA";
-            reportId="RPT08";
-        }
-        if (dataLaporan.getTipeLaporan().equalsIgnoreCase("uang_muka")){
-            titleReport="AGING UANG MUKA";
-            reportId="RPT09";
-        }
-        List<Aging> agingList = laporanAkuntansiBo.getAging(dataLaporan.getUnit(),periode,dataLaporan.getMasterId(),dataLaporan.getTipeLaporan(),reportId);
+
+        List<Aging> agingList = laporanAkuntansiBo.getAging(dataLaporan.getUnit(),periode,dataLaporan.getMasterId(),tipeAging,reportId);
         List<Aging> listOfAgingTemp = new ArrayList<>();
 
         String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
