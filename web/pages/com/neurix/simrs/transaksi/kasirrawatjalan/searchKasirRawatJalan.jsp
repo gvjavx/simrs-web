@@ -603,8 +603,8 @@
                         }
                     //non_tunai
                     } else {
-                        mapBiaya.push({"type": "kas", "nilai": total + totalObat + (totalObat * 0.1)});
-                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": total + totalObat + (totalObat * 0.1)});
+                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + (totalObat + (totalObat * 0.1))) });
+                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + (totalObat + (totalObat * 0.1))) });
                     }
                 }
             });

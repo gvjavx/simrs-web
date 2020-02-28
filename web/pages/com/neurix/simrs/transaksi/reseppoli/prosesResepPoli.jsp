@@ -820,6 +820,10 @@
                     $('#ref').val(1);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
+                } else {
+                    $('#ref').val(1);
+                    $('#info_dialog').dialog('close');
+                    $('#waiting_dialog').dialog('close');
                 }
             }
         });

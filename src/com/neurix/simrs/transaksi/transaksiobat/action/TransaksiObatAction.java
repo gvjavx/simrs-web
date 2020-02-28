@@ -710,8 +710,9 @@ public class TransaksiObatAction extends BaseMasterAction {
             response.setStatus(ERROR);
             response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
 
-            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
-            addActionError("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, " + e.getMessage());
+//            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
+//            addActionError("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, " + e.getMessage());
+            return response;
         }
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
@@ -728,7 +729,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         BigDecimal biayaPersediaan = new BigDecimal(0);
         List<Map> listMapPersediaan = new ArrayList<>();
-        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListRiwayatPembelianObat(idApprove);
+        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApprove);
         if (transaksiObatDetails.size() > 0){
             for (TransaksiObatDetail trans : transaksiObatDetails){
 
@@ -751,6 +752,10 @@ public class TransaksiObatAction extends BaseMasterAction {
                 mapPersediaanObat.put("nilai", hargaTotal);
                 listMapPersediaan.add(mapPersediaanObat);
             }
+        } else {
+            response.setStatus("error");
+            response.setMessage("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR data obat kosong");
+            return response;
         }
 
         Map mapJurnal = new HashMap();
@@ -940,17 +945,21 @@ public class TransaksiObatAction extends BaseMasterAction {
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. " + e.getMessage());
         }
 
+        BigDecimal pendapatan = new BigDecimal(transaksiObatDetail.getTotalBayar().subtract(transaksiObatDetail.getPpnBayar()).toString());
+        BigDecimal ppn = new BigDecimal(transaksiObatDetail.getPpnBayar().toString());
+
         // create jurnal
         Map hsCriteria = new HashMap();
-        hsCriteria.put("kas", transaksiObatDetail.getTotalBayar());
-        hsCriteria.put("pendapatan_obat_non_bpjs", transaksiObatDetail.getTotalBayar().subtract(transaksiObatDetail.getPpnBayar()));
-        hsCriteria.put("ppn_keluaran", transaksiObatDetail.getPpnBayar());
+        hsCriteria.put("kas", new BigDecimal(transaksiObatDetail.getTotalBayar()));
+        hsCriteria.put("pendapatan_obat_non_bpjs", pendapatan);
+        hsCriteria.put("ppn_keluaran", ppn);
 
         try {
             billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y");
         } catch (GeneralBOException e){
             logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR. ", e);
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR. " + e.getMessage());
+            return "search";
         }
 
         logger.info("[TransaksiObatAction.pembayaranObatBaru] END <<<<<<<");
