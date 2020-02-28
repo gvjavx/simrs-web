@@ -1,10 +1,12 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.Vendor;
@@ -15,6 +17,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -37,9 +40,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -950,6 +951,70 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+            TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+            BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+            // create jurnal
+            PermintaanVendor permintaanVendor = new PermintaanVendor();
+            permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
+            List<PermintaanVendor> permintaanVendorEntities = permintaanVendorBo.getByCriteria(permintaanVendor);
+
+            String idVendor = "";
+            String idApproval = "";
+            if (permintaanVendorEntities.size() > 0){
+                for (PermintaanVendor data : permintaanVendorEntities){
+                    idVendor = data.getIdVendor();
+                    idApproval = data.getIdApprovalObat();
+                }
+            }
+
+            List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApproval, "Y");
+            List<Map> listMapPersediaan = new ArrayList<>();
+            BigDecimal hutangUsaha = new BigDecimal(0);
+            BigDecimal ppn = new BigDecimal(0);
+            if (transaksiObatDetails.size() > 0) {
+                for (TransaksiObatDetail trans : transaksiObatDetails) {
+
+                    BigDecimal hargaRata = new BigDecimal(trans.getHarga());
+                    BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
+
+//                    // ppn
+//                    ppn = ppn.add(hargaTotal.multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+                    // hutang usaha
+                    hutangUsaha = hutangUsaha.add(hargaTotal);
+
+                    Map mapHutangUsaha = new HashMap();
+                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
+                    mapHutangUsaha.put("nilai", hargaTotal);
+                    listMapPersediaan.add(mapHutangUsaha);
+                }
+            }
+
+            // ppn
+            ppn = hutangUsaha.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+            Map mapHutangVendor = new HashMap();
+            mapHutangVendor.put("bukti", idPermintaanVendor);
+            mapHutangVendor.put("nilai", hutangUsaha.add(ppn));
+
+            Map jurnalMap = new HashMap();
+            jurnalMap.put("master_id", idVendor);
+            jurnalMap.put("persediaan_gudang", listMapPersediaan);
+            jurnalMap.put("ppn_masukan", ppn);
+            jurnalMap.put("hutang_vendor", mapHutangVendor);
+
+            String catatan = "Penerimaan Barang Gudang dari no vendor : "+idVendor;
+
+            try {
+                billingSystemBo.createJurnal("13", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("Found Error when search permintaan vendor "+e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Found Error when search permintaan vendor "+e);
+                return response;
+            }
 
             try {
                 response = permintaanVendorBo.tutupPurchaseOrder(idPermintaanVendor);

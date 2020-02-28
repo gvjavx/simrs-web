@@ -729,7 +729,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         BigDecimal biayaPersediaan = new BigDecimal(0);
         List<Map> listMapPersediaan = new ArrayList<>();
-        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApprove);
+        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApprove, "");
         if (transaksiObatDetails.size() > 0){
             for (TransaksiObatDetail trans : transaksiObatDetails){
 

@@ -1843,8 +1843,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
-    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval) throws GeneralBOException {
-        return transaksiObatDetailDao.getListOfObatBatchPermintaan(idApproval);
+    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval, String flagDiterima) throws GeneralBOException {
+        return transaksiObatDetailDao.getListOfObatBatchPermintaan(idApproval, flagDiterima);
     }
 
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {

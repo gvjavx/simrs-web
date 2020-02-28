@@ -35,6 +35,6 @@ public interface TransaksiObatBo {
     public void pembayaranObatBaru(TransaksiObatDetail bean) throws GeneralBOException;
     public List<TransaksiObatDetail> getListRiwayatPembelianObat(String idApprove) throws GeneralBOException;
     public List<MtSimrsRiwayatPembelianObat> getRiwayatPembelianObat(String idApprove) throws GeneralBOException;
-    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval, String flagDiterima) throws GeneralBOException;
 
 }

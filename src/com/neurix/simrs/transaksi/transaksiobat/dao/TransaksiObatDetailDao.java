@@ -311,18 +311,24 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return transaksiObatDetails;
     }
 
-    public List getListOfObatBatchPermintaan(String idApproval){
+    public List getListOfObatBatchPermintaan(String idApproval, String flagDiterima){
+
+        String strDiterimaFlag = "";
+        if (!"".equalsIgnoreCase(flagDiterima)){
+            strDiterimaFlag = "\n AND odb.diterima_flag = 'Y'";
+        }
 
         String SQL = "SELECT \n" +
                 "od.id_approval_obat,\n" +
                 "od.id_transaksi_obat_detail,\n" +
                 "odb.id_barang,\n" +
                 "odb.qty_approve,\n" +
-                "odb.jenis_satuan\n" +
+                "odb.jenis_satuan,\n" +
+                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApprove\n" +
-                "AND odb.status = 'Y'";
+                "AND odb.status = 'Y'"+strDiterimaFlag;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idApprove", idApproval)
@@ -339,6 +345,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetail.setIdBarang(obj[2].toString());
                 obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
                 obatDetail.setJenisSatuan(obj[4].toString());
+                obatDetail.setHarga(obj[5] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[5]);
                 trans.add(obatDetail);
             }
         }
