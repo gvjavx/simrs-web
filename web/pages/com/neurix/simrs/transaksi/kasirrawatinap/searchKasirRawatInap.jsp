@@ -482,7 +482,14 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
-                        metode = response.metodeBayar;
+                        // metode = response.metodeBayar;
+                    if(response.metodePembayaran == "tunai"){
+                        metode = "tunai";
+                    }else if(response.metodePembayaran == "non_tunai"){
+                        metode = "non_tunai";
+                    }else{
+                        metode = "bpjs";
+                    }
 
                     // });
 
@@ -495,7 +502,7 @@
                 var str = "";
                 $.each(response, function(i, item){
                     str += "<tr><td>"+item.stDate+"</td><td>"+item.id+"</td><td align='right' style='padding-right: 20px'>"+formatRupiah(item.dibayar)+"</td></tr>"
-                    mapBiaya.push({"type":"uang_muka", "nilai":item.dibayar});
+                    // mapBiaya.push({"type":"uang_muka", "nilai":item.dibayar});
                     $("#fin_no_nota").val(item.noNota);
                     uangMuka = parseInt(uangMuka) + parseInt(item.dibayar);
                     bukti = item.id;
@@ -557,10 +564,25 @@
                         '<tr><td colspan="3">Ppn Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
-                    mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
-                    mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
-                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalPpn});
+                    // mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
+                    // mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
+                    // mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
+                    // mapBiaya.push({"type":"ppn_keluaran", "nilai":totalPpn});
+
+                    //tunai
+                    if (metode == "tunai") {
+                            //rawat jalan dengan obat
+                            mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
+                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn) });
+                            mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
+                            mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
+                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalPpn });
+
+                        //non_tunai
+                    } else {
+                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + totalPpn)  });
+                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + totalPpn) });
+                    }
                 }
             });
 
