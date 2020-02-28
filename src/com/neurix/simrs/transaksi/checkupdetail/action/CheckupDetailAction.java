@@ -37,6 +37,7 @@ import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -973,7 +974,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
         // create jurnal if non tunai
         if ("non_tunai".equalsIgnoreCase(jenisBayar)){
-            headerDetailCheckup.setNoNota(closingJurnalNonTunai(idDetailCheckup, poli, idPasien));
+
+            JurnalResponse jurnalResponse = closingJurnalNonTunai(idDetailCheckup, poli, idPasien);
+            if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+                return status;
+            }
+            String invNumber = jurnalResponse.getInvoice();
+            headerDetailCheckup.setNoNota(invNumber);
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -1003,8 +1010,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         return status;
     }
 
-    private String closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){
+    private JurnalResponse closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){
 
+        JurnalResponse response = new JurnalResponse();
         String branchId = CommonUtil.userBranchLogin();
         String invoice = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1051,7 +1059,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             BigDecimal jumlahTindakan = checkupDetailBo.getSumJumlahTindakan(idDetailCheckup, "");
             BigDecimal ppnObat = new BigDecimal(0);
             if (jumlahResep.compareTo(new BigDecimal(0)) == 1){
-                ppnObat = jumlahResep.multiply(new BigDecimal(0.01));
+                ppnObat = jumlahResep.multiply(new BigDecimal(0.1)).setScale(2, BigDecimal.ROUND_HALF_UP);
             }
 
             // jumlah tindakan saja. tindakan total - jumlah resep
@@ -1068,13 +1076,13 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             BigDecimal jumlah = new BigDecimal(0);
 
-            if ("Y".equalsIgnoreCase(isResep) && "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
+            if ("Y".equalsIgnoreCase(isResep) || "rawat_inap".equalsIgnoreCase(pelayananData.getTipePelayanan())){
                 ketResep = "Dengan Obat";
 
                 // kredit jumlah obat
                 hsCriteria.put("pendapatan_obat_non_bpjs", jumlahResep);
                 // kredit ppn
-                hsCriteria.put("jumlah_ppn_obat", ppnObat);
+                hsCriteria.put("ppn_keluaran", ppnObat);
 
                 // jika ada resep dan ppn untuk debit piutang
                 jumlah = jumlah.add(jumlahResep.add(ppnObat));
@@ -1134,11 +1142,17 @@ public class CheckupDetailAction extends BaseMasterAction {
             String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No RM Pasien "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
+                response.setStatus("success");
             } catch (GeneralBOException e){
                 logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
+                response.setStatus("error");
+                response.setMsg("[CheckupDetailAction.closingJurnalNonTunai] Error, "+ e);
+                return response;
             }
         }
-        return invoice;
+
+        response.setInvoice(invoice);
+        return response;
     }
 
 //    private String getInvoiceNumber(String transId){ return billingSystemBoProxy.createInvoiceNumber(transId);}

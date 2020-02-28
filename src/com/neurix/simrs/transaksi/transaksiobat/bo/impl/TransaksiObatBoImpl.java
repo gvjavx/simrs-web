@@ -1842,6 +1842,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
     }
 
+    @Override
+    public List<TransaksiObatDetail> getListPermintaanBatch(String idApproval) throws GeneralBOException {
+        return transaksiObatDetailDao.getListOfObatBatchPermintaan(idApproval);
+    }
+
     public void setApprovalTransaksiObatDao(ApprovalTransaksiObatDao approvalTransaksiObatDao) {
         this.approvalTransaksiObatDao = approvalTransaksiObatDao;
     }

@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -171,6 +172,7 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             return false;
         }
     }
+
 
 
     public String getNextId(){

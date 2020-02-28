@@ -311,6 +311,40 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return transaksiObatDetails;
     }
 
+    public List getListOfObatBatchPermintaan(String idApproval){
+
+        String SQL = "SELECT \n" +
+                "od.id_approval_obat,\n" +
+                "od.id_transaksi_obat_detail,\n" +
+                "odb.id_barang,\n" +
+                "odb.qty_approve,\n" +
+                "odb.jenis_satuan\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "WHERE od.id_approval_obat = :idApprove\n" +
+                "AND odb.status = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idApprove", idApproval)
+                .list();
+
+        List<TransaksiObatDetail> trans = new ArrayList<>();
+        if (results.size() > 0){
+
+            TransaksiObatDetail obatDetail;
+            for (Object[] obj : results){
+                obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdApprovalObat(obj[0].toString());
+                obatDetail.setIdTransaksiObatDetail(obj[1].toString());
+                obatDetail.setIdBarang(obj[2].toString());
+                obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                obatDetail.setJenisSatuan(obj[4].toString());
+                trans.add(obatDetail);
+            }
+        }
+        return trans;
+    }
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");
         Iterator<BigInteger> iter=query.list().iterator();

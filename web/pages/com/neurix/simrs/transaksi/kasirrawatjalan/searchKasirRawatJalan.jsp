@@ -598,10 +598,10 @@
                         if (cekResep) {
                             //rawat jalan dengan obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
-                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + (totalObat + (totalObat * 0.1)))});
+                            mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat) });
                             mapBiaya.push({"type": "pendapatan_rawat_jalan_non_bpjs", "nilai": total});
                             mapBiaya.push({"type": "pendapatan_obat_non_bpjs", "nilai": totalObat});
-                            mapBiaya.push({"type": "ppn_keluaran", "nilai": totalObat * 0.1});
+                            mapBiaya.push({"type": "ppn_keluaran", "nilai": ppnObat });
                         } else {
                             //rawat jalan tanpa obat
                             mapBiaya.push({"type": "uang_muka", "nilai": uangMuka});
@@ -610,8 +610,8 @@
                         }
                     //non_tunai
                     } else {
-                        mapBiaya.push({"type": "kas", "nilai": total + totalObat + (totalObat * 0.1)});
-                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": total + totalObat + (totalObat * 0.1)});
+                        mapBiaya.push({"type": "kas", "nilai": ((total - uangMuka) + ppnObat)  });
+                        mapBiaya.push({"type": "piutang_pasien_non_bpjs", "nilai": ((total - uangMuka) + ppnObat) });
                     }
                 }
             });
