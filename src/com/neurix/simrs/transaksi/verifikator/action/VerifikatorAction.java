@@ -796,6 +796,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
         try {
             response = checkupDetailBo.updateInvoiceBpjs(idDetailCheckup, invNumber);
+            response.setStatus("200");
         } catch (GeneralBOException e){
             logger.error("[VerifikatorAction.updateDetailCheckupInvoice] Error ", e);
             response.setStatus("error");

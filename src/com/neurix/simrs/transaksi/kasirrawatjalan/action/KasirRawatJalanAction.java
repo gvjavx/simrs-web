@@ -708,16 +708,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             transId = "19";
             ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
         }
-        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+        if ("tunai".equalsIgnoreCase(jenis) && "JRI".equalsIgnoreCase(type)){
             transId = "20";
             ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
         }
 
         // jika piutang
         String invNumber = "";
-        if ("non_tunai".equalsIgnoreCase(jenis)){
-            transId = "11";
-            ketTerangan = "Pembayaran Piutang Pasien Umum";
+        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)){
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -733,7 +731,16 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             mapPiutang.put("bukti", invNumber);
             mapPiutang.put("nilai", uangPiutang);
 
-            hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+            if ("bpjs".equalsIgnoreCase(jenis)){
+                transId = "10";
+                ketTerangan = "Pembayaran Piutang Pasien BPJS";
+                hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
+            } else {
+                transId = "11";
+                ketTerangan = "Pembayaran Piutang Pasien Umum";
+                hsCriteria.put("piutang_pasien_non_bpjs", mapPiutang);
+            }
+
         } else {
             // jika bukan piutang maka pakai map uang muka
             Map mapUangMuka = new HashMap();
