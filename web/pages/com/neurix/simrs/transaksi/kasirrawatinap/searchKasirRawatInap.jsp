@@ -509,6 +509,9 @@
                 if (dataTindakan != null) {
                     var total = 0;
                     var totalObat = 0;
+                    var ppn = "";
+                    var totalPpn = 0;
+
                     $.each(dataTindakan, function (i, item) {
                         var tindakan = "";
                         var tarif    = "";
@@ -538,6 +541,7 @@
                             btn = '<img id="btn'+item.idRiwayatTindakan+'"  class="hvr-grow" onclick="detailResep(\''+item.idTindakan+'\',\''+item.idRiwayatTindakan+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">';
                             totalObat = parseInt(totalObat) + parseInt(item.totalTarif);
                             $("#fin_is_resep").val("Y");
+                            totalPpn = (totalObat * 0.1);
                         }
 
                         table += '<tr id="row'+item.idRiwayatTindakan+'" >' +
@@ -550,12 +554,13 @@
                     });
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
+                        '<tr><td colspan="3">Ppn Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
-                    mapBiaya.push({"type":"kas","nilai":total-uangMuka});
+                    mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
                     mapBiaya.push({"type":"pendapatan_rawat_inap_non_bpjs","nilai":total});
                     mapBiaya.push({"type":"pendapatan_obat_non_bpjs", "nilai":totalObat});
-                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalObat*0.1});
+                    mapBiaya.push({"type":"ppn_keluaran", "nilai":totalPpn});
                 }
             });
 
