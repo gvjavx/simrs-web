@@ -773,7 +773,7 @@ public class VerifikatorAction extends BaseMasterAction {
 
             try {
                 billingSystemBo.createJurnal(transId, hsCriteria, unitId, catatan, "Y");
-                response.setStatus("success");
+                response.setStatus("200");
             } catch (GeneralBOException e){
                 logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
                 response.setStatus("error");
@@ -800,6 +800,7 @@ public class VerifikatorAction extends BaseMasterAction {
             logger.error("[VerifikatorAction.updateDetailCheckupInvoice] Error ", e);
             response.setStatus("error");
             response.setMessage("[VerifikatorAction.updateDetailCheckupInvoice] Error "+ e);
+            return response;
         }
         return response;
     }
