@@ -9,6 +9,7 @@ import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -619,6 +620,39 @@ public class PasienAction extends BaseMasterAction {
         }
 
         return pasien;
+    }
+
+    public CheckResponse setPasswordPasien(String idPasien, String password){
+
+        CheckResponse response = new CheckResponse();
+
+        Pasien pasien = new Pasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        List<Pasien> pasienList = new ArrayList<>();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        if(!"".equalsIgnoreCase(idPasien) && idPasien != null){
+
+            Pasien listPasien = new Pasien();
+            listPasien.setIdPasien(idPasien);
+            listPasien.setPassword(password);
+            listPasien.setLastUpdate(time);
+            listPasien.setLastUpdateWho(userLogin);
+
+            try {
+                pasienBo.saveEditPassword(listPasien);
+                response.setStatus("success");
+                response.setMessage("Berhasil menyimpan password");
+            }catch (GeneralBOException e){
+                logger.error("Found Error when search data pasien "+e.getMessage());
+                response.setStatus("error");
+                response.setMessage("Found Error when update password "+e.getMessage());
+            }
+        }
+
+        return response;
     }
 
     public String getTipe() {
