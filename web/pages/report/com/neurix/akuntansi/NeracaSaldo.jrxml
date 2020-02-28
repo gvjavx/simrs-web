@@ -726,7 +726,7 @@ order by
 				<textElement>
 					<font size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Unit : " + $P{reportParams.kota}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="0" y="-19" width="95" height="50" uuid="e58c85b1-563f-4c00-bcc8-bce94db86081"/>

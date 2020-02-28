@@ -21,6 +21,7 @@ public class ItJurnalDetailEntity implements Serializable {
     private BigDecimal jumlahKredit;
     private String biaya;
     private String kdBarang;
+    private String pasienId;
 
     private String flag;
     private String action;
@@ -28,6 +29,14 @@ public class ItJurnalDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getPasienId() {
+        return pasienId;
+    }
+
+    public void setPasienId(String pasienId) {
+        this.pasienId = pasienId;
+    }
 
     public String getKdBarang() {
         return kdBarang;

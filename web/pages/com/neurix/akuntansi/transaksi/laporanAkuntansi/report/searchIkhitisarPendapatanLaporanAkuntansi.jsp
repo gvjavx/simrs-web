@@ -15,8 +15,6 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
-
     <script type='text/javascript'>
 
         function callSearch2() {
@@ -34,12 +32,10 @@
             var unit    = document.getElementById("branchId").value;
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
-            var tipeLaporan = document.getElementById("tipeLaporan").value;
-            var master = document.getElementById("masterId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&master!='') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master;
+                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -52,8 +48,6 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
-                }if ( master== '') {
-                    msg += 'Field <strong>Vendor </strong> masih belum diisi' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -86,7 +80,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Laporan Aging
+            Laporan Ikhitisar Pendapatan
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -96,14 +90,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Aging</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Laporan Ikhtisar Pendapatan</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReport_laporanAkuntansi.action" cssClass="form-horizontal">
-                                        <s:hidden id="tipeLaporan" name="laporanAkuntansi.tipeLaporan"/>
+                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaMutasi_laporanAkuntansi.action" cssClass="form-horizontal">
+                                        <s:hidden name="laporanAkuntansi.tipeLaporan" id="tipeLaporanId"/>
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -112,14 +106,6 @@
                                             </tr>
                                         </table>
                                         <table>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <s:textfield  id="tipeLaporanName" name="laporanAkuntansi.tipeLaporanName" readonly="true" cssClass="form-control"/>
-                                                </td>
-                                            </tr>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
@@ -150,52 +136,6 @@
                                                         <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeTahun"
                                                                   name="laporanAkuntansi.tahun" required="true" headerKey=""
                                                                   headerValue="[Select one]"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Vendor :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control"/>
-                                                    </table>
-                                                    <script>
-                                                        $(document).ready(function() {
-                                                            var functions, mapped;
-                                                            $('#masterId').typeahead({
-                                                                minLength: 1,
-                                                                source: function (query, process) {
-                                                                    functions = [];
-                                                                    mapped = {};
-                                                                    var data = [];
-                                                                    dwr.engine.setAsync(false);
-                                                                    MasterAction.initTypeaheadMaster(query,function (listdata) {
-                                                                        data = listdata;
-                                                                    });
-                                                                    $.each(data, function (i, item) {
-                                                                        var labelItem = item.nomorVendor + " | " + item.nama;
-                                                                        mapped[labelItem] = {
-                                                                            id: item.nomorVendor,
-                                                                            nama: item.nama
-                                                                        };
-                                                                        functions.push(labelItem);
-                                                                    });
-                                                                    process(functions);
-                                                                },
-                                                                updater: function (item) {
-                                                                    var selectedObj = mapped[item];
-                                                                    $('#masterName').val(selectedObj.nama);
-                                                                    return selectedObj.id;
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="masterName" name="laporanAkuntansi.masterName" required="true" readonly="true" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>

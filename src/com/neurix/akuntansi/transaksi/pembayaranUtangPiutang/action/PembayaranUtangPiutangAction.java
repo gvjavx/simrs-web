@@ -642,12 +642,9 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         String tipeTransaksi="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-        LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
         PembayaranUtangPiutang data = getPembayaranUtangPiutang();
-        LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getBranchId());
         Branch branch = branchBo.getBranchById(data.getBranchId(),"Y");
         PembayaranUtangPiutang search = new PembayaranUtangPiutang();
         search.setPembayaranUtangPiutangId(data.getPembayaranUtangPiutangId());
@@ -656,20 +653,15 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         //menambah printCount
         pembayaranUtangPiutangBo.addPrintCount(data.getNoJurnal());
+        String kodeRekeningKasJurnal = pembayaranUtangPiutangBo.getKodeRekeningKasJurnal(data.getNoJurnal());
 
         for (PembayaranUtangPiutang result : pembayaranUtangPiutangList){
             reportParams.put("terbilang", CommonUtil.angkaToTerbilang(result.getBayar().longValue()));
             reportParams.put("uraian", result.getKeterangan());
-            reportParams.put("totalBayar", CommonUtil.numbericFormat(result.getBayar(),"###,###.##"));
+            reportParams.put("totalBayar", CommonUtil.numbericFormat(result.getBayar(),"###,###.00"));
             reportParams.put("noSlipBank", result.getNoSlipBank());
+            reportParams.put("coaKas", kodeRekeningKasJurnal);
             tipeTransaksi=result.getTipeTransaksi();
-            KodeRekening searchKodeRekening = new KodeRekening();
-            searchKodeRekening.setKodeRekening("1.1.01.00.01");
-            searchKodeRekening.setFlag("Y");
-            List<KodeRekening> kodeRekeningList = kodeRekeningBo.getByCriteria(searchKodeRekening);
-            for (KodeRekening kodeRekening : kodeRekeningList){
-                reportParams.put("namaCoaKas", kodeRekening.getNamaKodeRekening());
-            }
         }
         String reportName ="";
         switch (tipeTransaksi){
@@ -683,7 +675,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 reportName="BUKTI KAS MASUK";
                 break;
                 default:
-                    reportName="NOTHING";
+                    reportName="";
                     break;
         }
 
@@ -693,21 +685,18 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         reportParams.put("branchId", data.getBranchId());
         java.util.Date now = new java.util.Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
-        reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
-        reportParams.put("nipManagerKeuangan", dataAtasan.getNipManagerKeuangan());
         reportParams.put("kota",branch.getBranchName());
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("noJurnal",data.getNoJurnal());
         reportParams.put("pembayaranId",data.getPembayaranUtangPiutangId());
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("areaId", CommonUtil.userAreaName());
-        reportParams.put("kataPembayaran", "Pemegang Kas/Kasir, harap menerima uang sebesar :");
         try {
             preDownload();
         } catch (SQLException e) {
             Long logId = null;
             try {
-                logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportBuktiPosting");
+                logId = pembayaranUtangPiutangBo.saveErrorMessage(e.getMessage(), "printReportBuktiPosting");
             } catch (GeneralBOException e1) {
                 logger.error("[PembayaranUtangPiutangAction.printReportBuktiPosting] Error when downloading ,", e1);
             }
