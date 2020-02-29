@@ -589,7 +589,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         }
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", idPasien);
+        hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -601,7 +601,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {
-            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk id_pasien : " + idPasien,"Y");
+            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk No Pasien : " + idPasien,"Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -667,7 +667,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis) throws JSONException {
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("master_id", idPasien);
+        hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
 
@@ -756,7 +756,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk RM pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
+                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk No Pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
