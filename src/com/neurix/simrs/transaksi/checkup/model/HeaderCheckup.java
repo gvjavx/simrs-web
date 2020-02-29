@@ -96,6 +96,16 @@ public class HeaderCheckup {
 
     private String invoice;
 
+    private String statusBayar;
+
+    public String getStatusBayar() {
+        return statusBayar;
+    }
+
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
+
     public String getInvoice() {
         return invoice;
     }

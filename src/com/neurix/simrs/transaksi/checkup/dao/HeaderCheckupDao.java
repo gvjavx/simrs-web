@@ -297,13 +297,28 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             pelayanan = poli;
         }
 
-        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan, \n" +
-                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian,  b.no_checkup, b.id_detail_checkup\n" +
+        String SQL = "SELECT \n" +
+                "a.id_pasien, \n" +
+                "a.nama,\n" +
+                "a.desa_id, \n" +
+                "d.desa_name, \n" +
+                "b.id_pelayanan, \n" +
+                "c.nama_pelayanan, \n" +
+                "d.kecamatan_id, \n" +
+                "e.kecamatan_name, \n" +
+                "b.tgl_antrian,  \n" +
+                "b.no_checkup, \n" +
+                "b.id_detail_checkup,\n" +
+                "a.id_jenis_periksa_pasien,\n" +
+                "f.id,\n" +
+                "f.id_detail_checkup,\n" +
+                "f.status_bayar\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
+                "LEFT JOIN it_simrs_uang_muka_pendaftaran f ON b.id_detail_checkup = f.id_detail_checkup\n" +
                 "WHERE b.status_periksa = '0'\n" +
                 "AND a.branch_id LIKE :branchId \n" +
                 "AND b.id_pelayanan LIKE :poliId \n" +
@@ -317,17 +332,36 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 .list();
 
         if (!result.isEmpty()) {
-            HeaderCheckup checkup;
+
             for (Object[] obj : result) {
-                checkup = new HeaderCheckup();
-                checkup.setIdPasien(obj[0].toString());
-                checkup.setNama(obj[1].toString());
-                checkup.setNamaDesa(obj[3].toString());
-                checkup.setNamaPelayanan(obj[5].toString());
-                checkup.setNamaKecamatan(obj[7].toString());
-                checkup.setNoCheckup(obj[9].toString());
-                checkup.setIdDetailCheckup(obj[10].toString());
-                listOfResult.add(checkup);
+
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setIdJenisPeriksaPasien(obj[11] == null ? "" : obj[11].toString());
+                headerCheckup.setStatusBayar(obj[14] == null ? "" : obj[14].toString());
+
+                if("bpjs".equalsIgnoreCase(headerCheckup.getIdJenisPeriksaPasien())){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setIdPasien(obj[0].toString());
+                    checkup.setNama(obj[1].toString());
+                    checkup.setNamaDesa(obj[3].toString());
+                    checkup.setNamaPelayanan(obj[5].toString());
+                    checkup.setNamaKecamatan(obj[7].toString());
+                    checkup.setNoCheckup(obj[9].toString());
+                    checkup.setIdDetailCheckup(obj[10].toString());
+                    listOfResult.add(checkup);
+                }else{
+                    if("Y".equalsIgnoreCase(headerCheckup.getStatusBayar())){
+                        HeaderCheckup checkup = new HeaderCheckup();
+                        checkup.setIdPasien(obj[0].toString());
+                        checkup.setNama(obj[1].toString());
+                        checkup.setNamaDesa(obj[3].toString());
+                        checkup.setNamaPelayanan(obj[5].toString());
+                        checkup.setNamaKecamatan(obj[7].toString());
+                        checkup.setNoCheckup(obj[9].toString());
+                        checkup.setIdDetailCheckup(obj[10].toString());
+                        listOfResult.add(checkup);
+                    }
+                }
             }
         }
 
