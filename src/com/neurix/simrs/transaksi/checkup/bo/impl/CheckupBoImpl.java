@@ -150,6 +150,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 hsCriteria.put("branch_id", bean.getBranchId());
             }
+            if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
+                hsCriteria.put("date_from", bean.getStTglFrom());
+            }
+            if (bean.getGetStTglTo() != null && !"".equalsIgnoreCase(bean.getGetStTglTo())) {
+                hsCriteria.put("date_to", bean.getGetStTglTo());
+            }
+
             hsCriteria.put("flag", "Y");
             List<String> listOfNoCheckup = new ArrayList<>();
 
@@ -882,8 +889,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     finalResult.setNoKtp(obj.getString("nik"));
                     finalResult.setNama(obj.getString("nama"));
                     finalResult.setJenisKelamin(obj.getString("sex"));
+                    finalResult.setTglLahir(Date.valueOf(obj.get("tglLahir").toString()));
                     String[] tglLahir = obj.getString("tglLahir").split("-");
                     finalResult.setStTglLahir(tglLahir[2] + "-" + tglLahir[1] + "-" + tglLahir[0]);
+
+                    if(obj.has("provUmum")){
+                        JSONObject prov = obj.getJSONObject("provUmum");
+                        finalResult.setNamaProvider(prov.getString("nmProvider"));
+                    }
+                    if(obj.has("statusPeserta")){
+                        JSONObject stsPeserta = obj.getJSONObject("statusPeserta");
+                        finalResult.setStatusBpjs(stsPeserta.getString("keterangan"));
+                    }
+                    if(obj.has("hakKelas")){
+                        JSONObject akses = obj.getJSONObject("hakKelas");
+                        finalResult.setKelasPasien(akses.getString("keterangan"));
+                        finalResult.setKelasRawat(akses.getString("kode"));
+                    }
+                    if(obj.has("mr")){
+                        JSONObject mr = obj.getJSONObject("mr");
+                        finalResult.setNoTelp(mr.getString("noTelepon"));
+                    }
+                    if(obj.has("jenisPeserta")){
+                        JSONObject jnsPeserta = obj.getJSONObject("jenisPeserta");
+                        finalResult.setProfesi(jnsPeserta.getString("keterangan"));
+                    }
                 }
             } catch (Exception e) {
                 logger.error("[CheckupBoImpl.completeBpjs] Error when get data");

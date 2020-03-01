@@ -183,7 +183,7 @@
                                             <div class="col-md-8">
                                                 <div class="input-group">
                                                     <s:textfield id="no_bpjs" name="pasien.noBpjs"
-                                                                 cssClass="form-control"/>
+                                                                 cssClass="form-control" onchange="checkBpjs()"/>
                                                     <div class="input-group-btn" onclick="checkBpjs()">
                                                         <a class="btn btn-success">
                                                                 <span id="btn-cek"><i
@@ -527,7 +527,10 @@
                     $('#no_ktp').val(response.noKtp);
                     $('#nama_pasien').val(response.nama);
                     $('#jenis_kelamin').val(response.jenisKelamin);
-                    $('#tanggalLahir').val(response.stTglLahir);
+                    var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
+                    $('#tanggal_lahir').val(tgl);
+                    $('#profesi').val(response.profesi);
+                    $('#no_telp').val(response.noTelp);
                     // $("#no_bpjs").prop("readonly", true);
                     $('#success_pasien').show().fadeOut(5000);
                     $('#msg_pasien_suc').text("No BPJS Berhasil diverifikasi...!");

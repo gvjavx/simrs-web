@@ -135,7 +135,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="headerCheckup.stTglTo"
+                                            <s:textfield id="tgl_to" name="headerCheckup.getStTglTo"
                                                          cssClass="form-control"
                                                          required="false"/>
                                         </div>
@@ -235,8 +235,7 @@
                                 <td>Nama</td>
                                 <td>Poli Terakhir</td>
                                 <td>Status Terakhir</td>
-                                <td>Ruangan</td>
-                                <td>No</td>
+                                <td>Desa</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -248,8 +247,7 @@
                                     <td><s:property value="nama"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td><s:property value="namaRuangan"/></td>
-                                    <td><s:property value="noRuangan"/></td>
+                                    <td><s:property value="namaDesa"/></td>
                                     <td align="center">
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                              src="<s:url value="/pages/images/icons8-search-25.png"/>"

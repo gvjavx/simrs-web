@@ -98,6 +98,34 @@ public class HeaderCheckup {
 
     private String statusBayar;
 
+    private String statusBpjs;
+    private String namaProvider;
+    private String kelasRawat;
+
+    public String getKelasRawat() {
+        return kelasRawat;
+    }
+
+    public void setKelasRawat(String kelasRawat) {
+        this.kelasRawat = kelasRawat;
+    }
+
+    public String getNamaProvider() {
+        return namaProvider;
+    }
+
+    public void setNamaProvider(String namaProvider) {
+        this.namaProvider = namaProvider;
+    }
+
+    public String getStatusBpjs() {
+        return statusBpjs;
+    }
+
+    public void setStatusBpjs(String statusBpjs) {
+        this.statusBpjs = statusBpjs;
+    }
+
     public String getStatusBayar() {
         return statusBayar;
     }

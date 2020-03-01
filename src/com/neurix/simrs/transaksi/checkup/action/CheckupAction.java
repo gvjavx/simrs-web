@@ -605,7 +605,14 @@ public class CheckupAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[CheckupAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
+        HeaderCheckup checkup = new HeaderCheckup();
+        checkup.setStTglFrom(tglToday);
+        checkup.setGetStTglTo(tglToday);
+        setHeaderCheckup(checkup);
         session.removeAttribute("listOfResult");
         logger.info("[CheckupAction.initForm] end process >>>");
         return "search";
