@@ -310,6 +310,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     }
     public String searchReportIkhtisar() {
         logger.info("[LaporanAkuntansiAction.searchReportIkhtisarSubBukuBesar] start process >>>");
+
         switch(laporanAkuntansi.getTipeLaporan()) {
             case "hutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
@@ -333,21 +334,27 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     }
     public String searchReportAging() {
         logger.info("[LaporanAkuntansiAction.searchReportAging] start process >>>");
+
         switch(laporanAkuntansi.getTipeLaporan()) {
             case "hutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("HUTANG USAHA");
+                laporanAkuntansi.setTipePerson("usaha");
                 break;
             case "piutang_usaha":
                 laporanAkuntansi.setTipeLaporanName("PIUTANG USAHA");
+                laporanAkuntansi.setTipePerson("usaha");
                 break;
             case "uang_muka":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA");
+                laporanAkuntansi.setTipePerson("usaha");
                 break;
             case "piutang_pasien":
                 laporanAkuntansi.setTipeLaporanName("PIUTANG PASIEN");
+                laporanAkuntansi.setTipePerson("pasien");
                 break;
             case "uang_muka_p":
                 laporanAkuntansi.setTipeLaporanName("UANG MUKA PASIEN");
+                laporanAkuntansi.setTipePerson("pasien");
                 break;
             default:
                 laporanAkuntansi.setTipeLaporanName("NOT FOUND");
@@ -360,7 +367,6 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         LaporanAkuntansi data = getLaporanAkuntansi();
         LaporanAkuntansi dataAtasan = laporanAkuntansiBo.getNipDanNamaManagerKeuanganDanGeneralManager(data.getUnit());
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
