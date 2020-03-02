@@ -428,6 +428,13 @@
                                         </select>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">No Rekening</label>
+                                <div class="col-md-8">
+                                    <input type="text" id="no_rekening" style="margin-top: 7px" class="form-control">
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -633,8 +640,9 @@
         var jumlah = $('#val_uang_muka').val();
         var metodeBayar = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
+        var noRekening = $('#no_rekening').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();
