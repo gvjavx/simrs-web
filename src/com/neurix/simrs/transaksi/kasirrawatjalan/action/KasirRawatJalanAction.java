@@ -723,7 +723,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             List<HeaderDetailCheckup> detailCheckups = checkupDetailBo.getByCriteria(detailCheckup);
             if (detailCheckups.size() > 0){
                 for (HeaderDetailCheckup data : detailCheckups){
-                    invNumber = data.getNoNota();
+                    invNumber = data.getInvoice();
                 }
             }
 
@@ -757,13 +757,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (("transfer").equalsIgnoreCase(metodeBayar)){
                     text=" pada Bank "+kodeBank;
                 }
-                billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk No Pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
+
+                String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk RM pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                 detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-                detailCheckup.setNoNota(billingSystemBo.createInvoiceNumber(type, branchId));
+                detailCheckup.setNoJurnal(noJurnal);
 
                 checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
                 response.setStatus("success");

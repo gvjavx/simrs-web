@@ -62,6 +62,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String stTotalbayar;
 
     private String flagVerifikasi;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public BigInteger getPpnBayar() {
         return ppnBayar;

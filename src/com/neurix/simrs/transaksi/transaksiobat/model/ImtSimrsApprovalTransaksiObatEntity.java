@@ -22,6 +22,15 @@ public class ImtSimrsApprovalTransaksiObatEntity implements Serializable{
     private String lastUpdateWho;
 
     private String branchId;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public String getBranchId() {
         return branchId;

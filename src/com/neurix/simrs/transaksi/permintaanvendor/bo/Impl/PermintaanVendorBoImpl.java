@@ -1334,7 +1334,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     @Override
-    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor) throws GeneralBOException {
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor, String noJurnal) throws GeneralBOException {
 
         CrudResponse response = new CrudResponse();
 
@@ -1385,6 +1385,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     approveEntity.setApprovePerson(CommonUtil.userLogin());
                     approveEntity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
                     approveEntity.setLastUpdateWho(CommonUtil.userLogin());
+                    approveEntity.setNoJurnal(noJurnal);
 
                     try{
                         approvalTransaksiObatDao.updateAndSave(approveEntity);

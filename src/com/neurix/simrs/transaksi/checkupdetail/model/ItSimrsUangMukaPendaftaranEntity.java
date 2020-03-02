@@ -21,6 +21,15 @@ public class ItSimrsUangMukaPendaftaranEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String noNota;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public BigInteger getJumlahDibayar() {
         return jumlahDibayar;
