@@ -400,7 +400,6 @@ public class TipeJurnalAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
-        session.removeAttribute("listOfResultKodeRekening");
         session.setAttribute("listOfResult", listOfsearchTipeJurnal);
 
         logger.info("[TipeJurnalAction.search] end process <<<");

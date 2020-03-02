@@ -101,17 +101,6 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                     logger.error("[TipeJurnalBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data TipeJurnal, please info to your admin..." + e.getMessage());
                 }
-
-                //Mapping dihapus terlebih dahulu
-                List<ImMappingJurnalEntity> mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTipeJurnalId(bean.getTipeJurnalId());
-                for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
-                    mappingJurnalEntity.setFlag("N");
-                    mappingJurnalEntity.setAction(bean.getAction());
-                    mappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    mappingJurnalEntity.setLastUpdate(bean.getLastUpdate());
-                    mappingJurnalDao.updateAndSave(mappingJurnalEntity);
-                }
-
             } else {
                 logger.error("[TipeJurnalBoImpl.saveDelete] Error, not found data TipeJurnal with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data TipeJurnal with request id, please check again your data ...");
@@ -153,41 +142,6 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                 logger.error("[TipeJurnalBoImpl.saveEdit] Error, not found data TipeJurnal with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data TipeJurnal with request id, please check again your data ...");
             }
-
-            //Mapping dihapus terlebih dahulu
-            List<ImMappingJurnalEntity> mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTipeJurnalId(bean.getTipeJurnalId());
-            for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
-                mappingJurnalEntity.setFlag("N");
-                mappingJurnalEntity.setAction(bean.getAction());
-                mappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                mappingJurnalEntity.setLastUpdate(bean.getLastUpdate());
-                mappingJurnalDao.updateAndSave(mappingJurnalEntity);
-            }
-
-            //Mapping yang baru ditambahkan
-            for (KodeRekening kodeRekening : kodeRekeningList){
-                ImMappingJurnalEntity mappingJurnalEntity = new ImMappingJurnalEntity();
-                String mappingId = mappingJurnalDao.getNextMappingJurnalId();
-                mappingJurnalEntity.setMappingJurnalId(mappingId);
-                mappingJurnalEntity.setTipeJurnalId(bean.getTipeJurnalId());
-                mappingJurnalEntity.setKodeRekening(kodeRekening.getKodeRekening());
-                mappingJurnalEntity.setPosisi(kodeRekening.getPosisi());
-
-                mappingJurnalEntity.setFlag(bean.getFlag());
-                mappingJurnalEntity.setAction(bean.getAction());
-                mappingJurnalEntity.setCreatedWho(bean.getCreatedWho());
-                mappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                mappingJurnalEntity.setCreatedDate(bean.getCreatedDate());
-                mappingJurnalEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    mappingJurnalDao.addAndSave(mappingJurnalEntity);
-                } catch (HibernateException e) {
-                    logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data TipeJurnal, please info to your admin..." + e.getMessage());
-                }
-            }
         }
         logger.info("[TipeJurnalBoImpl.saveEdit] end process <<<");
     }
@@ -226,30 +180,6 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
             } catch (HibernateException e) {
                 logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data TipeJurnal, please info to your admin..." + e.getMessage());
-            }
-
-            for (KodeRekening kodeRekening : kodeRekeningList){
-                ImMappingJurnalEntity mappingJurnalEntity = new ImMappingJurnalEntity();
-                String mappingId = mappingJurnalDao.getNextMappingJurnalId();
-                mappingJurnalEntity.setMappingJurnalId(mappingId);
-                mappingJurnalEntity.setTipeJurnalId(tipeJurnalId);
-                mappingJurnalEntity.setKodeRekening(kodeRekening.getKodeRekening());
-                mappingJurnalEntity.setPosisi(kodeRekening.getPosisi());
-
-                mappingJurnalEntity.setFlag(bean.getFlag());
-                mappingJurnalEntity.setAction(bean.getAction());
-                mappingJurnalEntity.setCreatedWho(bean.getCreatedWho());
-                mappingJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                mappingJurnalEntity.setCreatedDate(bean.getCreatedDate());
-                mappingJurnalEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    mappingJurnalDao.addAndSave(mappingJurnalEntity);
-                } catch (HibernateException e) {
-                    logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data TipeJurnal, please info to your admin..." + e.getMessage());
-                }
             }
         }
 

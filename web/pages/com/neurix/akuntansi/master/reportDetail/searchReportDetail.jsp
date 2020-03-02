@@ -49,14 +49,14 @@
     </style>
     <script type='text/javascript'>
         function link(){
-            window.location.href="<s:url action='initForm_kodeRekening'/>";
+            window.location.href="<s:url action='initForm_reportDetail'/>";
         }
     </script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ReportDetailAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ReportDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kode Rekening
+            Setting Report Akuntansi
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -79,86 +79,29 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Kode Rekening</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Detail Report</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="kodeRekeningForm" method="post" namespace="/kodeRekening" action="search_kodeRekening.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="reportDetailForm" method="post" namespace="/reportDetail" action="search_reportDetail.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Rekening ID</label>
+                                    <label class="control-label col-sm-4">Report ID</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="rekeningId" cssStyle="margin-top: 7px"
-                                                     name="kodeRekening.rekeningId" required="false"
-                                                     readonly="false" cssClass="form-control"/>
+                                        <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
+                                        <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="report_id"
+                                                  listKey="laporanAkuntansiId" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama Rekening</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="kodeRekeningName" name="kodeRekening.kodeRekeningName"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">kode Rekening ( COA )</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="kodeRekening" name="kodeRekening.kodeRekening"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                        <script>
-                                            $(document).ready(function() {
-                                                var functions, mapped;
-                                                $('#kodeRekening').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
-                                                            data = listdata;
-                                                        });
-                                                        $.each(data, function (i, item) {
-                                                            var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
-                                                            mapped[labelItem] = {
-                                                                id: item.kodeRekening,
-                                                                nama: item.namaKodeRekening
-                                                            };
-                                                            functions.push(labelItem);
-                                                        });
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        return selectedObj.id;
-                                                    }
-                                                });
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Rekening</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
-                                        <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningId" name="kodeRekening.tipeRekeningId"
-                                                  listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
+
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <a type="button" class="btn btn-primary" onclick="searchFunc()"><i
                                                 class="fa fa-search"></i> Search</a>
-                                        <s:url var="urlAdd" namespace="/kodeRekening" action="add_kodeRekening" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/reportDetail" action="add_reportDetail" escapeAmp="false">
                                         </s:url>
-                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                            <i class="fa fa-plus"></i>
-                                            Add Kode Rekening
-                                        </sj:a>
-                                        <a type="button" class="btn btn-danger" href="initForm_kodeRekening.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_reportDetail.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -184,7 +127,7 @@
                                             </center>
                                         </sj:dialog>
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true" resizable="false" cssStyle="text-align:left;"
-                                                   height="450" width="600" autoOpen="false" title="Add Kode Rekening"
+                                                   height="450" width="600" autoOpen="false" title="Add Report Detail"
                                         >
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -198,10 +141,17 @@
                     </div>
                     <div class="box-body">
                         <center>
-                            <table style="width: 80%;" class="tree table table-bordered">
+                            <table style="width: 60%;" class="tree table table-bordered">
                             </table>
                         </center>
                     </div>
+                    <br>
+                    <center>
+                        <a type="button" class="btn btn-primary" style="display: none" id="btnSaveDetailReport">
+                            <i class="fa fa-save"></i> Save
+                        </a>
+                    </center>
+                    <br>
                 </div>
             </div>
         </div>
@@ -222,7 +172,7 @@
                 <h4 class="modal-title">Delete Data</h4>
             </div>
             <div class="modal-body">
-                <s:form id="kodeRekeningDeleteForm" method="post" theme="simple" namespace="/kodeRekening" action="saveEdit_kodeRekening" cssClass="well form-horizontal">
+                <s:form id="reportDetailDeleteForm" method="post" theme="simple" namespace="/reportDetail" action="saveEdit_reportDetail" cssClass="well form-horizontal">
                     <div  class="form-group">
                         <label class="control-label col-sm-4" >Rekening Id :</label>
                         <div class="col-sm-6">
@@ -230,15 +180,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nama Kode Rekening :</label>
+                        <label class="control-label col-sm-4" >Nama Report Detail :</label>
                         <div class="col-sm-6">
-                            <input type="text" readonly class="form-control" id="kodeRekeningNameDelete">
+                            <input type="text" readonly class="form-control" id="reportDetailNameDelete">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >COA :</label>
                         <div class="col-sm-6">
-                            <input type="text" readonly class="form-control" id="kodeRekeningDelete">
+                            <input type="text" readonly class="form-control" id="reportDetailDelete">
                         </div>
                     </div>
                     <div class="form-group">
@@ -267,7 +217,7 @@
                 <h4 class="modal-title">Edit Data</h4>
             </div>
             <div class="modal-body">
-                <s:form id="kodeRekeningEditForm" method="post" theme="simple" namespace="/kodeRekening" action="saveEdit_kodeRekening" cssClass="well form-horizontal">
+                <s:form id="reportDetailEditForm" method="post" theme="simple" namespace="/reportDetail" action="saveEdit_reportDetail" cssClass="well form-horizontal">
                     <div  class="form-group">
                         <label class="control-label col-sm-4" >Rekening Id :</label>
                         <div class="col-sm-6">
@@ -275,33 +225,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nama Kode Rekening :</label>
+                        <label class="control-label col-sm-4" >Nama Report Detail :</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="kodeRekeningNameEdit">
+                            <input type="text" class="form-control" id="reportDetailNameEdit">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >COA :</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="kodeRekeningEdit" readonly >
+                            <input type="text" class="form-control" id="reportDetailEdit" readonly >
                             <%--<script>
                                 $(document).ready(function() {
                                     var functions, mapped;
-                                    $('#kodeRekeningEdit').typeahead({
+                                    $('#reportDetailEdit').typeahead({
                                         minLength: 1,
                                         source: function (query, process) {
                                             functions = [];
                                             mapped = {};
                                             var data = [];
                                             dwr.engine.setAsync(false);
-                                            KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
+                                            ReportDetailAction.initTypeaheadReportDetail(query,function (listdata) {
                                                 data = listdata;
                                             });
                                             $.each(data, function (i, item) {
-                                                var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
+                                                var labelItem = item.reportDetail + " | " + item.namaReportDetail;
                                                 mapped[labelItem] = {
-                                                    id: item.kodeRekening,
-                                                    nama: item.namaKodeRekening
+                                                    id: item.reportDetail,
+                                                    nama: item.namaReportDetail
                                                 };
                                                 functions.push(labelItem);
                                             });
@@ -335,16 +285,17 @@
 
 <script>
     $(document).ready(function () {
+        $("#btnSaveDetailReport").hide();
         //btn Save
         $('#btnEdit').click(function(){
             var id      = $('#rekeningIdEdit').val();
-            var kodeRekeningName  = $('#kodeRekeningNameEdit').val();
-            var kodeRekening= $('#kodeRekeningEdit').val();
+            var reportDetailName  = $('#reportDetailNameEdit').val();
+            var reportDetail= $('#reportDetailEdit').val();
             var tipeRekeningId  = $('#tipeRekeningIdEdit').val();
             var result = '';
-            if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''&&tipeRekeningId != ''){
+            if(id != ''&&reportDetailName != ''&&reportDetail != ''&&tipeRekeningId != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening, tipeRekeningId,"edit",function(listdata) {
+                    ReportDetailAction.saveEdit(id, reportDetailName, reportDetail, tipeRekeningId,"edit",function(listdata) {
                         alert('Record has been saved successfully.');
                         location.reload();
                     });
@@ -353,10 +304,10 @@
                 if (id==""){
                     result+="ID kode rekening tidak terdeteksi \n";
                 }
-                if (kodeRekeningName==""){
-                    result+="Nama Kode Rekening masih kosong \n";
+                if (reportDetailName==""){
+                    result+="Nama Report Detail masih kosong \n";
                 }
-                if (kodeRekening==""){
+                if (reportDetail==""){
                     result+="COA masih Kosong \n";
                 }
                 if (tipeRekeningId==""){
@@ -371,7 +322,7 @@
             var result = '';
             if(id != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, "", "", "","delete",function(listdata) {
+                    ReportDetailAction.saveEdit(id, "", "", "","delete",function(listdata) {
                         alert('Record has been delete successfully.');
                         location.reload();
                     });
@@ -391,11 +342,11 @@
 
         $('.tree').on('click', '.item-edit', function(){
             var id = $(this).attr('data');
-            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+            ReportDetailAction.initReportDetailSearch(id,"","",function(listdata) {
                 $.each(listdata, function(i,item){
                     $('#rekeningIdEdit').val(item.rekeningId);
-                    $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
-                    $('#kodeRekeningEdit').val(item.kodeRekening);
+                    $('#reportDetailNameEdit').val(item.namaReportDetail);
+                    $('#reportDetailEdit').val(item.reportDetail);
                     $('#tipeRekeningIdEdit').val(item.tipeRekeningId);
                 });
             });
@@ -404,11 +355,11 @@
 
         $('.tree').on('click', '.item-delete', function(){
             var id = $(this).attr('data');
-            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+            ReportDetailAction.initReportDetailSearch(id,"","",function(listdata) {
                 $.each(listdata, function(i,item){
                     $('#rekeningIdDelete').val(item.rekeningId);
-                    $('#kodeRekeningNameDelete').val(item.namaKodeRekening);
-                    $('#kodeRekeningDelete').val(item.kodeRekening);
+                    $('#reportDetailNameDelete').val(item.namaReportDetail);
+                    $('#reportDetailDelete').val(item.reportDetail);
                     $('#tipeRekeningIdDelete').val(item.tipeRekeningId);
                 });
             });
@@ -427,116 +378,76 @@
     }
 
     function f1() {
-        var rekeningId = document.getElementById("rekeningId").value;
-        var namaRekening = document.getElementById("kodeRekeningName").value;
-        var kodeRekening = document.getElementById("kodeRekening").value;
-        var tmp_table = "";
-        var data = [];
-        var data2 = [];
-        dwr.engine.setAsync(false);
-        KodeRekeningAction.initKodeRekeningSearch(rekeningId, namaRekening, kodeRekening, function(listdata){
-            data = listdata;
-            data2 = new Array();
-            data2_hasil = new Array();
-            data2Tmp= new Array();
-            $.each(data, function(i,item){
-                data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
-                    tipeRekening : item.tipeRekeningId, status : item.flag,tipeRekeningName: item.tipeRekeningName});
-            });
-            function hierarhySort(hashArr, key, result) {
-                if (hashArr[key] == undefined){
-                    //level--;
-                    return;
-                }else{
-                    var arr = [] ;
-                    arr  = hashArr[key];
-                }
-                for (var i=0; i<arr.length; i++) {
-                    result.push(arr[i]);
-                    hierarhySort(hashArr, arr[i]._id, result);
-                }
-                return result;
-            }
-            var hashArr = {};
-            for (var i=0; i<data2.length; i++) {
-                if (hashArr[data2[i].parent] == undefined) {
-                    hashArr[data2[i].parent] = [];
-                }
-                hashArr[data2[i].parent].push(data2[i]);
-            }
-            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
-                "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
-                "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
-                "</tr></thead>";
-            for(i = 0 ; i < data2.length ; i++){
-                if(data2[i].parent == "-"){
-                    tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
-                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        "</tr>";
-                } else {
-                    tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
-                        + '<td style="border: 2px solid black;">' +
-                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        "</tr>";
-                }
-            }
-            $('.tree').append(tmp_table);
-            $(".tree .ceknull:contains('null')").html("-");
-    });
-    }
-    function cekAvailableCoaEdit(nilai){
-        var coa = nilai.value;
-        var length = nilai.length;
-        if (length!=0){
+        var reportId = document.getElementById("report_id").value;
+        if (reportId==""){
+            alert("Report belum dipilih");
+        } else{
+            var tmp_table = "";
+            var data = [];
+            var data2 = [];
             dwr.engine.setAsync(false);
-            KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
-                if (listdata.length!=0){
-                    alert("COA sudah ada");
-                    $('#kodeRekeningEdit').val("");
+            ReportDetailAction.initReportDetailSearch(reportId, function(listdata){
+                data = listdata;
+                data2 = new Array();
+                data2_hasil = new Array();
+                data2Tmp= new Array();
+                $.each(data, function(i,item){
+                    data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
+                        tipeRekening : item.tipeRekeningId, status : item.flag,tipeRekeningName: item.tipeRekeningName,adaCetak:item.adaRekeningReport});
+                });
+                function hierarhySort(hashArr, key, result) {
+                    if (hashArr[key] == undefined){
+                        //level--;
+                        return;
+                    }else{
+                        var arr = [] ;
+                        arr  = hashArr[key];
+                    }
+                    for (var i=0; i<arr.length; i++) {
+                        result.push(arr[i]);
+                        hierarhySort(hashArr, arr[i]._id, result);
+                    }
+                    return result;
                 }
-            });
-        }
-    }
-    function cekAvailableParentEdit(nilai){
-        var coa = nilai.value;
-        var length = nilai.length;
-        if (length!=0){
-            dwr.engine.setAsync(false);
-            KodeRekeningAction.cekAvailableParent(coa, function(adaParent) {
-                if (!adaParent){
-                    alert("COA induk tidak ada");
-                    $('#kodeRekeningEdit').val("");
+                var hashArr = {};
+                for (var i=0; i<data2.length; i++) {
+                    if (hashArr[data2[i].parent] == undefined) {
+                        hashArr[data2[i].parent] = [];
+                    }
+                    hashArr[data2[i].parent].push(data2[i]);
                 }
+                tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+                    "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>cetak ?</th>"+
+                    "</tr></thead>";
+                for(i = 0 ; i < data2.length ; i++){
+                    var cekbox ="";
+                    if (data2[i].adaCetak) {
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox" checked>' + '</td>';
+                    }else{
+                        cekbox='<td align="center" class="ceknull">' + '<input type="checkbox">' + '</td>';
+                    }
+
+                    if(data2[i].parent == "-"){
+                        tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                            '<td >' + data2[i].coa + '</td>' +
+                            '<td >' + data2[i].nama + '</td>' +
+                            cekbox +
+                            "</tr>";
+                    } else {
+                        tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                            + '<td style="border: 2px solid black;">' +
+                            '<td >' + data2[i].coa + '</td>' +
+                            '<td >' + data2[i].nama + '</td>' +
+                            cekbox+
+                            '</td>' +
+                            "</tr>";
+                    }
+                }
+                $('.tree').append(tmp_table);
+                $(".tree .ceknull:contains('null')").html("-");
+                $("#btnSaveDetailReport").show();
             });
         }
     }
