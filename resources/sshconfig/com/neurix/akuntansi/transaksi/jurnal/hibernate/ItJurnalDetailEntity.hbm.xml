@@ -34,6 +34,9 @@
         <property name="pasienId">
             <column name="pasien_id" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="nomorRekening">
+            <column name="nomor_rekening" sql-type="varchar" length="30" not-null="false" />
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

@@ -486,6 +486,24 @@ public class PasienAction extends BaseMasterAction {
         return listOfPasien;
     }
 
+    public List getTypeAheadPasienByIdAndName(String query){
+        logger.info("[PasienAction.getTypeAheadPasienByIdAndName] start process >>>");
+
+        List<Pasien> listOfPasien = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        try {
+            listOfPasien = pasienBo.getTypeAheadPasienByIdAndName(query);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienAction.getTypeAheadPasienByIdAndName] Error when get combo pasien, please inform to your admin.", e);
+        }
+
+        logger.info("[PasienAction.getListComboPasien] end process <<<");
+        return listOfPasien;
+    }
+
     public List getListComboPasienByBpjs(String query){
         logger.info("[PasienAction.getListComboPasienByBpjs] start process >>>");
 
