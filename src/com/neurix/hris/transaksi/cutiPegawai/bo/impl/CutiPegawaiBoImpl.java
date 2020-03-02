@@ -1082,12 +1082,13 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         }
+        //ada kesalahan disini
         else if (listSisaCutiPegawai.size()==0){
                 CutiPegawai itemComboCutiPegawai = new CutiPegawai();
                 List<ImCutiEntity> cutiList = new ArrayList<>();
                 List<ImCutiPanjangEntity> cutiPanjangEntityList = new ArrayList<>();
                 ImBiodataEntity biodataEntity = new ImBiodataEntity();
-            if (cutiId.equalsIgnoreCase("CT006")){
+            /*if (cutiId.equalsIgnoreCase("CT006")){
                 biodataEntity=biodataDao.getById("nip",query,"Y");
                 cutiPanjangEntityList=cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(biodataEntity.getGolongan(),branchId);
                 for (ImCutiPanjangEntity cutiPanjangEntity:cutiPanjangEntityList){
@@ -1104,7 +1105,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 if (listCutiPanjang.size()!=0){
                     itemComboCutiPegawai.setSisaCutiHari(BigInteger.ZERO);
                 }
-            }
+            }*/
+                itemComboCutiPegawai.setSisaCutiHari(BigInteger.ZERO);
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");

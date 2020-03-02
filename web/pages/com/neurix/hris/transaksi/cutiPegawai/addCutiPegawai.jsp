@@ -489,6 +489,7 @@
                 $('#cutiId').val(item.cutiId).change();
                 $('#cutiId15').val(item.cutiId);
                 $('#sisaCuti').val(item.sisaCutiHari);
+
             });
             jeniscuti();
         }else{
