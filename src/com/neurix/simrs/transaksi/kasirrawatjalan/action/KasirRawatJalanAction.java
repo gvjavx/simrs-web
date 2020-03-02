@@ -570,7 +570,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank){
+    public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening){
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -593,6 +593,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
+        hsCriteria.put("no_rekening", noRekening);
 
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", id);
@@ -602,7 +603,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {
-            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk No Pasien : " + idPasien,"Y");
+            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk No Pasien " + idPasien +" no rekening "+noRekening,"Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
