@@ -180,8 +180,11 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
 
-            if (searchBean.getMappingJurnalId() != null && !"".equalsIgnoreCase(searchBean.getMappingJurnalId())) {
-                hsCriteria.put("tipe_rekening_id", searchBean.getMappingJurnalId());
+            if (searchBean.getTipeJurnalId() != null && !"".equalsIgnoreCase(searchBean.getTipeJurnalId())) {
+                hsCriteria.put("tipe_jurnal_id", searchBean.getTipeJurnalId());
+            }
+            if (searchBean.getTransId() != null && !"".equalsIgnoreCase(searchBean.getTransId())) {
+                hsCriteria.put("trans_id", searchBean.getTransId());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
