@@ -89,7 +89,8 @@
         <property name="invoice">
             <column name="invoice" sql-type="varchar" length="100" not-null="false" />
         </property>
-
-
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>
