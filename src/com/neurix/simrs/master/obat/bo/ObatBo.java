@@ -26,4 +26,5 @@ public interface ObatBo{
     public List<Obat> getListObatGroup(Obat bean) throws GeneralBOException;
     public List<ImSimrsObatEntity> getListEntityObat(Obat bean) throws GeneralBOException;
     public ImSimrsObatEntity getObatByIdBarang(String idBarang) throws GeneralBOException;
+    public List<Obat> getListHargaObat(Obat bean) throws GeneralBOException;
 }
