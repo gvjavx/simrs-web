@@ -682,6 +682,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                        throw new GeneralBOException("Found problem when retieving list purchase order, please info to your admin..." + e.getMessage());
                    }
 
+                   result.get(0).setBranchId(branchId);
+                   result.get(0).setIsMobile("Y");
+
                    try {
                        permintaanVendorBoProxy.saveConfirm(result.get(0), obatLama, obatBaru);
                        model.setMessage("Success");
