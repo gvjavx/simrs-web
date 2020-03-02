@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.143588810000003"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="84"/>
+	<property name="ireport.y" value="180"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -680,7 +680,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{master_id}==null || $F{master_id}.equalsIgnoreCase("")?"/ "+$F{pasien_id}:"/ "+$F{master_id}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{master_id}==null && $F{pasien_id}==null?"":($F{master_id}!=null?"/ "+$F{master_id}:"/ "+$F{pasien_id})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
