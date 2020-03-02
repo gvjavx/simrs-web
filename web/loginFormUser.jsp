@@ -243,7 +243,6 @@
                 </script>
 
                 <button type="submit" id="login" name="login" class="button"><i class="icon-arrow-right icon-large"></i></button>
-
             </form>
         </div>
 
@@ -312,10 +311,10 @@
                 <%--<button type="submit" id="login" name="login"><i class="icon-arrow-right icon-large"></i></button>--%>
             <%--</p>--%>
         <%--</form>--%>
-
     </section>
-</div>
-</div>
 
+</div>
+</div>
+<a href="/simrs/pages/antrian/choseeAntrian.jsp" style="color: blue; position: absolute; bottom: 10px ;float: right !important;padding: 10px">Antrian</a>
 </body>
 </html>

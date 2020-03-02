@@ -2087,6 +2087,19 @@ public class CheckupAction extends BaseMasterAction {
         return result;
     }
 
+    public List<HeaderCheckup> getListAntrianApotikPeriksa(String branch, String poli) {
+        List<HeaderCheckup> result = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+
+        try {
+            result = checkupBo.getListAntrianApotikPeriksa(branch, poli);
+        } catch (GeneralBOException e) {
+            logger.error("Foun Error" + e);
+        }
+        return result;
+    }
+
     public List<ImSimrsKategoriSkorRanapEntity> getListKategoriSkorRanapByHead(String head) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");

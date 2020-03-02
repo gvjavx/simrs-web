@@ -804,6 +804,19 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public List<HeaderCheckup> getListAntrianApotikPeriksa(String branch, String poli) throws GeneralBOException {
+        List<HeaderCheckup> result = new ArrayList<>();
+
+        try {
+            result = headerCheckupDao.getListAntrianObat(branch, poli);
+        } catch (HibernateException e) {
+            logger.error("[Found Error when search list antrian pasien] " + e);
+        }
+
+        return result;
+    }
+
+    @Override
     public HeaderCheckup getDataDetailPasien(String idDetailCheckup) throws GeneralBOException {
         HeaderCheckup checkup = new HeaderCheckup();
 

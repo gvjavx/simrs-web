@@ -125,6 +125,19 @@
                                     <tbody id="body_antrian">
                                     </tbody>
                                 </table>
+
+                                <div class="box-header with-border">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5 class="box-title"><i class="fa fa-user"></i> ANTRIAN APOTEK</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-header with-border"></div>
+                                <table class="table table-striped">
+                                    <tbody id="body_antrian_apotek">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -239,6 +252,21 @@
                     $('#body_periksa').html(tablePeriksa);
                 }else{
                     $('#body_periksa').html("");
+                }
+            });
+            var tableApotek = "";
+            CheckupAction.getListAntrianApotikPeriksa(branchId, poliId, function (response) {
+                if(response.length > 0){
+                    $.each(response, function (i, item) {
+                        tableApotek += '<tr>' +
+                            '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+                            '<td style="vertical-align: middle"><label class="label label-success"> Antrian Obat</label></td>' +
+                            '</tr>';
+                    });
+                    $('#body_antrian_apotek').html(tableApotek);
+                }else{
+                    $('#body_antrian_apotek').html("");
                 }
             });
         },1000);
