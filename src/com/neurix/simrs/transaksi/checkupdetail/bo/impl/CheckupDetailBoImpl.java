@@ -151,7 +151,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setLastUpdateWho(entity.getLastUpdateWho());
             detailCheckup.setTarifBpjs(entity.getTarifBpjs());
             detailCheckup.setNoSep(entity.getNoSep());
-            detailCheckup.setNoNota(entity.getInvoice());
+            detailCheckup.setInvoice(entity.getInvoice());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -216,7 +216,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setCaraPasienPulang(bean.getCaraPasienPulang());
             entity.setPendamping(bean.getPendamping());
             entity.setTempatTujuan(bean.getTempatTujuan());
-            entity.setInvoice(bean.getNoNota());
+            entity.setInvoice(bean.getInvoice());
 //            entity.setMetodePembayaran(bean.getMetodePembayaran());
 
             try {
@@ -502,8 +502,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
             uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
 
-            if (bean.getNoNota() != null){
-                uangMukaPendaftaranEntity.setNoNota(bean.getNoNota());
+            if (bean.getInvoice() != null){
+                uangMukaPendaftaranEntity.setNoNota(bean.getInvoice());
                 uangMukaPendaftaranEntity.setStatusBayar("Y");
             }
 
@@ -993,7 +993,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 detailCheckupEntity.setAction("U");
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setInvoice(bean.getNoNota());
+                detailCheckupEntity.setInvoice(bean.getInvoice());
+                detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
                 } catch (HibernateException e) {

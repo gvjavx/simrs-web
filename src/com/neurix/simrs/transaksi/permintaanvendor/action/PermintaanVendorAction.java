@@ -978,9 +978,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     BigDecimal hargaRata = new BigDecimal(trans.getHarga());
                     BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
 
-//                    // ppn
-//                    ppn = ppn.add(hargaTotal.multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
-
                     // hutang usaha
                     hutangUsaha = hutangUsaha.add(hargaTotal);
 
@@ -1006,8 +1003,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
             String catatan = "Penerimaan Barang Gudang dari no vendor : "+idVendor;
 
+            String noJurnal = "";
             try {
-                billingSystemBo.createJurnal("13", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
+                noJurnal = billingSystemBo.createJurnal("13", jurnalMap, CommonUtil.userBranchLogin(), catatan, "Y");
                 response.setStatus("success");
             } catch (GeneralBOException e){
                 logger.error("Found Error when search permintaan vendor "+e.getMessage());
@@ -1017,7 +1015,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
 
             try {
-                response = permintaanVendorBo.tutupPurchaseOrder(idPermintaanVendor);
+                response = permintaanVendorBo.tutupPurchaseOrder(idPermintaanVendor, noJurnal);
             }catch (GeneralBOException e){
                 logger.error("Found Error when search permintaan vendor "+e.getMessage());
             }

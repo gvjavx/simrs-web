@@ -6,7 +6,7 @@ package com.neurix.simrs.transaksi;
 public class JurnalResponse {
     private String status;
     private String msg;
-    private String noNota;
+    private String noJurnal;
     private String invoice;
 
     public String getStatus() {
@@ -25,12 +25,12 @@ public class JurnalResponse {
         this.msg = msg;
     }
 
-    public String getNoNota() {
-        return noNota;
+    public String getNoJurnal() {
+        return noJurnal;
     }
 
-    public void setNoNota(String noNota) {
-        this.noNota = noNota;
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
     }
 
     public String getInvoice() {

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.transaksiobat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -11,6 +12,7 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -696,9 +698,11 @@ public class TransaksiObatAction extends BaseMasterAction {
         try {
 
             // create jurnal Pengeluaran Obat Apotik
-            response = createJurnalPengeluaranObatApotik(idApproval);
-            if ("error".equalsIgnoreCase(response.getStatus())){
+            JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
+            if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
                 return response;
+            } else {
+                obatDetail.setNoJurnal(jurnalResponse.getNoJurnal());
             }
 
             transaksiObatBo.saveApproveResepPoli(obatDetail);
@@ -719,9 +723,9 @@ public class TransaksiObatAction extends BaseMasterAction {
         return response;
     }
 
-    private CheckObatResponse createJurnalPengeluaranObatApotik(String idApprove){
+    private JurnalResponse createJurnalPengeluaranObatApotik(String idApprove){
 
-        CheckObatResponse response = new CheckObatResponse();
+        JurnalResponse response = new JurnalResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
@@ -754,7 +758,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         } else {
             response.setStatus("error");
-            response.setMessage("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR data obat kosong");
+            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR data obat kosong");
             return response;
         }
 
@@ -764,12 +768,14 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
         String catatan = "Pengeluaran Obat Apotik "+branchId;
+        String noJurnal = "";
         try {
-            billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y");
+            noJurnal = billingSystemBo.createJurnal("17", mapJurnal, branchId, catatan, "Y");
+            response.setNoJurnal(noJurnal);
             response.setStatus("success");
         } catch (GeneralBOException e){
             response.setStatus("error");
-            response.setMessage("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR when search list obat, " + e.getMessage());
+            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR when search list obat, " + e.getMessage());
             logger.error("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR when search list obat, ", e);
             return response;
         }
@@ -938,32 +944,55 @@ public class TransaksiObatAction extends BaseMasterAction {
         transaksiObatDetail.setBranchId(branchId);
         transaksiObatDetail.setIdPelayanan(idPoli);
 
+        // create jurnal
+        JurnalResponse jurnalResponse = createJurnalPembayaranObatbaru(transaksiObatDetail);
+        if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+            logger.error(jurnalResponse.getMsg());
+            addActionError(jurnalResponse.getMsg());
+            return "search";
+        } else {
+            transaksiObatDetail.setNoJurnal(jurnalResponse.getNoJurnal());
+        }
+
         try {
             transaksiObatBoProxy.pembayaranObatBaru(transaksiObatDetail);
         } catch (GeneralBOException e) {
             logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. ", e);
             addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR error when save pembayaran. " + e.getMessage());
-        }
-
-        BigDecimal pendapatan = new BigDecimal(transaksiObatDetail.getTotalBayar().subtract(transaksiObatDetail.getPpnBayar()).toString());
-        BigDecimal ppn = new BigDecimal(transaksiObatDetail.getPpnBayar().toString());
-
-        // create jurnal
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("kas", new BigDecimal(transaksiObatDetail.getTotalBayar()));
-        hsCriteria.put("pendapatan_obat_non_bpjs", pendapatan);
-        hsCriteria.put("ppn_keluaran", ppn);
-
-        try {
-            billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y");
-        } catch (GeneralBOException e){
-            logger.error("[TransaksiObatAction.pembayaranObatBaru] ERROR. ", e);
-            addActionError("[TransaksiObatAction.pembayaranObatBaru] ERROR. " + e.getMessage());
             return "search";
         }
 
         logger.info("[TransaksiObatAction.pembayaranObatBaru] END <<<<<<<");
         return "search";
+    }
+
+    private JurnalResponse createJurnalPembayaranObatbaru(TransaksiObatDetail trans){
+
+        String branchId = CommonUtil.userBranchLogin();
+
+        BigDecimal pendapatan = new BigDecimal(trans.getTotalBayar().subtract(trans.getPpnBayar()).toString());
+        BigDecimal ppn = new BigDecimal(trans.getPpnBayar().toString());
+
+        JurnalResponse jurnalResponse = new JurnalResponse();
+
+        // create jurnal
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("kas", new BigDecimal(trans.getTotalBayar()));
+        hsCriteria.put("pendapatan_obat_non_bpjs", pendapatan);
+        hsCriteria.put("ppn_keluaran", ppn);
+
+        String noJurnal = "";
+        try {
+            noJurnal = billingSystemBoProxy.createJurnal("16", hsCriteria, branchId, "Penjualan Obat Apotik "+branchId, "Y");
+            jurnalResponse.setStatus("success");
+            jurnalResponse.setNoJurnal(noJurnal);
+        } catch (GeneralBOException e){
+            jurnalResponse.setStatus("error");
+            jurnalResponse.setMsg("[TransaksiObatAction.createJurnalPembayaranObatbaru] ERROR. "+ e);
+            return jurnalResponse;
+        }
+
+        return jurnalResponse;
     }
 
     public String printPembelianObat(){

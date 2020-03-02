@@ -28,5 +28,5 @@ public interface PermintaanVendorBo {
     public Boolean isNewBatchCheckByNoBatchAndExpDate(String idTransObatDetail, Integer noBatch, Date expDate) throws GeneralBOException;
     public List<TransaksiObatDetail> getListApprovedBatch(String idPermintaanObat, Integer noBatch) throws GeneralBOException;
 
-    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor) throws GeneralBOException;
+    public CrudResponse tutupPurchaseOrder(String idPermintaanVendor, String noJurnal) throws GeneralBOException;
 }

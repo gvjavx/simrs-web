@@ -37,6 +37,7 @@ import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -925,12 +926,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         return tindakanList;
     }
 
-    public String saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar) {
+    public CrudResponse saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar) {
         logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CrudResponse response = new CrudResponse();
 
-        String status = "error";
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
         headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
         headerDetailCheckup.setStatusPeriksa("3");
@@ -977,10 +978,11 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             JurnalResponse jurnalResponse = closingJurnalNonTunai(idDetailCheckup, poli, idPasien);
             if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-                return status;
+                response.setMsg(jurnalResponse.getMsg());
+                return response;
+            } else {
+                headerDetailCheckup.setInvoice(jurnalResponse.getInvoice());
             }
-            String invNumber = jurnalResponse.getInvoice();
-            headerDetailCheckup.setNoNota(invNumber);
         }
 
         headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
@@ -990,24 +992,26 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         try {
             checkupDetailBo.saveEdit(headerDetailCheckup);
+            response.setStatus("success");
+            response.setMsg("Berhasil Menyimpan transaksi");
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, ", e);
+            response.setStatus("error");
+            response.setMsg("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, "+ e);
+            return response;
         }
 
         if ("pindah".equalsIgnoreCase(idKtg)) {
             pindahPoli(noCheckup, idDetailCheckup, poli, idDokter);
-            status = "sukses";
         } else if ("rujuk".equalsIgnoreCase(idKtg)) {
             rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka);
-            status = "sukses";
         } else {
-            status = "sukses";
         }
 
         updateFlagPeriksaAntrianOnline(idDetailCheckup);
 
         logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
-        return status;
+        return response;
     }
 
     private JurnalResponse closingJurnalNonTunai(String idDetailCheckup, String idPoli, String idPasien){

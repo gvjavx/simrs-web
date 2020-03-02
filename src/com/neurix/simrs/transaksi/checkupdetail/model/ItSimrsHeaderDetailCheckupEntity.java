@@ -41,6 +41,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String metodePembayaran;
     private String invoice;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public String getInvoice() {
         return invoice;
