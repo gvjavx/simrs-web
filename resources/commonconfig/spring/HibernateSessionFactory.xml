@@ -359,7 +359,6 @@
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
                 <value>sshconfig/com/neurix/akuntansi/master/kodeRekening/hibernate/ImKodeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImTipeJurnalEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/master/tipeJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/trans/hibernate/ImTransEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/master/hibernate/ImMasterEntity.hbm.xml</value>
@@ -369,6 +368,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportDetail/hibernate/ImReportDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/mappingJurnal/hibernate/ImMappingJurnalEntity.hbm.xml</value>
             </list>
         </property>
     </bean>
