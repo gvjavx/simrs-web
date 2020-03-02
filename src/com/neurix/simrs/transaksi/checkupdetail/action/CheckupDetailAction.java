@@ -1074,7 +1074,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             mapUangMuka.put("nilai", jumlahUm);
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("master_id", idPasien);
+            hsCriteria.put("pasien_id", idPasien);
             // jumlah debit uang muka
             hsCriteria.put("uang_muka", mapUangMuka);
 
@@ -1143,7 +1143,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 transId = "07";
             }
 
-            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No RM Pasien "+idPasien;
+            String catatan = "Closing Pasien "+ketPoli+" Umum "+ketResep+" Piutang No Pasien "+idPasien;
             try {
               billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
                 response.setStatus("success");
