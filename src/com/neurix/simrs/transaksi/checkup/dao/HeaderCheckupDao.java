@@ -639,7 +639,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setProfesi(obj[10] == null ? "" : obj[10].toString());
                     checkup.setNoTelp(obj[11] == null ? "" : obj[11].toString());
                     checkup.setAgama(obj[12] == null ? "" : obj[12].toString());
-                    checkup.setUrlKtp(obj[13] == null ? "" : obj[13].toString());
+                    checkup.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_KTP_PASIEN+obj[13].toString());
                     checkup.setIdJenisPeriksaPasien(obj[14] == null ? "" : obj[14].toString());
                     checkup.setIdDetailCheckup(obj[15] == null ? "" : obj[15].toString());
                     checkup.setIdPelayanan(obj[16] == null ? "" : obj[16].toString());
