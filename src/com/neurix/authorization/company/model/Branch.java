@@ -21,12 +21,14 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal multifikator;
     private BigDecimal faktorJubileum;
     private BigDecimal faktorJasprod;
-    private BigDecimal umr;
     private BigDecimal uangMakan;
     private int maxJamIjinKeluar;
     private String periodeGajiAktif;
     private String lemburGajiAwal;
     private String lemburGajiAkhir;
+
+
+    private BigDecimal umr;
     private BigDecimal minBpjsKs;
     private BigDecimal maxBpjsKs;
     private BigDecimal minBpjsTk;
@@ -35,6 +37,88 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private BigDecimal percentKsPers;
     private BigDecimal percentTkKary;
     private BigDecimal percentTkPers;
+
+    private String stUmr;
+    private String stMinBpjsKs;
+    private String stMaxBpjsKs;
+    private String stMinBpjsTk;
+    private String stMaxBpjsTk;
+    private String stPercentKsKary;
+    private String stPercentKsPers;
+    private String stPercentTkKary;
+    private String stPercentTkPers;
+
+    public String getStMaxBpjsKs() {
+        return stMaxBpjsKs;
+    }
+
+    public void setStMaxBpjsKs(String stMaxBpjsKs) {
+        this.stMaxBpjsKs = stMaxBpjsKs;
+    }
+
+    public String getStMaxBpjsTk() {
+        return stMaxBpjsTk;
+    }
+
+    public void setStMaxBpjsTk(String stMaxBpjsTk) {
+        this.stMaxBpjsTk = stMaxBpjsTk;
+    }
+
+    public String getStMinBpjsKs() {
+        return stMinBpjsKs;
+    }
+
+    public void setStMinBpjsKs(String stMinBpjsKs) {
+        this.stMinBpjsKs = stMinBpjsKs;
+    }
+
+    public String getStMinBpjsTk() {
+        return stMinBpjsTk;
+    }
+
+    public void setStMinBpjsTk(String stMinBpjsTk) {
+        this.stMinBpjsTk = stMinBpjsTk;
+    }
+
+    public String getStPercentKsKary() {
+        return stPercentKsKary;
+    }
+
+    public void setStPercentKsKary(String stPercentKsKary) {
+        this.stPercentKsKary = stPercentKsKary;
+    }
+
+    public String getStPercentKsPers() {
+        return stPercentKsPers;
+    }
+
+    public void setStPercentKsPers(String stPercentKsPers) {
+        this.stPercentKsPers = stPercentKsPers;
+    }
+
+    public String getStPercentTkKary() {
+        return stPercentTkKary;
+    }
+
+    public void setStPercentTkKary(String stPercentTkKary) {
+        this.stPercentTkKary = stPercentTkKary;
+    }
+
+    public String getStPercentTkPers() {
+        return stPercentTkPers;
+    }
+
+    public void setStPercentTkPers(String stPercentTkPers) {
+        this.stPercentTkPers = stPercentTkPers;
+    }
+
+    public String getStUmr() {
+        return stUmr;
+    }
+
+    public void setStUmr(String stUmr) {
+        this.stUmr = stUmr;
+    }
 
     public String getAlamatSurat() {
         return alamatSurat;

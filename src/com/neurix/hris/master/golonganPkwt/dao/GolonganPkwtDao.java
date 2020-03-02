@@ -33,11 +33,11 @@ public class GolonganPkwtDao extends GenericDao<ImGolonganPkwtEntity, String> {
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("golongan_pkwt_id")!=null) {
-                criteria.add(Restrictions.eq("golonganPkwtId", (String) mapCriteria.get("golongan_pkwt_id")));
+            if (mapCriteria.get("golongan_Pkwt_id")!=null) {
+                criteria.add(Restrictions.eq("golonganPkwtId", (String) mapCriteria.get("golongan_Pkwt_id")));
             }
-            if (mapCriteria.get("golongan_pkwt_name")!=null) {
-                criteria.add(Restrictions.ilike("golonganPkwtName", "%" + (String)mapCriteria.get("golongan_pkwt_name") + "%"));
+            if (mapCriteria.get("golongan_Pkwt_name")!=null) {
+                criteria.add(Restrictions.ilike("golonganPkwtName", "%" + (String)mapCriteria.get("golongan_Pkwt_name") + "%"));
             }
 
 

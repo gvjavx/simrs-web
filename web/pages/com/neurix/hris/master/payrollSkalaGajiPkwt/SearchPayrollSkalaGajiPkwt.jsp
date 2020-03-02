@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_payrollSkalaGaji'/>";
+            window.location.href="<s:url action='initForm_payrollSkalaGajiPkwt'/>";
         }
 
     </script>
@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Skala Gaji
+            Payroll Gaji Pkwt
             <small>e-HEALTH</small>
         </h1>
     </section>
@@ -61,7 +61,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiForm" method="post"  theme="simple" namespace="/payrollSkalaGaji" action="search_payrollSkalaGaji.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiPkwtForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPkwt" action="search_payrollSkalaGajiPkwt.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -81,32 +81,20 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="skalaGajiId" name="payrollSkalaGaji.skalaGajiId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="skalaGajiId" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Level :</small></label>
+                                    <label class="control-label"><small>Golongan :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                        <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="payrollSkalaGaji.golonganId"
-                                                  listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tahun :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'2018':'2018', '2019' : '2019', '2020' : '2020'}" id="tahun" name="payrollSkalaGaji.tahun"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                        <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                        <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan1" name="payrollSkalaGajiPkwt.golonganId"
+                                                  listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -118,7 +106,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollSkalaGaji.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollSkalaGajiPkwt.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
 
@@ -135,22 +123,22 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiPkwtForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollSkalaGaji" action="add_payrollSkalaGaji" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiPkwt" action="add_payrollSkalaGajiPkwt" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Skala Gaji
+                                            Add Skala Gaji Pkwt
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGaji"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiPkwt"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -166,17 +154,17 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="400" width="550" autoOpen="false"
-                                                   title="Payroll Skala Gaji ">
+                                                   title="Payroll Skala Gaji Pkwt">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
                                         <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollSkalaGaji.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_payrollSkalaGajiPkwt.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollSkalaGaji" action="edit_payrollSkalaGaji" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiId"/></s:param>
+                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiPkwt" action="edit_payrollSkalaGajiPkwt" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiPkwtId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -186,8 +174,8 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGaji" action="delete_payrollSkalaGaji" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.skalaGajiId" /></s:param>
+                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPkwt" action="delete_payrollSkalaGajiPkwt" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="#attr.row.skalaGajiPkwtId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -195,14 +183,12 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="skalaGajiId" sortable="true" title="Skala Gaji ID" />
-                                            <display:column property="stLevel" sortable="true" title="Level"  />
-                                            <display:column property="stNilai" sortable="true" title="Gaji Level"  />
-                                            <display:column property="stSantunanKhusus" sortable="true" title="Santunan Khusus"  />
-                                            <display:column property="stRumah" sortable="true" title="Tunj. Rumah"  />
-                                            <display:column property="stListrik" sortable="true" title="Tunj. Listrik"  />
-                                            <display:column property="stAir" sortable="true" title="Tunj. Air"  />
-                                            <display:column property="stBbm" sortable="true" title="Tunj. Bbm"  />
+                                            <display:column property="skalaGajiPkwtId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="golonganPkwtName" sortable="true" title="Golongan"  />
+                                            <display:column property="gajiPokok" sortable="true" title="Gaji Pokok"  />
+                                            <display:column property="santunanKhusus" sortable="true" title="Santunan Khusus"  />
+                                            <display:column property="tunjFunsional" sortable="true" title="Tunj. Fungsional"  />
+                                            <display:column property="tunjtambahan" sortable="true" title="Tunj. Tambahan"  />
                                         </display:table>
                                     </td>
                                 </tr>

@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_golongan'/>";
+            window.location.href="<s:url action='initFormPkwt_golongan'/>";
         }
 
     </script>
@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Level / Golongan
+            Golongan Pkwt
             <small>e-HEALTH</small>
         </h1>
         <%--<ol class="breadcrumb">--%>
@@ -65,7 +65,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="golonganForm" method="post"  theme="simple" namespace="/golongan" action="search_golongan.action" cssClass="well form-horizontal">
+                    <s:form id="golonganPkwtForm" method="post"  theme="simple" namespace="/golongan" action="searchPkwt_golongan.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -83,36 +83,25 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Golongan Id :</small></label>
+                                    <label class="control-label"><small>GolonganPkwt Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="golonganId" name="golongan.golonganId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="golonganPkwtId" name="golonganPkwt.golonganPkwtId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Golongan Name :</small></label>
+                                    <label class="control-label"><small>GolonganPkwt Name :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="golonganName" name="golongan.golonganName" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="golonganPkwtName" name="golonganPkwt.golonganPkwtName" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Grade Level :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield type="number" min="0"  id="gradeLevel" name="golongan.stLevel" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-
 
                             <tr>
                                 <td>
@@ -120,7 +109,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="golongan.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="golonganPkwt.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
 
@@ -137,22 +126,22 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="golonganForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="golonganPkwtForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/golongan" action="add_golongan" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/golongan" action="addPkwt_golongan" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Golongan
+                                            Add GolonganPkwt
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_golongan"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_golonganPkwt"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -168,17 +157,17 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="500" width="900" autoOpen="false"
-                                                   title="Golongan ">
+                                                   title="GolonganPkwt ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfGolongan" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfGolongan" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_golongan.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                        <s:set name="listOfGolonganPkwt" value="#session.listOfResult" scope="request" />
+                                        <display:table name="listOfGolonganPkwt" class="table table-condensed table-striped table-hover"
+                                                       requestURI="paging_displaytag_golonganPkwt.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/golongan" action="edit_golongan" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.golonganId"/></s:param>
+                                                    <s:url var="urlEdit" namespace="/golongan" action="editPkwt_golongan" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.golonganPkwtId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -188,8 +177,8 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/golongan" action="delete_golongan" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.golonganId" /></s:param>
+                                                <s:url var="urlViewDelete" namespace="/golongan" action="deletePkwt_golongan" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="#attr.row.golonganPkwtId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
                                                 <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -197,10 +186,8 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <%--<display:column property="golonganId" sortable="true" title="Golongan ID" />--%>
-                                            <display:column property="golonganName" sortable="true" title="Nama"  />
-                                            <display:column property="stLevel" sortable="true" title="Grade Level"  />
-
+                                            <%--<display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />--%>
+                                            <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
                                             <%--<display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>--%>
 

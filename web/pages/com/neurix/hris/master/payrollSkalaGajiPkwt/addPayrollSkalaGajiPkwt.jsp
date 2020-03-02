@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,50 +16,44 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idGolongan = document.getElementById("golonganId").value;
-            var nameGolongan    = document.getElementById("golonganName1").value;
-            var level    = document.getElementById("level1").value;
+            var golonganId = document.getElementById("golonganId1").value;
+            var nilai = document.getElementById("nilai1").value;
 
-
-            if (nameGolongan != ''&& level!='' ) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (golonganId != ''&& nilai != '' ) {
+                if(isNaN(point) ==  false && isNaN(nilai) == false){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
                 }
-
-
             } else {
-
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-
-                if (nameGolongan == '') {
-                    msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
+                if (golonganId == '') {
+                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                }
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -89,14 +83,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveEdit_golongan" cssClass="well form-horizontal">
+            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiPkwt" action="saveAdd_payrollSkalaGajiPkwt" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit Golongan</legend>
+                <legend align="left">Add Payroll Gaji Pkwt</legend>
 
 
                 <table>
@@ -110,32 +104,53 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan Id :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="golonganId" name="golongan.golonganId" required="true" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Golongan Name :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="golonganName1" name="golongan.golonganName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganId1" name="payrollSkalaGajiPkwt.golonganId"
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Grade Level :</small></label>
+                            <label class="control-label"><small>Gaji Pokok :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="level1" type="number" min="0" name="golongan.stLevel" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiPkwt.gajiPokokNilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Santunan Khusus :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="sankhus1" name="payrollSkalaGajiPkwt.santunanKhususNilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Fungsional :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="tunjFungsional1" name="payrollSkalaGajiPkwt.tunjFunsionalNilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Tambahan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="tunjTambahan1" name="payrollSkalaGajiPkwt.tunjtambahanNilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -148,7 +163,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollSkalaGajiForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -184,7 +199,8 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
+                                                                      link();
                                                                    }
                                                             }"
                                         >
@@ -231,3 +247,4 @@
 </table>
 </body>
 </html>
+

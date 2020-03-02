@@ -1,6 +1,10 @@
 package com.neurix.hris.master.payrollSkalaGajiPkwt.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
+import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.bo.PayrollSkalaGajiPkwtBo;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
@@ -24,6 +28,15 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
 
     protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPkwtBoImpl.class);
     private PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao;
+    private GolonganPkwtDao golonganPkwtDao;
+
+    public GolonganPkwtDao getGolonganPkwtDao() {
+        return golonganPkwtDao;
+    }
+
+    public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
+        this.golonganPkwtDao = golonganPkwtDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -231,10 +244,19 @@ public class PayrollSkalaGajiPkwtBoImpl implements PayrollSkalaGajiPkwtBo {
                 for(ImPayrollSkalaGajiPkwtEntity payrollSkalaGajiEntity : imPayrollSkalaGajiEntity){
                     returnPayrollSkalaGaji = new payrollSkalaGajiPkwt();
                     returnPayrollSkalaGaji.setSkalaGajiPkwtId(payrollSkalaGajiEntity.getSkalaGajiPkwtId());
+
+                    ImGolonganPkwtEntity golonganPkwt = new ImGolonganPkwtEntity();
                     returnPayrollSkalaGaji.setGolonganPkwtId(payrollSkalaGajiEntity.getGolonganPkwtId());
+                    golonganPkwt = golonganPkwtDao.getById("golonganPkwtId",payrollSkalaGajiEntity.getGolonganPkwtId());
+                    returnPayrollSkalaGaji.setGolonganPkwtName(golonganPkwt.getGolonganPkwtName());
                     returnPayrollSkalaGaji.setGajiPokokNilai(payrollSkalaGajiEntity.getGajiPokok());
+                    returnPayrollSkalaGaji.setGajiPokok(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getGajiPokok(),"###,###"));
+                    returnPayrollSkalaGaji.setSantunanKhususNilai(payrollSkalaGajiEntity.getSantunanKhusus());
+                    returnPayrollSkalaGaji.setSantunanKhusus(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getSantunanKhusus(),"###,###"));
                     returnPayrollSkalaGaji.setTunjFunsionalNilai(payrollSkalaGajiEntity.getTunjFunsional());
+                    returnPayrollSkalaGaji.setTunjFunsional(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getTunjFunsional(),"###,###"));
                     returnPayrollSkalaGaji.setTunjtambahanNilai(payrollSkalaGajiEntity.getTunjtambahan());
+                    returnPayrollSkalaGaji.setTunjtambahan(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getTunjtambahan(),"###,###"));
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());
                     returnPayrollSkalaGaji.setCreatedDate(payrollSkalaGajiEntity.getCreatedDate());

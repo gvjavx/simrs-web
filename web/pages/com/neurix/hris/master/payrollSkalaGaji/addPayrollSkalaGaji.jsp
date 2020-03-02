@@ -17,11 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            if (golonganId != ''&& nilai != '' ) {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -32,12 +31,8 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
                     if (isNaN(nilai)) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                        msg += 'Field <strong>Gaji Level</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -48,15 +43,11 @@
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if (golonganId == '') {
-                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
-                }
-
-                if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Level </strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Gaji Level</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -114,17 +105,20 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGaji.golonganId"
+                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                             </table>
                         </td>
                     </tr>
-
+<%--
                     <tr>
                         <td>
                             <label class="control-label"><small>Tahun :</small></label>
@@ -135,26 +129,64 @@
                                           headerKey="" headerValue="[Select one]" cssClass="form-control" />
                             </table>
                         </td>
-                    </tr>
-
+                    </tr>--%>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Point :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" min="0"  id="point1" name="payrollSkalaGaji.point" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nilai :</small></label>
+                            <label class="control-label"><small>Gaji Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGaji.nilai" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Santunan Khusus :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="santunanKhusus1" name="payrollSkalaGaji.santunanKhusus" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Rumah :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="rumah1" name="payrollSkalaGaji.rumah" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Listrik :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="listrik1" name="payrollSkalaGaji.listrik" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Air :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="air1" name="payrollSkalaGaji.air" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Bbm :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="bbm1" name="payrollSkalaGaji.bbm" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

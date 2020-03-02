@@ -215,22 +215,22 @@
                                 <div class="form-group">
                                     <s:if test="isAddOrEdit()">
                                         <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Status Pabrik:</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Ks:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="statusPabrik" name="branch.statusPabrik" cssClass="form-control" required="true"/>
+                                                <s:textfield id="minBpjsKs" name="branch.minBpjsKs" cssClass="form-control" required="true"/>
                                             </div>
                                         </s:if>
                                         <s:else>
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Status Pabrik:</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Ks:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="statusPabrik" cssClass="form-control" name="branch.statusPabrik" required="true"/>
+                                                <s:textfield id="minBpjsKs" cssClass="form-control" name="branch.minBpjsKs" required="true"/>
                                             </div>
                                         </s:else>
                                     </s:if>
                                     <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5" for="branch.branchAddress">Status Pabrik:</label>
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Ks:</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="statusPabrik" readonly="true" cssClass="form-control" name="branch.statusPabrik" required="true"/>
+                                            <s:textfield id="minBpjsKs" readonly="true" cssClass="form-control" name="branch.minBpjsKs" required="true"/>
                                         </div>
                                     </s:elseif>
                                 </div>
@@ -238,22 +238,22 @@
                                 <div class="form-group">
                                     <s:if test="isAddOrEdit()">
                                         <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Multifikator Payroll:</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Ks:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="multifikator" name="branch.multifikator" cssClass="form-control" required="true"/>
+                                                <s:textfield id="maxBpjsKs" name="branch.maxBpjsKs" cssClass="form-control" required="true"/>
                                             </div>
                                         </s:if>
                                         <s:else>
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Multifikator Payroll:</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Ks:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="multifikator" cssClass="form-control" name="branch.multifikator" required="true"/>
+                                                <s:textfield id="maxBpjsKs" cssClass="form-control" name="branch.maxBpjsKs" required="true"/>
                                             </div>
                                         </s:else>
                                     </s:if>
                                     <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5" for="branch.branchAddress">Multifikator Payroll:</label>
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Ks:</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="multifikator" readonly="true" cssClass="form-control" name="branch.multifikator" required="true"/>
+                                            <s:textfield id="maxBpjsKs" readonly="true" cssClass="form-control" name="branch.maxBpjsKs" required="true"/>
                                         </div>
                                     </s:elseif>
                                 </div>
@@ -261,22 +261,22 @@
                                 <div class="form-group">
                                     <s:if test="isAddOrEdit()">
                                         <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max Ijin Keluar :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Tk:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="maxJamIjinKeluar" name="branch.maxJamIjinKeluar" cssClass="form-control" required="true"/>
+                                                <s:textfield id="minBpjsTk" name="branch.minBpjsTk" cssClass="form-control" required="true"/>
                                             </div>
                                         </s:if>
                                         <s:else>
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max Ijin Keluar :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Tk:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="maxJamIjinKeluar" cssClass="form-control" name="branch.maxJamIjinKeluar" required="true"/>
+                                                <s:textfield id="minBpjsTk" cssClass="form-control" name="branch.minBpjsTk" required="true"/>
                                             </div>
                                         </s:else>
                                     </s:if>
                                     <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5" for="branch.branchAddress">Max Ijin Keluar :</label>
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Min. Bpjs Tk:</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="maxJamIjinKeluar" readonly="true" cssClass="form-control" name="branch.maxJamIjinKeluar" required="true"/>
+                                            <s:textfield id="minBpjsTk" readonly="true" cssClass="form-control" name="branch.minBpjsTk" required="true"/>
                                         </div>
                                     </s:elseif>
                                 </div>
@@ -284,45 +284,110 @@
                                 <div class="form-group">
                                     <s:if test="isAddOrEdit()">
                                         <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Jasprod :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Tk:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="jasprod" name="branch.faktorJasprod" cssClass="form-control" required="true"/>
+                                                <s:textfield id="maxBpjsTk" name="branch.maxBpjsTk" cssClass="form-control" required="true"/>
                                             </div>
                                         </s:if>
                                         <s:else>
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Jasprod :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Tk:</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="jasprod" cssClass="form-control" name="branch.faktorJasprod" required="true"/>
+                                                <s:textfield id="maxBpjsTk" cssClass="form-control" name="branch.maxBpjsTk" required="true"/>
                                             </div>
                                         </s:else>
                                     </s:if>
                                     <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5" for="branch.branchAddress">Jasprod :</label>
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Max. Bpjs Tk:</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="jasprod" readonly="true" cssClass="form-control" name="branch.faktorJasprod" required="true"/>
+                                            <s:textfield id="maxBpjsTk" readonly="true" cssClass="form-control" name="branch.maxBpjsTk" required="true"/>
                                         </div>
                                     </s:elseif>
                                 </div>
-
                                 <div class="form-group">
                                     <s:if test="isAddOrEdit()">
                                         <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Jubileum :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Kary(%):</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="jubileum" name="branch.faktorJubileum" cssClass="form-control" required="true"/>
+                                                <s:textfield id="persenBpjsKsKary" name="branch.percentKsKary" cssClass="form-control" required="true"/>
                                             </div>
                                         </s:if>
                                         <s:else>
-                                            <label class="control-label col-sm-5" for="branch.branchAddress">Jubileum :</label>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Kary(%):</label>
                                             <div class="col-sm-3">
-                                                <s:textfield id="jubileum" cssClass="form-control" name="branch.faktorJubileum" required="true"/>
+                                                <s:textfield id="persenBpjsKsKary" cssClass="form-control" name="branch.percentKsKary" required="true"/>
                                             </div>
                                         </s:else>
                                     </s:if>
                                     <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5" for="branch.branchAddress">Jubileum :</label>
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Kary(%):</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="jubileum" readonly="true" cssClass="form-control" name="branch.faktorJubileum" required="true"/>
+                                            <s:textfield id="persenBpjsKsKary" readonly="true" cssClass="form-control" name="branch.percentKsKary" required="true"/>
+                                        </div>
+                                    </s:elseif>
+                                </div>
+                                <div class="form-group">
+                                    <s:if test="isAddOrEdit()">
+                                        <s:if test="isAdd()">
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Pers(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsKsPers" name="branch.percentKsPers" cssClass="form-control" required="true"/>
+                                            </div>
+                                        </s:if>
+                                        <s:else>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Pers(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsKsPers" cssClass="form-control" name="branch.percentKsPers" required="true"/>
+                                            </div>
+                                        </s:else>
+                                    </s:if>
+                                    <s:elseif test="isDelete()">
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Ks Pers(%):</label>
+                                        <div class="col-sm-3">
+                                            <s:textfield id="persenBpjsKsPers" readonly="true" cssClass="form-control" name="branch.percentKsPers" required="true"/>
+                                        </div>
+                                    </s:elseif>
+                                </div>
+                                <div class="form-group">
+                                    <s:if test="isAddOrEdit()">
+                                        <s:if test="isAdd()">
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Kary(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsTkKary" name="branch.percentTkKary" cssClass="form-control" required="true"/>
+                                            </div>
+                                        </s:if>
+                                        <s:else>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Kary(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsTkKary" cssClass="form-control" name="branch.percentTkKary" required="true"/>
+                                            </div>
+                                        </s:else>
+                                    </s:if>
+                                    <s:elseif test="isDelete()">
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Kary(%):</label>
+                                        <div class="col-sm-3">
+                                            <s:textfield id="persenBpjsTkKary" readonly="true" cssClass="form-control" name="branch.percentTkKary" required="true"/>
+                                        </div>
+                                    </s:elseif>
+                                </div>
+                                <div class="form-group">
+                                    <s:if test="isAddOrEdit()">
+                                        <s:if test="isAdd()">
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Pers(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsTkPers" name="branch.percentTkPers" cssClass="form-control" required="true"/>
+                                            </div>
+                                        </s:if>
+                                        <s:else>
+                                            <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Pers(%):</label>
+                                            <div class="col-sm-3">
+                                                <s:textfield id="persenBpjsTkPers" cssClass="form-control" name="branch.percentTkPers" required="true"/>
+                                            </div>
+                                        </s:else>
+                                    </s:if>
+                                    <s:elseif test="isDelete()">
+                                        <label class="control-label col-sm-5" for="branch.branchAddress">Persen BPJS Tk Pers(%):</label>
+                                        <div class="col-sm-3">
+                                            <s:textfield id="persenBpjsTkPers" readonly="true" cssClass="form-control" name="branch.percentTkPers" required="true"/>
                                         </div>
                                     </s:elseif>
                                 </div>
@@ -350,28 +415,7 @@
                                     </s:elseif>
                                 </div>
 
-                                <div class="form-group">
-                                    <s:if test="isAddOrEdit()">
-                                        <s:if test="isAdd()">
-                                            <label class="control-label col-sm-5" >Biaya Jasprod :</label>
-                                            <div class="col-sm-3">
-                                                <s:textfield id="biayaJasprod" name="branch.biayaJasprod" cssClass="form-control" required="true"/>
-                                            </div>
-                                        </s:if>
-                                        <s:else>
-                                            <label class="control-label col-sm-5" >Biaya Jasprod :</label>
-                                            <div class="col-sm-3">
-                                                <s:textfield id="biayaJasprod" cssClass="form-control" name="branch.biayaJasprod" required="true"/>
-                                            </div>
-                                        </s:else>
-                                    </s:if>
-                                    <s:elseif test="isDelete()">
-                                        <label class="control-label col-sm-5">Biaya Jasprod :</label>
-                                        <div class="col-sm-3">
-                                            <s:textfield id="biayaJasprod" readonly="true" cssClass="form-control" name="branch.biayaJasprod" required="true"/>
-                                        </div>
-                                    </s:elseif>
-                                </div>
+
 
                                 <s:if test="!(isAddOrEdit() || isDelete())">
                                     <div class="form-group">
@@ -577,22 +621,15 @@
                                             <display:column property="branchId" sortable="true" title="Id"/>
                                             <display:column property="branchName" sortable="true" title="Branch.Name"/>
                                             <display:column property="branchAddress" sortable="true" title="Address"/>
-                                            <display:column property="statusPabrik" sortable="true" title="Status Pabrik"/>
-                                            <display:column property="multifikator" sortable="true" title="Multifikator Payroll"/>
-                                            <display:column property="maxJamIjinKeluar" sortable="true" title="Max jam ijin keluar"/>
-                                            <display:column property="faktorJasprod" sortable="true" title="Jasprod"/>
-                                            <display:column property="faktorJubileum" sortable="true" title="Jubileum"/>
-                                            <display:column property="umr" sortable="true" title="Umr"/>
-                                            <display:column property="strBiayaJasprod" sortable="true" title="Biaya Jasprod"/>
-                                            <%--<display:column property="createdDate" sortable="true" title="CreatedDate"
-                                                            decorator="com.neurix.common.displaytag.LongDateWrapper"/>
-                                            <display:column property="createdWho" sortable="true" title="CreatedWho"/>
-                                            <display:column property="lastUpdate" sortable="true" title="Updated"
-                                                            decorator="com.neurix.common.displaytag.LongDateWrapper"/>
-                                            <display:column property="lastUpdateWho" sortable="true" title="UpdatedWho"/>
-                                            <display:column property="action" sortable="true" title="Action"/>
-                                            <display:column property="flag" sortable="true" title="Flag"/>--%>
-
+                                            <display:column property="stUmr" sortable="true" title="Umr"/>
+                                            <display:column property="stMinBpjsKs" sortable="true" title="Min BPJS Ks"/>
+                                            <display:column property="stMaxBpjsKs" sortable="true" title="Max BPJS Ks"/>
+                                            <display:column property="stMinBpjsTk" sortable="true" title="Min BPJS Tk"/>
+                                            <display:column property="stMaxBpjsTk" sortable="true" title="Min Bpjs Tk"/>
+                                            <display:column property="stPercentKsKary" sortable="true" title="Persen BPJS KS Kary"/>
+                                            <display:column property="stPercentKsPers" sortable="true" title="Persen BPJS KS Pers"/>
+                                            <display:column property="stPercentTkKary" sortable="true" title="Persen BPJS Tk Kary"/>
+                                            <display:column property="stPercentTkPers" sortable="true" title="Persen BPJS TK Pers"/>
 
                                             <display:setProperty name="paging.banner.item_name">Branch</display:setProperty>
                                             <display:setProperty name="paging.banner.items_name">Branches</display:setProperty>

@@ -16,12 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idGolongan = document.getElementById("golonganId").value;
-            var nameGolongan    = document.getElementById("golonganName1").value;
-            var level    = document.getElementById("level1").value;
+            var idDepartment = document.getElementById("skalaGajiId1").value;
+            var nameDepartment    = document.getElementById("golonganId1").value;
 
 
-            if (nameGolongan != ''&& level!='' ) {
+
+            if (nameDepartment != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -38,8 +38,8 @@
 
                 var msg = "";
 
-                if (nameGolongan == '') {
-                    msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
+                if (nameDepartment == '') {
+                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -89,14 +89,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveEdit_golongan" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPkwt" action="saveDelete_payrollSkalaGajiPkwt" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit Golongan</legend>
+                <legend align="left">Delete Payroll Gaji Pkwt</legend>
 
 
                 <table>
@@ -110,32 +110,63 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan Id :</small></label>
+                            <label class="control-label"><small>Id Payroll Pkwt :  </small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="golonganId" name="golongan.golonganId" required="true" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Golongan Name :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="golonganName1" name="golongan.golonganName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPkwt.skalaGajiPkwtId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Grade Level :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="level1" type="number" min="0" name="golongan.stLevel" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganId1" name="payrollSkalaGajiPkwt.golonganPkwtId" disabled="true"
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Gaji Pokok :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiPkwt.gajiPokokNilai" readonly="true" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Santunan Khusus :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="sankhus1" name="payrollSkalaGajiPkwt.santunanKhususNilai" readonly="true" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Fungsional :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="tunjFungsional1" name="payrollSkalaGajiPkwt.tunjFunsionalNilai" readonly="true" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tunj. Tambahan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="tunjTambahan1" name="payrollSkalaGajiPkwt.tunjtambahanNilai" readonly="true" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -148,11 +179,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-check"></i>
-                            Save
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel

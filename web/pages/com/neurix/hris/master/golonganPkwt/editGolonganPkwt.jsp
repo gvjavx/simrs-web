@@ -16,12 +16,11 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idGolongan = document.getElementById("golonganId").value;
-            var nameGolongan    = document.getElementById("golonganName1").value;
-            var level    = document.getElementById("level1").value;
+            var idGolonganPkwt = document.getElementById("golonganPkwtId").value;
+            var nameGolonganPkwt    = document.getElementById("golonganPkwtName1").value;
 
 
-            if (nameGolongan != ''&& level!='' ) {
+            if (nameGolonganPkwt != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -38,8 +37,8 @@
 
                 var msg = "";
 
-                if (nameGolongan == '') {
-                    msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
+                if (nameGolonganPkwt == '') {
+                    msg += 'Field <strong>GolonganPkwt Name</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -89,14 +88,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveEdit_golongan" cssClass="well form-horizontal">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveEditPkwt_golongan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit Golongan</legend>
+                <legend align="left">Edit Golongan Pkwt</legend>
 
 
                 <table>
@@ -110,32 +109,22 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan Id :</small></label>
+                            <label class="control-label"><small>GolonganPkwt Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="golonganId" name="golongan.golonganId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="golonganPkwtId" name="golonganPkwt.golonganPkwtId" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan Name :</small></label>
+                            <label class="control-label"><small>GolonganPkwt Name :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="golonganName1" name="golongan.golonganName" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Grade Level :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="level1" type="number" min="0" name="golongan.stLevel" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="golonganPkwtName1" name="golonganPkwt.golonganPkwtName" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

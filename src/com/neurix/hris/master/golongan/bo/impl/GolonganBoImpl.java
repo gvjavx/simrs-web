@@ -208,6 +208,9 @@ public class GolonganBoImpl implements GolonganBo {
             if (searchBean.getGolonganName() != null && !"".equalsIgnoreCase(searchBean.getGolonganName())) {
                 hsCriteria.put("golongan_name", searchBean.getGolonganName());
             }
+            if (searchBean.getStLevel() != null && !"".equalsIgnoreCase(searchBean.getStLevel())) {
+                hsCriteria.put("grade_level", Integer.parseInt(searchBean.getStLevel()));
+            }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
