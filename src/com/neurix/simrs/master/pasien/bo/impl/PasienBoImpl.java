@@ -389,6 +389,25 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
+    public List<Pasien> getTypeAheadPasienByIdAndName(String query) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getTypeAheadPasienByIdAndName] Start >>>>>>>");
+
+        List<ImSimrsPasienEntity> pasienEntityList = new ArrayList<>();
+        try {
+            pasienEntityList = pasienDao.getPasienListByLike(query);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        }
+
+        logger.info("[PasienBoImpl.getTypeAheadPasienByIdAndName] End <<<<<<<");
+        if (!pasienEntityList.isEmpty()){
+            return setTemplatePasien(pasienEntityList);
+        }
+
+        return new ArrayList<>();
+    }
+
+    @Override
     public List<Pasien> getListComboPasienByBpjs(String query) throws GeneralBOException {
         logger.info("[PasienBoImpl.getListComboPasienByBpjs] Start >>>>>>>");
 

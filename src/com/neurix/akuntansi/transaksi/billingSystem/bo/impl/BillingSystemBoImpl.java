@@ -3,7 +3,9 @@ package com.neurix.akuntansi.transaksi.billingSystem.bo.impl;
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.tipeJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
 import com.neurix.akuntansi.master.tipeJurnal.model.ImMappingJurnalEntity;
+import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
@@ -32,6 +34,15 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     private KodeRekeningDao kodeRekeningDao;
     private String userLogin;
     private Timestamp updateTime;
+    private TipeJurnalDao tipeJurnalDao;
+
+    public TipeJurnalDao getTipeJurnalDao() {
+        return tipeJurnalDao;
+    }
+
+    public void setTipeJurnalDao(TipeJurnalDao tipeJurnalDao) {
+        this.tipeJurnalDao = tipeJurnalDao;
+    }
 
     public KodeRekeningDao getKodeRekeningDao() {
         return kodeRekeningDao;
@@ -95,7 +106,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         userLogin = CommonUtil.userLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId;
-        String sumber;
+        String sumber = null;
 
         //mencari tipe jurnal Id
         try {
@@ -104,8 +115,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
+
+        //Pencarian di tipe jurnal apakah jurnal ini perlu membuat sumber baru
+        ImTipeJurnalEntity tipeJurnalEntity;
         try {
-            sumber = createInvoiceNumber(tipeJurnalId,branchId);
+            tipeJurnalEntity = tipeJurnalDao.getById("tipeJurnalId",tipeJurnalId);
         } catch (HibernateException e) {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -113,10 +127,18 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         if (tipeJurnalId!=null){
             try {
-                // MEMBUAT HEADER JURNAL //
                 // Generating ID, get from postgre sequence
                 noJurnal=jurnalDao.getNextJurnalId();
 
+                // MEMBUAT JURNAL DETAIL TERLEBIH DAHULU UNTUK MENGAMBIL NOMOR INVOICE DARI PEMBAYARAN
+                if (("Y").equalsIgnoreCase(tipeJurnalEntity.getFlagSumberBaru())){
+                    createJurnalDetail(data,noJurnal,tipeJurnalId,transId);
+                    sumber = createInvoiceNumber(tipeJurnalId,branchId);
+                }else{
+                    sumber = createJurnalDetail(data,noJurnal,tipeJurnalId,transId);
+                }
+
+                //MEMBUAT JURNAL HEADER
                 ItJurnalEntity jurnalEntity = new ItJurnalEntity();
                 jurnalEntity.setNoJurnal(noJurnal);
                 jurnalEntity.setTipeJurnalId(tipeJurnalId);
@@ -146,8 +168,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
 
-                // CREATE JURNAL DETAIL PER TRANS
-                createJurnalDetail(data,noJurnal,tipeJurnalId,transId);
             } catch (Exception e){
                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnal]"+e);
                 throw new GeneralBOException("Found problem : "+e+", please info to your admin...");
@@ -162,13 +182,16 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     }
 
     //////////////////////////////////////// DETAIL BILLING PER TRANS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId ){
+    private String createJurnalDetail ( Map data , String noJurnal ,String tipeJurnalId,String transId ){
         //MEMBUAT JURNAL DETAIL
         String status;
         String metodeBayar=null;
         String bank=null;
         String masterId = null;
         String pasienId = null;
+        String sumber = null;
+        String nomorRekeningPembayaran =null;
+
         List<ImMappingJurnalEntity> mappingJurnal ;
 
         if (data.get("master_id")!=null){
@@ -183,7 +206,22 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             metodeBayar = (String) data.get("metode_bayar");
             // tunai / transfer
             if (("transfer").equalsIgnoreCase(metodeBayar)){
-                bank = (String) data.get("bank");
+                if (data.get("bank")!=null){
+                    bank = (String) data.get("bank");
+                }else{
+                    status="ERROR : Bank belum dipilih";
+                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                }
+
+                if (data.get("nomor_rekening")!=null){
+                    nomorRekeningPembayaran = (String) data.get("nomor_rekening");
+                }else{
+                    status="ERROR : Nomor rekening tidak ada";
+                    logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                    throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                }
+
                 try {
                     rekeningIdKas = kodeRekeningDao.searchRekeningIdBankLikeName(bank);
                 } catch (HibernateException e) {
@@ -214,14 +252,16 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             for (ImMappingJurnalEntity mapping : mappingJurnal){
                 if (mapping.getKeterangan()!=null){
                     String rekeningId = null;
+                    String nomorRekening = null;
 
                     ///////////////////////DIGUNAKAN UNTUK PENGECEKAN KAS  //////////////////////////////
                     if (("kas").equalsIgnoreCase(mapping.getKeterangan())){
                         if (metodeBayar!=null){
                             if (("tunai").equalsIgnoreCase(metodeBayar)){
                                 rekeningId=rekeningIdKas;
-                            }else if (("transfer").equalsIgnoreCase(metodeBayar)&&(bank!=null)){
+                            }else if (("transfer").equalsIgnoreCase(metodeBayar)){
                                 rekeningId=rekeningIdKas;
+                                nomorRekening=nomorRekeningPembayaran;
                             }else{
                                 status="ERROR : Metode pembayaran transfer tetapi belum memilih bank";
                                 logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
@@ -255,6 +295,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 Map listOfMap = (Map) data.get(mapping.getKeterangan());
                                 if (listOfMap.get("bukti")!=null){
                                     noNota = (String) listOfMap.get("bukti");
+
+                                    //untuk mengambil no invoice sebagai kode sumber dari jurnal header
+                                    if (("uang_muka").equalsIgnoreCase(mapping.getKeterangan())){
+                                        sumber=noNota;
+                                    }
                                 }
                                 if (listOfMap.get("nilai")!=null){
                                     biaya=(BigDecimal) listOfMap.get("nilai");
@@ -287,6 +332,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                 ItJurnalDetailEntity jurnalDetailEntity = new ItJurnalDetailEntity();
                                 jurnalDetailEntity.setNoJurnal(noJurnal);
                                 jurnalDetailEntity.setRekeningId(rekeningId);
+                                jurnalDetailEntity.setNomorRekening(nomorRekening);
                                 jurnalDetailEntity.setMasterId(masterId);
                                 jurnalDetailEntity.setPasienId(pasienId);
                                 jurnalDetailEntity.setNoNota(noNota);
@@ -360,7 +406,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         jurnalBarang.setMasterId(masterId);
                                         jurnalBarang.setPasienId(pasienId);
                                         jurnalBarang.setKdBarang(noKdBarang);
-                                        jurnalBarang.setNoNota(noNota);
+                                        jurnalBarang.setNoNota(null);
                                         jurnalBarang.setJurnalDetailId(jurnalDetailBarangId);
                                         jurnalBarang.setNoJurnal(noJurnal);
 
@@ -429,6 +475,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
         }
+        return sumber;
     }
     private String getRekeningForMappingOtomatis(String kodeRekening){
         String rekeningId=null;

@@ -22,6 +22,15 @@ public class JurnalDetail extends BaseModel {
     private BigDecimal jumlahKredit;
     private String biaya;
     private String pasienId;
+    private String nomorRekening;
+
+    public String getNomorRekening() {
+        return nomorRekening;
+    }
+
+    public void setNomorRekening(String nomorRekening) {
+        this.nomorRekening = nomorRekening;
+    }
 
     public String getPasienId() {
         return pasienId;

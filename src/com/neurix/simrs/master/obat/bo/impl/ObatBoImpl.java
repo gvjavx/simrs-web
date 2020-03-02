@@ -11,6 +11,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailBatchDao;
@@ -34,6 +35,7 @@ public class ObatBoImpl implements ObatBo {
     private JenisObatDao jenisObatDao;
     private ObatGejalaDao obatGejalaDao;
     private TransaksiObatDetailBatchDao batchDao;
+    private HargaObatDao hargaObatDao;
 
     public void setBatchDao(TransaksiObatDetailBatchDao batchDao) {
         this.batchDao = batchDao;
@@ -55,6 +57,9 @@ public class ObatBoImpl implements ObatBo {
         return logger;
     }
 
+    public void setHargaObatDao(HargaObatDao hargaObatDao) {
+        this.hargaObatDao = hargaObatDao;
+    }
 
     @Override
     public List<Obat> getByCriteria(Obat bean) throws GeneralBOException {
@@ -856,5 +861,8 @@ public class ObatBoImpl implements ObatBo {
         return id;
     }
 
-
+    @Override
+    public List<Obat> getListHargaObat(Obat bean) throws GeneralBOException {
+        return hargaObatDao.listObatForHargaJual(bean);
+    }
 }

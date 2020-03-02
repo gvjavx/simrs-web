@@ -19,6 +19,7 @@
           p:jenisObatDao-ref="jenisObatDao"
           p:obatGejalaDao-ref="obatGejalaDao"
           p:batchDao-ref="transaksiObatDetailBatchDao"
+          p:hargaObatDao-ref="hargaObatDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

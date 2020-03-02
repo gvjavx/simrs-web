@@ -432,7 +432,7 @@
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">No Rekening</label>
                                 <div class="col-md-8">
-                                    <input type="text" id="no_rekening" style="margin-top: 7px" class="form-control">
+                                    <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
                                 </div>
                             </div>
                             </div>
