@@ -158,17 +158,15 @@ FROM
             split_part(kr.kode_rekening, '.', 3)
           ) AS kode_rekening,
           sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-          x.branch_id
-        from
+          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
+		  from
           it_akun_jurnal x
           inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
           INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id
         where
           to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
-          and branch_id = $P{reportParams.branchId}
+      		and x.branch_id IN ($P!{reportParams.branchId})
         group by
-          branch_id,
           concat(
             split_part(kr.kode_rekening, '.', 1),
             '.',
@@ -190,7 +188,7 @@ FROM
       it_akun_saldo_akhir
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id = $P{reportParams.branchId}
+      and branch_id IN ($P!{reportParams.branchId})
   ) c ON a.rekening_id = c.rekening_id
 order by
   a.kode_rekening]]>

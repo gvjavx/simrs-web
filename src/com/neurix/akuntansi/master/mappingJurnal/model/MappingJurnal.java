@@ -1,4 +1,4 @@
-package com.neurix.akuntansi.master.tipeJurnal.model;
+package com.neurix.akuntansi.master.mappingJurnal.model;
 
 import com.neurix.common.model.BaseModel;
 
@@ -19,6 +19,24 @@ public class MappingJurnal extends BaseModel {
     private String bukti;
     private String kodeBarang;
     private String keterangan;
+    private String tipeJurnalName;
+    private String transName;
+
+    public String getTransName() {
+        return transName;
+    }
+
+    public void setTransName(String transName) {
+        this.transName = transName;
+    }
+
+    public String getTipeJurnalName() {
+        return tipeJurnalName;
+    }
+
+    public void setTipeJurnalName(String tipeJurnalName) {
+        this.tipeJurnalName = tipeJurnalName;
+    }
 
     public String getKeterangan() {
         return keterangan;

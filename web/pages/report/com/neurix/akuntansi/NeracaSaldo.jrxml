@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NeracaSaldo" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="84beb8d4-8de8-4367-9aeb-63471eea57d0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.138428376721006"/>
-	<property name="ireport.x" value="30"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.7715610000000035"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="91"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -139,8 +139,7 @@ FROM
     select
       rekening_id_parent as rekening_id_parent,
       sum(jumlah_debit) as jumlah_debit,
-      sum(jumlah_kredit) as jumlah_kredit,
-      branch_id as branch_id
+      sum(jumlah_kredit) as jumlah_kredit
     from
       (
         select
@@ -176,12 +175,10 @@ FROM
           and x.registered_flag = 'Y'
           and x.flag = 'Y'
           AND y.rekening_id IN (rek.rekening_id)
+		  and branch_id IN ($P!{reportParams.branchId})
       ) k
-    where
-      branch_id = $P{reportParams.branchId}
     group by
-      rekening_id_parent,
-      branch_id
+      rekening_id_parent
   ) b ON b.rekening_id_parent = a.rekening_id
   LEFT OUTER JOIN (
     select
@@ -190,7 +187,7 @@ FROM
       it_akun_saldo_akhir
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id = $P{reportParams.branchId}
+      and branch_id IN ($P!{reportParams.branchId})
       and rekening_id IN (
         SELECT
           rekening_id

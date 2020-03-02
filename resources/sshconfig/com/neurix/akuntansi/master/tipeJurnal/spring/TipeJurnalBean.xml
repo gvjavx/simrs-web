@@ -36,7 +36,5 @@
 
     <bean id="tipeJurnalDao" class="com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="mappingJurnalDao" class="com.neurix.akuntansi.master.tipeJurnal.dao.MappingJurnalDao"
-          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

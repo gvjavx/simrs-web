@@ -12,17 +12,18 @@ function formatKodeRekening(field) {
         kode = kode.replace(/\./g, "")
         var len = kode.length;
         if (kode.match(/^\d{0,9}$/)) {
-            if (len <= 3) {
+            if (len <= 1) {
                 // Do Nothing
+            }else if (len<=2) {
+                kode = kode.replace(/([0-9]{1})([0-9]{1,2})/g, "$1.$2");
             }
-            else if (len <= 5) {
-                kode = kode.replace(/([0-9]{3})([0-9]{1,2})/g, "$1.$2");
+            else if (len <= 4) {
+                kode = kode.replace(/([0-9]{1})([0-9]{1})([0-9]{1,2})/g, "$1.$2.$3");
             }
-            else if (len <= 7) {
-                kode = kode.replace(/([0-9]{3})([0-9]{2})([0-9]{1,2})/g, "$1.$2.$3");
-            }
-            else {
-                kode = kode.replace(/([0-9]{3})([0-9]{2})([0-9]{2})([0-9]{1,2})/g, "$1.$2.$3.$4");
+            else if(len<=6){
+                kode = kode.replace(/([0-9]{1})([0-9]{1})([0-9]{2})([0-9]{1,2})/g, "$1.$2.$3.$4");
+            }else{
+                kode = kode.replace(/([0-9]{1})([0-9]{1})([0-9]{2})([0-9]{1,2})([0-9]{1,2})/g, "$1.$2.$3.$4.$5");
             }
             field.value = kode;
         } else {
@@ -31,12 +32,12 @@ function formatKodeRekening(field) {
             formatKodeRekening(field);
         }
     }
-
-    if (kode.match(/^(\s*|(\d|\d{3})(\.\d{2}){0,3})$/)) {
-        field.style.color = "black";
-    } else {
-        field.style.color = "red";
-    }
+    //
+    // if (kode.match(/^(\s*|(\d|\d{1})(\.\d{2}){0,2})$/)) {
+    //     field.style.color = "black";
+    // } else {
+    //     field.style.color = "red";
+    // }
 }
 
 function formatRupiah2(field) {

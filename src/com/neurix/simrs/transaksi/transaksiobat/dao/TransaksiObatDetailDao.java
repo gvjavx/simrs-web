@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -315,7 +316,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         String strDiterimaFlag = "";
         if (!"".equalsIgnoreCase(flagDiterima)){
-            strDiterimaFlag = "\n AND odb.diterima_flag = 'Y'";
+            strDiterimaFlag = "\n AND odb.approve_flag = 'Y'";
         }
 
         String SQL = "SELECT \n" +
@@ -339,13 +340,14 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
             TransaksiObatDetail obatDetail;
             for (Object[] obj : results){
+                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
                 obatDetail = new TransaksiObatDetail();
                 obatDetail.setIdApprovalObat(obj[0].toString());
                 obatDetail.setIdTransaksiObatDetail(obj[1].toString());
                 obatDetail.setIdBarang(obj[2].toString());
                 obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
                 obatDetail.setJenisSatuan(obj[4].toString());
-                obatDetail.setHarga(obj[5] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[5]);
+                obatDetail.setHarga(new BigInteger(harga.toString()));
                 trans.add(obatDetail);
             }
         }

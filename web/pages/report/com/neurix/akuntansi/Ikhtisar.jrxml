@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.4522712143931047"/>
-	<property name="ireport.x" value="69"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="161"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -143,20 +143,18 @@ FROM
       y.master_id as nomor_master,
       z.nama as nama,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-      x.branch_id
+      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
     from
       it_akun_jurnal x
       inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
       inner join im_akun_master z on y.master_id = z.nomor_master
     where
       to_char(x.created_date, 'MM-yyyy') =  $P{reportParams.periode}
-      and x.branch_id =  $P{reportParams.branchId}
+      and x.branch_id IN  ($P!{reportParams.branchId})
     group by
       y.rekening_id,
       y.master_id,
-      z.nama,
-      x.branch_id
+      z.nama
   ) b ON b.rekening_id = a.rekening_id
   LEFT OUTER JOIN (
     select
@@ -170,7 +168,7 @@ FROM
       it_akun_saldo_akhir
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id = $P{reportParams.branchId}
+      and branch_id IN ($P!{reportParams.branchId})
   ) c ON a.rekening_id = c.rekening_id
   and c.master_id = b.nomor_master
 ORDER BY
@@ -191,7 +189,8 @@ ORDER BY
 	<field name="currsaldo" class="java.math.BigDecimal"/>
 	<field name="currposisi" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<variable name="SUM_last_saldo_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>

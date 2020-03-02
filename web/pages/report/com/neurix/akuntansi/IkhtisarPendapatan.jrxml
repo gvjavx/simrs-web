@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="10"/>
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="22"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,104 +25,132 @@
 	<parameter name="parameter2" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-	    distinct a.kode_rekening as kodeRekening,
-	    $P{periode} as periode,
-            a.nama_kode_rekening as namaRekening,
-            (CASE WHEN length(a.kode_rekening) = 12 THEN (b.jumlah_debit - b.jumlah_kredit) ELSE NULL END) as saldo,
-            (CASE WHEN length(a.kode_rekening) = 12 THEN (c.jumlah_debit - c.jumlah_kredit) ELSE NULL END) as saldoSekarang,
-	    (CASE WHEN length(a.kode_rekening) = 12 THEN (CASE WHEN d.jumlah_debit IS NULL OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit)END) ELSE NULL END) as lastSaldo
-        FROM
-            (select
-                kode_rekening, nama_kode_rekening,rekening_id
+  distinct a.kode_rekening as kodeRekening,
+  a.grup as grup,
+  $P{periode} as periode,
+  a.nama_kode_rekening as namaRekening,
+  (
+    CASE WHEN length(a.kode_rekening) = 12 THEN (b.jumlah_debit - b.jumlah_kredit) ELSE NULL END
+  ) as saldo,
+  (
+    CASE WHEN length(a.kode_rekening) = 12 THEN (c.jumlah_debit - c.jumlah_kredit) ELSE NULL END
+  ) as saldoSekarang,
+  (
+    CASE WHEN length(a.kode_rekening) = 12 THEN (
+      CASE WHEN d.jumlah_debit IS NULL
+      OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
+    ) ELSE NULL END
+  ) as lastSaldo
+FROM
+  (
+    SELECT
+      x.*,
+      y.nama_kode_rekening as grup
+    FROM
+      (
+        select
+          kode_rekening,
+          nama_kode_rekening,
+          rekening_id,
+          left(kode_rekening, 9) as grup_id
+        from
+          im_akun_kode_rekening
+        where
+          rekening_id IN (
+            select
+              rekening_id
             from
-                im_akun_kode_rekening
+              im_akun_report_detail
             where
-            	rekening_id IN (
-				select
-					rekening_id
-					from
-					im_akun_report_detail
-					where
-					report_id =$P{reportId}
-				)
-            group by kode_rekening, nama_kode_rekening,rekening_id
-            order by kode_rekening
-            ) a
-
-        left outer JOIN
-                (
-		select
-                rekening_id,
-                sum(jumlah_debit) as jumlah_debit,
-                sum(jumlah_kredit) as jumlah_kredit
-		from
-		(
-		select
-                    y.rekening_id as rekening_id,
-                    sum(y.jumlah_debit*x.kurs) as jumlah_debit,
-                    sum(y.jumlah_kredit*x.kurs) as jumlah_kredit
-                from
-                    it_akun_jurnal x
-                    inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-                where
-                    x.tanggal_jurnal < (select to_date($P{periode}, 'MM-yyyy') + Interval '1 month')
-			and x.branch_id=$P{branchId}
-                group by
-                    y.rekening_id
-		union all
-		select
-			i.kode_rekening,
-			i.jumlah_debit,
-			i.jumlah_kredit
-		from
-			it_akun_jurnal_detail_akhir_tahun i inner join it_akun_jurnal_akhir_tahun j
-			on i.no_jurnal = j.no_jurnal
-			where to_date(j.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-			and j.branch_id=$P{branchId}
-		)jurnal_gabungan
-		group by rekening_id
-		) b
-            ON b.rekening_id = a.rekening_id
-
-	left outer JOIN
-                (
-		select
-                    y.rekening_id as rekening_id,
-                    sum(y.jumlah_debit*x.kurs) as jumlah_debit,
-                    sum(y.jumlah_kredit*x.kurs) as jumlah_kredit
-                from
-                    it_akun_jurnal x
-                    inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-		    left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
-                where
-		    to_char(x.tanggal_jurnal, 'MM-yyyy') =$P{periode}
-                    and x.registered_flag = 'Y'
-					and x.branch_id=$P{branchId}
-                group by
-                    y.rekening_id
-		) c
-		ON c.rekening_id = a.rekening_id
-
-	left outer JOIN
-                (select
-                    y.rekening_id as rekening_id,
-                    sum(y.jumlah_debit*x.kurs) as jumlah_debit,
-                    sum(y.jumlah_kredit*x.kurs) as jumlah_kredit
-                from
-                    it_akun_jurnal x
-                    inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-                where
-                    x.tanggal_jurnal < (select to_date($P{periode}, 'MM-yyyy'))
-				 and x.branch_id=$P{branchId}
-                group by
-                    y.rekening_id) d
-            ON d.rekening_id = a.rekening_id
-	where
-    	b.jumlah_debit IS NOT NULL]]>
+              report_id = $P{reportId}
+          )
+        group by
+          kode_rekening,
+          nama_kode_rekening,
+          rekening_id
+        order by
+          kode_rekening
+      ) x
+      INNER JOIN im_akun_kode_rekening y ON x.grup_id = y.kode_rekening
+  ) a
+  left outer JOIN (
+    select
+      rekening_id,
+      sum(jumlah_debit) as jumlah_debit,
+      sum(jumlah_kredit) as jumlah_kredit
+    from
+      (
+        select
+          y.rekening_id as rekening_id,
+          sum(y.jumlah_debit * x.kurs) as jumlah_debit,
+          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
+        from
+          it_akun_jurnal x
+          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+        where
+          x.tanggal_jurnal < (
+            select
+              to_date($P{periode}, 'MM-yyyy') + Interval '1 month'
+          )
+          and x.branch_id IN ($P!{branchId})
+        group by
+          y.rekening_id
+        union all
+        select
+          i.kode_rekening,
+          i.jumlah_debit,
+          i.jumlah_kredit
+        from
+          it_akun_jurnal_detail_akhir_tahun i
+          inner join it_akun_jurnal_akhir_tahun j on i.no_jurnal = j.no_jurnal
+        where
+          to_date(j.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
+          and j.branch_id IN ($P!{branchId})
+      ) jurnal_gabungan
+    group by
+      rekening_id
+  ) b ON b.rekening_id = a.rekening_id
+  left outer JOIN (
+    select
+      y.rekening_id as rekening_id,
+      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
+      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
+    from
+      it_akun_jurnal x
+      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+      left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
+    where
+      to_char(x.tanggal_jurnal, 'MM-yyyy') =  $P{periode}
+      and x.registered_flag = 'Y'
+      and x.branch_id IN ($P!{branchId})
+    group by
+      y.rekening_id
+  ) c ON c.rekening_id = a.rekening_id
+  left outer JOIN (
+    select
+      y.rekening_id as rekening_id,
+      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
+      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
+    from
+      it_akun_jurnal x
+      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+    where
+      x.tanggal_jurnal < (
+        select
+          to_date($P{periode}, 'MM-yyyy')
+      )
+      and x.branch_id IN ($P!{branchId})
+    group by
+      y.rekening_id
+  ) d ON d.rekening_id = a.rekening_id
+where
+  b.jumlah_debit IS NOT NULL]]>
 	</queryString>
 	<field name="koderekening" class="java.lang.String"/>
+	<field name="grup" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<field name="namarekening" class="java.lang.String"/>
 	<field name="saldo" class="java.math.BigDecimal"/>
@@ -262,7 +290,7 @@
 		</groupFooter>
 	</group>
 	<group name="rekening" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{koderekening}.substring(0,2)]]></groupExpression>
+		<groupExpression><![CDATA[$F{grup}]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
@@ -577,9 +605,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="158" y="-1" width="182" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
+				<reportElement key="textField-22" x="158" y="14" width="182" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -592,7 +620,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$V{lastSaldoDisplay}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="0" y="0" width="68" height="15" uuid="42653c39-803d-4ccd-b9d3-6903229e0743"/>
+				<reportElement key="textField" mode="Transparent" x="0" y="15" width="68" height="15" uuid="42653c39-803d-4ccd-b9d3-6903229e0743"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -605,7 +633,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{koderekening}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="68" y="0" width="167" height="15" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
+				<reportElement key="textField" mode="Transparent" x="68" y="15" width="167" height="15" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -618,7 +646,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-1" isPrintRepeatedValues="false" x="0" y="14" width="235" height="1" isPrintInFirstWholeBand="true" printWhenGroupChanges="rekening" uuid="03ed574d-83d4-41e2-b914-c46f3797bd6e">
+				<reportElement key="line-1" isPrintRepeatedValues="false" x="0" y="29" width="235" height="1" isPrintInFirstWholeBand="true" printWhenGroupChanges="rekening" uuid="03ed574d-83d4-41e2-b914-c46f3797bd6e">
 					<printWhenExpression><![CDATA[new Boolean($F{koderekening}.length() == 3)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -626,7 +654,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="349" y="0" width="116" height="14" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
+				<reportElement key="textField-16" x="349" y="15" width="116" height="14" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -639,7 +667,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$V{saldoSekarangDisplay}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-18" x="450" y="-1" width="116" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
+				<reportElement key="textField-18" x="450" y="14" width="116" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -650,6 +678,19 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{saldoDisplay}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" mode="Transparent" x="0" y="0" width="167" height="15" printWhenGroupChanges="rekening" uuid="3da6ccb9-dc64-47a2-9e4f-5454d74e21c3"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

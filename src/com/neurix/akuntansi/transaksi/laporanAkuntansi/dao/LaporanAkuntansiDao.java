@@ -77,7 +77,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        where \n" +
                 "          flag = 'Y' \n" +
                 "          and registered_flag = 'Y'\n" +
-                "\t\t  and branch_id='"+branchId+"'\n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
@@ -167,7 +167,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        where \n" +
                 "          flag = 'Y' \n" +
                 "          and registered_flag = 'Y' \n" +
-                "          and branch_id = '"+branchId+"'\n" +
+                "\t\t  and branch_id IN ("+branchId+")\n" +
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +

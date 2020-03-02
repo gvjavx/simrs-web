@@ -2,18 +2,15 @@ package com.neurix.akuntansi.transaksi.billingSystem.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
-import com.neurix.akuntansi.master.tipeJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
-import com.neurix.akuntansi.master.tipeJurnal.model.ImMappingJurnalEntity;
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
-import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
-import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail;
-import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -30,7 +27,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     private JurnalDao jurnalDao;
     private JurnalDetailDao jurnalDetailDao;
-    private MappingJurnalDao  mappingJurnalDao;
+    private MappingJurnalDao mappingJurnalDao;
     private KodeRekeningDao kodeRekeningDao;
     private String userLogin;
     private Timestamp updateTime;
@@ -391,7 +388,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
-
+                                        if (masterId==null){
+                                            status="Kode Vendor masih kosong";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
                                         ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
                                         String jurnalDetailBarangId="";
                                         ItJurnalDetailEntity jurnalBarang = new ItJurnalDetailEntity();

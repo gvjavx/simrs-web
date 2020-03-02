@@ -1,4 +1,4 @@
-package com.neurix.akuntansi.master.tipeJurnal.model;
+package com.neurix.akuntansi.master.mappingJurnal.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
