@@ -36,20 +36,19 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
-            if (mapCriteria.get("mappingJurnal_id")!=null) {
-                criteria.add(Restrictions.eq("mappingJurnalId", (String) mapCriteria.get("mappingJurnal_id")));
+            if (mapCriteria.get("tipe_jurnal_id")!=null) {
+                criteria.add(Restrictions.eq("tipeJurnalId", (String) mapCriteria.get("tipe_jurnal_id")));
             }
-            if (mapCriteria.get("mappingJurnal_name")!=null) {
-                criteria.add(Restrictions.ilike("mappingJurnalName", "%" + (String)mapCriteria.get("mappingJurnal_name") + "%"));
+            if (mapCriteria.get("trans_id")!=null) {
+                criteria.add(Restrictions.eq("transId", (String) mapCriteria.get("trans_id")));
             }
-
-
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("mappingJurnalId"));
+        criteria.addOrder(Order.asc("tipeJurnalId"));
+        criteria.addOrder(Order.asc("transId"));
 
         List<ImMappingJurnalEntity> results = criteria.list();
 

@@ -48,6 +48,16 @@ public class PermintaanVendor{
 
     private Integer noBatch;
 
+    private String isMobile;
+
+    public String getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(String isMobile) {
+        this.isMobile = isMobile;
+    }
+
     public String getNotFlagR() {
         return notFlagR;
     }

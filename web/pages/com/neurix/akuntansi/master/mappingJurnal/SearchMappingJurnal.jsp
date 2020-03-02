@@ -59,7 +59,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian MappingJurnal</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mapping Jurnal</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -77,21 +77,26 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Mapping Jurnal Id :</small></label>
+                                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="mappingJurnalId" name="mappingJurnal.mappingJurnalId" cssClass="form-control"/>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Mapping Jurnal :</small></label>
+                                                    <label class="control-label"><small>Tipe Transaksi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="mappingJurnalName" name="mappingJurnal.mappingJurnalName" cssClass="form-control"/>
+                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
+                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId"
+                                                                  onchange="$(this).css('border','')"
+                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>

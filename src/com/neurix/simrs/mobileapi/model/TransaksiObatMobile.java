@@ -180,6 +180,18 @@ public class TransaksiObatMobile implements Serializable {
     @Expose
     private String action;
 
+    @SerializedName("flagVerifikasi")
+    @Expose
+    private String flagVerifikasi;
+
+    public String getFlagVerifikasi() {
+        return flagVerifikasi;
+    }
+
+    public void setFlagVerifikasi(String flagVerifikasi) {
+        this.flagVerifikasi = flagVerifikasi;
+    }
+
     public String getAction() {
         return action;
     }
