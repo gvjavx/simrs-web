@@ -450,6 +450,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 transaksiObatMobile.setNamaObat(item.getNamaObat());
                 transaksiObatMobile.setHarga(item.getHarga().toString());
                 transaksiObatMobile.setIdPabrik(item.getIdPabrik());
+                transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
+                transaksiObatMobile.setFlagVerifikasi(item.getFlagVerifikasi());
 
                 listOfTransaksiObat.add(transaksiObatMobile);
             }

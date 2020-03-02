@@ -463,6 +463,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             //transaksiObatDetailEntity.setLastUpdate(bean.getLastUpdate());
             //transaksiObatDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
             transaksiObatDetailEntity.setKeterangan(bean.getKeterangan());
+//            transaksiObatDetailEntity.setFlagVerifikasi("Y");
             //transaksiObatDetailEntity.setLembarPerBox(bean.getLembarPerBox());
             //transaksiObatDetailEntity.setBijiPerLembar(bean.getBijiPerLembar());
 
@@ -604,6 +605,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setIdBarang(idBarang);
                                 obatDetail.setQtyApprove(batchEntity.getQtyApprove());
                                 obatDetail.setExpDate(batchEntity.getExpiredDate());
+                                obatDetail.setBranchId(bean.getBranchId());
 
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
@@ -712,7 +714,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
-        String branchId = CommonUtil.userBranchLogin();
+        String branchId;
+
+        if (bean.getBranchId() != null) {
+            branchId = bean.getBranchId();
+        } else branchId = CommonUtil.userBranchLogin();
 //        String userLogin = CommonUtil.userLogin();
 
         Obat sumObat = new Obat();
