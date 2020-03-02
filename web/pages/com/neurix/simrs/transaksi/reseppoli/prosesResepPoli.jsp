@@ -268,7 +268,7 @@
                     <div class="box-body">
                         <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
                         <a onclick="confirm()" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</a>
-                        <a onclick="printStrukResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>
+                        <%--<a onclick="printStrukResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>--%>
                         <div class="form-group">
                             <s:form id="pembayaranForm" method="post" namespace="/transaksi"
                                     action="pembayaran_transaksi.action"
@@ -318,7 +318,7 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                        toContent();
+                                                                                         toContent();
                                                                                      }
                                                                             }"
                                         >
@@ -498,7 +498,7 @@
     function toContent(){
         var ref = $('#ref').val();
         if(ref == 1){
-            window.location.reload(true);
+            window.location.href = 'initForm_reseppoli.action';
         }
     }
 

@@ -194,7 +194,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
-                "WHERE a.flag = :flag \n" +
+                "WHERE a.flag LIKE :flag \n" +
                 "AND a.branch_id LIKE :branchId\n" +
                 "AND a.is_umum LIKE :isUmum\n" +
                 "AND a.id_permintaan_resep LIKE :idResep\n" +

@@ -183,7 +183,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
@@ -383,6 +383,12 @@
                                         <option value="bca">BCA</option>
                                         <option value="mandiri">Mandiri</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">No Kartu</label>
+                                <div class="col-md-8">
+                                    <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -587,7 +593,7 @@
                     });
 
                     table = table + '<tr><td colspan="3">Total</td><td align="right" style="padding-right: 20px">'+formatRupiah(total)+'</td></tr>'+
-                        '<tr><td colspan="3">Ppn Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
+                        '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">'+formatRupiah(totalPpn)+'</td></tr>'+
                         '<tr><td colspan="3">Total Biaya</td><td align="right" style="padding-right: 20px">'+formatRupiah(total-uangMuka)+'</td></tr>';
 
                     // mapBiaya.push({"type":"kas","nilai":(total-uangMuka)+totalPpn});
@@ -718,13 +724,14 @@
         var isResep = $("#fin_is_resep").val();
         var metodeBayarDiAwal = $('#fin_metode_bayar').val();
         var bukti = $('#fin_bukti').val();
+        var noRekening = $('#no_rekening').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRI",metodeBayarDiAwal, {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRI",metodeBayarDiAwal, noRekening, {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {

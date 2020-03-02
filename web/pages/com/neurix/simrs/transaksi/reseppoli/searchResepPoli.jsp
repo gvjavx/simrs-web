@@ -123,7 +123,7 @@
                                     <div class="col-sm-4">
                                         <s:select list="#{'4':'Selesai'}" cssStyle="margin-top: 7px"
                                                   id="status" name="permintaanResep.status"
-                                                  headerKey="1" headerValue="Antrian"
+                                                  headerKey="3" headerValue="Proses"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Resep Poli</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" id="myTable">
+                        <table class="table table-bordered table-striped" id="sortTable">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Resep</td>

@@ -196,7 +196,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
@@ -386,9 +386,10 @@
                     </div>
                     <div class="col-md-6">
                         <div style="display: none" id="pilih_bank">
+                            <div class="row">
                         <div class="form-group">
-                            <label class="col-md-2" style="margin-top: 7px">Bank</label>
-                            <div class="col-md-6">
+                            <label class="col-md-3" style="margin-top: 7px">Bank</label>
+                            <div class="col-md-8">
                                 <select class="form-control" id="bank">
                                     <option value="" >[Select One]</option>
                                     <option value="bri">BRI</option>
@@ -398,6 +399,15 @@
                                 </select>
                             </div>
                         </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-3" style="margin-top: 7px">No Kartu</label>
+                                    <div class="col-md-8">
+                                        <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -602,7 +612,7 @@
                     });
 
                     if(cekResep){
-                        ppn = '<tr><td colspan="3">Ppn Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalObat * 0.1) + '</td></tr>';
+                        ppn = '<tr><td colspan="3">PPN Obat</td><td align="right" style="padding-right: 20px">' + formatRupiah(totalObat * 0.1) + '</td></tr>';
                         ppnObat = (totalObat * 0.1);
                     }
 
@@ -741,13 +751,14 @@
         var isResep = $("#fin_is_resep").val();
         var metodeBayarDiAwal = $('#fin_metode_bayar').val();
         var bukti = $('#fin_bukti').val();
+        var noRekening = $('#no_rekening').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRJ",metodeBayarDiAwal, {
+        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRJ",metodeBayarDiAwal, noRekening, {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {

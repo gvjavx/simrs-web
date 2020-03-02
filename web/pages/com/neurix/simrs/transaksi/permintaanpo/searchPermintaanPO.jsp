@@ -163,7 +163,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar PO</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID PO</td>
@@ -175,7 +175,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idVendor"/></td>
+                                    <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>

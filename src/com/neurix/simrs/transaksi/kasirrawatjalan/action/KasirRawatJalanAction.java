@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.soap.Detail;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -327,9 +328,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
                 BigInteger tarifUangMuka = hitungTotalUangMuka(uangMukaList);
+                BigInteger tarifObat = hitungTotalObat(obatDetailList);
+                BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
+                ppnObat = new BigDecimal(tarifObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
-                totalJasa = tarifJasa.subtract(new BigDecimal(tarifUangMuka));
+                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
@@ -398,6 +402,17 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         if (uangMukaList != null && uangMukaList.size() > 0) {
             for (UangMuka trans : uangMukaList) {
                 total = total.add(trans.getDibayar());
+            }
+        }
+        return total;
+    }
+
+    private BigInteger hitungTotalObat(List<TransaksiObatDetail> transaksiObatDetailList) {
+
+        BigInteger total = new BigInteger(String.valueOf("0"));
+        if (transaksiObatDetailList != null && transaksiObatDetailList.size() > 0) {
+            for (TransaksiObatDetail trans : transaksiObatDetailList) {
+                total = total.add(trans.getTotalHarga());
             }
         }
         return total;

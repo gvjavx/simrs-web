@@ -601,7 +601,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.id_ruangan,\n" +
                     "i.nama_ruangan,\n" +
                     "b.metode_pembayaran,\n" +
-                    "b.invoice,\n" +
+                    "b.no_jurnal,\n" +
                     "a.url_doc_rujuk\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +

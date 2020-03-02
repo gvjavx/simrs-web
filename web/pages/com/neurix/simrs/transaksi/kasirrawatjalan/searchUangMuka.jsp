@@ -241,7 +241,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
@@ -430,7 +430,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">No Rekening</label>
+                                <label class="col-md-4" style="margin-top: 7px">No Kartu</label>
                                 <div class="col-md-8">
                                     <input type="number" id="no_rekening" style="margin-top: 7px" class="form-control">
                                 </div>
@@ -642,7 +642,7 @@
         var kodeBank = $('#bank').val();
         var noRekening = $('#no_rekening').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();

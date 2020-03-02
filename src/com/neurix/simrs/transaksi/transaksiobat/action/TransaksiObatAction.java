@@ -171,8 +171,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         session.removeAttribute("listOfResultResep");
         session.removeAttribute("listOfResultObat");
         session.removeAttribute("listOfResult");
-
-        setPermintaanResep(new PermintaanResep());
+        PermintaanResep resep = new PermintaanResep();
+        setPermintaanResep(resep);
 
         logger.info("[TransaksiObatAction.initForm] END <<<<<<<");
         return "search";
