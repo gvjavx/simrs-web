@@ -38,5 +38,11 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
         </property>
+        <property name="notaVendor">
+            <column name="nota_vendor" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="urlDocPo">
+            <column name="url_doc_po" sql-type="varchar" length="100" not-null="false" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -1409,6 +1409,21 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return response;
     }
 
+    @Override
+    public List getListPermintaanVendorDoc(String idPermintaanVendor) throws GeneralBOException {
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(idPermintaanVendor);
+
+        List<MtSimrsPermintaanVendorEntity> permintaanVendorEntities = getListEntityVendor(permintaanVendor);
+        if (permintaanVendorEntities.size() > 0){
+            MtSimrsPermintaanVendorEntity vendorEntity = permintaanVendorEntities.get(0);
+            if (vendorEntity.getUrlDocPo() != null && !"".equalsIgnoreCase(vendorEntity.getUrlDocPo()) && vendorEntity.getNotaVendor() != null && !"".equalsIgnoreCase(vendorEntity.getNotaVendor())){
+                return permintaanVendorEntities;
+            }
+        }
+        return new ArrayList();
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {

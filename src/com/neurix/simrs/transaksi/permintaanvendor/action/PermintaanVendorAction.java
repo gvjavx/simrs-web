@@ -35,6 +35,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -934,16 +935,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return obatDetailList;
     }
 
-    public CrudResponse closeAndCreateJurnal(String idPreOrder){
-
-        CrudResponse response = new CrudResponse();
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
-        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
-
-        return response;
-    }
-
     public CrudResponse tutupPurchaseOrder(String idPermintaanVendor){
 
         CrudResponse response = new CrudResponse();
@@ -1021,6 +1012,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
         return response;
+    }
+
+    public CrudResponse uploadDocVendor(InputStream file, String notaVendor, String idPermintaanVendor){
+
+        CrudResponse response = new CrudResponse();
+        response.setMsg(""+file);
+        return response;
+    }
+
+    public List<MtSimrsPermintaanVendorEntity> getListPermintaanVendorDoc(String idPermintaanVendor){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        return permintaanVendorBo.getListPermintaanVendorDoc(idPermintaanVendor);
+
     }
 
     @Override

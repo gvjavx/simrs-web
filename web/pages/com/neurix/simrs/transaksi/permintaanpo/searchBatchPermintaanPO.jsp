@@ -155,6 +155,31 @@
                                 <div class="box-header with-border">
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <h3 class="box-title"><i class="fa fa-file-text-o"></i> Dokumen Vendor</h3>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a class="btn btn-success pull-right" onclick="upload()"><i class="fa fa-upload"></i> Upload</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered table-striped" id="tabel_doc">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Nota Vendor</td>
+                                        <td>Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body-doc">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-8" >
+                                <div class="box-header with-border">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch</h3>
                                         </div>
                                         <div class="col-md-6">
@@ -324,6 +349,41 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-upload">
+    <div class="modal-dialog modal-fade">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Upload Document From Vendor
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-5">Nota Vendor</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="nota-vendor">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-5">Upload Image</label>
+                        <div class="col-md-7">
+                            <input type="file" class="form-control" id="file-doc">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success"  onclick="saveUpload()"><i class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -332,6 +392,7 @@
 
     $(document).ready(function () {
         $('#permintaan_po').addClass('active');
+        listDocument();
     });
 
     function formatRupiah(angka) {
@@ -347,6 +408,37 @@
 
     function updateBatch(noBatch){
         window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+    }
+
+    function listDocument() {
+
+        PermintaanVendorAction.getListPermintaanVendorDoc(idpermintaanPo, function(response){
+            var str = "";
+            if (response.length > 0){
+                $.each(response, function(i, item){
+                    str += '<tr>'+
+                        '<td>'+item.notaVendor+'</td>'+
+                        '<td align="center"><a href="#"><img src="<s:url value="/pages/images/icons8-search-25.png"/>"></a>'+
+                        '</td></tr>';
+                });
+
+                $("#body-doc").html(str);
+            }
+        });
+    }
+
+    function saveUpload() {
+
+        var file = $("#file-doc")[0].files[0];
+        var notaVendor = $("#nota-vendor").val();
+//        console.log(file.mozFullPath);
+        PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function(response){
+            console.log(response);
+        })
+    }
+
+    function upload() {
+        $("#modal-upload").modal("show");
     }
 
     function confirmBatch(noBatch){

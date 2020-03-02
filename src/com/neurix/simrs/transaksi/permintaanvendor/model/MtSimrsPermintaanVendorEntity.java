@@ -18,6 +18,16 @@ public class MtSimrsPermintaanVendorEntity implements Serializable {
     private String createdWho;
     private String urlDocPo;
     private String branchId;
+    private String notaVendor;
+
+    public String getNotaVendor() {
+        return notaVendor;
+    }
+
+    public void setNotaVendor(String notaVendor) {
+        this.notaVendor = notaVendor;
+    }
+
 
     public String getBranchId() {
         return branchId;
