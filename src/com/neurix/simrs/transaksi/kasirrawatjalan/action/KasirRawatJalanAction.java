@@ -323,6 +323,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
+                reportParams.put("title", "Invoice Rawat Jalan Pasien");
                 reportParams.put("itemDataSource", itemData);
                 reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);

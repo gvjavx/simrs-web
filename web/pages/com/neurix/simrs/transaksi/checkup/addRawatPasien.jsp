@@ -590,8 +590,7 @@
                                                 <s:textfield id="no_ktp" name="headerCheckup.noKtp"
                                                              onkeypress="$(this).css('border','')"
                                                              cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['9999999999999999']"
-                                                             data-mask=""/>
+                                                             />
                                             </div>
                                         </div>
                                         <div class="form-group">

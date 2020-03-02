@@ -378,9 +378,12 @@ apply the skin class to the body tag so the changes take effect.
     $( document ).ready(function() {
 //        $('#popoverData').popover();
         //$('#popoverData').tooltip({container: 'body'});
-        $('#myTable').DataTable({
+        $('#myTable').DataTable();
+
+        $('#sortTable').DataTable({
             "order": [[ 0, "desc" ]]
         });
+
         $("#tanggal_lahir").datepicker({
             autoclose: true,
             changeMonth: true,

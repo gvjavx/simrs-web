@@ -75,6 +75,7 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -988,26 +989,26 @@ public class CheckupAction extends BaseMasterAction {
 //            }
 //                checkup.setUrlKtp(checkup.getUrlKtp());
 
-            String fileName = "";
             if (this.fileUploadDoc != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadDocContentType)) {
                     if (this.fileUploadDoc.length() <= 5242880 && this.fileUploadDoc.length() > 0) {
 
                         // file name
-                        fileName = "SURAT_RUJUK_" + checkup.getNoKtp() + "_" + this.fileUploadDocFileName;
-
-                        // deklarasi path file
+                        String fileName = this.fileUploadDocFileName;
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String newFileName = checkup.getNoKtp() + "-"+dateFormater("MM")+dateFormater("yy")+"-"+fileNameReplace;
+                                // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN;
                         logger.info("[CheckupAction.uploadImages] FILEPATH :" + filePath);
 
                         // persiapan pemindahan file
-                        File fileToCreate = new File(filePath, fileName);
+                        File fileToCreate = new File(filePath, newFileName);
 
                         try {
                             // pemindahan file
                             FileUtils.copyFile(this.fileUploadDoc, fileToCreate);
                             logger.info("[CheckupAction.uploadImages] SUCCES PINDAH");
-                            checkup.setUrlDocRujuk(fileName);
+                            checkup.setUrlDocRujuk(newFileName);
                         } catch (IOException e) {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
@@ -1031,6 +1032,12 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveAdd] end process >>>");
         return "success_add";
 
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
 //    private String createJurnalUangMuka(String idPasien, String jumlah){
@@ -1338,7 +1345,12 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         logger.info("[CheckupAction.completeBpjs] end process >>>");
-        return result;
+        if(result != null){
+            return result;
+        }else{
+            result.setStatusBpjs("error");
+            return result;
+        }
     }
 
     public String savePenunjangPasien(String tinggi, String beratBadan, String noCheckup) {

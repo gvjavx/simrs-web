@@ -76,7 +76,7 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/kasirrawatinap/searchKasirRawatInap.jsp</result>
 
             <result name="print_invoice" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printInvoiceRawatInap.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printInvoiceRawatJalan.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

@@ -9,6 +9,7 @@
           p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="transaksiApotekController" class="com.neurix.simrs.mobileapi.TransaksiApotekController"

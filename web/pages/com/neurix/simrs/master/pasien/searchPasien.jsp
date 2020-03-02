@@ -135,7 +135,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped tablePasien">
+                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Pasien</td>
@@ -364,7 +364,8 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <table class="table table-striped">
+                            <img id="img_ktp" style="height: 200px; width: 100%">
+                            <table class="table table-striped" style="margin-top: 20px">
                                 <tr>
                                     <td><b>ID Pasien</b></td>
                                     <td><span id="an_id_pasien"></span></td>
@@ -377,6 +378,11 @@
                                     <td><b>Nama</b></td>
                                     <td><span id="an_nama"></span></td>
                                 </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <table class="table table-striped">
                                 <tr>
                                     <td><b>Jenis Kelamin</b></td>
                                     <td><span id="an_jenis_kelamin"></span></td>
@@ -393,11 +399,6 @@
                                     <td><b>Suku</b></td>
                                     <td><span id="an_suku"></span></td>
                                 </tr>
-                            </table>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-6">
-                            <table class="table table-striped">
                                 <tr>
                                     <td><b>Alamat</b></td>
                                     <td><span id="an_alamat"></span></td>
@@ -498,11 +499,12 @@
                     agama = response.agama;
                     suku = response.suku;
                     alamat = response.jalan;
-                    provinsi = response.namaProvinsi;
-                    kabupaten = response.namaKota;
-                    kecamatan = response.namaKecamatan;
-                    desa = response.namaDesa;
+                    provinsi = response.provinsi;
+                    kabupaten = response.kota;
+                    kecamatan = response.kecamatan;
+                    desa = response.desa;
                     idPasien = response.idPasien;
+                    $('#img_ktp').attr('src',response.urlKtp);
                 }
             });
 

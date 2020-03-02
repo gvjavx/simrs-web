@@ -36,6 +36,8 @@
             var kota = $('#kabupaten11').val();
             var kecamatan = $('#kecamatan11').val();
             var desa = $('#desa11').val();
+            var imgInp = $('#imgInp').val();
+            var noTelp = $('#no_telp').val();
 
 
             if (noKtp != ''
@@ -47,7 +49,9 @@
                 && provinsi != ''
                 && kota != ''
                 && kecamatan != ''
-                && desa != '') {
+                && desa != ''
+                && imgInp != ''
+                && noTelp != '') {
 
                 $('#confirm_dialog').dialog('open');
 
@@ -55,7 +59,7 @@
 
                 $("html, body").animate({scrollTop: 0}, 600);
                 $('#warning_pasien').show().fadeOut(10000);
-                $('#msg_pasien').text("Silahkan cek kembali inputan data pasien...!");
+                $('#msg_pasien_war').text("Silahkan cek kembali inputan data pasien...!");
 
                 if (noKtp == '') {
                     $('#no_ktp').css('border', 'red solid 1px');
@@ -75,14 +79,8 @@
                 if (agama == '') {
                     $('#agama').css('border', 'red solid 1px');
                 }
-                if (poli == '') {
-                    $('#war_poli').show();
-                }
-                if (dokter == '' || dokter == null) {
-                    $('#war_dokter').show();
-                }
-                if (penjamin == '') {
-                    $('#war_penjamin').show();
+                if (noTelp == '') {
+                    $('#no_telp').css('border', 'red solid 1px');
                 }
                 if (provinsi == '') {
                     $('#provinsi').css('border', 'red solid 1px');
@@ -286,9 +284,8 @@
                                             <label class="col-md-4">No Telp</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_telp" name="pasien.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['+62 999-9999-9999']"
-                                                             data-mask=""/>
+                                                             onkeypress="$(this).css('border','')"
+                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -359,7 +356,7 @@
                                                 <img id="img-upload" width="100%"
                                                      src="<s:url value="/pages/images/ktp-default.jpg"/>"
                                                      style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
-                                                <s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>
+                                                <%--<s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -521,24 +518,39 @@
         dwr.engine.setAsync(true);
         CheckupAction.completeBpjs(noBpjs, {
             callback: function (response) {
-                console.log(response);
-                if (response.nama != null) {
-                    $('#btn-cek').html('<i class="fa fa-search"></i> Search');
-                    $('#no_ktp').val(response.noKtp);
-                    $('#nama_pasien').val(response.nama);
-                    $('#jenis_kelamin').val(response.jenisKelamin);
-                    var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
-                    $('#tanggal_lahir').val(tgl);
-                    $('#profesi').val(response.profesi);
-                    $('#no_telp').val(response.noTelp);
-                    // $("#no_bpjs").prop("readonly", true);
-                    $('#success_pasien').show().fadeOut(5000);
-                    $('#msg_pasien_suc').text("No BPJS Berhasil diverifikasi...!");
-                } else {
-                    $('#btn-cek').html('<i class="fa fa-search"></i> Search');
-                    $('#warning_pasien').show().fadeOut(5000);
-                    $('#msg_pasien_war').text("No BPJS Tidak ditemukan...!");
-                }
+                    if(response.statusBpjs == "AKTIF"){
+                        if (response.nama != null) {
+                            $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                            $('#no_ktp').val(response.noKtp);
+                            $('#nama_pasien').val(response.nama);
+                            $('#jenis_kelamin').val(response.jenisKelamin);
+                            var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
+                            $('#tanggal_lahir').val(tgl);
+                            $('#profesi').val(response.profesi);
+                            $('#no_telp').val(response.noTelp);
+                            // $("#no_bpjs").prop("readonly", true);
+                            $('#success_pasien').show().fadeOut(5000);
+                            $('#msg_pasien_suc').text("No BPJS Berhasil diverifikasi...!");
+                        }
+                    }else if(response.statusBpjs == "TIDAK AKTIF"){
+                        if (response.nama != null) {
+                            $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                            $('#no_ktp').val(response.noKtp);
+                            $('#nama_pasien').val(response.nama);
+                            $('#jenis_kelamin').val(response.jenisKelamin);
+                            var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
+                            $('#tanggal_lahir').val(tgl);
+                            $('#profesi').val(response.profesi);
+                            $('#no_telp').val(response.noTelp);
+                            // $("#no_bpjs").prop("readonly", true);
+                            $('#warning_pasien').show().fadeOut(5000);
+                            $('#msg_pasien_war').text("No BPJS sudah tidak Aktif...!");
+                        }
+                    }else{
+                        $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                        $('#warning_pasien').show().fadeOut(5000);
+                        $('#msg_pasien_war').text("No BPJS Tidak ditemukan...!");
+                    }
             }
         });
     }

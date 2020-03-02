@@ -143,7 +143,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
             pasien.setImgKtp(data.getUrlKtp());
-            pasien.setUrlKtp(CommonConstant.URL_IMG + CommonConstant.RESOURCE_PATH_KTP_PASIEN + data.getUrlKtp());
+            pasien.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());
             pasien.setCreatedDate(data.getCreatedDate());
@@ -211,7 +211,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setTglLahir(date);
             BigInteger bigInteger = new BigInteger(pasien.getDesaId());
             pasienEntity.setDesaId(bigInteger);
-            pasienEntity.setJalan(pasien.getAlamat());
+            pasienEntity.setJalan(pasien.getJalan());
 
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
