@@ -58,7 +58,8 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "ob.merk,\n" +
                 "ho.harga_jual\n," +
                 "ho.harga_net\n," +
-                "ho.diskon\n" +
+                "ho.diskon,\n" +
+                "ob.id_barang\n" +
                 "FROM im_simrs_obat ob\n" +
                 "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat GROUP BY id_obat ) obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
                 "LEFT JOIN mt_simrs_harga_obat ho ON ho.id_obat = ob.id_obat\n" +
@@ -86,6 +87,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setHargaJual(obj[8] == null ? new BigDecimal(0) : (BigDecimal) obj[8]);
                 obat.setHargaNet(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
                 obat.setHargaJual(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
+                obat.setIdBarang(obj[11].toString());
                 obats.add(obat);
 
             }
