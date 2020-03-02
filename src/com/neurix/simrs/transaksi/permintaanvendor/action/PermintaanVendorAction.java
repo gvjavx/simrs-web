@@ -1014,11 +1014,38 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse uploadDocVendor(InputStream file, String notaVendor, String idPermintaanVendor){
+    public String uploadDocVendor(){
 
-        CrudResponse response = new CrudResponse();
-        response.setMsg(""+file);
-        return response;
+        PermintaanVendor getPermintaan = getPermintaanVendor();
+
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setIdPermintaanVendor(getPermintaan.getIdPermintaanVendor());
+
+        String idPermintaanVendor = getPermintaan.getIdPermintaanVendor();
+        String idApproval = "";
+        String uploadName = "";
+        List<PermintaanVendor> listPermintaan = permintaanVendorBoProxy.getByCriteria(permintaanVendor);
+        if (listPermintaan.size() > 0){
+            for (PermintaanVendor data : listPermintaan){
+                idApproval = data.getIdApprovalObat();
+            }
+        }
+
+        permintaanVendor.setNotaVendor(getPermintaan.getNotaVendor());
+        permintaanVendor.setUrlDocPo(uploadName);
+        permintaanVendor.setAction("U");
+        permintaanVendor.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        permintaanVendor.setLastUpdateWho(CommonUtil.userLogin());
+
+        try {
+            permintaanVendorBoProxy.saveUpoadDocPermintaanVendor(permintaanVendor);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanVendorAction.uploadDocVendor] ERROR ", e);
+            addActionError("[PermintaanVendorAction.uploadDocVendor] ERROR "+ e);
+            return "list_batch";
+        }
+
+        return initListBatch(idApproval, idPermintaanVendor);
     }
 
     public List<MtSimrsPermintaanVendorEntity> getListPermintaanVendorDoc(String idPermintaanVendor){

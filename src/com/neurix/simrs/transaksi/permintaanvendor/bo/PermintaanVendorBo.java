@@ -30,4 +30,5 @@ public interface PermintaanVendorBo {
 
     public CrudResponse tutupPurchaseOrder(String idPermintaanVendor, String noJurnal) throws GeneralBOException;
     public List getListPermintaanVendorDoc(String idPermintaanVendor) throws GeneralBOException;
+    public void saveUpoadDocPermintaanVendor(PermintaanVendor bean) throws GeneralBOException;
 }
