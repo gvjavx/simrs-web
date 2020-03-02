@@ -45,6 +45,15 @@ public class KasirRawatInapAction extends BaseMasterAction {
     private BranchBo branchBoProxy;
     private String id;
     private String idDetailCheckup;
+    private String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public void setKasirRawatJalanBoProxy(KasirRawatJalanBo kasirRawatJalanBoProxy) {
         this.kasirRawatJalanBoProxy = kasirRawatJalanBoProxy;
@@ -326,6 +335,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
         HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
         String jk = "";
+        String jenisPasien = getJenis();
 
         String logo = "";
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
@@ -454,7 +464,11 @@ public class KasirRawatInapAction extends BaseMasterAction {
             }
         }
 
-        return "print_invoice";
+        if("bpjs".equalsIgnoreCase(jenisPasien)){
+            return "print_invoice_bpjs";
+        }else {
+            return "print_invoice_umum";
+        }
     }
 
     private HeaderCheckup getHeaderCheckup(String noCheckup) {

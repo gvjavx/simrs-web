@@ -80,6 +80,23 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Status Bayar</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'Y':'Sudah Dibayar'}" cssStyle="margin-top: 7px"
+                                                  id="statusBayar"
+                                                  headerKey="" headerValue="Belum Dibayar" name="rawatInap.statusBayar"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis Pasien</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'bpjs':'BPJS'}" cssStyle="margin-top: 7px"
+                                                  headerKey="umum" headerValue="UMUM" name="rawatInap.idJenisPeriksa"
+                                                  cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
                                         <div class="input-group date" style="margin-top: 7px">
@@ -197,8 +214,8 @@
                                     <td align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirinap" action="printInvoice_kasirinap" escapeAmp="false">
-                                                <s:param name="id"><s:property value="noCheckup"/></s:param>
-                                                <s:param name="idDetailCheckup"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="jenis"><s:property value="idJenisPeriksa"/></s:param>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                                 <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
@@ -207,6 +224,15 @@
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>" onclick="showInvoice('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icon_payment.ico"/>" style="cursor: pointer;">
                                         </s:else>
+                                        <s:if test='#row.idJenisPeriksa == "bpjs"'>
+                                            <s:url var="print_invo_bpjs" namespace="/kasirinap" action="printInvoice_kasirinap" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="jenis"><s:property value="idJenisPeriksa"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_invo_bpjs}" target="_blank">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

@@ -1574,7 +1574,9 @@
                         icon = "fa-info";
                         title = "Info!";
                         warnClass = "alert-success";
-                        msg = "Nomor Rujukan Berhasil Diverifikasi..!";
+                        msg =   '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>'+
+                                '<p>Jenis Rawat  : '+response.namaPelayanan+'</p>'+
+                                '<p>Poli Rujukan : '+response.namaPoliRujukan+'</p>';
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);

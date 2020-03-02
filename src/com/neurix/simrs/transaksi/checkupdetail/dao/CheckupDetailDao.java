@@ -208,6 +208,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                             headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                             headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
                             headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+                            headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
 
                             if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                                 List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
@@ -255,6 +256,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                 headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                                 headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
                                 headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+                                headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
 
                                 if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                                     List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
@@ -302,6 +304,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                                     headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                                     headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
                                     headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+                                    headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
 
                                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());
@@ -349,6 +352,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     headerDetailCheckup.setKlaimBpjsFlag(obj[10] == null ? "" : obj[10].toString());
                     headerDetailCheckup.setStatusBayar(obj[11] == null ? "" : obj[11].toString());
+                        headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());

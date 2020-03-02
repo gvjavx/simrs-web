@@ -197,6 +197,7 @@
 
     <include file="sshconfig/com/neurix/simrs/transaksi/monitorruangan/struts/MonitorRuanganAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/kasirrawatjalan/struts/UangMukaAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/obat/struts/HargaObatAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->

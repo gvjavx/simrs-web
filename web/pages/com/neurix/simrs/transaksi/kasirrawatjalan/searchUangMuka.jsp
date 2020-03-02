@@ -642,7 +642,7 @@
         var kodeBank = $('#bank').val();
         var noRekening = $('#no_rekening').val();
         dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
+        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, {callback: function (response) {
             if(response.status == "success"){
                 $('#save_fin').show();
                 $('#load_fin').hide();

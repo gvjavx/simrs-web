@@ -1147,8 +1147,8 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             try {
                 billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
-                response.setStatus("error");
-                response.setMsg("[COba errr]");
+                response.setStatus("success");
+                response.setMsg("[Berhasil]");
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.closingJurnalNonTunai] Error, ", e);
                 response.setStatus("error");

@@ -57,6 +57,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     private String idDetailCheckup;
     private BillingSystemBo billingSystemBoProxy;
     private BranchBo branchBoProxy;
+    private String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -235,6 +244,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
         String jk = "";
+        String jenisPasien = getJenis();
 
         String logo = "";
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
@@ -363,7 +373,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
 
-        return "print_invoice";
+        if("bpjs".equalsIgnoreCase(jenisPasien)){
+            return "print_invoice_bpjs";
+        }else{
+            return "print_invoice_umum";
+        }
+
     }
 
     private BigDecimal hitungTotalJasa(List<RiwayatTindakan> riwayatTindakanList) {

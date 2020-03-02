@@ -228,6 +228,20 @@
                                     Record has been saved successfully.
                                 </sj:dialog>
 
+                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                           resizable="false"
+                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                           buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                >
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <label class="control-label" align="left">
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                 name="icon_error"> System Found : <p id="errorMessage"></p>
+                                        </label>
+                                    </div>
+                                </sj:dialog>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -1760,12 +1774,14 @@
             $('#load_ket').show();
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                if(response == "success"){
+                if(response.status == "success"){
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
                     $('#save_ket').show();
                     $('#load_ket').hide();
                 }
@@ -1776,10 +1792,17 @@
             $('#load_ket').show();
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+                if(response.status == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
         if(idKtg == "selesai"){
@@ -1787,10 +1810,17 @@
             $('#load_ket').show();
             dwr.engine.setAsync(true);
             CheckupDetailAction.saveKeterangan(noCheckup, idDetailCheckup, idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_cekup, ket_cekup, jenisPasien, "", "", "", idPasien, metodeBayar, uangMuka, jenisBayar, function (response) {
-                $('#info_dialog').dialog('open');
-                $('#close_pos').val(6);
-                $('#save_ket').show();
-                $('#load_ket').hide();
+                if(response.status == "success"){
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(6);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }else{
+                    $('#error_dialog').dialog('open');
+                    $('#errorMessage').text(response.msg);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
+                }
             });
         }
     }
@@ -2874,7 +2904,8 @@
                     table += "<tr>" +
                             "<td>" + dateFormat + "</td>" +
                             "<td>" + idResep + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +
+                            "<td align='center'>" +
+                        <%--'<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' +--%>
                             ' <img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">' +
                             "</td>" +
                             "</tr>"

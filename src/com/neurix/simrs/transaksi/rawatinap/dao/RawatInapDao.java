@@ -309,6 +309,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String branchId = "%";
             String jenisPeriksa = "%";
             String notLike = "";
+            String statusBayar = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
                 idPasien = bean.getIdPasien();
@@ -358,9 +359,15 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
-            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
-                notLike = "\n AND a.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
+            if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
+                statusBayar = "\n AND b.status_bayar = '" + bean.getStatusBayar() + "'\n";
+            } else {
+                statusBayar = "\n AND b.status_bayar is null \n";
             }
+
+//            if(bean.getNotLike() != null && !"".equalsIgnoreCase(bean.getNotLike())){
+//                notLike = "\n AND a.id_jenis_periksa_pasien NOT LIKE '"+bean.getNotLike()+"' \n";
+//            }
 
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
@@ -379,7 +386,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "b.no_sep, b.klaim_bpjs_flag, b.status_bayar\n" +
+                    "b.no_sep, b.klaim_bpjs_flag, b.status_bayar, a.id_jenis_periksa_pasien\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
@@ -396,7 +403,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND a.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y'\n" + notLike;
+                    "AND a.flag = 'Y'\n" + statusBayar;
 
             List<Object[]> results = new ArrayList<>();
 
@@ -502,6 +509,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
                     rawatInap.setKlaimBpjsFlag(obj[17] == null ? "" : obj[17].toString());
                     rawatInap.setStatusBayar(obj[18] == null ? "" : obj[18].toString());
+                    rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())){
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
