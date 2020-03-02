@@ -391,7 +391,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
-
+                                        if (masterId==null){
+                                            status="Kode Vendor masih kosong";
+                                            logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
+                                            throw new GeneralBOException("Found problem "+status+", please info to your admin...");
+                                        }
                                         ///////////////////////MEMASUKKAN KE ENTITY  //////////////////////////////
                                         String jurnalDetailBarangId="";
                                         ItJurnalDetailEntity jurnalBarang = new ItJurnalDetailEntity();
