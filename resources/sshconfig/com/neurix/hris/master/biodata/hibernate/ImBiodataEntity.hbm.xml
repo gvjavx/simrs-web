@@ -138,7 +138,7 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
         <property name="golongan">
-            <column name="golongan_id" sql-type="varchar" length="3" not-null="false" />
+            <column name="golongan_id" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="shift">
             <column name="shift" sql-type="varchar" length="1" not-null="false" />
@@ -160,6 +160,12 @@
         </property>
         <property name="mt">
             <column name="mt" sql-type="integer" not-null="false" />
+        </property>
+        <property name="golonganDapenId">
+            <column name="golongan_dapen_id" sql-type="varchar" length="3" not-null="false" />
+        </property>
+        <property name="masaKerjaGolongan">
+            <column name="masa_kerja_gol" sql-type="integer" not-null="false" />
         </property>
         <property name="golonganDapen">
             <column name="golongan_dapen" sql-type="varchar" not-null="false" />
@@ -193,6 +199,11 @@
         <property name="statusGiling">
             <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
         </property>
+
+        <property name="tanggalAkhirKontrak">
+            <column name="tgl_akhir_kontrak" sql-type="timestamp" not-null="false" />
+        </property>
+
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

@@ -971,4 +971,26 @@ public class CommonUtil {
         cal.add(Calendar.YEAR, i);
         return cal.getTime();
     }
+    public static BigDecimal percentage(BigDecimal base, BigDecimal pct){
+        return base.multiply(pct).divide(new BigDecimal(100));
+    }
+    public static String cekDateBeforeNow(String tglAwal){
+        String status = "";
+        //mengambil Tanggal Sekarang
+        java.util.Date now = new java.util.Date();
+        String stNow = CommonUtil.convertDateToString(now);
+        String[] arrNow = stNow.split("-");
+        Integer intNow = Integer.parseInt(arrNow[0]+arrNow[1]+arrNow[2]);
+
+        String tglawalnew = tglAwal.replaceAll("/","-");
+        String[] arrTglAwal = tglawalnew.split("-");
+        Integer intTglAwal = Integer.parseInt(arrTglAwal[0]+arrTglAwal[1]+arrTglAwal[2]);
+
+        if (intTglAwal<intNow){
+            status="Boleh";
+        }else {
+            status="tidak";
+        }
+        return status;
+    }
 }

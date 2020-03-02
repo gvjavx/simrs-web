@@ -14,6 +14,10 @@
         <property name="positionId">
             <column name="position_id" sql-type="varchar" length="5" not-null="true" />
         </property>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="15" not-null="true" />
+        </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
         </property>

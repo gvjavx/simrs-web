@@ -17,4 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
           <!--p:url="jdbc:postgresql://localhost:5432/simrs"-->
           <!--p:username="postgres"-->
           <!--p:password="123456"/>-->
+
+
+>>>>>>> sodiq/editor
 </beans>

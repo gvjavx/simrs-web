@@ -526,7 +526,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         }
                     }
 
-//                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
+                    rawatInap.setCekApprove(cekApproveFlag(obj[0].toString()));
                     rawatInap.setAlamat(jalan);
                     rawatInapList.add(rawatInap);
                 }

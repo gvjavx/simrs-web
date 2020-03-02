@@ -43,7 +43,7 @@
     <section class="content-header">
         <h1>
             User Information
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
 
@@ -74,7 +74,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.positionId">Position :</label>
+                                        <label class="control-label col-sm-5" for="users.positionId">Posisi :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                                             <s:select list="#comboPosition.listOfComboPositions" id="positionId" name="users.positionId"
@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.branchId">Branch :</label>
+                                        <label class="control-label col-sm-5" for="users.branchId">Unit :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                             <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="users.branchId"
@@ -225,10 +225,10 @@
 
                                                     <display:column property="userId" sortable="true" title="Id"/>
                                                     <display:column property="username" sortable="true" title="Name"/>
-                                                    <display:column property="positionName" sortable="true" title="Position"/>
+                                                    <display:column property="positionName" sortable="true" title="Posisi"/>
                                                     <display:column property="roleName" sortable="true" title="Role"/>
                                                     <display:column property="areaName" sortable="true" title="Area"/>
-                                                    <display:column property="branchName" sortable="true" title="Branch"/>
+                                                    <display:column property="branchName" sortable="true" title="Unit"/>
                                                     <display:column property="email" sortable="true" title="Email"/>
                                                     <display:column property="previewPhoto" media="html" title="Preview"/>
                                                     <display:column property="createdDate" sortable="true" title="CreatedDate"

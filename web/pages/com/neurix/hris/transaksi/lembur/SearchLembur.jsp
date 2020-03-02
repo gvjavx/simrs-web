@@ -150,6 +150,17 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Status Approval :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'0':'Menunggu Approve','Y':'Telah di Approve','N':'Tidak di Approve'}" id="statusAproval" name="lembur.approvalFlag"
+                                                                  headerKey="" headerValue="Semua Status" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
                                         <script>
                                             var functions, mapped;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
-	<property name="ireport.zoom" value="2.1435888100000033"/>
-	<property name="ireport.x" value="2"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.zoom" value="1.9487171000000034"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -81,6 +81,7 @@
 	<parameter name="reportParams.nama" class="java.lang.String"/>
 	<parameter name="reportParams.golongan" class="java.lang.String"/>
 	<parameter name="reportParams.posisi" class="java.lang.String"/>
+	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM it_hris_absensi_pegawai LIMIT 1]]>
 	</queryString>
@@ -96,108 +97,110 @@
 	<pageHeader>
 		<band height="144" splitType="Stretch">
 			<textField>
-				<reportElement x="172" y="0" width="208" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="172" y="17" width="208" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="3" y="6" width="95" height="50" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="2" y="6" width="81" height="40" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="154" y="25" width="100" height="20" uuid="08a801a1-1352-4ccf-8317-e83b444634fd"/>
-				<textElement textAlignment="Right">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.tanggalDari}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="301" y="25" width="100" height="20" uuid="974644d5-e392-478a-a3e2-6c43b6a05b51"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.tanggalSelesai}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="254" y="25" width="47" height="20" uuid="458665ae-75e6-44e2-b2c2-6b41190bd5cb"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[s/d]]></text>
-			</staticText>
 			<image>
-				<reportElement x="437" y="0" width="69" height="70" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="475" y="4" width="50" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Tanggal : " + new java.util.Date(),
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="475" y="69" width="80" height="20" uuid="8d5d0360-4743-4a51-92b4-39dcd96a1734"/>
-				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="401" y="69" width="74" height="20" uuid="c348c97a-2769-4381-83a8-23720ef3fab7"/>
-				<text><![CDATA[Printed Date :]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="147" y="100" width="266" height="15" uuid="69fa5537-d50e-4eec-8299-90198584cb7c"/>
+				<reportElement x="147" y="112" width="266" height="15" uuid="69fa5537-d50e-4eec-8299-90198584cb7c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.posisi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="52" y="100" width="95" height="15" uuid="8e087a61-a4e8-4ee7-b18d-9a0f61967ea6"/>
+				<reportElement x="52" y="112" width="95" height="15" uuid="8e087a61-a4e8-4ee7-b18d-9a0f61967ea6"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Posisi		:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="52" y="70" width="95" height="15" uuid="daa8d57e-9873-4e33-b2c8-89149d34c829"/>
+				<reportElement x="52" y="82" width="95" height="15" uuid="daa8d57e-9873-4e33-b2c8-89149d34c829"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[NIP 		:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="147" y="85" width="266" height="15" uuid="ca8fb7c6-17a4-4c99-afbe-86be2ffc879a"/>
+				<reportElement x="147" y="97" width="266" height="15" uuid="ca8fb7c6-17a4-4c99-afbe-86be2ffc879a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="147" y="70" width="266" height="15" uuid="678024df-1e1c-462e-9ab0-7724bb8e2871"/>
+				<reportElement x="147" y="82" width="266" height="15" uuid="678024df-1e1c-462e-9ab0-7724bb8e2871"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.nip}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="52" y="85" width="95" height="15" uuid="15390ee4-a391-4471-af74-c67018a2aeeb"/>
+				<reportElement x="52" y="97" width="95" height="15" uuid="15390ee4-a391-4471-af74-c67018a2aeeb"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Nama 		:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="147" y="115" width="266" height="15" uuid="4d73c555-04a7-4f24-910f-15fb2707e2c4"/>
+				<reportElement x="147" y="127" width="266" height="15" uuid="4d73c555-04a7-4f24-910f-15fb2707e2c4"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.golongan}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="52" y="115" width="95" height="15" uuid="d7d2ed42-3191-46a8-872e-03d91135e80d"/>
+				<reportElement x="52" y="127" width="95" height="15" uuid="d7d2ed42-3191-46a8-872e-03d91135e80d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[Golongan	:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="52" width="145" height="17" uuid="691528d3-3e2f-4b06-a879-a9a668d64a9c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.branchName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="45" width="143" height="20" uuid="be7f5086-4d3c-4827-a32d-04d8e7253c68"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="78" width="553" height="1" uuid="8f83937d-0c71-4107-89a1-0b4d479247de"/>
+			</line>
+			<staticText>
+				<reportElement x="446" y="54" width="79" height="20" uuid="8310be79-8975-4749-99a1-9fdeb118c33a"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="506" y="54" width="80" height="20" uuid="85f1082d-12aa-4664-a213-82c7c72d09b0"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>

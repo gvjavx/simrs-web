@@ -19,119 +19,60 @@ import java.util.Date;
  */
 public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
 
+    private String historyJabatanId;
     private String historyJabatanPegawaiId;
     private String nip;
-    private String bidang;
+    private String bidangName;
     private String status;
     private String positionName;
     private String branchName;
     private String tahun;
     private String pjsFlag;
-    private String positionId;
-    private String branchId;
-    private String divisiId;
-    private Date tanggalMutasiSk;
-
-    private String flag;
     private String action;
+    private String flag;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
-    private String fromPerson;
-    private String noRequest;
-
-    private String tipePegawai;
+    private String branchId;
+    private String positionId;
+    private String divisiId;
+    private Date tanggalSkMutasi;
+    private String tipePegawaiName;
     private String tipePegawaiId;
-    private String GolonganId;
-    private String GolonganName;
+    private String golonganId;
     private String point;
     private String pointLebih;
     private BigDecimal nilaiSmk;
     private String gradeSmk;
+    private String golonganName;
     private String tanggal;
+    private String bagianId;
+    private String bidangId;
+    private String profesiId;
+    private String divisiName;
+    private String bagianName;
+    private String perusahaanLain;
+    private String jabatanLain;
+    private String tanggalKeluar;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(String tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
 
     private ImPosition imPosition;
-
-    public String getTanggal() {
-        return tanggal;
-    }
-
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
-    }
-
-    public String getTipePegawaiId() {
-        return tipePegawaiId;
-    }
-
-    public void setTipePegawaiId(String tipePegawaiId) {
-        this.tipePegawaiId = tipePegawaiId;
-    }
-
-    public String getGolonganId() {
-        return GolonganId;
-    }
-
-    public void setGolonganId(String golonganId) {
-        GolonganId = golonganId;
-    }
-
-    public String getGolonganName() {
-        return GolonganName;
-    }
-
-    public void setGolonganName(String golonganName) {
-        GolonganName = golonganName;
-    }
-
-    public String getGradeSmk() {
-        return gradeSmk;
-    }
-
-    public void setGradeSmk(String gradeSmk) {
-        this.gradeSmk = gradeSmk;
-    }
-
-    public BigDecimal getNilaiSmk() {
-        return nilaiSmk;
-    }
-
-    public void setNilaiSmk(BigDecimal nilaiSmk) {
-        this.nilaiSmk = nilaiSmk;
-    }
-
-    public String getPoint() {
-        return point;
-    }
-
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
-    public String getPointLebih() {
-        return pointLebih;
-    }
-
-    public void setPointLebih(String pointLebih) {
-        this.pointLebih = pointLebih;
-    }
-
-    public String getTipePegawai() {
-        return tipePegawai;
-    }
-
-    public void setTipePegawai(String tipePegawai) {
-        this.tipePegawai = tipePegawai;
-    }
-
-    public Date getTanggalMutasiSk() {
-        return tanggalMutasiSk;
-    }
-
-    public void setTanggalMutasiSk(Date tanggalMutasiSk) {
-        this.tanggalMutasiSk = tanggalMutasiSk;
-    }
 
     public ImPosition getImPosition() {
         return imPosition;
@@ -139,30 +80,6 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
 
     public void setImPosition(ImPosition imPosition) {
         this.imPosition = imPosition;
-    }
-
-    public String getDivisiId() {
-        return divisiId;
-    }
-
-    public void setDivisiId(String divisiId) {
-        this.divisiId = divisiId;
-    }
-
-    public String getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(String positionId) {
-        this.positionId = positionId;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
     }
 
     public String getAction() {
@@ -173,12 +90,44 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.action = action;
     }
 
-    public String getBidang() {
-        return bidang;
+    public String getBagianId() {
+        return bagianId;
     }
 
-    public void setBidang(String bidang) {
-        this.bidang = bidang;
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getBagianName() {
+        return bagianName;
+    }
+
+    public void setBagianName(String bagianName) {
+        this.bagianName = bagianName;
+    }
+
+    public String getBidangId() {
+        return bidangId;
+    }
+
+    public void setBidangId(String bidangId) {
+        this.bidangId = bidangId;
+    }
+
+    public String getBidangName() {
+        return bidangName;
+    }
+
+    public void setBidangName(String bidangName) {
+        this.bidangName = bidangName;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
     public String getBranchName() {
@@ -205,6 +154,22 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.createdWho = createdWho;
     }
 
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
     public String getFlag() {
         return flag;
     }
@@ -213,20 +178,44 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.flag = flag;
     }
 
-    public String getFromPerson() {
-        return fromPerson;
+    public String getGolonganId() {
+        return golonganId;
     }
 
-    public void setFromPerson(String fromPerson) {
-        this.fromPerson = fromPerson;
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
     }
 
-    public String getHistoryJabatanPegawaiId() {
-        return historyJabatanPegawaiId;
+    public String getGolonganName() {
+        return golonganName;
     }
 
-    public void setHistoryJabatanPegawaiId(String historyJabatanPegawaiId) {
-        this.historyJabatanPegawaiId = historyJabatanPegawaiId;
+    public void setGolonganName(String golonganName) {
+        this.golonganName = golonganName;
+    }
+
+    public String getGradeSmk() {
+        return gradeSmk;
+    }
+
+    public void setGradeSmk(String gradeSmk) {
+        this.gradeSmk = gradeSmk;
+    }
+
+    public String getHistoryJabatanId() {
+        return historyJabatanId;
+    }
+
+    public void setHistoryJabatanId(String historyJabatanId) {
+        this.historyJabatanId = historyJabatanId;
+    }
+
+    public String getJabatanLain() {
+        return jabatanLain;
+    }
+
+    public void setJabatanLain(String jabatanLain) {
+        this.jabatanLain = jabatanLain;
     }
 
     public Timestamp getLastUpdate() {
@@ -245,6 +234,14 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public BigDecimal getNilaiSmk() {
+        return nilaiSmk;
+    }
+
+    public void setNilaiSmk(BigDecimal nilaiSmk) {
+        this.nilaiSmk = nilaiSmk;
+    }
+
     public String getNip() {
         return nip;
     }
@@ -253,12 +250,12 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.nip = nip;
     }
 
-    public String getNoRequest() {
-        return noRequest;
+    public String getPerusahaanLain() {
+        return perusahaanLain;
     }
 
-    public void setNoRequest(String noRequest) {
-        this.noRequest = noRequest;
+    public void setPerusahaanLain(String perusahaanLain) {
+        this.perusahaanLain = perusahaanLain;
     }
 
     public String getPjsFlag() {
@@ -269,12 +266,36 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
         this.pjsFlag = pjsFlag;
     }
 
+    public String getPoint() {
+        return point;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
+    }
+
+    public String getPointLebih() {
+        return pointLebih;
+    }
+
+    public void setPointLebih(String pointLebih) {
+        this.pointLebih = pointLebih;
+    }
+
     public String getPositionName() {
         return positionName;
     }
 
     public void setPositionName(String positionName) {
         this.positionName = positionName;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 
     public String getStatus() {
@@ -291,5 +312,37 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
 
     public void setTahun(String tahun) {
         this.tahun = tahun;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public Date getTanggalSkMutasi() {
+        return tanggalSkMutasi;
+    }
+
+    public void setTanggalSkMutasi(Date tanggalSkMutasi) {
+        this.tanggalSkMutasi = tanggalSkMutasi;
+    }
+
+    public String getTipePegawaiId() {
+        return tipePegawaiId;
+    }
+
+    public void setTipePegawaiId(String tipePegawaiId) {
+        this.tipePegawaiId = tipePegawaiId;
+    }
+
+    public String getTipePegawaiName() {
+        return tipePegawaiName;
+    }
+
+    public void setTipePegawaiName(String tipePegawaiName) {
+        this.tipePegawaiName = tipePegawaiName;
     }
 }

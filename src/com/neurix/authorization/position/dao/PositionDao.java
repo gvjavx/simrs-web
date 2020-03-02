@@ -100,6 +100,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
+    public List<ImPosition> getPositionById (String positionId) throws HibernateException {
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.eq("positionId", positionId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();
@@ -196,11 +205,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tdepartment_id,\n" +
                 "\tdepartment_name\n" +
                 "from\n" +
-                "\tstruktur_jabatan\n" +
-                "where\n" +
-                "\tbranch_id is not null\n" + unit + bagian + "\n" +
-                "\tand nip is not null\n" +
-                "\torder by department_name";
+                "\tim_hris_department\n" +
+                "order by department_name";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -217,6 +223,40 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
 
     public List<ImPosition> getDataPosisiBiodata(String divisiId){
+
+        String bagian = "";
+
+
+        if(!divisiId.equalsIgnoreCase("")){
+            bagian = " and department_id = '"+divisiId+"' ";
+        }
+
+        List<ImPosition> listOfResult = new ArrayList<ImPosition>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                "\tposition_id,\n" +
+                "\tposition_name\n" +
+                "from\n" +
+                "\tim_position\n" +
+                "where\n" +
+                "\tposition_id is not null\n" + bagian + "\n" +
+                "order by\n" +
+                "\tposition_name";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPosition result  = new ImPosition();
+            result.setPositionId((String) row[0]);
+            result.setPositionName((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+    public List<ImPosition> getDataPosisiBiodataHistory(String divisiId){
 
         String bagian = "";
 

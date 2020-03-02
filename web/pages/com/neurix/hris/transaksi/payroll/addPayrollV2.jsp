@@ -348,24 +348,24 @@
                                             <display:column property="departmentName" sortable="true" title="Bidang" />
                                             <display:column property="positionName" sortable="true" title="Jabatan" />
                                             <display:column property="golonganName" sortable="true" title="Golongan" />
-                                            <display:column style="text-align:right;" property="totalA" sortable="true" title="Gaji Kotor" />
+                                            <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai" />
+                                            <display:column style="text-align:right;" property="gajiKotor" sortable="true" title="Gaji Kotor" />
                                             <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
                                             <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
                                             <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
-                                            <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />
                                             <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
                                             <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
                                             <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
-                                            <display:column style="text-align:center;" media="html" title="Promosi">
+                                            <%--<display:column style="text-align:center;" media="html" title="Promosi">
                                                 <s:if test="#attr.row.flagPromosiOn">
                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
                                                         <span style="font-size: 17px" class="glyphicon glyphicon-user"></span>
                                                     </a>
                                                 </s:if>
-                                            </display:column>
-                                            <display:column style="text-align:center;" media="html" title="Konsistensi">
+                                            </display:column>--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Konsistensi">
                                                 <s:if test="#attr.row.flagKonsistensi">
                                                     <a style="color: green" href="javascript:;"
                                                        data="<s:property value="%{#attr.row.nip}"/>"
@@ -384,7 +384,7 @@
                                                         Tidak
                                                     </a>
                                                 </s:else>
-                                            </display:column>
+                                            </display:column>--%>
 
 
 
@@ -538,14 +538,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-1" >Golongan/Point</label>
+                            <label class="control-label col-sm-1" >Golongan</label>
                             <div class="col-sm-1">
                                 <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golongan" name="nip">
                             </div>
 
-                            <div class="col-sm-1">
+                            <%--<div class="col-sm-1">
                                 <input readonly type="text" class="form-control nip" id="point" name="nip">
-                            </div>
+                            </div>--%>
                         </div>
 
                         <div class="form-group">
@@ -573,9 +573,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label style="padding-left: 0px; padding-right: 0px" class="control-label col-sm-1" >PJS</label>
-                            <div class="col-sm-2">
-                                <input type="checkbox" id="checkPjs" class="checkApprove" disabled>
+                            <label class="control-label col-sm-1" >Gol.Dapen/Masa Gol.</label>
+                            <div class="col-sm-1">
+                                <input readonly style="padding-left: 8px; padding-right: 0px" type="text" class="form-control nip" id="golonganDapenId" name="nip">
+                            </div>
+
+                            <div class="col-sm-1">
+                                <input readonly type="text" class="form-control nip" id="masaGolDapen" name="nip">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-3">
+
                             </div>
                         </div>
 
@@ -586,32 +596,32 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <%--<div class="form-group">
                             <label class="control-label col-sm-1" >Multifikator</label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="multifikator" name="nip">
                             </div>
-                        </div>
+                        </div>--%>
 
-                        <div class="form-group">
+                        <%--<div class="form-group">
                             <label class="control-label col-sm-1" >Gaji Bpjs **</label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="gajiBpjs" name="nip">
                             </div>
-                        </div>
+                        </div>--%>
 
                         <br>
                         <div class="form-group">
                             <div class="col-sm-5">
-                                <h4>A. Penerimaan Income </h4>
+                                <h4>A. Gaji </h4>
                             </div>
 
                             <div class="col-sm-4">
-                                <h4>B. Potongan (Reduce)</h4>
+                                <h4>B. Tunjangan RLAB dan SANSOS</h4>
                             </div>
 
                             <div class="col-sm-2">
-                                <h4>C. Lain - lain</h4>
+                                <h4>C. Potongan</h4>
                             </div>
                         </div>
 
@@ -622,57 +632,44 @@
                             </div>
 
                             <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailGaji"  style="display: none" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
                             </div>
 
-                            <label class="control-label col-sm-1" >PPh Gaji </label>
+                            <label class="control-label col-sm-1" >Tunj. Rumah </label>
                             <div class="col-sm-2">
-                                <input readonly style="text-align: right"  type="text" class="form-control nip" id="pphGaji" name="nip">
+                                <input readonly style="text-align: right"  type="text" class="form-control nip" id="tunjRumah" name="nip">
                             </div>
 
-                            <div class="col-md-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailPphGaji" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                                <input onchange="disableReadOnly()" type="checkbox" id="checkKalkulasiPph" name="checkKalkulasiPph" class="checkApprove">
-                            </div>
-
-                            <%--<div class="col-md-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="editPphGaji" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>--%>
-
-                            <label class="control-label col-sm-1" >Pengobatan</label>
+                            <label class="control-label col-sm-2" >Iur. Dapen Peg</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="pengobatan" name="nip">
-                            </div>
-                            <div id="detailPengobatan" class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailPengobatan">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
+                                <input readonly style="text-align: right"  type="text" class="form-control nip" id="iuranDapenPeg" name="nip">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-1" >Tunj. UMK</label>
+                            <label class="control-label col-sm-1" >Sankhus</label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjUmk" name="nip">
                             </div>
-                            <label class="control-label col-sm-2" >PPh Pengobatan</label>
+                            <label class="control-label col-sm-2" >Tunj. Listrik</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="pphPengobatan" name="nip">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjListrik" name="nip">
                             </div>
-                            <div class="col-md-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailPphPengobatan" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-edit"></span>
-                                </a>
-                            </div>
-
-                            <label class="control-label col-sm-1" >Koperasi</label>
+                            <label class="control-label col-sm-2" >Iur. Dapen Persh</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="koperasi" onfocusout="updateNilai(this.id, this.value)">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranDapenPersh" name="nip">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Tunj. Jabatan</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Tunj. Air</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjAir" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Iur. Bpjs Tk Pegawai</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPeg" name="nip">
                             </div>
                         </div>
                         <div class="form-group">
@@ -680,184 +677,107 @@
                             <div class="col-sm-2">
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStruktural" name="nip">
                             </div>
-                            <label class="control-label col-sm-2" >Iuran Pensiun</label>
+
+                            <label class="control-label col-sm-2" >Tunj. BBM</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranPensiun" name="nip">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBbm" name="nip">
                             </div>
 
-                            <label class="control-label col-sm-2" >Dansos</label>
+                            <label class="control-label col-sm-2" >Iur. Bpjs Tk Persh. </label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="dansos" onfocusout="updateNilai(this.id, this.value)">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTkPers" name="nip">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Tunj. Fungs</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStrategis" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2"><b>Total. RLAB</b></label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalRlab" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Iur. Bpjs Ks Peg. </label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPeg" name="nip">
+                            </div>
+                        </div>
+                        <br>
                         <div class="form-group">
                             <label class="control-label col-sm-1" >Tunj. Peralihan</label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" onfocusout="updateNilai(this.id, this.value)" name="nip">
                             </div>
-                            <label class="control-label col-sm-2" >Iuran Bpjs Tk</label>
+                            <label class="control-label col-sm-2" >Tunj. Dapen</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsTk" name="nip">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjDapen" name="nip">
                             </div>
-
-                            <label class="control-label col-sm-2" >SP</label>
+                            <label class="control-label col-sm-2" >Iur. Bpjs Ks Pers. </label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="sp" onfocusout="updateNilai(this.id, this.value)">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKsPers" name="nip">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-1" >Tunj.Jab.Struktural</label>
+                            <label class="control-label col-sm-1" >Tunj. Lain</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjJabStruktural" name="nip">
-                            </div>
-                            <label class="control-label col-sm-2" >Iuran Bpjs Pens.</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsPensiun" name="nip">
-                            </div>
-
-                            <label class="control-label col-sm-2" >Bazis</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="bazis" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Tunj. Strategis</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjStrategis" name="nip">
-                            </div>
-                            <label class="control-label col-sm-2" >Iuran Bpjs Kes</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="iuranBpjsKes" name="nip">
-                            </div>
-
-                            <label class="control-label col-sm-2" >Bapor</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="bapor" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Kompensasi</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="kompensasi" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-                            <label class="control-label col-sm-2" >Uang Muka Lain</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="uangMukaLain" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-
-                            <label class="control-label col-sm-2" >Zakat Profesi</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="zakatProfesi" name="nip">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Transport</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right"  type="text" class="form-control nip" id="transport" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-                            <label class="control-label col-sm-2" >Kurang Bpjs</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="kekuranganIuranBpjs" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-
-                            <label class="control-label col-sm-2" >Lain - lain</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="lainLain" onfocusout="updateNilai(this.id, this.value)">
-                            </div>
-                            <%--<div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailBiayaLainLain">
-                                    <span style="font-size: 25px" class="fa fa-edit"></span>
-                                </a>
-                            </div>--%>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Listrik Air</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="listrikAir" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <input onchange="changeJubileumNPensiun()" type="checkbox" id="checkListrikAir" name="checkListrikAir" class="checkApprove">
-                            </div>
-                            <label class="control-label col-sm-1" >Total B</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalB" name="nip">
-                            </div>
-
-                            <label class="control-label col-sm-2" >Total C</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalC" name="nip">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Perumahan</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPerumahan" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <input onchange="changeJubileumNPensiun()" type="checkbox" id="checkPerumahan" name="checkperumahan" class="checkApprove">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Pengobatan</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPengobatan" name="nip">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Tunj. Pph</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPph" name="nip">
-                            </div>
-                            <div class="col-sm-2">
-
-                            </div>
-
-                            <div class="col-sm-4">
-                                <h4>D. Penambahan</h4>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" >Tunj. lain</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" type="text" class="form-control nip" id="tunjLain" onfocusout="updateNilai(this.id, this.value)">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLain" name="nip">
                             </div>
                             <div class="col-sm-1">
-                            </div>
-                            <label class="control-label col-sm-1" >Rapel</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="rapel" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailRapel">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
+                                <a href="javascript:;" class="detailTunjlain" style="display: inline">
+                                    <span style="font-size: 25px" class="glyphicon glyphicon-zoom-in"></span>
                                 </a>
                             </div>
+                            <label class="control-label col-sm-1" >Tunj. Bpjs Ks</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsKs" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Pot. Pph</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="pphGaji1" name="nip">
+                            </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Tunj. Tambahan(PKWT)</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjTambahan" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Tunj. Bpjs Tk</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjBpjsTk" name="nip">
+                            </div>
+                            <label class="control-label col-sm-2" >Pot. Lain-lain</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalPotonganLain" name="nip">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-sm-1" >Tunj. Lembur</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur" name="nip">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur"name="nip">
                             </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;" class="detailLembur">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>
-
-                            <label class="control-label col-sm-1" >THR</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Pemondokan</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="thr" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailThr">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
+                                <input style="text-align: right" type="text" class="form-control nip" id="pemondokan" onfocusout="updateNilai(this.id, this.value)" name="nip">
                             </div>
 
+                            <label class="control-label col-sm-2" >Tunj. Pph</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjPph" name="nip">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Komunikasi</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" type="text" class="form-control nip" id="komunikasi" onfocusout="updateNilai(this.id, this.value)" name="nip">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Tambahan Lain</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="tambahanLain" name="nip">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-1" >Total A</label>
@@ -865,112 +785,106 @@
                                 <input style="text-align: right" readonly type="text" class="form-control nip" id="totalA" name="nip">
                             </div>
 
-                            <div class="col-sm-1">
+                            <div class="col-sm-5">
                             </div>
-                            <label class="control-label col-sm-1" >Pendidikan</label>
+                            <label class="control-label col-sm-1" >Total C</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="pendidikan" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailPendidikan" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalC" name="nip">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="control-label col-sm-1" ></label>
-
-                            <div class="col-sm-3">
-                            </div>
-                            <label class="control-label col-sm-1" >Jasprod</label>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="jasprod" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailJasprod" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-1" ><b>Gaji Bersih (A-B-C) + D</b></label>
+                            <label class="control-label col-sm-1" ><b>Gaji Bersih (A+B)- C</b></label>
                             <div class="col-sm-2">
                                 <input style="text-align: right" align="right" readonly type="text" class="form-control nip" id="gajiBersih" name="nip">
                             </div>
-
-                            <div class="col-sm-1">
-                            </div>
-
-                            <label class="control-label col-sm-1" >Insentif</label>
+                            <label class="control-label col-sm-2" >Total B</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="insentif" name="nip">
+                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalB" name="nip">
                             </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailInsentif" >
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
+                            <div class="col-sm-2"></div>
                             <div class="col-sm-2">
+                                <h4>C. Rincian Potongan</h4>
                             </div>
-
-                            <div class="col-sm-2">
-                            </div>
-
-                            <div class="col-sm-1" style="text-align: right">
-                                <input onchange="changeJubileumNPensiun()" type="checkbox" id="checkApproveJubileum" name="checkApproveJubileum" class="checkApprove">
-                                <label class="control-label " >Jubilium: </label>
-                            </div>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="jubileum" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailJubileum">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                            </div>
-
-                            <div class="col-sm-2">
-                            </div>
-
-                            <div class="col-sm-1" style="text-align: right">
-                                <input onchange="changeJubileumNPensiun()" type="checkbox" id="checkApprovePensiun" name="checkApprovePensiun" class="checkApprove">
-                                <label class="control-label " >Pensiun: </label>
-                            </div>
-                            <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="pensiun" name="nip">
-                            </div>
-                            <div class="col-sm-1" style="padding-left: 0px;">
-                                <a href="javascript:;"  data="a"  class="detailPensiun">
-                                    <span style="font-size: 25px" class="glyphicon glyphicon-search"></span>
-                                </a>
-                            </div>
-
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-2">
-                            </div>
+                            <div class="col-sm-7"></div>
 
+                            <label class="control-label col-sm-2" >Kopkar</label>
                             <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="kopkar" name="nip" onfocusout="updateNilai(this.id, this.value)">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
 
-                            <label class="control-label col-sm-1" >Total D</label>
+                            <label class="control-label col-sm-2" >Iuran Sp</label>
                             <div class="col-sm-2">
-                                <input style="text-align: right" readonly type="text" class="form-control nip" id="totalD" name="nip">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="iuranSp" name="nip" onfocusout="updateNilai(this.id, this.value)">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
 
+                            <label class="control-label col-sm-2" >Iuran PIIKB</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="iuranPiiKb" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Bank BRI</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="bankBri" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Bank Mandiri</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="bankMandiri" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Infaq</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="infaq" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Perkes dan Obat</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="perkesDanObat" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Listrik</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="listrik" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Iuran Profesi</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="iuranProfesi" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-7"></div>
+
+                            <label class="control-label col-sm-2" >Potongan Lain</label>
+                            <div class="col-sm-2">
+                                <input style="text-align: right"  type="text" class="form-control nip" id="potonganLain" name="nip" onfocusout="updateNilai(this.id, this.value)">
+                            </div>
                         </div>
                         <br>
                         <br>
@@ -3038,6 +2952,31 @@
     </div>
 </div>
 
+<%--Modal detail tunjangan Lain Irfan--%>
+<div id="modal-detailTunjLain" class="modal fade modal2" role="dialog">
+    <div class="modal-dialog " style="width:500px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal">
+                </form>
+                <div class="table-responsive">
+                    <table id="tableDetailTunjLain" class="tableDetailTunjLain table table-bordered">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-rapel-lembur" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:1000px;">
 
@@ -4178,28 +4117,52 @@
             $('#modal-pphPengobatan').modal('hide');
         });
 
+        $('.detailTunjlain').on('click', function(){
+            var nip = document.getElementById("nip").value;
+            var bulan = document.getElementById("bulan").value;
+            var tahun = document.getElementById("tahun").value;
+
+            $('.tableDetailTunjLain').find('tbody').remove();
+            $('.tableDetailTunjLain').find('thead').remove();
+
+            var tmp_table = "";
+            var tmp_table2 = "<tbody>";
+            var hasil = 0;
+
+            PayrollAction.payrollDetailTunjLain(bulan,tahun, nip, function(listdata){
+                tmp_table = "<thead style='font-size: 13px; color: white; white-space: nowrap' ><tr class='active'>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>No </th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Nama Tunjangan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>" +
+                        "</tr></thead><tbody>";
+                console.log(listdata)
+                $.each(listdata, function (i, item) {
+                    tmp_table += '<tr style="font-size: 12px; white-space: nowrap">' +
+                            '<td align="left">' + (i+1) + '</td>' +
+                            '<td align="left">' + item.namaTunjangan+ '</td>' +
+                            '<td align="right">' + item.nilai+ '</td>' +
+                            "</tr>";
+                });
+                tmp_table += "</tbody>";
+                $('.tableDetailTunjLain').append(tmp_table);
+            });
+
+            $('#modal-detailTunjLain').find('.modal-title').text('Detail Tunj. Lain');
+            $('#modal-detailTunjLain').modal('show');
+        });
+
 
         $('.tablePayroll').on('click', '.item-edit', function(){
             var nip = $(this).val().replace(/\n|\r/g, "");
             var nip = $(this).attr('data');
 
             PayrollAction.getDetailAdd(nip, function(listdata){
-                if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
-                    $('.detailGaji').show();
-                }else{
-                    $('.detailGaji').hide();
-                }
+
 
                 if(listdata.flagRapel == 'Y'){
                     $('.detailRapel').show();
                 }else{
                     $('.detailRapel').hide();
-                }
-
-                if(listdata.flagPendidikan == 'Y'){
-                    $('.detailPendidikan').show();
-                }else{
-                    $('.detailPendidikan').hide();
                 }
 
                 if(listdata.flagJasprod == 'Y'){
@@ -4220,102 +4183,27 @@
                     $('.detailThr').hide();
                 }
 
-                if(listdata.flagJubileumOn == true){
-                    $('#checkApproveJubileum').removeAttr('disabled');
-                    $('#jubileum').val(listdata.nettoJubileum);
-                    $('.detailJubileum').show();
-                }else{
-                    $('.detailJubileum').hide();
-                    $('#jubileum').val(listdata.labelJubileum);
-                    $('#checkApproveJubileum').prop('disabled', 'true');
-                }
-
-                if(listdata.centangJubileum == "Y"){
-                    if(listdata.flagJubileumOn == true){
-                        if($('#checkApproveJubileum').prop('disabled')){
-                            $('.detailJubileum').hide();
-                        }else{
-                            $('.detailJubileum').show();
-                        }
-                    }else{
-                        $('.detailJubileum').hide();
-                    }
-                    document.getElementById("checkApproveJubileum").checked = true;
-                }else{
-                    $('.detailJubileum').hide();
-                    document.getElementById("checkApproveJubileum").checked = false;
-                }
-
-                if(listdata.flagPensiunOn == true){
-                    $('.detailPensiun').show();
-                    $('#checkApprovePensiun').removeAttr('disabled');
-                }else{
-                    $('.detailPensiun').hide();
-                    $('#checkApprovePensiun').prop('disabled', 'true');
-                }
-
-                if(listdata.centangPensiun == "Y"){
-                    if($('#checkApprovePensiun').prop('disabled')){
-                        $('.detailPensiun').hide();
-                    }else{
-                        $('.detailPensiun').show();
-                    }
-                    document.getElementById("checkApprovePensiun").checked = true;
-                }else{
-                    $('.detailPensiun').hide();
-                    document.getElementById("checkApprovePensiun").checked = false;
-                }
-
-                if(listdata.flagPerumahanOn == true){
-                    $('#checkPerumahan').removeAttr('disabled');
-                }else{
-                    $('#checkPerumahan').prop('disabled', 'true');
-                }
-
-                if(listdata.flagListrikAirOn == true){
-                    $('#checkListrikAir').removeAttr('disabled');
-                }else{
-                    $('#checkListrikAir').prop('disabled', 'true');
-                }
-
-                if(listdata.centangListrikAir == "Y"){
-                    document.getElementById("checkListrikAir").checked = true;
-                }else{
-                    document.getElementById("checkListrikAir").checked = false;
-                }
-
-                if(listdata.centangPerumahan == "Y"){
-                    document.getElementById("checkPerumahan").checked = true;
-                }else{
-                    document.getElementById("checkPerumahan").checked = false;
-                }
-
-                if(listdata.flagPjs == "Y"){
-                    document.getElementById("checkPjs").checked = true;
-                }else{
-                    document.getElementById("checkPjs").checked = false;
-                }
-
                 if(listdata.flagPayroll == "Y"){
-                    $('.detailLembur').show();
-                    $('.detailPphGaji').show();
                 }else{
-                    $('.detailPphGaji').show();
-                    //$('.detailPphGaji').hide();
-                    $('.detailLembur').hide();
-                    $('#tunjPeralihan').attr('readonly', true);
-                    $('#kompensasi').attr('readonly', true);
-                    $('#transport').attr('readonly', true);
                     $('#tunjLain').attr('readonly', true);
+                    $('#tunjPeralihan').attr('readonly', true);
+                    $('#pemondokan').attr('readonly', true);
+                    $('#komunikasi').attr('readonly', true);
+                    $(".detailTunjlain").hide();
+
+
+                    $('#kopkar').attr('readonly', true);
+                    $('#iuranSp').attr('readonly', true);
+                    $('#iuranPiiKb').attr('readonly', true);
+                    $('#bankBri').attr('readonly', true);
+                    $('#bankMandiri').attr('readonly', true);
+                    $('#infaq').attr('readonly', true);
+                    $('#perkesDanObat').attr('readonly', true);
+                    $('#listrik').attr('readonly', true);
+                    $('#iuranProfesi').attr('readonly', true);
+                    $('#potonganLain').attr('readonly', true);
+
                     $('#pphGaji').attr('readonly', true);
-                    $('#uangMukaLain').attr('readonly', true);
-                    $('#kekuranganIuranBpjs').attr('readonly', true);
-                    $('#koperasi').attr('readonly', true);
-                    $('#dansos').attr('readonly', true);
-                    $('#sp').attr('readonly', true);
-                    $('#bazis').attr('readonly', true);
-                    $('#bapor').attr('readonly', true);
-                    $('#lainLain').attr('readonly', true);
                 }
 
                 $('#bulan').val(listdata.bulan);
@@ -4338,95 +4226,66 @@
                 $('#tipeDanaPensiun').val(listdata.danaPensiunName);
                 $('#tipePegawai').val(listdata.tipePegawai);
                 $('#tipePegawaiName').val(listdata.tipePegawaiName);
+                $('#golonganDapenId').val(listdata.golonganDapenName);
+                $('#masaGolDapen').val(listdata.stMasaKerjaGol);
 
-                $('#multifikator').val(listdata.multifikator);
-                $('#gajiBpjs').val(listdata.gajiBpjs);
+                /*$('#multifikator').val(listdata.multifikator);
+                $('#gajiBpjs').val(listdata.gajiBpjs);*/
 
+                //komponen A
                 $('#gaji').val(listdata.gajiGolongan);
                 $('#tunjUmk').val(listdata.tunjanganUmk);
-                $('#tunjStruktural').val(listdata.tunjanganStruktural);
-                $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
-                $('#tunjPendidikan').val(listdata.tunjanganPendidikan);
                 $('#tunjJabStruktural').val(listdata.tunjanganJabatanStruktural);
+                $('#tunjStruktural').val(listdata.tunjanganStruktural);
                 $('#tunjStrategis').val(listdata.tunjanganStrategis);
-                $('#kompensasi').val(listdata.kompensasi);
-                $('#transport').val(listdata.tunjanganTransport);
-                $('#listrikAir').val(listdata.tunjanganAirListrik);
-                $('#tunjPengobatan').val(listdata.tunjanganPengobatan);
-                $('#tunjPerumahan').val(listdata.tunjanganPerumahan);
-                $('#tunjPph').val(listdata.tunjanganPph);
+                $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
+                $('#tunjTambahan').val(listdata.tunjanganTambahan);
                 $('#tunjLain').val(listdata.tunjanganLain);
+                $('#pemondokan').val(listdata.pemondokan);
+                $('#komunikasi').val(listdata.komunikasi);
+                $('#tambahanLain').val(listdata.tambahanLain);
                 $('#tunjLembur').val(listdata.tunjanganLembur);
-                $('#fieldBiayaLembur').val(listdata.tunjanganLembur);
+
+                //komponen B
+                //RLAB
+                $('#tunjRumah').val(listdata.tunjanganRumah);
+                $('#tunjListrik').val(listdata.tunjanganListrik);
+                $('#tunjAir').val(listdata.tunjanganAir);
+                $('#tunjBbm').val(listdata.tunjanganBbm);
+                $('#totalRlab').val(listdata.totalRlab);
+                $('#tunjDapen').val(listdata.iuranDapenPersh);
+                $('#tunjBpjsKs').val(listdata.tunjanganBpjsKs);
+                $('#tunjBpjsTk').val(listdata.tunjanganBpjsTk);
+                $('#tunjPph').val(listdata.tunjanganPph);
+
+                //komponen C
+                $('#iuranDapenPeg').val(listdata.iuranDapenPeg);
+                $('#iuranDapenPersh').val(listdata.iuranDapenPersh);
+                $('#iuranBpjsTkPeg').val(listdata.iuranBpjsTkKary);
+                $('#iuranBpjsTkPers').val(listdata.iuranBpjsTkPers);
+                $('#iuranBpjsKsPeg').val(listdata.iuranBpjsKsKary);
+                $('#iuranBpjsKsPers').val(listdata.iuranBpjsKsPersh);
+                $('#pphGaji1').val(listdata.pphGaji);
+                $('#totalPotonganLain').val(listdata.totalPotonganLain);
+
+                //detail komponen C potongan lain -lain
+                $('#kopkar').val(listdata.kopkar);
+                $('#iuranSp').val(listdata.iuranSp);
+                $('#iuranPiiKb').val(listdata.iuranPiikb);
+                $('#bankBri').val(listdata.bankBri);
+                $('#bankMandiri').val(listdata.bankMandiri);
+                $('#infaq').val(listdata.infaq);
+                $('#perkesDanObat').val(listdata.perkesDanObat);
+                $('#listrik').val(listdata.listrik);
+                $('#iuranProfesi').val(listdata.iuranProfesi);
+                $('#potonganLain').val(listdata.potonganLain);
+
+
+                //Total
                 $('#totalA').val(listdata.totalA);
-
-
-                $('#pphGaji').val(listdata.pphGaji);
-                $('#pphPengobatan').val(listdata.pphPengobatan);
-                $('#iuranPensiun').val(listdata.iuranPensiun);
-                $('#iuranBpjsKes').val(listdata.iuranBpjsKesehatan);
-                $('#iuranBpjsTk').val(listdata.iuranBpjsTk);
-                $('#iuranBpjsPensiun').val(listdata.iuranBpjsPensiun);
-                $('#uangMukaLain').val(listdata.uangMukaLainnya);
-                $('#kekuranganIuranBpjs').val(listdata.kekuranganBpjsTk);
                 $('#totalB').val(listdata.totalB);
-                $('#totalD').val(listdata.totalTambahan);
-
-                $('#pengobatan').val(listdata.pengobatan);
-                if(listdata.branchId != 'KD01'){
-                    $('.detailPengobatan').show;
-                }else{
-                    $('.detailPengobatan').hide();
-                }
-                $('#fieldBiayaPengobatan').val(listdata.pengobatan);
-                $('#koperasi').val(listdata.koperasi);
-                $('#dansos').val(listdata.dansos);
-                $('#sp').val(listdata.SP);
-                $('#bazis').val(listdata.bazis);
-                $('#bapor').val(listdata.bapor);
-                $('#zakatProfesi').val(listdata.zakat);
-                $('#lainLain').val(listdata.lainLain);
                 $('#totalC').val(listdata.totalC);
-
                 $('#gajiBersih').val(listdata.totalGajiBersih);
-
-                $('#pphGajiNilai').val(listdata.pphGaji);
-
-                $('#rapel').val(listdata.totalRapel);
-                $('#thr').val(listdata.totalThrBersih);
-                $('#pendidikan').val(listdata.totalPendidikan);
-                $('#jasprod').val(listdata.totalJasProd);
-                $('#insentif').val(listdata.totalInsentif);
-                $('#pensiun').val(listdata.nettoPensiun);
-                $('#jubileum').val(listdata.nettoJubileum);
-
-                //modal jubileum
-                $('#jubileumMasKer1').val(listdata.stTanggalAktif);
-                $('#jubileumMasKer2').val(listdata.stTanggalAktifSekarang);
-                $('#jubileumGolongan').val(listdata.golonganName);
-                $('#jubileumPoint').val(listdata.point);
-
-                if(listdata.centangKalkulasiPph == "Y"){
-                    $("#pphGaji").prop('readonly', true);
-                    document.getElementById("checkKalkulasiPph").checked = true;
-                }else{
-                    $("#pphGaji").prop('readonly', false);
-                    document.getElementById("checkKalkulasiPph").checked = false;
-                }
-
-                if(listdata.centangKalkulasiPphPengobatan == "Y"){
-                    $("#pphPengobatanBayar").prop('readonly', true);
-                    document.getElementById("checkKalkulasiPphPengobatan").checked = true;
-                }else{
-                    $("#pphPengobatanBayar").prop('readonly', false);
-                    document.getElementById("checkKalkulasiPphPengobatan").checked = false;
-                }
-
-                $('#pphPengobatanJumlah').val(listdata.jumlahPengobatan);
-                $('#pphPengobatanHarusDibayar').val(listdata.hutangPphPengobatan);
-                $('#pphPengobatanTerbayar').val(listdata.jumlahPphPengobatan);
-                $('#pphPengobatanKurang').val(listdata.kurangPphPengobatan);
-                $('#pphPengobatanBayar').val(listdata.pphPengobatan);
 
             });
             //alert( $('#branchId1').text);
@@ -4593,12 +4452,12 @@
             changeJubileumNPensiun();
         });
 
-        $('.detailGaji').on('click', function(){
+        /*$('.detailGaji').on('click', function(){
             var nip = document.getElementById("nip").value;
 
             $('#modal-gaji').find('.modal-title').text('Detail Gaji');
             $('#modal-gaji').modal('show');
-        });
+        });*/
         $('#tanggaGajiAkhir').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
@@ -4892,11 +4751,11 @@
         var nip = document.getElementById("nip").value;
 
         PayrollAction.getDetailAdd(nip, function(listdata){
-            if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
+            /*if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
                 $('.detailGaji').show();
             }else{
                 $('.detailGaji').hide();
-            }
+            }*/
 
             if(listdata.flagRapel == 'Y'){
                 $('.detailRapel').show();
@@ -5020,7 +4879,6 @@
             $('#tunjLain').val(listdata.tunjanganLain);
             $('#tunjLembur').val(listdata.tunjanganLembur);
             $('#fieldBiayaLembur').val(listdata.tunjanganLembur);
-            $('#totalA').val(listdata.totalA);
 
 
             $('#pphGaji').val(listdata.pphGaji);
@@ -5031,7 +4889,7 @@
             $('#iuranBpjsPensiun').val(listdata.iuranBpjsPensiun);
             $('#uangMukaLain').val(listdata.uangMukaLainnya);
             $('#kekuranganIuranBpjs').val(listdata.kekuranganBpjsTk);
-            $('#totalB').val(listdata.totalB);
+
             $('#totalD').val(listdata.totalTambahan);
 
             $('#koperasi').val(listdata.koperasi);
@@ -5041,7 +4899,7 @@
             $('#bapor').val(listdata.bapor);
             $('#zakatProfesi').val(listdata.zakat);
             $('#lainLain').val(listdata.lainLain);
-            $('#totalC').val(listdata.totalC);
+
 
             $('#gajiBersih').val(listdata.totalGajiBersih);
 
@@ -5068,22 +4926,16 @@
         var nip = document.getElementById("nip").value;
 
         PayrollAction.reloadDetail(nip, function(listdata){
-            if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
+            /*if(listdata.tipePegawai == "TP03" && listdata.strukturGaji != "G"){
                 $('.detailGaji').show();
             }else{
                 $('.detailGaji').hide();
-            }
+            }*/
 
-            if(listdata.flagRapel == 'Y'){
+            /*if(listdata.flagRapel == 'Y'){
                 $('.detailRapel').show();
             }else{
                 $('.detailRapel').hide();
-            }
-
-            if(listdata.flagPendidikan == 'Y'){
-                $('.detailPendidikan').show();
-            }else{
-                $('.detailPendidikan').hide();
             }
 
             if(listdata.flagJasprod == 'Y'){
@@ -5155,7 +5007,7 @@
                 document.getElementById("checkPerumahan").checked = true;
             }else{
                 document.getElementById("checkPerumahan").checked = false;
-            }
+            }*/
 
             $('#bulan').val(listdata.bulan);
             $('#tahun').val(listdata.tahun);
@@ -5180,60 +5032,67 @@
             $('#multifikator').val(listdata.multifikator);
             $('#gajiBpjs').val(listdata.gajiBpjs);
 
+            //komponen A
             $('#gaji').val(listdata.gajiGolongan);
             $('#tunjUmk').val(listdata.tunjanganUmk);
-            $('#tunjStruktural').val(listdata.tunjanganStruktural);
-            $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
-            $('#tunjPendidikan').val(listdata.tunjanganPendidikan);
             $('#tunjJabStruktural').val(listdata.tunjanganJabatanStruktural);
+            $('#tunjStruktural').val(listdata.tunjanganStruktural);
             $('#tunjStrategis').val(listdata.tunjanganStrategis);
-            $('#kompensasi').val(listdata.kompensasi);
-            $('#transport').val(listdata.tunjanganTransport);
-            $('#listrikAir').val(listdata.tunjanganAirListrik);
-            $('#tunjPerumahan').val(listdata.tunjanganPerumahan);
-            $('#tunjPengobatan').val(listdata.tunjanganPengobatan);
-            $('#tunjPph').val(listdata.tunjanganPph);
+            $('#tunjPeralihan').val(listdata.tunjanganPeralihan);
+            $('#tunjTambahan').val(listdata.tunjanganTambahan);
             $('#tunjLain').val(listdata.tunjanganLain);
-            $('#tunjLembur').val(listdata.tunjanganLembur);
-            $('#fieldBiayaLembur').val(listdata.tunjanganLembur);
+            $('#pemondokan').val(listdata.pemondokan);
+            $('#komunikasi').val(listdata.komunikasi);
+
+            //komponen B
+            //RLAB
+            $('#tunjRumah').val(listdata.tunjanganRumah);
+            $('#tunjListrik').val(listdata.tunjanganListrik);
+            $('#tunjAir').val(listdata.tunjanganAir);
+            $('#tunjBbm').val(listdata.tunjanganBbm);
+            $('#totalRlab').val(listdata.totalRlab);
+            $('#tunjDapen').val(listdata.iuranDapenPersh);
+            $('#tunjBpjsKs').val(listdata.tunjanganBpjsKs);
+            $('#tunjBpjsTk').val(listdata.tunjanganBpjsTk);
+            $('#tunjPph').val(listdata.tunjanganPph);
+
+            //komponen C
+            $('#iuranDapenPeg').val(listdata.iuranDapenPeg);
+            $('#iuranDapenPersh').val(listdata.iuranDapenPersh);
+            $('#iuranBpjsTkPeg').val(listdata.iuranBpjsTkKary);
+            $('#iuranBpjsTkPers').val(listdata.iuranBpjsTkPers);
+            $('#iuranBpjsKsPeg').val(listdata.iuranBpjsKsKary);
+            $('#iuranBpjsKsPers').val(listdata.iuranBpjsKsPersh);
+            $('#pphGaji1').val(listdata.pphGaji);
+            $('#totalPotonganLain').val(listdata.totalPotonganLain);
+
+            //detail komponen C potongan lain -lain
+            $('#kopkar').val(listdata.kopkar);
+            $('#iuranSp').val(listdata.iuranSp);
+            $('#iuranPiiKb').val(listdata.iuranPiikb);
+            $('#bankBri').val(listdata.bankBri);
+            $('#bankMandiri').val(listdata.bankMandiri);
+            $('#infaq').val(listdata.infaq);
+            $('#perkesDanObat').val(listdata.perkesDanObat);
+            $('#listrik').val(listdata.listrik);
+            $('#iuranProfesi').val(listdata.iuranProfesi);
+            $('#potonganLain').val(listdata.potonganLain);
+
+
+            //Total
             $('#totalA').val(listdata.totalA);
-
-
-            $('#pphGaji').val(listdata.pphGaji);
-            $('#pphPengobatan').val(listdata.pphPengobatan);
-            $('#iuranPensiun').val(listdata.iuranPensiun);
-            $('#iuranBpjsKes').val(listdata.iuranBpjsKesehatan);
-            $('#iuranBpjsTk').val(listdata.iuranBpjsTk);
-            $('#iuranBpjsPensiun').val(listdata.iuranBpjsPensiun);
-            $('#uangMukaLain').val(listdata.uangMukaLainnya);
-            $('#kekuranganIuranBpjs').val(listdata.kekuranganBpjsTk);
             $('#totalB').val(listdata.totalB);
-            $('#totalD').val(listdata.totalTambahan);
-
-            $('#pengobatan').val(listdata.pengobatan);
-            $('#fieldBiayaPengobatan').val(listdata.pengobatan);
-            $('#koperasi').val(listdata.koperasi);
-            $('#dansos').val(listdata.dansos);
-            $('#sp').val(listdata.SP);
-            $('#bazis').val(listdata.bazis);
-            $('#bapor').val(listdata.bapor);
-            $('#zakatProfesi').val(listdata.zakat);
-            $('#lainLain').val(listdata.lainLain);
             $('#totalC').val(listdata.totalC);
-
             $('#gajiBersih').val(listdata.totalGajiBersih);
 
-            $('#pphGajiNilai').val(listdata.pphGaji);
 
-            $('#rapel').val(listdata.totalRapel);
-            $('#thr').val(listdata.totalThrBersih);
-            $('#pendidikan').val(listdata.totalPendidikan);
+            /*$('#pendidikan').val(listdata.totalPendidikan);
             $('#jasprod').val(listdata.totalJasProd);
             $('#insentif').val(listdata.totalInsentif);
             $('#pensiun').val(listdata.nettoPensiun);
-            $('#jubileum').val(listdata.nettoJubileum);
+            $('#jubileum').val(listdata.nettoJubileum);*/
 
-            //modal jubileum
+            /*//modal jubileum
             $('#jubileumMasKer1').val(listdata.stTanggalAktif);
             $('#jubileumMasKer2').val(listdata.stTanggalAktifSekarang);
             $('#jubileumGolongan').val(listdata.golonganName);
@@ -5243,7 +5102,7 @@
             $('#pphPengobatanHarusDibayar').val(listdata.hutangPphPengobatan);
             $('#pphPengobatanTerbayar').val(listdata.jumlahPphPengobatan);
             $('#pphPengobatanKurang').val(listdata.kurangPphPengobatan);
-            $('#pphPengobatanBayar').val(listdata.pphPengobatan);
+            $('#pphPengobatanBayar').val(listdata.pphPengobatan);*/
         });
     }
 
@@ -5302,7 +5161,7 @@
     }
 
     window.changeJubileumNPensiun = function(){
-        var nip = document.getElementById("nip").value;
+        /*var nip = document.getElementById("nip").value;
         var tipePegawai = document.getElementById("tipePegawai").value;
 
         var tunjanganPeralihan = document.getElementById("tunjPeralihan").value;
@@ -5382,7 +5241,7 @@
                 flagPerumahan, pphPengobatan, pphGaji, flagKalkulasiPph, flagKalkulasiPphPengobatan, function(listdata) {
                     alert('Data Berhasil Dirubah');
                     reloadDataModal();
-                });
+                });*/
     }
 
     window.updateNilai = function(id, a){
@@ -5391,35 +5250,35 @@
         var isnum = /^\d+$/.test(a);
 
         var nip = document.getElementById("nip").value;
-        var tipePegawai = document.getElementById("tipePegawai").value;
+//        var tipePegawai = document.getElementById("tipePegawai").value;
 
+        //Komponen A
         var tunjanganPeralihan = document.getElementById("tunjPeralihan").value;
-        var tunjanganLain = document.getElementById("tunjLain").value;
-        var kompensasi = document.getElementById("kompensasi").value;
-        var transport = document.getElementById("transport").value;
-        var uangMukaLain = document.getElementById("uangMukaLain").value;
-        var kurangBpjs = document.getElementById("kekuranganIuranBpjs").value;
-        var koperasi = document.getElementById("koperasi").value;
-        var dansos = document.getElementById("dansos").value;
-        var sp = document.getElementById("sp").value;
-        var bazis = document.getElementById("bazis").value;
-        var bapor = document.getElementById("bapor").value;
-        var lainLain = document.getElementById("lainLain").value;
-        var lembur = document.getElementById("fieldBiayaLembur").value;
-        var pengobatan = document.getElementById("fieldBiayaPengobatan").value;
-        var pphPengobatan = document.getElementById("pphPengobatanBayar").value;
-        var pphGaji = document.getElementById("pphGaji").value;
+        var pemondokan = document.getElementById("pemondokan").value;
+        var komunikasi = document.getElementById("komunikasi").value;
 
-        var gaji = document.getElementById("gaji").value;
+
+        //komponen rincian potongan
+        var kopkar = document.getElementById("kopkar").value;
+        var iuranSp = document.getElementById("iuranSp").value;
+        var iuranPiikb = document.getElementById("iuranPiiKb").value;
+        var bankBri = document.getElementById("bankBri").value;
+        var bankMandiri = document.getElementById("bankMandiri").value;
+        var infaq = document.getElementById("infaq").value;
+        var perkesDanObat = document.getElementById("perkesDanObat").value;
+        var listrik = document.getElementById("listrik").value;
+        var iuranProfesi = document.getElementById("iuranProfesi").value;
+        var potonganLain = document.getElementById("potonganLain").value;
+
+
 
         var flagPensiun = "N";
         var flagJubileum = "N";
-        var flagListrikAir = "N";
+        /*var flagListrikAir = "N";
         var flagPerumahan = "N";
-        var flagKalkulasiPph = "N";
-        var flagKalkulasiPphPengobatan = "N";
+        var flagKalkulasiPph = "N";*/
 
-        if($('#checkApproveJubileum').is(":checked")){
+        /*if($('#checkApproveJubileum').is(":checked")){
             var hasil = cekJubileum(nip);
             if(hasil == ''){
                 flagJubileum = "Y";
@@ -5428,21 +5287,15 @@
             }
         }else{
             flagJubileum = "N";
-        }
+        }*/
 
-        if($('#checkKalkulasiPph').is(":checked")){
+        /*if($('#checkKalkulasiPph').is(":checked")){
             flagKalkulasiPph = "Y";
         }else{
             flagKalkulasiPph = "N";
-        }
+        }*/
 
-        if($('#checkKalkulasiPphPengobatan').is(":checked")){
-            flagKalkulasiPphPengobatan = "Y";
-        }else{
-            flagKalkulasiPphPengobatan = "N";
-        }
-
-        if($('#checkApprovePensiun').is(":checked")){
+        /*if($('#checkApprovePensiun').is(":checked")){
             var hasil = cekPensiun(nip);
             if(hasil == ''){
                 flagPensiun = "Y";
@@ -5451,24 +5304,13 @@
             }
         }else{
             flagPensiun = "N";
-        }
-
-        if($('#checkListrikAir').is(":checked")){
-            flagListrikAir = "Y";
-        }else{
-            flagListrikAir = "N";
-        }
-
-        if($('#checkPerumahan').is(":checked")){
-            flagPerumahan = "Y";
-        }else{
-            flagPerumahan = "N";
-        }
+        }*/
 
         if(isnum == true){
-            PayrollAction.saveEditSessionData(nip, tunjanganPeralihan, kompensasi, transport, uangMukaLain, kurangBpjs, koperasi, dansos,
-                    sp, bazis, bapor, lainLain, tunjanganLain, flagJubileum, flagPensiun, tipePegawai, gaji, lembur, pengobatan, flagListrikAir,
-                    flagPerumahan, pphPengobatan, pphGaji, flagKalkulasiPph, flagKalkulasiPphPengobatan, function(listdata) {
+            PayrollAction.saveEditSessionData(nip, tunjanganPeralihan,pemondokan,
+                    komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
+                    listrik, iuranProfesi, potonganLain,
+                    flagJubileum, flagPensiun, function(listdata) {
                         reloadDataModal();
                     });
         }else{

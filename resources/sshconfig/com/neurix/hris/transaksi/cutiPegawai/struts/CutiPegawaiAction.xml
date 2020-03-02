@@ -89,6 +89,18 @@
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
+            <result name="print_surat_sisa_cuti" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/printSuratSisaCuti.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_surat_sisa_cuti_pensiun" type="jasper">
+                <param name="location">/pages/report/com/neurix/hris/printSuratSisaCutiPensiun.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
             <result name="success_print_report_cuti" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/printRekapitulasiIjinCuti.jasper</param>
                 <param name="connection">connection</param>

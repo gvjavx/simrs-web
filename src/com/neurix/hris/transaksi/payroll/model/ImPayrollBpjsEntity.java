@@ -26,6 +26,80 @@ public class ImPayrollBpjsEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    //tambahan irfan
+    private Double iuranBpjsKsKaryPersen;
+    private Double iuranBpjsKsPersPersen;
+    private Double iuranBpjsTkKaryPersen;
+    private Double iuranBpjsTkPersPersen;
+    private BigDecimal minBpjsKs;
+    private BigDecimal maxBpjsKs;
+    private BigDecimal minBpjsTk;
+    private BigDecimal MaxBpjsTk;
+
+    public Double getIuranBpjsKsKaryPersen() {
+        return iuranBpjsKsKaryPersen;
+    }
+
+    public void setIuranBpjsKsKaryPersen(Double iuranBpjsKsKaryPersen) {
+        this.iuranBpjsKsKaryPersen = iuranBpjsKsKaryPersen;
+    }
+
+    public Double getIuranBpjsKsPersPersen() {
+        return iuranBpjsKsPersPersen;
+    }
+
+    public void setIuranBpjsKsPersPersen(Double iuranBpjsKsPersPersen) {
+        this.iuranBpjsKsPersPersen = iuranBpjsKsPersPersen;
+    }
+
+    public Double getIuranBpjsTkKaryPersen() {
+        return iuranBpjsTkKaryPersen;
+    }
+
+    public void setIuranBpjsTkKaryPersen(Double iuranBpjsTkKaryPersen) {
+        this.iuranBpjsTkKaryPersen = iuranBpjsTkKaryPersen;
+    }
+
+    public Double getIuranBpjsTkPersPersen() {
+        return iuranBpjsTkPersPersen;
+    }
+
+    public void setIuranBpjsTkPersPersen(Double iuranBpjsTkPersPersen) {
+        this.iuranBpjsTkPersPersen = iuranBpjsTkPersPersen;
+    }
+
+    public BigDecimal getMaxBpjsKs() {
+        return maxBpjsKs;
+    }
+
+    public void setMaxBpjsKs(BigDecimal maxBpjsKs) {
+        this.maxBpjsKs = maxBpjsKs;
+    }
+
+    public BigDecimal getMaxBpjsTk() {
+        return MaxBpjsTk;
+    }
+
+    public void setMaxBpjsTk(BigDecimal maxBpjsTk) {
+        MaxBpjsTk = maxBpjsTk;
+    }
+
+    public BigDecimal getMinBpjsKs() {
+        return minBpjsKs;
+    }
+
+    public void setMinBpjsKs(BigDecimal minBpjsKs) {
+        this.minBpjsKs = minBpjsKs;
+    }
+
+    public BigDecimal getMinBpjsTk() {
+        return minBpjsTk;
+    }
+
+    public void setMinBpjsTk(BigDecimal minBpjsTk) {
+        this.minBpjsTk = minBpjsTk;
+    }
+
     public String getBpjsId() {
         return bpjsId;
     }

@@ -24,6 +24,12 @@
         <property name="positionName">
             <column name="position_name" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="profesiName">
+            <column name="profesi_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="100" not-null="false" />
+        </property>
         <property name="namaPegawai">
             <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false" />
         </property>

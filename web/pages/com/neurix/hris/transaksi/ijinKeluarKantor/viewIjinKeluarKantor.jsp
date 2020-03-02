@@ -234,16 +234,19 @@
                     </tr>
                 </table>
                 <br>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
-                            <i class="fa fa-close"/> Close
-                        </button>
-                    </div>
-                </div>
+                <table id="showdata" width="60%">
+                    <tr>
+                        <td align="center">
+                            <s:set name="listAnggotaIjinKeluarKantor" value="#session.listAnggotaIjinKeluarKantor" scope="request" />
+                            <display:table name="listAnggotaIjinKeluarKantor" class="table table-condensed table-striped table-hover"
+                                           requestURI="paging_displaytag_anggota.action" id="row" pagesize="14" style="font-size:14">
+                                <display:column property="nip" sortable="true" title="Nip" />
+                                <display:column property="namaPegawai" sortable="true" title="Nama Pegawai"  />
 
-
+                            </display:table>
+                        </td>
+                    </tr>
+                </table>
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>

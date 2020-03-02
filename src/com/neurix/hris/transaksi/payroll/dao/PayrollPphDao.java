@@ -80,5 +80,40 @@ public class PayrollPphDao extends GenericDao<ItPayrollPphEntity, String> {
 
         return results;
     }
+    public ItPayrollPphEntity getIuranJkmJkk(String nip,String tahun) throws HibernateException {
+        ItPayrollPphEntity result = new ItPayrollPphEntity();
+        result.setIuranJkmJkk(BigDecimal.ZERO);
+        result.setPakaianDinas(BigDecimal.ZERO);
+        result.setIuranBpjsKesehatan(BigDecimal.ZERO);
+        String query = "SELECT\n" +
+                "\tmax(pp.pakaian_dinas) as pd,\n" +
+                "\tmax(pp.iuran_jkm_jkk) as ijj,\n" +
+                "\tsum(p.iuran_bpjs_kesehatan) as ibk\n" +
+                "from \n" +
+                "\tit_hris_payroll p\n" +
+                "\tINNER JOIN it_hris_payroll_pph pp ON p.payroll_id=pp.payroll_id\n" +
+                "where \n" +
+                "\ttahun='"+tahun+"' \n" +
+                "\tand nip='"+nip+"'\n" +
+                "\tand flag_payroll='Y'\n" +
+                "\t";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
 
+        for(Object[] row: results){
+            if (row[0]!= null){
+                result.setPakaianDinas(BigDecimal.valueOf(Double.valueOf(row[0].toString())));
+            }
+            if (row[1]!= null){
+                result.setIuranJkmJkk(BigDecimal.valueOf(Double.valueOf(row[1].toString())));
+            }
+            if (row[2]!= null){
+                result.setIuranBpjsKesehatan(BigDecimal.valueOf(Double.valueOf(row[2].toString())));
+            }
+        }
+
+        return result;
+    }
 }

@@ -3,6 +3,7 @@ package com.neurix.simrs.master.pasien.bo.impl;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.belajar.model.Belajar;
 import com.neurix.hris.master.cuti.model.ImCutiEntity;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
@@ -20,6 +21,7 @@ import org.hibernate.HibernateException;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -141,7 +143,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setProfesi(data.getProfesi());
             pasien.setNoTelp(data.getNoTelp());
             pasien.setImgKtp(data.getUrlKtp());
-            pasien.setUrlKtp(CommonConstant.URL_IMG + CommonConstant.RESOURCE_PATH_KTP_PASIEN + data.getUrlKtp());
+            pasien.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + data.getUrlKtp());
             pasien.setFlag(data.getFlag());
             pasien.setAction(data.getAction());
             pasien.setCreatedDate(data.getCreatedDate());
@@ -189,7 +191,6 @@ public class PasienBoImpl implements PasienBo {
         if (pasien != null) {
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             String id = getIdPasien();
-
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
@@ -199,7 +200,7 @@ public class PasienBoImpl implements PasienBo {
                 e.printStackTrace();
             }
 
-            pasienEntity.setIdPasien("PS" + id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
@@ -210,13 +211,13 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setTglLahir(date);
             BigInteger bigInteger = new BigInteger(pasien.getDesaId());
             pasienEntity.setDesaId(bigInteger);
-            pasienEntity.setJalan(pasien.getAlamat());
+            pasienEntity.setJalan(pasien.getJalan());
 
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
             pasienEntity.setProfesi(pasien.getProfesi());
             pasienEntity.setNoTelp(pasien.getNoTelp());
-            pasienEntity.setUrlKtp(pasien.getNoKtp());
+            pasienEntity.setUrlKtp(pasien.getUrlKtp());
             pasienEntity.setFlag("Y");
             pasienEntity.setAction("C");
             pasienEntity.setCreatedDate(pasien.getCreatedDate());
@@ -702,6 +703,12 @@ public class PasienBoImpl implements PasienBo {
                 }
             }
         }
+    }
+
+    private String dateFormater(String type){
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     @Override

@@ -163,7 +163,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idDetil       = "%";
         String nama           = "%";
         String status         = "%";
-        String flag         = "Y";
+        String flag         = "%";
 
         if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
             isUmum = bean.getIsUmum();

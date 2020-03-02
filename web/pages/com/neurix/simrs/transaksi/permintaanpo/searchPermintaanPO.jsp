@@ -175,7 +175,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idPermintaanVendor"/></td>
+                                    <td><s:property value="idVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>

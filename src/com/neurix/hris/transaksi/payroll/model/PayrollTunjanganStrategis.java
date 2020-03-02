@@ -13,6 +13,16 @@ import com.neurix.common.model.BaseModel;
 public class PayrollTunjanganStrategis extends BaseModel {
     private String tunjStrategisId ;
     private String positionId ;
+    private String golonganId ;
+
+    public String getGolonganId() {
+        return golonganId;
+    }
+
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
+    }
+
     private double nilai ;
 
     public double getNilai() {

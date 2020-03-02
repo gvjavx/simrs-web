@@ -528,7 +528,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             strNip = " and itPosisi.nip = '"+nip+"' ";
         }
 
-        String query = "select \n" +
+        String query = "select distinct \n" +
                 "\tjabatan.*,\n" +
                 "\titPosisi.nip,\n" +
                 "\tpegawai.nama_pegawai, \n" +

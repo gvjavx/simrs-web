@@ -103,7 +103,7 @@
         <action name="paging_displaytag_mutasi"
                 class="com.neurix.hris.transaksi.mutasi.action.MutasiAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/mutasi/SearchMutasiKualifikasi.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/mutasi/SearchMutasi.jsp</result>
         </action>
 
     </package>

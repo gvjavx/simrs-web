@@ -515,15 +515,15 @@
                         kecamatan = response.namaKecamatan;
                         desa = response.namaDesa;
                         noSep = response.noSep;
-//                        metode = response.metodePembayaran;
 
                         if(response.metodePembayaran == "tunai"){
-                            metode = response.metodePembayaran;
-                        } else if (response.metodePembayaran == "non_tunai"){
-                            metode = response.metodePembayaran;
-                        } else {
+                            metode = "tunai";
+                        }else if(response.metodePembayaran == "non_tunai"){
+                            metode = "non_tunai";
+                        }else{
                             metode = "bpjs";
                         }
+
                     // });
 
                     $("#fin_id_pasien").val(response.idPasien);

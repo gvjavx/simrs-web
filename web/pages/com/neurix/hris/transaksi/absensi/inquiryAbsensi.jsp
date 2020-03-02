@@ -205,6 +205,17 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>
+                                                <label class="control-label"><small>Status Pegawai :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:select list="#{'Y':'Pegawai Shift','N':'Pegawai Kantor'}" id="statusPegawai" name="absensiPegawai.cekPegawaiStatus"
+                                                              headerKey="" headerValue="Semua Pegawai" cssClass="form-control" />
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td align="center" colspan="2">
                                                 <br>
                                                 <div class="form-group">

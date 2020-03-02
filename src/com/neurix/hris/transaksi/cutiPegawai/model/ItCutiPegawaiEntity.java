@@ -58,6 +58,61 @@ public class ItCutiPegawaiEntity implements Serializable {
     private ImBranches imBranches;
     private ImDepartmentEntity imDepartmentEntity;
 
+    private String unitId;
+    private String divisiId;
+    private String posisiId;
+    private String bagianId;
+    private String profesiId;
+
+    private String flagPerbaikan;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getFlagPerbaikan() {
+        return flagPerbaikan;
+    }
+
+    public void setFlagPerbaikan(String flagPerbaikan) {
+        this.flagPerbaikan = flagPerbaikan;
+    }
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(String unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getPosisiId() {
+        return posisiId;
+    }
+
+    public void setPosisiId(String posisiId) {
+        this.posisiId = posisiId;
+    }
 
     public String getAlamatCuti() {
         return alamatCuti;

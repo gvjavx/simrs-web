@@ -97,11 +97,19 @@ public class PayrollInsentifDao extends GenericDao<ItPayrollInsentifEntity, Stri
     public List<ItPayrollInsentifEntity> getInsentif(String payrollId) throws HibernateException {
         List<ItPayrollInsentifEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollInsentifEntity.class)
                 .add(Restrictions.eq("payrollId", payrollId))
-                .add(Restrictions.eq("payrollId", payrollId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 
         return results;
     }
 
+    public List<ItPayrollInsentifEntity> getInsentifByNipAndTahun(String nip,String tahun) throws HibernateException {
+        List<ItPayrollInsentifEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollInsentifEntity.class)
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
 }

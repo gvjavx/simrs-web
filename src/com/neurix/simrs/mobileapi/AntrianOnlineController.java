@@ -3,8 +3,12 @@ package com.neurix.simrs.mobileapi;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.mobileapi.model.AntrianMobile;
+import com.neurix.simrs.mobileapi.model.CheckupMobile;
+import com.neurix.simrs.mobileapi.model.HeaderCheckupMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -23,7 +27,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(AntrianOnlineController.class);
     private AntrianMobile model = new AntrianMobile();
     private Collection<AntrianMobile> listOfAntrianOnline = new ArrayList<>();
+    private Collection<HeaderCheckupMobile> listOfHeaderCheckup = new ArrayList<>();
     private AntrianOnlineBo antrianOnlineBoProxy;
+    private CheckupBo checkupBoProxy;
 
     private String idAntrianOnline;
     private String noCheckupOnline;
@@ -35,6 +41,32 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String jamAkhir;
     private String tglCheckup;
     private String action;
+
+    private String idDetailCheckup;
+
+    public CheckupBo getCheckupBoProxy() {
+        return checkupBoProxy;
+    }
+
+    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
+        this.checkupBoProxy = checkupBoProxy;
+    }
+
+    public Collection<HeaderCheckupMobile> getListOfHeaderCheckup() {
+        return listOfHeaderCheckup;
+    }
+
+    public void setListOfHeaderCheckup(Collection<HeaderCheckupMobile> listOfHeaderCheckup) {
+        this.listOfHeaderCheckup = listOfHeaderCheckup;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public void setModel(AntrianMobile model) {
         this.model = model;
@@ -142,7 +174,14 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     @Override
     public Object getModel() {
-       return (listOfAntrianOnline != null ? listOfAntrianOnline : model);
+        switch (action){
+            case "show":
+                return listOfAntrianOnline;
+            case "antrianAll":
+                return listOfHeaderCheckup;
+            default: return model;
+        }
+
     }
 
     public HttpHeaders create() {
@@ -165,8 +204,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             }
         }
 
-        List<AntianOnline> result = new ArrayList<>();
         if (action.equalsIgnoreCase("show")) {
+            List<AntianOnline> result = new ArrayList<>();
             try {
                 result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
             } catch (GeneralBOException e) {
@@ -189,12 +228,41 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 antrian.setNoAntrian(item.getNoAntrian());
                 antrian.setNoCheckupOnline(item.getNoCheckupOnline());
                 antrian.setNoCheckup(item.getNoCheckup());
-                antianOnline.setIdDetailCheckup(item.getIdDetailCheckup());
+                antrian.setIdDetailCheckup(item.getIdDetailCheckup());
                 antrian.setTglCheckup(item.getTglCheckup());
+                antrian.setFlagPeriksa(item.getFlagPeriksa());
 
                 listOfAntrianOnline.add(antrian);
             }
 
+        }
+
+        if (action.equalsIgnoreCase("antrianAll")){
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+                result = checkupBoProxy.getListAntrian(branchId, idPelayanan);
+            } catch (GeneralBOException e) {
+
+            }
+
+            if (result.size() > 0){
+                int i = 1;
+                for (HeaderCheckup item :result){
+                    HeaderCheckupMobile headerCheckupMobile = new HeaderCheckupMobile();
+                    headerCheckupMobile.setNoAntrian(String.valueOf(i));
+                    headerCheckupMobile.setIdPasien(item.getIdPasien());
+                    headerCheckupMobile.setNama(item.getNama());
+                    headerCheckupMobile.setNamaDesa(item.getNamaDesa());
+                    headerCheckupMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    headerCheckupMobile.setNamaKecamatan(item.getNamaKecamatan());
+                    headerCheckupMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    headerCheckupMobile.setNoCheckup(item.getNoCheckup());
+
+                    listOfHeaderCheckup.add(headerCheckupMobile);
+                    i++;
+                }
+            }
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");

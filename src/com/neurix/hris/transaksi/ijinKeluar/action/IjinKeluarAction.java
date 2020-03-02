@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.ijinKeluar.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -23,6 +25,7 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -44,7 +47,15 @@ public class IjinKeluarAction extends BaseMasterAction {
     private IjinKeluarBo ijinKeluarBoProxy;
     private IjinKeluar ijinKeluar;
     private PositionBagianBo positionBagianBoProxy;
+    private boolean admin = false;
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     private List<IjinKeluar> initComboAlat;
 
@@ -108,6 +119,18 @@ public class IjinKeluarAction extends BaseMasterAction {
             } else {
                 setIjinKeluar(new IjinKeluar());
             }
+
+
+//            //mengambil data anggota ijin keluar kantor
+////            HttpSession session = ServletActionContext.getRequest().getSession();
+//            session.removeAttribute("listOfResultAnggotaIjinKeluarKantor");
+//            List<IjinKeluarAnggota> daftarAnggota = new ArrayList<>();
+//            try{
+//                daftarAnggota = ijinKeluarBoProxy.getijinKeluarAnggota(kode);
+//            }catch (GeneralBOException e1) {
+//                logger.error("[IjinKeluarAction.edit] Error when retrieving edit data,", e1);
+//            }
+//            session.setAttribute("listOfResultAnggotaIjinKeluarKantor", daftarAnggota);
 
             logger.info("[IjinKeluar.init] end process >>>");
         }
@@ -247,7 +270,13 @@ public class IjinKeluarAction extends BaseMasterAction {
         String itemId = getId();
         String itemFlag = getFlag();
 
+
         IjinKeluar editIjinKeluar = new IjinKeluar();
+
+
+
+
+
 
         if(itemFlag != null){
             try {
@@ -283,6 +312,22 @@ public class IjinKeluarAction extends BaseMasterAction {
         setAddOrEdit(true);
         logger.info("[IjinKeluarAction.edit] end process >>>");
         return "init_edit";
+    }
+
+    //search anggota saat view
+    public List<IjinKeluarAnggota> searchAnggota(String ijinId) {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+//        session.removeAttribute("listAnggotaIjinKeluarKantor");
+        List<IjinKeluarAnggota> daftarAnggota = new ArrayList<>();
+        try{
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+            daftarAnggota = ijinKeluarBo.getijinKeluarAnggota(ijinId);
+        }catch (GeneralBOException e1) {
+            logger.error("[IjinKeluarAction.edit] Error when retrieving edit data,", e1);
+        }
+        session.setAttribute("listAnggotaIjinKeluarKantor", daftarAnggota);
+        return daftarAnggota;
     }
 
 
@@ -337,10 +382,14 @@ public class IjinKeluarAction extends BaseMasterAction {
     }
     public String deleteKantor() {
         logger.info("[IjinKeluar.deleteKantor] start process >>>");
-
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listAnggotaIjinKeluarKantor");
         String itemId = getId();
         String itemFlag = getFlag();
         IjinKeluar deleteIjinKeluar = new IjinKeluar();
+
+        //mengambil data anggota ijin keluar kantor
+        searchAnggota(itemId);
 
         if (itemFlag != null ) {
 
@@ -557,10 +606,12 @@ public class IjinKeluarAction extends BaseMasterAction {
         List<IjinKeluar> listOfSearchIjinKeluar = new ArrayList();
         String role = CommonUtil.roleAsLogin();
         searchAlat.setFrom("ijinKeluar");
-        if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
 
-        }
-        else{
+        if ("ADMIN".equalsIgnoreCase(role)){
+            setAdmin(true);
+        }else if ("Admin bagian".equalsIgnoreCase(role)){
+
+        } else{
             searchAlat.setNip(CommonUtil.userIdLogin());
         }
 
@@ -607,7 +658,6 @@ public class IjinKeluarAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultIjinKeluar");
         session.setAttribute("listOfResultIjinKeluar", listOfSearchIjinKeluar);
-
         logger.info("[IjinKeluar.search] end process <<<");
 
         return SUCCESS;
@@ -615,7 +665,8 @@ public class IjinKeluarAction extends BaseMasterAction {
 
     public String searchKantor() {
         logger.info("[IjinKeluar.searchKantor] start process >>>");
-
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultIjinKeluarKantor");
         IjinKeluar searchAlat = getIjinKeluar();
         List<IjinKeluar> listOfSearchIjinKeluarKantor = new ArrayList();
         String role = CommonUtil.roleAsLogin();
@@ -666,8 +717,7 @@ public class IjinKeluarAction extends BaseMasterAction {
             Collections.sort(listOfSearchIjinKeluarKantor, comparator);
         }
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultIjinKeluarKantor");
+
         session.setAttribute("listOfResultIjinKeluarKantor", listOfSearchIjinKeluarKantor);
 
         logger.info("[IjinKeluar.search] end process <<<");
@@ -678,6 +728,11 @@ public class IjinKeluarAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[IjinKeluar.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+
+
+        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            setAdmin(true);
+        }
 
         session.removeAttribute("listOfResultIjinKeluar");
         logger.info("[IjinKeluar.initForm] end process >>>");
@@ -773,11 +828,12 @@ public class IjinKeluarAction extends BaseMasterAction {
     }
 
     public List<IjinKeluar> approveAtasan(String ijinKeluarId) {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listAnggotaIjinKeluarKantor");
         logger.info("[IjinKeluarAction.edit] start process >>>");
         String itemId = ijinKeluarId;
         String itemFlag = "Y";
         List<IjinKeluar> ijinKeluarList = new ArrayList<IjinKeluar>();
-
         IjinKeluar editIjinKeluar = new IjinKeluar();
 
         if (itemFlag != null) {
@@ -804,6 +860,7 @@ public class IjinKeluarAction extends BaseMasterAction {
                 addActionError("Error, Unable to find data with id = " + itemId);
             }
         }
+//        searchAnggota(editIjinKeluar.getIjinKeluarId());
         setAddOrEdit(true);
         logger.info("[IjinKeluarAction.edit] end process >>>");
         return ijinKeluarList;
@@ -1010,6 +1067,9 @@ public class IjinKeluarAction extends BaseMasterAction {
     public String paging_kantor(){
         return SUCCESS;
     }
+    public String paging_anggota(){
+        return SUCCESS;
+    }
     public String cetakSurat(){
         logger.info("[IjinKeluarAction.cetakSurat] end process >>>");
 
@@ -1201,7 +1261,23 @@ public class IjinKeluarAction extends BaseMasterAction {
             SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
             String stDate = dt1.format(dataDate);
             for (IjinKeluar ijinKeluar1 : ijinKeluarList){
-                reportParams.put("urlLogo", CommonConstant.URL_IMAGE_LOGO_REPORT);
+                Branch branch = new Branch();
+                try{
+                    BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                    branch = branchBo.getBranchById(ijinKeluar1.getUnitId(),"Y");
+                }catch( HibernateException e){
+                }
+                if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS01")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
+                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS02")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
+                }else if (ijinKeluar1.getUnitId().equalsIgnoreCase("RS03")){
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
+                }else{
+                    reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+                }
+                String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+                reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
                 reportParams.put("ijinTidakMasukId", id);
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());
@@ -1524,5 +1600,82 @@ public class IjinKeluarAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+
+    public List listDispensasiMasal(String unit){
+        List listOfResult = null;
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        try {
+            listOfResult = ijinKeluarBo.getListDispensasiMasal(unit);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBo.saveErrorMessage(e.getMessage(), "ijinKeluarAction.listDispensasiMasal");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.searchCutiBersama] Error when saving error,", e1);
+            }
+            logger.error("[CutiPegawaiAction.searchCutiBersama] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[ijinKeluarAction.listDispensasiMasal] end process <<<");
+
+        return listOfResult;
+    }
+
+    public void saveDispensasiMasal(){
+        logger.info("[IjinKeluar.searchAnggotaIjin] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        IjinKeluar ijinKeluar = getIjinKeluar();
+
+        String userLogin = CommonUtil.userLogin();
+        java.sql.Date dateStart = CommonUtil.convertToDate(ijinKeluar.getStTanggalAwal());
+        java.sql.Date dateEnd = CommonUtil.convertToDate(ijinKeluar.getStTanggalAkhir());
+
+        String allData = ijinKeluar.getCheckedValue();
+        String[]data = allData.split(", ");
+        for (String dataLoop: data){
+
+            ijinKeluar.setNip(dataLoop);
+            ijinKeluar.setTanggalAwal(dateStart);
+            ijinKeluar.setTanggalAkhir(dateEnd);
+
+            ijinKeluar.setCreatedWho(userLogin);
+            ijinKeluar.setLastUpdate(updateTime);
+            ijinKeluar.setCreatedDate(updateTime);
+            ijinKeluar.setLastUpdateWho(userLogin);
+            ijinKeluar.setAction("C");
+            ijinKeluar.setFlag("Y");
+
+            ijinKeluar.setApprovalFlag("Y");
+            ijinKeluar.setApprovalId("0001");
+            ijinKeluar.setApprovalName("Admin");
+            ijinKeluar.setApprovalDate(updateTime);
+
+            ijinKeluar.setApprovalSdmFlag("Y");
+            ijinKeluar.setApprovalSdmId("0001");
+            ijinKeluar.setApprovalSdmName("Admin");
+            ijinKeluar.setApprovalSdmDate(updateTime);
+
+            try {
+                ijinKeluarBo.saveAddDispensasiMasal(ijinKeluar);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinKeluarBo.saveErrorMessage(e.getMessage(), "ijinKeluarAction.listDispensasiMasal");
+                } catch (GeneralBOException e1) {
+                    logger.error("[CutiPegawaiAction.searchCutiBersama] Error when saving error,", e1);
+                }
+                logger.error("[CutiPegawaiAction.searchCutiBersama] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            }
+
+            logger.info("[ijinKeluarAction.listDispensasiMasal] end process <<<");
+        }
     }
 }

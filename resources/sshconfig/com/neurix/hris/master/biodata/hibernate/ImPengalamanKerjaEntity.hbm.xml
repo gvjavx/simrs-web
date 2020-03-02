@@ -20,6 +20,9 @@
         <property name="jabatan">
             <column name="jabatan" sql-type="varchar" length="30" not-null="false" />
         </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
         <property name="tahunMasuk">
             <column name="tanggal_masuk" sql-type="date" not-null="false" />
         </property>

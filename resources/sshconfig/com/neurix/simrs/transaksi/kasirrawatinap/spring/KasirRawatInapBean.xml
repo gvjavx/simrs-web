@@ -10,6 +10,8 @@
           p:checkupBoProxy-ref="checkupBoProxy"
           p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"
           p:transaksiObatBoProxy-ref="transaksiObatBoProxy"
+          p:kasirRawatJalanBoProxy-ref="kasirRawatJalanBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
     />
 
     <bean id="kasirRawatInapBo" class="com.neurix.simrs.transaksi.kasirrawatinap.bo.impl.KasirRawatInapBoImpl"

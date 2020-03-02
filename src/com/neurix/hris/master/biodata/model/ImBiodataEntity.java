@@ -28,6 +28,7 @@ public class ImBiodataEntity implements Serializable {
     private String branchId;
     private String divisiId;
     private String posisiId;
+    private String profesiId;
     private int batih;
     private int noAnggota;
 
@@ -61,6 +62,59 @@ public class ImBiodataEntity implements Serializable {
     private BigDecimal persentasiHutangPph;
     private String umur;
     private String flagMess;
+    private String golonganDapenId;
+    private String stMasaKerjaGol;
+    private Integer masaKerjaGolongan;
+    private String branchIdTerakhir;
+    private String positionIdTerakhir;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getBranchIdTerakhir() {
+        return branchIdTerakhir;
+    }
+
+    public void setBranchIdTerakhir(String branchIdTerakhir) {
+        this.branchIdTerakhir = branchIdTerakhir;
+    }
+
+    public String getPositionIdTerakhir() {
+        return positionIdTerakhir;
+    }
+
+    public void setPositionIdTerakhir(String positionIdTerakhir) {
+        this.positionIdTerakhir = positionIdTerakhir;
+    }
+
+    public Integer getMasaKerjaGolongan() {
+        return masaKerjaGolongan;
+    }
+
+    public void setMasaKerjaGolongan(Integer masaKerjaGolongan) {
+        this.masaKerjaGolongan = masaKerjaGolongan;
+    }
+
+    public String getStMasaKerjaGol() {
+        return stMasaKerjaGol;
+    }
+
+    public void setStMasaKerjaGol(String stMasaKerjaGol) {
+        this.stMasaKerjaGol = stMasaKerjaGol;
+    }
+
+    public String getGolonganDapenId() {
+        return golonganDapenId;
+    }
+
+    public void setGolonganDapenId(String golonganDapenId) {
+        this.golonganDapenId = golonganDapenId;
+    }
 
     public String getBagianName() {
         return bagianName;

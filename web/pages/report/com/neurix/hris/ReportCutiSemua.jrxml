@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
-	<property name="ireport.zoom" value="0.9075000000000013"/>
+	<property name="ireport.zoom" value="1.9453068450750053"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="32"/>
+	<property name="ireport.y" value="43"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -66,6 +66,7 @@
 	<parameter name="reportParams.divisi" class="java.lang.String"/>
 	<parameter name="reportParams.date" class="java.lang.String"/>
 	<parameter name="reportParams.bagian" class="java.lang.String"/>
+	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM it_hris_absensi_pegawai LIMIT 1]]>
 	</queryString>
@@ -79,80 +80,75 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="109" splitType="Stretch">
+		<band height="90" splitType="Stretch">
 			<textField>
-				<reportElement x="138" y="0" width="275" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
+				<reportElement x="138" y="5" width="275" height="20" uuid="82a6e25e-0263-40e4-acdb-efb4e6ca3ac9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="DejaVu Sans" size="15" isBold="true"/>
+					<font fontName="DejaVu Sans" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="128" height="55" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
+				<reportElement x="0" y="6" width="83" height="37" uuid="cf8f70f1-b6d7-4748-9c1d-abb8c6f5229c"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="154" y="25" width="100" height="20" uuid="08a801a1-1352-4ccf-8317-e83b444634fd"/>
+				<reportElement x="154" y="30" width="100" height="20" uuid="08a801a1-1352-4ccf-8317-e83b444634fd"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalDari}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="301" y="25" width="100" height="20" uuid="974644d5-e392-478a-a3e2-6c43b6a05b51"/>
+				<reportElement x="301" y="30" width="100" height="20" uuid="974644d5-e392-478a-a3e2-6c43b6a05b51"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tanggalSelesai}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="254" y="25" width="47" height="20" uuid="458665ae-75e6-44e2-b2c2-6b41190bd5cb"/>
+				<reportElement x="254" y="30" width="47" height="20" uuid="458665ae-75e6-44e2-b2c2-6b41190bd5cb"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[s/d]]></text>
 			</staticText>
 			<image>
-				<reportElement x="437" y="0" width="69" height="70" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
+				<reportElement x="482" y="5" width="52" height="50" uuid="02256ac0-db6b-4fa4-a084-808c1a951693"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Tanggal : " + new java.util.Date(),
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="3" y="69" width="65" height="20" uuid="63638550-b52f-4d0d-b8a4-9d5e1c57372d"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[Unit 	:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="68" y="69" width="288" height="20" uuid="2060a779-66e0-403e-ba1d-87ac237f6818"/>
+				<reportElement x="1" y="46" width="288" height="20" uuid="2060a779-66e0-403e-ba1d-87ac237f6818"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="3" y="89" width="65" height="20" uuid="68f05da6-6948-4a0a-a455-781b16a61b17"/>
+				<reportElement x="1" y="36" width="288" height="20" uuid="baca9be7-fe04-4ff1-b328-6f3728d9112c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Bagian 	:]]></text>
+				<text><![CDATA[PT. Nusantara Medika Utama]]></text>
 			</staticText>
+			<line>
+				<reportElement x="3" y="72" width="552" height="1" uuid="07479d03-45f1-4646-82d2-719386d6697c"/>
+			</line>
 			<textField>
-				<reportElement x="68" y="89" width="288" height="20" uuid="6e23259d-42df-4be7-970f-6dd3b403a16b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+				<reportElement x="516" y="55" width="80" height="20" uuid="93a638c5-92b1-457a-ac6b-3c1ef548e810"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="484" y="69" width="80" height="20" uuid="8d5d0360-4743-4a51-92b4-39dcd96a1734"/>
 				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="413" y="69" width="71" height="20" uuid="c348c97a-2769-4381-83a8-23720ef3fab7"/>
+				<reportElement x="456" y="55" width="79" height="20" uuid="2e42b7a2-af46-4849-8a87-0d5b8f0c23cc"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Printed Date :]]></text>
 			</staticText>
 		</band>
@@ -160,7 +156,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	<detail>
 		<band height="508" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 1" mode="Opaque" x="1" y="1" width="555" height="501" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="bd5e82dc-f1fe-4e78-b854-4eb9561fa64a"/>
+				<reportElement key="table 1" mode="Opaque" x="3" y="22" width="552" height="486" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="bd5e82dc-f1fe-4e78-b854-4eb9561fa64a"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="itemDataset" uuid="3f512dfb-79a9-4aeb-b6b1-a104be32d78b">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
@@ -392,14 +388,24 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					</jr:columnGroup>
 				</jr:table>
 			</componentElement>
+			<staticText>
+				<reportElement x="1" y="2" width="65" height="20" uuid="68f05da6-6948-4a0a-a455-781b16a61b17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Bagian 	:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="66" y="2" width="288" height="20" uuid="6e23259d-42df-4be7-970f-6dd3b403a16b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.bagian}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="122">
-			<staticText>
-				<reportElement x="399" y="3" width="46" height="20" uuid="44a1d27f-1b63-4f78-97e3-5ae5407c70af"/>
-				<text><![CDATA[Surabaya, ]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="380" y="96" width="154" height="20" uuid="abd27476-f415-4895-aff0-53e9e5e7fa1b"/>
 				<textElement textAlignment="Center"/>
@@ -411,8 +417,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Bagian SDM]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="449" y="3" width="89" height="20" uuid="59342fd5-4da9-4870-b66c-985aa7511d2e"/>
-				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+				<reportElement x="380" y="3" width="154" height="20" uuid="59342fd5-4da9-4870-b66c-985aa7511d2e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{reportParams.alamatSurat}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

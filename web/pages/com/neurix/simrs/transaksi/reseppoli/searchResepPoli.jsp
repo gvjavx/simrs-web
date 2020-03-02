@@ -118,6 +118,24 @@
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'4':'Selesai'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="permintaanResep.status"
+                                                  headerKey="1" headerValue="Antrian"
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Flag</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'N':'Non Active'}" cssStyle="margin-top: 7px"--%>
+                                                  <%--id="flag" name="permintaanResep.status"--%>
+                                                  <%--headerKey="Y" headerValue="Active"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <%--<div class="form-group">--%>
                                     <%--<label>&nbsp;</label>--%>
                                     <%--<div class="col-sm-4">--%>
@@ -129,7 +147,7 @@
                                         <%--</div>--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
-                                <s:hidden name="permintaanResep.status" value="3"></s:hidden>
+                                <%--<s:hidden name="permintaanResep.status" value="3"></s:hidden>--%>
                                 <s:hidden name="permintaanResep.isUmum" value="N"></s:hidden>
                                 <br>
                                 <div class="form-group">
@@ -199,19 +217,31 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" id="listOfResultObat">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanResep"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="status"/></td>
                                     <td align="center">
-                                        <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_proses}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
+                                        <s:if test='#row.flag == "N"'>
+                                            <s:url var="add_print" namespace="/reseppoli" action="printStrukResepPasien_reseppoli" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="idResep"><s:property value="idPermintaanResep"/></s:param>
+                                                <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_print}" target="_blank">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                        </s:if>
+                                        <s:else>
+                                            <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanResep"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_proses}">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

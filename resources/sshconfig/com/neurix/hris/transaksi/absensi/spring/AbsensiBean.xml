@@ -24,6 +24,7 @@
           p:jamLemburDao-ref="jamLemburDao"
           p:payrollDao-ref="payrollDao"
           p:payrollSkalaGajiDao-ref="skalaGajiDao"
+          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
           p:departmentDao-ref="departmentDao"
           p:cutiPegawaiDao-ref="cutiPegawaiDao"
           p:indisiplinerDao-ref="indisiplinerDao"

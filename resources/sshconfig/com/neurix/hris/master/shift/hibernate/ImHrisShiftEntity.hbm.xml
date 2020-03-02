@@ -40,8 +40,8 @@
         <property name="idBranch">
             <column name="branch_id" sql-type="varchar" length="4"/>
         </property>
-        <property name="kelompokPositionId">
-            <column name="kelompok_position_id" sql-type="varchar" length="10"/>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="10"/>
         </property>
 
     </class>

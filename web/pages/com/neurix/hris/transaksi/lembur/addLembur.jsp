@@ -273,7 +273,7 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <%--<tr>
                         <td>
                             <label class="control-label"><small>Status Giling :</small></label>
                         </td>
@@ -284,7 +284,7 @@
                                 <s:textfield  id="statusGiling1" cssStyle="display: none" name="lembur.statusGiling" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
-                    </tr>
+                    </tr>--%>
                     <tr>
                         <td>
                             <label class="control-label"><small>Tipe Lembur :</small></label>

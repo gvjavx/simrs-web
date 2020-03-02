@@ -2,6 +2,7 @@
 package com.neurix.hris.transaksi.personilPosition.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
 import com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity;
 import org.hibernate.Criteria;
@@ -143,15 +144,15 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
 
         for (Object[] row : results) {
             ImtHrisHistoryJabatanPegawaiEntity result  = new ImtHrisHistoryJabatanPegawaiEntity();
-            result.setHistoryJabatanPegawaiId((String) row[0]);
+            result.setHistoryJabatanId((String) row[0]);
             result.setTahun((String) row[1]);
             result.setNip((String) row[2]);
             result.setPositionName((String) row[3]);
 
             if(row[4] != null){
-                result.setTipePegawai((String) row[4]);
+                result.setTipePegawaiName((String) row[4]);
             }else{
-                result.setTipePegawai("-");
+                result.setTipePegawaiName("-");
             }
 
             if(row[6] != null){
@@ -189,6 +190,97 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
         }
 
         return listOfResult;
+    }
+    public String getBranchById(String branchId) throws HibernateException {
+        String Result;
+        String query ="select branch_name from im_branches where branch_id = '"+branchId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+    public String getPositionById(String positionId) throws HibernateException {
+        String Result;
+        String query ="select position_name from im_position where position_id ='"+positionId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+
+    public String getDivisiById(String divisiId) throws HibernateException {
+        String Result;
+        String query ="select department_name from im_hris_department where department_id ='"+divisiId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+    public String getGolonganById(String golonganId) throws HibernateException {
+        String Result;
+        String query ="select golongan_name from im_hris_golongan where golongan_id ='"+golonganId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+    public String getGolonganPkwtById(String golonganId) throws HibernateException {
+        String Result;
+        String query ="select golongan_pkwt_name from im_hris_golongan_pkwt where golongan_pkwt_id ='"+golonganId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+    public String getTipePegawaiById(String tipePegawaiId) throws HibernateException {
+        String Result;
+        String query ="select tipe_pegawai_name from im_hris_tipe_pegawai where tipe_pegawai_id ='"+tipePegawaiId+"'";
+
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        Result = results.toString();
+        return Result;
+    }
+
+    public List<HistoryJabatanPegawai> geyBagianByPositionId(String positionId) throws HibernateException {
+        List<HistoryJabatanPegawai> listOfResult = new ArrayList<HistoryJabatanPegawai>();
+
+        String query = "select DISTINCT \n" +
+                "\t im_hris_position_bagian.bagian_id, \n" +
+                "\t im_hris_position_bagian.nama_bagian \n" +
+                "from\n" +
+                "\t im_hris_position_bagian, \n"+
+                "\t im_position \n"+
+                "WHERE \n"+
+                "\t im_position.bagian_id = im_hris_position_bagian.bagian_id \n"+
+                "\t and im_position.position_id = '"+positionId+"'";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        HistoryJabatanPegawai historyJabatan;
+        for(Object[] rows: results){
+            historyJabatan = new HistoryJabatanPegawai();
+            historyJabatan.setBagianId(rows[0].toString());
+            historyJabatan.setBagianName(rows[1].toString());
+            listOfResult.add(historyJabatan);
+        }
+        return listOfResult;
+    }
+    public List<ImtHrisHistoryJabatanPegawaiEntity> getDataHistoryForThp(String nip) throws HibernateException {
+        List<ImtHrisHistoryJabatanPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImtHrisHistoryJabatanPegawaiEntity.class)
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("nip", nip))
+                .addOrder(Order.asc("tahun"))
+                .addOrder(Order.asc("tanggal"))
+                .list();
+        return results;
     }
     
 }

@@ -76,6 +76,8 @@ public class IjinKeluar extends BaseModel {
     private String keperluanName;
 
     private String os;
+    private String checkedValue;
+
 
     public String getOs() {
         return os;
@@ -83,6 +85,14 @@ public class IjinKeluar extends BaseModel {
 
     public void setOs(String os) {
         this.os = os;
+    }
+
+    public String getCheckedValue() {
+        return checkedValue;
+    }
+
+    public void setCheckedValue(String checkedValue) {
+        this.checkedValue = checkedValue;
     }
 
     public String getKeperluanName() {

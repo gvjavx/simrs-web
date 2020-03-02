@@ -178,7 +178,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>

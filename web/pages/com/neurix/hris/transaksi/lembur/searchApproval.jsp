@@ -80,7 +80,7 @@
     <section class="content-header">
         <h1>
             Lembur
-            <small>e-HEALTH</small>
+            <small>HRIS</small>
         </h1>
     </section>
 

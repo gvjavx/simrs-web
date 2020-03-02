@@ -32,6 +32,15 @@ public class Notifikasi extends BaseModel {
     private String os;
     private String channelId;
 
+    private String stTglJubilium;
+
+    public String getStTglJubilium() {
+        return stTglJubilium;
+    }
+
+    public void setStTglJubilium(String stTglJubilium) {
+        this.stTglJubilium = stTglJubilium;
+    }
     public String getOs() {
         return os;
     }

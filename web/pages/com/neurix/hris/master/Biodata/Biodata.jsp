@@ -184,9 +184,9 @@
                     <li><a tes = 'work' href="#keluarga">Keluarga</a></li>
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
                     <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
-                    <li><a href="#reward">Reward</a></li>
+                    <%--<li><a href="#reward">Reward</a></li>
                     <li><a href="#sertifikat">Sertifikat</a></li>
-                    <li><a href="#pelatihanJabatan">Pelatihan Jabatan</a></li>
+                    <li><a href="#pelatihanJabatan">Pelatihan Jabatan</a></li>--%>
 
                 </ul>
 
@@ -401,7 +401,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Bagian :</small></label>
+                                        <label class="control-label"><small>Bidang :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -431,6 +431,24 @@
                                             </s:if>
                                             <s:else>
                                                 <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Profesi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                             </s:else>
                                         </table>
                                     </td>
@@ -770,7 +788,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
+                                        <label class="control-label"><small>Status Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -790,37 +808,18 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Struktur Gaji :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#{'H':'Harian (PKWT Harian)', 'G':'Golongan (PKWT Golongan)', 'L':'Lumsum (PKWT Lumsum)', 'D':'Direksi',
-                                             'K':'Komisaris'}" id="strukturGaji" name="biodata.strukturGaji" disabled="true" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <select id="strukturGaji" name="biodata.strukturGaji" class="form-control"></select>
-                                                <s:textfield id="strukturGaji2" cssStyle="display: none" name="biodata.strukturGaji2" class="form-control"></s:textfield>
-                                                <%--<s:select list="" id="strukturGaji" name="biodata.strukturGaji"  headerValue="[Select one]" cssClass="form-control"/>--%>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Status Pegawai * :</small></label>
+                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'KNS' : 'Karyawan Non Staf', 'KS':'Karyawan Staf'}"
+                                                <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai" disabled="true"
                                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'KNS' : 'Karyawan Non Staf', 'KS':'Karyawan Staf'}"
+                                                <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai"
                                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
@@ -831,73 +830,34 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Gaji:</small></label>
+                                        <label class="control-label"><small>Level :</small></label>
                                     </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="gaji" name="biodata.gaji" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="gaji"  name="biodata.gaji" required="true" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Status Giling :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#{'': '', 'DMG':'Dalam Masa Giling', 'LMG' : 'Luar Masa Giling'}" id="statusGiling" name="biodata.statusGiling"
-                                                          cssClass="form-control" readOnly="true" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#{'': '', 'DMG':'Dalam Masa Giling', 'LMG' : 'Luar Masa Giling'}" id="statusGiling" name="biodata.statusGiling"
-                                                          cssClass="form-control" disabled="true" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Masa Tanam :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:action id="listComboMasaTanam" namespace="/masaTanam" name="searchMasaTanam_masaTanam"/>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#listComboMasaTanam.listComboMasaTanam"
-                                                          id="masaTanam" name="biodata.mt" disabled="true"
-                                                          listKey="masaTanamId" listValue="masaTanamName" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#listComboMasaTanam.listComboMasaTanam"
-                                                          id="masaTanam" name="biodata.mt" listKey="masaTanamId" disabled="true"
-                                                          listValue="masaTanamName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Golongan :</small></label>
-                                    </td>
-                                    <td>
+                                    <td id="golongan1Group">
                                         <table>
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
-                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="golonganName" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                    <td id="golongan2Group">
+                                        <table>
+                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                            <s:if test="isDelete()">
+                                                <%--Untuk list Golongan PKWT--%>
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan3" name="biodata.golongan" disabled="true"
+                                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <%--Untuk list Golongan PKWT--%>
+                                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan3" name="biodata.golongan"
+                                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -906,15 +866,15 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Poin :</small></label>
+                                        <label class="control-label"><small>Masa Kerja Golongan:</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="poin" name="biodata.point" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="poinLebih" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="poin"  name="biodata.point" required="true" cssClass="form-control"/>
+                                                <s:textfield id="poinLebih"  name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -922,16 +882,23 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Poin Lebih:</small></label>
+                                        <label class="control-label"><small>Golongan Dapen :</small></label>
                                     </td>
                                     <td>
                                         <table>
+                                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+
                                             <s:if test="isDelete()">
-                                                <s:textfield id="poinLebih" name="biodata.poinLebih" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
+                                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true" readonly="true"/>
+                                                <s:textfield id="golongan2" name="biodata.golonganDapenId" required="true" disabled="true" cssClass="form-control" readonly="true"/>
+
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="poinLebih"  name="biodata.poinLebih" required="true" cssClass="form-control"/>
+                                                <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
+                                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
+
                                         </table>
                                     </td>
                                 </tr>
@@ -946,7 +913,7 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
@@ -1185,6 +1152,125 @@
                                             </s:if>
                                             <s:else>
                                                 <s:textfield id="noRekBank"  name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Supervisi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Lokasi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Siaga :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunjangan Profesional :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="profesional" class="checkZakat" disabled onchange="cekProfesional()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Direksi :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="direksi" class="checkZakat" disabled onchange="cekDireksi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="direksi" class="checkZakat" onchange="cekDireksi()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjDireksi" name="biodata.flagTunjDireksi"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Komisaris :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="komisaris" class="checkZakat" disabled onchange="cekKomisaris()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="komisaris" class="checkZakat" onchange="cekKomisaris()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKomisaris" name="biodata.flagTunjKomisaris"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Komite Audit :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="koiteAudit" class="checkZakat" disabled onchange="cekKoiteAudit()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="koiteAudit" class="checkZakat" onchange="cekKoiteAudit()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjKoiteAudit" name="biodata.flagTunjKoiteAudit"  />
                                             </s:else>
                                         </table>
                                     </td>
@@ -1463,36 +1549,83 @@
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanId" name="txtStdudyName">
+                            <%--<input type="text" class="form-control" id="pengalamanId" name="txtStdudyName">--%>
+                            <input type="text" class="form-control" id="pengalamanId">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="gender">Nama Perusahaan :</label>
                         <div class="col-sm-8">
-                            <select id="branchIdRiwayatKerja" name="branchId" class="form-control" onchange="cekPerusahaan()"></select>
+                            <s:action id="initComboBranch2" namespace="/admin/branch"
+                                      name="initComboBranch2_branch"/>
+                            <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
+                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
+                                      listKey="branchId" listValue="branchName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
-
                     <div id="namaPerusahaanLain" class="form-group" style="display: none">
-                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain </label>
+                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPerusahaan">
+                            <input type="text" class="form-control" id="perusahaanLain">
                         </div>
                     </div>
-
-
+                    <div class="form-group" id="namaBidang">
+                        <label class="control-label col-sm-4" >Bidang : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboDivisi" namespace="/department"
+                                      name="searchDepartment2_department"/>
+                            <s:select list="#comboDivisi.listComboDepartment" id="departmentId"
+                                      name="biodata.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
+                                      listKey="departmentId" listValue="departmentName"
+                                      headerKey="" headerValue="[Select one]"
+                                      cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div id="namaBidangLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" for="gender">Nama Bidang Lain:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="bidangLain">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Jabatan : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanJabatan" >
+                            <s:action id="comboPosition" namespace="/admin/position"
+                                      name="searchPosition3_position"/>
+                            <s:select list="#comboPosition.listOfComboPosition" id="positionId3"
+                                      name="biodata.positionId" onchange="cekPosisiLain()"
+                                      listKey="positionId" listValue="positionName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div id="namaJabatanLain" class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" for="gender">Nama Jabatan Lain: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="jabatanLain">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Profesi : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesi3" name="biodata.profesiId"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tanggal / Tahun Diangkat: </label>
+                        <label class="control-label col-sm-4" >Tanggal Diangkat: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanTanggalMasuk">
+                            <input type="text" class="form-control" id="pengalamanTanggalMasuk" readonly="true" style="background-color: #fff;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tanggal Selesai: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="pengalamanTanggalKeluar" readonly="true" style="background-color: #fff;">
                         </div>
                     </div>
 
@@ -1500,44 +1633,35 @@
                         <label class="control-label col-sm-4" >Tipe Pegawai: </label>
                         <div class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
-                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawai"
+                            <s:select list="#initComboTipe.listComboTipePegawai" id="pengalamanTipePegawaiId" onchange="changePegawaiHistory(this.value)"
                                       listKey="tipePegawaiId" listValue="tipePegawaiName" cssClass="form-control"/>
-
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Golongan: </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanGolonganName">
+                        <div class="col-sm-8" id="golonganHistory1Group">
+                            <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                            <s:select list="#comboGolongan.listComboGolongan" id="pengalamanGolonganId1"
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                        <div class="col-sm-8" id="golonganHistory2Group">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwtHistory_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwtHistory" id="golonganHistory3" name="biodata.golongan"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Point: </label>
+                        <label class="control-label col-sm-4" >Pjs: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPoint">
+                            <s:select list="#{'Y':'Ya'}" id="pjsFlag1"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Point Lebih: </label>
+                        <label class="control-label col-sm-4" >Jabatan Aktif?: </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanPointLebih">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai SMK: </label>
-                        <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" class="form-control" id="pengalamanNilaiSmk">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Grade SMK: </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pengalamanGradeSmk">
+                            <s:select list="#{'Y':'Ya'}" id="flagAktif1"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
                         </div>
                     </div>
 
@@ -2256,6 +2380,66 @@
 </html>
 
 <script>
+    window.cekPerusahaanLain = function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        if (branch=='0'){
+            $('#perusahaanLain').val("");
+            $('#namaPerusahaanLain').show();
+        }
+        else{
+            $('#perusahaanLain').val("");
+            $('#namaPerusahaanLain').hide();
+        }
+    };
+    window.cekBidangLain = function(){
+        var divisi = document.getElementById("departmentId").value;
+        if (divisi=='0'){
+            $('#bidangLain').val("");
+            $('#namaBidangLain').show();
+        }
+        else{
+            $('#bidangLain').val("");
+            $('#namaBidangLain').hide();
+        }
+    };
+    window.cekPosisiLain = function(){
+        var position = document.getElementById("positionId3").value;
+//        alert(position);
+        if (position=='0'){
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').show();
+        }
+        else{
+            $('#jabatanLain').val("");
+            $('#namaJabatanLain').hide();
+        }
+    };
+    window.listDivisi= function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        $('#departmentId').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#departmentId').append($("<option></option>")
+                        .attr("value",item.departmentId)
+                        .text(item.departmentName));
+            });
+        });
+        listPosisi();
+
+    };
+    window.listDivisiHistory= function(){
+        var branch = document.getElementById("branchIdRiwayatKerja").value;
+        $('#departmentId').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#departmentId').append($("<option></option>")
+                        .attr("value",item.departmentId)
+                        .text(item.departmentName));
+            });
+        });
+        listPosisiHistory();
+
+    };
     function cek(){
         var home    = document.getElementById("home1").value;
         var person    = document.getElementById("person1").value;
@@ -2283,14 +2467,30 @@
             });
         });
     }
+    window.listPosisiHistory = function (branch, divisi) {
+        var branch = document.getElementById("branch1").value;
+        var divisi = document.getElementById("divisi1").value;
+        $('#positionId3').empty();
+        $('#positionId3').append($("<option></option>")
+                .attr("value", '')
+                .text(''));
+        PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
+            $.each(listdata, function (i, item) {
+                $('#positionId3').append($("<option></option>")
+                        .attr("value", item.positionId)
+                        .text(item.positionName));
+            });
+        });
+    }
 
     window.changePegawai = function (id) {
         if (id == "TP01") {
-            $('#golongan1').removeAttr('disabled');
+            $('#golongan1Group').show();
+            $('#golongan2Group').hide();
             $('#point').removeAttr('disabled');
             $('#danaPensiun').removeAttr('disabled');
-            $('#masaTanam').prop('disabled', 'true');
-            $('#statusGiling').prop('disabled', 'true');
+//            $('#masaTanam').prop('disabled', 'true');
+            /*$('#statusGiling').prop('disabled', 'true');
             $('#strukturGaji').empty();
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'G')
@@ -2300,9 +2500,11 @@
                     .text('Direksi'));
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'K')
-                    .text('Komisaris'));
+                    .text('Komisaris'));*/
         } else {
-            $('#strukturGaji').empty();
+            $('#golongan1Group').hide();
+            $('#golongan2Group').show();
+            /*$('#strukturGaji').empty();
             $('#strukturGaji').append($("<option></option>")
                     .attr("value", 'G')
                     .text('Golongan (PKWT Golongan)'));
@@ -2313,10 +2515,19 @@
                     .attr("value", 'L')
                     .text('Lumsum (PKWT Lumsum)'));
             $('#statusGiling').removeAttr('disabled');
-            $('#masaTanam').removeAttr('disabled');
-            $('#golongan1').prop('disabled', 'true');
+            $('#masaTanam').removeAttr('disabled');*/
+//            $('#golongan1').prop('disabled', 'true');
             $('#point').prop('disabled', 'true');
             $('#danaPensiun').prop('disabled', 'true');
+        }
+    }
+    window.changePegawaiHistory = function (id) {
+        if (id == "TP01") {
+            $('#golonganHistory1Group').show();
+            $('#golonganHistory2Group').hide();
+        } else {
+            $('#golonganHistory1Group').hide();
+            $('#golonganHistory2Group').show();
         }
     }
 
@@ -2376,11 +2587,11 @@
         var divisi = document.getElementById("divisi1").value;
         var posisi = document.getElementById("posisi2").value;
         var tipePegawai = document.getElementById("tipePegawai1").value;
-        var strukturGaji = document.getElementById("strukturGaji2").value;
+//        var strukturGaji = document.getElementById("strukturGaji2").value;
         listPosisi(branch, divisi);
         changePegawai(tipePegawai);
         $('#positionId1').val(posisi);
-        $('#strukturGaji').val(strukturGaji);
+//        $('#strukturGaji').val(strukturGaji);
 
         var pathFoto = document.getElementById("pathFoto").value;
         var nama = document.getElementById("namaPegawai1").value;
@@ -2502,11 +2713,10 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai SMK</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Grade SMK</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -2516,11 +2726,10 @@
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai SMK</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Grade SMK</th>" +
                         "</tr></thead>";
                 </s:else>
 
@@ -2532,11 +2741,10 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.namaPerusahaan + '</td>' +
                             '<td align="center">' + item.jabatan + '</td>' +
+                            '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
-                            '<td align="center">' + toFixed(item.nilaiSmk , 2)+ '</td>' +
-                            '<td align="center">' + item.gradeSmk + '</td>' +
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -2554,12 +2762,10 @@
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.namaPerusahaan + '</td>' +
                             '<td align="center">' + item.jabatan + '</td>' +
+                            '<td align="center">' + item.profesiName + '</td>' +
                             '<td align="center">' + item.stTtahunMasuk + '</td>' +
                             '<td align="center">' + item.tipePegawai + '</td>' +
                             '<td align="center">' + item.golonganName + '</td>' +
-                            '<td align="center">' + toFixed(item.nilaiSmk , 2)+ '</td>' +
-                            '<td align="center">' + item.gradeSmk + '</td>' +
-
                             "</tr>";
                     </s:else>
                 });
@@ -3254,20 +3460,31 @@
             var url = $('#myFormPengalaman').attr('action');
             var data = $('#myFormPengalaman').serialize();
 
+
+//            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
+//            var jabatan = document.getElementById("pengalamanJabatan").value;
+//            var tipePegawaiName = $("#pengalamanTipePegawai option:selected").text();
+
             var id = document.getElementById("pengalamanId").value;
             var nip = document.getElementById("nip1").value;
-            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
-            var jabatan = document.getElementById("pengalamanJabatan").value;
-            var tanggalMasuk = document.getElementById("pengalamanTanggalMasuk").value;
-
-            var tipePegawai = document.getElementById("pengalamanTipePegawai").value;
-            var tipePegawaiName = $("#pengalamanTipePegawai option:selected").text();
-            var golonganName = document.getElementById("pengalamanGolonganName").value;
-            var point = document.getElementById("pengalamanPoint").value;
-            var pointLebih = document.getElementById("pengalamanPointLebih").value;
-            var nilaiSmk = document.getElementById("pengalamanNilaiSmk").value;
-            var gradeSmk = document.getElementById("pengalamanGradeSmk").value;
             var branchId = document.getElementById("branchIdRiwayatKerja").value;
+            var divisiId = document.getElementById("departmentId").value;
+            var posisiId = document.getElementById("positionId3").value;
+            var profesiId = document.getElementById("profesi3").value;
+            var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
+            var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
+            var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
+            if(tipePegawaiId=="TP01"){
+                var golonganId = document.getElementById("pengalamanGolonganId1").value;
+            }
+            if(tipePegawaiId=="TP03"){
+                var golonganId = document.getElementById("golonganHistory3").value;
+            }
+            var pjsFlag = document.getElementById("pjsFlag1").value;
+            var aktifFlag = document.getElementById("flagAktif1").value;
+            var perusahaanLain = document.getElementById("perusahaanLain").value;
+            var bidangLain = document.getElementById("bidangLain").value;
+            var jabatanLain = document.getElementById("jabatanLain").value;
 
             if(branchId != 'lain'){
                 namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
@@ -3275,12 +3492,13 @@
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
-                if (namaPerusahaan == '' && jabatan == '' && tanggalMasuk == '' && tanggalKeluar == '') {
+                console.log('yayaya');
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar =='' && tipePegawaiId =='' &&golonganId =='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
                     if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                         dwr.engine.setAsync(false);
-                        BiodataAction.saveAddPengalaman(nip, namaPerusahaan, jabatan, tanggalMasuk, tanggalKeluar, function (listdata) {
+                        BiodataAction.saveAddPengalaman(nip, branchId, divisiId, posisiId, tanggal, tipePegawaiId, golonganId, pjsFlag,   function (listdata) {
                             alert('Data Berhasil Disimpan');
                             $('#modal-pengalamanKerja').modal('hide');
                             $('#myFormPengalaman')[0].reset();
@@ -3302,30 +3520,107 @@
             </s:if>
             <s:else>
             if (url == 'addPengalamanKerja') {
-                if (namaPerusahaan == '' && tanggalMasuk != '') {
-                    alert('Nama Perusahaan dan Tahun Harus Diisi');
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId ==''|| profesiId=='') {
+                    alert('Isi Field Terlebih Dahulu');
                 } else {
-                    if (confirm('Are you sure you want to save this Record?')) {
-                        dwr.engine.setAsync(false);
-                        BiodataAction.saveAddDataPengalamaKerja(nip, namaPerusahaan, jabatan, tanggalMasuk, tipePegawaiName, golonganName,
-                                point, pointLebih, nilaiSmk, gradeSmk, branchId, tipePegawai,  function (listdata) {
-                            alert('Data Successfully Added');
-                            $('#modal-pengalamanKerja').modal('hide');
-                            $('#myFormPengalaman')[0].reset();
-                            loadPengalamanKerja(nip);
-                        });
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(profesiId == ''){
+                            msg+="- Profesi\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+                        if(tanggalKeluar == ''){
+                            if(aktifFlag == 'N'){
+                                msg+="- Tanggal Selesai\n";
+                            }
+                        }else{
+                            if(tanggalKeluar.length <10){
+                                if(aktifFlag == 'N'){
+                                    msg2+="- Format Tanggal Selesai Salah\n";
+                                }
+                            }
+                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
                     }
+                    else{
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
+                                        alert('Data Successfully Added');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
+                        }
+                    }
+
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.saveEditPengalamanKerja(id, nip, namaPerusahaan, jabatan, tanggalMasuk, tipePegawaiName, golonganName,
-                            point, pointLebih, nilaiSmk, gradeSmk, branchId, tipePegawai, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-pengalamanKerja').modal('hide');
-                        $('#myFormPengalaman')[0].reset();
-                        loadPengalamanKerja(nip);
-                    });
+                if (branchId == '' && divisiId == '' && posisiId == '' && tanggal == ''&& tanggalKeluar ==''&& tipePegawaiId == '') {
+                    alert('Isi Field Terlebih Dahulu');
+                } else {
+                    var msg ="Field:  \n";
+                    var msg2 ="";
+                    if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tanggalKeluar ==''|| tipePegawaiId=='') {
+                        if(branchId == ''){
+                            msg+="- Nama Perusahaan\n";
+                        }
+                        if(divisiId == ''){
+                            msg+="- Bidang\n";
+                        }
+                        if(posisiId == ''){
+                            msg+="- Jabatan\n";
+                        }
+                        if(tanggal == ''){
+                            msg+="- Tanggal Diangkat\n";
+                        }else{
+                            if(tanggal.length <10){
+                                msg2+="- Format Tanggal Diangkat Salah\n";
+                            }
+                        }
+                        if(tanggalKeluar == ''){
+                            msg+="- Tanggal Selesai\n";
+                        }else{
+                            if(tanggalKeluar.length <10){
+                                msg2+="- Format Tanggal Selesai Salah\n";
+                            }
+                        }
+                        if(tipePegawaiId ==''){
+                            msg+="- Tipe Pegawai\n";
+                        }
+                        alert(msg+"Harus Diisi\n"+msg2);
+                    } else{
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
+                                    golonganId, perusahaanLain, bidangLain, jabatanLain, function (listdata) {
+                                        alert('Data Successfully Updated');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
+                        }
+                    }
                 }
             }
             </s:else>
@@ -3704,6 +3999,8 @@
 
         $('#btnAddPengalamanKerja').click(function () {
             $('#myFormPengalaman')[0].reset();
+            $('#pengalamanGolonganId1').show();
+            $('#golonganHistory2Group').hide();
             cekPerusahaan();
             $('#modal-pengalamanKerja').modal('show');
             $('#myFormPengalaman').attr('action', 'addPengalamanKerja');
@@ -3764,16 +4061,26 @@
             <s:else>
             BiodataAction.searchDataEditPengalamanKerja(id, function (listdata) {
                 $('#branchIdRiwayatKerja').val(listdata.branchId).change();
+                $('#positionId3').val(listdata.posisiId).change();
+                $('#departmentId').val(listdata.divisiId).change();
                 $('#pengalamanPerusahaan').val(listdata.namaPerusahaan);
                 $('#pengalamanJabatan').val(listdata.jabatan);
-                $('#pengalamanTanggalMasuk').val(listdata.stTtahunMasuk);
-                $('#pengalamanTipePegawai').val(listdata.tipePegawaiId).change();
+                $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
+                $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
+                $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
+                $('#flagAktif1').val(listdata.flagJabatanAktif).change();
+                if(listdata.tipePegawaiId == "TP01"){
+                    $('#pengalamanGolonganId1').val(listdata.golonganId).change();
+                    $('#golonganHistory1Group').show();
+                    $('#golonganHistory2Group').hide();
+                }
+                if(listdata.tipePegawaiId == "TP03"){
+                    $('#golonganHistory3').val(listdata.golonganId).change();
+                    $('#golonganHistory1Group').hide();
+                    $('#golonganHistory2Group').show();
+                }
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
-                $('#pengalamanPoint').val(listdata.point);
-                $('#pengalamanPointLebih').val(listdata.pointLebih);
-                $('#pengalamanNilaiSmk').val(listdata.nilaiSmk);
-                $('#pengalamanGradeSmk').val(listdata.gradeSmk);
             });
             </s:else>
 
@@ -4252,6 +4559,12 @@
             changeYear: true,
             yearRange: "-100:+0"
         });
+        $('#pengalamanTanggalKeluar').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0"
+        });
 
         $('#tanggalLahir1').datepicker({
             dateFormat: 'dd-mm-yy',
@@ -4339,6 +4652,64 @@
             $("#flagAktif").val("N");
         }
     }
+
+
+    window.cekSupervisi = function () {
+        if ($('#supervisi').is(":checked")) {
+            $("#flagTunjSupervisi").val("Y");
+        } else {
+            $("#flagTunjSupervisi").val("N");
+        }
+    }
+
+    window.cekLokasi = function () {
+        if ($('#lokasi').is(":checked")) {
+            $("#flagTunjLokasi").val("Y");
+        } else {
+            $("#flagTunjLokasi").val("N");
+        }
+    }
+
+    window.cekSiaga = function () {
+        if ($('#siaga').is(":checked")) {
+            $("#flagTunjSiaga").val("Y");
+        } else {
+            $("#flagTunjSiaga").val("N");
+        }
+    }
+    window.cekProfesional = function () {
+        if ($('#profesional').is(":checked")) {
+            $("#flagTunjProfesional").val("Y");
+        } else {
+            $("#flagTunjProfesional").val("N");
+        }
+    }
+
+    window.cekDireksi = function () {
+        if ($('#direksi').is(":checked")) {
+            $("#flagTunjDireksi").val("Y");
+        } else {
+            $("#flagTunjDireksi").val("N");
+        }
+    }
+
+    window.cekKomisaris = function () {
+        if ($('#komisaris').is(":checked")) {
+            $("#flagTunjKomisaris").val("Y");
+        } else {
+            $("#flagTunjKomisaris").val("N");
+        }
+    }
+    window.cekKoiteAudit = function () {
+        if ($('#koiteAudit').is(":checked")) {
+            $("#flagTunjKoiteAudit").val("Y");
+        } else {
+            $("#flagTunjKoiteAudit").val("N");
+        }
+    }
+
+
+
 
     window.listStatusKeluarga = function () {
         var gender = document.getElementById("gender").value;
