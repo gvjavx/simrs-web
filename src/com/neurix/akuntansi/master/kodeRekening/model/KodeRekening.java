@@ -24,6 +24,15 @@ public class KodeRekening extends BaseModel {
 
     //for view only
     private String tipeRekeningName;
+    private boolean adaRekeningReport=false;
+
+    public boolean isAdaRekeningReport() {
+        return adaRekeningReport;
+    }
+
+    public void setAdaRekeningReport(boolean adaRekeningReport) {
+        this.adaRekeningReport = adaRekeningReport;
+    }
 
     public String getTipeRekeningName() {
         return tipeRekeningName;

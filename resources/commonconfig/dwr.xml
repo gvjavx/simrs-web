@@ -482,6 +482,12 @@
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
       <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.reportDetail.model.ReportDetail"/>
+
   </allow>
 
 </dwr>

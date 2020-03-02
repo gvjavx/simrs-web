@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="6"/>
+	<property name="ireport.x" value="433"/>
+	<property name="ireport.y" value="246"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -57,7 +57,7 @@ where
     and y.master_id = $P{nomor_master}
     and lower(mu.kode_mata_uang) = 'rph'
     and x.registered_flag = 'Y'
-and x.branch_id=$P{reportParams.branchId}]]>
+    and x.branch_id IN ($P!{reportParams.branchId})]]>
 	</queryString>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
 	<field name="no_jurnal" class="java.lang.String"/>
@@ -71,7 +71,8 @@ and x.branch_id=$P{reportParams.branchId}]]>
 	<field name="jumlahdebit" class="java.math.BigDecimal"/>
 	<field name="jumlahkredit" class="java.math.BigDecimal"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<variable name="SUM_jumlahDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>
@@ -538,14 +539,17 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</staticText>
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="383" y="23" width="184" height="18" uuid="4f87b79d-245a-423d-bba9-e003ed0fd7a2"/>
-				<subreportParameter name="periode">
-					<subreportParameterExpression><![CDATA[$P{periode}]]></subreportParameterExpression>
+				<subreportParameter name="nomor_master">
+					<subreportParameterExpression><![CDATA[$P{nomor_master}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="kode_rekening">
 					<subreportParameterExpression><![CDATA[$P{kode_rekening}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="nomor_master">
-					<subreportParameterExpression><![CDATA[$P{nomor_master}]]></subreportParameterExpression>
+				<subreportParameter name="periode">
+					<subreportParameterExpression><![CDATA[$P{periode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branch_id">
+					<subreportParameterExpression><![CDATA[$P{reportParams.branchId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="debit_awal" toVariable="debit_awal"/>

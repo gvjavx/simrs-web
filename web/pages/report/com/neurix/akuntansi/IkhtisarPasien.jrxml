@@ -143,20 +143,18 @@ FROM
       y.pasien_id as pasien_id,
       z.nama as nama,
       sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit,
-      x.branch_id
+      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
     from
       it_akun_jurnal x
       inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
       inner join im_simrs_pasien z on y.pasien_id = z.id_pasien
     where
       to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
-      and x.branch_id =  $P{reportParams.branchId}
+      and x.branch_id IN ($P!{reportParams.branchId})
     group by
       y.rekening_id,
       y.pasien_id,
-      z.nama,
-      x.branch_id
+      z.nama
   ) b ON b.rekening_id = a.rekening_id
   LEFT OUTER JOIN (
     select
@@ -170,7 +168,7 @@ FROM
       it_akun_saldo_akhir
     where
       to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id = $P{reportParams.branchId}
+      and branch_id IN ($P!{reportParams.branchId})
   ) c ON a.rekening_id = c.rekening_id
   and c.pasien_id = b.pasien_id
 ORDER BY
