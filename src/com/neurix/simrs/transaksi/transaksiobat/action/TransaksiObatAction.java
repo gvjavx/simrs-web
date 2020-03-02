@@ -1150,9 +1150,6 @@ public class TransaksiObatAction extends BaseMasterAction {
 
             }
 
-//        HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
-//        JenisPriksaPasien jenisPriksaPasien = getListJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
-
             reportParams.put("resepId", idResep);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
