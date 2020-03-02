@@ -123,9 +123,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 pendaftaranEntity.setStatusBayar("Y");
                 pendaftaranEntity.setAction("U");
                 pendaftaranEntity.setJumlahDibayar(bean.getDibayar());
-//                pendaftaranEntity.setNoNota(bean.getNoNota());
                 pendaftaranEntity.setLastUpdate(bean.getLastUpdate());
                 pendaftaranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                pendaftaranEntity.setNoJurnal(bean.getNoJurnal());
 
                 try {
                     uangMukaDao.updateAndSave(pendaftaranEntity);

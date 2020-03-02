@@ -593,7 +593,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
-        hsCriteria.put("no_rekening", noRekening);
+
+        if (!"".equalsIgnoreCase(noRekening)){
+            hsCriteria.put("nomor_rekening", noRekening);
+        }
 
         Map mapUangMuka = new HashMap();
         mapUangMuka.put("bukti", id);
@@ -603,7 +606,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         hsCriteria.put("kas", new BigDecimal(jumlahDibayar));
 
         try {
-            billingSystemBo.createJurnal(transId, hsCriteria, branchId,"Uang Muka untuk No Pasien " + idPasien +" no rekening "+noRekening,"Y");
+
+            String catatan = "Uang Muka untuk No Pasien " + idPasien;
+            if (!"".equalsIgnoreCase(noRekening)){
+                catatan = catatan+" No. Rekening "+noRekening;
+            }
+
+            String noJurnal =  billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan,"Y");
 
             UangMuka uangMuka = new UangMuka();
             uangMuka.setNoNota(noNota);
@@ -611,6 +620,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             uangMuka.setDibayar(new BigInteger(jumlahDibayar));
             uangMuka.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             uangMuka.setLastUpdateWho(CommonUtil.userLogin());
+            uangMuka.setNoJurnal(noJurnal);
 
             kasirRawatJalanBo.updateNotaUangMukaById(uangMuka);
 
@@ -666,12 +676,15 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis) throws JSONException {
+    public CrudResponse savePembayaranTagihan(String jsonString, String idPasien, String noNota, String withObat, String idDetailCheckup, String metodeBayar, String kodeBank, String type, String jenis, String noRekening) throws JSONException {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("pasien_id", idPasien);
         hsCriteria.put("metode_bayar", metodeBayar);
         hsCriteria.put("bank", kodeBank);
+        if (!"".equalsIgnoreCase(noRekening)){
+            hsCriteria.put("nomor_rekening", noRekening);
+        }
 
         String branchId = CommonUtil.userBranchLogin();
 
@@ -759,7 +772,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     text=" pada Bank "+kodeBank;
                 }
 
-                String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId ,ketTerangan + " untuk RM pasien : " + idPasien +" menggunakan metode "+metodeBayar+text,"Y");
+                String catatan = ketTerangan + " untuk No Pasien " + idPasien +" menggunakan metode "+metodeBayar+text;
+                if (!"".equalsIgnoreCase(noRekening)){
+                    catatan = catatan + " No. Rekening "+noRekening;
+                }
+
+                String noJurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId , catatan,"Y");
 
                 HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);

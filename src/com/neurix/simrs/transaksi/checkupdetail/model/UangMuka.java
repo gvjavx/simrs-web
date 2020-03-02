@@ -20,6 +20,15 @@ public class UangMuka extends BaseModel {
     private String noNota;
     private String stDate;
     private BigInteger dibayar;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public BigInteger getDibayar() {
         return dibayar;
