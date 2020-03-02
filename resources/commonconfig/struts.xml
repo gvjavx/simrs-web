@@ -210,5 +210,6 @@
     <include file="sshconfig/com/neurix/akuntansi/transaksi/jurnal/struts/JurnalAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/struts/PembayaranUtangPiutangAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/reportDetail/struts/ReportDetailAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/mappingJurnal/struts/MappingJurnalAction.xml"/>
 
 </struts>

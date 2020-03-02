@@ -1,6 +1,6 @@
-package com.neurix.akuntansi.master.tipeJurnal.dao;
+package com.neurix.akuntansi.master.mappingJurnal.dao;
 
-import com.neurix.akuntansi.master.tipeJurnal.model.ImMappingJurnalEntity;
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;

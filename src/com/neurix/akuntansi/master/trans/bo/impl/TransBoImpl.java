@@ -194,7 +194,7 @@ public class TransBoImpl implements TransBo {
                 for(ImTransEntity transEntity : imTransEntity){
                     returnTrans = new Trans();
                     returnTrans.setTransId(transEntity.getTransId());
-                    returnTrans.setTransName(transEntity.getTransName());;
+                    returnTrans.setTransName(transEntity.getTransName());
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());

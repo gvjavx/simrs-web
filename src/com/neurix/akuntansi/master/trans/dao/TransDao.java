@@ -55,7 +55,7 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
 
     // Generate surrogate id from postgre
     public String getNextTransId() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_tipe_rekening')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_trans')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%02d", iter.next());
 

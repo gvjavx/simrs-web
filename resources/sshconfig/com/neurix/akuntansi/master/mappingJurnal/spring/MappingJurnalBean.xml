@@ -5,17 +5,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="tipeJurnalAction" class="com.neurix.akuntansi.master.tipeJurnal.action.TipeJurnalAction"
-          p:tipeJurnalBoProxy-ref="tipeJurnalBoProxy" />
+    <bean id="mappingJurnalAction" class="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction"
+          p:mappingJurnalBoProxy-ref="mappingJurnalBoProxy" />
 
-    <bean id="tipeJurnalBo" class="com.neurix.akuntansi.master.tipeJurnal.bo.impl.TipeJurnalBoImpl"
-          p:tipeJurnalDao-ref="tipeJurnalDao"
+    <bean id="mappingJurnalBo" class="com.neurix.akuntansi.master.mappingJurnal.bo.impl.MappingJurnalBoImpl"
           p:mappingJurnalDao-ref="mappingJurnalDao"
-          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:tipeJurnalDao-ref="tipeJurnalDao"
+          p:transDao-ref="transDao"
     />
 
-    <bean id="tipeJurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="tipeJurnalBo">
+    <bean id="mappingJurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="mappingJurnalBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -34,7 +34,7 @@
         </property>
     </bean>
 
-    <bean id="tipeJurnalDao" class="com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao"
+    <bean id="mappingJurnalDao" class="com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.akuntansi.master.tipeJurnal.model.ImMappingJurnalEntity" dynamic-update="true"
+    <class name="com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity" dynamic-update="true"
            table="im_akun_mapping_jurnal" select-before-update="true" schema="public">
 
         <id name="mappingJurnalId">
