@@ -133,13 +133,14 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
-                "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tim_position.position_id,\n" +
+                "\tim_position.position_name\n" +
                 "from\n" +
-                "\tstruktur_jabatan\n" +
+                "\tim_position, it_hris_pegawai_position\n" +
                 "where\n" +
                 "\tbranch_id is not null\n" + unit + bagian + "\n" +
                 "\tand nip is not null\n" +
+                "\tand im_position.position_id = it_hris_pegawai_position.position_id\n" +
                 "\torder by position_name";
 
         results = this.sessionFactory.getCurrentSession()

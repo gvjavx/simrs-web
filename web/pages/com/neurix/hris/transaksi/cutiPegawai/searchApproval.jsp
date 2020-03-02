@@ -443,6 +443,9 @@
         var who = $('#myForm').attr('action');
         var nip = document.getElementById("CutiPegawaiId1").value;
         var nipid=document.getElementById("Nip1").value;
+        var pejabatanSementara1=document.getElementById("PejabatSementara1").value;
+        var pejabatanSementara12=document.getElementById("PejabatSementara12").value;
+        alert(pejabatanSementara1+'-'+pejabatanSementara12);
         if (confirm('Are you sure you want to save this Record?')) {
             dwr.engine.setAsync(false);
             CutiPegawaiAction.saveApprove(nip, "Y",who,nipid, function(listdata) {
